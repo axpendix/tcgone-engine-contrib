@@ -1,34 +1,34 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -133,53 +133,53 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
   ABSOL_96 ("Absol", "96", Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
   JIRACHI_97 ("Jirachi", "97", Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   TeamMagmaVsTeamAquaNG(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.TEAM_MAGMA_VS_TEAM_AQUA;
+    return tcgwars.logic.card.Collection.TEAM_MAGMA_VS_TEAM_AQUA
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -204,7 +204,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case TEAM_AQUA_S_CRAWDAUNT_2:
       return evolution (this, from:"null", hp:HP080, type:[W, D], retreatCost:1) {
         weakness L
@@ -224,7 +224,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case TEAM_AQUA_S_KYOGRE_3:
       return basic (this, hp:HP100, type:[W, D], retreatCost:3) {
         weakness G
@@ -249,7 +249,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case TEAM_AQUA_S_MANECTRIC_4:
       return evolution (this, from:"null", hp:HP070, type:[L, D], retreatCost:1) {
         weakness F
@@ -267,7 +267,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case TEAM_AQUA_S_SHARPEDO_5:
       return evolution (this, from:"null", hp:HP070, type:[W, D], retreatCost:null) {
         weakness L
@@ -287,7 +287,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case TEAM_AQUA_S_WALREIN_6:
       return evolution (this, from:"null", hp:HP120, type:[W, D], retreatCost:2) {
         weakness F
@@ -308,7 +308,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_AGGRON_7:
       return evolution (this, from:"null", hp:HP120, type:[F, D], retreatCost:2) {
         weakness G
@@ -329,7 +329,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_CLAYDOL_8:
       return evolution (this, from:"null", hp:HP080, type:[P, D], retreatCost:2) {
         weakness P
@@ -346,7 +346,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_GROUDON_9:
       return basic (this, hp:HP100, type:[F, D], retreatCost:3) {
         weakness G
@@ -371,7 +371,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_HOUNDOOM_10:
       return evolution (this, from:"null", hp:HP070, type:[R, D], retreatCost:1) {
         weakness W
@@ -391,7 +391,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_RHYDON_11:
       return evolution (this, from:"null", hp:HP090, type:[F, D], retreatCost:2) {
         weakness G
@@ -411,7 +411,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_TORKOAL_12:
       return basic (this, hp:HP080, type:[R, D], retreatCost:2) {
         weakness W
@@ -431,7 +431,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case RAICHU_13:
       return evolution (this, from:"null", hp:HP080, type:L, retreatCost:1) {
         weakness F
@@ -451,7 +451,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case TEAM_AQUA_S_CRAWDAUNT_14:
       return evolution (this, from:"null", hp:HP080, type:W, retreatCost:1) {
         weakness L
@@ -471,7 +471,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case TEAM_AQUA_S_MIGHTYENA_15:
       return evolution (this, from:"null", hp:HP070, type:D, retreatCost:1) {
         weakness G
@@ -492,7 +492,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case TEAM_AQUA_S_SEALEO_16:
       return evolution (this, from:"null", hp:HP070, type:W, retreatCost:1) {
         weakness M
@@ -512,7 +512,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case TEAM_AQUA_S_SEVIPER_17:
       return basic (this, hp:HP080, type:G, retreatCost:2) {
         weakness P
@@ -532,7 +532,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TEAM_AQUA_S_SHARPEDO_18:
       return evolution (this, from:"null", hp:HP070, type:W, retreatCost:null) {
         weakness L
@@ -552,7 +552,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_CAMERUPT_19:
       return evolution (this, from:"null", hp:HP080, type:R, retreatCost:2) {
         weakness W
@@ -569,7 +569,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_LAIRON_20:
       return evolution (this, from:"null", hp:HP080, type:F, retreatCost:2) {
         weakness G
@@ -589,7 +589,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_MIGHTYENA_21:
       return evolution (this, from:"null", hp:HP070, type:D, retreatCost:1) {
         weakness F
@@ -610,7 +610,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_RHYDON_22:
       return evolution (this, from:"null", hp:HP080, type:F, retreatCost:2) {
         weakness G
@@ -630,7 +630,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_ZANGOOSE_23:
       return basic (this, hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -650,7 +650,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case TEAM_AQUA_S_CACNEA_24:
       return basic (this, hp:HP050, type:[G, D], retreatCost:1) {
         weakness R
@@ -670,7 +670,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case TEAM_AQUA_S_CARVANHA_25:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -687,7 +687,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TEAM_AQUA_S_CORPHISH_26:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -707,7 +707,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TEAM_AQUA_S_ELECTRIKE_27:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -728,7 +728,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case TEAM_AQUA_S_LANTURN_28:
       return evolution (this, from:"null", hp:HP080, type:L, retreatCost:1) {
         weakness F
@@ -746,7 +746,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case TEAM_AQUA_S_MANECTRIC_29:
       return evolution (this, from:"null", hp:HP080, type:L, retreatCost:1) {
         weakness F
@@ -767,7 +767,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case TEAM_AQUA_S_MIGHTYENA_30:
       return evolution (this, from:"null", hp:HP080, type:D, retreatCost:1) {
         weakness G
@@ -788,7 +788,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case TEAM_AQUA_S_SEALEO_31:
       return evolution (this, from:"null", hp:HP080, type:W, retreatCost:2) {
         weakness M
@@ -808,7 +808,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_BALTOY_32:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -828,7 +828,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_CLAYDOL_33:
       return evolution (this, from:"null", hp:HP080, type:F, retreatCost:1) {
         weakness G
@@ -848,7 +848,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_HOUNDOOM_34:
       return evolution (this, from:"null", hp:HP070, type:R, retreatCost:1) {
         weakness W
@@ -868,7 +868,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_HOUNDOUR_35:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -888,7 +888,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_LAIRON_36:
       return evolution (this, from:"null", hp:HP070, type:F, retreatCost:1) {
         weakness G
@@ -908,7 +908,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_MIGHTYENA_37:
       return evolution (this, from:"null", hp:HP080, type:D, retreatCost:1) {
         weakness F
@@ -926,7 +926,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_RHYHORN_38:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
@@ -946,7 +946,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case BULBASAUR_39:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -966,7 +966,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case CUBONE_40:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
@@ -978,7 +978,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case JIGGLYPUFF_41:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -998,7 +998,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case MEOWTH_42:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1018,7 +1018,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case PIKACHU_43:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1038,7 +1038,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case PSYDUCK_44:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness L
@@ -1058,7 +1058,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SLOWPOKE_45:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -1078,7 +1078,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SQUIRTLE_46:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -1095,7 +1095,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case TEAM_AQUA_S_CARVANHA_47:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness L
@@ -1115,7 +1115,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case TEAM_AQUA_S_CARVANHA_48:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -1135,7 +1135,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TEAM_AQUA_S_CHINCHOU_49:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1156,7 +1156,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TEAM_AQUA_S_CORPHISH_50:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -1168,7 +1168,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case TEAM_AQUA_S_CORPHISH_51:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -1188,7 +1188,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case TEAM_AQUA_S_ELECTRIKE_52:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1209,7 +1209,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case TEAM_AQUA_S_ELECTRIKE_53:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1230,7 +1230,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TEAM_AQUA_S_POOCHYENA_54:
       return basic (this, hp:HP040, type:D, retreatCost:1) {
         weakness G
@@ -1251,7 +1251,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TEAM_AQUA_S_POOCHYENA_55:
       return basic (this, hp:HP050, type:D, retreatCost:1) {
         weakness G
@@ -1272,7 +1272,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case TEAM_AQUA_S_SPHEAL_56:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness M
@@ -1284,7 +1284,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case TEAM_AQUA_S_SPHEAL_57:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness M
@@ -1304,7 +1304,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_ARON_58:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
@@ -1324,7 +1324,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_ARON_59:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
@@ -1336,7 +1336,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_BALTOY_60:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
@@ -1356,7 +1356,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_BALTOY_61:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
@@ -1376,7 +1376,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_HOUNDOUR_62:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1396,7 +1396,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_HOUNDOUR_63:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1416,7 +1416,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_NUMEL_64:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1436,7 +1436,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_POOCHYENA_65:
       return basic (this, hp:HP040, type:D, retreatCost:1) {
         weakness F
@@ -1449,7 +1449,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_POOCHYENA_66:
       return basic (this, hp:HP050, type:D, retreatCost:1) {
         weakness F
@@ -1470,7 +1470,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_RHYHORN_67:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
@@ -1490,7 +1490,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case TEAM_MAGMA_S_RHYHORN_68:
       return basic (this, hp:HP060, type:F, retreatCost:2) {
         weakness G
@@ -1510,7 +1510,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case TEAM_AQUA_SCHEMER_69:
       return supporter (this) {
         text "Discard any 1 Pokémon from your hand. Then draw 3 cards. If you discarded a Pokémon with Team Aqua in its name, draw 4 cards instead." +
@@ -1519,7 +1519,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case TEAM_MAGMA_SCHEMER_70:
       return supporter (this) {
         text "Discard any 1 Pokémon from your hand. Then draw 3 cards. If you discarded a Pokémon with Team Magma in its name, draw 4 cards instead." +
@@ -1528,7 +1528,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case ARCHIE_71:
       return supporter (this) {
         text "Search your deck for a Pokémon with Team Aqua in its name and put it onto your Bench. Shuffle your deck afterward. Treat the new Benched Pokémon as a Basic Pokémon. If it is a Stage 2 Pokémon, put 2 damage counters on that Pokémon." +
@@ -1537,7 +1537,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case DUAL_BALL_72:
       return itemCard (this) {
         text "Flip 2 coins. For each heads, search your deck for a Basic Pokémon card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
@@ -1545,7 +1545,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case MAXIE_73:
       return supporter (this) {
         text "Search your hand or discard pile for a Pokémon with Team Magma in its name and put it onto your Bench. Treat the new Benched Pokémon as a Basic Pokémon. If it is a Stage 2 Pokémon, put 2 damage counters on that Pokémon." +
@@ -1554,7 +1554,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case STRENGTH_CHARM_74:
       return pokemonTool (this) {
         text "Whenever an attack from the Pokémon that Strength Charm is attached to does damage to the Active Pokémon (after applying Weakness and Resistance), the attack does 10 more damage. At the end of the turn in which this happens, discard Strength Charm." +
@@ -1565,7 +1565,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case TEAM_AQUA_BALL_75:
       return itemCard (this) {
         text "Flip a coin. If heads, search your deck for a Pokémon that has Team Aqua in its name, show it to your opponent, and put it into your hand. If tails, search your deck for a Basic Pokémon that has Team Aqua in its name, show it to your opponent and put into your hand. Shuffle your deck afterward."
@@ -1573,7 +1573,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case TEAM_AQUA_BELT_76:
       return pokemonTool (this) {
         text "At any time between turns, if the Pokémon Team Aqua Belt is attached to is your Active Pokémon, search your deck for a card that evolves from that Pokémon and put it on that Pokémon. (This counts as evolving that Pokémon.) Shuffle your deck afterward, then discard Team Aqua Belt." +
@@ -1584,7 +1584,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case TEAM_AQUA_CONSPIRATOR_77:
       return supporter (this) {
         text "Search your deck for up to 2 in any combination of Basic Pokémon with Team Aqua in its name and basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward." +
@@ -1593,7 +1593,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case TEAM_AQUA_HIDEOUT_78:
       return stadium (this) {
         text "Each Pokémon that does not have Team Aqua in its name pays [C] more to retreat." +
@@ -1602,7 +1602,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         }
         onRemoveFromPlay{
         }
-      };
+      }
       case TEAM_AQUA_S_TECHNICAL_MACHINE_01_79:
       return itemCard (this) {
         text "Attach this card to 1 of your Pokémon that has Team Aqua in its name. That Pokémon may use this card's attack instead of its own. At the end of your turn, discard Team Aqua Technical Machine 01."
@@ -1610,7 +1610,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case TEAM_MAGMA_BALL_80:
       return itemCard (this) {
         text "Flip a coin. If heads, search your deck for a Pokémon that has Team Magma in its name, show it to your opponent, and put it into your hand. If tails, search your deck for a Basic Pokémon that has Team Magma in its name, show it to your opponent and put into your hand. Shuffle your deck afterward."
@@ -1618,7 +1618,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case TEAM_MAGMA_BELT_81:
       return pokemonTool (this) {
         text "At any time between turns, if the Pokémon Team Magma Belt is attached to is your Active Pokémon, search your deck for a card that evolves from that Pokémon and put it on that Pokémon. (This counts as evolving that Pokémon.) Shuffle your deck afterward, then discard Team Magma Belt." +
@@ -1629,7 +1629,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case TEAM_MAGMA_CONSPIRATOR_82:
       return supporter (this) {
         text "Search your deck for up to 2 in any combination of Basic Pokémon with Team Magma in its name and basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward." +
@@ -1638,7 +1638,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case TEAM_MAGMA_HIDEOUT_83:
       return stadium (this) {
         text "Whenever any player plays a Basic Pokémon that doesn't have Team Magma in its name from his or her hand, that player puts 1 damage counter on that Pokémon." +
@@ -1647,7 +1647,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         }
         onRemoveFromPlay{
         }
-      };
+      }
       case TEAM_MAGMA_S_TECHNICAL_MACHINE_01_84:
       return itemCard (this) {
         text "Attach this card to 1 of your Pokémon that has Team Magma in its name. That Pokémon may use this card's attack instead of its own. At the end of your turn, discard Team Magma Technical Machine 01."
@@ -1655,7 +1655,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case WARP_POINT_85:
       return itemCard (this) {
         text "Your opponent switches 1 of his or her Defending Pokémon with 1 of his or her Benched Pokémon, if any. You switch 1 of your Active Pokémon with 1 of your Benched Pokémon, if any."
@@ -1663,7 +1663,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case AQUA_ENERGY_86:
       return specialEnergy (this, [[C]]) {
         text "Aqua Energy can be attached only to a Pokémon with Team Aqua in its name. Aqua Energy provides Water and [D] Energy but provides 2 Energy at a time. (Doesn't count as a basic Energy card when not in play and has no effect other than providing Energy.) At the end of your turn, discard Aqua Energy."
@@ -1675,7 +1675,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case MAGMA_ENERGY_87:
       return specialEnergy (this, [[C]]) {
         text "Magma Energy can be attached only to a Pokémon with Team Magma in its name. Magma Energy provides Fighting and /or [D] Energy but provides 2 Energy at a time. (Doesn't count as a basic Energy card when not in play and has no effect other than providing Energy.) At the end of your turn, discard Magma Energy."
@@ -1687,7 +1687,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case DOUBLE_RAINBOW_ENERGY_88:
       return specialEnergy (this, [[C]]) {
         text "Double Rainbow Energy can be attached only to an Evolved Pokémon (excluding Pokémon-ex). While in play, Double Rainbow Energy provides every type of Energy but provides 2 Energy at a time. (Doesn't count as a basic Energy when not in play and has no effect other than providing Energy.) Damage done to your opponent's Pokémon by the Pokémon Double Rainbow Energy is attached to is reduced by 10 (after applying Weakness and Resistance). When the Pokémon Double Rainbow Energy is attached to is no longer an Evolved Pokémon, discard Double Rainbow Energy."
@@ -1699,7 +1699,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case BLAZIKEN_EX_89:
       return basic (this, hp:HP150, type:R, retreatCost:2) {
         weakness W
@@ -1720,7 +1720,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case CRADILY_EX_90:
       return basic (this, hp:HP150, type:G, retreatCost:2) {
         weakness W
@@ -1746,7 +1746,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case ENTEI_EX_91:
       return basic (this, hp:HP100, type:R, retreatCost:2) {
         weakness W
@@ -1766,7 +1766,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 90
           }
         }
-      };
+      }
       case RAIKOU_EX_92:
       return basic (this, hp:HP100, type:L, retreatCost:2) {
         weakness F
@@ -1786,7 +1786,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case SCEPTILE_EX_93:
       return basic (this, hp:HP150, type:G, retreatCost:2) {
         weakness G
@@ -1816,7 +1816,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 100
           }
         }
-      };
+      }
       case SUICUNE_EX_94:
       return basic (this, hp:HP100, type:W, retreatCost:2) {
         weakness L
@@ -1836,7 +1836,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case SWAMPERT_EX_95:
       return basic (this, hp:HP150, type:F, retreatCost:3) {
         weakness G
@@ -1856,7 +1856,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case ABSOL_96:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness F
@@ -1876,7 +1876,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case JIRACHI_97:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -1896,9 +1896,9 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       default:
-      return null;
+      return null
     }
   }
 }

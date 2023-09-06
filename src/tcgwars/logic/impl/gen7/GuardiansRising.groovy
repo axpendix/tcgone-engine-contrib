@@ -4,25 +4,25 @@ import tcgwars.logic.effect.gm.Attack
 import tcgwars.logic.impl.gen5.DarkExplorers
 import tcgwars.logic.impl.gen5.EmergingPowers
 import tcgwars.logic.impl.gen6.PhantomForces
-import tcgwars.logic.impl.gen6.Xy;
+import tcgwars.logic.impl.gen6.Xy
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.*;
+import tcgwars.logic.*
 import tcgwars.logic.card.*
 import tcgwars.logic.effect.ability.*
 import tcgwars.logic.effect.basic.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -199,53 +199,53 @@ public enum GuardiansRising implements LogicCardInfo {
   LIGHTNING_ENERGY_168 ("Lightning Energy", "168", Rarity.SECRET, [BASIC_ENERGY, ENERGY]),
   FIGHTING_ENERGY_169 ("Fighting Energy", "169", Rarity.SECRET, [BASIC_ENERGY, ENERGY]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   GuardiansRising(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.GUARDIANS_RISING;
+    return tcgwars.logic.card.Collection.GUARDIANS_RISING
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -262,7 +262,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WEEPINBELL_2:
         return evolution (this, from:"Bellsprout", hp:HP080, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -275,7 +275,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VICTREEBEL_3:
         return evolution (this, from:"Weepinbell", hp:HP140, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -301,7 +301,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PETILIL_4:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -314,7 +314,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LILLIGANT_5:
         return evolution (this, from:"Petilil", hp:HP090, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -334,7 +334,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PHANTUMP_6:
         return basic (this, hp:HP060, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -353,7 +353,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TREVENANT_7:
         return evolution (this, from:"Phantump", hp:HP120, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -377,7 +377,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WIMPOD_8:
         return basic (this, hp:HP070, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -397,7 +397,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOLISOPOD_9:
         return evolution (this, from:"Wimpod", hp:HP130, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -421,7 +421,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VICTINI_10:
         return basic (this, hp:HP070, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -460,7 +460,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LITWICK_11:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -473,7 +473,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LAMPENT_12:
         return evolution (this, from:"Litwick", hp:HP080, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -485,7 +485,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHANDELURE_13:
         return evolution (this, from:"Lampent", hp:HP140, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -518,7 +518,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ORICORIO_14:
         return basic (this, hp:HP090, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -552,7 +552,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SALANDIT_15:
         return basic (this, hp:HP070, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -572,7 +572,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SALAZZLE_16:
         return evolution (this, from:"Salandit", hp:HP110, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -597,7 +597,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TURTONATOR_17:
         return basic (this, hp:HP110, type:FIRE, retreatCost:3) {
           weakness WATER
@@ -619,7 +619,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TURTONATOR_GX_18:
         return basic (this, hp:HP190, type:FIRE, retreatCost:3) {
           weakness WATER
@@ -659,7 +659,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_SANDSHREW_19:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness METAL
@@ -677,7 +677,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_SANDSLASH_20:
         return evolution (this, from:"Alolan Sandshrew", hp:HP110, type:WATER, retreatCost:2) {
           weakness METAL
@@ -699,7 +699,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_VULPIX_21:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness METAL
@@ -721,7 +721,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_NINETALES_GX_22:
         return evolution (this, from:"Alolan Vulpix", hp:HP210, type:WATER, retreatCost:1) {
           weakness METAL
@@ -759,7 +759,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TENTACOOL_23:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -772,7 +772,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TENTACRUEL_24:
         return evolution (this, from:"Tentacool", hp:HP110, type:WATER, retreatCost:2) {
           weakness GRASS
@@ -793,7 +793,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case POLITOED_25:
         return evolution (this, from:"Poliwhirl", hp:HP130, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -824,7 +824,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DELIBIRD_26:
         return basic (this, hp:HP090, type:WATER, retreatCost:1) {
           weakness METAL
@@ -848,7 +848,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CARVANHA_27:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -860,7 +860,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHARPEDO_28:
         return evolution (this, from:"Carvanha", hp:HP090, type:WATER, retreatCost:0) {
           weakness GRASS
@@ -872,7 +872,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WAILMER_29:
         return basic (this, hp:HP120, type:WATER, retreatCost:3) {
           weakness GRASS
@@ -891,7 +891,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WAILORD_30:
         return evolution (this, from:"Wailmer", hp:HP200, type:WATER, retreatCost:4) {
           weakness GRASS
@@ -914,7 +914,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SNORUNT_31:
         return basic (this, hp:HP060, type:WATER, retreatCost:2) {
           weakness METAL
@@ -933,7 +933,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GLALIE_32:
         return evolution (this, from:"Snorunt", hp:HP120, type:WATER, retreatCost:3) {
           weakness METAL
@@ -954,7 +954,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VANILLITE_33:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness METAL
@@ -966,7 +966,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VANILLISH_34:
         return evolution (this, from:"Vanillite", hp:HP080, type:WATER, retreatCost:2) {
           weakness METAL
@@ -979,7 +979,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VANILLUXE_35:
         return evolution (this, from:"Vanillish", hp:HP140, type:WATER, retreatCost:2) {
           weakness METAL
@@ -1004,7 +1004,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOMOMOLA_36:
         return basic (this, hp:HP110, type:WATER, retreatCost:2) {
           weakness GRASS
@@ -1035,7 +1035,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WISHIWASHI_37:
         return basic (this, hp:HP030, type:WATER, retreatCost:0) {
           weakness LIGHTNING
@@ -1061,7 +1061,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WISHIWASHI_GX_38:
         return basic (this, hp:HP210, type:WATER, retreatCost:3) {
           weakness LIGHTNING
@@ -1097,7 +1097,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAREANIE_39:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -1119,7 +1119,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_GEODUDE_40:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:2) {
           weakness FIGHTING
@@ -1146,7 +1146,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_GRAVELER_41:
         return evolution (this, from:"Alolan Geodude", hp:HP110, type:LIGHTNING, retreatCost:4) {
           weakness FIGHTING
@@ -1168,7 +1168,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_GOLEM_42:
         return evolution (this, from:"Alolan Graveler", hp:HP160, type:LIGHTNING, retreatCost:4) {
           weakness FIGHTING
@@ -1188,7 +1188,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HELIOPTILE_43:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1202,7 +1202,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HELIOLISK_44:
         return evolution (this, from:"Helioptile", hp:HP100, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1224,7 +1224,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VIKAVOLT_GX_45:
         return evolution (this, from:"Charjabug", hp:HP240, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1263,7 +1263,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ORICORIO_46:
         return basic (this, hp:HP090, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1283,7 +1283,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TAPU_KOKO_GX_47:
         return basic (this, hp:HP170, type:LIGHTNING, retreatCost:2) {
           bwAbility "Aero Trail", {
@@ -1294,9 +1294,9 @@ public enum GuardiansRising implements LogicCardInfo {
                 def card = null
                 while(1){
                   def pl=(my.all.findAll {it.cards.filterByEnergyType(L) && it!=self})
-                  if(!pl) break;
+                  if(!pl) break
                   def src=pl.select("Source for energy (cancel to stop)", false)
-                  if(!src) break;
+                  if(!src) break
                   card=src.cards.filterByEnergyType(L).select("Card to move").first()
                   energySwitch(src, self, card)
                 }
@@ -1324,7 +1324,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SLOWPOKE_48:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:3) {
           weakness PSYCHIC
@@ -1343,7 +1343,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SLOWBRO_49:
         return evolution (this, from:"Slowpoke", hp:HP110, type:PSYCHIC, retreatCost:3) {
           weakness PSYCHIC
@@ -1364,7 +1364,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TRUBBISH_50:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -1386,7 +1386,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GARBODOR_51:
         return evolution (this, from:"Trubbish", hp:HP120, type:PSYCHIC, retreatCost:3) {
           weakness PSYCHIC
@@ -1406,7 +1406,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOTHITA_52:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1418,7 +1418,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOTHORITA_53:
         return evolution (this, from:"Gothita", hp:HP080, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -1438,7 +1438,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOTHITELLE_54:
         return evolution (this, from:"Gothorita", hp:HP140, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -1462,7 +1462,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ORICORIO_55:
         return basic (this, hp:HP090, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1484,7 +1484,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ORICORIO_56:
         return basic (this, hp:HP090, type:PSYCHIC, retreatCost:1) {
           weakness DARKNESS
@@ -1513,7 +1513,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TOXAPEX_GX_57:
         return evolution (this, from:"Mareanie", hp:HP210, type:PSYCHIC, retreatCost:3) {
           weakness PSYCHIC
@@ -1543,7 +1543,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MIMIKYU_58:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
           initHook {Card thisCard->
@@ -1587,7 +1587,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DHELMISE_59:
         return basic (this, hp:HP120, type:PSYCHIC, retreatCost:2) {
           weakness DARKNESS
@@ -1614,7 +1614,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TAPU_LELE_GX_60:
         return basic (this, hp:HP170, type:PSYCHIC, retreatCost:1) {
           bwAbility "Wonder Tag", {
@@ -1650,7 +1650,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUNALA_61:
         return evolution (this, from:"Cosmoem", hp:HP160, type:PSYCHIC, retreatCost:2) {
           weakness DARKNESS
@@ -1675,7 +1675,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MACHOP_62:
         return basic (this, hp:HP070, type:FIGHTING, retreatCost:2) {
           weakness PSYCHIC
@@ -1687,7 +1687,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MACHOP_63:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:2) {
           weakness PSYCHIC
@@ -1699,7 +1699,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MACHOKE_64:
         return evolution (this, from:"Machop", hp:HP100, type:FIGHTING, retreatCost:3) {
           weakness PSYCHIC
@@ -1737,7 +1737,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MACHAMP_65:
         return evolution (this, from:"Machoke", hp:HP160, type:FIGHTING, retreatCost:3) {
           weakness PSYCHIC
@@ -1758,7 +1758,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SUDOWOODO_66:
         return basic (this, hp:HP100, type:FIGHTING, retreatCost:2) {
           weakness WATER
@@ -1786,7 +1786,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GLIGAR_67:
         return basic (this, hp:HP070, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -1798,7 +1798,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GLISCOR_68:
         return evolution (this, from:"Gligar", hp:HP110, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -1820,7 +1820,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NOSEPASS_69:
         return basic (this, hp:HP080, type:FIGHTING, retreatCost:3) {
           weakness GRASS
@@ -1840,7 +1840,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BARBOACH_70:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:2) {
           weakness GRASS
@@ -1859,7 +1859,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WHISCASH_71:
         return evolution (this, from:"Barboach", hp:HP130, type:FIGHTING, retreatCost:3) {
           weakness GRASS
@@ -1883,7 +1883,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PANCHAM_72:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:2) {
           weakness PSYCHIC
@@ -1895,7 +1895,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ROCKRUFF_73:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -1914,7 +1914,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LYCANROC_GX_74:
         return evolution (this, from:"Rockruff", hp:HP200, type:FIGHTING, retreatCost:2) {
           weakness GRASS
@@ -1947,7 +1947,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MUDBRAY_75:
         return basic (this, hp:HP080, type:FIGHTING, retreatCost:2) {
           weakness GRASS
@@ -1959,7 +1959,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MUDSDALE_76:
         return evolution (this, from:"Mudbray", hp:HP140, type:FIGHTING, retreatCost:4) {
           weakness GRASS
@@ -1980,7 +1980,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MINIOR_77:
         return basic (this, hp:HP070, type:FIGHTING, retreatCost:1) {
           weakness LIGHTNING
@@ -2003,7 +2003,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MURKROW_78:
         return basic (this, hp:HP070, type:DARKNESS, retreatCost:1) {
           weakness LIGHTNING
@@ -2017,7 +2017,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HONCHKROW_79:
         return evolution (this, from:"Murkrow", hp:HP110, type:DARKNESS, retreatCost:1) {
           weakness LIGHTNING
@@ -2038,7 +2038,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SABLEYE_80:
         return basic (this, hp:HP060, type:DARKNESS, retreatCost:1) {
           move "Limitation", {
@@ -2056,7 +2056,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ABSOL_81:
         return basic (this, hp:HP100, type:DARKNESS, retreatCost:1) {
           weakness FIGHTING
@@ -2091,7 +2091,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PANGORO_82:
         return evolution (this, from:"Pancham", hp:HP130, type:DARKNESS, retreatCost:3) {
           weakness FIGHTING
@@ -2112,7 +2112,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BELDUM_83:
         return basic (this, hp:HP060, type:METAL, retreatCost:1) {
           weakness FIRE
@@ -2128,7 +2128,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case METANG_84:
         return evolution (this, from:"Beldum", hp:HP090, type:METAL, retreatCost:3) {
           weakness FIRE
@@ -2151,7 +2151,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case METAGROSS_GX_85:
         return evolution (this, from:"Metang", hp:HP250, type:METAL, retreatCost:3) {
           weakness FIRE
@@ -2184,12 +2184,12 @@ public enum GuardiansRising implements LogicCardInfo {
             }
             onAttack {
               gxPerform()
-              my.deck.select(max: 5).moveTo(hidden:true, my.hand);
+              my.deck.select(max: 5).moveTo(hidden:true, my.hand)
               shuffleDeck()
             }
           }
 
-        };
+        }
       case PROBOPASS_86:
         return evolution (this, from:"Nosepass", hp:HP130, type:METAL, retreatCost:4) {
           weakness FIRE
@@ -2212,7 +2212,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SOLGALEO_87:
         return evolution (this, from:"Cosmoem", hp:HP160, type:METAL, retreatCost:3) {
           weakness FIRE
@@ -2233,7 +2233,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CLEFAIRY_88:
         return basic (this, hp:HP060, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -2256,7 +2256,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CLEFABLE_89:
         return evolution (this, from:"Clefairy", hp:HP100, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -2278,7 +2278,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case COTTONEE_90:
         return basic (this, hp:HP050, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -2291,7 +2291,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WHIMSICOTT_91:
         return evolution (this, from:"Cottonee", hp:HP080, type:FAIRY, retreatCost:0) {
           weakness METAL
@@ -2332,7 +2332,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SYLVEON_GX_92:
         return evolution (this, from:"Eevee", hp:HP200, type:FAIRY, retreatCost:2) {
           weakness METAL
@@ -2370,7 +2370,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case COMFEY_93:
         return basic (this, hp:HP070, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -2413,7 +2413,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOOMY_94:
         return basic (this, hp:HP050, type:DRAGON, retreatCost:1) {
           weakness FAIRY
@@ -2432,7 +2432,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SLIGGOO_95:
         return evolution (this, from:"Goomy", hp:HP070, type:DRAGON, retreatCost:3) {
           weakness FAIRY
@@ -2459,7 +2459,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOODRA_96:
         return evolution (this, from:"Sliggoo", hp:HP160, type:DRAGON, retreatCost:3) {
           weakness FAIRY
@@ -2479,7 +2479,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DRAMPA_97:
         return basic (this, hp:HP120, type:DRAGON, retreatCost:2) {
           weakness FAIRY
@@ -2501,7 +2501,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case JANGMO_O_98:
         return basic (this, hp:HP060, type:DRAGON, retreatCost:2) {
           weakness FAIRY
@@ -2524,7 +2524,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HAKAMO_O_99:
         return evolution (this, from:"Jangmo-o", hp:HP090, type:DRAGON, retreatCost:2) {
           weakness FAIRY
@@ -2543,7 +2543,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KOMMO_O_GX_100:
         return evolution (this, from:"Hakamo-o", hp:HP240, type:DRAGON, retreatCost:2) {
           weakness FAIRY
@@ -2574,7 +2574,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHANSEY_101:
         return basic (this, hp:HP110, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -2596,7 +2596,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BLISSEY_102:
         return evolution (this, from:"Chansey", hp:HP160, type:COLORLESS, retreatCost:4) {
           weakness FIGHTING
@@ -2618,7 +2618,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TAILLOW_103:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -2632,7 +2632,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SWELLOW_104:
         return evolution (this, from:"Taillow", hp:HP090, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -2655,7 +2655,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CASTFORM_105:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -2679,7 +2679,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAYQUAZA_106:
         return basic (this, hp:HP120, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -2706,7 +2706,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PATRAT_107:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -2728,7 +2728,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WATCHOG_108:
         return evolution (this, from:"Patrat", hp:HP090, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -2750,7 +2750,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FLETCHLING_109:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -2770,7 +2770,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FLETCHINDER_110:
         return evolution (this, from:"Fletchling", hp:HP070, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -2790,7 +2790,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TALONFLAME_111:
         return evolution (this, from:"Fletchinder", hp:HP130, type:COLORLESS, retreatCost:0) {
           weakness LIGHTNING
@@ -2814,7 +2814,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STUFFUL_112:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -2833,7 +2833,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BEWEAR_113:
         return evolution (this, from:"Stufful", hp:HP130, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -2855,7 +2855,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KOMALA_114:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -2889,7 +2889,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DRAMPA_GX_115:
         return basic (this, hp:HP180, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -2923,7 +2923,7 @@ public enum GuardiansRising implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AETHER_PARADISE_CONSERVATION_AREA_116:
         return stadium (this) {
           text "Basic [G] and Basic [L] Pokémon (both yours and your opponent's) take 30 less damage from the opponent's attacks (after applying Weakness and Resistance).\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card."
@@ -2943,7 +2943,7 @@ public enum GuardiansRising implements LogicCardInfo {
           onRemoveFromPlay{
             eff.unregister()
           }
-        };
+        }
       case ALTAR_OF_THE_MOONE_117:
         return stadium (this) {
           text "The Retreat Cost of each Pokémon (both yours and your opponent's) that has any [P] or [D] Energy attached to it is [C][C] less.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card."
@@ -2959,7 +2959,7 @@ public enum GuardiansRising implements LogicCardInfo {
           onRemoveFromPlay{
             eff.unregister()
           }
-        };
+        }
       case ALTAR_OF_THE_SUNNE_118:
         return stadium (this) {
           text "[R] Pokémon and [M] Pokémon (both yours and your opponent's) have no Weakness.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card."
@@ -2974,7 +2974,7 @@ public enum GuardiansRising implements LogicCardInfo {
           onRemoveFromPlay{
             eff.unregister()
           }
-        };
+        }
       case AQUA_PATCH_119:
         return itemCard (this) {
           text "Attach a [W] Energy card from your discard pile to 1 of your Benched [W] Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -2984,7 +2984,7 @@ public enum GuardiansRising implements LogicCardInfo {
           playRequirement{
             assert my.discard.filterByEnergyType(W) && my.bench.findAll {it.types.contains(W)}
           }
-        };
+        }
       case BROOKLET_HILL_120:
         return stadium (this) {
           text "Once during each player's turn, that player may search their deck for a Basic [W] Pokémon or Basic [F] Pokémon and, put it onto their Bench, and shuffle their deck.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card."
@@ -3006,7 +3006,7 @@ public enum GuardiansRising implements LogicCardInfo {
           onRemoveFromPlay{
             actions.each { bg().gm().unregisterAction(it) }
           }
-        };
+        }
       case CHOICE_BAND_121:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nThe attacks of the Pokémon this card is attached to do 30 more damage to your opponent's Active Pokémon-GX or Active Pokémon-EX (before applying Weakness and Resistance).\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -3026,7 +3026,7 @@ public enum GuardiansRising implements LogicCardInfo {
           onRemoveFromPlay {
             eff1.unregister()
           }
-        };
+        }
       case ENERGY_LOTO_122:
         return itemCard (this) {
           text "Look at the top 7 cards of your deck. You may reveal an Energy card you find there and put it into your hand. Shuffle the other cards back into your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -3037,7 +3037,7 @@ public enum GuardiansRising implements LogicCardInfo {
           playRequirement{
             assert my.deck
           }
-        };
+        }
       case ENERGY_RECYCLER_123:
         return itemCard (this) {
           text "Shuffle 5 basic Energy cards from your discard pile into your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -3048,9 +3048,9 @@ public enum GuardiansRising implements LogicCardInfo {
           playRequirement{
             assert my.discard.filterByType(BASIC_ENERGY)
           }
-        };
+        }
       case ENHANCED_HAMMER_124:
-        return copy(PhantomForces.ENHANCED_HAMMER_94, this);
+        return copy(PhantomForces.ENHANCED_HAMMER_94, this)
       case FIELD_BLOWER_125:
         return itemCard (this) {
           text "Choose up to 2 in any combination of Pokémon Tool cards and Stadium cards in play (yours or your opponent's) and discard them.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -3077,7 +3077,7 @@ public enum GuardiansRising implements LogicCardInfo {
           playRequirement{
             assert all.findAll {it.cards.hasType(POKEMON_TOOL)} || (bg.stadiumInfoStruct)
           }
-        };
+        }
       case HALA_126:
         return supporter (this) {
           text "Shuffle your hand into your deck. If you have used your GX attack, draw 7 cards. If not, draw 4 cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -3088,7 +3088,7 @@ public enum GuardiansRising implements LogicCardInfo {
           playRequirement{
             assert (my.hand.getExcludedList(thisCard) || my.deck) : "You have no more cards in neither your deck nor your hand"
           }
-        };
+        }
       case MALLOW_127:
         return supporter (this) {
           text "Search your deck for 2 cards, shuffle your deck, and put those cards on top of your deck in any order.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -3102,9 +3102,9 @@ public enum GuardiansRising implements LogicCardInfo {
           playRequirement{
             assert my.deck
           }
-        };
+        }
       case MAX_POTION_128:
-        return copy(EmergingPowers.MAX_POTION_94, this);
+        return copy(EmergingPowers.MAX_POTION_94, this)
       case MULTI_SWITCH_129:
         return itemCard (this) {
           text "Move an Energy from 1 of your Benched Pokémon to your Active Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -3114,7 +3114,7 @@ public enum GuardiansRising implements LogicCardInfo {
           playRequirement{
             assert my.bench.find {it.cards.filterByType(ENERGY)}
           }
-        };
+        }
       case RESCUE_STRETCHER_130:
         return itemCard (this) {
           text "Choose 1:\n" +
@@ -3133,7 +3133,7 @@ public enum GuardiansRising implements LogicCardInfo {
           playRequirement{
             assert my.discard.filterByType(POKEMON)
           }
-        };
+        }
       case TURTONATOR_GX_131:
         return copy (TURTONATOR_GX_18, this)
       case ALOLAN_NINETALES_GX_132:
@@ -3207,13 +3207,13 @@ public enum GuardiansRising implements LogicCardInfo {
       case DOUBLE_COLORLESS_ENERGY_166:
         return copy(Xy.DOUBLE_COLORLESS_ENERGY_130, this)
       case GRASS_ENERGY_167:
-        return basicEnergy (this, G);
+        return basicEnergy (this, G)
       case LIGHTNING_ENERGY_168:
-        return basicEnergy (this, L);
+        return basicEnergy (this, L)
       case FIGHTING_ENERGY_169:
-        return basicEnergy (this, F);
+        return basicEnergy (this, F)
       default:
-        return null;
+        return null
     }
   }
 

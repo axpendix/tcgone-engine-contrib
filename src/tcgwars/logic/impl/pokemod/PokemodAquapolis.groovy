@@ -1,34 +1,34 @@
 package tcgwars.logic.impl.pokemod
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -234,53 +234,53 @@ public enum PokemodAquapolis implements LogicCardInfo {
   TYPHLOSION_EX_197 ("Typhlosion ex", "197", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, EX, _FIRE_]),
   MACHAMP_EX_198 ("Machamp ex", "198", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, EX, _FIGHTING_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   PokemodAquapolis(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.POKEMOD_AQUAPOLIS;
+    return tcgwars.logic.card.Collection.POKEMOD_AQUAPOLIS
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -305,7 +305,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case ARCANINE_2:
       return evolution (this, from:"Growlithe", hp:HP090, type:R, retreatCost:3) {
         weakness W
@@ -322,7 +322,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case ARIADOS_3:
       return evolution (this, from:"Spinarak", hp:HP070, type:G, retreatCost:0) {
         weakness R
@@ -339,7 +339,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case AZUMARILL_4:
       return evolution (this, from:"Marill", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -356,7 +356,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case BELLOSSOM_5:
       return evolution (this, from:"Gloom", hp:HP090, type:G, retreatCost:2) {
         weakness R
@@ -374,7 +374,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case BLISSEY_6:
       return evolution (this, from:"Chansey", hp:HP120, type:C, retreatCost:2) {
         weakness F
@@ -392,7 +392,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case DONPHAN_7:
       return evolution (this, from:"Phanpy", hp:HP080, type:F, retreatCost:2) {
         weakness G
@@ -413,7 +413,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case ELECTRODE_8:
       return evolution (this, from:"Voltorb", hp:HP070, type:L, retreatCost:1) {
         weakness F
@@ -430,7 +430,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case ELEKID_9:
       return baby (this, successors:'SUCCESSOR(S)', hp:HP030, type:L, retreatCost:0) {
         move "Energy Kick", {
@@ -441,7 +441,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case ENTEI_10:
       return basic (this, hp:HP070, type:R, retreatCost:1) {
         weakness W
@@ -458,7 +458,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case ESPEON_11:
       return evolution (this, from:"Eevee", hp:HP080, type:P, retreatCost:0) {
         weakness P
@@ -475,7 +475,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case EXEGGUTOR_12:
       return evolution (this, from:"Exeggcute", hp:HP080, type:G, retreatCost:1) {
         weakness R
@@ -495,7 +495,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case EXEGGUTOR_13:
       return evolution (this, from:"Exeggcute", hp:HP080, type:P, retreatCost:1) {
         weakness P
@@ -515,7 +515,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case HOUNDOOM_14:
       return evolution (this, from:"Houndour", hp:HP080, type:R, retreatCost:1) {
         weakness W
@@ -535,7 +535,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case HOUNDOOM_15:
       return evolution (this, from:"Houndour", hp:HP070, type:D, retreatCost:1) {
         weakness F
@@ -556,7 +556,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case HYPNO_16:
       return evolution (this, from:"Drowzee", hp:HP080, type:P, retreatCost:1) {
         weakness P
@@ -573,7 +573,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case JUMPLUFF_17:
       return evolution (this, from:"Skiploom", hp:HP070, type:G, retreatCost:0) {
         weakness R
@@ -591,7 +591,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case JYNX_18:
       return basic (this, hp:HP060, type:P, retreatCost:2) {
         weakness P
@@ -611,7 +611,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case KINGDRA_19:
       return evolution (this, from:"Seadra", hp:HP120, type:W, retreatCost:3) {
         weakness L
@@ -628,7 +628,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case LANTURN_20:
       return evolution (this, from:"Chinchou", hp:HP080, type:W, retreatCost:1) {
         weakness G
@@ -648,7 +648,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case LANTURN_21:
       return evolution (this, from:"Chinchou", hp:HP080, type:L, retreatCost:1) {
         weakness F
@@ -665,7 +665,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MAGNETON_22:
       return evolution (this, from:"Magnemite", hp:HP070, type:M, retreatCost:2) {
         weakness R
@@ -683,7 +683,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case MUK_23:
       return evolution (this, from:"Grimer", hp:HP070, type:G, retreatCost:2) {
         weakness P
@@ -700,7 +700,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case NIDOKING_24:
       return evolution (this, from:"Nidorino", hp:HP110, type:F, retreatCost:3) {
         weakness G
@@ -718,7 +718,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case NINETALES_25:
       return evolution (this, from:"Vulpix", hp:HP080, type:R, retreatCost:1) {
         weakness W
@@ -738,7 +738,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case OCTILLERY_26:
       return evolution (this, from:"Remoraid", hp:HP080, type:W, retreatCost:2) {
         weakness L
@@ -755,7 +755,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case PARASECT_27:
       return evolution (this, from:"Paras", hp:HP070, type:G, retreatCost:1) {
         weakness R
@@ -775,7 +775,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case PORYGON2_28:
       return evolution (this, from:"Porygon", hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -793,7 +793,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case PRIMEAPE_29:
       return evolution (this, from:"Mankey", hp:HP080, type:F, retreatCost:1) {
         weakness P
@@ -813,7 +813,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case QUAGSIRE_30:
       return evolution (this, from:"Wooper", hp:HP080, type:W, retreatCost:2) {
         weakness G
@@ -833,7 +833,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case RAPIDASH_31:
       return evolution (this, from:"Ponyta", hp:HP070, type:R, retreatCost:0) {
         weakness W
@@ -853,7 +853,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SCIZOR_32:
       return evolution (this, from:"Scyther", hp:HP080, type:M, retreatCost:2) {
         weakness R
@@ -878,7 +878,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SLOWBRO_33:
       return evolution (this, from:"Slowpoke", hp:HP080, type:W, retreatCost:2) {
         weakness L
@@ -895,7 +895,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SLOWKING_34:
       return evolution (this, from:"Slowpoke", hp:HP080, type:P, retreatCost:1) {
         weakness P
@@ -915,7 +915,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case STEELIX_35:
       return evolution (this, from:"Onix", hp:HP100, type:M, retreatCost:4) {
         weakness R
@@ -936,7 +936,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case SUDOWOODO_36:
       return basic (this, hp:HP060, type:F, retreatCost:2) {
         weakness W
@@ -956,7 +956,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case SUICUNE_37:
       return basic (this, hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -973,7 +973,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case TENTACRUEL_38:
       return evolution (this, from:"Tentacool", hp:HP070, type:W, retreatCost:0) {
         weakness L
@@ -990,7 +990,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TOGETIC_39:
       return evolution (this, from:"Togepi", hp:HP060, type:C, retreatCost:1) {
         weakness L
@@ -1008,7 +1008,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case TYRANITAR_40:
       return evolution (this, from:"Pupitar", hp:HP120, type:D, retreatCost:3) {
         weakness F
@@ -1037,7 +1037,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case UMBREON_41:
       return evolution (this, from:"Eevee", hp:HP080, type:D, retreatCost:1) {
         weakness F
@@ -1055,7 +1055,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case VICTREEBEL_42:
       return evolution (this, from:"Weepinbell", hp:HP090, type:G, retreatCost:2) {
         weakness R
@@ -1072,7 +1072,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case VILEPLUME_43:
       return evolution (this, from:"Gloom", hp:HP100, type:G, retreatCost:2) {
         weakness R
@@ -1092,7 +1092,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case ZAPDOS_44:
       return basic (this, hp:HP080, type:L, retreatCost:2) {
         pokeBody "Anti-Lightning", {
@@ -1116,7 +1116,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case BELLSPROUT_45:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -1128,7 +1128,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case DODRIO_46:
       return evolution (this, from:"Doduo", hp:HP070, type:C, retreatCost:1) {
         weakness L
@@ -1149,7 +1149,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case FLAAFFY_47:
       return evolution (this, from:"Mareep", hp:HP080, type:L, retreatCost:1) {
         weakness F
@@ -1169,7 +1169,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case FURRET_48:
       return evolution (this, from:"Sentret", hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -1187,7 +1187,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case GLOOM_49:
       return evolution (this, from:"Oddish", hp:HP070, type:G, retreatCost:2) {
         weakness R
@@ -1204,7 +1204,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case GOLDUCK_50:
       return evolution (this, from:"Psyduck", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -1224,7 +1224,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case GROWLITHE_51:
       return basic (this, hp:HP060, type:R, retreatCost:1) {
         weakness W
@@ -1236,7 +1236,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case MAGNEMITE_52:
       return basic (this, hp:HP040, type:M, retreatCost:1) {
         weakness R
@@ -1257,7 +1257,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MARILL_53:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -1277,7 +1277,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case MAROWAK_54:
       return evolution (this, from:"Cubone", hp:HP070, type:F, retreatCost:1) {
         weakness G
@@ -1298,7 +1298,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case NIDORINO_55:
       return evolution (this, from:"Nidoran♂", hp:HP060, type:G, retreatCost:1) {
         weakness P
@@ -1318,7 +1318,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case PUPITAR_56:
       return evolution (this, from:"Larvitar", hp:HP080, type:F, retreatCost:1) {
         weakness W
@@ -1330,7 +1330,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SCYTHER_57:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -1350,7 +1350,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SEADRA_58:
       return evolution (this, from:"Horsea", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -1370,7 +1370,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SEAKING_59:
       return evolution (this, from:"Goldeen", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -1390,7 +1390,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SKIPLOOM_60:
       return evolution (this, from:"Hoppip", hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -1408,7 +1408,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SMOOCHUM_61:
       return baby (this, successors:'SUCCESSOR(S)', hp:HP030, type:P, retreatCost:0) {
         move "Energy Kiss", {
@@ -1419,7 +1419,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SPINARAK_62:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -1439,7 +1439,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TYROGUE_63:
       return baby (this, successors:'SUCCESSOR(S)', hp:HP030, type:F, retreatCost:0) {
         move "Energy Punch", {
@@ -1450,7 +1450,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case VOLTORB_64:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1470,7 +1470,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case WEEPINBELL_65:
       return evolution (this, from:"Bellsprout", hp:HP070, type:G, retreatCost:1) {
         weakness R
@@ -1490,7 +1490,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case WOOPER_66:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness G
@@ -1510,7 +1510,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case AIPOM_67:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1531,7 +1531,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case BELLSPROUT_68:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness P
@@ -1551,7 +1551,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case CHANSEY_69:
       return basic (this, hp:HP100, type:C, retreatCost:2) {
         weakness F
@@ -1572,7 +1572,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case CHINCHOU_70:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness G
@@ -1592,7 +1592,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case CHINCHOU_71:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1612,7 +1612,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case CUBONE_72:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness G
@@ -1633,7 +1633,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case DODUO_73:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness L
@@ -1654,7 +1654,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case DROWZEE_74:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -1674,7 +1674,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case EEVEE_75:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1695,7 +1695,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case EXEGGCUTE_76:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -1715,7 +1715,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case EXEGGCUTE_77:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -1735,7 +1735,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case GOLDEEN_78:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness L
@@ -1747,7 +1747,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case GRIMER_79:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness P
@@ -1759,7 +1759,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case GROWLITHE_80:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1779,7 +1779,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case HITMONCHAN_81:
       return basic (this, hp:HP060, type:F, retreatCost:2) {
         weakness P
@@ -1799,7 +1799,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case HITMONTOP_82:
       return basic (this, hp:HP060, type:F, retreatCost:1) {
         weakness P
@@ -1819,7 +1819,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case HOPPIP_83:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -1837,7 +1837,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case HORSEA_84:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness L
@@ -1849,7 +1849,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case HORSEA_85:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -1861,7 +1861,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case HOUNDOUR_86:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1881,7 +1881,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case HOUNDOUR_87:
       return basic (this, hp:HP050, type:D, retreatCost:1) {
         weakness F
@@ -1894,7 +1894,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case KANGASKHAN_88:
       return basic (this, hp:HP070, type:C, retreatCost:2) {
         weakness F
@@ -1915,7 +1915,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case LARVITAR_89:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness W
@@ -1935,7 +1935,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case LICKITUNG_90:
       return basic (this, hp:HP080, type:C, retreatCost:2) {
         weakness F
@@ -1956,7 +1956,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MAGNEMITE_91:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1973,7 +1973,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MANKEY_92:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness P
@@ -1993,7 +1993,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case MAREEP_93:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness F
@@ -2013,7 +2013,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MILTANK_94:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness F
@@ -2034,7 +2034,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MR__MIME_95:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -2051,7 +2051,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case NIDORAN_MALE_96:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness P
@@ -2071,7 +2071,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case ODDISH_97:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -2091,7 +2091,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case ONIX_98:
       return basic (this, hp:HP060, type:F, retreatCost:2) {
         weakness W
@@ -2103,7 +2103,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case PARAS_99:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -2123,7 +2123,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case PHANPY_100:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness G
@@ -2144,7 +2144,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case PINSIR_101:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -2164,7 +2164,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 90
           }
         }
-      };
+      }
       case PONYTA_102:
       return basic (this, hp:HP040, type:R, retreatCost:1) {
         weakness W
@@ -2184,7 +2184,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case PORYGON_103:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
@@ -2205,7 +2205,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case PSYDUCK_104:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -2225,7 +2225,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case REMORAID_105:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -2237,7 +2237,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SCYTHER_106:
       return basic (this, hp:HP060, type:G, retreatCost:0) {
         weakness L
@@ -2258,7 +2258,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SENTRET_107:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -2279,7 +2279,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SLOWPOKE_108:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -2299,7 +2299,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SMEARGLE_109:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness F
@@ -2320,7 +2320,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SNEASEL_110:
       return basic (this, hp:HP060, type:D, retreatCost:1) {
         weakness F
@@ -2341,7 +2341,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SPINARAK_111:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness P
@@ -2353,7 +2353,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case TANGELA_112:
       return basic (this, hp:HP060, type:G, retreatCost:2) {
         weakness R
@@ -2374,7 +2374,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case TENTACOOL_113:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -2394,7 +2394,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case TOGEPI_114:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
@@ -2415,7 +2415,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case VOLTORB_115:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness F
@@ -2427,7 +2427,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case VULPIX_116:
       return basic (this, hp:HP040, type:R, retreatCost:1) {
         weakness W
@@ -2439,7 +2439,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case WOOPER_117:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness L
@@ -2459,7 +2459,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case APRICORN_FOREST_118:
       return stadium (this) {
         text "Once during each player's turn (before attacking), if that player's Bench isn't full, that player flips a coin. If heads, that player shows his or her opponent a basic Energy card from his or her hand. Then, that player searches his or her deck for a Basic Pokémon card of the same type (color) as the revealed Energy card and puts it onto his or her Bench. The player shuffles his or her deck afterward."
@@ -2467,7 +2467,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         onRemoveFromPlay{
         }
-      };
+      }
       case DARKNESS_CUBE_01_119:
       return basicTrainer (this) {
         text "Attach this card to 1 of your [D] Pokémon in play. That Pokémon may use this card's attack instead of its own. At the end of your turn, discard Darkness Cube 01." +
@@ -2476,7 +2476,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case ENERGY_SWITCH_120:
       return basicTrainer (this) {
         text "Move a basic Energy card attached to 1 of your Pokémon to another of your Pokémon."
@@ -2484,7 +2484,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case FIGHTING_CUBE_01_121:
       return basicTrainer (this) {
         text "Attach this card to 1 of our [F] Pokémon in play. That Pokémon my use this card's attack instead of its own. At the end of your turn, discard Fighting Cube 01." +
@@ -2493,7 +2493,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case FIRE_CUBE_01_122:
       return basicTrainer (this) {
         text "Attach this card to 1 of your [R] Pokémon in play. That Pokémon may use this card's attack instead of its own. At the end of your turn, discard Fire Cube 01." +
@@ -2502,7 +2502,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case FOREST_GUARDIAN_123:
       return supporter (this) {
         text "Shuffle your deck. Then, look at the top 7 cards of your deck. Choose 1 of those cards and put it into your hand. Shuffle the rest into your deck afterward."
@@ -2510,7 +2510,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case GRASS_CUBE_01_124:
       return basicTrainer (this) {
         text "Attach this card to 1 of your [G] Pokémon in play. That Pokémon may use this card's attack instead of its own. At the end of your turn, discard Grass Cube 01." +
@@ -2519,7 +2519,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case DESERT_RUINS_125:
       return stadium (this) {
         text "At any time between turns, each player puts 1 damage counter on his or her Pokémon-ex with a remaining HP of 80 or more."
@@ -2527,7 +2527,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         onRemoveFromPlay{
         }
-      };
+      }
       case JUGGLER_126:
       return supporter (this) {
         text "Discard up to 2 basic Energy cards from your hand. If you discarded 1 basic Energy card, draw 3 cards. If you discarded 2 basic Energy cards, draw 5 cards."
@@ -2535,7 +2535,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case LIGHTNING_CUBE_01_127:
       return basicTrainer (this) {
         text "Attach this card to 1 of your [L] Pokémon in play. That Pokémon may use this attack instead of it own. At the end of your turn, discard Lightning Cube 01." +
@@ -2544,7 +2544,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case MEMORY_BERRY_128:
       return pokemonTool (this) {
         text "The Pokémon this card is attached to (exluding Pokémon-ex) can use any attack from its Basic Pokémon card or any Evolution card from which the Pokémon evolved. (You still have to pay for that attack's Energy cost.) Discard this card at the end of any turn the Pokémon attacks."
@@ -2554,7 +2554,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case METAL_CUBE_01_129:
       return basicTrainer (this) {
         text "Attach this card to 1 of your [M] Pokémon in play. That Pokémon may use this card's attack instead of its own. At the end of your turn, discard Metal Cube 01." +
@@ -2563,7 +2563,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case POKEMON_FAN_CLUB_130:
       return supporter (this) {
         text "Search your deck for up to 2 Baby Pokémon and/or Basic Pokémon cards and put them onto your Bench. Shuffle your deck afterward."
@@ -2571,7 +2571,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case POKEMON_PARK_131:
       return stadium (this) {
         text "Once during each of his or her turns, whenever a player attaches an Energy card from his or her hand to 1 of his or her Benched Pokémon (exluding Pokémon-ex), he or she removes 1 damage counter, if any, from that Pokémon."
@@ -2579,7 +2579,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         onRemoveFromPlay{
         }
-      };
+      }
       case PSYCHIC_CUBE_01_132:
       return basicTrainer (this) {
         text "Attach this card to 1 of your [P] Pokémon in play. That Pokémon may us this card's attack instead of its own. At the end of your turn, discard Psychic Cube 01." +
@@ -2588,7 +2588,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case SEER_133:
       return supporter (this) {
         text "Look at the top 6 cards of your deck. Take all basic Energy cards you find there, show them to your opponent, and then put them into your hand. Shuffle your deck afterward."
@@ -2596,7 +2596,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case HEALING_FIELDS_134:
       return stadium (this) {
         text "Once during each player's turn, he or she may flip a coin. If heads, that player's Active Pokémon (exluding Pokémon-ex) is no longer affected by any Special Conditions."
@@ -2604,7 +2604,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         onRemoveFromPlay{
         }
-      };
+      }
       case TIME_SHARD_135:
       return pokemonTool (this) {
         text "If the Pokémon this card is attached to is Knocked Out by damage from the Defending Pokémon's attack during your opponent's turn, your may return up to 2 basic Energy cards attached to that Pokémon to your hand."
@@ -2614,7 +2614,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case TOWN_VOLUNTEERS_136:
       return supporter (this) {
         text "Take 5 Baby Pokémon, Basic Pokémon, Evolution, and/or basic Energy cards from your discard pile and then show them to your opponent. Shuffle them into your deck."
@@ -2622,7 +2622,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case TRAVELING_SALESMAN_137:
       return supporter (this) {
         text "Search your deck for up to 2 Technical Machine and/or Pokémon Tool cards, show them to your opponent, and then put them into your hand. Shuffle your deck afterward."
@@ -2630,7 +2630,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case UNDERSEA_RUINS_138:
       return stadium (this) {
         text "Once during each player's turn (before attacking), that player may flip a coin. If heads, that player chooses 1 of his or her Evolved Pokémon in play and discards the top Evolution card from that Pokémon, devolving it."
@@ -2638,7 +2638,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         onRemoveFromPlay{
         }
-      };
+      }
       case POWER_PLANT_139:
       return stadium (this) {
         text "Once during each of his or her turns, a player may discard a basic Energy card from his or her hand. If that player does, he or she chooses a basic Energy card from his or her discard pile, shows it to his or her opponent, and then puts it into his or her hand."
@@ -2646,7 +2646,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         onRemoveFromPlay{
         }
-      };
+      }
       case WATER_CUBE_01_140:
       return basicTrainer (this) {
         text "Attach this card to 1 of you [W] Pokémon in play. That Pokémon may use this card's attack instead of its own. At the end of your turn, discard Water Cube 01." +
@@ -2655,7 +2655,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case WEAKNESS_GUARD_141:
       return basicTrainer (this) {
         text "Attach this card to 1 of your Pokémon. Discard it at the end of your opponent's next turn." +
@@ -2664,7 +2664,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case DARKNESS_ENERGY_142:
       return specialEnergy (this, [[C]]) {
         text "If the Pokémon Darkness Energy is attached to damages the Defending Pokémon (after applying Weakness and Resistance), the attack does 10 more damage to the Defending Pokémon." +
@@ -2678,7 +2678,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case METAL_ENERGY_143:
       return specialEnergy (this, [[C]]) {
         text "Damage done to the Pokémon Metal Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon Metal Energy is attached to isn't [M]." +
@@ -2691,7 +2691,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case RAINBOW_ENERGY_144:
       return specialEnergy (this, [[C]]) {
         text "Attach Rainbow Energy to 1 of your Pokémon. While in play, Rainbow Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.) When you attach this card from your hand to 1 of your Pokémon, put 1 damage counter on that Pokémon."
@@ -2703,7 +2703,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case BOOST_ENERGY_145:
       return specialEnergy (this, [[C]]) {
         text "Boost Energy provides [C] energy. While in play, if you have more prize cards than your opponent, Boost Energy provides [C][C][C]. If the Pokémon Boost Energy is attached to is a Pokémon-ex, or has a Poké-Power, Poké-Body, or any other Special Energy cards attached to it (at any time), discard Boost Energy."
@@ -2715,7 +2715,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case CRYSTAL_ENERGY_146:
       return specialEnergy (this, [[C]]) {
         text "Crystal Energy provides 1 Energy of all types (colors) of all basic Energy cards attached to the Pokémon Crystal Energy is attached to." +
@@ -2728,7 +2728,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case WARP_ENERGY_147:
       return specialEnergy (this, [[C]]) {
         text "Warp Energy provides 1 [C] Energy." +
@@ -2741,7 +2741,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case KINGDRA_148:
       return evolution (this, from:"Seadra", hp:HP110, type:C, retreatCost:3) {
         weakness L
@@ -2766,7 +2766,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case LUGIA_149:
       return basic (this, hp:HP080, type:C, retreatCost:3) {
         weakness P
@@ -2791,7 +2791,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case NIDOKING_150:
       return evolution (this, from:"Nidorino", hp:HP100, type:C, retreatCost:3) {
         weakness P
@@ -2816,7 +2816,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case BOOST_ENERGY_151:
       return specialEnergy (this, [[C]]) {
         text "Boost Energy provides [C] energy. While in play, if you have more prize cards than your opponent, Boost Energy provides [C][C][C]. If the Pokémon Boost Energy is attached to has a Poké-Power, or any other Special Energy cards attached to it (at any time), discard Boost Energy. If the Pokémon Boost Energy is attached to is a Pokémon-ex, Discard Boost Energy."
@@ -2828,11 +2828,11 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case CRYSTAL_ENERGY_152:
-      return copy (CRYSTAL_ENERGY_146, this);
+      return copy (CRYSTAL_ENERGY_146, this)
       case WARP_ENERGY_153:
-      return copy (WARP_ENERGY_147, this);
+      return copy (WARP_ENERGY_147, this)
       case BLEND_ENERGY_GRPD_154:
       return specialEnergy (this, [[C]]) {
         text "This card provides 1 [C] Energy." +
@@ -2845,7 +2845,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case BLEND_ENERGY_WLFM_155:
       return specialEnergy (this, [[C]]) {
         text "This card provides 1 [C] Energy." +
@@ -2858,7 +2858,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case KABUTOPS_156:
       return evolution (this, from:"Kabuto", hp:HP090, type:F, retreatCost:3) {
         weakness G
@@ -2876,7 +2876,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case SNEASEL_157:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness F
@@ -2894,73 +2894,73 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case AMPHAROS_158:
-      return copy (AMPHAROS_1, this);
+      return copy (AMPHAROS_1, this)
       case ARCANINE_159:
-      return copy (ARCANINE_2, this);
+      return copy (ARCANINE_2, this)
       case ARIADOS_160:
-      return copy (ARIADOS_3, this);
+      return copy (ARIADOS_3, this)
       case AZUMARILL_161:
-      return copy (AZUMARILL_4, this);
+      return copy (AZUMARILL_4, this)
       case BELLOSSOM_162:
-      return copy (BELLOSSOM_5, this);
+      return copy (BELLOSSOM_5, this)
       case BLISSEY_163:
-      return copy (BLISSEY_6, this);
+      return copy (BLISSEY_6, this)
       case ELECTRODE_164:
-      return copy (ELECTRODE_8, this);
+      return copy (ELECTRODE_8, this)
       case ENTEI_165:
-      return copy (ENTEI_10, this);
+      return copy (ENTEI_10, this)
       case ESPEON_166:
-      return copy (ESPEON_11, this);
+      return copy (ESPEON_11, this)
       case EXEGGUTOR_167:
-      return copy (EXEGGUTOR_12, this);
+      return copy (EXEGGUTOR_12, this)
       case HOUNDOOM_168:
-      return copy (HOUNDOOM_15, this);
+      return copy (HOUNDOOM_15, this)
       case HYPNO_169:
-      return copy (HYPNO_16, this);
+      return copy (HYPNO_16, this)
       case JUMPLUFF_170:
-      return copy (JUMPLUFF_17, this);
+      return copy (JUMPLUFF_17, this)
       case KINGDRA_171:
-      return copy (KINGDRA_19, this);
+      return copy (KINGDRA_19, this)
       case LANTURN_172:
-      return copy (LANTURN_21, this);
+      return copy (LANTURN_21, this)
       case MAGNETON_173:
-      return copy (MAGNETON_22, this);
+      return copy (MAGNETON_22, this)
       case MUK_174:
-      return copy (MUK_23, this);
+      return copy (MUK_23, this)
       case NIDOKING_175:
-      return copy (NIDOKING_24, this);
+      return copy (NIDOKING_24, this)
       case NINETALES_176:
-      return copy (NINETALES_25, this);
+      return copy (NINETALES_25, this)
       case OCTILLERY_177:
-      return copy (OCTILLERY_26, this);
+      return copy (OCTILLERY_26, this)
       case SCIZOR_178:
-      return copy (SCIZOR_32, this);
+      return copy (SCIZOR_32, this)
       case SLOWKING_179:
-      return copy (SLOWKING_34, this);
+      return copy (SLOWKING_34, this)
       case STEELIX_180:
-      return copy (STEELIX_35, this);
+      return copy (STEELIX_35, this)
       case SUDOWOODO_181:
-      return copy (SUDOWOODO_36, this);
+      return copy (SUDOWOODO_36, this)
       case SUICUNE_182:
-      return copy (SUICUNE_37, this);
+      return copy (SUICUNE_37, this)
       case TENTACRUEL_183:
-      return copy (TENTACRUEL_38, this);
+      return copy (TENTACRUEL_38, this)
       case TOGETIC_184:
-      return copy (TOGETIC_39, this);
+      return copy (TOGETIC_39, this)
       case TYRANITAR_185:
-      return copy (TYRANITAR_40, this);
+      return copy (TYRANITAR_40, this)
       case UMBREON_186:
-      return copy (UMBREON_41, this);
+      return copy (UMBREON_41, this)
       case VICTREEBEL_187:
-      return copy (VICTREEBEL_42, this);
+      return copy (VICTREEBEL_42, this)
       case VILEPLUME_188:
-      return copy (VILEPLUME_43, this);
+      return copy (VILEPLUME_43, this)
       case ZAPDOS_189:
-      return copy (ZAPDOS_44, this);
+      return copy (ZAPDOS_44, this)
       case DONPHAN_190:
-      return copy (DONPHAN_7, this);
+      return copy (DONPHAN_7, this)
       case RAIKOU_EX_191:
       return basic (this, hp:HP100, type:L, retreatCost:2) {
         weakness F
@@ -2980,7 +2980,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case ENTEI_EX_192:
       return basic (this, hp:HP100, type:R, retreatCost:2) {
         weakness W
@@ -3000,7 +3000,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case SUICUNE_EX_193:
       return basic (this, hp:HP100, type:W, retreatCost:2) {
         weakness L
@@ -3020,7 +3020,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case KABUTOPS_EX_194:
       return evolution (this, from:"Kabuto", hp:HP150, type:W, retreatCost:2) {
         weakness G
@@ -3042,7 +3042,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case RAICHU_EX_195:
       return evolution (this, from:"Pikachu", hp:HP100, type:L, retreatCost:1) {
         weakness F
@@ -3062,7 +3062,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 120
           }
         }
-      };
+      }
       case AERODACTYL_EX_196:
       return evolution (this, from:"Mysterious Fossil", hp:HP100, type:C, retreatCost:1) {
         weakness G
@@ -3088,7 +3088,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case TYPHLOSION_EX_197:
       return evolution (this, from:"Quilava", hp:HP150, type:R, retreatCost:2) {
         weakness W
@@ -3109,7 +3109,7 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 100
           }
         }
-      };
+      }
       case MACHAMP_EX_198:
       return evolution (this, from:"Machoke", hp:HP150, type:F, retreatCost:3) {
         weakness P
@@ -3135,9 +3135,9 @@ public enum PokemodAquapolis implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
         default:
-      return null;
+      return null
     }
   }
 }

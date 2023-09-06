@@ -2,37 +2,37 @@ package tcgwars.logic.impl.pokemod
 
 import tcgwars.logic.effect.gm.PlayCard
 import tcgwars.logic.effect.gm.PlayTrainer
-import tcgwars.logic.impl.gen1.TeamRocket;
+import tcgwars.logic.impl.gen1.TeamRocket
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author TheAquaPiplup
@@ -151,53 +151,53 @@ public enum PokemodTeamRocket implements LogicCardInfo {
   ROCKETS_SCYTHER_EX_108 ("Rocket's Scyther ex", "108", Rarity.ULTRARARE, [BASIC, ]),
   ROCKETS_SNORLAX_EX_109 ("Rocket's Snorlax ex", "109", Rarity.ULTRARARE, [BASIC, ]);
 
-    static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+    static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   PokemodTeamRocket(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.POKEMOD_TEAM_ROCKET;
+    return tcgwars.logic.card.Collection.POKEMOD_TEAM_ROCKET
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -226,7 +226,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_ARBOK_2:
         return evolution (this, from:"Ekans", hp:HP060, type:GRASS, retreatCost:2) {
           weakness PSYCHIC
@@ -265,7 +265,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_BLASTOISE_3:
         return evolution (this, from:"Dark Wartortle", hp:HP080, type:WATER, retreatCost:2) {
           weakness LIGHTNING
@@ -291,9 +291,9 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_CHARIZARD_4:
-        return copy (TeamRocket.DARK_CHARIZARD_4, this);
+        return copy (TeamRocket.DARK_CHARIZARD_4, this)
       case DARK_DRAGONITE_5:
         return evolution (this, from:"Dark Dragonair", hp:HP080, type:COLORLESS, retreatCost:2) {
           resistance FIGHTING, MINUS30
@@ -321,7 +321,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_DUGTRIO_6:
         return evolution (this, from:"Diglett", hp:HP060, type:FIGHTING, retreatCost:2) {
           weakness GRASS
@@ -347,9 +347,9 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_GOLBAT_7:
-        return copy (TeamRocket.DARK_GOLBAT_7, this);
+        return copy (TeamRocket.DARK_GOLBAT_7, this)
       case DARK_GYARADOS_8:
         return evolution (this, from:"Magikarp", hp:HP070, type:WATER, retreatCost:2) {
           weakness LIGHTNING
@@ -380,7 +380,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_HYPNO_9:
         return evolution (this, from:"Drowzee", hp:HP060, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -401,7 +401,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_MACHAMP_10:
         return evolution (this, from:"Dark Machoke", hp:HP080, type:FIGHTING, retreatCost:3) {
           weakness PSYCHIC
@@ -425,7 +425,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_MAGNETON_11:
         return evolution (this, from:"Magnemite", hp:HP060, type:LIGHTNING, retreatCost:2) {
           weakness FIGHTING
@@ -450,7 +450,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_SLOWBRO_12:
         return evolution (this, from:"Slowpoke", hp:HP060, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -471,7 +471,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_VILEPLUME_13:
         return evolution (this, from:"Dark Gloom", hp:HP060, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -502,7 +502,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_WEEZING_14:
         return evolution (this, from:"Koffing", hp:HP060, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -535,9 +535,9 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HERE_COMES_TEAM_ROCKET_15:
-        return copy (TeamRocket.HERE_COMES_TEAM_ROCKET_15, this);
+        return copy (TeamRocket.HERE_COMES_TEAM_ROCKET_15, this)
       case ROCKETS_SNEAK_ATTACK_16:
         return basicTrainer (this) {
           text "Look at your opponent’s hand. If he or she has any Trainer cards, choose 1 of them. Your opponent shuffles that card into his or her deck."
@@ -551,37 +551,37 @@ public enum PokemodTeamRocket implements LogicCardInfo {
           playRequirement{
             assert opp.hand
           }
-        };
+        }
       case RAINBOW_ENERGY_17:
-        return copy (TeamRocket.RAINBOW_ENERGY_17, this);
+        return copy (TeamRocket.RAINBOW_ENERGY_17, this)
       case DARK_ALAKAZAM_18:
-        return copy (DARK_ALAKAZAM_1, this);
+        return copy (DARK_ALAKAZAM_1, this)
       case DARK_ARBOK_19:
-        return copy (DARK_ARBOK_2, this);
+        return copy (DARK_ARBOK_2, this)
       case DARK_BLASTOISE_20:
-        return copy (DARK_BLASTOISE_3, this);
+        return copy (DARK_BLASTOISE_3, this)
       case DARK_CHARIZARD_21:
-        return copy (TeamRocket.DARK_CHARIZARD_4, this);
+        return copy (TeamRocket.DARK_CHARIZARD_4, this)
       case DARK_DRAGONITE_22:
-        return copy (DARK_DRAGONITE_5, this);
+        return copy (DARK_DRAGONITE_5, this)
       case DARK_DUGTRIO_23:
-        return copy (DARK_DUGTRIO_6, this);
+        return copy (DARK_DUGTRIO_6, this)
       case DARK_GOLBAT_24:
-        return copy (TeamRocket.DARK_GOLBAT_7, this);
+        return copy (TeamRocket.DARK_GOLBAT_7, this)
       case DARK_GYARADOS_25:
-        return copy (DARK_GYARADOS_8, this);
+        return copy (DARK_GYARADOS_8, this)
       case DARK_HYPNO_26:
-        return copy (DARK_HYPNO_9, this);
+        return copy (DARK_HYPNO_9, this)
       case DARK_MACHAMP_27:
-        return copy (DARK_MACHAMP_10, this);
+        return copy (DARK_MACHAMP_10, this)
       case DARK_MAGNETON_28:
-        return copy (DARK_MAGNETON_11, this);
+        return copy (DARK_MAGNETON_11, this)
       case DARK_SLOWBRO_29:
-        return copy (DARK_SLOWBRO_12, this);
+        return copy (DARK_SLOWBRO_12, this)
       case DARK_VILEPLUME_30:
-        return copy (DARK_VILEPLUME_13, this);
+        return copy (DARK_VILEPLUME_13, this)
       case DARK_WEEZING_31:
-        return copy (DARK_WEEZING_14, this);
+        return copy (DARK_WEEZING_14, this)
       case DARK_CHARMELEON_32:
         return evolution (this, from:"Charmander", hp:HP060, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -607,9 +607,9 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_DRAGONAIR_33:
-        return copy (TeamRocket.DARK_DRAGONAIR, this);
+        return copy (TeamRocket.DARK_DRAGONAIR, this)
       case DARK_ELECTRODE_34:
         return evolution (this, from:"Voltorb", hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -638,7 +638,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_FLAREON_35:
         return evolution (this, from:"Eevee", hp:HP060, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -666,11 +666,11 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_GLOOM_36:
-        return copy (TeamRocket.DARK_GLOOM, this);
+        return copy (TeamRocket.DARK_GLOOM, this)
       case DARK_GOLDUCK_37:
-        return copy (TeamRocket.DARK_GOLDUCK, this);
+        return copy (TeamRocket.DARK_GOLDUCK, this)
       case DARK_JOLTEON_38:
         return evolution (this, from:"Eevee", hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -693,7 +693,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_KADABRA_39:
         return evolution (this, from:"Abra", hp:HP060, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -719,7 +719,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_MACHOKE_40:
         return evolution (this, from:"Machop", hp:HP060, type:FIGHTING, retreatCost:2) {
           weakness PSYCHIC
@@ -748,7 +748,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_MUK_41:
         return evolution (this, from:"Grimer", hp:HP060, type:GRASS, retreatCost:2) {
           weakness PSYCHIC
@@ -770,7 +770,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_PERSIAN_42:
         return evolution (this, from:"Meowth", hp:HP060, type:COLORLESS, retreatCost:0) {
           weakness FIGHTING
@@ -798,7 +798,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_PRIMEAPE_43:
         return evolution (this, from:"Mankey", hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -827,7 +827,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_RAPIDASH_44:
         return evolution (this, from:"Ponyta", hp:HP060, type:FIRE, retreatCost:0) {
           weakness WATER
@@ -852,7 +852,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DARK_VAPOREON_45:
         return evolution (this, from:"Eevee", hp:HP060, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -873,7 +873,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_WARTORTLE_46:
         return evolution (this, from:"Squirtle", hp:HP060, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -917,7 +917,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGIKARP_47:
         return basic (this, hp:HP030, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -943,7 +943,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PORYGON_48:
         return basic (this, hp:HP040, type:COLORLESS, retreatCost:0) {
           resistance PSYCHIC, MINUS30
@@ -988,21 +988,21 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ABRA_49:
-        return copy (TeamRocket.ABRA, this);
+        return copy (TeamRocket.ABRA, this)
       case CHARMANDER_50:
-        return copy (TeamRocket.CHARMANDER, this);
+        return copy (TeamRocket.CHARMANDER, this)
       case DARK_RATICATE_51:
-        return copy (TeamRocket.DARK_RATICATE, this);
+        return copy (TeamRocket.DARK_RATICATE, this)
       case DIGLETT_52:
-        return copy (TeamRocket.DIGLETT, this);
+        return copy (TeamRocket.DIGLETT, this)
       case DRATINI_53:
-        return copy (TeamRocket.DRATINI, this);
+        return copy (TeamRocket.DRATINI, this)
       case DROWZEE_54:
-        return copy (TeamRocket.DROWZEE, this);
+        return copy (TeamRocket.DROWZEE, this)
       case EEVEE_55:
-        return copy (TeamRocket.EEVEE, this);
+        return copy (TeamRocket.EEVEE, this)
       case EKANS_56:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -1024,7 +1024,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GRIMER_57:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -1049,11 +1049,11 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KOFFING_58:
-        return copy (TeamRocket.KOFFING, this);
+        return copy (TeamRocket.KOFFING, this)
       case MACHOP_59:
-        return copy (TeamRocket.MACHOP, this);
+        return copy (TeamRocket.MACHOP, this)
       case MAGNEMITE_60:
         return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1074,21 +1074,21 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MANKEY_61:
-        return copy (TeamRocket.MANKEY, this);
+        return copy (TeamRocket.MANKEY, this)
       case MEOWTH_62:
-        return copy (TeamRocket.MEOWTH, this);
+        return copy (TeamRocket.MEOWTH, this)
       case ODDISH_63:
-        return copy (TeamRocket.ODDISH, this);
+        return copy (TeamRocket.ODDISH, this)
       case PONYTA_64:
-        return copy (TeamRocket.PONYTA, this);
+        return copy (TeamRocket.PONYTA, this)
       case PSYDUCK_65:
-        return copy (TeamRocket.PSYDUCK, this);
+        return copy (TeamRocket.PSYDUCK, this)
       case RATTATA_66:
-        return copy (TeamRocket.RATTATA, this);
+        return copy (TeamRocket.RATTATA, this)
       case SLOWPOKE_67:
-        return copy (TeamRocket.SLOWPOKE, this);
+        return copy (TeamRocket.SLOWPOKE, this)
       case SQUIRTLE_68:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1101,37 +1101,37 @@ public enum PokemodTeamRocket implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VOLTORB_69:
-        return copy (TeamRocket.VOLTORB, this);
+        return copy (TeamRocket.VOLTORB, this)
       case ZUBAT_70:
-        return copy (TeamRocket.ZUBAT, this);
+        return copy (TeamRocket.ZUBAT, this)
       case HERE_COMES_TEAM_ROCKET_71:
-        return copy (TeamRocket.HERE_COMES_TEAM_ROCKET_15, this);
+        return copy (TeamRocket.HERE_COMES_TEAM_ROCKET_15, this)
       case ROCKETS_SNEAK_ATTACK_72:
-        return copy (ROCKETS_SNEAK_ATTACK_16, this);
+        return copy (ROCKETS_SNEAK_ATTACK_16, this)
       case THE_BOSSS_WAY_73:
-        return copy (TeamRocket.THE_BOSSS_WAY, this);
+        return copy (TeamRocket.THE_BOSSS_WAY, this)
       case CHALLENGE_74:
         break
       case DIGGER_75:
-        return copy (TeamRocket.DIGGER, this);
+        return copy (TeamRocket.DIGGER, this)
       case IMPOSTER_OAKS_REVENGE_76:
         break
       case NIGHTLY_GARBAGE_RUN_77:
-        return copy (TeamRocket.NIGHTLY_GARBAGE_RUN, this);
+        return copy (TeamRocket.NIGHTLY_GARBAGE_RUN, this)
       case GOOP_GAS_ATTACK_78:
         break
       case SLEEP_79:
-        return copy (TeamRocket.SLEEP, this);
+        return copy (TeamRocket.SLEEP, this)
       case RAINBOW_ENERGY_80:
-        return copy (TeamRocket.RAINBOW_ENERGY_17, this);
+        return copy (TeamRocket.RAINBOW_ENERGY_17, this)
       case FULL_HEAL_ENERGY_81:
-        return copy (TeamRocket.FULL_HEAL_ENERGY, this);
+        return copy (TeamRocket.FULL_HEAL_ENERGY, this)
       case POTION_ENERGY_82:
-        return copy (TeamRocket.POTION_ENERGY, this);
+        return copy (TeamRocket.POTION_ENERGY, this)
       case DARK_RAICHU_83:
-        return copy (TeamRocket.DARK_RAICHU, this);
+        return copy (TeamRocket.DARK_RAICHU, this)
       case BOOST_ENERGY_84:
         break
       case SCRAMBLE_ENERGY_85:
@@ -1154,7 +1154,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
           playRequirement{
             assert my.deck
           }
-        };
+        }
         //make so coinflip
       case POKEMON_RETRIVER_90:
         return basicTrainer (this) {
@@ -1172,7 +1172,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
           playRequirement{
             assert my.discard.filterByType(BASIC, EVOLUTION)
           }
-        };
+        }
       case POW_HAND_EXTENTION_91:
         break
       case SURPRISE_TIME_MACHINE_92:
@@ -1212,7 +1212,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
       case ROCKETS_SNORLAX_EX_109:
         break
       default:
-        return null;
+        return null
     }
   }
 

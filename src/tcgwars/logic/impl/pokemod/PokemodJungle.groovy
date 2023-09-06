@@ -2,35 +2,35 @@ package tcgwars.logic.impl.pokemod
 
 import tcgwars.logic.impl.gen1.Jungle
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -121,53 +121,53 @@ public enum PokemodJungle implements LogicCardInfo {
   VAPOREON_EX_81 ("Vaporeon ex", "81", Rarity.SECRET, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
   JOLTEON_EX_82 ("Jolteon ex", "82", Rarity.SECRET, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   PokemodJungle(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.POKEMOD_JUNGLE;
+    return tcgwars.logic.card.Collection.POKEMOD_JUNGLE
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -185,7 +185,7 @@ public enum PokemodJungle implements LogicCardInfo {
               def moveList = []
               def labelList = []
 
-              moveList.addAll(defending.topPokemonCard.moves);
+              moveList.addAll(defending.topPokemonCard.moves)
               labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
 
               def move=choose(moveList, labelList, "Which move do you want to use")
@@ -203,7 +203,7 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTRODE_2:
         return evolution (this, from:"Voltorb", hp:HP090, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -230,7 +230,7 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FLAREON_3:
         return evolution (this, from:"Eevee", hp:HP080, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -253,7 +253,7 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case JOLTEON_4:
         return evolution (this, from:"Eevee", hp:HP080, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -275,9 +275,9 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KANGASKHAN_5:
-        return copy (Jungle.KANGASKHAN_5, this);
+        return copy (Jungle.KANGASKHAN_5, this)
       case MR_MIME_6:
         return basic (this, hp:HP040, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -305,7 +305,7 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDOQUEEN_7:
         return evolution (this, from:"Nidorina", hp:HP100, type:GRASS, retreatCost:3) {
           weakness PSYCHIC
@@ -329,7 +329,7 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIDGEOT_8:
         return evolution (this, from:"Pidgeotto", hp:HP080, type:COLORLESS, retreatCost:0) {
           weakness LIGHTNING
@@ -354,7 +354,7 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PINSIR_9:
         return basic (this, hp:HP080, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -376,9 +376,9 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SCYTHER_10:
-        return copy (Jungle.SCYTHER_10, this);
+        return copy (Jungle.SCYTHER_10, this)
       case SNORLAX_11:
         return basic (this, hp:HP090, type:COLORLESS, retreatCost:4) {
           weakness FIGHTING
@@ -404,7 +404,7 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VAPOREON_12:
         return evolution (this, from:"Eevee", hp:HP080, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -427,7 +427,7 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VENOMOTH_13:
         break
       case VICTREEBEL_14:
@@ -452,43 +452,43 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VILEPLUME_15:
-        return copy (Jungle.VILEPLUME_15, this);
+        return copy (Jungle.VILEPLUME_15, this)
       case WIGGLYTUFF_16:
-        return copy (Jungle.WIGGLYTUFF_16, this);
+        return copy (Jungle.WIGGLYTUFF_16, this)
       case CLEFABLE_17:
-        return copy (CLEFABLE_1, this);
+        return copy (CLEFABLE_1, this)
       case ELECTRODE_18:
-        return copy (ELECTRODE_2, this);
+        return copy (ELECTRODE_2, this)
       case FLAREON_19:
-        return copy (FLAREON_3, this);
+        return copy (FLAREON_3, this)
       case JOLTEON_20:
-        return copy (JOLTEON_4, this);
+        return copy (JOLTEON_4, this)
       case KANGASKHAN_21:
-        return copy (Jungle.KANGASKHAN_5, this);
+        return copy (Jungle.KANGASKHAN_5, this)
       case MR_MIME_22:
-        return copy (MR_MIME_6, this);
+        return copy (MR_MIME_6, this)
       case NIDOQUEEN_23:
-        return copy (NIDOQUEEN_7, this);
+        return copy (NIDOQUEEN_7, this)
       case PIDGEOT_24:
-        return copy (PIDGEOT_8, this);
+        return copy (PIDGEOT_8, this)
       case PINSIR_25:
-        return copy (PINSIR_9, this);
+        return copy (PINSIR_9, this)
       case SCYTHER_26:
-        return copy (Jungle.SCYTHER_10, this);
+        return copy (Jungle.SCYTHER_10, this)
       case SNORLAX_27:
-        return copy (SNORLAX_11, this);
+        return copy (SNORLAX_11, this)
       case VAPOREON_28:
-        return copy (VAPOREON_12, this);
+        return copy (VAPOREON_12, this)
       case VENOMOTH_29:
-        return copy (VENOMOTH_13, this);
+        return copy (VENOMOTH_13, this)
       case VICTREEBEL_30:
-        return copy (VICTREEBEL_14, this);
+        return copy (VICTREEBEL_14, this)
       case VILEPLUME_31:
-        return copy (Jungle.VILEPLUME_15, this);
+        return copy (Jungle.VILEPLUME_15, this)
       case WIGGLYTUFF_32:
-        return copy (Jungle.WIGGLYTUFF_16, this);
+        return copy (Jungle.WIGGLYTUFF_16, this)
       case BUTTERFREE_33:
         return evolution (this, from:"Metapod", hp:HP080, type:GRASS, retreatCost:0) {
           weakness FIRE
@@ -514,7 +514,7 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DODRIO_34:
         return evolution (this, from:"Doduo", hp:HP070, type:COLORLESS, retreatCost:0) {
           weakness LIGHTNING
@@ -536,9 +536,9 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EXEGGUTOR_35:
-        return copy (Jungle.EXEGGUTOR_35, this);
+        return copy (Jungle.EXEGGUTOR_35, this)
       case FEAROW_36:
         return evolution (this, from:"Spearow", hp:HP080, type:COLORLESS, retreatCost:0) {
           weakness LIGHTNING
@@ -561,9 +561,9 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GLOOM_37:
-        return copy (Jungle.GLOOM_37, this);
+        return copy (Jungle.GLOOM_37, this)
       case LICKITUNG_38:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:3) {
           weakness FIGHTING
@@ -587,7 +587,7 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAROWAK_39:
         return evolution (this, from:"Cubone", hp:HP070, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -615,7 +615,7 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDORINA_40:
         return evolution (this, from:"Nidoran♀", hp:HP080, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -636,7 +636,7 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PARASECT_41:
         return evolution (this, from:"Paras", hp:HP060, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -657,7 +657,7 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PERSIAN_42:
         return evolution (this, from:"Meowth", hp:HP070, type:COLORLESS, retreatCost:0) {
           weakness FIGHTING
@@ -694,9 +694,9 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PRIMEAPE_43:
-        return copy (Jungle.PRIMEAPE_43, this);
+        return copy (Jungle.PRIMEAPE_43, this)
       case RAPIDASH_44:
         return evolution (this, from:"Ponyta", hp:HP070, type:FIRE, retreatCost:0) {
           weakness WATER
@@ -719,7 +719,7 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RHYDON_45:
         return evolution (this, from:"Rhyhorn", hp:HP100, type:FIGHTING, retreatCost:3) {
           weakness GRASS
@@ -747,7 +747,7 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SEAKING_46:
         return evolution (this, from:"Goldeen", hp:HP070, type:WATER, retreatCost:0) {
           weakness LIGHTNING
@@ -768,9 +768,9 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TAUROS_47:
-        return copy (Jungle.TAUROS_47, this);
+        return copy (Jungle.TAUROS_47, this)
       case WEEPINBELL_48:
         return evolution (this, from:"Bellsprout", hp:HP070, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -792,7 +792,7 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BELLSPROUT_49:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -818,7 +818,7 @@ public enum PokemodJungle implements LogicCardInfo {
               shuffleDeck()
             }
           }
-        };
+        }
       case CUBONE_50:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -856,11 +856,11 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EEVEE_51:
-        return copy (Jungle.EEVEE_51, this);
+        return copy (Jungle.EEVEE_51, this)
       case EXEGGCUTE_52:
-        return copy (Jungle.EXEGGCUTE_52, this);
+        return copy (Jungle.EXEGGCUTE_52, this)
       case GOLDEEN_53:
         return basic (this, hp:HP040, type:WATER, retreatCost:0) {
           weakness LIGHTNING
@@ -873,9 +873,9 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case JIGGLYPUFF_54:
-        return copy (Jungle.JIGGLYPUFF_54, this);
+        return copy (Jungle.JIGGLYPUFF_54, this)
       case MANKEY_55:
         return basic (this, hp:HP040, type:FIGHTING, retreatCost:0) {
           weakness PSYCHIC
@@ -887,11 +887,11 @@ public enum PokemodJungle implements LogicCardInfo {
               powerUsed()
               def choice = choose([0,1,2,3,4],["Top of your deck", "Top of your opponent's deck", "Your opponent’s hand ", "Your Prizes", "Opponent's Prizes"])
               switch (choice){
-                case 0: my.deck.subList(0,1).showToMe("Top of your deck"); break;
-                case 1: opp.deck.subList(0,1).showToMe("Top of your opponent's deck"); break;
-                case 2: opp.hand.shuffledCopy().select(hidden: true, "Select a random card from opponent's hand").showToMe("Selected card"); break;
-                case 3: my.prizeCardSet.select(hidden: true, "Select a random card from your prizes").showToMe("Selected card"); break;
-                case 4: opp.prizeCardSet.select(hidden: true, "Select a random card from your opponent's prizes").showToMe("Selected card"); break;
+                case 0: my.deck.subList(0,1).showToMe("Top of your deck"); break
+                case 1: opp.deck.subList(0,1).showToMe("Top of your opponent's deck"); break
+                case 2: opp.hand.shuffledCopy().select(hidden: true, "Select a random card from opponent's hand").showToMe("Selected card"); break
+                case 3: my.prizeCardSet.select(hidden: true, "Select a random card from your prizes").showToMe("Selected card"); break
+                case 4: opp.prizeCardSet.select(hidden: true, "Select a random card from your opponent's prizes").showToMe("Selected card"); break
               }
             }
           }
@@ -904,7 +904,7 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MEOWTH_56:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -919,7 +919,7 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDORAN_FEMALE_57:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -946,9 +946,9 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ODDISH_58:
-        return copy (Jungle.ODDISH_58, this);
+        return copy (Jungle.ODDISH_58, this)
       case PARAS_59:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -969,7 +969,7 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIKACHU_60:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -983,11 +983,11 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RHYHORN_61:
-        return copy (Jungle.RHYHORN_61, this);
+        return copy (Jungle.RHYHORN_61, this)
       case SPEAROW_62:
-        return copy (Jungle.SPEAROW_62, this);
+        return copy (Jungle.SPEAROW_62, this)
       case VENONAT_63:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1010,11 +1010,11 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case POKE_BALL_64:
-        return copy (Jungle.POKE_BALL_64, this);
+        return copy (Jungle.POKE_BALL_64, this)
       case ENERGY_RESTORE_65:
-       return copy(RubySapphire.ENERGY_RESTORE_81, this);
+       return copy(RubySapphire.ENERGY_RESTORE_81, this)
       case LEVEL_BALL_66:
        return basicTrainer(this) {
           text "Search your deck for a Pokémon with 50 HP or less, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
@@ -1024,13 +1024,13 @@ public enum PokemodJungle implements LogicCardInfo {
           playRequirement{
             assert my.deck : "There are no more cards in your deck"
           }
-        };
+        }
       case SAMURAI_67:
-       return copy(SunMoon.HAU_120, this);
+       return copy(SunMoon.HAU_120, this)
       case HEALING_FIELDS_69:
        break
       case POKEMON_POOL_PARTY_70:
-       return copy(BlackWhitePromos.TROPICAL_BEACH_BW28, this);
+       return copy(BlackWhitePromos.TROPICAL_BEACH_BW28, this)
       case MASTER_BALL_71:
        return basicTrainer (this) {
           text "Search your deck for up to 3 Basic Pokémon. Show them to your opponent, and put them into your hand. Shuffle your deck afterward"
@@ -1040,7 +1040,7 @@ public enum PokemodJungle implements LogicCardInfo {
           playRequirement{
             assert my.deck : "There are no more cards in your deck"
           }
-        };
+        }
       case SCOOP_UP_CYCLONE_72:
        return basicTrainer (this) {
           text "Put 1 of your Pokémon in play and all cards attached to it into your hand."
@@ -1052,15 +1052,15 @@ public enum PokemodJungle implements LogicCardInfo {
           playRequirement{
             confirmScoopLastPokemon()
           }
-        };
+        }
       case SCRAMBLE_SWITCH_73:
-       return copy(PlasmaStorm.SCRAMBLE_SWITCH_129, this);
+       return copy(PlasmaStorm.SCRAMBLE_SWITCH_129, this)
       case KANGASKHAN_74:
-       return copy (Jungle.KANGASKHAN_5, this);
+       return copy (Jungle.KANGASKHAN_5, this)
       case HUNGRY_SNORLAX_75:
        break
       case SCYTHER_76:
-       return copy (Jungle.SCYTHER_10, this);
+       return copy (Jungle.SCYTHER_10, this)
       case WIGGLYTUFF_EX_77:
        return evolution (this, from: "Jigglypuff", hp:100, type:COLORLESS, retreatCost:2) {
          weakness FIGHTING
@@ -1083,7 +1083,7 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VILEPLUME_EX_78:
        return evolution (this, from: "Gloom", hp:120, type:GRASS, retreatCost:2) {
          weakness PSYCHIC, FIRE
@@ -1110,7 +1110,7 @@ public enum PokemodJungle implements LogicCardInfo {
              }
            }
           }
-       };
+       }
       case CLEFABLE_EX_79:
        return evolution (this, from:"Clefairy", hp:HP100, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -1123,7 +1123,7 @@ public enum PokemodJungle implements LogicCardInfo {
               def moveList = []
               def labelList = []
 
-              moveList.addAll(defending.topPokemonCard.moves);
+              moveList.addAll(defending.topPokemonCard.moves)
               labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
 
               def move=choose(moveList, labelList, "Which move do you want to use")
@@ -1140,7 +1140,7 @@ public enum PokemodJungle implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FLAREON_EX_80:
        return evolution (this, from:"Eevee", hp:HP100, type:R, retreatCost:1) {
         weakness W
@@ -1169,7 +1169,7 @@ public enum PokemodJungle implements LogicCardInfo {
             damage 20, self
           }
         }
-      };
+      }
       case VAPOREON_EX_81:
        return evolution (this, from:"Eevee", hp:HP100, type:W, retreatCost:1) {
         weakness L
@@ -1198,7 +1198,7 @@ public enum PokemodJungle implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case JOLTEON_EX_82:
        return evolution (this, from:"Eevee", hp:HP100, type:L, retreatCost:1) {
         weakness F
@@ -1229,9 +1229,9 @@ public enum PokemodJungle implements LogicCardInfo {
             discardSelfEnergy L
           }
         }
-      };
+      }
       default:
-        return null;
+        return null
     }
   }
 

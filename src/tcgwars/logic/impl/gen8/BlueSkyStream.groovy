@@ -2,37 +2,37 @@ package tcgwars.logic.impl.gen8
 
 import tcgwars.logic.impl.gen5.BlackWhite
 import tcgwars.logic.impl.gen5.EmergingPowers
-import tcgwars.logic.impl.gen6.Xy;
+import tcgwars.logic.impl.gen6.Xy
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -130,53 +130,53 @@ public enum BlueSkyStream implements LogicCardInfo {
   STORMY_MOUNTAIN_RANGE_89 ("Stormy Mountain Range", "89", Rarity.UNCOMMON, [TRAINER, STADIUM]),
   LIGHTNING_ENERGY_90 ("Lightning Energy", "90", Rarity.COMMON, [ENERGY, BASIC_ENERGY]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   BlueSkyStream(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.BLUE_SKY_STREAM;
+    return tcgwars.logic.card.Collection.BLUE_SKY_STREAM
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -194,7 +194,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SKIPLOOM_2:
       return evolution (this, from:"Hoppip", hp:HP060, type:G, retreatCost:0) {
         weakness R
@@ -225,7 +225,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case JUMPLUFF_3:
       return evolution (this, from:"Skiploom", hp:HP090, type:G, retreatCost:0) {
         weakness R
@@ -240,7 +240,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case TROPIUS_4:
       return basic (this, hp:HP110, type:G, retreatCost:1) {
         weakness R
@@ -260,7 +260,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 100
           }
         }
-      };
+      }
       case PANSAGE_5:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -271,7 +271,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SIMISAGE_6:
       return evolution (this, from:"Pansage", hp:HP100, type:G, retreatCost:1) {
         weakness R
@@ -294,7 +294,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case TREVENANT_V_7:
       return basic (this, hp:HP210, type:G, retreatCost:2) {
         weakness R
@@ -316,7 +316,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case TREVENANT_VMAX_8:
       return evolution (this, from:"Trevenant V", hp:HP320, type:G, retreatCost:3) {
         weakness R
@@ -337,7 +337,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 180
           }
         }
-      };
+      }
       case APPLIN_9:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -348,7 +348,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case VULPIX_10:
       return basic (this, hp:HP070, type:R, retreatCost:1) {
         weakness W
@@ -359,7 +359,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case NINETALES_11:
       return evolution (this, from:"Vulpix", hp:HP120, type:R, retreatCost:2) {
         weakness W
@@ -378,7 +378,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case VICTINI_12:
       return basic (this, hp:HP060, type:R, retreatCost:1) {
         weakness W
@@ -394,7 +394,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case PANSEAR_13:
       return basic (this, hp:HP060, type:R, retreatCost:1) {
         weakness W
@@ -407,7 +407,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SIMISEAR_14:
       return evolution (this, from:"Pansear", hp:HP100, type:R, retreatCost:1) {
         weakness W
@@ -432,7 +432,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case VOLCARONA_V_15:
       return basic (this, hp:HP210, type:R, retreatCost:2) {
         weakness W
@@ -458,7 +458,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             discardSelfEnergyAfterDamage()
           }
         }
-      };
+      }
       case SIZZLIPEDE_16:
       return basic (this, hp:HP070, type:R, retreatCost:2) {
         weakness W
@@ -473,7 +473,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             apply BURNED
           }
         }
-      };
+      }
       case CENTISKORCH_17:
       return evolution (this, from:"Sizzlipede", hp:HP130, type:R, retreatCost:2) {
         weakness W
@@ -492,7 +492,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 120
           }
         }
-      };
+      }
       case SHELLDER_18:
       return basic (this, hp:HP070, type:W, retreatCost:2) {
         weakness L
@@ -510,7 +510,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case CLOYSTER_19:
       return evolution (this, from:"Shellder", hp:HP130, type:W, retreatCost:2) {
         weakness L
@@ -526,7 +526,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             multiDamage opp.bench, 2, 30, text
           }
         }
-      };
+      }
       case GYARADOS_V_20:
       return basic (this, hp:HP220, type:W, retreatCost:3) {
         weakness L
@@ -547,7 +547,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 180
           }
         }
-      };
+      }
       case GYARADOS_VMAX_21:
       return evolution (this, from:"Gyarados V", hp:HP330, type:W, retreatCost:4) {
         weakness L
@@ -566,7 +566,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 240
           }
         }
-      };
+      }
       case GALARIAN_DARUMAKA_22:
       return basic (this, hp:HP080, type:W, retreatCost:2) {
         weakness M
@@ -578,7 +578,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             flipTails { damage 10, self }
           }
         }
-      };
+      }
       case GALARIAN_DARMANITAN_23:
       return evolution (this, from:"Galarian Darumaka", hp:HP130, type:W, retreatCost:2) {
         weakness M
@@ -603,7 +603,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 130
           }
         }
-      };
+      }
       case CRYOGONAL_24:
       return basic (this, hp:HP090, type:W, retreatCost:1) {
         weakness M
@@ -630,7 +630,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case WISHIWASHI_25:
       return basic (this, hp:HP030, type:W, retreatCost:1) {
         weakness L
@@ -650,7 +650,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 30 * self.cards.basicEnergyCardCount()
           }
         }
-      };
+      }
       case MAREEP_26:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness F
@@ -668,7 +668,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case FLAAFFY_27:
       return evolution (this, from:"Mareep", hp:HP090, type:L, retreatCost:2) {
         weakness F
@@ -689,7 +689,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case AMPHAROS_28:
       return evolution (this, from:"Flaaffy", hp:HP150, type:L, retreatCost:2) {
         weakness F
@@ -714,7 +714,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case PLUSLE_29:
       return basic (this, hp:HP070, type:L, retreatCost:1) {
         weakness F
@@ -739,7 +739,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MINUN_30:
       return basic (this, hp:HP070, type:L, retreatCost:1) {
         weakness F
@@ -755,7 +755,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TOXEL_31:
       return basic (this, hp:HP070, type:L, retreatCost:2) {
         weakness F
@@ -766,7 +766,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TOXTRICITY_32:
       return evolution (this, from:"Toxel", hp:HP130, type:L, retreatCost:2) {
         weakness F
@@ -781,7 +781,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case REGIELEKI_33:
       return basic (this, hp:HP120, type:L, retreatCost:2) {
         weakness F
@@ -804,7 +804,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SANDSHREW_34:
       return basic (this, hp:HP060, type:F, retreatCost:1) {
         weakness G
@@ -832,7 +832,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 20 * my.bench.findAll { it.getTopPokemonCard().moves.any { it.name == "Everyone Rollout" } }.size()
           }
         }
-      };
+      }
       case SANDSLASH_35:
       return evolution (this, from:"Sandshrew", hp:HP120, type:F, retreatCost:2) {
         weakness G
@@ -848,7 +848,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MEDICHAM_V_36:
       return basic (this, hp:HP210, type:F, retreatCost:2) {
         weakness P
@@ -885,7 +885,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             noResistanceDamage 100, defending
           }
         }
-      };
+      }
       case BALTOY_37:
       return basic (this, hp:HP060, type:F, retreatCost:1) {
         weakness G
@@ -896,7 +896,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case CLAYDOL_38:
       return evolution (this, from:"Baltoy", hp:HP120, type:F, retreatCost:2) {
         weakness G
@@ -920,7 +920,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             directDamage defending.remainingHP.value - 60, defending
           }
         }
-      };
+      }
       case LANDORUS_39:
       return basic (this, hp:HP120, type:F, retreatCost:1) {
         weakness G
@@ -946,7 +946,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case STUFFUL_40:
       return basic (this, hp:HP070, type:F, retreatCost:2) {
         weakness P
@@ -964,7 +964,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case BEWEAR_41:
       return evolution (this, from:"Stufful", hp:HP130, type:F, retreatCost:3) {
         weakness P
@@ -983,7 +983,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 130
           }
         }
-      };
+      }
       case DRAGONITE_V_42:
       return basic (this, hp:HP230, type:N, retreatCost:3) {
         move "Shred", {
@@ -1003,7 +1003,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case BAGON_43:
       return basic (this, hp:HP070, type:N, retreatCost:2) {
         move "Gnaw", {
@@ -1020,7 +1020,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SHELGON_44:
       return evolution (this, from:"Bagon", hp:HP090, type:N, retreatCost:3) {
         move "Hard Roll", {
@@ -1033,7 +1033,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SALAMENCE_45:
       return evolution (this, from:"Shelgon", hp:HP170, type:N, retreatCost:2) {
         bwAbility "Intimidating Roar", {
@@ -1053,7 +1053,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             if (defending.numberOfDamageCounters) damage 120
           }
         }
-      };
+      }
       case RAYQUAZA_V_46:
       return basic (this, hp:HP210, type:N, retreatCost:2) {
         move "Dragon Pulse", {
@@ -1089,7 +1089,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case RAYQUAZA_VMAX_47:
       return evolution (this, from:"Rayquaza V", hp:HP320, type:N, retreatCost:2) {
         bwAbility "Blue Sky Wave", {
@@ -1128,7 +1128,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ZYGARDE_48:
       return basic (this, hp:HP130, type:N, retreatCost:2) {
         move "Bite", {
@@ -1149,7 +1149,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 40 * opp.prizeCardSet.takenCount, tar
           }
         }
-      };
+      }
       case TURTONATOR_49:
       return basic (this, hp:HP130, type:N, retreatCost:3) {
         move "Shell Trap", {
@@ -1170,7 +1170,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 80
           }
         }
-      };
+      }
       case FLAPPLE_50:
       return evolution (this, from:"Applin", hp:HP080, type:N, retreatCost:1) {
         move "Acidic Mucus", {
@@ -1193,7 +1193,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             if (defending.pokemonV) damage 80
           }
         }
-      };
+      }
       case APPLETUN_51:
       return evolution (this, from:"Applin", hp:HP090, type:N, retreatCost:3) {
         move "Sticky Mucus", {
@@ -1215,7 +1215,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             if (defending.pokemonV) damage 80
           }
         }
-      };
+      }
       case REGIDRAGO_52:
       return basic (this, hp:HP130, type:N, retreatCost:3) {
         move "Hammer In", {
@@ -1232,7 +1232,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 240 - 20 * self.numberOfDamageCounters
           }
         }
-      };
+      }
       case CHANSEY_53:
       return basic (this, hp:HP110, type:C, retreatCost:2) {
         weakness F
@@ -1251,7 +1251,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case BLISSEY_54:
       return evolution (this, from:"Chansey", hp:HP130, type:C, retreatCost:2) {
         weakness F
@@ -1282,7 +1282,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 20 * my.bench.findAll { it.getTopPokemonCard().moves.any { it.name == "Everyone Rollout" } }.size()
           }
         }
-      };
+      }
       case STANTLER_55:
       return basic (this, hp:HP110, type:C, retreatCost:1) {
         weakness F
@@ -1303,7 +1303,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             damage 30 * defending.energyCards.size()
           }
         }
-      };
+      }
       case LUCKY_ICE_POP_56:
       return itemCard (this) {
         text "Heal 20 damage from your Active Pokémon. Then" +
@@ -1327,9 +1327,9 @@ public enum BlueSkyStream implements LogicCardInfo {
         playRequirement {
           assert my.active.numberOfDamageCounters : "Active Pokémon has no damage counters on it"
         }
-      };
+      }
       case GREAT_BALL_57:
-        return copy (EmergingPowers.GREAT_BALL_93, this);
+        return copy (EmergingPowers.GREAT_BALL_93, this)
       case TOY_CATCHER_58:
       return itemCard (this) {
         text "Choose 1 of your opponent's Benched Pokémon with 50 HP or less and switch it with their Active Pokémon."
@@ -1339,7 +1339,7 @@ public enum BlueSkyStream implements LogicCardInfo {
         playRequirement {
           assert opp.bench.any { it.remainingHP.value <= 50 } : "Opponent has no Benched Pokémon with 50 HP or less remaining"
         }
-      };
+      }
       case SWITCH_59:
         return copy(BlackWhite.SWITCH_104, this)
       case RUBBERY_GLOVES_60:
@@ -1361,7 +1361,7 @@ public enum BlueSkyStream implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-      };
+      }
       case NETHER_MASK_61:
       return pokemonTool (this) {
         text "If the Pokémon this card is attached to is in the Active Spot and is damaged by an attack from your opponent's Pokémon (even if it is Knocked Out)" +
@@ -1383,7 +1383,7 @@ public enum BlueSkyStream implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-      };
+      }
       case RAPID_STRIKE_SCROLL_OF_THE_FLYING_DRAGON_62:
       return pokemonTool (this) {
         text "The Rapid Strike Pokémon this card is attached to can use the attack on this card. (You still need the necessary Energy to use this attack.)"
@@ -1417,7 +1417,7 @@ public enum BlueSkyStream implements LogicCardInfo {
         onRemoveFromPlay {
           newMove.unregister()
         }
-      };
+      }
       case SHAUNA_63:
         return copy(Xy.SHAUNA_127, this)
       case SCHOOLBOY_64:
@@ -1435,7 +1435,7 @@ public enum BlueSkyStream implements LogicCardInfo {
         playRequirement {
           assert deck : "Deck is empty"
         }
-      };
+      }
       case ZINNIA_S_RESOLVE_65:
       return supporter (this) {
         text "You can play this card only if you discard 2 other cards from your hand. Draw a card for each of your opponent's Pokémon in play."
@@ -1447,7 +1447,7 @@ public enum BlueSkyStream implements LogicCardInfo {
           assert hand.getExcludedList(thisCard).size() >= 2 : "You do not have 2 other cards to discard from your hand"
           assert deck : "Your deck is empty"
         }
-      };
+      }
       case STORMY_MOUNTAIN_RANGE_66:
       return stadium (this) {
         text "Once during each player's turn" +
@@ -1474,57 +1474,57 @@ public enum BlueSkyStream implements LogicCardInfo {
         onRemoveFromPlay{
           actions.each { bg.gm().unregisterAction it }
         }
-      };
+      }
       case AURORA_ENERGY_67:
-      return copy (SwordShield.AURORA_ENERGY_186, this);
+      return copy (SwordShield.AURORA_ENERGY_186, this)
       case TREVENANT_V_68:
-      return copy (TREVENANT_V_7, this);
+      return copy (TREVENANT_V_7, this)
       case VOLCARONA_V_69:
-      return copy (VOLCARONA_V_15, this);
+      return copy (VOLCARONA_V_15, this)
       case GYARADOS_V_70:
-      return copy (GYARADOS_V_20, this);
+      return copy (GYARADOS_V_20, this)
       case MEDICHAM_V_71:
-      return copy (MEDICHAM_V_36, this);
+      return copy (MEDICHAM_V_36, this)
       case MEDICHAM_V_72:
-      return copy (MEDICHAM_V_36, this);
+      return copy (MEDICHAM_V_36, this)
       case DRAGONITE_V_73:
-      return copy (DRAGONITE_V_42, this);
+      return copy (DRAGONITE_V_42, this)
       case DRAGONITE_V_74:
-      return copy (DRAGONITE_V_42, this);
+      return copy (DRAGONITE_V_42, this)
       case RAYQUAZA_V_75:
-      return copy (RAYQUAZA_V_46, this);
+      return copy (RAYQUAZA_V_46, this)
       case RAYQUAZA_V_76:
-      return copy (RAYQUAZA_V_46, this);
+      return copy (RAYQUAZA_V_46, this)
       case SHAUNA_77:
-      return copy (SHAUNA_63, this);
+      return copy (SHAUNA_63, this)
       case SCHOOLBOY_78:
-      return copy (SCHOOLBOY_64, this);
+      return copy (SCHOOLBOY_64, this)
       case ZINNIA_S_RESOLVE_79:
-      return copy (ZINNIA_S_RESOLVE_65, this);
+      return copy (ZINNIA_S_RESOLVE_65, this)
       case TREVENANT_VMAX_80:
-      return copy (TREVENANT_VMAX_8, this);
+      return copy (TREVENANT_VMAX_8, this)
       case GYARADOS_VMAX_81:
-      return copy (GYARADOS_VMAX_21, this);
+      return copy (GYARADOS_VMAX_21, this)
       case RAYQUAZA_VMAX_82:
-      return copy (RAYQUAZA_VMAX_47, this);
+      return copy (RAYQUAZA_VMAX_47, this)
       case RAYQUAZA_VMAX_83:
-      return copy (RAYQUAZA_VMAX_47, this);
+      return copy (RAYQUAZA_VMAX_47, this)
       case SHAUNA_84:
-      return copy (SHAUNA_63, this);
+      return copy (SHAUNA_63, this)
       case SCHOOLBOY_85:
-      return copy (SCHOOLBOY_64, this);
+      return copy (SCHOOLBOY_64, this)
       case ZINNIA_S_RESOLVE_86:
-      return copy (ZINNIA_S_RESOLVE_65, this);
+      return copy (ZINNIA_S_RESOLVE_65, this)
       case FROSLASS_87:
-      return copy (ChillingReign.FROSLASS_36, this);
+      return copy (ChillingReign.FROSLASS_36, this)
       case TOY_CATCHER_88:
-      return copy (TOY_CATCHER_58, this);
+      return copy (TOY_CATCHER_58, this)
       case STORMY_MOUNTAIN_RANGE_89:
-      return copy (STORMY_MOUNTAIN_RANGE_66, this);
+      return copy (STORMY_MOUNTAIN_RANGE_66, this)
       case LIGHTNING_ENERGY_90:
-      return basicEnergy (this, L);
+      return basicEnergy (this, L)
       default:
-      return null;
+      return null
     }
   }
 }

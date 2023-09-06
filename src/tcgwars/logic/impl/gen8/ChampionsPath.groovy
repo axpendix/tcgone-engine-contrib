@@ -1,15 +1,15 @@
 package tcgwars.logic.impl.gen8
 
 import tcgwars.logic.impl.gen3.FireRedLeafGreen
-import tcgwars.logic.impl.gen5.EmergingPowers;
+import tcgwars.logic.impl.gen5.EmergingPowers
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
+import static tcgwars.logic.effect.EffectType.*
 import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
@@ -103,53 +103,53 @@ public enum ChampionsPath implements LogicCardInfo {
   CHARIZARD_V_79 ("Charizard V", 79, Rarity.SECRET, [POKEMON, BASIC, POKEMON_V, _FIRE_]),
   STRANGE_CANNED_FOOD_80 ("Strange Canned Food", 80, Rarity.SECRET, [TRAINER, ITEM]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected int collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected int collectionLineNo
 
   ChampionsPath(String name, int collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.CHAMPIONS_PATH;
+    return tcgwars.logic.card.Collection.CHAMPIONS_PATH
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -179,7 +179,7 @@ public enum ChampionsPath implements LogicCardInfo {
             cantUseAttack thisMove, self
           }
         }
-      };
+      }
       case WEEDLE_2:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -188,7 +188,7 @@ public enum ChampionsPath implements LogicCardInfo {
           energyCost C
           callForFamily basic:true, 1, delegate
         }
-      };
+      }
       case KAKUNA_3:
       return evolution (this, from:"Weedle", hp:HP080, type:G, retreatCost:3) {
         weakness R
@@ -199,7 +199,7 @@ public enum ChampionsPath implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case BEEDRILL_4:
       return evolution (this, from:"Kakuna", hp:HP140, type:G, retreatCost:1) {
         weakness R
@@ -211,9 +211,9 @@ public enum ChampionsPath implements LogicCardInfo {
             apply POISONED
           }
         }
-      };
+      }
       case ELDEGOSS_V_5:
-      return copy (RebelClash.ELDEGOSS_V_19, this);
+      return copy (RebelClash.ELDEGOSS_V_19, this)
       case VULPIX_6:
       return basic (this, hp:HP060, type:R, retreatCost:1) {
         weakness W
@@ -234,7 +234,7 @@ public enum ChampionsPath implements LogicCardInfo {
             apply BURNED
           }
         }
-      };
+      }
       case VICTINI_7:
       return basic (this, hp:HP070, type:R, retreatCost:1) {
         weakness W
@@ -255,7 +255,7 @@ public enum ChampionsPath implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case INCINEROAR_V:
       return basic (this, hp:HP220, type:R, retreatCost:3) {
         weakness W
@@ -278,7 +278,7 @@ public enum ChampionsPath implements LogicCardInfo {
             damage 30, self
           }
         }
-      };
+      }
       case SIZZLIPEDE_9:
       return copy(SwordShield.SIZZLIPEDE_37, this)
       case CENTISKORCH_10:
@@ -299,7 +299,7 @@ public enum ChampionsPath implements LogicCardInfo {
             damage 140
           }
         }
-      };
+      }
       case CARVANHA_11:
       return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness L
@@ -310,7 +310,7 @@ public enum ChampionsPath implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SHARPEDO_12:
       return evolution (this, from:"Carvanha", hp:HP110, type:W, retreatCost:1) {
         weakness L
@@ -324,7 +324,7 @@ public enum ChampionsPath implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case WAILORD_V_13:
       return basic (this, hp:HP280, type:W, retreatCost:4) {
         weakness L
@@ -345,7 +345,7 @@ public enum ChampionsPath implements LogicCardInfo {
             flip 3, { damage 120 }
           }
         }
-      };
+      }
       case DREDNAW_V_14:
       return basic (this, hp:HP210, type:W, retreatCost:4) {
         weakness L
@@ -371,7 +371,7 @@ public enum ChampionsPath implements LogicCardInfo {
             cantRetreat defending
           }
         }
-      };
+      }
       case DREDNAW_VMAX_15:
       return evolution (this, from:"Drednaw V", hp:HP320, type:W, retreatCost:4) {
         weakness L
@@ -397,7 +397,7 @@ public enum ChampionsPath implements LogicCardInfo {
             flip { damage 80 }
           }
         }
-      };
+      }
       case GARDEVOIR_V_16:
       return basic (this, hp:HP210, type:P, retreatCost:2) {
         weakness M
@@ -416,7 +416,7 @@ public enum ChampionsPath implements LogicCardInfo {
             if(self.lastHealedTurn == bg.turnCount) damage 80
           }
         }
-      };
+      }
       case GARDEVOIR_VMAX_17:
       return evolution (this, from:"Gardevoir V", hp:HP320, type:P, retreatCost:2) {
         weakness M
@@ -428,7 +428,7 @@ public enum ChampionsPath implements LogicCardInfo {
             heal 50, self
           }
         }
-      };
+      }
       case HATENNA_18:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness D
@@ -447,7 +447,7 @@ public enum ChampionsPath implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case HATTREM_19:
       return evolution (this, from:"Hatenna", hp:HP090, type:P, retreatCost:2) {
         weakness D
@@ -466,7 +466,7 @@ public enum ChampionsPath implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case HATTERENE_20:
       return evolution (this, from:"Hattrem", hp:HP150, type:P, retreatCost:2) {
         weakness D
@@ -486,7 +486,7 @@ public enum ChampionsPath implements LogicCardInfo {
             heal 30, self
           }
         }
-      };
+      }
       case GALARIAN_CURSOLA_V_21:
       return basic (this, hp:HP190, type:P, retreatCost:2) {
         weakness D
@@ -510,7 +510,7 @@ public enum ChampionsPath implements LogicCardInfo {
             putDamageCountersOnOpponentsPokemon(3, opp.bench)
           }
         }
-      };
+      }
       case ALCREMIE_V_22:
       return basic (this, hp:HP170, type:P, retreatCost:2) {
         weakness M
@@ -532,7 +532,7 @@ public enum ChampionsPath implements LogicCardInfo {
             if (defending.basic) cantAttackNextTurn(defending)
           }
         }
-      };
+      }
       case ALCREMIE_VMAX_23:
       return evolution (this, from:"Alcremie V", hp:HP310, type:P, retreatCost:3) {
         weakness M
@@ -558,7 +558,7 @@ public enum ChampionsPath implements LogicCardInfo {
             additionalDamageByDiscardingCardTypeFromPokemon 60, ENERGY
           }
         }
-      };
+      }
       case MACHOP_24:
       return basic (this, hp:HP070, type:F, retreatCost:2) {
         weakness P
@@ -577,7 +577,7 @@ public enum ChampionsPath implements LogicCardInfo {
             flip { damage 40 }
           }
         }
-      };
+      }
       case MACHOKE_25:
       return evolution (this, from:"Machop", hp:HP110, type:F, retreatCost:3) {
         weakness P
@@ -596,7 +596,7 @@ public enum ChampionsPath implements LogicCardInfo {
             flip { damage 70 }
           }
         }
-      };
+      }
       case MACHAMP_26:
       return evolution (this, from:"Machoke", hp:HP170, type:F, retreatCost:3) {
         weakness P
@@ -620,7 +620,7 @@ public enum ChampionsPath implements LogicCardInfo {
             damage 50, self
           }
         }
-      };
+      }
       case LUCARIO_V_27:
       return basic (this, hp:HP210, type:F, retreatCost:2) {
         weakness P
@@ -640,7 +640,7 @@ public enum ChampionsPath implements LogicCardInfo {
             cantUseAttack thisMove, self
           }
         }
-      };
+      }
       case ZYGARDE_28:
       return basic (this, hp:HP140, type:F, retreatCost:3) {
         weakness G
@@ -659,7 +659,7 @@ public enum ChampionsPath implements LogicCardInfo {
             discardSelfEnergyAfterDamage F
           }
         }
-      };
+      }
       case ROCKRUFF_29:
       return basic (this, hp:HP070, type:F, retreatCost:1) {
         weakness G
@@ -680,7 +680,7 @@ public enum ChampionsPath implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case LYCANROC_30:
       return evolution (this, from:"Rockruff", hp:HP120, type:F, retreatCost:2) {
         weakness G
@@ -700,7 +700,7 @@ public enum ChampionsPath implements LogicCardInfo {
             cantUseAttack thisMove, self
           }
         }
-      };
+      }
       case ROLYCOLY_31:
       return basic (this, hp:HP070, type:F, retreatCost:2) {
         weakness G
@@ -711,7 +711,7 @@ public enum ChampionsPath implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case GRAPPLOCT_V_32:
       return basic (this, hp:HP210, type:F, retreatCost:2) {
         weakness P
@@ -733,7 +733,7 @@ public enum ChampionsPath implements LogicCardInfo {
             flip { damage 100 }
           }
         }
-      };
+      }
       case EKANS_33:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness F
@@ -751,7 +751,7 @@ public enum ChampionsPath implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case ARBOK_34:
       return evolution (this, from:"Ekans", hp:HP120, type:D, retreatCost:1) {
         weakness F
@@ -769,7 +769,7 @@ public enum ChampionsPath implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case GALARIAN_ZIGZAGOON_35:
       return basic (this, hp:HP070, type:D, retreatCost:2) {
         weakness G
@@ -782,7 +782,7 @@ public enum ChampionsPath implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case GALARIAN_LINOONE_36:
       return evolution (this, from:"Galarian Zigzagoon", hp:HP100, type:D, retreatCost:2) {
         weakness G
@@ -794,7 +794,7 @@ public enum ChampionsPath implements LogicCardInfo {
             damage 20, self
           }
         }
-      };
+      }
       case GALARIAN_OBSTAGOON_37:
       return evolution (this, from:"Galarian Linoone", hp:HP170, type:D, retreatCost:2) {
         weakness G
@@ -816,7 +816,7 @@ public enum ChampionsPath implements LogicCardInfo {
             cantAttackNextTurn self
           }
         }
-      };
+      }
       case ABSOL_38:
       return basic (this, hp:HP100, type:D, retreatCost:1) {
         weakness G
@@ -827,11 +827,11 @@ public enum ChampionsPath implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case PURRLION_39:
       return copy (DarknessAblaze.PURRLOIN_106, this)
       case LIEPARD_40:
-      return copy (DarknessAblaze.LIEPARD_107, this);
+      return copy (DarknessAblaze.LIEPARD_107, this)
       case SCRAGGY_41:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness G
@@ -849,7 +849,7 @@ public enum ChampionsPath implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SCRAFTY_42:
       return evolution (this, from:"Scraggy", hp:HP120, type:D, retreatCost:2) {
         weakness G
@@ -871,9 +871,9 @@ public enum ChampionsPath implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case TRUBBISH_43:
-      return copy (RebelClash.TRUBBISH_117, this);
+      return copy (RebelClash.TRUBBISH_117, this)
       case INKAY_44:
       return basic (this, hp:HP060, type:D, retreatCost:1) {
         weakness G
@@ -894,7 +894,7 @@ public enum ChampionsPath implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MALAMAR_45:
       return evolution (this, from:"Inkay", hp:HP120, type:D, retreatCost:3) {
         weakness G
@@ -918,7 +918,7 @@ public enum ChampionsPath implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case NICKIT_46:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness G
@@ -939,7 +939,7 @@ public enum ChampionsPath implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case DURALUDON_V_47:
       return basic (this, hp:HP220, type:M, retreatCost:3) {
         weakness R
@@ -965,7 +965,7 @@ public enum ChampionsPath implements LogicCardInfo {
             damage 40 * self.cards.energyCount(M)
           }
         }
-      };
+      }
       case SWABLU_48:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness L
@@ -977,7 +977,7 @@ public enum ChampionsPath implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case ALTARIA_49:
       return evolution (this, from:"Swablu", hp:HP110, type:C, retreatCost:1) {
         weakness L
@@ -1007,35 +1007,35 @@ public enum ChampionsPath implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case BEDE_50:
-      return copy (SwordShield.BEDE_157, this);
+      return copy (SwordShield.BEDE_157, this)
       case FULL_HEAL_51:
-      return copy (RebelClash.FULL_HEAL_159, this);
+      return copy (RebelClash.FULL_HEAL_159, this)
       case GREAT_BALL_52:
-      return copy (EmergingPowers.GREAT_BALL_93, this);
+      return copy (EmergingPowers.GREAT_BALL_93, this)
       case HOP_53:
-      return copy (SwordShield.HOP_165, this);
+      return copy (SwordShield.HOP_165, this)
       case HYPER_POTION_54:
-      return copy (SwordShield.HYPER_POTION_166, this);
+      return copy (SwordShield.HYPER_POTION_166, this)
       case KABU_55:
-      return copy (DarknessAblaze.KABU_163, this);
+      return copy (DarknessAblaze.KABU_163, this)
       case MARNIE_56:
-      return copy (SwordShield.MARNIE_169, this);
+      return copy (SwordShield.MARNIE_169, this)
       case MILO_57:
-      return copy (RebelClash.MILO_161, this);
+      return copy (RebelClash.MILO_161, this)
       case PIERS_58:
-      return copy (DarknessAblaze.PIERS_165, this);
+      return copy (DarknessAblaze.PIERS_165, this)
       case POKE_BALL_59:
-      return copy(FireRedLeafGreen.POKE_BALL_95, this);
+      return copy(FireRedLeafGreen.POKE_BALL_95, this)
       case POKEMON_CENTER_LADY_60:
-      return copy(SwordShield.POKEMON_CENTER_LADY_176, this);
+      return copy(SwordShield.POKEMON_CENTER_LADY_176, this)
       case POTION_61:
-      return copy (SwordShield.POTION_177, this);
+      return copy (SwordShield.POTION_177, this)
       case PROFESSOR_S_RESEARCH_62:
-      return copy (SwordShield.PROFESSOR_S_RESEARCH_178, this);
+      return copy (SwordShield.PROFESSOR_S_RESEARCH_178, this)
       case ROTOM_BIKE_63:
-      return copy (SwordShield.ROTOM_BIKE_181, this);
+      return copy (SwordShield.ROTOM_BIKE_181, this)
       case ROTOM_PHONE_64:
       return itemCard (this) {
         text "Look at the top 5 cards of your deck. Choose a card you find there, shuffle your deck, then put that card on top of your deck."
@@ -1048,9 +1048,9 @@ public enum ChampionsPath implements LogicCardInfo {
         playRequirement{
           assert my.deck.notEmpty : "Your deck is empty!"
         }
-      };
+      }
       case SONIA_65:
-      return copy (RebelClash.SONIA_167, this);
+      return copy (RebelClash.SONIA_167, this)
       case STRANGE_CANNED_FOOD_66:
       return itemCard (this) {
         text "Heal 80 damage from 1 of your Pokémon with a [P] Energy attached to it. Then, discard a [P] Energy from that Pokémon."
@@ -1063,37 +1063,37 @@ public enum ChampionsPath implements LogicCardInfo {
         playRequirement{
           assert my.all.findAll{it.cards.energyCount(P) && it.numberOfDamageCounters} : "You have no damaged Pokémon with [P] Energy attached to them"
         }
-      };
+      }
       case TEAM_YELL_GRUNT_67:
-      return copy (SwordShield.TEAM_YELL_GRUNT_184, this);
+      return copy (SwordShield.TEAM_YELL_GRUNT_184, this)
       case TURRFIELD_68:
-      return copy (RebelClash.TURRFIELD_170, this);
+      return copy (RebelClash.TURRFIELD_170, this)
       case DREDNAW_V_69:
-      return copy (DREDNAW_V_14, this);
+      return copy (DREDNAW_V_14, this)
       case GARDEVOIR_V_70:
-      return copy (GARDEVOIR_V_16, this);
+      return copy (GARDEVOIR_V_16, this)
       case GALARIAN_CURSOLA_V_71:
-      return copy (GALARIAN_CURSOLA_V_21, this);
+      return copy (GALARIAN_CURSOLA_V_21, this)
       case GRAPPLOCT_V_72:
-      return copy (GRAPPLOCT_V_32, this);
+      return copy (GRAPPLOCT_V_32, this)
       case HOP_73:
-      return copy (SwordShield.HOP_165, this);
+      return copy (SwordShield.HOP_165, this)
       case CHARIZARD_VMAX_74:
-      return copy (DarknessAblaze.CHARIZARD_VMAX_20, this);
+      return copy (DarknessAblaze.CHARIZARD_VMAX_20, this)
       case DREDNAW_VMAX_75:
-      return copy (DREDNAW_VMAX_15, this);
+      return copy (DREDNAW_VMAX_15, this)
       case GARDEVOIR_VMAX_76:
-      return copy (GARDEVOIR_VMAX_17, this);
+      return copy (GARDEVOIR_VMAX_17, this)
       case KABU_77:
-      return copy (DarknessAblaze.KABU_163, this);
+      return copy (DarknessAblaze.KABU_163, this)
       case PIERS_78:
-      return copy (DarknessAblaze.PIERS_165, this);
+      return copy (DarknessAblaze.PIERS_165, this)
       case CHARIZARD_V_79:
-      return copy (DarknessAblaze.CHARIZARD_V_19, this);
+      return copy (DarknessAblaze.CHARIZARD_V_19, this)
       case STRANGE_CANNED_FOOD_80:
-      return copy (STRANGE_CANNED_FOOD_66, this);
+      return copy (STRANGE_CANNED_FOOD_66, this)
       default:
-      return null;
+      return null
     }
   }
 }

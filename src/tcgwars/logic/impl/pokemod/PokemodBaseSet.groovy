@@ -6,35 +6,35 @@ import tcgwars.logic.effect.gm.PlayTrainer
 import tcgwars.logic.impl.gen1.BaseSetNG
 import tcgwars.logic.impl.gen3.FireRedLeafGreen
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -164,53 +164,53 @@ public enum PokemodBaseSet implements LogicCardInfo {
   MIRACLE_ENERGY_OPTION_1 ("Miracle Energy", "121", Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
   MIRACLE_ENERGY_OPTION_2 ("Miracle Energy", "122", Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   PokemodBaseSet(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.POKEMOD_BASE_SET;
+    return tcgwars.logic.card.Collection.POKEMOD_BASE_SET
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -246,7 +246,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             flip { applyAfterDamage(CONFUSED) }
           }
         }
-      };
+      }
       case BLASTOISE_2:
       return evolution (this, from:"Wartortle", hp:HP100, type:W, retreatCost:3) {
         weakness L
@@ -272,9 +272,9 @@ public enum PokemodBaseSet implements LogicCardInfo {
             extraEnergyDamage(2, hp(10), W, thisMove)
           }
         }
-      };
+      }
       case BLASTOISE_111:
-      return copy (BLASTOISE_2, this);
+      return copy (BLASTOISE_2, this)
       case CHANSEY_3:
       return basic (this, hp:HP120, type:C, retreatCost:1) {
         weakness F
@@ -294,7 +294,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 80, self
           }
         }
-      };
+      }
       case CHARIZARD_4:
       return evolution (this, from:"Charmeleon", hp:HP120, type:R, retreatCost:3) {
         weakness W
@@ -326,9 +326,9 @@ public enum PokemodBaseSet implements LogicCardInfo {
             discardSelfEnergyInOrderTo(R)
           }
         }
-      };
+      }
       case CHARIZARD_112:
-      return copy (CHARIZARD_4, this);
+      return copy (CHARIZARD_4, this)
       case CLEFAIRY_5:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
@@ -347,7 +347,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             def moveList = []
             def labelList = []
 
-            moveList.addAll(defending.topPokemonCard.moves);
+            moveList.addAll(defending.topPokemonCard.moves)
             labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
 
             def move=choose(moveList, labelList)
@@ -356,7 +356,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             bef.unregisterItself(bg().em())
           }
         }
-      };
+      }
       case GYARADOS_6:
       return evolution (this, from:"Magikarp", hp:HP100, type:W, retreatCost:3) {
         weakness L
@@ -376,7 +376,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             flip { applyAfterDamage(PARALYZED) }
           }
         }
-      };
+      }
       case HITMONCHAN_7:
       return basic (this, hp:HP070, type:F, retreatCost:2) {
         weakness P
@@ -394,7 +394,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case MACHAMP_8:
       return evolution (this, from:"Machoke", hp:HP100, type:F, retreatCost:3) {
         weakness P
@@ -416,7 +416,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case MAGNETON_9:
       return evolution (this, from:"Magnemite", hp:HP060, type:L, retreatCost:1) {
         weakness F
@@ -438,7 +438,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 80, self
           }
         }
-      };
+      }
       case MEWTWO_10:
       return basic (this, hp:HP070, type:P, retreatCost:2) {
         weakness P
@@ -457,7 +457,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             preventAllEffectsNextTurn()
           }
         }
-      };
+      }
       case NIDOKING_11:
       return evolution (this, from:"Nidorino", hp:HP100, type:G, retreatCost:3) {
         weakness P
@@ -480,7 +480,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case NINETALES_12:
       return evolution (this, from:"Vulpix", hp:HP080, type:R, retreatCost:1) {
         weakness W
@@ -506,7 +506,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 80
           }
         }
-      };
+      }
       case POLIWRATH_13:
       return evolution (this, from:"Poliwhirl", hp:HP100, type:W, retreatCost:3) {
         weakness G
@@ -526,7 +526,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             afterDamage { discardDefendingEnergy() }
           }
         }
-      };
+      }
       case RAICHU_14:
       return evolution (this, from:"Pikachu", hp:HP080, type:L, retreatCost:1) {
         weakness F
@@ -546,7 +546,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             flip 1, {}, {damage 30, self}
           }
         }
-      };
+      }
       case VENUSAUR_15:
       return evolution (this, from:"Ivysaur", hp:HP100, type:G, retreatCost:2) {
         weakness R
@@ -574,9 +574,9 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case VENUSAUR_113:
-      return copy (VENUSAUR_15, this);
+      return copy (VENUSAUR_15, this)
       case ZAPDOS_16:
       return basic (this, hp:HP090, type:L, retreatCost:3) {
         resistance F, MINUS30
@@ -598,7 +598,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 100
           }
         }
-      };
+      }
       case BEEDRILL_17:
       return evolution (this, from:"Kakuna", hp:HP090, type:G, retreatCost:0) {
         weakness R
@@ -618,7 +618,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             flip { applyAfterDamage(POISONED) }
           }
         }
-      };
+      }
       case DRAGONAIR_18:
       return evolution (this, from:"Dratini", hp:HP080, type:C, retreatCost:2) {
         resistance P, MINUS30
@@ -637,7 +637,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             discardDefendingEnergy()
           }
         }
-      };
+      }
       case DUGTRIO_19:
       return evolution (this, from:"Diglett", hp:HP080, type:F, retreatCost:2) {
         weakness G
@@ -657,7 +657,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             my.bench.each({ damage 10, it})
           }
         }
-      };
+      }
       case ELECTABUZZ_20:
       return basic (this, hp:HP070, type:L, retreatCost:2) {
         weakness F
@@ -677,7 +677,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             flip 1, {damage 10}, {damage 10, self}
           }
         }
-      };
+      }
       case ELECTRODE_21:
       return evolution (this, from:"Voltorb", hp:HP080, type:L, retreatCost:1) {
         weakness F
@@ -713,7 +713,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             flip 1, {}, {damage 10, self}
           }
         }
-      };
+      }
       case PIDGEOTTO_22:
       return evolution (this, from:"Pidgey", hp:HP060, type:C, retreatCost:0) {
         weakness L
@@ -748,7 +748,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage lastDamage.value
           }
         }
-      };
+      }
       case ARCANINE_23:
       return evolution (this, from:"Growlithe", hp:HP100, type:R, retreatCost:3) {
         weakness W
@@ -768,7 +768,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 30, self
           }
         }
-      };
+      }
       case CHARMELEON_24:
       return evolution (this, from:"Charmander", hp:HP080, type:R, retreatCost:1) {
         weakness W
@@ -787,7 +787,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             discardSelfEnergyInOrderTo(R)
           }
         }
-      };
+      }
       case DEWGONG_25:
       return evolution (this, from:"Seel", hp:HP080, type:W, retreatCost:1) {
         weakness L
@@ -806,7 +806,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             flip { applyAfterDamage(PARALYZED) }
           }
         }
-      };
+      }
       case DRATINI_26:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         resistance P, MINUS30
@@ -817,7 +817,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case FARFETCH_D_27:
       return basic (this, hp:HP060, type:C, retreatCost:0) {
         weakness L
@@ -841,7 +841,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case GROWLITHE_28:
       return basic (this, hp:HP060, type:R, retreatCost:1) {
         weakness W
@@ -852,7 +852,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case HAUNTER_29:
       return evolution (this, from:"Gastly", hp:HP060, type:P, retreatCost:1) {
         weakness D
@@ -874,7 +874,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case IVYSAUR_30:
       return evolution (this, from:"Bulbasaur", hp:HP070, type:G, retreatCost:1) {
         weakness R
@@ -893,7 +893,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             applyAfterDamage(POISONED)
           }
         }
-      };
+      }
       case JYNX_31:
       return basic (this, hp:HP070, type:P, retreatCost:2) {
         weakness P
@@ -912,7 +912,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 20+10*opp.active.numberOfDamageCounters
           }
         }
-      };
+      }
       case KADABRA_32:
       return evolution (this, from:"Abra", hp:HP060, type:P, retreatCost:3) {
         weakness P
@@ -934,7 +934,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case KAKUNA_33:
       return evolution (this, from:"Weedle", hp:HP080, type:G, retreatCost:2) {
         weakness R
@@ -952,7 +952,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             flip { applyAfterDamage(POISONED) }
           }
         }
-      };
+      }
       case MACHOKE_34:
       return evolution (this, from:"Machop", hp:HP080, type:F, retreatCost:3) {
         weakness P
@@ -971,7 +971,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 20, self
           }
         }
-      };
+      }
       case MAGIKARP_35:
       return basic (this, hp:HP030, type:W, retreatCost:0) {
         weakness L
@@ -989,7 +989,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 10*self.numberOfDamageCounters
           }
         }
-      };
+      }
       case MAGMAR_36:
       return basic (this, hp:HP070, type:R, retreatCost:2) {
         weakness W
@@ -1008,7 +1008,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case NIDORINO_37:
       return evolution (this, from:"Nidoran♂", hp:HP070, type:G, retreatCost:1) {
         weakness P
@@ -1027,7 +1027,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case POLIWHIRL_38:
       return evolution (this, from:"Poliwag", hp:HP070, type:W, retreatCost:1) {
         weakness G
@@ -1045,7 +1045,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             flip 2, {damage 30}
           }
         }
-      };
+      }
       case PORYGON_39:
       return basic (this, hp:HP030, type:C, retreatCost:0) {
         weakness F
@@ -1064,7 +1064,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             // TODO:
           }
         }
-      };
+      }
       case RATICATE_40:
       return evolution (this, from:"Rattata", hp:HP060, type:C, retreatCost:1) {
         weakness F
@@ -1083,7 +1083,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage ceil((defending.hp/10)/2)*10
           }
         }
-      };
+      }
       case SEEL_41:
       return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness L
@@ -1094,7 +1094,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case WARTORTLE_42:
       return evolution (this, from:"Squirtle", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -1112,7 +1112,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case ABRA_43:
       return basic (this, hp:HP030, type:P, retreatCost:0) {
         weakness P
@@ -1124,7 +1124,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             flip { applyAfterDamage(PARALYZED) }
           }
         }
-      };
+      }
       case BULBASAUR_44:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -1143,7 +1143,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case CATERPIE_45:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -1155,7 +1155,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             flip { applyAfterDamage(PARALYZED) }
           }
         }
-      };
+      }
       case CHARMANDER_46:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1174,7 +1174,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case DIGLETT_47:
       return basic (this, hp:HP030, type:F, retreatCost:0) {
         weakness G
@@ -1193,7 +1193,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case DODUO_48:
       return basic (this, hp:HP050, type:C, retreatCost:0) {
         weakness L
@@ -1206,7 +1206,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             flip 3, {damage 10}
           }
         }
-      };
+      }
       case DROWZEE_49:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -1225,7 +1225,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             flip { applyAfterDamage(CONFUSED) }
           }
         }
-      };
+      }
       case GASTLY_50:
       return basic (this, hp:HP040, type:P, retreatCost:0) {
         weakness D
@@ -1255,7 +1255,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case KOFFING_51:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness P
@@ -1270,7 +1270,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MACHOP_52:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness P
@@ -1281,7 +1281,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MAGNEMITE_53:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness F
@@ -1303,7 +1303,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 40, self
           }
         }
-      };
+      }
       case METAPOD_54:
       return evolution (this, from:"Caterpie", hp:HP070, type:G, retreatCost:2) {
         weakness R
@@ -1322,7 +1322,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             flip { applyAfterDamage(PARALYZED) }
           }
         }
-      };
+      }
       case NIDORAN_MALE_55:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness P
@@ -1333,7 +1333,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             flip { damage 30 }
           }
         }
-      };
+      }
       case ONIX_56:
       return basic (this, hp:HP090, type:F, retreatCost:3) {
         weakness G
@@ -1351,7 +1351,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             bg.em().run(new Harden("Harden", hp(30)))
           }
         }
-      };
+      }
       case PIDGEY_57:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness L
@@ -1364,7 +1364,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             whirlwind()
           }
         }
-      };
+      }
       case PIKACHU_58:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness F
@@ -1383,7 +1383,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             flip 1, {}, {damage 10, self}
           }
         }
-      };
+      }
       case POLIWAG_59:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness G
@@ -1395,7 +1395,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             extraEnergyDamage(2,hp(10),W,thisMove)
           }
         }
-      };
+      }
       case PONYTA_60:
       return basic (this, hp:HP040, type:R, retreatCost:1) {
         weakness W
@@ -1413,7 +1413,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case RATTATA_61:
       return basic (this, hp:HP040, type:C, retreatCost:0) {
         weakness F
@@ -1425,7 +1425,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SANDSHREW_62:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness G
@@ -1438,7 +1438,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             sandAttack(thisMove)
           }
         }
-      };
+      }
       case SQUIRTLE_63:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness L
@@ -1457,7 +1457,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             flip { preventAllDamageNextTurn() }
           }
         }
-      };
+      }
       case STARMIE_64:
       return evolution (this, from:"Staryu", hp:HP060, type:W, retreatCost:1) {
         weakness L
@@ -1477,7 +1477,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             flip { applyAfterDamage(PARALYZED) }
           }
         }
-      };
+      }
       case STARYU_65:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness L
@@ -1488,7 +1488,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TANGELA_66:
       return basic (this, hp:HP060, type:G, retreatCost:2) {
         weakness R
@@ -1508,7 +1508,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             applyAfterDamage(POISONED)
           }
         }
-      };
+      }
       case VOLTORB_67:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1519,7 +1519,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case VULPIX_68:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1531,7 +1531,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             flip { applyAfterDamage(CONFUSED) }
           }
         }
-      };
+      }
       case WEEDLE_69:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -1543,7 +1543,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             flip { applyAfterDamage(POISONED) }
           }
         }
-      };
+      }
       case CLEFAIRY_DOLL_70:
       return basicTrainer (this) {
         text "Play Clefairy Doll as if it were a Basic Pokémon. While in play, Clefairy Doll counts as a Pokémon (instead of a Trainer card.) Clefairy Doll has no attacks, can''t retreat, and can''t be Asleep, Confused, Paralyzed, or Poisoned. If Clefairy Doll is Knocked Out, it doesn''t count as a Knocked Out Pokémon. At any time during tyour turn before your attack, you may discard Clefairy Doll."
@@ -1595,7 +1595,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         playRequirement{
           assert bench.notFull
         }
-      };
+      }
       case COMPUTER_SEARCH_71:
       return basicTrainer (this) {
         text "Discard 2 of the other cards from your hand in order to search your deck for any card and put it into your hand. Shuffle your deck afterward."
@@ -1608,9 +1608,9 @@ public enum PokemodBaseSet implements LogicCardInfo {
           assert my.hand.getExcludedList(thisCard).size() >= 2
           assert my.deck
         }
-      };
+      }
       case DEVOLUTION_SPRAY_72:
-        return copy(BaseSetNG.DEVOLUTION_SPRAY, this);
+        return copy(BaseSetNG.DEVOLUTION_SPRAY, this)
       case IMPOSTER_PROFESSOR_OAK_73:
       return basicTrainer (this) {
         text "Your opponent shuffles his or her hand into his or her deck, then draws 7 cards."
@@ -1622,7 +1622,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         playRequirement{
           assert opp.deck
         }
-      };
+      }
       case ITEM_FINDER_74:
       return basicTrainer (this) {
         text "Discard 2 of the other cards from your hand in order to put a Trainer card from your discard pile into your hand."
@@ -1635,7 +1635,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           assert my.hand.getExcludedList(thisCard).size() >= 2
           assert my.discard.hasType(TRAINER)
         }
-      };
+      }
       case LASS_75:
       return supporter (this) {
         text "You and your opponent show each other your hands, then shuffle all the Trainer cards from your hands into your decks."
@@ -1652,7 +1652,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         playRequirement{
           assert (opp.hand || my.hand) : "Neither player has any cards in hand"
         }
-      };
+      }
       case POKEMON_BREEDER_76: //TODO: Use the implementation of Rare Candy (admin: they are not the same!)
       return basicTrainer (this) {
         text "Put a Stage 2 Evolution card from your hand on the matching Basic Pokémon. You can only play this card when you would be allowed to evolve that Pokémon anyway."
@@ -1674,7 +1674,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         playRequirement{
           assert stage2_to_basic : "No matching Stage 2 card in hand"
         }
-      };
+      }
       case POKEMON_TRADER_77:
       return basicTrainer (this) {
         text "Trade 1 of the Basic Pokémon or Evolution cards in your hand for 1 of the Basic Pokémon or Evolution cards from your deck. Show both cards to your opponent. Shuffle your deck afterward."
@@ -1686,7 +1686,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         playRequirement{
           assert my.hand.find(cardTypeFilter(POKEMON))
         }
-      };
+      }
       case SCOOP_UP_78:
       return basicTrainer (this) {
         text "Choose 1 of your own Pokémon in play and return its Basic Pokémon card to your hand. (Discard all cards attached to that card.)"
@@ -1704,7 +1704,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             removePCS pcs
           }
         }
-      };
+      }
       case SUPER_ENERGY_REMOVAL_79:
       return basicTrainer (this) {
         text "Discard 1 Special Energy attached to 1 of your opponent's Pokémon."
@@ -1720,7 +1720,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         playRequirement{
           assert opp.all.findAll {it.cards.filterByType(SPECIAL_ENERGY)}
         }
-      };
+      }
       case DEFENDER_80:
       return basicTrainer (this) {
         text "Attach Defender to 1 of your Pokémon. At the end of your opponent''s next turn, discard Defender. Damage done to that Pokémon by attacks is reduced by 20 (after applying Weakness and Resistance)."
@@ -1729,7 +1729,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case ENERGY_RETRIEVAL_81:
       return basicTrainer (this) {
         text "Trade 1 of the other cards in your hand for up to 2 basic Energy cards from your discard pile."
@@ -1737,7 +1737,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case FULL_HEAL_82:
       return basicTrainer (this) {
         text "Remove all Special Conditions from your Active Pokémon"
@@ -1747,7 +1747,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         playRequirement{
           assert !my.active.specialConditions.isEmpty()
         }
-      };
+      }
       case MAINTENANCE_83:
       return basicTrainer (this) {
         text "Shuffle 2 of the other cards from your hand into your deck in order to draw 2 cards."
@@ -1759,7 +1759,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         playRequirement{
           assert hand.getExcludedList(thisCard).size() >= 2
         }
-      };
+      }
       case PLUSPOWER_84:
       return basicTrainer (this) {
         text "Attach PlusPower to your Active Pokémonn. At the end of your turn, discard PlusPower. If this Pokémon''s attack does damage to the defending Pokémon (after applying Weakness and Resistance), the attack does 10 more damage to the Defending Pokémon."
@@ -1768,7 +1768,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case POKEMON_CENTER_85:
       return basicTrainer (this) {
         text "Remove all damage counters from 1 of your own Pokémon, then discard all Energy cards attached to those Pokémon."
@@ -1780,7 +1780,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         playRequirement{
           assert my.all.findAll{it.numberOfDamageCounters}
         }
-      };
+      }
       case POKEMON_FLUTE_86:
       return basicTrainer (this) {
         text "Choose 1 Basic Pokémon card from your opponent's discard pile and put it onto his or her Bench. (You can't play Pokémon Flute if your opponent's Bench is full.)"
@@ -1793,7 +1793,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           assert opp.discard.find(cardTypeFilter(BASIC)) : "No basic in opponent's discard"
           assert opp.bench.notFull : "Opponent bench is full"
         }
-      };
+      }
       case POKEDEX_87:
       return basicTrainer (this) {
         text "Look at up to 5 cards from the top of your deck and rearrange them as you like."
@@ -1804,7 +1804,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         playRequirement{
           assert my.deck : "Your deck is empty!"
         }
-      };
+      }
       case PROFESSOR_OAK_88:
       return supporter (this) {
         text "Discard your hand, then draw 7 cards."
@@ -1815,7 +1815,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         playRequirement{
           assert my.deck
         }
-      };
+      }
       case REVIVE_89:
       return basicTrainer (this) {
         text "Put 1 Basic Pokémon card (excluding Pokémon-ex) from your discard pile onto your Bench. Put damage counters on that Pokémon equal to half its HP (rounded down to the nearest 10). (You can't play Revive if your Bench is full.)"
@@ -1828,7 +1828,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         playRequirement{
           assert my.discard.find(cardTypeFilter(BASIC) && !it.asPokemonCard().types.contains(EX)) && my.bench.notFull
         }
-      };
+      }
       case SUPER_POTION_90:
       return basicTrainer (this) {
         text "Discard 1 Energy card attached to 1 of your own Pokémon (excluding Pokémon-ex) in order to remove up to 4 damage counters from that Pokémon."
@@ -1845,7 +1845,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         playRequirement{
           assert my.all.findAll { it.cards.energyCount(C) && it.numberOfDamageCounters && !it.EX }
         }
-      };
+      }
       case BILL_91:
       return basicTrainer (this) {
         text "Draw 2 cards."
@@ -1855,7 +1855,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         playRequirement{
           assert my.deck
         }
-      };
+      }
       case ENERGY_REMOVAL_92:
       return basicTrainer (this) {
         text "Flip a coin. If heads, choose 1 Energy card attached to 1 of your opponent's Pokémon and discard it."
@@ -1873,7 +1873,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         playRequirement{
           assert opp.all.findAll {it.cards.energyCount(C)}
         }
-      };
+      }
       case GUST_OF_WIND_93:
       return basicTrainer (this) {
         text "Choose 1 of your opponent's Benched Pokémon and switch it with his or her Active Pokémon."
@@ -1886,7 +1886,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         playRequirement{
           assert opp.bench
         }
-      };
+      }
       case POTION_94:
       return basicTrainer (this) {
         text "Remove up to 2 damage counters from 1 of your Pokémon."
@@ -1897,26 +1897,26 @@ public enum PokemodBaseSet implements LogicCardInfo {
         playRequirement{
           assert my.all.findAll{it.numberOfDamageCounters}
         }
-      };
+      }
       case SWITCH_95:
-      return copy(FireRedLeafGreen.SWITCH_102, this);
+      return copy(FireRedLeafGreen.SWITCH_102, this)
       case DOUBLE_COLORLESS_ENERGY_96:
       return specialEnergy (this, [[C],[C]]) {
         text "Double Colorless Energy provides [C][C] Energy."
         onPlay {}
-      };
+      }
       case FIGHTING_ENERGY:
-      return basicEnergy (this, F);
+      return basicEnergy (this, F)
       case FIRE_ENERGY_98:
-      return basicEnergy (this, R);
+      return basicEnergy (this, R)
       case GRASS_ENERGY_99:
-      return basicEnergy (this, G);
+      return basicEnergy (this, G)
       case LIGHTNING_ENERGY_100:
-      return basicEnergy (this, L);
+      return basicEnergy (this, L)
       case PSYCHIC_ENERGY_101:
-      return basicEnergy (this, P);
+      return basicEnergy (this, P)
       case WATER_ENERGY_102:
-      return basicEnergy (this, W);
+      return basicEnergy (this, W)
       case DUAL_BALL_103:
       return basicTrainer (this) {
         text "Flip 2 coins. For each heads, search your deck for a basic Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
@@ -1933,7 +1933,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         playRequirement{
           assert my.deck : "Your deck is empty!"
         }
-      };
+      }
       case ENERGY_SWITCH_104:
       return basicTrainer (this) {
         text "Move a basic Energy card from 1 of your Pokémon to another of your Pokémon"
@@ -1946,7 +1946,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           assert my.all.findAll{it.cards.filterByType(BASIC_ENERGY)} : "You have no basic Energy attached to your Pokémon."
           assert my.all.size() >= 2 : "You only have one Pokémon in play."
         }
-      };
+      }
       case SUPER_ENERGY_RETRIEVAL_105:
       return basicTrainer (this) {
         text "Trade 2 of the other cards in your hand for up to 4 basic Energy cards from your discard pile."
@@ -1960,7 +1960,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           assert my.hand.getExcludedList(thisCard).size() >= 2 : "You don't have 2 other cards to discard"
           assert my.discard.filterByType(BASIC_ENERGY) : "You don't have any basic Energy in your discard"
         }
-      };
+      }
       case SUPER_SCOOP_UP_106:
       return basicTrainer (this) {
         text "Flip a coin. If heads, return 1 of your Pokémon in play and all cards attached to it to your hand."
@@ -1975,7 +1975,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case CRUSHING_HAMMER_107:
       return basicTrainer (this) {
         text "Discard 1 Energy card attached to 1 of your Pokémon in order to choose 1 of your opponent's Pokémon and up to 2 Energy cards attached to it. Discard those Energy cards."
@@ -1991,7 +1991,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           assert my.all.findAll{it.cards.filterByType(ENERGY)} : "You have no energy attached to your Pokémon."
           assert opp.all.findAll{it.cards.filterByType(ENERGY)} : "Your opponent has no energy attached to their Pokémon."
         }
-      };
+      }
       case DOWSING_MACHINE_108:
       return basicTrainer (this) {
         text "Search your discard pile for a Trainer card, show it to your opponent, and put it into your hand."
@@ -2003,7 +2003,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           assert my.discard.filterByType(TRAINER) : "You have no trainers in your discard pile."
           assert !bg.em().retrieveObject("G_SPEC_"+thisCard.player) : "You have already used your G-SPEC card"
         }
-      };
+      }
       case Elixir_109:
       return basicTrainer (this) {
         text "Remove up to 6 damage counters from 1 of your Pokémon."
@@ -2018,7 +2018,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           assert my.all.findAll{it.numberOfDamageCounters}
           assert !bg.em().retrieveObject("G_SPEC_"+thisCard.player) : "You have already used your G-SPEC card"
         }
-      };
+      }
       case Hacker_110:
       return basicTrainer (this) {
         text "Search your deck for a card and put it into your hand. Shuffle your deck afterward."
@@ -2031,7 +2031,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
           assert my.deck
           assert !bg.em().retrieveObject("G_SPEC_"+thisCard.player) : "You have already used your G-SPEC card"
         }
-      };
+      }
       case MEWTWO_114:
       return basic (this, hp:HP070, type:P, retreatCost:2) {
         weakness P
@@ -2049,13 +2049,13 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case SQUIRTLE_115:
-      return copy (SQUIRTLE_63, this);
+      return copy (SQUIRTLE_63, this)
       case KOFFING_116:
-      return copy (KOFFING_51, this);
+      return copy (KOFFING_51, this)
       case ARCANINE_117:
-      return copy (ARCANINE_23, this);
+      return copy (ARCANINE_23, this)
       case CHARIZARD_EX_118:
       return evolution (this, from:"Charmeleon", hp:HP150, type:R, retreatCost:2) {
         weakness W
@@ -2084,7 +2084,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             discardSelfEnergy(R,R,R,R,R)
           }
         }
-      };
+      }
       case BLASTOISE_EX_119:
       return evolution (this, from:"Wartortle", hp:HP150, type:W, retreatCost:3) {
         weakness G
@@ -2111,7 +2111,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case VENUSAUR_EX_120:
       return evolution (this, from:"Ivysaur", hp:HP150, type:G, retreatCost:3) {
         weakness R
@@ -2144,7 +2144,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case MIRACLE_ENERGY_OPTION_1:
       return specialEnergy (this, [[]]) {
         def check = {
@@ -2194,7 +2194,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         getEnergyTypesOverride{
           return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
         }
-      };
+      }
       case MIRACLE_ENERGY_OPTION_2:
       return specialEnergy (this, [[]]) {
         def check = {
@@ -2241,9 +2241,9 @@ public enum PokemodBaseSet implements LogicCardInfo {
         getEnergyTypesOverride{
           return [[R, D, F, G, W, Y, L, M, P] as Set, [R, D, F, G, W, Y, L, M, P] as Set]
         }
-      };
+      }
         default:
-      return null;
+      return null
     }
   }
 }

@@ -1,40 +1,40 @@
 package tcgwars.logic.impl.gen3
 
-import tcgwars.logic.effect.ability.custom.Safeguard;
-import tcgwars.logic.impl.gen1.FossilNG;
-import tcgwars.logic.impl.gen6.Xy;
-import tcgwars.logic.impl.gen7.CelestialStorm;
+import tcgwars.logic.effect.ability.custom.Safeguard
+import tcgwars.logic.impl.gen1.FossilNG
+import tcgwars.logic.impl.gen6.Xy
+import tcgwars.logic.impl.gen7.CelestialStorm
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
 import static tcgwars.logic.card.CardType.*
-import static tcgwars.logic.effect.Source.POKEPOWER;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.effect.Source.POKEPOWER
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -135,53 +135,53 @@ public enum LegendMaker implements LogicCardInfo {
   REGISTEEL_STAR_92 ("Registeel Star", "92", Rarity.HOLORARE, [POKEMON_STAR, POKEMON, BASIC, _METAL_]),
   PIKACHU_DELTA_93 ("Pikachu", "93", Rarity.HOLORARE, [POKEMON, BASIC, DELTA, _METAL_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   LegendMaker(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.LEGEND_MAKER;
+    return tcgwars.logic.card.Collection.LEGEND_MAKER
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -234,7 +234,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case AGGRON_2:
       return evolution (this, from:"Lairon", hp:HP110, type:M, retreatCost:4) {
         weakness R
@@ -258,7 +258,7 @@ public enum LegendMaker implements LogicCardInfo {
             cantUseAttack(thisMove, self)
           }
         }
-      };
+      }
       case CRADILY_3:
       return evolution (this, from:"Lileep", hp:HP100, type:G, retreatCost:2) {
         weakness R
@@ -277,7 +277,7 @@ public enum LegendMaker implements LogicCardInfo {
             while (evolvedPoke && remainingTargets > 0) {
               def info = "Select one of your opponent's devolved Pokémon to mark it for devolution, or press Cancel to stop. You have ${remainingTargets} out of ${maxTargets} potential devolutions remaining."
               def sel = evolvedPoke.select(info, (remainingTargets == maxTargets), self.owner) // Mandatory to devolve at least one, if attacking.
-              if (!sel) break; //TODO: Allow to unmark a Pokémon. Ideal way would be a search-like pop-up.
+              if (!sel) break //TODO: Allow to unmark a Pokémon. Ideal way would be a search-like pop-up.
               toBeDevolved.add(sel)
               evolvedPoke.remove(sel)
               remainingTargets--
@@ -302,7 +302,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case DELCATTY_4:
       return evolution (this, from:"Skitty", hp:HP080, type:C, retreatCost:1) {
         weakness F
@@ -336,7 +336,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case GENGAR_5:
       return evolution (this, from:"Haunter", hp:HP100, type:P, retreatCost:1) {
         weakness D
@@ -370,7 +370,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case GOLEM_6:
       return evolution (this, from:"Graveler", hp:HP120, type:F, retreatCost:3) {
         weakness W
@@ -403,7 +403,7 @@ public enum LegendMaker implements LogicCardInfo {
             dontApplyResistance()
           }
         }
-      };
+      }
       case KABUTOPS_7:
       return evolution (this, from:"Kabuto", hp:HP110, type:F, retreatCost:2) {
         weakness G
@@ -444,7 +444,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case LAPRAS_8:
       return basic (this, hp:HP080, type:W, retreatCost:2) {
         weakness L
@@ -465,7 +465,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case MACHAMP_9:
       return evolution (this, from:"Machoke", hp:HP120, type:F, retreatCost:2) {
         weakness P
@@ -486,7 +486,7 @@ public enum LegendMaker implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case MEW_10:
       return basic (this, hp:HP070, type:P, retreatCost:1) {
         weakness P
@@ -528,7 +528,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MUK_11:
       return evolution (this, from:"Grimer", hp:HP070, type:G, retreatCost:2) {
         weakness P
@@ -562,7 +562,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case SHIFTRY_12:
       return evolution (this, from:"Nuzleaf", hp:HP110, type:D, retreatCost:1) {
         weakness F
@@ -599,7 +599,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case VICTREEBEL_13:
       return evolution (this, from:"Weepinbell", hp:HP100, type:G, retreatCost:2) {
         weakness R
@@ -633,7 +633,7 @@ public enum LegendMaker implements LogicCardInfo {
             flip { damage 30 }
           }
         }
-      };
+      }
       case WAILORD_14:
       return evolution (this, from:"Wailmer", hp:HP120, type:W, retreatCost:4) {
         weakness L
@@ -664,7 +664,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 40+10*friends
           }
         }
-      };
+      }
       case ABSOL_15:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness F
@@ -698,7 +698,7 @@ public enum LegendMaker implements LogicCardInfo {
             swiftDamage(20, opp.all.select())
           }
         }
-      };
+      }
       case GIRAFARIG_16:
       return basic (this, hp:HP070, type:P, retreatCost:1) {
         weakness P
@@ -734,7 +734,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case GOREBYSS_17:
       return evolution (this, from:"Clamperl", hp:HP070, type:W, retreatCost:0) {
         weakness L
@@ -755,7 +755,7 @@ public enum LegendMaker implements LogicCardInfo {
             extraEnergyDamage(2, hp(20), W, thisMove)
           }
         }
-      };
+      }
       case HUNTAIL_18:
       return evolution (this, from:"Clamperl", hp:HP080, type:W, retreatCost:1) {
         weakness L
@@ -785,7 +785,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case LANTURN_19:
       return evolution (this, from:"Chinchou", hp:HP080, type:L, retreatCost:2) {
         weakness F
@@ -810,7 +810,7 @@ public enum LegendMaker implements LogicCardInfo {
             extraEnergyDamage(2, hp(20), W, thisMove)
           }
         }
-      };
+      }
       case LUNATONE_20:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -851,7 +851,7 @@ public enum LegendMaker implements LogicCardInfo {
             flip { apply PARALYZED }
           }
         }
-      };
+      }
       case MAGMAR_21:
       return basic (this, hp:HP070, type:R, retreatCost:1) {
         weakness W
@@ -881,7 +881,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MAGNETON_22:
       return evolution (this, from:"Magnemite", hp:HP070, type:L, retreatCost:1) {
         weakness F
@@ -923,7 +923,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case OMASTAR_23:
       return evolution (this, from:"Omanyte", hp:HP100, type:W, retreatCost:1) {
         weakness L
@@ -965,7 +965,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case PINSIR_24:
       return basic (this, hp:HP070, type:G, retreatCost:1) {
         weakness R
@@ -1001,7 +1001,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 20, my.bench.select()
           }
         }
-      };
+      }
       case SOLROCK_25:
       return basic (this, hp:HP070, type:F, retreatCost:1) {
         weakness G
@@ -1042,7 +1042,7 @@ public enum LegendMaker implements LogicCardInfo {
             flip { discardDefendingEnergy() }
           }
         }
-      };
+      }
       case SPINDA_26:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness F
@@ -1084,7 +1084,7 @@ public enum LegendMaker implements LogicCardInfo {
             flip 1, {}, { damage 10, self }
           }
         }
-      };
+      }
       case TORKOAL_27:
       return basic (this, hp:HP080, type:R, retreatCost:2) {
         weakness W
@@ -1109,7 +1109,7 @@ public enum LegendMaker implements LogicCardInfo {
             flip 1, {}, { discardSelfEnergy R }
           }
         }
-      };
+      }
       case WOBBUFFET_28:
       return basic (this, hp:HP080, type:P, retreatCost:2) {
         weakness P
@@ -1149,7 +1149,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ANORITH_29:
       return evolution (this, from:"Claw Fossil", hp:HP070, type:F, retreatCost:1) {
         weakness G
@@ -1180,7 +1180,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case CASCOON_30:
       return evolution (this, from:"Wurmple", hp:HP070, type:G, retreatCost:2) {
         weakness R
@@ -1208,7 +1208,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case DUNSPARCE_31:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1247,7 +1247,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ELECTRODE_32:
       return evolution (this, from:"Voltorb", hp:HP070, type:L, retreatCost:0) {
         weakness F
@@ -1267,7 +1267,7 @@ public enum LegendMaker implements LogicCardInfo {
             flip { damage 20 }
           }
         }
-      };
+      }
       case FURRET_33:
       return evolution (this, from:"Sentret", hp:HP080, type:C, retreatCost:1) {
         weakness F
@@ -1286,7 +1286,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 10+10*my.bench.size()
           }
         }
-      };
+      }
       case GRAVELER_34:
       return evolution (this, from:"Geodude", hp:HP070, type:F, retreatCost:2) {
         weakness W
@@ -1315,7 +1315,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case HAUNTER_35:
       return evolution (this, from:"Gastly", hp:HP070, type:P, retreatCost:1) {
         weakness D
@@ -1342,7 +1342,7 @@ public enum LegendMaker implements LogicCardInfo {
             directDamage 20, defending
           }
         }
-      };
+      }
       case KABUTO_36:
       return evolution (this, from:"Mysterious Fossil", hp:HP060, type:F, retreatCost:2) {
         weakness G
@@ -1363,7 +1363,7 @@ public enum LegendMaker implements LogicCardInfo {
             reduceDamageNextTurn(hp(10), thisMove)
           }
         }
-      };
+      }
       case KECLEON_37:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness F
@@ -1398,7 +1398,7 @@ public enum LegendMaker implements LogicCardInfo {
             flip { damage 20 }
           }
         }
-      };
+      }
       case LAIRON_38:
       return evolution (this, from:"Aron", hp:HP070, type:M, retreatCost:2) {
         weakness R
@@ -1420,7 +1420,7 @@ public enum LegendMaker implements LogicCardInfo {
             flip { apply PARALYZED }
           }
         }
-      };
+      }
       case MACHOKE_39:
       return evolution (this, from:"Machop", hp:HP080, type:F, retreatCost:1) {
         weakness P
@@ -1453,7 +1453,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case MISDREAVUS_40:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness D
@@ -1465,7 +1465,7 @@ public enum LegendMaker implements LogicCardInfo {
               //TODO: Check this not stacking with other cards (Slumbering Forest, Dark Gengar NeoDestiny). 99% sure it doesn't but just to make sure.
               if(self.active){
                 flip "Asleep (Deep Sleep)", 2, {}, {}, [2:{
-                  ef.unregisterItself(bg.em());
+                  ef.unregisterItself(bg.em())
                 },1:{
                   bc "$ef.target is still asleep."
                 },0:{
@@ -1496,7 +1496,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case NUZLEAF_41:
       return evolution (this, from:"Seedot", hp:HP070, type:D, retreatCost:1) {
         weakness F
@@ -1518,7 +1518,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case ROSELIA_42:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -1553,7 +1553,7 @@ public enum LegendMaker implements LogicCardInfo {
             if ( sw2(target) ) { apply POISONED, target }
           }
         }
-      };
+      }
       case SEALEO_43:
       return evolution (this, from:"Spheal", hp:HP070, type:W, retreatCost:1) {
         weakness M
@@ -1577,7 +1577,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case TANGELA_44:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -1611,7 +1611,7 @@ public enum LegendMaker implements LogicCardInfo {
             cantRetreat(defending)
           }
         }
-      };
+      }
       case TENTACRUEL_45:
       return evolution (this, from:"Tentacool", hp:HP070, type:W, retreatCost:0) {
         weakness L
@@ -1650,7 +1650,7 @@ public enum LegendMaker implements LogicCardInfo {
             flip 3, { damage 20 }
           }
         }
-      };
+      }
       case VIBRAVA_46:
       return evolution (this, from:"Trapinch", hp:HP080, type:C, retreatCost:1) {
         weakness C
@@ -1673,7 +1673,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case WEEPINBELL_47:
       return evolution (this, from:"Bellsprout", hp:HP070, type:G, retreatCost:1) {
         weakness R
@@ -1692,7 +1692,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case ARON_48:
       return basic (this, hp:HP050, type:M, retreatCost:2) {
         weakness R
@@ -1711,7 +1711,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case BELLSPROUT_49:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -1722,7 +1722,7 @@ public enum LegendMaker implements LogicCardInfo {
             apply ASLEEP
           }
         }
-      };
+      }
       case CHINCHOU_50:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1740,7 +1740,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case CLAMPERL_51:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -1758,7 +1758,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case GASTLY_52:
       return basic (this, hp:HP040, type:P, retreatCost:1) {
         weakness D
@@ -1777,7 +1777,7 @@ public enum LegendMaker implements LogicCardInfo {
             apply POISONED
           }
         }
-      };
+      }
       case GEODUDE_53:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness W
@@ -1795,7 +1795,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 50, self
           }
         }
-      };
+      }
       case GRIMER_54:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness P
@@ -1811,7 +1811,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case GROWLITHE_55:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1831,7 +1831,7 @@ public enum LegendMaker implements LogicCardInfo {
             flip { damage 20 }
           }
         }
-      };
+      }
       case LILEEP_56:
       return evolution (this, from:"Root Fossil", hp:HP080, type:G, retreatCost:2) {
         weakness R
@@ -1853,7 +1853,7 @@ public enum LegendMaker implements LogicCardInfo {
             applyAfterDamage CONFUSED
           }
         }
-      };
+      }
       case MACHOP_57:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness P
@@ -1867,7 +1867,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MAGBY_58:
       return basic (this, hp:HP040, type:R, retreatCost:1) {
         weakness W
@@ -1890,7 +1890,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MAGNEMITE_59:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1905,7 +1905,7 @@ public enum LegendMaker implements LogicCardInfo {
             }, {}
           }
         }
-      };
+      }
       case OMANYTE_60:
       return evolution (this, from:"Mysterious Fossil", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -1932,7 +1932,7 @@ public enum LegendMaker implements LogicCardInfo {
             flip { damage 20 }
           }
         }
-      };
+      }
       case SEEDOT_61:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -1954,7 +1954,7 @@ public enum LegendMaker implements LogicCardInfo {
             flipUntilTails { damage 10 }
           }
         }
-      };
+      }
       case SENTRET_62:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1973,7 +1973,7 @@ public enum LegendMaker implements LogicCardInfo {
             flip { damage 20 }
           }
         }
-      };
+      }
       case SHUPPET_63:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness D
@@ -1992,7 +1992,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SKITTY_64:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -2015,7 +2015,7 @@ public enum LegendMaker implements LogicCardInfo {
             flip { damage 20 }
           }
         }
-      };
+      }
       case SPHEAL_65:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness M
@@ -2026,7 +2026,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TENTACOOL_66:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -2037,7 +2037,7 @@ public enum LegendMaker implements LogicCardInfo {
             apply POISONED
           }
         }
-      };
+      }
       case TRAPINCH_67:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
@@ -2056,7 +2056,7 @@ public enum LegendMaker implements LogicCardInfo {
             flip 2, { damage 20 }
           }
         }
-      };
+      }
       case VOLTORB_68:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -2075,7 +2075,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 10, self
           }
         }
-      };
+      }
       case WAILMER_69:
       return basic (this, hp:HP080, type:W, retreatCost:3) {
         weakness L
@@ -2096,7 +2096,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case WURMPLE_70:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -2117,7 +2117,7 @@ public enum LegendMaker implements LogicCardInfo {
             switchYourOpponentsBenchedWithActive()
           }
         }
-      };
+      }
       case WYNAUT_71:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -2138,7 +2138,7 @@ public enum LegendMaker implements LogicCardInfo {
             apply CONFUSED, self
           }
         }
-      };
+      }
       case CURSED_STONE_72:
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
@@ -2151,7 +2151,7 @@ public enum LegendMaker implements LogicCardInfo {
               all.each {
                 def hasPokePower = false
                 for (Ability ability : it.getAbilities().keySet()) {
-                  if (ability instanceof PokePower) hasPokePower = true;
+                  if (ability instanceof PokePower) hasPokePower = true
                 }
 
                 if (hasPokePower) {
@@ -2168,7 +2168,7 @@ public enum LegendMaker implements LogicCardInfo {
         onRemoveFromPlay{
           eff.unregister()
         }
-      };
+      }
       case FIELDWORKER_73:
       return supporter (this) {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
@@ -2182,7 +2182,7 @@ public enum LegendMaker implements LogicCardInfo {
         playRequirement{
           assert my.deck : "Deck is empty"
         }
-      };
+      }
       case FULL_FLAME_74:
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
@@ -2207,7 +2207,7 @@ public enum LegendMaker implements LogicCardInfo {
           eff1.unregister()
           eff2.unregister()
         }
-      };
+      }
       case GIANT_STUMP_75:
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
@@ -2227,7 +2227,7 @@ public enum LegendMaker implements LogicCardInfo {
           thisCard.player.pbg.triggerBenchSizeCheck()
           new CheckAbilities().run(bg)
         }
-      };
+      }
       case POWER_TREE_76:
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
@@ -2248,7 +2248,7 @@ public enum LegendMaker implements LogicCardInfo {
         onRemoveFromPlay{
           actions.each { bg().gm().unregisterAction(it) }
         }
-      };
+      }
       case STRANGE_CAVE_77:
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
@@ -2271,7 +2271,7 @@ public enum LegendMaker implements LogicCardInfo {
         onRemoveFromPlay {
           actions.each { bg().gm().unregisterAction(it) }
         }
-      };
+      }
       case CLAW_FOSSIL_78:
       return itemCard (this) {
         text "Play Claw Fossil as if it were a Basic Pokémon. While in play, Claw Fossil counts as a [C] Pokémon (as well as a Trainer card). Claw Fossil has no attacks of its own, can't retreat, and can't be affected by any Special Conditions. If Claw Fossil is Knocked Out, it doesn't count as a Knocked Out Pokémon. (Discard it anyway.) At any time during your turn before your attack, you may discard Claw Fossil from play." +
@@ -2337,7 +2337,7 @@ public enum LegendMaker implements LogicCardInfo {
         playRequirement{
           assert bench.notFull
         }
-      };
+      }
       case MYSTERIOUS_FOSSIL_79:
       return itemCard (this) {
         text "Play Mysterious Fossil as if it were a Basic Pokémon. While in play, Mysterious Fossil counts as a [C] Pokémon (as well as a Trainer card). Mysterious Fossil has no attacks of its own, can't retreat, and can't be affected by any Special Conditions. If Mysterious Fossil is Knocked out, it doesn't count as a Knocked Out Pokémon. (Discard it anyway.) At any time during your turn before your attack, you may discard Mysterious Fossil from play."
@@ -2388,7 +2388,7 @@ public enum LegendMaker implements LogicCardInfo {
         playRequirement{
           assert bench.notFull : "Bench is full"
         }
-      };
+      }
       case ROOT_FOSSIL_80:
       return itemCard (this) {
         text "Play Root Fossil as if it were a Basic Pokémon. While in play, Root Fossil counts as a [C] Pokémon (as well as a Trainer card). Root Fossil has no attacks of its own, can't retreat, and can't be affected by any Special Conditions. If Root Fossil is Knocked Out, it doesn't count as a Knocked Out Pokémon. (Discard it anyway.) At any time during your turn before your attack, you may discard Root Fossil from play." +
@@ -2459,15 +2459,15 @@ public enum LegendMaker implements LogicCardInfo {
         playRequirement{
           assert bench.notFull
         }
-      };
+      }
       case RAINBOW_ENERGY_81:
-      return copy(CelestialStorm.RAINBOW_ENERGY_151,this);
+      return copy(CelestialStorm.RAINBOW_ENERGY_151,this)
       case REACT_ENERGY_82:
       return specialEnergy (this, [[C]]) {
         text "React Energy provides [C] Energy."
         onPlay {reason->
         }
-      };
+      }
       case ARCANINE_EX_83:
       return evolution (this, from:"Growlithe", hp:HP120, type:R, retreatCost:2) {
         weakness W
@@ -2510,7 +2510,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ARMALDO_EX_84:
       return evolution (this, from:"Anorith", hp:HP160, type:F, retreatCost:3) {
         weakness G
@@ -2543,7 +2543,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case BANETTE_EX_85:
       return evolution (this, from:"Shuppet", hp:HP090, type:P, retreatCost:1) {
         weakness D
@@ -2577,7 +2577,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 30 + Math.min(my.discard.filterByType(SUPPORTER).size()*10, 60)
           }
         }
-      };
+      }
       case DUSTOX_EX_86:
       return evolution (this, from:"Cascoon", hp:HP140, type:G, retreatCost:1) {
         weakness R
@@ -2602,7 +2602,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case FLYGON_EX_87:
       return evolution (this, from:"Vibrava", hp:HP150, type:C, retreatCost:2) {
         weakness C
@@ -2639,7 +2639,7 @@ public enum LegendMaker implements LogicCardInfo {
             damage 100
           }
         }
-      };
+      }
       case MEW_EX_88:
       return basic (this, hp:HP090, type:P, retreatCost:1) {
         weakness P
@@ -2656,7 +2656,7 @@ public enum LegendMaker implements LogicCardInfo {
             switchYourActive(may: true)
           }
         }
-      };
+      }
       case WALREIN_EX_89:
       return evolution (this, from:"Sealeo", hp:HP150, type:W, retreatCost:3) {
         weakness F
@@ -2694,7 +2694,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case REGICE_STAR_90:
       return basic (this, hp:HP090, type:W, retreatCost:3) {
         weakness M
@@ -2719,7 +2719,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case REGIROCK_STAR_91:
       return basic (this, hp:HP090, type:F, retreatCost:3) {
         weakness W
@@ -2742,7 +2742,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case REGISTEEL_STAR_92:
       return basic (this, hp:HP090, type:M, retreatCost:3) {
         weakness R
@@ -2766,7 +2766,7 @@ public enum LegendMaker implements LogicCardInfo {
             putDamageCountersOnOpponentsPokemon(counters)
           }
         }
-      };
+      }
       case PIKACHU_DELTA_93:
       return basic (this, hp:HP040, type:M, retreatCost:1) {
         weakness F
@@ -2784,9 +2784,9 @@ public enum LegendMaker implements LogicCardInfo {
             flipUntilTails { damage 20 }
           }
         }
-      };
+      }
       default:
-      return null;
+      return null
     }
   }
 }

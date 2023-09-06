@@ -2,42 +2,42 @@ package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.effect.gm.ActivateSimpleTrainer
 import tcgwars.logic.effect.gm.Attack
-import tcgwars.logic.exception.EffectRequirementException;
-import tcgwars.logic.impl.gen3.FireRedLeafGreen;
+import tcgwars.logic.exception.EffectRequirementException
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
 import tcgwars.logic.impl.gen3.RubySapphire
 
 import tcgwars.logic.effect.gm.PlayTrainer
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -178,53 +178,53 @@ public enum SecretWonders implements LogicCardInfo {
   GARDEVOIR_LV_X_131 ("Gardevoir Lv.X", "131", Rarity.HOLORARE, [LVL_X, POKEMON, _PSYCHIC_]),
   HONCHKROW_LV_X_132 ("Honchkrow Lv.X", "132", Rarity.HOLORARE, [LVL_X, POKEMON, _DARKNESS_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   SecretWonders(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.SECRET_WONDERS;
+    return tcgwars.logic.card.Collection.SECRET_WONDERS
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -263,7 +263,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BLASTOISE_2:
         return evolution (this, from:"Wartortle", hp:HP120, type:WATER, retreatCost:2) {
           weakness L, PLUS30
@@ -297,7 +297,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHARIZARD_3:
         return evolution (this, from:"Charmeleon", hp:HP130, type:FIRE, retreatCost:3) {
           weakness W, PLUS40
@@ -342,7 +342,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ENTEI_4:
         return basic (this, hp:HP080, type:FIRE, retreatCost:2) {
           weakness W, PLUS20
@@ -385,7 +385,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FLYGON_5:
         return evolution (this, from:"Vibrava", hp:HP120, type:FIGHTING, retreatCost:1) {
           weakness W, PLUS30
@@ -422,7 +422,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GALLADE_6:
         return evolution (this, from:"Kirlia", hp:HP130, type:FIGHTING, retreatCost:2) {
           weakness P, PLUS30
@@ -452,7 +452,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GARDEVOIR_7:
         return evolution (this, from:"Kirlia", hp:HP110, type:PSYCHIC, retreatCost:2) {
           weakness P, PLUS30
@@ -463,7 +463,7 @@ public enum SecretWonders implements LogicCardInfo {
               checkNoSPC()
               assert bg.em().retrieveObject("Telepass") != bg.turnCount : "You can't use more than 1 Telepass Poke-Power each turn."
               assert opp.discard.hasType(SUPPORTER) : "Your opponent has no supporters discarded."
-              bg.em().storeObject("Telepass", bg.turnCount);
+              bg.em().storeObject("Telepass", bg.turnCount)
               powerUsed()
               def card = opp.discard.select("Opponent's discard. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
               bg.em().run(new ActivateSimpleTrainer(card))
@@ -494,7 +494,7 @@ public enum SecretWonders implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case GASTRODON_EAST_SEA_8:
         return evolution (this, from:"Shellos East Sea", hp:HP100, type:WATER, retreatCost:4) {
           weakness G, PLUS30
@@ -522,7 +522,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GASTRODON_WEST_SEA_9:
         return evolution (this, from:"Shellos West Sea", hp:HP100, type:FIGHTING, retreatCost:4) {
           weakness G, PLUS30
@@ -549,7 +549,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HO_OH_10:
         return basic (this, hp:HP090, type:FIRE, retreatCost:2) {
           weakness W
@@ -606,7 +606,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case JUMPLUFF_11:
         return evolution (this, from:"Skiploom", hp:HP090, type:GRASS, retreatCost:0) {
           weakness R, PLUS30
@@ -638,7 +638,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LICKILICKY_12:
         return evolution (this, from:"Lickitung", hp:HP110, type:COLORLESS, retreatCost:4) {
           weakness F, PLUS30
@@ -663,7 +663,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUDICOLO_13:
         return evolution (this, from:"Lombre", hp:HP100, type:WATER, retreatCost:2) {
           weakness L, PLUS30
@@ -695,7 +695,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUGIA_14:
         return basic (this, hp:HP090, type:COLORLESS, retreatCost:2) {
           weakness P, PLUS20
@@ -723,7 +723,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MEW_15:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS20
@@ -760,7 +760,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAIKOU_16:
         return basic (this, hp:HP080, type:LIGHTNING, retreatCost:2) {
           weakness F, PLUS20
@@ -797,7 +797,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ROSERADE_17:
         return evolution (this, from:"Roselia", hp:HP090, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
@@ -822,7 +822,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SALAMENCE_18:
         return evolution (this, from:"Shelgon", hp:HP140, type:COLORLESS, retreatCost:3) {
           weakness C, PLUS30
@@ -853,7 +853,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SUICUNE_19:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness L, PLUS20
@@ -875,7 +875,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VENUSAUR_20:
         return evolution (this, from:"Ivysaur", hp:HP130, type:GRASS, retreatCost:3) {
           weakness R, PLUS30
@@ -902,7 +902,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ABSOL_21:
         return basic (this, hp:HP070, type:DARKNESS, retreatCost:1) {
           weakness F, PLUS20
@@ -931,7 +931,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARCANINE_22:
         return evolution (this, from:"Growlithe", hp:HP100, type:FIRE, retreatCost:2) {
           weakness W, PLUS30
@@ -958,7 +958,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BANETTE_23:
         return evolution (this, from:"Shuppet", hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness D, PLUS20
@@ -990,7 +990,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DUGTRIO_24:
         return evolution (this, from:"Diglett", hp:HP090, type:FIGHTING, retreatCost:0) {
           weakness W, PLUS20
@@ -1026,7 +1026,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTIVIRE_25:
         return evolution (this, from:"Electabuzz", hp:HP100, type:LIGHTNING, retreatCost:3) {
           weakness F, PLUS30
@@ -1058,7 +1058,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTRODE_26:
         return evolution (this, from:"Voltorb", hp:HP080, type:LIGHTNING, retreatCost:0) {
           weakness F, PLUS20
@@ -1108,7 +1108,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FURRET_27:
         return evolution (this, from:"Sentret", hp:HP090, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS20
@@ -1140,7 +1140,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOLDUCK_28:
         return evolution (this, from:"Psyduck", hp:HP090, type:WATER, retreatCost:1) {
           weakness L, PLUS20
@@ -1185,7 +1185,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOLEM_29:
         return evolution (this, from:"Graveler", hp:HP130, type:FIGHTING, retreatCost:4) {
           weakness G, PLUS30
@@ -1212,7 +1212,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case JYNX_30:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:2) {
           weakness P, PLUS20
@@ -1253,7 +1253,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGMORTAR_31:
         return evolution (this, from:"Magmar", hp:HP110, type:FIRE, retreatCost:3) {
           weakness W, PLUS30
@@ -1291,7 +1291,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MINUN_32:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -1330,7 +1330,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
 f
-        };
+        }
       case MOTHIM_33:
         return evolution (this, from:["Burmy","Burmy Plant Cloak","Burmy Sandy Cloak","Burmy Trash Cloak"], hp:HP080, type:GRASS, retreatCost:0) {
           weakness R, PLUS20
@@ -1353,7 +1353,7 @@ f
             }
           }
 
-        };
+        }
       case NIDOKING_34:
         return evolution (this, from:"Nidorino", hp:HP130, type:PSYCHIC, retreatCost:2) {
           weakness P, PLUS30
@@ -1379,7 +1379,7 @@ f
             }
           }
 
-        };
+        }
       case PIDGEOT_35:
         return evolution (this, from:"Pidgeotto", hp:HP120, type:COLORLESS, retreatCost:0) {
           weakness L, PLUS30
@@ -1415,7 +1415,7 @@ f
             }
           }
 
-        };
+        }
       case PLUSLE_36:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -1450,7 +1450,7 @@ f
             }
           }
 
-        };
+        }
       case SHARPEDO_37:
         return evolution (this, from:"Carvanha", hp:HP080, type:DARKNESS, retreatCost:0) {
           weakness L, PLUS20
@@ -1470,7 +1470,7 @@ f
             }
           }
 
-        };
+        }
       case SUNFLORA_38:
         return evolution (this, from:"Sunkern", hp:HP080, type:GRASS, retreatCost:2) {
           weakness R, PLUS20
@@ -1507,7 +1507,7 @@ f
             }
           }
 
-        };
+        }
       case UNOWN_S_39:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -1533,7 +1533,7 @@ f
             }
           }
 
-        };
+        }
       case WEAVILE_40:
         return evolution (this, from:"Sneasel", hp:HP080, type:WATER, retreatCost:0) {
           weakness M, PLUS20
@@ -1586,7 +1586,7 @@ f
             }
           }
 
-        };
+        }
       case WORMADAM_PLANT_CLOAK_41:
         return evolution (this, from:"Burmy Plant Cloak", hp:HP080, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
@@ -1609,7 +1609,7 @@ f
             }
           }
 
-        };
+        }
       case WORMADAM_SANDY_CLOAK_42:
         return evolution (this, from:"Burmy Sandy Cloak", hp:HP080, type:FIGHTING, retreatCost:1) {
           weakness R, PLUS20
@@ -1634,7 +1634,7 @@ f
             }
           }
 
-        };
+        }
       case WORMADAM_TRASH_CLOAK_43:
         return evolution (this, from:"Burmy Trash Cloak", hp:HP070, type:METAL, retreatCost:1) {
           weakness R, PLUS20
@@ -1661,7 +1661,7 @@ f
             }
           }
 
-        };
+        }
       case XATU_44:
         return evolution (this, from:"Natu", hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -1687,7 +1687,7 @@ f
             }
           }
 
-        };
+        }
       case BRELOOM_45:
         return evolution (this, from:"Shroomish", hp:HP100, type:GRASS, retreatCost:2) {
           weakness R, PLUS30
@@ -1710,7 +1710,7 @@ f
             }
           }
 
-        };
+        }
       case CHARMELEON_46:
         return evolution (this, from:"Charmander", hp:HP080, type:FIRE, retreatCost:1) {
           weakness W, PLUS20
@@ -1734,7 +1734,7 @@ f
             }
           }
 
-        };
+        }
       case CLOYSTER_47:
         return evolution (this, from:"Shellder", hp:HP080, type:WATER, retreatCost:2) {
           weakness L, PLUS20
@@ -1757,7 +1757,7 @@ f
             }
           }
 
-        };
+        }
       case DONPHAN_48:
         return evolution (this, from:"Phanpy", hp:HP100, type:FIGHTING, retreatCost:3) {
           weakness W, PLUS20
@@ -1788,7 +1788,7 @@ f
             }
           }
 
-        };
+        }
       case FARFETCH_D_49:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness L, PLUS20
@@ -1809,7 +1809,7 @@ f
             }
           }
 
-        };
+        }
       case FLAAFFY_50:
         return evolution (this, from:"Mareep", hp:HP080, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS20
@@ -1837,7 +1837,7 @@ f
             }
           }
 
-        };
+        }
       case IVYSAUR_51:
         return evolution (this, from:"Bulbasaur", hp:HP080, type:GRASS, retreatCost:2) {
           weakness R, PLUS20
@@ -1857,7 +1857,7 @@ f
             }
           }
 
-        };
+        }
       case KECLEON_52:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
@@ -1887,7 +1887,7 @@ f
             }
           }
 
-        };
+        }
       case KIRLIA_53:
         return evolution (this, from:"Ralts", hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS20
@@ -1910,7 +1910,7 @@ f
             }
           }
 
-        };
+        }
       case LOMBRE_54:
         return evolution (this, from:"Lotad", hp:HP070, type:WATER, retreatCost:1) {
           weakness L, PLUS20
@@ -1933,7 +1933,7 @@ f
             }
           }
 
-        };
+        }
       case MILTANK_55:
         return basic (this, hp:HP090, type:COLORLESS, retreatCost:2) {
           weakness F, PLUS20
@@ -1959,7 +1959,7 @@ f
             }
           }
 
-        };
+        }
       case MUK_56:
         return evolution (this, from:"Grimer", hp:HP080, type:PSYCHIC, retreatCost:2) {
           weakness P, PLUS20
@@ -1984,7 +1984,7 @@ f
             }
           }
 
-        };
+        }
       case NIDORINO_57:
         return evolution (this, from:"Nidoran♂", hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS20
@@ -2022,7 +2022,7 @@ f
             }
           }
 
-        };
+        }
       case PIDGEOTTO_58:
         return evolution (this, from:"Pidgey", hp:HP070, type:COLORLESS, retreatCost:0) {
           weakness L, PLUS20
@@ -2045,7 +2045,7 @@ f
             }
           }
 
-        };
+        }
       case PINSIR_59:
         return basic (this, hp:HP080, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
@@ -2066,7 +2066,7 @@ f
             }
           }
 
-        };
+        }
       case QUAGSIRE_60:
         return evolution (this, from:"Wooper", hp:HP090, type:WATER, retreatCost:3) {
           weakness G, PLUS30
@@ -2092,7 +2092,7 @@ f
             }
           }
 
-        };
+        }
       case RATICATE_61:
         return evolution (this, from:"Rattata", hp:HP070, type:COLORLESS, retreatCost:0) {
           weakness F, PLUS20
@@ -2117,7 +2117,7 @@ f
             }
           }
 
-        };
+        }
       case ROSELIA_62:
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -2136,7 +2136,7 @@ f
             }
           }
 
-        };
+        }
       case SABLEYE_63:
         return basic (this, hp:HP060, type:DARKNESS, retreatCost:1) {
           resistance C, MINUS20
@@ -2163,7 +2163,7 @@ f
             }
           }
 
-        };
+        }
       case SHELGON_64:
         return evolution (this, from:"Bagon", hp:HP080, type:COLORLESS, retreatCost:2) {
           weakness C, PLUS20
@@ -2184,7 +2184,7 @@ f
             }
           }
 
-        };
+        }
       case SKIPLOOM_65:
         return evolution (this, from:"Hoppip", hp:HP060, type:GRASS, retreatCost:0) {
           weakness R, PLUS20
@@ -2211,7 +2211,7 @@ f
             }
           }
 
-        };
+        }
       case SMEARGLE_66:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
@@ -2237,7 +2237,7 @@ f
             }
           }
 
-        };
+        }
       case SMOOCHUM_67:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -2267,7 +2267,7 @@ f
             }
           }
 
-        };
+        }
       case UNOWN_K_68:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -2288,7 +2288,7 @@ f
             }
           }
 
-        };
+        }
       case UNOWN_N_69:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -2319,7 +2319,7 @@ f
             }
           }
 
-        };
+        }
       case UNOWN_O_70:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -2346,7 +2346,7 @@ f
             }
           }
 
-        };
+        }
       case UNOWN_X_71:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -2372,7 +2372,7 @@ f
             }
           }
 
-        };
+        }
       case UNOWN_Z_72:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -2407,7 +2407,7 @@ f
             }
           }
 
-        };
+        }
       case VENOMOTH_73:
         return evolution (this, from:"Venonat", hp:HP080, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
@@ -2433,7 +2433,7 @@ f
             }
           }
 
-        };
+        }
       case VIBRAVA_74:
         return evolution (this, from:"Trapinch", hp:HP080, type:FIGHTING, retreatCost:1) {
           weakness W, PLUS20
@@ -2458,7 +2458,7 @@ f
             }
           }
 
-        };
+        }
       case WARTORTLE_75:
         return evolution (this, from:"Squirtle", hp:HP080, type:WATER, retreatCost:1) {
           weakness L, PLUS20
@@ -2478,7 +2478,7 @@ f
             }
           }
 
-        };
+        }
       case BAGON_76:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness C, PLUS10
@@ -2498,7 +2498,7 @@ f
             }
           }
 
-        };
+        }
       case BULBASAUR_77:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -2519,7 +2519,7 @@ f
             }
           }
 
-        };
+        }
       case BURMY_PLANT_CLOAK_78:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -2544,7 +2544,7 @@ f
             }
           }
 
-        };
+        }
       case BURMY_SANDY_CLOAK_79:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -2569,7 +2569,7 @@ f
             }
           }
 
-        };
+        }
       case BURMY_TRASH_CLOAK_80:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -2594,7 +2594,7 @@ f
             }
           }
 
-        };
+        }
       case CARVANHA_81:
         return basic (this, hp:HP050, type:DARKNESS, retreatCost:1) {
           weakness L, PLUS10
@@ -2618,7 +2618,7 @@ f
             }
           }
 
-        };
+        }
       case CHARMANDER_82:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
           weakness W, PLUS10
@@ -2640,7 +2640,7 @@ f
             }
           }
 
-        };
+        }
       case CLEFAIRY_83:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
@@ -2665,7 +2665,7 @@ f
             }
           }
 
-        };
+        }
       case CORSOLA_84:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness G, PLUS20
@@ -2701,7 +2701,7 @@ f
             }
           }
 
-        };
+        }
       case DIGLETT_85:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness W, PLUS10
@@ -2722,7 +2722,7 @@ f
             }
           }
 
-        };
+        }
       case DUSKULL_86:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness D, PLUS10
@@ -2748,7 +2748,7 @@ f
             }
           }
 
-        };
+        }
       case ELECTABUZZ_87:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:2) {
           weakness F, PLUS20
@@ -2775,7 +2775,7 @@ f
             }
           }
 
-        };
+        }
       case GRIMER_88:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:2) {
           weakness P, PLUS10
@@ -2794,7 +2794,7 @@ f
             }
           }
 
-        };
+        }
       case GROWLITHE_89:
         return basic (this, hp:HP070, type:FIRE, retreatCost:2) {
           weakness W, PLUS20
@@ -2813,7 +2813,7 @@ f
             }
           }
 
-        };
+        }
       case HOPPIP_90:
         return basic (this, hp:HP030, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -2835,7 +2835,7 @@ f
             }
           }
 
-        };
+        }
       case LICKITUNG_91:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:3) {
           weakness F, PLUS20
@@ -2860,7 +2860,7 @@ f
             }
           }
 
-        };
+        }
       case LOTAD_92:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness L, PLUS10
@@ -2882,7 +2882,7 @@ f
             }
           }
 
-        };
+        }
       case MAGMAR_93:
         return basic (this, hp:HP070, type:FIRE, retreatCost:2) {
           weakness W, PLUS20
@@ -2902,7 +2902,7 @@ f
             }
           }
 
-        };
+        }
       case MAREEP_94:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -2925,7 +2925,7 @@ f
             }
           }
 
-        };
+        }
       case MURKROW_95:
         return basic (this, hp:HP050, type:DARKNESS, retreatCost:1) {
           weakness L, PLUS10
@@ -2946,7 +2946,7 @@ f
               swiftDamage(20, opp.all.select())
             }
           }
-        };
+        }
       case NATU_96:
         return basic (this, hp:HP040, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -2967,7 +2967,7 @@ f
             foresight(5, delegate)
           }
 
-        };
+        }
       case NIDORAN_MALE_97:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -2989,7 +2989,7 @@ f
             }
           }
 
-        };
+        }
       case PHANPY_98:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness W, PLUS10
@@ -3013,7 +3013,7 @@ f
             }
           }
 
-        };
+        }
       case PIDGEY_99:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness L, PLUS10
@@ -3033,7 +3033,7 @@ f
             }
           }
 
-        };
+        }
       case PSYDUCK_100:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness L, PLUS10
@@ -3064,7 +3064,7 @@ f
             }
           }
 
-        };
+        }
       case QWILFISH_101:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness L, PLUS20
@@ -3091,7 +3091,7 @@ f
             }
           }
 
-        };
+        }
       case RALTS_102:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -3112,7 +3112,7 @@ f
             }
           }
 
-        };
+        }
       case RATTATA_103:
         return basic (this, hp:HP030, type:COLORLESS, retreatCost:0) {
           weakness F, PLUS10
@@ -3133,7 +3133,7 @@ f
             }
           }
 
-        };
+        }
       case SENTRET_104:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
@@ -3157,7 +3157,7 @@ f
             }
           }
 
-        };
+        }
       case SHELLDER_105:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness L, PLUS10
@@ -3179,7 +3179,7 @@ f
             }
           }
 
-        };
+        }
       case SHELLOS_EAST_SEA_106:
         return basic (this, hp:HP060, type:WATER, retreatCost:2) {
           weakness L, PLUS10
@@ -3196,7 +3196,7 @@ f
             }
           }
 
-        };
+        }
       case SHELLOS_WEST_SEA_107:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness L, PLUS10
@@ -3219,7 +3219,7 @@ f
             }
           }
 
-        };
+        }
       case SHROOMISH_108:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -3242,7 +3242,7 @@ f
             }
           }
 
-        };
+        }
       case SHUCKLE_109:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
@@ -3309,7 +3309,7 @@ f
             }
           }
 
-        };
+        }
       case SHUPPET_110:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness D, PLUS10
@@ -3329,7 +3329,7 @@ f
             }
           }
 
-        };
+        }
       case SPINDA_111:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS20
@@ -3355,7 +3355,7 @@ f
             }
           }
 
-        };
+        }
       case SQUIRTLE_112:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness L, PLUS10
@@ -3379,7 +3379,7 @@ f
             }
           }
 
-        };
+        }
       case STANTLER_113:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS20
@@ -3404,7 +3404,7 @@ f
             }
           }
 
-        };
+        }
       case SUNKERN_114:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -3432,7 +3432,7 @@ f
             }
           }
 
-        };
+        }
       case TRAPINCH_115:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness W, PLUS10
@@ -3456,7 +3456,7 @@ f
             }
           }
 
-        };
+        }
       case VENONAT_116:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -3480,7 +3480,7 @@ f
             }
           }
 
-        };
+        }
       case VOLTORB_117:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -3501,7 +3501,7 @@ f
             }
           }
 
-        };
+        }
       case WOOPER_118:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness G, PLUS20
@@ -3521,13 +3521,13 @@ f
             }
           }
 
-        };
+        }
       case BEBE_S_SEARCH_119:
-        return copy (MysteriousTreasures.BEBE_S_SEARCH_109, this);
+        return copy (MysteriousTreasures.BEBE_S_SEARCH_109, this)
       case NIGHT_MAINTENANCE_120:
-        return copy (MysteriousTreasures.NIGHT_MAINTENANCE_113, this);
+        return copy (MysteriousTreasures.NIGHT_MAINTENANCE_113, this)
       case PLUSPOWER_121:
-        return copy (DiamondPearl.PLUSPOWER_109, this);
+        return copy (DiamondPearl.PLUSPOWER_109, this)
       case PROFESSOR_OAK_S_VISIT_122:
         return basicTrainer (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 3 cards. Then, choose a card from your hand and put it on the bottom of your deck."
@@ -3538,7 +3538,7 @@ f
           playRequirement{
             assert my.deck || my.hand.getExcludedList(thisCard) : "Both your deck and your hand are empty"
           }
-        };
+        }
       case PROFESSOR_ROWAN_123:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nChoose 1 card in your hand and shuffle the rest of your cards into your deck. Then, draw 4 cards. (If this is the only card in your hand, you can’t play this card.)"
@@ -3553,9 +3553,9 @@ f
           playRequirement{
             assert my.hand.getExcludedList(thisCard) : "You have no other cards in your hand"
           }
-        };
+        }
       case RIVAL_124:
-        return copy (DiamondPearl.RIVAL_113, this);
+        return copy (DiamondPearl.RIVAL_113, this)
       case ROSEANNE_S_RESEARCH_125:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for up to 2 in any combination of Basic Pokémon and basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
@@ -3566,7 +3566,7 @@ f
           playRequirement{
             assert my.deck : "Your deck is empty!"
           }
-        };
+        }
       case TEAM_GALACTIC_S_MARS_126:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 2 cards. Then, choose a card from your opponent’s hand without looking and put it on the bottom of his or her deck."
@@ -3577,15 +3577,15 @@ f
           playRequirement{
             assert my.deck : "There are no cards left in your deck."
           }
-        };
+        }
       case POTION_127:
         return copy (FireRedLeafGreen.POTION_101, this)
       case SWITCH_128:
-        return copy(FireRedLeafGreen.SWITCH_102, this);
+        return copy(FireRedLeafGreen.SWITCH_102, this)
       case DARKNESS_ENERGY_129:
-        return copy (MysteriousTreasures.DARKNESS_ENERGY_119, this);
+        return copy (MysteriousTreasures.DARKNESS_ENERGY_119, this)
       case METAL_ENERGY_130:
-        return copy (RubySapphire.METAL_ENERGY_94, this);
+        return copy (RubySapphire.METAL_ENERGY_94, this)
       case GARDEVOIR_LV_X_131:
         return levelUp (this, from:"Gardevoir", hp:HP130, type:PSYCHIC, retreatCost:2) {
           weakness P
@@ -3608,7 +3608,7 @@ f
             energyCost P, P
             bringDown(delegate)
           }
-        };
+        }
       case HONCHKROW_LV_X_132:
         return levelUp (this, from:"Honchkrow", hp:HP110, type:DARKNESS, retreatCost:0) {
           weakness L, PLUS30
@@ -3636,9 +3636,9 @@ f
               damage 60
             }
           }
-        };
+        }
       default:
-        return null;
+        return null
     }
   }
 

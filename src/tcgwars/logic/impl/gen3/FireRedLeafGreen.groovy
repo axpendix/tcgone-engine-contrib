@@ -1,15 +1,15 @@
 package tcgwars.logic.impl.gen3
 
 import tcgwars.logic.effect.ability.custom.Safeguard
-import tcgwars.logic.exception.EffectRequirementException;
-import tcgwars.logic.impl.gen2.Expedition;
+import tcgwars.logic.exception.EffectRequirementException
+import tcgwars.logic.impl.gen2.Expedition
 
 import tcgwars.logic.effect.gm.Attack
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import static tcgwars.logic.effect.EffectType.*
@@ -18,13 +18,13 @@ import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.*;
+import tcgwars.logic.*
 import tcgwars.logic.card.*
-import tcgwars.logic.effect.*;
+import tcgwars.logic.effect.*
 import tcgwars.logic.effect.ability.*
 import tcgwars.logic.effect.basic.*
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -150,53 +150,53 @@ public enum FireRedLeafGreen implements LogicCardInfo {
   MOLTRES_EX_115 ("Moltres ex", "115", Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_, EX]),
   ZAPDOS_EX_116 ("Zapdos ex", "116", Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_, EX]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   FireRedLeafGreen(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.FIRERED_LEAFGREEN;
+    return tcgwars.logic.card.Collection.FIRERED_LEAFGREEN
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -224,7 +224,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BUTTERFREE_2:
         return evolution (this, from:"Metapod", hp:HP100, type:GRASS, retreatCost:0) {
           weakness LIGHTNING
@@ -259,7 +259,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DEWGONG_3:
         return evolution (this, from:"Seel", hp:HP080, type:WATER, retreatCost:2) {
           weakness METAL
@@ -282,7 +282,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DITTO_4:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -311,7 +311,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EXEGGUTOR_5:
         return evolution (this, from:"Exeggcute", hp:HP080, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -336,7 +336,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case KANGASKHAN_6:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -363,7 +363,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAROWAK_7:
         return evolution (this, from:"Cubone", hp:HP080, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -384,7 +384,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDOKING_8:
         return evolution (this, from:"Nidorino", hp:HP120, type:FIGHTING, retreatCost:3) {
           weakness WATER
@@ -418,7 +418,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDOQUEEN_9:
         return evolution (this, from:"Nidorina", hp:HP120, type:FIGHTING, retreatCost:2) {
           weakness GRASS
@@ -451,7 +451,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIDGEOT_10:
         return evolution (this, from:"Pidgeotto", hp:HP100, type:COLORLESS, retreatCost:0) {
           weakness LIGHTNING
@@ -477,7 +477,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case POLIWRATH_11:
         return evolution (this, from:"Poliwhirl", hp:HP120, type:WATER, retreatCost:2) {
           weakness LIGHTNING
@@ -511,7 +511,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAICHU_12:
         return evolution (this, from:"Pikachu", hp:HP080, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -538,7 +538,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAPIDASH_13:
         return evolution (this, from:"Ponyta", hp:HP080, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -567,7 +567,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SLOWBRO_14:
         return evolution (this, from:"Slowpoke", hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -593,7 +593,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SNORLAX_15:
         return basic (this, hp:HP090, type:COLORLESS, retreatCost:3) {
           weakness FIGHTING
@@ -632,7 +632,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TAUROS_16:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -655,7 +655,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VICTREEBEL_17:
         return evolution (this, from:"Weepinbell", hp:HP110, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -680,7 +680,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARCANINE_18:
         return evolution (this, from:"Growlithe", hp:HP090, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -700,7 +700,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHANSEY_19:
         return basic (this, hp:HP090, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -724,7 +724,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CLOYSTER_20:
         return evolution (this, from:"Shellder", hp:HP070, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -759,7 +759,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DODRIO_21:
         return evolution (this, from:"Doduo", hp:HP070, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -780,7 +780,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DUGTRIO_22:
         return evolution (this, from:"Diglett", hp:HP080, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -800,7 +800,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FARFETCH_D_23:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -831,7 +831,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FEAROW_24:
         return evolution (this, from:"Spearow", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -860,7 +860,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HYPNO_25:
         return evolution (this, from:"Drowzee", hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -886,7 +886,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KINGLER_26:
         return evolution (this, from:"Krabby", hp:HP080, type:WATER, retreatCost:2) {
           weakness LIGHTNING
@@ -908,7 +908,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGNETON_27:
         return evolution (this, from:"Magnemite", hp:HP080, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -929,7 +929,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PRIMEAPE_28:
         return evolution (this, from:"Mankey", hp:HP070, type:FIGHTING, retreatCost:0) {
           weakness PSYCHIC
@@ -950,7 +950,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SCYTHER_29:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -971,7 +971,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TANGELA_30:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -996,7 +996,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHARMELEON_31:
         return evolution (this, from:"Charmander", hp:HP070, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -1016,7 +1016,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DROWZEE_32:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1036,7 +1036,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EXEGGCUTE_33:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1056,7 +1056,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HAUNTER_34:
         return evolution (this, from:"Gastly", hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness DARKNESS
@@ -1079,7 +1079,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case IVYSAUR_35:
         return evolution (this, from:"Bulbasaur", hp:HP080, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -1098,7 +1098,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KAKUNA_36:
         return evolution (this, from:"Weedle", hp:HP070, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -1117,7 +1117,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LICKITUNG_37:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -1137,7 +1137,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MANKEY_38:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -1156,7 +1156,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case METAPOD_39:
         return evolution (this, from:"Caterpie", hp:HP080, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -1182,7 +1182,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDORINA_40:
         return evolution (this, from:"Nidoran♀", hp:HP080, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -1205,7 +1205,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDORINO_41:
         return evolution (this, from:"Nidoran♂", hp:HP070, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -1225,7 +1225,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ONIX_42:
         return basic (this, hp:HP080, type:FIGHTING, retreatCost:3) {
           weakness WATER
@@ -1254,7 +1254,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PARASECT_43:
         return evolution (this, from:"Paras", hp:HP070, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1280,7 +1280,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PERSIAN_44:
         return evolution (this, from:"Meowth", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -1309,7 +1309,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIDGEOTTO_45:
         return evolution (this, from:"Pidgey", hp:HP070, type:COLORLESS, retreatCost:0) {
           weakness LIGHTNING
@@ -1330,7 +1330,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case POLIWHIRL_46:
         return evolution (this, from:"Poliwag", hp:HP080, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1354,7 +1354,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PORYGON_47:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -1376,7 +1376,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RATICATE_48:
         return evolution (this, from:"Rattata", hp:HP070, type:COLORLESS, retreatCost:0) {
           weakness FIGHTING
@@ -1394,7 +1394,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost C
             onAttack {
               if(my.discard){
-                def selectedCard = new CardList();
+                def selectedCard = new CardList()
                 if(my.discard.filterByType(POKEMON)) selectedCard.add(my.discard.filterByType(POKEMON).select(count : 1, "Search your discard pile for a Basic Pokémon (or Evolution card)").first())
                 if(my.discard.filterByType(TRAINER)) selectedCard.add(my.discard.filterByType(TRAINER).select(count : 1, "Search your discard pile for a Trainer card").first())
                 if(my.discard.filterByType(ENERGY)) selectedCard.add(my.discard.filterByType(ENERGY).select(count : 1, "Search your discard pile for an Energy card)").first())
@@ -1411,7 +1411,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VENOMOTH_49:
         return evolution (this, from:"Venonat", hp:HP070, type:GRASS, retreatCost:0) {
           weakness FIRE
@@ -1442,7 +1442,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WARTORTLE_50:
         return evolution (this, from:"Squirtle", hp:HP080, type:WATER, retreatCost:2) {
           weakness LIGHTNING
@@ -1463,7 +1463,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WEEPINBELL_51:
         return evolution (this, from:"Bellsprout", hp:HP070, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1483,7 +1483,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WIGGLYTUFF_52:
         return evolution (this, from:"Jigglypuff", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -1509,7 +1509,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BELLSPROUT_53:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1521,7 +1521,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BULBASAUR_54:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1543,7 +1543,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BULBASAUR_55:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -1563,7 +1563,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CATERPIE_56:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1586,7 +1586,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CHARMANDER_57:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -1598,7 +1598,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHARMANDER_58:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -1617,7 +1617,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CLEFAIRY_59:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -1639,7 +1639,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CUBONE_60:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -1658,7 +1658,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DIGLETT_61:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -1670,7 +1670,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DODUO_62:
         return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -1693,7 +1693,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GASTLY_63:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness DARKNESS
@@ -1720,7 +1720,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GROWLITHE_64:
         return basic (this, hp:HP060, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -1739,7 +1739,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case JIGGLYPUFF_65:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -1763,7 +1763,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KRABBY_66:
         return basic (this, hp:HP050, type:WATER, retreatCost:2) {
           weakness LIGHTNING
@@ -1785,7 +1785,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGIKARP_67:
         return basic (this, hp:HP030, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1802,7 +1802,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             ascension delegate
           }
 
-        };
+        }
       case MAGNEMITE_68:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1822,7 +1822,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MEOWTH_69:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -1844,7 +1844,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDORAN_FEMALE_70:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -1855,7 +1855,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               assert my.deck
             }
             onAttack {
-              def revealCard = new CardList();
+              def revealCard = new CardList()
               def foundBasic = false
               def ind = 0
               def curCard
@@ -1887,7 +1887,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDORAN_MALE_71:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -1913,7 +1913,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PARAS_72:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1931,7 +1931,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIDGEY_73:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -1951,7 +1951,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIKACHU_74:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1966,7 +1966,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case POLIWAG_75:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1985,7 +1985,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PONYTA_76:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -1998,7 +1998,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RATTATA_77:
         return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -2020,7 +2020,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SEEL_78:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -2032,7 +2032,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHELLDER_79:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -2051,7 +2051,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SLOWPOKE_80:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -2064,7 +2064,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SPEAROW_81:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -2084,7 +2084,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SQUIRTLE_82:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -2097,7 +2097,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SQUIRTLE_83:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -2117,7 +2117,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VENONAT_84:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -2137,7 +2137,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VOLTORB_85:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -2158,7 +2158,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WEEDLE_86:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -2186,7 +2186,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BILL_S_MAINTENANCE_87:
         return supporter (this) {
           text "If you have any cards in your hand, shuffle 1 of them into your deck, then draw 3 cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -2198,7 +2198,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           playRequirement{
             assert my.hand.getExcludedList(thisCard)
           }
-        };
+        }
       case CELIO_S_NETWORK_88:
         return supporter (this) {
           text "Search your deck for a Basic Pokémon or Evolution card (excluding Pokémon-ex), show it to your opponent, and put it into your hand. Shuffle your deck afterward.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -2211,9 +2211,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           playRequirement{
             assert my.deck
           }
-        };
+        }
       case ENERGY_REMOVAL_2_89:
-        return copy(Expedition.ENERGY_REMOVAL_2_140, this);
+        return copy(Expedition.ENERGY_REMOVAL_2_140, this)
       case ENERGY_SWITCH_90:
         return basicTrainer (this) {
           text "Move a basic Energy card attached to 1 of your Pokémon to another of your Pokémon."
@@ -2228,7 +2228,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             assertMyBench()
             assertMyAll(info:"with basic Energy cards attached to them", {it.cards.filterByType(BASIC_ENERGY)})
           }
-        };
+        }
       case EXP_ALL_91:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nAttach EXP.ALL to 1 of your Pokémon (excluding Pokémon-ex and Pokémon that has an owner in its name) that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nDuring your opponent’s turn, if 1 of your Active Pokémon would be Knocked Out by your opponent’s attack, you may take 1 basic Energy card attached to that Knocked Out Pokémon and attach it to the Pokémon with EXP.ALL attached to it. If you do, discard EXP.ALL."
@@ -2258,7 +2258,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           allowAttach {to->
             to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && !to.EX
           }
-        };
+        }
       case GREAT_BALL_92:
         return basicTrainer (this) {
           text "Search your deck for a Basic Pokémon (excluding Pokémon-ex) and put it onto your Bench. Shuffle your deck afterward."
@@ -2271,7 +2271,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           playRequirement{
             assert my.bench.notFull
           }
-        };
+        }
       case LIFE_HERB_93:
         return basicTrainer (this) {
           text "Flip a coin. If heads, choose 1 of your Pokémon (excluding Pokémon-ex), and remove all Special Conditions and 6 damage counters from that Pokémon (all if there are less than 6)."
@@ -2288,7 +2288,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           playRequirement{
             assert my.all.findAll{(it.numberOfDamageCounters || !(it.noSPC())) && it.topPokemonCard.cardTypes.isNot(EX)}
           }
-        };
+        }
       case MT__MOON_94:
         return stadium (this) {
           text "Any Pokémon (both yours and your opponent’s) with maximum HP of 70 or less can’t use any Poké-Powers.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
@@ -2313,7 +2313,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             effect2.unregister()
             new CheckAbilities().run(bg)
           }
-        };
+        }
       case POKE_BALL_95:
         return basicTrainer (this) {
           text "Flip a coin. If heads, search your deck for a Basic Pokémon or Evolution card, show it to your opponent and put it into your hand. Shuffle your deck afterward."
@@ -2326,7 +2326,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           playRequirement{
             assert my.deck
           }
-        };
+        }
       case POKEDEX_HANDY909_96:
         return basicTrainer (this) {
           text "Shuffle your deck. Look at 6 cards from the top of your deck, then put them back on top of your deck in any order."
@@ -2338,7 +2338,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             assert my.deck
 
           }
-        };
+        }
       case POKEMON_REVERSAL_97:
         return basicTrainer (this) {
           text "Flip a coin. If heads, choose 1 of your opponent’s Benched Pokémon and switch it with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
@@ -2352,7 +2352,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           playRequirement{
             assert opp.bench : "Opponent has no benched Pokémon"
           }
-        };
+        }
       case PROF__OAK_S_RESEARCH_98:
         return supporter (this) {
           text "Shuffle your hand into your deck, then draw 5 cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -2364,7 +2364,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           playRequirement{
             assert my.deck.notEmpty || (my.hand.getExcludedList(thisCard).size() >0)
           }
-        };
+        }
       case SUPER_SCOOP_UP_99:
         return basicTrainer (this) {
           text "Flip a coin. If heads, return 1 of your Pokémon and all cards attached to it to your hand."
@@ -2377,7 +2377,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           playRequirement{
             confirmScoopLastPokemon()
           }
-        };
+        }
       case VS_SEEKER_100:
         return basicTrainer (this) {
           text "Search your discard pile for a Supporter card, show it to your opponent, and put it into your hand."
@@ -2387,7 +2387,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           playRequirement{
             assert my.discard.filterByType(SUPPORTER) : "You have no Supporters in your discard"
           }
-        };
+        }
       case POTION_101:
         return basicTrainer (this) {
           text "Remove 2 damage counters from 1 of your Pokémon (remove 1 damage counter if that Pokémon has only 1)."
@@ -2401,7 +2401,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           playRequirement{
             assertMyAll(info:"with damage on them", {it.numberOfDamageCounters})
           }
-        };
+        }
       case SWITCH_102:
         return basicTrainer (this) {
           text "Switch 1 of your Active Pokémon with 1 of your Benched Pokémon."
@@ -2413,7 +2413,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           playRequirement{
             assert my.bench : "No benched Pokémon"
           }
-        };
+        }
       case MULTI_ENERGY_103:
         return specialEnergy (this, [[C]]) {
           text "Attach Multi Energy to 1 of your Pokémon. While in play, Multi Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.) Multi Energy provides [C] Energy when attached to a Pokémon that already has Special Energy cards attached to it."
@@ -2427,7 +2427,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               return [valuesBasicEnergy() as Set]
             }
           }
-        };
+        }
       case BLASTOISE_EX_104:
         return evolution (this, from:"Wartortle", hp:HP150, type:WATER, retreatCost:3) {
           weakness LIGHTNING
@@ -2461,7 +2461,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHARIZARD_EX_105:
         return evolution (this, from:"Charmeleon", hp:HP160, type:FIRE, retreatCost:2) {
           weakness LIGHTNING
@@ -2491,7 +2491,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CLEFABLE_EX_106:
         return evolution (this, from:"Clefairy", hp:HP100, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -2502,7 +2502,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               def moveList = []
               def labelList = []
 
-              moveList.addAll(defending.topPokemonCard.moves);
+              moveList.addAll(defending.topPokemonCard.moves)
               labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
 
               def move=choose(moveList, labelList)
@@ -2519,7 +2519,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTRODE_EX_107:
         return evolution (this, from:"Voltorb", hp:HP090, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -2542,7 +2542,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GENGAR_EX_108:
         return evolution (this, from:"Haunter", hp:HP150, type:PSYCHIC, retreatCost:2) {
           weakness DARKNESS
@@ -2567,7 +2567,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GYARADOS_EX_109:
         return evolution (this, from:"Magikarp", hp:HP130, type:WATER, retreatCost:3) {
           weakness LIGHTNING
@@ -2593,7 +2593,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MR__MIME_EX_110:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
           pokeBody "Magic Odds", {
@@ -2617,7 +2617,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MR__MIME_EX_111:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
           pokeBody "Magic Evens", {
@@ -2641,7 +2641,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VENUSAUR_EX_112:
         return evolution (this, from:"Ivysaur", hp:HP150, type:GRASS, retreatCost:3) {
           weakness FIRE
@@ -2681,7 +2681,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHARMANDER_113:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -2700,7 +2700,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARTICUNO_EX_114:
         return basic (this, hp:HP110, type:WATER, retreatCost:2) {
           weakness METAL
@@ -2712,9 +2712,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                 sw my.active, self
                 while(1){
                   def pl=(my.all.findAll {it.cards.filterByBasicEnergyType(W) && it!=self})
-                  if(!pl) break;
+                  if(!pl) break
                   def src=pl.select("Source for basic [W] Energy (cancel to stop moving)", false)
-                  if(!src) break;
+                  if(!src) break
                   def card=src.cards.filterByBasicEnergyType(W).select("Card to move").first()
                   energySwitch(src, self, card)
                 }
@@ -2735,7 +2735,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MOLTRES_EX_115:
         return basic (this, hp:HP110, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -2747,9 +2747,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                 sw my.active, self
                 while (1) {
                   def pl = (my.all.findAll { it.cards.filterByBasicEnergyType(R) && it != self })
-                  if (!pl) break;
+                  if (!pl) break
                   def src = pl.select("Source for basic [R] Energy (cancel to stop moving)", false)
-                  if (!src) break;
+                  if (!src) break
                   def card = src.cards.filterByBasicEnergyType(R).select("Card to move").first()
                   energySwitch(src, self, card)
                 }
@@ -2768,7 +2768,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ZAPDOS_EX_116:
         return basic (this, hp:HP110, type:LIGHTNING, retreatCost:2) {
           weakness LIGHTNING
@@ -2780,9 +2780,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                 sw my.active, self
                 while (1) {
                   def pl = (my.all.findAll { it.cards.filterByBasicEnergyType(L) && it != self })
-                  if (!pl) break;
+                  if (!pl) break
                   def src = pl.select("Source for basic [L] Energy (cancel to stop moving)", false)
-                  if (!src) break;
+                  if (!src) break
                   def card = src.cards.filterByBasicEnergyType(L).select("Card to move").first()
                   energySwitch(src, self, card)
                 }
@@ -2800,9 +2800,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       default:
-        return null;
+        return null
     }
   }
 

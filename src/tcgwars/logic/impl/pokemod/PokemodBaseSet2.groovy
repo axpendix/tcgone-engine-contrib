@@ -1,36 +1,36 @@
-package tcgwars.logic.impl.pokemod;
+package tcgwars.logic.impl.pokemod
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.impl.pokemod.PokemodBaseSet;
+import tcgwars.logic.impl.pokemod.PokemodBaseSet
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author
@@ -168,66 +168,66 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
   PSYCHIC_ENERGY_129 ("Psychic Energy", "129", Rarity.COMMON, [ENERGY, BASIC_ENERGY]),
   WATER_ENERGY_130 ("Water Energy", "130", Rarity.COMMON, [ENERGY, BASIC_ENERGY]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   PokemodBaseSet2(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.POKEMOD_BASE_SET_2;
+    return tcgwars.logic.card.Collection.POKEMOD_BASE_SET_2
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
   public Card getImplementation() {
     switch (this) {
       case ALAKAZAM_1:
-      return copy (PokemodBaseSet.ALAKAZAM_1, this);
+      return copy (PokemodBaseSet.ALAKAZAM_1, this)
       case BLASTOISE_2:
-      return copy (PokemodBaseSet.BLASTOISE_2, this);
+      return copy (PokemodBaseSet.BLASTOISE_2, this)
       case CHANSEY_3:
-      return copy (PokemodBaseSet.CHANSEY_3, this);
+      return copy (PokemodBaseSet.CHANSEY_3, this)
       case CHARIZARD_4:
-      return copy (PokemodBaseSet.CHARIZARD_4, this);
+      return copy (PokemodBaseSet.CHARIZARD_4, this)
       case CLEFABLE_5:
       return evolution (this, from:"Clefairy", hp:HP070, type:C, retreatCost:2) {
         weakness F
@@ -240,7 +240,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             def moveList = []
             def labelList = []
 
-            moveList.addAll(defending.topPokemonCard.moves);
+            moveList.addAll(defending.topPokemonCard.moves)
             labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
 
             def move=choose(moveList, labelList)
@@ -257,19 +257,19 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             reduceDamageNextTurn(hp(20), thisMove)
           }
         }
-      };
+      }
       case CLEFAIRY_6:
-      return copy (PokemodBaseSet.CLEFAIRY_5, this);
+      return copy (PokemodBaseSet.CLEFAIRY_5, this)
       case GYARADOS_7:
-      return copy (PokemodBaseSet.GYARADOS_6, this);
+      return copy (PokemodBaseSet.GYARADOS_6, this)
       case HITMONCHAN_8:
-      return copy (PokemodBaseSet.HITMONCHAN_7, this);
+      return copy (PokemodBaseSet.HITMONCHAN_7, this)
       case MAGNETON_9:
-      return copy (PokemodBaseSet.MAGNETON_9, this);
+      return copy (PokemodBaseSet.MAGNETON_9, this)
       case MEWTWO_10:
-      return copy (PokemodBaseSet.MEWTWO_10, this);
+      return copy (PokemodBaseSet.MEWTWO_10, this)
       case NIDOKING_11:
-      return copy (PokemodBaseSet.NIDOKING_11, this);
+      return copy (PokemodBaseSet.NIDOKING_11, this)
       case NIDOQUEEN_12:
       return evolution (this, from:"Nidorina", hp:HP100, type:G, retreatCost:3) {
         weakness P
@@ -294,9 +294,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case NINETALES_13:
-      return copy (PokemodBaseSet.NINETALES_12, this);
+      return copy (PokemodBaseSet.NINETALES_12, this)
       case PIDGEOT_14:
       return evolution (this, from:"Pidgeotto", hp:HP080, type:C, retreatCost:0) {
         weakness L
@@ -322,11 +322,11 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case POLIWRATH_15:
-      return copy (PokemodBaseSet.POLIWRATH_13, this);
+      return copy (PokemodBaseSet.POLIWRATH_13, this)
       case RAICHU_16:
-      return copy (PokemodBaseSet.RAICHU_14, this);
+      return copy (PokemodBaseSet.RAICHU_14, this)
       case SCYTHER_17:
       return basic (this, hp:HP070, type:G, retreatCost:0) {
         weakness R
@@ -347,9 +347,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case VENUSAUR_18:
-      return copy (PokemodBaseSet.VENUSAUR_15, this);
+      return copy (PokemodBaseSet.VENUSAUR_15, this)
       case WIGGLYTUFF_19:
       return evolution (this, from:"Jigglypuff", hp:HP080, type:C, retreatCost:2) {
         weakness F
@@ -373,19 +373,19 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ZAPDOS_20:
-      return copy (PokemodBaseSet.ZAPDOS_16, this);
+      return copy (PokemodBaseSet.ZAPDOS_16, this)
       case BEEDRILL_21:
-      return copy (PokemodBaseSet.BEEDRILL_17, this);
+      return copy (PokemodBaseSet.BEEDRILL_17, this)
       case DRAGONAIR_22:
-      return copy (PokemodBaseSet.DRAGONAIR_18, this);
+      return copy (PokemodBaseSet.DRAGONAIR_18, this)
       case DUGTRIO_23:
-      return copy (PokemodBaseSet.DUGTRIO_19, this);
+      return copy (PokemodBaseSet.DUGTRIO_19, this)
       case ELECTABUZZ_24:
-      return copy (PokemodBaseSet.ELECTABUZZ_20, this);
+      return copy (PokemodBaseSet.ELECTABUZZ_20, this)
       case ELECTRODE_25:
-      return copy (PokemodBaseSet.ELECTRODE_21, this);
+      return copy (PokemodBaseSet.ELECTRODE_21, this)
       case KANGASKHAN_26:
       return basic (this, hp:HP090, type:C, retreatCost:3) {
         weakness F
@@ -408,7 +408,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MR_MIME_27:
       return basic (this, hp:HP040, type:P, retreatCost:1) {
         weakness P
@@ -435,9 +435,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             damage 10+10*defending.numberOfDamageCounters
           }
         }
-      };
+      }
       case PIDGEOTTO_28:
-      return copy (PokemodBaseSet.PIGEOTTO_22, this);
+      return copy (PokemodBaseSet.PIGEOTTO_22, this)
       case PINSIR_29:
       return basic (this, hp:HP080, type:G, retreatCost:1) {
         weakness R
@@ -460,7 +460,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case SNORLAX_30:
       return basic (this, hp:HP090, type:C, retreatCost:4) {
         weakness F
@@ -490,7 +490,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case VENOMOTH_31:
       return evolution (this, from:"Venonat", hp:HP070, type:G, retreatCost:0) {
         weakness R
@@ -530,7 +530,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case VICTREEBEL_32:
       return evolution (this, from:"Weepinbell", hp:HP090, type:G, retreatCost:2) {
         weakness R
@@ -553,9 +553,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ARCANINE_33:
-      return copy (PokemodBaseSet.ARCANINE_23, this);
+      return copy (PokemodBaseSet.ARCANINE_23, this)
       case BUTTERFREE_34:
       return evolution (this, from:"Metapod", hp:HP080, type:G, retreatCost:0) {
         weakness R
@@ -580,11 +580,11 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             removeDamageCounterEqualToHalfDamageDone()
           }
         }
-      };
+      }
       case CHARMELEON_35:
-      return copy (PokemodBaseSet.CHARMELEON_24, this);
+      return copy (PokemodBaseSet.CHARMELEON_24, this)
       case DEWGONG_36:
-      return copy (PokemodBaseSet.DEWGONG_25, this);
+      return copy (PokemodBaseSet.DEWGONG_25, this)
       case DODRIO_37:
       return evolution (this, from:"Doduo", hp:HP070, type:C, retreatCost:0) {
         weakness L
@@ -605,9 +605,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             damage 10+10*self.numberOfDamageCounters
           }
         }
-      };
+      }
       case DRATINI_38:
-      return copy (PokemodBaseSet.DRATINI_26, this);
+      return copy (PokemodBaseSet.DRATINI_26, this)
       case EXEGGUTOR_39:
       return evolution (this, from:"Exeggcute", hp:HP080, type:G, retreatCost:3) {
         weakness R
@@ -629,9 +629,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case FARFETCH_D_40:
-      return copy (PokemodBaseSet.FARFETCH_D_27, this);
+      return copy (PokemodBaseSet.FARFETCH_D_27, this)
       case FEAROW_41:
       return evolution (this, from:"Spearow", hp:HP080, type:C, retreatCost:0) {
         weakness L
@@ -655,19 +655,19 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case GROWLITHE_42:
-      return copy (PokemodBaseSet.GROWLITHE_28, this);
+      return copy (PokemodBaseSet.GROWLITHE_28, this)
       case HAUNTER_43:
-      return copy (PokemodBaseSet.HAUNTER_29, this);
+      return copy (PokemodBaseSet.HAUNTER_29, this)
       case IVYSAUR_44:
-      return copy (PokemodBaseSet.IVYSAUR_30, this);
+      return copy (PokemodBaseSet.IVYSAUR_30, this)
       case JYNX_45:
-      return copy (PokemodBaseSet.JYNX_31, this);
+      return copy (PokemodBaseSet.JYNX_31, this)
       case KADABRA_46:
-      return copy (PokemodBaseSet.KADABRA_32, this);
+      return copy (PokemodBaseSet.KADABRA_32, this)
       case KAKUNA_47:
-      return copy (PokemodBaseSet.KAKUNA_33, this);
+      return copy (PokemodBaseSet.KAKUNA_33, this)
       case LICKITUNG_48:
       return basic (this, hp:HP080, type:C, retreatCost:3) {
         weakness F
@@ -694,13 +694,13 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MACHOKE_49:
-      return copy (PokemodBaseSet.MACHOKE_34, this);
+      return copy (PokemodBaseSet.MACHOKE_34, this)
       case MAGIKARP_50:
-      return copy (PokemodBaseSet.MAGIKARP_35, this);
+      return copy (PokemodBaseSet.MAGIKARP_35, this)
       case MAGMAR_51:
-      return copy (PokemodBaseSet.MAGMAR_36, this);
+      return copy (PokemodBaseSet.MAGMAR_36, this)
       case MAROWAK_52:
       return evolution (this, from:"Cubone", hp:HP070, type:F, retreatCost:1) {
         weakness G
@@ -729,7 +729,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             shuffleDeck()
           }
         }
-      };
+      }
       case NIDORINA_53:
       return evolution (this, from:"Nidoran♀", hp:HP080, type:G, retreatCost:1) {
         weakness P
@@ -753,9 +753,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case NIDORINO_54:
-      return copy (PokemodBaseSet.NIDORINO_37, this);
+      return copy (PokemodBaseSet.NIDORINO_37, this)
       case PARASECT_55:
       return evolution (this, from:"Paras", hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -775,7 +775,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case PERSIAN_56:
       return evolution (this, from:"Meowth", hp:HP070, type:C, retreatCost:0) {
         weakness F
@@ -797,11 +797,11 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             reduceDamageFromDefendingNextTurn(hp(10),thisMove,defending)
           }
         }
-      };
+      }
       case POLIWHIRL_57:
-      return copy (PokemodBaseSet.POLIWHIRL_38, this);
+      return copy (PokemodBaseSet.POLIWHIRL_38, this)
       case RATICATE_58:
-      return copy (PokemodBaseSet.RATICATE_40, this);
+      return copy (PokemodBaseSet.RATICATE_40, this)
       case RHYDON_59:
       return evolution (this, from:"Rhyhorn", hp:HP100, type:F, retreatCost:3) {
         weakness G
@@ -826,7 +826,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SEAKING_60:
       return evolution (this, from:"Goldeen", hp:HP070, type:W, retreatCost:0) {
         weakness L
@@ -846,9 +846,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SEEL_61:
-      return copy (PokemodBaseSet.SEEL_41, this);
+      return copy (PokemodBaseSet.SEEL_41, this)
       case TAUROS_62:
       return basic (this, hp:HP060, type:C, retreatCost:2) {
         weakness F
@@ -877,9 +877,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case WARTORTLE_63:
-      return copy (PokemodBaseSet.WARTORTLE_42, this);
+      return copy (PokemodBaseSet.WARTORTLE_42, this)
       case WEEPINBELL_64:
       return evolution (this, from:"Bellsprout", hp:HP070, type:G, retreatCost:1) {
         weakness R
@@ -902,9 +902,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case ABRA_65:
-      return copy (PokemodBaseSet.ABRA_43, this);
+      return copy (PokemodBaseSet.ABRA_43, this)
       case BELLSPROUT_66:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -930,13 +930,13 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             shuffleDeck()
           }
         }
-      };
+      }
       case BULBASAUR_67:
-      return copy (PokemodBaseSet.BULBASAUR_44, this);
+      return copy (PokemodBaseSet.BULBASAUR_44, this)
       case CATERPIE_68:
-      return copy (PokemodBaseSet.CATERPIE_45, this);
+      return copy (PokemodBaseSet.CATERPIE_45, this)
       case CHARMANDER_69:
-      return copy (PokemodBaseSet.CHARMANDER_46, this);
+      return copy (PokemodBaseSet.CHARMANDER_46, this)
       case CUBONE_70:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
@@ -957,13 +957,13 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             damage 10+10*self.numberOfDamageCounters
           }
         }
-      };
+      }
       case DIGLETT_71:
-      return copy (PokemodBaseSet.DIGLETT_47, this);
+      return copy (PokemodBaseSet.DIGLETT_47, this)
       case DODUO_72:
-      return copy (PokemodBaseSet.DODUO_48, this);
+      return copy (PokemodBaseSet.DODUO_48, this)
       case DROWZEE_73:
-      return copy (PokemodBaseSet.DROWZEE_49, this);
+      return copy (PokemodBaseSet.DROWZEE_49, this)
       case EXEGGCUTE_74:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -993,9 +993,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case GASTLY_75:
-      return copy (PokemodBaseSet.GASTLY_50, this);
+      return copy (PokemodBaseSet.GASTLY_50, this)
       case GOLDEEN_76:
       return basic (this, hp:HP040, type:W, retreatCost:0) {
         weakness L
@@ -1007,7 +1007,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case JIGGLYPUFF_77:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness F
@@ -1028,11 +1028,11 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MACHOP_78:
-      return copy (PokemodBaseSet.MACHOP_52, this);
+      return copy (PokemodBaseSet.MACHOP_52, this)
       case MAGNEMITE_79:
-      return copy (PokemodBaseSet.MAGNEMITE_53, this);
+      return copy (PokemodBaseSet.MAGNEMITE_53, this)
       case MEOWTH_80:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1048,9 +1048,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case METAPOD_81:
-      return copy (PokemodBaseSet.METAPOD_54, this);
+      return copy (PokemodBaseSet.METAPOD_54, this)
       case NIDORAN_FEMALE_82:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness P
@@ -1078,11 +1078,11 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             shuffleDeck()
           }
         }
-      };
+      }
       case NIDORAN_MALE_83:
-      return copy (PokemodBaseSet.NIDORAN_MALE_55, this);
+      return copy (PokemodBaseSet.NIDORAN_MALE_55, this)
       case ONIX_84:
-      return copy (PokemodBaseSet.ONIX_56, this);
+      return copy (PokemodBaseSet.ONIX_56, this)
       case PARAS_85:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -1102,15 +1102,15 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             apply ASLEEP
           }
         }
-      };
+      }
       case PIDGEY_86:
-      return copy (PokemodBaseSet.PIDGEY_57, this);
+      return copy (PokemodBaseSet.PIDGEY_57, this)
       case PIKACHU_87:
-      return copy (PokemodBaseSet.PIKACHU_58, this);
+      return copy (PokemodBaseSet.PIKACHU_58, this)
       case POLIWAG_88:
-      return copy (PokemodBaseSet.POLIWAG_59, this);
+      return copy (PokemodBaseSet.POLIWAG_59, this)
       case RATTATA_89:
-      return copy (PokemodBaseSet.RATTATA_61, this);
+      return copy (PokemodBaseSet.RATTATA_61, this)
       case RHYHORN_90:
       return basic (this, hp:HP070, type:F, retreatCost:3) {
         weakness G
@@ -1149,9 +1149,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SANDSHREW_91:
-      return copy (PokemodBaseSet.SANDSHREW_62, this);
+      return copy (PokemodBaseSet.SANDSHREW_62, this)
       case SPEAROW_92:
       return basic (this, hp:HP050, type:C, retreatCost:0) {
         weakness L
@@ -1186,15 +1186,15 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             damage lastDamage.value
           }
         }
-      };
+      }
       case SQUIRTLE_93:
-      return copy (PokemodBaseSet.SQUIRTLE_63, this);
+      return copy (PokemodBaseSet.SQUIRTLE_63, this)
       case STARMIE_94:
-      return copy (PokemodBaseSet.STARMIE_64, this);
+      return copy (PokemodBaseSet.STARMIE_64, this)
       case STARYU_95:
-      return copy (PokemodBaseSet.STARYU_65, this);
+      return copy (PokemodBaseSet.STARYU_65, this)
       case TANGELA_96:
-      return copy (PokemodBaseSet.TANGELA_66, this);
+      return copy (PokemodBaseSet.TANGELA_66, this)
       case VENONAT_97:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -1218,53 +1218,53 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             removeDamageCounterEqualToDamageDone()
           }
         }
-      };
+      }
       case VOLTORB_98:
-      return copy (PokemodBaseSet.VOLTORB_67, this);
+      return copy (PokemodBaseSet.VOLTORB_67, this)
       case VULPIX_99:
-      return copy (PokemodBaseSet.VULPIX_68, this);
+      return copy (PokemodBaseSet.VULPIX_68, this)
       case WEEDLE_100:
-      return copy (PokemodBaseSet.WEEDLE_69, this);
+      return copy (PokemodBaseSet.WEEDLE_69, this)
       case COMPUTER_SEARCH_101:
-      return copy (PokemodBaseSet.COMPUTER_SEARCH_71, this);
+      return copy (PokemodBaseSet.COMPUTER_SEARCH_71, this)
       case IMPOSTER_PROFESSOR_OAK_102:
-      return copy (PokemodBaseSet.IMPOSTER_PROFESSOR_OAK_73, this);
+      return copy (PokemodBaseSet.IMPOSTER_PROFESSOR_OAK_73, this)
       case ITEM_FINDER_103:
-      return copy (PokemodBaseSet.ITEM_FINDER_74, this);
+      return copy (PokemodBaseSet.ITEM_FINDER_74, this)
       case LASS_104:
-      return copy (PokemodBaseSet.LASS_75, this);
+      return copy (PokemodBaseSet.LASS_75, this)
       case POKEMON_BREEDER_105:
-      return copy (PokemodBaseSet.POKEMON_BREEDER_76, this);
+      return copy (PokemodBaseSet.POKEMON_BREEDER_76, this)
       case POKEMON_TRADER_106:
-      return copy (PokemodBaseSet.POKEMON_TRADER_77, this);
+      return copy (PokemodBaseSet.POKEMON_TRADER_77, this)
       case SCOOP_UP_107:
-      return copy (PokemodBaseSet.SCOOP_UP_78, this);
+      return copy (PokemodBaseSet.SCOOP_UP_78, this)
       case SUPER_ENERGY_REMOVAL_108:
-      return copy (PokemodBaseSet.SUPER_ENERGY_REMOVAL_79, this);
+      return copy (PokemodBaseSet.SUPER_ENERGY_REMOVAL_79, this)
       case DEFENDER_109:
-      return copy (PokemodBaseSet.DEFENDER_80, this);
+      return copy (PokemodBaseSet.DEFENDER_80, this)
       case ENERGY_RETRIEVAL_110:
-      return copy (PokemodBaseSet.ENERGY_RETRIEVAL_81, this);
+      return copy (PokemodBaseSet.ENERGY_RETRIEVAL_81, this)
       case FULL_HEAL_111:
-      return copy (PokemodBaseSet.FULL_HEAL_82, this);
+      return copy (PokemodBaseSet.FULL_HEAL_82, this)
       case MAINTENANCE_112:
-      return copy (PokemodBaseSet.MAINTENANCE_83, this);
+      return copy (PokemodBaseSet.MAINTENANCE_83, this)
       case PLUSPOWER_113:
-      return copy (PokemodBaseSet.PLUSPOWER_84, this);
+      return copy (PokemodBaseSet.PLUSPOWER_84, this)
       case POKEMON_CENTER_114:
-      return copy (PokemodBaseSet.POKEMON_CENTER_85, this);
+      return copy (PokemodBaseSet.POKEMON_CENTER_85, this)
       case POKEDEX_115:
-      return copy (PokemodBaseSet.POKEDEX_87, this);
+      return copy (PokemodBaseSet.POKEDEX_87, this)
       case PROFESSOR_OAK_116:
-      return copy (PokemodBaseSet.PROFESSOR_OAK_88, this);
+      return copy (PokemodBaseSet.PROFESSOR_OAK_88, this)
       case SUPER_POTION_117:
-      return copy (PokemodBaseSet.SUPER_POTION_90, this);
+      return copy (PokemodBaseSet.SUPER_POTION_90, this)
       case BILL_118:
-      return copy (PokemodBaseSet.BILL_91, this);
+      return copy (PokemodBaseSet.BILL_91, this)
       case ENERGY_REMOVAL_119:
-      return copy (PokemodBaseSet.ENERGY_REMOVAL_92, this);
+      return copy (PokemodBaseSet.ENERGY_REMOVAL_92, this)
       case GUST_OF_WIND_120:
-      return copy (PokemodBaseSet.GUST_OF_WIND_93, this);
+      return copy (PokemodBaseSet.GUST_OF_WIND_93, this)
       case POKE_BALL_121:
       return basicTrainer (this) {
         text "Flip a coin. If heads, you may search your deck for any Basic Pokémon or Evolution card. Show that card to your opponent, then put it into your hand. Shuffle your deck afterward."
@@ -1275,27 +1275,27 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
         playRequirement{
           assert my.deck : "Your deck is empty!"
         }
-      };
+      }
       case POTION_122:
-      return copy (PokemodBaseSet.POTION_94, this);
+      return copy (PokemodBaseSet.POTION_94, this)
       case SWITCH_123:
-      return copy (PokemodBaseSet.SWITCH_95, this);
+      return copy (PokemodBaseSet.SWITCH_95, this)
       case DOUBLE_COLORLESS_ENERGY_124:
-      return copy (PokemodBaseSet.DOUBLE_COLORLESS_ENERGY_96, this);
+      return copy (PokemodBaseSet.DOUBLE_COLORLESS_ENERGY_96, this)
       case FIGHTING_ENERGY_125:
-      return basicEnergy (this, F);
+      return basicEnergy (this, F)
       case FIRE_ENERGY_126:
-      return basicEnergy (this, R);
+      return basicEnergy (this, R)
       case GRASS_ENERGY_127:
-      return basicEnergy (this, G);
+      return basicEnergy (this, G)
       case LIGHTNING_ENERGY_128:
-      return basicEnergy (this, L);
+      return basicEnergy (this, L)
       case PSYCHIC_ENERGY_129:
-      return basicEnergy (this, P);
+      return basicEnergy (this, P)
       case WATER_ENERGY_130:
-      return basicEnergy (this, W);
+      return basicEnergy (this, W)
         default:
-      return null;
+      return null
     }
   }
 }

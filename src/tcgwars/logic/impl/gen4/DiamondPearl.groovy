@@ -1,41 +1,41 @@
 package tcgwars.logic.impl.gen4
 
-import tcgwars.logic.impl.gen1.BaseSet;
-import tcgwars.logic.impl.gen2.Expedition;
-import tcgwars.logic.impl.gen3.Sandstorm;
-import tcgwars.logic.impl.gen3.FireRedLeafGreen;
-import tcgwars.logic.impl.gen5.PlasmaStorm;
-import tcgwars.logic.impl.gen5.BlackWhite;
+import tcgwars.logic.impl.gen1.BaseSet
+import tcgwars.logic.impl.gen2.Expedition
+import tcgwars.logic.impl.gen3.Sandstorm
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
+import tcgwars.logic.impl.gen5.PlasmaStorm
+import tcgwars.logic.impl.gen5.BlackWhite
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
 
-import java.util.*;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix
@@ -176,53 +176,53 @@ public enum DiamondPearl implements LogicCardInfo {
   DARKNESS_ENERGY_129 ("Darkness Energy", "129", Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
   METAL_ENERGY_130 ("Metal Energy", "130", Rarity.COMMON, [BASIC_ENERGY, ENERGY]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   DiamondPearl(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.DIAMOND_PEARL;
+    return tcgwars.logic.card.Collection.DIAMOND_PEARL
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -257,7 +257,7 @@ public enum DiamondPearl implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DUSKNOIR_2:
         return evolution (this, from:"Dusclops", hp:HP120, type:PSYCHIC, retreatCost:3) {
           weakness D, PLUS30
@@ -287,7 +287,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTIVIRE_3:
         return evolution (this, from:"Electabuzz", hp:HP100, type:LIGHTNING, retreatCost:3) {
           weakness F, PLUS20
@@ -319,7 +319,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EMPOLEON_4:
         return evolution (this, from:"Prinplup", hp:HP130, type:WATER, retreatCost:2) {
           weakness L, PLUS30
@@ -341,7 +341,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case INFERNAPE_5:
         return evolution (this, from:"Monferno", hp:HP100, type:FIRE, retreatCost:0) {
           weakness W, PLUS30
@@ -365,7 +365,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUCARIO_6:
         return evolution (this, from:"Riolu", hp:HP090, type:FIGHTING, retreatCost:1) {
           weakness P, PLUS20
@@ -389,7 +389,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUXRAY_7:
         return evolution (this, from:"Luxio", hp:HP120, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS30
@@ -426,7 +426,7 @@ public enum DiamondPearl implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MAGNEZONE_8:
         return evolution (this, from:"Magneton", hp:HP120, type:METAL, retreatCost:4) {
           weakness R, PLUS30
@@ -449,7 +449,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MANAPHY_9:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness L, PLUS20
@@ -472,7 +472,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MISMAGIUS_10:
         return evolution (this, from:"Misdreavus", hp:HP090, type:PSYCHIC, retreatCost:1) {
           weakness D, PLUS20
@@ -494,7 +494,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PALKIA_11:
         return basic (this, hp:HP090, type:WATER, retreatCost:2) {
           weakness L, PLUS20
@@ -534,7 +534,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RHYPERIOR_12:
         return evolution (this, from:"Rhydon", hp:HP140, type:FIGHTING, retreatCost:4) {
           weakness W, PLUS30
@@ -558,7 +558,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ROSERADE_13:
         return evolution (this, from:"Roselia", hp:HP090, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
@@ -583,7 +583,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHIFTRY_14:
         return evolution (this, from:"Nuzleaf", hp:HP120, type:DARKNESS, retreatCost:2) {
           weakness F, PLUS30
@@ -613,7 +613,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SKUNTANK_15:
         return evolution (this, from:"Stunky", hp:HP090, type:DARKNESS, retreatCost:1) {
           weakness F, PLUS20
@@ -641,7 +641,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STARAPTOR_16:
         return evolution (this, from:"Staravia", hp:HP100, type:COLORLESS, retreatCost:0) {
           weakness L, PLUS30
@@ -677,7 +677,7 @@ public enum DiamondPearl implements LogicCardInfo {
               flip 1, {}, { damage 100, self }
             }
           }
-        };
+        }
       case TORTERRA_17:
         return evolution (this, from:"Grotle", hp:HP140, type:GRASS, retreatCost:4) {
           weakness R, PLUS30
@@ -700,7 +700,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AZUMARILL_18:
         return evolution (this, from:"Marill", hp:HP080, type:WATER, retreatCost:2) {
           weakness L, PLUS20
@@ -725,7 +725,7 @@ public enum DiamondPearl implements LogicCardInfo {
                 flip { apply PARALYZED }
             }
           }
-        };
+        }
       case BEAUTIFLY_19:
         return evolution (this, from:"Silcoon", hp:HP100, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
@@ -749,7 +749,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BIBAREL_20:
         return evolution (this, from:"Bidoof", hp:HP100, type:COLORLESS, retreatCost:2) {
           weakness F, PLUS20
@@ -773,7 +773,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CARNIVINE_21:
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
@@ -801,7 +801,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CLEFABLE_22:
         return evolution (this, from:"Clefairy", hp:HP090, type:COLORLESS, retreatCost:2) {
           weakness F, PLUS20
@@ -822,7 +822,7 @@ public enum DiamondPearl implements LogicCardInfo {
               def moveList = []
               def labelList = []
 
-              moveList.addAll(defending.topPokemonCard.moves);
+              moveList.addAll(defending.topPokemonCard.moves)
               labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
 
               def move=choose(moveList, labelList)
@@ -832,7 +832,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DRAPION_23:
         return evolution (this, from:"Skorupi", hp:HP100, type:PSYCHIC, retreatCost:3) {
           weakness P, PLUS20
@@ -855,7 +855,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DRIFBLIM_24:
         return evolution (this, from:"Drifloon", hp:HP080, type:PSYCHIC, retreatCost:0) {
           weakness D, PLUS20
@@ -886,7 +886,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DUSTOX_25:
         return evolution (this, from:"Cascoon", hp:HP120, type:GRASS, retreatCost:2) {
           weakness R, PLUS30
@@ -910,7 +910,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FLOATZEL_26:
         return evolution (this, from:"Buizel", hp:HP090, type:WATER, retreatCost:1) {
           weakness L, PLUS20
@@ -933,7 +933,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GENGAR_27:
         return evolution (this, from:"Haunter", hp:HP110, type:PSYCHIC, retreatCost:1) {
           weakness D, PLUS30
@@ -970,7 +970,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HERACROSS_28:
         return basic (this, hp:HP080, type:GRASS, retreatCost:2) {
           weakness R, PLUS20
@@ -993,7 +993,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HIPPOWDON_29:
         return evolution (this, from:"Hippopotas", hp:HP110, type:FIGHTING, retreatCost:3) {
           weakness W, PLUS20
@@ -1036,7 +1036,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LOPUNNY_30:
         return evolution (this, from:"Buneary", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS20
@@ -1069,7 +1069,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MACHAMP_31:
         return evolution (this, from:"Machoke", hp:HP130, type:FIGHTING, retreatCost:3) {
           weakness P, PLUS30
@@ -1094,7 +1094,7 @@ public enum DiamondPearl implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MEDICHAM_32:
         return evolution (this, from:"Meditite", hp:HP090, type:FIGHTING, retreatCost:2) {
           weakness P, PLUS20
@@ -1116,7 +1116,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MUNCHLAX_33:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:2) {
           weakness F, PLUS10
@@ -1141,7 +1141,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NOCTOWL_34:
         return evolution (this, from:"Hoothoot", hp:HP090, type:COLORLESS, retreatCost:1) {
           weakness L, PLUS20
@@ -1174,7 +1174,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PACHIRISU_35:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS20
@@ -1201,7 +1201,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PURUGLY_36:
         return evolution (this, from:"Glameow", hp:HP090, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS20
@@ -1223,7 +1223,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SNORLAX_37:
         return basic (this, hp:HP100, type:COLORLESS, retreatCost:4) {
           weakness F, PLUS20
@@ -1246,7 +1246,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STEELIX_38:
         return evolution (this, from:"Onix", hp:HP110, type:METAL, retreatCost:4) {
           weakness R, PLUS20
@@ -1269,7 +1269,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VESPIQUEN_39:
         return evolution (this, from:"Combee", hp:HP100, type:GRASS, retreatCost:3) {
           weakness R, PLUS20
@@ -1297,7 +1297,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WEAVILE_40:
         return evolution (this, from:"Sneasel", hp:HP080, type:DARKNESS, retreatCost:1) {
           weakness F, PLUS20
@@ -1322,7 +1322,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WOBBUFFET_41:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:3) {
           weakness P, PLUS20
@@ -1342,7 +1342,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WYNAUT_42:
         return basic (this, hp:HP040, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -1364,7 +1364,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BUDEW_43:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -1389,7 +1389,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CASCOON_44:
         return evolution (this, from:"Wurmple", hp:HP080, type:GRASS, retreatCost:3) {
           weakness R, PLUS20
@@ -1424,7 +1424,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHERRIM_45:
         return evolution (this, from:"Cherubi", hp:HP080, type:GRASS, retreatCost:2) {
           weakness R, PLUS20
@@ -1451,7 +1451,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DRIFLOON_46:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness D, PLUS10
@@ -1484,7 +1484,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DUSCLOPS_47:
         return evolution (this, from:"Duskull", hp:HP080, type:PSYCHIC, retreatCost:2) {
           weakness D, PLUS20
@@ -1511,7 +1511,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELEKID_48:
         return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -1537,7 +1537,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GROTLE_49:
         return evolution (this, from:"Turtwig", hp:HP090, type:GRASS, retreatCost:3) {
           weakness R, PLUS20
@@ -1562,7 +1562,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HAUNTER_50:
         return evolution (this, from:"Gastly", hp:HP070, type:PSYCHIC, retreatCost:0) {
           weakness D, PLUS20
@@ -1584,7 +1584,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HIPPOPOTAS_51:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:2) {
           weakness W, PLUS10
@@ -1607,7 +1607,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUXIO_52:
         return evolution (this, from:"Shinx", hp:HP080, type:LIGHTNING, retreatCost:0) {
           weakness F, PLUS20
@@ -1631,7 +1631,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MACHOKE_53:
         return evolution (this, from:"Machop", hp:HP080, type:FIGHTING, retreatCost:2) {
           weakness P, PLUS20
@@ -1652,7 +1652,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGNETON_54:
         return evolution (this, from:"Magnemite", hp:HP070, type:METAL, retreatCost:2) {
           weakness R, PLUS20
@@ -1681,7 +1681,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MANTYKE_55:
         return basic (this, hp:HP040, type:WATER, retreatCost:1) {
           weakness L, PLUS10
@@ -1705,7 +1705,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MONFERNO_56:
         return evolution (this, from:"Chimchar", hp:HP070, type:FIRE, retreatCost:0) {
           weakness W, PLUS20
@@ -1729,7 +1729,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NUZLEAF_57:
         return evolution (this, from:"Seedot", hp:HP080, type:DARKNESS, retreatCost:1) {
           weakness F, PLUS20
@@ -1760,7 +1760,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PRINPLUP_58:
         return evolution (this, from:"Piplup", hp:HP080, type:WATER, retreatCost:1) {
           weakness L, PLUS20
@@ -1785,7 +1785,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAPIDASH_59:
         return evolution (this, from:"Ponyta", hp:HP080, type:FIRE, retreatCost:0) {
           weakness W, PLUS20
@@ -1812,7 +1812,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RHYDON_60:
         return evolution (this, from:"Rhyhorn", hp:HP090, type:FIGHTING, retreatCost:2) {
           weakness W, PLUS20
@@ -1848,7 +1848,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RIOLU_61:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness P, PLUS10
@@ -1861,7 +1861,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SEAKING_62:
         return evolution (this, from:"Goldeen", hp:HP080, type:WATER, retreatCost:1) {
           weakness L, PLUS20
@@ -1882,7 +1882,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SILCOON_63:
         return evolution (this, from:"Wurmple", hp:HP080, type:GRASS, retreatCost:3) {
           weakness R, PLUS20
@@ -1917,7 +1917,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STARAVIA_64:
         return evolution (this, from:"Starly", hp:HP070, type:COLORLESS, retreatCost:0) {
           weakness L, PLUS20
@@ -1941,7 +1941,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case UNOWN_A_65:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -1965,7 +1965,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case UNOWN_B_66:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -1993,7 +1993,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case UNOWN_C_67:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -2021,7 +2021,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case UNOWN_D_68:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -2048,7 +2048,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AZURILL_69:
         return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
@@ -2070,7 +2070,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BIDOOF_70:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
@@ -2093,7 +2093,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BONSLY_71:
         return basic (this, hp:HP040, type:FIGHTING, retreatCost:1) {
           weakness G, PLUS10
@@ -2127,7 +2127,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BUIZEL_72:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness L, PLUS10
@@ -2143,7 +2143,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BUNEARY_73:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
@@ -2166,7 +2166,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHATOT_74:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness L, PLUS10
@@ -2189,7 +2189,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHERUBI_75:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -2219,7 +2219,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHIMCHAR_76:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
           weakness W, PLUS10
@@ -2243,7 +2243,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CLEFAIRY_77:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
@@ -2267,7 +2267,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CLEFFA_78:
         return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
@@ -2289,7 +2289,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case COMBEE_79:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -2314,7 +2314,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DUSKULL_80:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness D, PLUS10
@@ -2338,7 +2338,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTABUZZ_81:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:2) {
           weakness F, PLUS10
@@ -2365,7 +2365,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GASTLY_82:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness D, PLUS10
@@ -2383,7 +2383,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GLAMEOW_83:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
@@ -2404,7 +2404,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOLDEEN_84:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness L, PLUS10
@@ -2426,7 +2426,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HOOTHOOT_85:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness L, PLUS10
@@ -2448,7 +2448,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MACHOP_86:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:2) {
           weakness P, PLUS10
@@ -2461,7 +2461,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGNEMITE_87:
         return basic (this, hp:HP050, type:METAL, retreatCost:1) {
           weakness R, PLUS10
@@ -2484,7 +2484,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MARILL_88:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness L, PLUS10
@@ -2508,7 +2508,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MEDITITE_89:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness P, PLUS10
@@ -2529,7 +2529,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MIME_JR__90:
         return basic (this, hp:HP040, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -2553,7 +2553,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MISDREAVUS_91:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness D, PLUS10
@@ -2576,7 +2576,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ONIX_92:
         return basic (this, hp:HP090, type:FIGHTING, retreatCost:3) {
           weakness G, PLUS20
@@ -2604,7 +2604,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIPLUP_93:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness L, PLUS10
@@ -2626,7 +2626,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PONYTA_94:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
           weakness W, PLUS10
@@ -2647,7 +2647,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RHYHORN_95:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:2) {
           weakness W, PLUS10
@@ -2670,7 +2670,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ROSELIA_96:
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -2695,7 +2695,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SEEDOT_97:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -2731,7 +2731,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHINX_98:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -2747,7 +2747,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SKORUPI_99:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:2) {
           weakness P, PLUS10
@@ -2768,7 +2768,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SNEASEL_100:
         return basic (this, hp:HP060, type:DARKNESS, retreatCost:1) {
           weakness F, PLUS10
@@ -2790,7 +2790,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STARLY_101:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness L, PLUS10
@@ -2813,7 +2813,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STUNKY_102:
         return basic (this, hp:HP060, type:DARKNESS, retreatCost:1) {
           weakness F, PLUS10
@@ -2836,7 +2836,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TURTWIG_103:
         return basic (this, hp:HP060, type:GRASS, retreatCost:2) {
           weakness R, PLUS10
@@ -2858,7 +2858,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WURMPLE_104:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -2881,11 +2881,11 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DOUBLE_FULL_HEAL_105:
-        return copy (Sandstorm.DOUBLE_FULL_HEAL_86, this);
+        return copy (Sandstorm.DOUBLE_FULL_HEAL_86, this)
       case ENERGY_RESTORE_106:
-        return copy (Expedition.ENERGY_RESTORE_141, this);
+        return copy (Expedition.ENERGY_RESTORE_141, this)
       case ENERGY_SWITCH_107:
         return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this)
       case NIGHT_POKEMON_CENTER_108:
@@ -2898,18 +2898,18 @@ public enum DiamondPearl implements LogicCardInfo {
             switch (headCount) {
               case 0:
                 pcs.cards.filterByType(ENERGY).discard()
-                break;
+                break
               case 2:
                 if (pcs.numberOfDamageCounters) healAll pcs
-                break;
+                break
               default:
-                break;
+                break
             }
           }
           playRequirement {
             assert my.all.findAll{it.numberOfDamageCounters || it.cards.energyCount()} : "You have no Pokémon with either damage counters, energy attached, or both."
           }
-        };
+        }
       case PLUSPOWER_109:
       // This print increases before W/R, do not use it as copy for older prints that do it after W/R. Another diference is it affecting damage to any active, not just the defending like old prints.
       return itemCard (this) {
@@ -2944,7 +2944,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case POKE_BALL_110:
       return itemCard (this) {
           text "Flip a coin. If heads, search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
@@ -2957,7 +2957,7 @@ public enum DiamondPearl implements LogicCardInfo {
           playRequirement{
             assert my.deck: "There are no more cards in your deck."
           }
-        };
+        }
       case POKEDEX_HANDY910IS_111:
         return basicTrainer (this) {
           text "Look at the top 2 cards of your deck, choose 1 of them, and put it into your hand. Put the other card on the bottom of your deck."
@@ -2969,7 +2969,7 @@ public enum DiamondPearl implements LogicCardInfo {
           playRequirement{
             assert my.deck : "There are no more cards in your deck."
           }
-        };
+        }
       case PROFESSOR_ROWAN_112:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nChoose 1 card in your hand and shuffle the rest of your cards into your deck. Then, draw 4 cards. (If this is the only card in your hand, you can’t play this card.)"
@@ -2983,7 +2983,7 @@ public enum DiamondPearl implements LogicCardInfo {
           playRequirement{
             assert my.hand.getExcludedList(thisCard) : "This is the only card in your hand."
           }
-        };
+        }
       case RIVAL_113:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nReveal the top 5 cards of your deck. Your opponent choose 3 of those cards. Put those cards into your hand and put other 2 cards on top of your deck. Shuffle your deck afterward."
@@ -2996,7 +2996,7 @@ public enum DiamondPearl implements LogicCardInfo {
           playRequirement{
             assert my.deck : "There are no more cards in your deck."
           }
-        };
+        }
       case SPEED_STADIUM_114:
         return stadium(this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nOnce during each player's turn, the player may flip a coin until he or she gets tails. For each heads, that player draws a card."
@@ -3015,17 +3015,17 @@ public enum DiamondPearl implements LogicCardInfo {
           onRemoveFromPlay{
             actions.each { bg.gm().unregisterAction(it) }
           }
-        };
+        }
       case SUPER_SCOOP_UP_115:
-        return copy(FireRedLeafGreen.SUPER_SCOOP_UP_99, this);
+        return copy(FireRedLeafGreen.SUPER_SCOOP_UP_99, this)
       case WARP_POINT_116:
-        return copy(PlasmaStorm.ESCAPE_ROPE_120, this);
+        return copy(PlasmaStorm.ESCAPE_ROPE_120, this)
       case ENERGY_SEARCH_117:
-        return copy(BlackWhite.ENERGY_SEARCH_93, this);
+        return copy(BlackWhite.ENERGY_SEARCH_93, this)
       case POTION_118:
-        return copy(FireRedLeafGreen.POTION_101, this);
+        return copy(FireRedLeafGreen.POTION_101, this)
       case SWITCH_119:
-        return copy(FireRedLeafGreen.SWITCH_102, this);
+        return copy(FireRedLeafGreen.SWITCH_102, this)
       case EMPOLEON_LV_X_120:
         return levelUp (this, from:"Empoleon", hp:HP140, type:WATER, retreatCost:2) {
           weakness L, PLUS30
@@ -3069,7 +3069,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case INFERNAPE_LV_X_121:
         return levelUp (this, from:"Infernape", hp:HP120, type:FIRE, retreatCost:0) {
           weakness W, PLUS30
@@ -3101,7 +3101,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TORTERRA_LV_X_122:
         return levelUp (this, from:"Torterra", hp:HP160, type:GRASS, retreatCost:4) {
           weakness R, PLUS30
@@ -3128,25 +3128,25 @@ public enum DiamondPearl implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GRASS_ENERGY_123:
-        return basicEnergy (this, GRASS);
+        return basicEnergy (this, GRASS)
       case FIRE_ENERGY_124:
-        return basicEnergy (this, FIRE);
+        return basicEnergy (this, FIRE)
       case WATER_ENERGY_125:
-        return basicEnergy (this, WATER);
+        return basicEnergy (this, WATER)
       case LIGHTNING_ENERGY_126:
-        return basicEnergy (this, LIGHTNING);
+        return basicEnergy (this, LIGHTNING)
       case PSYCHIC_ENERGY_127:
-        return basicEnergy (this, PSYCHIC);
+        return basicEnergy (this, PSYCHIC)
       case FIGHTING_ENERGY_128:
-        return basicEnergy (this, FIGHTING);
+        return basicEnergy (this, FIGHTING)
       case DARKNESS_ENERGY_129:
-        return basicEnergy (this, DARKNESS);
+        return basicEnergy (this, DARKNESS)
       case METAL_ENERGY_130:
-        return basicEnergy (this, METAL);
+        return basicEnergy (this, METAL)
       default:
-        return null;
+        return null
     }
   }
 

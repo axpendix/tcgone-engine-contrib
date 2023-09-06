@@ -2,7 +2,7 @@ package tcgwars.logic.impl.gen7
 
 import tcgwars.logic.effect.gm.PlayCard
 import tcgwars.logic.impl.gen3.FireRedLeafGreen
-import tcgwars.logic.impl.gen3.TeamRocketReturns;
+import tcgwars.logic.impl.gen3.TeamRocketReturns
 import tcgwars.logic.impl.gen5.DarkExplorers
 import tcgwars.logic.impl.gen5.BlackWhite
 import tcgwars.logic.impl.gen6.Breakthrough
@@ -11,24 +11,24 @@ import tcgwars.logic.impl.gen6.PrimalClash
 import tcgwars.logic.impl.gen3.Dragon
 import tcgwars.logic.impl.gen3.RubySapphire
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.*;
+import tcgwars.logic.*
 import tcgwars.logic.card.*
-import tcgwars.logic.effect.*;
+import tcgwars.logic.effect.*
 import tcgwars.logic.effect.ability.*
 import tcgwars.logic.effect.basic.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -221,53 +221,53 @@ public enum CelestialStorm implements LogicCardInfo {
   RAINBOW_ENERGY_183("Rainbow Energy", "183", Rarity.SECRET, [ENERGY,SPECIAL_ENERGY]);
 
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   CelestialStorm(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.CELESTIAL_STORM;
+    return tcgwars.logic.card.Collection.CELESTIAL_STORM
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -286,7 +286,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case WEEPINBELL_2:
         return 	evolution (this, from:"Bellsprout", hp:HP080, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -305,7 +305,7 @@ public enum CelestialStorm implements LogicCardInfo {
               flip 2,{damage 30}
             }
           }
-        };
+        }
       case VICTREEBEL_3:
         return 	evolution (this, from:"Weepinbell", hp:HP140, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -328,7 +328,7 @@ public enum CelestialStorm implements LogicCardInfo {
               flipThenApplySC BURNED
             }
           }
-        };
+        }
       case SCYTHER_4:
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -345,7 +345,7 @@ public enum CelestialStorm implements LogicCardInfo {
               flip{preventAllEffectsNextTurn()}
             }
           }
-        };
+        }
       case SPINARAK_5:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -366,7 +366,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case ARIADOS_6:
         return 	evolution (this, from:"Spinarak", hp:HP070, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -394,7 +394,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case TREECKO_7:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -406,7 +406,7 @@ public enum CelestialStorm implements LogicCardInfo {
               apply ASLEEP
             }
           }
-        };
+        }
       case TREECKO_8:
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -424,7 +424,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case GROVYLE_9:
         return 	evolution (this, from:"Treecko", hp:HP080, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -436,7 +436,7 @@ public enum CelestialStorm implements LogicCardInfo {
               flip {damage 40}
             }
           }
-        };
+        }
       case SCEPTILE_10:
         return 	evolution (this, from:"Grovyle", hp:HP140, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -460,7 +460,7 @@ public enum CelestialStorm implements LogicCardInfo {
               my.all.each{damage 20*it.cards.energyCount(C)}
             }
           }
-        };
+        }
       case SEEDOT_11:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -490,7 +490,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SEEDOT_12:
         return basic (this, hp:HP060, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -501,7 +501,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case NUZLEAF_13:
         return 	evolution (this, from:"Seedot", hp:HP090, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -528,7 +528,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SHIFTRY_GX_14:
         return 	evolution (this, from:"Nuzleaf", hp:HP240, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -562,7 +562,7 @@ public enum CelestialStorm implements LogicCardInfo {
               shuffleOppDeck()
             }
           }
-        };
+        }
       case SURSKIT_15:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -573,7 +573,7 @@ public enum CelestialStorm implements LogicCardInfo {
               flipThenApplySC PARALYZED
             }
           }
-        };
+        }
       case MASQUERAIN_16:
         return evolution (this, from:"Surskit", hp:HP090, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -593,7 +593,7 @@ public enum CelestialStorm implements LogicCardInfo {
               flip 4, {damage 40}
             }
           }
-        };
+        }
       case VOLBEAT_17:
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -605,7 +605,7 @@ public enum CelestialStorm implements LogicCardInfo {
               if(bg.em().retrieveObject("Pheromone_Signal") == bg.turnCount - 2) damage 100
             }
           }
-        };
+        }
       case ILLUMISE_18:
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -618,7 +618,7 @@ public enum CelestialStorm implements LogicCardInfo {
               applyAfterDamage CONFUSED
             }
           }
-        };
+        }
       case CACNEA_19:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -636,7 +636,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case CACTURNE_20:
         return 	evolution (this, from:"Cacnea", hp:HP110, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -654,7 +654,7 @@ public enum CelestialStorm implements LogicCardInfo {
               swiftDamage(50,opp.all.select("50 damage to "))
             }
           }
-        };
+        }
       case TROPIUS_21:
         return basic (this, hp:HP110, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -676,7 +676,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 70
             }
           }
-        };
+        }
       case DHELMISE_22:
         return basic (this, hp:HP130, type:GRASS, retreatCost:3) {
           weakness FIRE
@@ -696,7 +696,7 @@ public enum CelestialStorm implements LogicCardInfo {
               cantAttackNextTurn self
             }
           }
-        };
+        }
       case SLUGMA_23:
         return basic (this, hp:HP070, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -715,7 +715,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case MAGCARGO_24:
         return 	evolution (this, from:"Slugma", hp:HP090, type:FIRE, retreatCost:3) {
           weakness WATER
@@ -737,7 +737,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case TORCHIC_25:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -751,7 +751,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case TORCHIC_26:
         return basic (this, hp:HP070, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -769,7 +769,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case COMBUSKEN_27:
         return 	evolution (this, from:"Torchic", hp:HP080, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -790,7 +790,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case BLAZIKEN_GX_28:
         return 	evolution (this, from:"Combusken", hp:HP240, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -823,7 +823,7 @@ public enum CelestialStorm implements LogicCardInfo {
               discardOpponentEnergy(Target.OPP_ALL)
             }
           }
-        };
+        }
       case TORKOAL_29:
         return basic (this, hp:HP120, type:FIRE, retreatCost:3) {
           weakness WATER
@@ -852,7 +852,7 @@ public enum CelestialStorm implements LogicCardInfo {
               applyAfterDamage BURNED
             }
           }
-        };
+        }
       case ORICORIO_30:
         return basic (this, hp:HP090, type:FIRE, retreatCost:1) {
           weakness LIGHTNING
@@ -878,7 +878,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 70
             }
           }
-        };
+        }
       case ARTICUNO_GX_31:
         return basic (this, hp:HP170, type:WATER, retreatCost:2) {
           weakness METAL
@@ -890,9 +890,9 @@ public enum CelestialStorm implements LogicCardInfo {
                 sw my.active, self
                 while(1){
                   def pl=(my.all.findAll {it.cards.filterByEnergyType(W) && it!=self})
-                  if(!pl) break;
+                  if(!pl) break
                   def src=pl.select("Source for [W] energy (cancel to stop moving)", false)
-                  if(!src) break;
+                  if(!src) break
                   def card=src.cards.filterByEnergyType(W).select("Card to move").first()
                   energySwitch(src, self, card)
                 }
@@ -918,7 +918,7 @@ public enum CelestialStorm implements LogicCardInfo {
               opp.active.cards.filterByType(ENERGY).discard()
             }
           }
-        };
+        }
       case MUDKIP_32:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -932,7 +932,7 @@ public enum CelestialStorm implements LogicCardInfo {
               my.deck.search(max:3,"Choose up to 3 [W] energy to put in your hand",basicEnergyFilter(W)).moveTo(my.hand)
             }
           }
-        };
+        }
       case MUDKIP_33:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -950,7 +950,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case MARSHTOMP_34:
         return 	evolution (this, from:"Mudkip", hp:HP090, type:WATER, retreatCost:3) {
           weakness GRASS
@@ -971,7 +971,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 70
             }
           }
-        };
+        }
       case SWAMPERT_35:
         return 	evolution (this, from:"Marshtomp", hp:HP160, type:WATER, retreatCost:3) {
           weakness GRASS
@@ -992,7 +992,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 80+20*self.cards.energyCount(W)
             }
           }
-        };
+        }
       case LOTAD_36:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1006,7 +1006,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LOMBRE_37:
         return 	evolution (this, from:"Lotad", hp:HP080, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1026,7 +1026,7 @@ public enum CelestialStorm implements LogicCardInfo {
               flip {damage 20}
             }
           }
-        };
+        }
       case LUDICOLO_38:
         return 	evolution (this, from:"Lombre", hp:HP140, type:WATER, retreatCost:2) {
           weakness LIGHTNING
@@ -1046,7 +1046,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 70+10*(my.bench.size()+opp.all.size())
             }
           }
-        };
+        }
       case WAILMER_39:
         return basic (this, hp:HP120, type:WATER, retreatCost:3) {
           weakness GRASS
@@ -1060,7 +1060,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case WAILORD_40:
         return 	evolution (this, from:"Wailmer", hp:HP220, type:WATER, retreatCost:4) {
           weakness GRASS
@@ -1071,7 +1071,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 200-40*self.numberOfDamageCounters
             }
           }
-        };
+        }
       case CLAMPERL_41:
         return basic (this, hp:HP050, type:WATER, retreatCost:3) {
           weakness GRASS
@@ -1093,7 +1093,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case HUNTAIL_42:
         return 	evolution (this, from:"Clamperl", hp:HP110, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -1114,7 +1114,7 @@ public enum CelestialStorm implements LogicCardInfo {
               if(defending.basic) damage 80
             }
           }
-        };
+        }
       case GOREBYSS_43:
         return 	evolution (this, from:"Clamperl", hp:HP090, type:WATER, retreatCost:0) {
           weakness GRASS
@@ -1140,7 +1140,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LUVDISC_44:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -1164,7 +1164,7 @@ public enum CelestialStorm implements LogicCardInfo {
               applyAfterDamage ASLEEP
             }
           }
-        };
+        }
       case REGICE_45:
         return basic (this, hp:HP120, type:WATER, retreatCost:3) {
           weakness METAL
@@ -1187,7 +1187,7 @@ public enum CelestialStorm implements LogicCardInfo {
               applyAfterDamage ASLEEP
             }
           }
-        };
+        }
       case KYOGRE_46:
         return basic (this, hp:HP130, type:WATER, retreatCost:4) {
           weakness GRASS
@@ -1210,7 +1210,7 @@ public enum CelestialStorm implements LogicCardInfo {
               cantUseAttack thisMove, self
             }
           }
-        };
+        }
       case VOLTORB_47:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1230,7 +1230,7 @@ public enum CelestialStorm implements LogicCardInfo {
               flipThenApplySC PARALYZED
             }
           }
-        };
+        }
       case ELECTRODE_GX_48:
         return evolution(this, from: "Voltorb", hp: HP190, type: LIGHTNING, retreatCost: 1) {
           weakness FIGHTING
@@ -1273,7 +1273,7 @@ public enum CelestialStorm implements LogicCardInfo {
               additionalDamageByDiscardingCardTypeFromPokemon 30, 50, ENERGY
             }
           }
-        };
+        }
       case CHINCHOU_49:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1299,7 +1299,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LANTURN_50:
         return 	evolution (this, from:"Chinchou", hp:HP110, type:LIGHTNING, retreatCost:2) {
           weakness FIGHTING
@@ -1327,7 +1327,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ELECTRIKE_51:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1339,7 +1339,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case MANECTRIC_52:
         return 	evolution (this, from:"Electrike", hp:HP110, type:LIGHTNING, retreatCost:0) {
           weakness FIGHTING
@@ -1366,7 +1366,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case PLUSLE_53:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1390,7 +1390,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case MINUN_54:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1417,7 +1417,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case ORICORIO_55:
         return basic (this, hp:HP090, type:LIGHTNING, retreatCost:1) {
           weakness LIGHTNING
@@ -1441,7 +1441,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 70
             }
           }
-        };
+        }
       case MR_MIME_GX_56:
         return basic (this, hp:HP150, type:PSYCHIC, retreatCost:2) {
           bwAbility "Magic Evens" , {
@@ -1475,7 +1475,7 @@ public enum CelestialStorm implements LogicCardInfo {
               heal self.numberOfDamageCounters*10, self
             }
           }
-        };
+        }
       case GULPIN_57:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1493,7 +1493,7 @@ public enum CelestialStorm implements LogicCardInfo {
               apply POISONED
             }
           }
-        };
+        }
       case SWALOT_58:
         return 	evolution (this, from:"Gulpin", hp:HP120, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -1513,7 +1513,7 @@ public enum CelestialStorm implements LogicCardInfo {
               if(defending.getRemainingHP() < self.getRemainingHP()) damage 80
             }
           }
-        };
+        }
       case SPOINK_59:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1527,7 +1527,7 @@ public enum CelestialStorm implements LogicCardInfo {
               switchYourActive(now: 1)
             }
           }
-        };
+        }
       case GRUMPIG_60:
         return 	evolution (this, from:"Spoink", hp:HP120, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -1547,7 +1547,7 @@ public enum CelestialStorm implements LogicCardInfo {
               if(addDmg) damage 70
             }
           }
-        };
+        }
       case LUNATONE_61:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1583,7 +1583,7 @@ public enum CelestialStorm implements LogicCardInfo {
               flipThenApplySC PARALYZED
             }
           }
-        };
+        }
       case SOLROCK_62:
         return basic (this, hp:HP090, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1602,7 +1602,7 @@ public enum CelestialStorm implements LogicCardInfo {
               flip 1, {apply PARALYZED}, {apply BURNED}
             }
           }
-        };
+        }
       case SHUPPET_63:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness DARKNESS
@@ -1621,7 +1621,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case SHUPPET_64:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness DARKNESS
@@ -1633,7 +1633,7 @@ public enum CelestialStorm implements LogicCardInfo {
               apply CONFUSED
             }
           }
-        };
+        }
       case BANETTE_65:
         return 	evolution (this, from:"Shuppet", hp:HP090, type:PSYCHIC, retreatCost:1) {
           weakness DARKNESS
@@ -1656,7 +1656,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case BANETTE_GX_66:
         return 	evolution (this, from:"Shuppet", hp:HP190, type:PSYCHIC, retreatCost:1) {
           weakness DARKNESS
@@ -1668,7 +1668,7 @@ public enum CelestialStorm implements LogicCardInfo {
               assert self.active : "$self is not your active"
               assert my.all.findAll{it.numberOfDamageCounters} || opp.all.findAll{it.numberOfDamageCounters} : "There is no pokémon with damage counter on them"
               powerUsed()
-              def bothAll = new PcsList();
+              def bothAll = new PcsList()
               my.all.each{
                 bothAll.add(it)
               }
@@ -1705,7 +1705,7 @@ public enum CelestialStorm implements LogicCardInfo {
               my.discard.select(max:3,"select the card you want to put in your hand.").moveTo(my.hand)
             }
           }
-        };
+        }
       case DEOXYS_67:
         return basic (this, hp:HP120, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1727,7 +1727,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DEOXYS_68:
         return basic (this, hp:HP130, type:PSYCHIC, retreatCost:3) {
           weakness PSYCHIC
@@ -1746,7 +1746,7 @@ public enum CelestialStorm implements LogicCardInfo {
               dontApplyResistance()
             }
           }
-        };
+        }
       case DEOXYS_69:
         return basic (this, hp:HP100, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1765,7 +1765,7 @@ public enum CelestialStorm implements LogicCardInfo {
               noWrDamage(50,opp.all.select())
             }
           }
-        };
+        }
       case LUNALA_70:
         return 	evolution (this, from:"Cosmoem", hp:HP160, type:PSYCHIC, retreatCost:2) {
           weakness DARKNESS
@@ -1790,7 +1790,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 80+20*defending.cards.energyCount(C)
             }
           }
-        };
+        }
       case ONIX_71:
         return basic (this, hp:HP100, type:FIGHTING, retreatCost:2) {
           weakness GRASS
@@ -1820,7 +1820,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 10+10*(self.numberOfDamageCounters)
             }
           }
-        };
+        }
       case PHANPY_72:
         return basic (this, hp:HP070, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -1851,7 +1851,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DONPHAN_73:
         return 	evolution (this, from:"Phanpy", hp:HP130, type:FIGHTING, retreatCost:3) {
           weakness GRASS
@@ -1877,7 +1877,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LARVITAR_74:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -1895,7 +1895,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case PUPITAR_75:
         return 	evolution (this, from:"Larvitar", hp:HP080, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -1923,7 +1923,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MEDITITE_76:
         return basic (this, hp:HP070, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -1954,7 +1954,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case MEDICHAM_77:
         return 	evolution (this, from:"Meditite", hp:HP090, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -1974,7 +1974,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 30,self
             }
           }
-        };
+        }
       case BALTOY_78:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -1986,7 +1986,7 @@ public enum CelestialStorm implements LogicCardInfo {
               flipThenApplySC PARALYZED
             }
           }
-        };
+        }
       case CLAYDOL_79:
         return 	evolution (this, from:"Baltoy", hp:HP110, type:FIGHTING, retreatCost:2) {
           weakness GRASS
@@ -2005,7 +2005,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 40*my.discard.findAll{it.name.contains("Steven's Resolve")}.size()
             }
           }
-        };
+        }
       case REGIROCK_80:
         return basic (this, hp:HP120, type:FIGHTING, retreatCost:3) {
           weakness GRASS
@@ -2027,7 +2027,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case GROUDON_81:
         return basic (this, hp:HP130, type:FIGHTING, retreatCost:4) {
           weakness GRASS
@@ -2055,7 +2055,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case PALOSSAND_GX_82:
         return 	evolution (this, from:"Sandygast", hp:HP210, type:FIGHTING, retreatCost:4) {
           weakness GRASS
@@ -2087,7 +2087,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 60*opp.deck.subList(0,13).filterByType(POKEMON).select(min:0,max:opp.deck.subList(0,13).filterByType(POKEMON).size(),"Select the cards you want to discard.").discard().size()
             }
           }
-        };
+        }
       case MINIOR_83:
         return basic (this, hp:HP090, type:FIGHTING, retreatCost:2) {
           weakness GRASS
@@ -2107,7 +2107,7 @@ public enum CelestialStorm implements LogicCardInfo {
               swiftDamage 30, defending
             }
           }
-        };
+        }
       case ALOLAN_RATTATA_84:
         return basic (this, hp:HP040, type:DARKNESS, retreatCost:1) {
           weakness FIGHTING
@@ -2129,7 +2129,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case ALOLAN_RATICATE_GX_85:
         return 	evolution (this, from:"Alolan Rattata", hp:HP200, type:DARKNESS, retreatCost:3) {
           weakness FIGHTING
@@ -2161,7 +2161,7 @@ public enum CelestialStorm implements LogicCardInfo {
               my.deck.search(min:0,max:6,"Select up to 6 item cards",cardTypeFilter(ITEM)).showToOpponent("Selected cards").moveTo(my.hand)
             }
           }
-        };
+        }
       case SNEASEL_86:
         return basic (this, hp:HP060, type:DARKNESS, retreatCost:1) {
           weakness FIGHTING
@@ -2180,7 +2180,7 @@ public enum CelestialStorm implements LogicCardInfo {
               flip my.all.size(),{damage 30}
             }
           }
-        };
+        }
       case TYRANITAR_87:
         return 	evolution (this, from:"Pupitar", hp:HP170, type:DARKNESS, retreatCost:3) {
           weakness FIGHTING
@@ -2208,7 +2208,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SABLEYE_88:
         return basic (this, hp:HP070, type:DARKNESS, retreatCost:1) {
           bwAbility "Excavate" , {
@@ -2231,7 +2231,7 @@ public enum CelestialStorm implements LogicCardInfo {
               amnesia delegate
             }
           }
-        };
+        }
       case STEELIX_89:
         return 	evolution (this, from:"Onix", hp:HP190, type:METAL, retreatCost:4) {
           weakness FIRE
@@ -2251,7 +2251,7 @@ public enum CelestialStorm implements LogicCardInfo {
               flip {damage 40}
             }
           }
-        };
+        }
       case SCIZOR_GX_90:
         return 	evolution (this, from:"Scyther", hp:HP210, type:METAL, retreatCost:1) {
           weakness FIRE
@@ -2291,7 +2291,7 @@ public enum CelestialStorm implements LogicCardInfo {
               if(defending.realEvolution) damage 100
             }
           }
-        };
+        }
       case MAWILE_91:
         return basic (this, hp:HP070, type:METAL, retreatCost:1) {
           weakness FIRE
@@ -2319,7 +2319,7 @@ public enum CelestialStorm implements LogicCardInfo {
               if(defending.pokemonGX || defending.pokemonEX) damage 30
             }
           }
-        };
+        }
       case BELDUM_92:
         return basic (this, hp:HP060, type:METAL, retreatCost:2) {
           weakness FIRE
@@ -2339,7 +2339,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case BELDUM_93:
         return basic (this, hp:HP070, type:METAL, retreatCost:3) {
           weakness FIRE
@@ -2351,7 +2351,7 @@ public enum CelestialStorm implements LogicCardInfo {
               flip {damage 50}
             }
           }
-        };
+        }
       case METANG_94:
         return 	evolution (this, from:"Beldum", hp:HP090, type:METAL, retreatCost:3) {
           weakness FIRE
@@ -2364,7 +2364,7 @@ public enum CelestialStorm implements LogicCardInfo {
               flip 2,{damage 20}
             }
           }
-        };
+        }
       case METAGROSS_95:
         return 	evolution (this, from:"Metang", hp:HP170, type:METAL, retreatCost:4) {
           weakness FIRE
@@ -2388,7 +2388,7 @@ public enum CelestialStorm implements LogicCardInfo {
               increasedBaseDamageNextTurn("Meteor Mash",hp(60))
             }
           }
-        };
+        }
       case REGISTEEL_96:
         return basic (this, hp:HP120, type:METAL, retreatCost:3) {
           weakness FIRE
@@ -2414,7 +2414,7 @@ public enum CelestialStorm implements LogicCardInfo {
               if(defending.hasModernAbility()) damage 60
             }
           }
-        };
+        }
       case JIRACHI_PRISM_STAR_97:
         return basic (this, hp:HP080, type:METAL, retreatCost:1) {
           weakness FIRE
@@ -2467,7 +2467,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case HEATRAN_98:
         return basic (this, hp:HP130, type:METAL, retreatCost:3) {
           weakness FIRE
@@ -2496,7 +2496,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 30, self
             }
           }
-        };
+        }
       case SOLGALEO_99:
         return 	evolution (this, from:"Cosmoem", hp:HP160, type:METAL, retreatCost:3) {
           weakness FIRE
@@ -2518,7 +2518,7 @@ public enum CelestialStorm implements LogicCardInfo {
               dontApplyResistance()
             }
           }
-        };
+        }
       case CELESTEELA_100:
         return basic (this, hp:HP140, type:METAL, retreatCost:4) {
           weakness LIGHTNING
@@ -2550,7 +2550,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 160
             }
           }
-        };
+        }
       case KARTANA_101:
         return basic (this, hp:HP060, type:METAL, retreatCost:1) {
           weakness FIRE
@@ -2563,7 +2563,7 @@ public enum CelestialStorm implements LogicCardInfo {
               if(opp.prizeCardSet.size() == 6) damage 90
             }
           }
-        };
+        }
       case STAKATAKA_GX_102:
         return basic (this, hp:HP180, type:METAL, retreatCost:3) {
           weakness FIRE
@@ -2600,7 +2600,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 50*my.prizeCardSet.takenCount
             }
           }
-        };
+        }
       case BAGON_103:
         return basic (this, hp:HP060, type:DRAGON, retreatCost:1) {
           weakness FAIRY
@@ -2612,7 +2612,7 @@ public enum CelestialStorm implements LogicCardInfo {
               reduceDamageNextTurn(hp(10),thisMove)
             }
           }
-        };
+        }
       case BAGON_104:
         return basic (this, hp:HP070, type:DRAGON, retreatCost:1) {
           weakness FAIRY
@@ -2624,7 +2624,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 10, self
             }
           }
-        };
+        }
       case SHELGON_105:
         return 	evolution (this, from:"Bagon", hp:HP090, type:DRAGON, retreatCost:3) {
           weakness FAIRY
@@ -2636,7 +2636,7 @@ public enum CelestialStorm implements LogicCardInfo {
               if(self.numberOfDamageCounters) damage 50
             }
           }
-        };
+        }
       case SALAMENCE_106:
         return 	evolution (this, from:"Shelgon", hp:HP150, type:DRAGON, retreatCost:3) {
           weakness FAIRY
@@ -2657,7 +2657,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 100
             }
           }
-        };
+        }
       case LATIAS_PRISM_STAR_107:
         return basic (this, hp:HP130, type:DRAGON, retreatCost:1) {
           weakness FAIRY
@@ -2675,7 +2675,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LATIOS_PRISM_STAR_108:
         return basic (this, hp:HP140, type:DRAGON, retreatCost:1) {
           weakness FAIRY
@@ -2688,7 +2688,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case RAYQUAZA_GX_109:
         return basic (this, hp:HP180, type:DRAGON, retreatCost:3) {
           weakness FAIRY
@@ -2724,7 +2724,7 @@ public enum CelestialStorm implements LogicCardInfo {
               draw 10
             }
           }
-        };
+        }
       case DUNSPARCE_110:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -2757,7 +2757,7 @@ public enum CelestialStorm implements LogicCardInfo {
               flipThenApplySC PARALYZED
             }
           }
-        };
+        }
       case WINGULL_111:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -2769,7 +2769,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case PELIPPER_112:
         return 	evolution (this, from:"Wingull", hp:HP120, type:COLORLESS, retreatCost:2) {
           weakness LIGHTNING
@@ -2793,7 +2793,7 @@ public enum CelestialStorm implements LogicCardInfo {
               applyAfterDamage ASLEEP
             }
           }
-        };
+        }
       case SLAKOTH_113:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -2812,7 +2812,7 @@ public enum CelestialStorm implements LogicCardInfo {
               cantAttackNextTurn self
             }
           }
-        };
+        }
       case VIGOROTH_114:
         return 	evolution (this, from:"Slakoth", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -2830,7 +2830,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 20+10*self.numberOfDamageCounters
             }
           }
-        };
+        }
       case SLAKING_115:
         return 	evolution (this, from:"Vigoroth", hp:HP160, type:COLORLESS, retreatCost:3) {
           weakness FIGHTING
@@ -2866,7 +2866,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case WHISMUR_116:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -2895,7 +2895,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case WHISMUR_117:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -2911,7 +2911,7 @@ public enum CelestialStorm implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LOUDRED_118:
         return 	evolution (this, from:"Whismur", hp:HP100, type:COLORLESS, retreatCost:3) {
           weakness FIGHTING
@@ -2923,7 +2923,7 @@ public enum CelestialStorm implements LogicCardInfo {
               applyAfterDamage CONFUSED
             }
           }
-        };
+        }
       case EXPLOUD_119:
         return 	evolution (this, from:"Loudred", hp:HP150, type:COLORLESS, retreatCost:4) {
           weakness FIGHTING
@@ -2944,7 +2944,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 100
             }
           }
-        };
+        }
       case SKITTY_120:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -2956,7 +2956,7 @@ public enum CelestialStorm implements LogicCardInfo {
               flipThenApplySC PARALYZED
             }
           }
-        };
+        }
       case DELCATTY_121:
         return 	evolution (this, from:"Skitty", hp:HP090, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -2976,7 +2976,7 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 40
             }
           }
-        };
+        }
       case KECLEON_122:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -2998,11 +2998,11 @@ public enum CelestialStorm implements LogicCardInfo {
               damage 80
             }
           }
-        };
+        }
       case ACRO_BIKE_123:
-        return copy(PrimalClash.ACRO_BIKE_122, this);
+        return copy(PrimalClash.ACRO_BIKE_122, this)
       case APRICORN_MAKER_124:
-        return copy(Skyridge.APRICORN_MAKER_121, this);
+        return copy(Skyridge.APRICORN_MAKER_121, this)
       case BEAST_BALL_125:
         return 	itemCard (this) {
           text "Look at your face-down Prize cards. You may reveal an Ultra Beast card you find there, put it into your hand, and put this Beast Ball in its place. (If you don't reveal an Ultra Beast card, put this card in the discard pile.) Then, shuffle your face-down Prize cards.\nYou may play as many Item cards as you like during your turn (before your attack).\n"
@@ -3022,11 +3022,11 @@ public enum CelestialStorm implements LogicCardInfo {
           }
           playRequirement{
           }
-        };
+        }
       case BILLS_MAINTENANCE_126:
-        return copy(FireRedLeafGreen.BILL_S_MAINTENANCE_87, this);
+        return copy(FireRedLeafGreen.BILL_S_MAINTENANCE_87, this)
       case COPYCAT_127:
-        return copy(TeamRocketReturns.COPYCAT_83, this);
+        return copy(TeamRocketReturns.COPYCAT_83, this)
       case ENERGY_RECYCLE_SYSTEM_128:
         return itemCard (this) {
           text "Choose 1:\n" +
@@ -3047,11 +3047,11 @@ public enum CelestialStorm implements LogicCardInfo {
           }
         }
       case ENERGY_SWITCH_129:
-        return copy(BlackWhite.ENERGY_SWITCH_94, this);
+        return copy(BlackWhite.ENERGY_SWITCH_94, this)
       case FISHERMAN_130:
-        return copy(Breakthrough.FISHERMAN_136, this);
+        return copy(Breakthrough.FISHERMAN_136, this)
       case FRIEND_BALL_131:
-        return copy(Skyridge.FRIEND_BALL_126, this);
+        return copy(Skyridge.FRIEND_BALL_126, this)
       case HAU_132:
         return supporter(this) {
           text "Draw 3 cards.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
@@ -3061,7 +3061,7 @@ public enum CelestialStorm implements LogicCardInfo {
           playRequirement{
             assert my.deck.notEmpty
           }
-        };
+        }
       case HIKER_133:
         return supporter(this) {
           text "Look at the top 5 cards of either players deck and choose 1 of them. That player shuffles the other cards back into their deck. Then, put the card you chose on top of that deck.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
@@ -3097,7 +3097,7 @@ public enum CelestialStorm implements LogicCardInfo {
           playRequirement{
             assert my.deck.notEmpty || opp.deck.notEmpty
           }
-        };
+        }
       case HUSTLE_BELT_134:
         return 	pokemonTool(this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesnt already have a Pokémon Tool attached to it.\nIf the Pokémon this card is attached to has 30 HP or less remaining and has any damage counters on it, its attacks do 60 more damage to your opponents Active Pokémon (before applying Weakness and Resistance).\nYou may play as many Item cards as you like during your turn (before your attack).\n"
@@ -3119,7 +3119,7 @@ public enum CelestialStorm implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case LAST_CHANCE_POTION_135:
         return 	itemCard (this) {
           text "Heal 120 damage from 1 of your Pokémon that has 30 HP or less remaining.\nYou may play as many Item cards as you like during your turn (before your attack).\n"
@@ -3130,7 +3130,7 @@ public enum CelestialStorm implements LogicCardInfo {
           playRequirement{
             assert my.all.findAll{it.numberOfDamageCounters && it.getRemainingHP().value <= 30}
           }
-        };
+        }
       case LIFE_HERB_136:
         return 	itemCard (this) {
           text "You may play as many Item cards as you like during your turn (before your attack).\n"
@@ -3147,7 +3147,7 @@ public enum CelestialStorm implements LogicCardInfo {
           playRequirement{
             assert my.all.findAll{(it.numberOfDamageCounters !=0 || !(it.noSPC()))}
           }
-        };
+        }
       case LISIA_137:
         return supporter(this) {
           text "Search your deck for up to 2 Prism Star cards, reveal them, and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
@@ -3158,9 +3158,9 @@ public enum CelestialStorm implements LogicCardInfo {
           playRequirement{
             assert my.deck
           }
-        };
+        }
       case LURE_BALL_138:
-        return copy(Skyridge.LURE_BALL_128, this);
+        return copy(Skyridge.LURE_BALL_128, this)
       case THE_MASKED_ROYAL_139:
         return supporter(this) {
           text "Attach a basic Energy card from your hand to one of your Stage 2 [G], [R], or [W] Pokémon.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
@@ -3170,9 +3170,9 @@ public enum CelestialStorm implements LogicCardInfo {
           playRequirement{
             assert my.all.any{it.stage2 && (it.types.contains(G) || it.types.contains(R) || it.types.contains(W))} && my.hand.filterByType(BASIC_ENERGY)
           }
-        };
+        }
       case POKENAV_140:
-        return copy(RubySapphire.POKENAV_88, this);
+        return copy(RubySapphire.POKENAV_88, this)
       case RAINBOW_BRUSH_141:
         return 	itemCard (this) {
           text "Choose an Energy card attached to 1 of your Pokémon. Search your deck for a basic Energy card and switch it with that card. Shuffle the first Energy card into your deck.\nYou may play as many Item cards as you like during your turn (before your attack).\n"
@@ -3189,9 +3189,9 @@ public enum CelestialStorm implements LogicCardInfo {
           playRequirement{
             assert my.all.findAll{it.cards.filterByType(ENERGY)} && my.deck
           }
-        };
+        }
       case RARE_CANDY_142:
-        return copy(DarkExplorers.RARE_CANDY_100, this);
+        return copy(DarkExplorers.RARE_CANDY_100, this)
       case SHRINE_OF_PUNISHMENT_143:
         return stadium(this) {
           text "Between turns, put 1 damage counter on each Pokémon-GX and Pokémon-EX (both yours and your opponents).\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you cant play this card.\n"
@@ -3215,7 +3215,7 @@ public enum CelestialStorm implements LogicCardInfo {
           onRemoveFromPlay{
             eff.unregister()
           }
-        };
+        }
       case SKY_PILLAR_144:
         return stadium(this) {
           text "Prevent all effects of the opponents attacks, including damage, done to Benched Pokémon (both yours and your opponents).\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you cant play this card.\n"
@@ -3244,7 +3244,7 @@ public enum CelestialStorm implements LogicCardInfo {
           onRemoveFromPlay{
             eff.unregister()
           }
-        };
+        }
       case STEVENS_RESOLVE_145:
         return supporter(this) {
           text "Search your deck for up to 3 cards and put them into your hand. Then, shuffle your deck. Your turn ends.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
@@ -3258,11 +3258,11 @@ public enum CelestialStorm implements LogicCardInfo {
           playRequirement{
             assert my.deck
           }
-        };
+        }
       case SUPER_SCOOP_UP_146:
-        return copy(FireRedLeafGreen.SUPER_SCOOP_UP_99, this);
+        return copy(FireRedLeafGreen.SUPER_SCOOP_UP_99, this)
       case SWITCH_147:
-        return copy(BlackWhite.SWITCH_104, this);
+        return copy(BlackWhite.SWITCH_104, this)
       case TATE_LIZA_148:
         return supporter(this) {
           text "Choose 1:\nShuffle your hand into your deck. Then, draw 5 cards.\nSwitch your Active Pokémon with 1 of your Benched Pokémon.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
@@ -3290,7 +3290,7 @@ public enum CelestialStorm implements LogicCardInfo {
           playRequirement{
             assert my.deck.notEmpty || (my.hand.size() > 1) || my.bench
           }
-        };
+        }
       case TV_REPORTER_149:
         return supporter(this) {
           text "Draw 3 cards. Then, discard a card from your hand. If you have no cards in your deck, you can't play this card.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
@@ -3301,7 +3301,7 @@ public enum CelestialStorm implements LogicCardInfo {
           playRequirement{
             assert my.deck
           }
-        };
+        }
       case UNDERGROUND_EXPEDITION_150:
         return supporter(this) {
           text "Look at the bottom 4 cards of your deck and put 2 of them into your hand. Put the other cards back on the bottom of your deck in any order.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
@@ -3322,7 +3322,7 @@ public enum CelestialStorm implements LogicCardInfo {
           playRequirement{
             assert my.deck
           }
-        };
+        }
       case RAINBOW_ENERGY_151:
         return specialEnergy (this, [[C]]) {
           text "Attach Rainbow Energy to 1 of your Pokémon. While in play, Rainbow Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.) When you attach this card from your hand to 1 of your Pokémon, put 1 damage counter on that Pokémon. (While not in play, Rainbow Energy counts as Colorless Energy.)"
@@ -3335,73 +3335,73 @@ public enum CelestialStorm implements LogicCardInfo {
           getEnergyTypesOverride {
             self != null ? [valuesBasicEnergy() as Set] : [[C] as Set]
           }
-        };
+        }
       case SHIFTRY_GX_152:
-        return copy(SHIFTRY_GX_14,this);
+        return copy(SHIFTRY_GX_14,this)
       case BLAZIKEN_GX_153:
-        return copy(BLAZIKEN_GX_28,this);
+        return copy(BLAZIKEN_GX_28,this)
       case ARTICUNO_GX_154:
-        return copy(ARTICUNO_GX_31,this);
+        return copy(ARTICUNO_GX_31,this)
       case ELECTRODE_GX_155:
         return copy(ELECTRODE_GX_48,this)
       case MR_MIME_GX_156:
-        return copy(MR_MIME_GX_56,this);
+        return copy(MR_MIME_GX_56,this)
       case BANETTE_GX_157:
-        return copy(BANETTE_GX_66,this);
+        return copy(BANETTE_GX_66,this)
       case SCIZOR_GX_158:
-        return copy(SCIZOR_GX_90,this);
+        return copy(SCIZOR_GX_90,this)
       case STAKATAKA_GX_159:
-        return copy(STAKATAKA_GX_102,this);
+        return copy(STAKATAKA_GX_102,this)
       case RAYQUAZA_GX_160:
-        return copy(RAYQUAZA_GX_109,this);
+        return copy(RAYQUAZA_GX_109,this)
       case APRICORN_MAKER_161:
-        return copy(APRICORN_MAKER_124,this);
+        return copy(APRICORN_MAKER_124,this)
       case BILLS_MAINTENANCE_162:
-        return copy(BILLS_MAINTENANCE_126,this);
+        return copy(BILLS_MAINTENANCE_126,this)
       case COPYCAT_163:
-        return copy(COPYCAT_127,this);
+        return copy(COPYCAT_127,this)
       case LISIA_164:
-        return copy(LISIA_137,this);
+        return copy(LISIA_137,this)
       case STEVENS_RESOLVE_165:
-        return copy(STEVENS_RESOLVE_145,this);
+        return copy(STEVENS_RESOLVE_145,this)
       case TATE_LIZA_166:
-        return copy(TATE_LIZA_148,this);
+        return copy(TATE_LIZA_148,this)
       case TV_REPORTER_167:
-        return copy(TV_REPORTER_149,this);
+        return copy(TV_REPORTER_149,this)
       case UNDERGROUND_EXPEDITION_168:
-        return copy(UNDERGROUND_EXPEDITION_150,this);
+        return copy(UNDERGROUND_EXPEDITION_150,this)
       case SHIFTRY_GX_169:
-        return copy(SHIFTRY_GX_14,this);
+        return copy(SHIFTRY_GX_14,this)
       case BLAZIKEN_GX_170:
-        return copy(BLAZIKEN_GX_28,this);
+        return copy(BLAZIKEN_GX_28,this)
       case ARTICUNO_GX_171:
-        return copy(ARTICUNO_GX_31,this);
+        return copy(ARTICUNO_GX_31,this)
       case ELECTRODE_GX_172:
-        return copy(ELECTRODE_GX_48,this);
+        return copy(ELECTRODE_GX_48,this)
       case MR_MIME_GX_173:
-        return copy(MR_MIME_GX_56,this);
+        return copy(MR_MIME_GX_56,this)
       case BANETTE_GX_174:
-        return copy(BANETTE_GX_66,this);
+        return copy(BANETTE_GX_66,this)
       case SCIZOR_GX_175:
-        return copy(SCIZOR_GX_90,this);
+        return copy(SCIZOR_GX_90,this)
       case STAKATAKA_GX_176:
-        return copy(STAKATAKA_GX_102,this);
+        return copy(STAKATAKA_GX_102,this)
       case RAYQUAZA_GX_177:
-        return copy(RAYQUAZA_GX_109,this);
+        return copy(RAYQUAZA_GX_109,this)
       case ACRO_BIKE_178:
-        return copy(ACRO_BIKE_123,this);
+        return copy(ACRO_BIKE_123,this)
       case HUSTLE_BELT_179:
-        return copy(HUSTLE_BELT_134,this);
+        return copy(HUSTLE_BELT_134,this)
       case LIFE_HERB_180:
-        return copy(LIFE_HERB_136,this);
+        return copy(LIFE_HERB_136,this)
       case POKENAV_181:
-        return copy(POKENAV_140,this);
+        return copy(POKENAV_140,this)
       case RAINBOW_BRUSH_182:
-        return copy(RAINBOW_BRUSH_141,this);
+        return copy(RAINBOW_BRUSH_141,this)
       case RAINBOW_ENERGY_183:
-        return copy(RAINBOW_ENERGY_151,this);
+        return copy(RAINBOW_ENERGY_151,this)
       default:
-        return null;
+        return null
     }
   }
 

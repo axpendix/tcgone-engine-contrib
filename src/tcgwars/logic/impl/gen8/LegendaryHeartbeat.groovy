@@ -3,37 +3,37 @@ package tcgwars.logic.impl.gen8
 import tcgwars.logic.impl.gen3.FireRedLeafGreen
 import tcgwars.logic.impl.gen5.EmergingPowers
 import tcgwars.logic.impl.gen5.NobleVictories
-import tcgwars.logic.impl.gen6.KalosStarterSet;
+import tcgwars.logic.impl.gen6.KalosStarterSet
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -135,53 +135,53 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
   HERO_S_MEDAL_93 ("Hero's Medal", "93", Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER, ITEM]),
   CAPE_OF_TOUGHNESS_94 ("Cape of Toughness", "94", Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER, ITEM]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   LegendaryHeartbeat(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.LEGENDARY_HEARTBEAT;
+    return tcgwars.logic.card.Collection.LEGENDARY_HEARTBEAT
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -202,7 +202,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             shuffleDeck()
           }
         }
-      };
+      }
       case KAKUNA_2:
       return evolution (this, from:"Weedle", hp:HP080, type:G, retreatCost:3) {
         weakness R
@@ -222,7 +222,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case BEEDRILL_3:
       return evolution (this, from:"Kakuna", hp:HP130, type:G, retreatCost:0) {
         weakness R
@@ -255,7 +255,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 120
           }
         }
-      };
+      }
       case EXEGGCUTE_4:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -266,7 +266,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case EXEGGUTOR_5:
       return evolution (this, from:"Exeggcute", hp:HP140, type:G, retreatCost:3) {
         weakness R
@@ -285,7 +285,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 90
           }
         }
-      };
+      }
       case YANMA_6:
       return basic (this, hp:HP080, type:G, retreatCost:1) {
         weakness R
@@ -304,7 +304,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case YANMEGA_7:
       return evolution (this, from:"Yanma", hp:HP130, type:G, retreatCost:0) {
         weakness R
@@ -323,7 +323,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 130
           }
         }
-      };
+      }
       case PINECO_8:
       return basic (this, hp:HP060, type:G, retreatCost:2) {
         weakness R
@@ -341,7 +341,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             flip { preventAllDamageNextTurn() }
           }
         }
-      };
+      }
       case CELEBI_9:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -370,7 +370,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             shuffleDeck()
           }
         }
-      };
+      }
       case SHAYMIN_10:
       return basic (this, hp:HP070, type:G, retreatCost:1) {
         weakness R
@@ -394,7 +394,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case GENESECT_11:
       return basic (this, hp:HP120, type:G, retreatCost:2) {
         weakness R
@@ -414,7 +414,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             cantAttackNextTurn self
           }
         }
-      };
+      }
       case DHELMISE_12:
       return basic (this, hp:HP130, type:G, retreatCost:3) {
         weakness R
@@ -435,7 +435,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ZARUDE_V_13:
       return basic (this, hp:HP210, type:G, retreatCost:1) {
         weakness R
@@ -467,7 +467,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case AMPHAROS_V_14:
       return basic (this, hp:HP210, type:L, retreatCost:3) {
         weakness F
@@ -488,7 +488,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             opp.bench.each { if(it.numberOfDamageCounters) damage(30, it) }
           }
         }
-      };
+      }
       case RAIKOU_15:
       return basic (this, hp:HP110, type:L, retreatCost:2) {
         weakness F
@@ -503,7 +503,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ELECTRIKE_16:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness F
@@ -524,7 +524,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MANECTRIC_17:
       return evolution (this, from:"Electrike", hp:HP120, type:L, retreatCost:0) {
         weakness F
@@ -543,7 +543,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 100
           }
         }
-      };
+      }
       case JOLTIK_18:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness F
@@ -554,7 +554,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case GALVANTULA_19:
       return evolution (this, from:"Joltik", hp:HP090, type:L, retreatCost:1) {
         weakness F
@@ -576,7 +576,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 20 * defending.numberOfDamageCounters
           }
         }
-      };
+      }
       case ZEKROM_20:
       return basic (this, hp:HP130, type:L, retreatCost:3) {
         weakness F
@@ -596,7 +596,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             applyAfterDamage PARALYZED
           }
         }
-      };
+      }
       case ZERAORA_21:
       return basic (this, hp:HP100, type:L, retreatCost:0) {
         weakness F
@@ -608,7 +608,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             if (defending.pokemonGX || defending.pokemonV) damage 80
           }
         }
-      };
+      }
       case PINCURCHIN_22:
       return basic (this, hp:HP080, type:L, retreatCost:1) {
         weakness F
@@ -626,7 +626,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case CLEFAIRY_23:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness M
@@ -644,7 +644,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             flip { metronome defending, delegate }
           }
         }
-      };
+      }
       case CLEFABLE_24:
       return evolution (this, from:"Clefairy", hp:HP100, type:P, retreatCost:1) {
         weakness M
@@ -670,7 +670,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 80
           }
         }
-      };
+      }
       case GIRAFARIG_25:
       return basic (this, hp:HP090, type:P, retreatCost:1) {
         weakness D
@@ -694,7 +694,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SHUPPET_26:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness D
@@ -706,7 +706,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             directDamage 10, defending
           }
         }
-      };
+      }
       case BANETTE_27:
       return evolution (this, from:"Shuppet", hp:HP090, type:P, retreatCost:1) {
         weakness D
@@ -729,7 +729,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case DEDENNE_28:
       return basic (this, hp:HP070, type:P, retreatCost:1) {
         weakness M
@@ -741,7 +741,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             applyAfterDamage CONFUSED
           }
         }
-      };
+      }
       case XERNEAS_29:
       return basic (this, hp:HP130, type:P, retreatCost:2) {
         weakness M
@@ -765,7 +765,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             heal 30, self
           }
         }
-      };
+      }
       case DIANCIE_30:
       return basic (this, hp:HP090, type:P, retreatCost:1) {
         weakness M
@@ -795,11 +795,11 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ALCREMIE_V_31:
-      return copy(ChampionsPath.ALCREMIE_V_22, this);
+      return copy(ChampionsPath.ALCREMIE_V_22, this)
       case ALCREMIE_VMAX_32:
-      return copy(ChampionsPath.ALCREMIE_VMAX_23, this);
+      return copy(ChampionsPath.ALCREMIE_VMAX_23, this)
       case ZACIAN_33:
       return basic (this, hp:HP110, type:P, retreatCost:2) {
         weakness M
@@ -819,7 +819,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             if (opp.all.any { it.pokemonVMAX }) damage 150
           }
         }
-      };
+      }
       case WOOPER_34:
       return basic (this, hp:HP070, type:F, retreatCost:1) {
         weakness G
@@ -837,7 +837,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case QUAGSIRE_35:
       return evolution (this, from:"Wooper", hp:HP120, type:F, retreatCost:2) {
         weakness G
@@ -859,7 +859,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 180
           }
         }
-      };
+      }
       case SHUCKLE_36:
       return basic (this, hp:HP070, type:F, retreatCost:1) {
         weakness G
@@ -880,7 +880,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case REGIROCK_37:
       return basic (this, hp:HP130, type:F, retreatCost:3) {
         weakness G
@@ -899,7 +899,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 30, self
           }
         }
-      };
+      }
       case RIOLU_38:
       return basic (this, hp:HP070, type:F, retreatCost:1) {
         weakness P
@@ -910,7 +910,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             flip { damage 30 }
           }
         }
-      };
+      }
       case ZYGARDE_39:
       return basic (this, hp:HP150, type:F, retreatCost:4) {
         weakness G
@@ -929,7 +929,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             if (my.prizeCardSet.size() > opp.prizeCardSet.size()) damage 80
           }
         }
-      };
+      }
       case ROCKRUFF_40:
       return basic (this, hp:HP070, type:F, retreatCost:1) {
         weakness G
@@ -947,7 +947,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case LYCANROC_41:
       return evolution (this, from:"Rockruff", hp:HP120, type:F, retreatCost:2) {
         weakness G
@@ -965,7 +965,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case COALOSSAL_V_42:
       return basic (this, hp:HP220, type:F, retreatCost:4) {
         weakness G
@@ -984,7 +984,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 180
           }
         }
-      };
+      }
       case COALOSSAL_VMAX_43:
       return evolution (this, from:"Coalossal V", hp:HP330, type:F, retreatCost:4) {
         weakness G
@@ -1008,7 +1008,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 240
           }
         }
-      };
+      }
       case ZAMAZENTA_44:
       return basic (this, hp:HP110, type:F, retreatCost:2) {
         weakness P
@@ -1028,7 +1028,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             preventAllDamageFromCustomPokemonNextTurn thisMove, self, { it.pokemonVMAX }
           }
         }
-      };
+      }
       case FORRETRESS_45:
       return evolution (this, from:"Pineco", hp:HP120, type:M, retreatCost:3) {
         weakness R
@@ -1051,7 +1051,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case STEELIX_V_46:
       return basic (this, hp:HP250, type:M, retreatCost:4) {
         weakness R
@@ -1072,7 +1072,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 30, self
           }
         }
-      };
+      }
       case BELDUM_47:
       return basic (this, hp:HP070, type:M, retreatCost:2) {
         weakness R
@@ -1089,7 +1089,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case METANG_48:
       return evolution (this, from:"Beldum", hp:HP100, type:M, retreatCost:3) {
         weakness R
@@ -1108,7 +1108,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case METAGROSS_49:
       return evolution (this, from:"Metang", hp:HP170, type:M, retreatCost:3) {
         weakness R
@@ -1127,7 +1127,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             if (defending.realEvolution) cantAttackNextTurn defending
           }
         }
-      };
+      }
       case JIRACHI_50:
       return basic (this, hp:HP070, type:M, retreatCost:1) {
         weakness R
@@ -1156,7 +1156,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             shuffleDeck()
           }
         }
-      };
+      }
       case LUCARIO_51:
       return evolution (this, from:"Riolu", hp:HP130, type:M, retreatCost:2) {
         weakness R
@@ -1177,7 +1177,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             cantAttackNextTurn self
           }
         }
-      };
+      }
       case DIALGA_52:
       return basic (this, hp:HP130, type:M, retreatCost:2) {
         weakness R
@@ -1200,7 +1200,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             discardSelfEnergyAfterDamage C, C
           }
         }
-      };
+      }
       case GALARIAN_STUNFISK_53:
       return basic (this, hp:HP120, type:M, retreatCost:3) {
         weakness R
@@ -1220,7 +1220,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             cantRetreat defending
           }
         }
-      };
+      }
       case MAGEARNA_54:
       return basic (this, hp:HP090, type:M, retreatCost:1) {
         weakness R
@@ -1245,7 +1245,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 20 * opp.bench.size()
           }
         }
-      };
+      }
       case LUGIA_55:
       return basic (this, hp:HP130, type:C, retreatCost:2) {
         weakness L
@@ -1268,7 +1268,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 250
           }
         }
-      };
+      }
       case RAYQUAZA_56:
       return basic (this, hp:HP120, type:C, retreatCost:2) {
         weakness L
@@ -1293,7 +1293,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case CHATOT_57:
       return basic (this, hp:HP070, type:C, retreatCost:1) {
         weakness L
@@ -1318,7 +1318,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TOGEKISS_V_58:
       return basic (this, hp:HP200, type:C, retreatCost:1) {
         weakness L
@@ -1338,7 +1338,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 130
           }
         }
-      };
+      }
       case TOGEKISS_VMAX_59:
       return evolution (this, from:"Togekiss V", hp:HP310, type:C, retreatCost:0) {
         weakness L
@@ -1354,7 +1354,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case TORNADUS_60:
       return basic (this, hp:HP120, type:C, retreatCost:1) {
         weakness L
@@ -1375,7 +1375,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             discardSelfEnergyAfterDamage C
           }
         }
-      };
+      }
       case PIKIPEK_61:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness L
@@ -1387,7 +1387,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case TRUMBEAK_62:
       return evolution (this, from:"Pikipek", hp:HP080, type:C, retreatCost:1) {
         weakness L
@@ -1410,7 +1410,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case TOUCANNON_63:
       return evolution (this, from:"Trumbeak", hp:HP150, type:C, retreatCost:2) {
         weakness L
@@ -1431,7 +1431,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             moveSelfEnergyAfterDamage my.hand, C, C
           }
         }
-      };
+      }
       case GREAT_BALL_64:
       return copy(EmergingPowers.GREAT_BALL_93, this)
       case SWITCH_65:
@@ -1452,7 +1452,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         playRequirement{
           assert my.all.any { it.energyCards && it.numberOfDamageCounters } : "No Pokémon with Energy Cards that have damage"
         }
-      };
+      }
       case HERO_S_MEDAL_68:
       return pokemonTool (this) {
         text "The Pokémon VMAX this card is attached to gets -100 HP" +
@@ -1491,9 +1491,9 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         allowAttach {PokemonCardSet to->
           (!to.pokemonVMAX || to.remainingHP > hp(100))
         }
-      };
+      }
       case ROCKY_HELMET_69:
-      return copy(NobleVictories.ROCKY_HELMET_94, this);
+      return copy(NobleVictories.ROCKY_HELMET_94, this)
       case BEAUTY_70:
       return supporter (this) {
         text "This card can be played on the first turn of the first player. Draw 2 cards."
@@ -1503,7 +1503,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         playRequirement{
           assert my.deck : "Your deck is empty!"
         }
-      };
+      }
       case ALLISTER_71:
       return supporter (this) {
         text "Draw 3 cards. If you do" +
@@ -1515,7 +1515,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         playRequirement{
           assert my.deck : "Your deck is empty!"
         }
-      };
+      }
       case OPAL_72:
       return supporter (this) {
         text "Flip 2 coins. For each heads" +
@@ -1531,7 +1531,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         playRequirement{
           assert my.deck : "Your deck is empty!"
         }
-      };
+      }
       case MARNIE_73:
       return copy(SwordShield.MARNIE_169, this)
       case AROMA_G_ENERGY_74:
@@ -1564,7 +1564,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
         onRemoveFromPlay {
           spcEff.unregister()
         }
-      };
+      }
       case STONE_F_ENERGY_75:
       return specialEnergy (this, [[]]) {
         text "This card provides [F] Energy only while this card is attached to a Pokémon. The [F] Pokémon this card is attached to takes 20 less damage from your opponent's attacks (after applying Weakness and Resistance)."
@@ -1591,47 +1591,47 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           if (self != null) return [[F] as Set]
           else return [[] as Set]
         }
-      };
+      }
       case TWIN_ENERGY_76:
       return copy (RebelClash.TWIN_ENERGY_174, this)
       case ZARUDE_V_77:
-      return copy (ZARUDE_V_13, this);
+      return copy (ZARUDE_V_13, this)
       case AMPHAROS_V_78:
-      return copy (AMPHAROS_V_14, this);
+      return copy (AMPHAROS_V_14, this)
       case ALCREMIE_V_79:
-      return copy (ALCREMIE_V_31, this);
+      return copy (ALCREMIE_V_31, this)
       case COALOSSAL_V_80:
-      return copy (COALOSSAL_V_42, this);
+      return copy (COALOSSAL_V_42, this)
       case STEELIX_V_81:
-      return copy (STEELIX_V_46, this);
+      return copy (STEELIX_V_46, this)
       case TOGEKISS_V_82:
-      return copy (TOGEKISS_V_58, this);
+      return copy (TOGEKISS_V_58, this)
       case BEAUTY_83:
-      return copy (BEAUTY_70, this);
+      return copy (BEAUTY_70, this)
       case ALLISTER_84:
-      return copy (ALLISTER_71, this);
+      return copy (ALLISTER_71, this)
       case OPAL_85:
-      return copy (OPAL_72, this);
+      return copy (OPAL_72, this)
       case ALCREMIE_VMAX_86:
-      return copy (ALCREMIE_VMAX_32, this);
+      return copy (ALCREMIE_VMAX_32, this)
       case COALOSSAL_VMAX_87:
-      return copy (COALOSSAL_VMAX_43, this);
+      return copy (COALOSSAL_VMAX_43, this)
       case TOGEKISS_VMAX_88:
-      return copy (TOGEKISS_VMAX_59, this);
+      return copy (TOGEKISS_VMAX_59, this)
       case BEAUTY_89:
-      return copy (BEAUTY_70, this);
+      return copy (BEAUTY_70, this)
       case ALLISTER_90:
-      return copy (ALLISTER_71, this);
+      return copy (ALLISTER_71, this)
       case OPAL_91:
-      return copy (OPAL_72, this);
+      return copy (OPAL_72, this)
       case ORANGURU_92:
       return copy (SwordShield.ORANGURU_148, this)
       case HERO_S_MEDAL_93:
-      return copy (HERO_S_MEDAL_68, this);
+      return copy (HERO_S_MEDAL_68, this)
       case CAPE_OF_TOUGHNESS_94:
       return copy (DarknessAblaze.CAPE_OF_TOUGHNESS_160, this)
       default:
-      return null;
+      return null
     }
   }
 }

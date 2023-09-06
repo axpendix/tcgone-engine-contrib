@@ -1,15 +1,15 @@
 package tcgwars.logic.impl.gen8
 
 import tcgwars.logic.effect.gm.Attack
-import tcgwars.logic.impl.gen3.TeamRocketReturns;
+import tcgwars.logic.impl.gen3.TeamRocketReturns
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
+import static tcgwars.logic.effect.EffectType.*
 import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
@@ -261,66 +261,66 @@ enum EvolvingSkies implements LogicCardInfo {
   DARKNESS_ENERGY_236("Darkness Energy", "236", Rarity.SECRET, [ENERGY, BASIC_ENERGY]),
   METAL_ENERGY_237("Metal Energy", "237", Rarity.SECRET, [ENERGY, BASIC_ENERGY]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   EvolvingSkies(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   String getName() {
-    return name;
+    return name
   }
 
   @Override
   Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.EVOLVING_SKIES;
+    return tcgwars.logic.card.Collection.EVOLVING_SKIES
   }
 
   @Override
   String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
   Card getImplementation() {
     switch (this) {
       case PINSIR_1:
-        return copy(EeveeHeroes.PINSIR_1, this);
+        return copy(EeveeHeroes.PINSIR_1, this)
       case HOPPIP_2:
-        return copy(BlueSkyStream.HOPPIP_1, this);
+        return copy(BlueSkyStream.HOPPIP_1, this)
       case SKIPLOOM_3:
-        return copy(BlueSkyStream.SKIPLOOM_2, this);
+        return copy(BlueSkyStream.SKIPLOOM_2, this)
       case JUMPLUFF_4:
-        return copy(BlueSkyStream.JUMPLUFF_3, this);
+        return copy(BlueSkyStream.JUMPLUFF_3, this)
       case SEEDOT_5:
         return basic(this, hp: HP050, type: G, retreatCost: 1) {
           weakness FIRE
@@ -329,13 +329,13 @@ enum EvolvingSkies implements LogicCardInfo {
             energyCost COLORLESS, COLORLESS
             astonish()
           }
-        };
+        }
       case TROPIUS_6:
-        return copy(BlueSkyStream.TROPIUS_4, this);
+        return copy(BlueSkyStream.TROPIUS_4, this)
       case LEAFEON_V_7:
-        return copy(EeveeHeroes.LEAFEON_V_2, this);
+        return copy(EeveeHeroes.LEAFEON_V_2, this)
       case LEAFEON_VMAX_8:
-        return copy(EeveeHeroes.LEAFEON_VMAX_3, this);
+        return copy(EeveeHeroes.LEAFEON_VMAX_3, this)
       case PETILIL_9:
         return basic(this, hp: HP060, type: G, retreatCost: 1) {
           weakness FIRE
@@ -346,7 +346,7 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case LILLIGANT_10:
         return evolution(this, from: "Petilil", hp: HP100, type: G, retreatCost: 1) {
           weakness FIRE
@@ -358,7 +358,7 @@ enum EvolvingSkies implements LogicCardInfo {
               flip 1, { applyAfterDamage ASLEEP }, { applyAfterDamage CONFUSED }
             }
           }
-        };
+        }
       case DWEBBLE_11:
         return basic(this, hp: HP060, type: G, retreatCost: 2) {
           weakness FIRE
@@ -377,7 +377,7 @@ enum EvolvingSkies implements LogicCardInfo {
               flip { damage 30 }
             }
           }
-        };
+        }
       case CRUSTLE_12:
         return evolution(this, from: "Dwebble", hp: HP130, type: G, retreatCost: 3) {
           weakness FIRE
@@ -396,25 +396,25 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 130
             }
           }
-        };
+        }
       case TREVENANT_V_13:
-        return copy(BlueSkyStream.TREVENANT_V_7, this);
+        return copy(BlueSkyStream.TREVENANT_V_7, this)
       case TREVENANT_VMAX_14:
-        return copy(BlueSkyStream.TREVENANT_VMAX_8, this);
+        return copy(BlueSkyStream.TREVENANT_VMAX_8, this)
       case GOSSIFLEUR_15:
-        return copy(EeveeHeroes.GOSSIFLEUR_9, this);
+        return copy(EeveeHeroes.GOSSIFLEUR_9, this)
       case ELDEGOSS_16:
-        return copy(EeveeHeroes.ELDEGOSS_10, this);
+        return copy(EeveeHeroes.ELDEGOSS_10, this)
       case APPLIN_17:
-        return copy(BlueSkyStream.APPLIN_9, this);
+        return copy(BlueSkyStream.APPLIN_9, this)
       case FLAREON_VMAX_18:
-        return copy(EeveeHeroesVmaxSpecialSet.FLAREON_VMAX_1, this);
+        return copy(EeveeHeroesVmaxSpecialSet.FLAREON_VMAX_1, this)
       case ENTEI_19:
-        return copy(EeveeHeroes.ENTEI_14, this);
+        return copy(EeveeHeroes.ENTEI_14, this)
       case VICTINI_20:
-        return copy(BlueSkyStream.VICTINI_12, this);
+        return copy(BlueSkyStream.VICTINI_12, this)
       case VOLCARONA_V_21:
-        return copy(BlueSkyStream.VOLCARONA_V_15, this);
+        return copy(BlueSkyStream.VOLCARONA_V_15, this)
       case LITLEO_22:
         return basic(this, hp: HP060, type: R, retreatCost: 1) {
           weakness WATER
@@ -425,7 +425,7 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case PYROAR_23:
         return evolution(this, from: "Litleo", hp: HP130, type: R, retreatCost: 2) {
           weakness WATER
@@ -444,7 +444,7 @@ enum EvolvingSkies implements LogicCardInfo {
               discardDefendingEnergyAfterDamage()
             }
           }
-        };
+        }
       case PSYDUCK_24:
         return basic(this, hp: HP070, type: W, retreatCost: 2) {
           weakness LIGHTNING
@@ -455,7 +455,7 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case GOLDUCK_25:
         return evolution(this, from: "Psyduck", hp: HP120, type: W, retreatCost: 1) {
           weakness LIGHTNING
@@ -474,7 +474,7 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 70
             }
           }
-        };
+        }
       case TENTACOOL_26:
         return basic(this, hp: HP060, type: W, retreatCost: 1) {
           weakness LIGHTNING
@@ -485,7 +485,7 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case TENTACRUEL_27:
         return evolution(this, from: "Tentacool", hp: HP120, type: W, retreatCost: 2) {
           weakness LIGHTNING
@@ -505,21 +505,21 @@ enum EvolvingSkies implements LogicCardInfo {
               cantRetreat defending
             }
           }
-        };
+        }
       case GYARADOS_V_28:
-        return copy(BlueSkyStream.GYARADOS_V_20, this);
+        return copy(BlueSkyStream.GYARADOS_V_20, this)
       case GYARADOS_VMAX_29:
-        return copy(BlueSkyStream.GYARADOS_VMAX_21, this);
+        return copy(BlueSkyStream.GYARADOS_VMAX_21, this)
       case VAPOREON_VMAX_30:
-        return copy(EeveeHeroesVmaxSpecialSet.VAPOREON_VMAX_2, this);
+        return copy(EeveeHeroesVmaxSpecialSet.VAPOREON_VMAX_2, this)
       case SUICUNE_V_31:
-        return copy(SkyscrapingPerfection.SUICUNE_V_1, this);
+        return copy(SkyscrapingPerfection.SUICUNE_V_1, this)
       case LOTAD_32:
-        return copy(SkyscrapingPerfection.LOTAD_2, this);
+        return copy(SkyscrapingPerfection.LOTAD_2, this)
       case LOMBRE_33:
-        return copy(SkyscrapingPerfection.LOMBRE_3, this);
+        return copy(SkyscrapingPerfection.LOMBRE_3, this)
       case LUDICOLO_34:
-        return copy(SkyscrapingPerfection.LUDICOLO_4, this);
+        return copy(SkyscrapingPerfection.LUDICOLO_4, this)
       case CARVANHA_35:
         return basic(this, hp: HP050, type: W, retreatCost: 1) {
           weakness LIGHTNING
@@ -537,7 +537,7 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case SHARPEDO_36:
         return evolution(this, from: "Carvanha", hp: HP120, type: W, retreatCost: 1) {
           weakness LIGHTNING
@@ -559,11 +559,11 @@ enum EvolvingSkies implements LogicCardInfo {
               cantAttackNextTurn self
             }
           }
-        };
+        }
       case FEEBAS_37:
-        return copy(EeveeHeroes.FEEBAS_22, this);
+        return copy(EeveeHeroes.FEEBAS_22, this)
       case MILOTIC_38:
-        return copy(EeveeHeroes.MILOTIC_23, this);
+        return copy(EeveeHeroes.MILOTIC_23, this)
       case LUVDISC_39:
         return basic(this, hp: HP070, type: W, retreatCost: 1) {
           weakness LIGHTNING
@@ -586,11 +586,11 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case GLACEON_V_40:
-        return copy(EeveeHeroes.GLACEON_V_24, this);
+        return copy(EeveeHeroes.GLACEON_V_24, this)
       case GLACEON_VMAX_41:
-        return copy(EeveeHeroes.GLACEON_VMAX_25, this);
+        return copy(EeveeHeroes.GLACEON_VMAX_25, this)
       case TYMPOLE_42:
         return basic(this, hp: HP070, type: W, retreatCost: 2) {
           weakness LIGHTNING
@@ -601,9 +601,9 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case CRYOGONAL_43:
-        return copy(BlueSkyStream.CRYOGONAL_24, this);
+        return copy(BlueSkyStream.CRYOGONAL_24, this)
       case BERGMITE_44:
         return basic(this, hp: HP070, type: W, retreatCost: 2) {
           weakness METAL
@@ -621,7 +621,7 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case AVALUGG_45:
         return evolution(this, from: "Bergmite", hp: HP150, type: W, retreatCost: 4) {
           weakness METAL
@@ -640,11 +640,11 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 140
             }
           }
-        };
+        }
       case WISHIWASHI_46:
-        return copy(BlueSkyStream.WISHIWASHI_25, this);
+        return copy(BlueSkyStream.WISHIWASHI_25, this)
       case EISCUE_47:
-        return copy(SkyscrapingPerfection.EISCUE_9, this);
+        return copy(SkyscrapingPerfection.EISCUE_9, this)
       case ARCTOVISH_V_48:
         return basic(this, hp: HP220, type: W, retreatCost: 2) {
           weakness LIGHTNING
@@ -666,13 +666,13 @@ enum EvolvingSkies implements LogicCardInfo {
               cantAttackNextTurn self
             }
           }
-        };
+        }
       case PIKACHU_49:
-        return copy(EeveeHeroes.PIKACHU_26, this);
+        return copy(EeveeHeroes.PIKACHU_26, this)
       case RAICHU_50:
-        return copy(EeveeHeroes.RAICHU_27, this);
+        return copy(EeveeHeroes.RAICHU_27, this)
       case JOLTEON_VMAX_51:
-        return copy(EeveeHeroesVmaxSpecialSet.JOLTEON_VMAX_3, this);
+        return copy(EeveeHeroesVmaxSpecialSet.JOLTEON_VMAX_3, this)
       case CHINCHOU_52:
         return basic(this, hp: HP070, type: L, retreatCost: 1) {
           weakness FIGHTING
@@ -683,7 +683,7 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case LANTURN_53:
         return evolution(this, from: "Chinchou", hp: HP120, type: L, retreatCost: 2) {
           weakness FIGHTING
@@ -702,13 +702,13 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 120
             }
           }
-        };
+        }
       case MAREEP_54:
-        return copy(BlueSkyStream.MAREEP_26, this);
+        return copy(BlueSkyStream.MAREEP_26, this)
       case FLAAFFY_55:
-        return copy(BlueSkyStream.FLAAFFY_27, this);
+        return copy(BlueSkyStream.FLAAFFY_27, this)
       case AMPHAROS_56:
-        return copy(BlueSkyStream.AMPHAROS_28, this);
+        return copy(BlueSkyStream.AMPHAROS_28, this)
       case EMOLGA_57:
         return basic(this, hp: HP070, type: L, retreatCost: null) {
           weakness FIGHTING
@@ -722,7 +722,7 @@ enum EvolvingSkies implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DRACOZOLT_V_58:
         return basic(this, hp: HP220, type: L, retreatCost: 3) {
           weakness FIGHTING
@@ -761,7 +761,7 @@ enum EvolvingSkies implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DRACOZOLT_VMAX_59:
         return evolution(this, from: "Dracozolt V", hp: HP330, type: L, retreatCost: 3) {
           weakness FIGHTING
@@ -782,9 +782,9 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 200
             }
           }
-        };
+        }
       case REGIELEKI_60:
-        return copy(BlueSkyStream.REGIELEKI_33, this);
+        return copy(BlueSkyStream.REGIELEKI_33, this)
       case DROWZEE_61:
         return basic(this, hp: HP070, type: P, retreatCost: 2) {
           weakness DARKNESS
@@ -796,7 +796,7 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case HYPNO_62:
         return evolution(this, from: "Drowzee", hp: HP110, type: P, retreatCost: 2) {
           weakness DARKNESS
@@ -819,15 +819,15 @@ enum EvolvingSkies implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case GALARIAN_ARTICUNO_63:
-        return copy(SkyscrapingPerfection.GALARIAN_ARTICUNO_12, this);
+        return copy(SkyscrapingPerfection.GALARIAN_ARTICUNO_12, this)
       case ESPEON_V_64:
-        return copy(EeveeHeroes.ESPEON_V_35, this);
+        return copy(EeveeHeroes.ESPEON_V_35, this)
       case ESPEON_VMAX_65:
-        return copy(EeveeHeroesVmaxSpecialSet.ESPEON_VMAX_4, this);
+        return copy(EeveeHeroesVmaxSpecialSet.ESPEON_VMAX_4, this)
       case WOBBUFFET_66:
-        return copy(SkyscrapingPerfection.WOBBUFFET_13, this);
+        return copy(SkyscrapingPerfection.WOBBUFFET_13, this)
       case SABLEYE_67:
         return basic(this, hp: HP070, type: P, retreatCost: 1) {
           weakness DARKNESS
@@ -851,7 +851,7 @@ enum EvolvingSkies implements LogicCardInfo {
               cantRetreat defending
             }
           }
-        };
+        }
       case WOOBAT_68:
         return basic(this, hp: HP060, type: P, retreatCost: 1) {
           weakness LIGHTNING
@@ -873,7 +873,7 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case SWOOBAT_69:
         return evolution(this, from: "Woobat", hp: HP090, type: P, retreatCost: 1) {
           weakness LIGHTNING
@@ -886,23 +886,23 @@ enum EvolvingSkies implements LogicCardInfo {
               if (opp.hand.size() == hand.size()) damage 80
             }
           }
-        };
+        }
       case GOLURK_V_70:
-        return copy(SkyscrapingPerfection.GOLURK_V_15, this);
+        return copy(SkyscrapingPerfection.GOLURK_V_15, this)
       case FLABEBE_71:
-        return copy(EeveeHeroes.FLABEBE_37, this);
+        return copy(EeveeHeroes.FLABEBE_37, this)
       case FLOETTE_72:
-        return copy(EeveeHeroes.FLOETTE_38, this);
+        return copy(EeveeHeroes.FLOETTE_38, this)
       case FLORGES_73:
-        return copy(EeveeHeroes.FLORGES_39, this);
+        return copy(EeveeHeroes.FLORGES_39, this)
       case SYLVEON_V_74:
-        return copy(EeveeHeroes.SYLVEON_V_40, this);
+        return copy(EeveeHeroes.SYLVEON_V_40, this)
       case SYLVEON_VMAX_75:
-        return copy(EeveeHeroes.SYLVEON_VMAX_41, this);
+        return copy(EeveeHeroes.SYLVEON_VMAX_41, this)
       case PUMPKABOO_76:
-        return copy(SkyscrapingPerfection.PUMPKABOO_16, this);
+        return copy(SkyscrapingPerfection.PUMPKABOO_16, this)
       case GOURGEIST_77:
-        return copy(SkyscrapingPerfection.GOURGEIST_17, this);
+        return copy(SkyscrapingPerfection.GOURGEIST_17, this)
       case CUTIEFLY_78:
         return basic(this, hp: HP030, type: P, retreatCost: null) {
           weakness METAL
@@ -913,7 +913,7 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case RIBOMBEE_79:
         return evolution(this, from: "Cutiefly", hp: HP070, type: P, retreatCost: null) {
           weakness METAL
@@ -925,15 +925,15 @@ enum EvolvingSkies implements LogicCardInfo {
               moveDefendingEnergyAfterDamage opp.bench
             }
           }
-        };
+        }
       case MARSHADOW_80:
-        return copy(EeveeHeroes.MARSHADOW_44, this);
+        return copy(EeveeHeroes.MARSHADOW_44, this)
       case HITMONCHAN_81:
-        return copy(SkyscrapingPerfection.HITMONCHAN_18, this);
+        return copy(SkyscrapingPerfection.HITMONCHAN_18, this)
       case GALARIAN_ZAPDOS_82:
-        return copy(SkyscrapingPerfection.GALARIAN_ZAPDOS_19, this);
+        return copy(SkyscrapingPerfection.GALARIAN_ZAPDOS_19, this)
       case MEDICHAM_V_83:
-        return copy(BlueSkyStream.MEDICHAM_V_36, this);
+        return copy(BlueSkyStream.MEDICHAM_V_36, this)
       case HIPPOPOTAS_84:
         return basic(this, hp: HP100, type: F, retreatCost: 4) {
           weakness GRASS
@@ -951,7 +951,7 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case HIPPOWDON_85:
         return evolution(this, from: "Hippopotas", hp: HP150, type: F, retreatCost: 4) {
           weakness GRASS
@@ -970,7 +970,7 @@ enum EvolvingSkies implements LogicCardInfo {
               discardSelfEnergyAfterDamage C, C
             }
           }
-        };
+        }
       case ROGGENROLA_86:
         return basic(this, hp: HP070, type: F, retreatCost: 3) {
           weakness GRASS
@@ -988,7 +988,7 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case BOLDORE_87:
         return evolution(this, from: "Roggenrola", hp: HP110, type: F, retreatCost: 4) {
           weakness GRASS
@@ -1007,7 +1007,7 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 60
             }
           }
-        };
+        }
       case GIGALITH_88:
         return evolution(this, from: "Boldore", hp: HP180, type: F, retreatCost: 4) {
           weakness GRASS
@@ -1027,7 +1027,7 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 10 * self.numberOfDamageCounters, self
             }
           }
-        };
+        }
       case PALPITOAD_89:
         return evolution(this, from: "Tympole", hp: HP100, type: F, retreatCost: 3) {
           weakness GRASS
@@ -1045,7 +1045,7 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case SEISMITOAD_90:
         return evolution(this, from: "Palpitoad", hp: HP170, type: F, retreatCost: 3) {
           weakness GRASS
@@ -1065,17 +1065,17 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 160
             }
           }
-        };
+        }
       case LYCANROC_V_91:
-        return copy(SkyscrapingPerfection.LYCANROC_V_24, this);
+        return copy(SkyscrapingPerfection.LYCANROC_V_24, this)
       case LYCANROC_VMAX_92:
-        return copy(SkyscrapingPerfection.LYCANROC_VMAX_25, this);
+        return copy(SkyscrapingPerfection.LYCANROC_VMAX_25, this)
       case GALARIAN_MOLTRES_93:
-        return copy(SkyscrapingPerfection.GALARIAN_MOLTRES_26, this);
+        return copy(SkyscrapingPerfection.GALARIAN_MOLTRES_26, this)
       case UMBREON_V_94:
-        return copy(EeveeHeroes.UMBREON_V_47, this);
+        return copy(EeveeHeroes.UMBREON_V_47, this)
       case UMBREON_VMAX_95:
-        return copy(EeveeHeroes.UMBREON_VMAX_48, this);
+        return copy(EeveeHeroes.UMBREON_VMAX_48, this)
       case NUZLEAF_96:
         return evolution(this, from: "Seedot", hp: HP080, type: D, retreatCost: 1) {
           weakness GRASS
@@ -1089,7 +1089,7 @@ enum EvolvingSkies implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SHIFTRY_97:
         return evolution(this, from: "Nuzleaf", hp: HP150, type: D, retreatCost: 3) {
           weakness GRASS
@@ -1113,7 +1113,7 @@ enum EvolvingSkies implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SCRAGGY_98:
         return basic(this, hp: HP070, type: D, retreatCost: 1) {
           weakness GRASS
@@ -1125,7 +1125,7 @@ enum EvolvingSkies implements LogicCardInfo {
               reduceDamageNextTurn hp(10), thisMove
             }
           }
-        };
+        }
       case SCRAFTY_99:
         return evolution(this, from: "Scraggy", hp: HP120, type: D, retreatCost: 2) {
           weakness GRASS
@@ -1146,59 +1146,59 @@ enum EvolvingSkies implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case GARBODOR_V_100:
-        return copy(SkyscrapingPerfection.GARBODOR_V_30, this);
+        return copy(SkyscrapingPerfection.GARBODOR_V_30, this)
       case GARBODOR_VMAX_101:
-        return copy(SkyscrapingPerfection.GARBODOR_VMAX_31, this);
+        return copy(SkyscrapingPerfection.GARBODOR_VMAX_31, this)
       case ZORUA_102:
-        return copy(EeveeHeroes.ZORUA_49, this);
+        return copy(EeveeHeroes.ZORUA_49, this)
       case ZOROARK_103:
-        return copy(EeveeHeroes.ZOROARK_50, this);
+        return copy(EeveeHeroes.ZOROARK_50, this)
       case NICKIT_104:
-        return copy(SkyscrapingPerfection.NICKIT_32, this);
+        return copy(SkyscrapingPerfection.NICKIT_32, this)
       case THIEVUL_105:
-        return copy(SkyscrapingPerfection.THIEVUL_33, this);
+        return copy(SkyscrapingPerfection.THIEVUL_33, this)
       case ALTARIA_106:
-        return copy(SkyscrapingPerfection.ALTARIA_40, this);
+        return copy(SkyscrapingPerfection.ALTARIA_40, this)
       case BAGON_107:
-        return copy(BlueSkyStream.BAGON_43, this);
+        return copy(BlueSkyStream.BAGON_43, this)
       case SHELGON_108:
-        return copy(BlueSkyStream.SHELGON_44, this);
+        return copy(BlueSkyStream.SHELGON_44, this)
       case SALAMENCE_109:
-        return copy(BlueSkyStream.SALAMENCE_45, this);
+        return copy(BlueSkyStream.SALAMENCE_45, this)
       case RAYQUAZA_V_110:
-        return copy(BlueSkyStream.RAYQUAZA_V_46, this);
+        return copy(BlueSkyStream.RAYQUAZA_V_46, this)
       case RAYQUAZA_VMAX_111:
-        return copy(BlueSkyStream.RAYQUAZA_VMAX_47, this);
+        return copy(BlueSkyStream.RAYQUAZA_VMAX_47, this)
       case DIALGA_112:
-        return copy(SkyscrapingPerfection.DIALGA_41, this);
+        return copy(SkyscrapingPerfection.DIALGA_41, this)
       case DEINO_113:
-        return copy(SkyscrapingPerfection.DEINO_42, this);
+        return copy(SkyscrapingPerfection.DEINO_42, this)
       case ZWEILOUS_114:
-        return copy(SkyscrapingPerfection.ZWEILOUS_43, this);
+        return copy(SkyscrapingPerfection.ZWEILOUS_43, this)
       case HYDREIGON_115:
-        return copy(SkyscrapingPerfection.HYDREIGON_44, this);
+        return copy(SkyscrapingPerfection.HYDREIGON_44, this)
       case KYUREM_116:
-        return copy(SkyscrapingPerfection.KYUREM_45, this);
+        return copy(SkyscrapingPerfection.KYUREM_45, this)
       case NOIVERN_V_117:
-        return copy(SkyscrapingPerfection.NOIVERN_V_46, this);
+        return copy(SkyscrapingPerfection.NOIVERN_V_46, this)
       case ZYGARDE_118:
-        return copy(BlueSkyStream.ZYGARDE_48, this);
+        return copy(BlueSkyStream.ZYGARDE_48, this)
       case DRAMPA_119:
-        return copy(SkyscrapingPerfection.DRAMPA_47, this);
+        return copy(SkyscrapingPerfection.DRAMPA_47, this)
       case FLAPPLE_120:
-        return copy(BlueSkyStream.FLAPPLE_50, this);
+        return copy(BlueSkyStream.FLAPPLE_50, this)
       case APPLETUN_121:
-        return copy(BlueSkyStream.APPLETUN_51, this);
+        return copy(BlueSkyStream.APPLETUN_51, this)
       case DURALUDON_V_122:
-        return copy(SkyscrapingPerfection.DURALUDON_V_48, this);
+        return copy(SkyscrapingPerfection.DURALUDON_V_48, this)
       case DURALUDON_VMAX_123:
-        return copy(SkyscrapingPerfection.DURALUDON_VMAX_49, this);
+        return copy(SkyscrapingPerfection.DURALUDON_VMAX_49, this)
       case REGIDRAGO_124:
-        return copy(BlueSkyStream.REGIDRAGO_52, this);
+        return copy(BlueSkyStream.REGIDRAGO_52, this)
       case EEVEE_125:
-        return copy(EeveeHeroes.EEVEE_58, this);
+        return copy(EeveeHeroes.EEVEE_58, this)
       case TEDDIURSA_126:
         return basic(this, hp: HP070, type: C, retreatCost: 2) {
           weakness FIGHTING
@@ -1209,7 +1209,7 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case URSARING_127:
         return evolution(this, from: "Teddiursa", hp: HP140, type: C, retreatCost: 3) {
           weakness FIGHTING
@@ -1227,17 +1227,17 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 110
             }
           }
-        };
+        }
       case SMEARGLE_128:
-        return copy(EeveeHeroes.SMEARGLE_59, this);
+        return copy(EeveeHeroes.SMEARGLE_59, this)
       case SLAKOTH_129:
-        return copy(SkyscrapingPerfection.SLAKOTH_50, this);
+        return copy(SkyscrapingPerfection.SLAKOTH_50, this)
       case VIGOROTH_130:
-        return copy(SkyscrapingPerfection.VIGOROTH_51, this);
+        return copy(SkyscrapingPerfection.VIGOROTH_51, this)
       case SLAKING_131:
-        return copy(SkyscrapingPerfection.SLAKING_52, this);
+        return copy(SkyscrapingPerfection.SLAKING_52, this)
       case SWABLU_132:
-        return copy(SkyscrapingPerfection.SWABLU_53, this);
+        return copy(SkyscrapingPerfection.SWABLU_53, this)
       case LILLIPUP_133:
         return basic(this, hp: HP060, type: C, retreatCost: 1) {
           weakness FIGHTING
@@ -1260,7 +1260,7 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case HERDIER_134:
         return evolution(this, from: "Lillipup", hp: HP100, type: C, retreatCost: 2) {
           weakness FIGHTING
@@ -1279,7 +1279,7 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 20, self
             }
           }
-        };
+        }
       case STOUTLAND_135:
         return evolution(this, from: "Herdier", hp: HP160, type: C, retreatCost: 3) {
           weakness FIGHTING
@@ -1306,7 +1306,7 @@ enum EvolvingSkies implements LogicCardInfo {
               flip { damage 100 }
             }
           }
-        };
+        }
       case RUFFLET_136:
         return basic(this, hp: HP060, type: C, retreatCost: 1) {
           weakness LIGHTNING
@@ -1319,7 +1319,7 @@ enum EvolvingSkies implements LogicCardInfo {
               switchYourOpponentsBenchedWithActive()
             }
           }
-        };
+        }
       case BRAVIARY_137:
         return evolution(this, from: "Rufflet", hp: HP130, type: C, retreatCost: 1) {
           weakness LIGHTNING
@@ -1342,7 +1342,7 @@ enum EvolvingSkies implements LogicCardInfo {
               damage 50, self
             }
           }
-        };
+        }
       case FLETCHLING_138:
         return basic(this, hp: HP040, type: C, retreatCost: 1) {
           weakness LIGHTNING
@@ -1367,7 +1367,7 @@ enum EvolvingSkies implements LogicCardInfo {
               flip { damage 20 }
             }
           }
-        };
+        }
       case FLETCHINDER_139:
         return evolution(this, from: "Fletchling", hp: HP080, type: C, retreatCost: 1) {
           weakness LIGHTNING
@@ -1380,7 +1380,7 @@ enum EvolvingSkies implements LogicCardInfo {
               flip { damage 20 }
             }
           }
-        };
+        }
       case TALONFLAME_140:
         return evolution(this, from: "Fletchinder", hp: HP140, type: C, retreatCost: null) {
           weakness LIGHTNING
@@ -1401,203 +1401,203 @@ enum EvolvingSkies implements LogicCardInfo {
               if (self.cards.energyCount(R)) damage 80
             }
           }
-        };
+        }
       case AROMA_LADY_141:
-        return copy(EeveeHeroes.AROMA_LADY_66, this);
+        return copy(EeveeHeroes.AROMA_LADY_66, this)
       case BOOST_SHAKE_142:
-        return copy(EeveeHeroes.RAPID_SHAKE_60, this);
+        return copy(EeveeHeroes.RAPID_SHAKE_60, this)
       case COPYCAT_143:
-        return copy(TeamRocketReturns.COPYCAT_83, this);
+        return copy(TeamRocketReturns.COPYCAT_83, this)
       case CRYSTAL_CAVE_144:
-        return copy(SkyscrapingPerfection.CRYSTAL_CAVE_66, this);
+        return copy(SkyscrapingPerfection.CRYSTAL_CAVE_66, this)
       case DIGGING_GLOVES_145:
-        return copy(SkyscrapingPerfection.DIGGING_GLOVES_60, this);
+        return copy(SkyscrapingPerfection.DIGGING_GLOVES_60, this)
       case DREAM_BALL_146:
-        return copy(EeveeHeroes.DREAM_BALL_61, this);
+        return copy(EeveeHeroes.DREAM_BALL_61, this)
       case ELEMENTAL_BADGE_147:
-        return copy(EeveeHeroes.ELEMENTAL_BADGE_62, this);
+        return copy(EeveeHeroes.ELEMENTAL_BADGE_62, this)
       case FULL_FACE_GUARD_148:
-        return copy(SkyscrapingPerfection.FULL_FACE_GUARD_62, this);
+        return copy(SkyscrapingPerfection.FULL_FACE_GUARD_62, this)
       case GORDIE_149:
-        return copy(EeveeHeroes.GORDIE_67, this);
+        return copy(EeveeHeroes.GORDIE_67, this)
       case LUCKY_ICE_POP_150:
-        return copy(BlueSkyStream.LUCKY_ICE_POP_56, this);
+        return copy(BlueSkyStream.LUCKY_ICE_POP_56, this)
       case MOON_SUN_BADGE_151:
-        return copy(EeveeHeroes.MOON_AND_SUN_BADGE_64, this);
+        return copy(EeveeHeroes.MOON_AND_SUN_BADGE_64, this)
       case RAIHAN_152:
-        return copy(SkyscrapingPerfection.RAIHAN_63, this);
+        return copy(SkyscrapingPerfection.RAIHAN_63, this)
       case RAPID_STRIKE_SCROLL_OF_THE_FLYING_DRAGON_153:
-        return copy(BlueSkyStream.RAPID_STRIKE_SCROLL_OF_THE_FLYING_DRAGON_62, this);
+        return copy(BlueSkyStream.RAPID_STRIKE_SCROLL_OF_THE_FLYING_DRAGON_62, this)
       case RESCUE_CARRIER_154:
-        return copy(SkyscrapingPerfection.RESCUE_TROLLEY_59, this);
+        return copy(SkyscrapingPerfection.RESCUE_TROLLEY_59, this)
       case RIBBON_BADGE_155:
-        return copy(EeveeHeroes.RIBBON_BADGE_65, this);
+        return copy(EeveeHeroes.RIBBON_BADGE_65, this)
       case RUBBER_GLOVES_156:
-        return copy(BlueSkyStream.RUBBERY_GLOVES_60, this);
+        return copy(BlueSkyStream.RUBBERY_GLOVES_60, this)
       case SHOPPING_CENTER_157:
-        return copy(EeveeHeroes.FASHION_MALL_68, this);
+        return copy(EeveeHeroes.FASHION_MALL_68, this)
       case SINGLE_STRIKE_SCROLL_OF_THE_FANGED_DRAGON_158:
-        return copy(SkyscrapingPerfection.SINGLE_STRIKE_SCROLL_OF_THE_DRAGON_FANG_61, this);
+        return copy(SkyscrapingPerfection.SINGLE_STRIKE_SCROLL_OF_THE_DRAGON_FANG_61, this)
       case SNOW_LEAF_BADGE_159:
-        return copy(EeveeHeroes.SNOW_LEAF_BADGE_63, this);
+        return copy(EeveeHeroes.SNOW_LEAF_BADGE_63, this)
       case SPIRIT_MASK_160:
-        return copy(BlueSkyStream.NETHER_MASK_61, this);
+        return copy(BlueSkyStream.NETHER_MASK_61, this)
       case STORMY_MOUNTAINS_161:
-        return copy(BlueSkyStream.STORMY_MOUNTAIN_RANGE_66, this);
+        return copy(BlueSkyStream.STORMY_MOUNTAIN_RANGE_66, this)
       case SWITCHING_CUPS_162:
-        return copy(SkyscrapingPerfection.SWITCHEROO_CUP_58, this);
+        return copy(SkyscrapingPerfection.SWITCHEROO_CUP_58, this)
       case TOY_CATCHER_163:
-        return copy(BlueSkyStream.TOY_CATCHER_58, this);
+        return copy(BlueSkyStream.TOY_CATCHER_58, this)
       case ZINNIA_S_RESOLVE_164:
-        return copy(BlueSkyStream.ZINNIA_S_RESOLVE_65, this);
+        return copy(BlueSkyStream.ZINNIA_S_RESOLVE_65, this)
       case TREASURE_ENERGY_165:
-        return copy(EeveeHeroes.TREASURE_ENERGY_69, this);
+        return copy(EeveeHeroes.TREASURE_ENERGY_69, this)
       case LEAFEON_V_166:
-        return copy(LEAFEON_V_7, this);
+        return copy(LEAFEON_V_7, this)
       case LEAFEON_V_167:
-        return copy(LEAFEON_V_7, this);
+        return copy(LEAFEON_V_7, this)
       case TREVENANT_V_168:
-        return copy(TREVENANT_V_13, this);
+        return copy(TREVENANT_V_13, this)
       case FLAREON_V_169:
-        return copy(EeveeHeroes.FLAREON_V_11, this);
+        return copy(EeveeHeroes.FLAREON_V_11, this)
       case VOLCARONA_V_170:
-        return copy(VOLCARONA_V_21, this);
+        return copy(VOLCARONA_V_21, this)
       case GYARADOS_V_171:
-        return copy(GYARADOS_V_28, this);
+        return copy(GYARADOS_V_28, this)
       case VAPOREON_V_172:
-        return copy(EeveeHeroes.VAPOREON_V_15, this);
+        return copy(EeveeHeroes.VAPOREON_V_15, this)
       case SUICUNE_V_173:
-        return copy(SUICUNE_V_31, this);
+        return copy(SUICUNE_V_31, this)
       case GLACEON_V_174:
-        return copy(GLACEON_V_40, this);
+        return copy(GLACEON_V_40, this)
       case GLACEON_V_175:
-        return copy(GLACEON_V_40, this);
+        return copy(GLACEON_V_40, this)
       case ARCTOVISH_V_176:
-        return copy(ARCTOVISH_V_48, this);
+        return copy(ARCTOVISH_V_48, this)
       case JOLTEON_V_177:
-        return copy(EeveeHeroes.JOLTEON_V_30, this);
+        return copy(EeveeHeroes.JOLTEON_V_30, this)
       case DRACOZOLT_V_178:
-        return copy(DRACOZOLT_V_58, this);
+        return copy(DRACOZOLT_V_58, this)
       case ESPEON_V_179:
-        return copy(ESPEON_V_64, this);
+        return copy(ESPEON_V_64, this)
       case ESPEON_V_180:
-        return copy(ESPEON_V_64, this);
+        return copy(ESPEON_V_64, this)
       case GOLURK_V_181:
-        return copy(GOLURK_V_70, this);
+        return copy(GOLURK_V_70, this)
       case GOLURK_V_182:
-        return copy(GOLURK_V_70, this);
+        return copy(GOLURK_V_70, this)
       case SYLVEON_V_183:
-        return copy(SYLVEON_V_74, this);
+        return copy(SYLVEON_V_74, this)
       case SYLVEON_V_184:
-        return copy(SYLVEON_V_74, this);
+        return copy(SYLVEON_V_74, this)
       case MEDICHAM_V_185:
-        return copy(MEDICHAM_V_83, this);
+        return copy(MEDICHAM_V_83, this)
       case MEDICHAM_V_186:
-        return copy(MEDICHAM_V_83, this);
+        return copy(MEDICHAM_V_83, this)
       case LYCANROC_V_187:
-        return copy(LYCANROC_V_91, this);
+        return copy(LYCANROC_V_91, this)
       case UMBREON_V_188:
-        return copy(UMBREON_V_94, this);
+        return copy(UMBREON_V_94, this)
       case UMBREON_V_189:
-        return copy(UMBREON_V_94, this);
+        return copy(UMBREON_V_94, this)
       case GARBODOR_V_190:
-        return copy(GARBODOR_V_100, this);
+        return copy(GARBODOR_V_100, this)
       case DRAGONITE_V_191:
-        return copy(BlueSkyStream.DRAGONITE_V_42, this);
+        return copy(BlueSkyStream.DRAGONITE_V_42, this)
       case DRAGONITE_V_192:
-        return copy(DRAGONITE_V_191, this);
+        return copy(DRAGONITE_V_191, this)
       case RAYQUAZA_V_193:
-        return copy(RAYQUAZA_V_110, this);
+        return copy(RAYQUAZA_V_110, this)
       case RAYQUAZA_V_194:
-        return copy(RAYQUAZA_V_110, this);
+        return copy(RAYQUAZA_V_110, this)
       case NOIVERN_V_195:
-        return copy(NOIVERN_V_117, this);
+        return copy(NOIVERN_V_117, this)
       case NOIVERN_V_196:
-        return copy(NOIVERN_V_117, this);
+        return copy(NOIVERN_V_117, this)
       case DURALUDON_V_197:
-        return copy(DURALUDON_V_122, this);
+        return copy(DURALUDON_V_122, this)
       case DURALUDON_V_198:
-        return copy(DURALUDON_V_122, this);
+        return copy(DURALUDON_V_122, this)
       case AROMA_LADY_199:
-        return copy(AROMA_LADY_141, this);
+        return copy(AROMA_LADY_141, this)
       case COPYCAT_200:
-        return copy(COPYCAT_143, this);
+        return copy(COPYCAT_143, this)
       case GORDIE_201:
-        return copy(GORDIE_149, this);
+        return copy(GORDIE_149, this)
       case RAIHAN_202:
-        return copy(RAIHAN_152, this);
+        return copy(RAIHAN_152, this)
       case ZINNIA_S_RESOLVE_203:
-        return copy(ZINNIA_S_RESOLVE_164, this);
+        return copy(ZINNIA_S_RESOLVE_164, this)
       case LEAFEON_VMAX_204:
-        return copy(LEAFEON_VMAX_8, this);
+        return copy(LEAFEON_VMAX_8, this)
       case LEAFEON_VMAX_205:
-        return copy(LEAFEON_VMAX_8, this);
+        return copy(LEAFEON_VMAX_8, this)
       case TREVENANT_VMAX_206:
-        return copy(TREVENANT_VMAX_14, this);
+        return copy(TREVENANT_VMAX_14, this)
       case GYARADOS_VMAX_207:
-        return copy(GYARADOS_VMAX_29, this);
+        return copy(GYARADOS_VMAX_29, this)
       case GLACEON_VMAX_208:
-        return copy(GLACEON_VMAX_41, this);
+        return copy(GLACEON_VMAX_41, this)
       case GLACEON_VMAX_209:
-        return copy(GLACEON_VMAX_41, this);
+        return copy(GLACEON_VMAX_41, this)
       case DRACOZOLT_VMAX_210:
-        return copy(DRACOZOLT_VMAX_59, this);
+        return copy(DRACOZOLT_VMAX_59, this)
       case SYLVEON_VMAX_211:
-        return copy(SYLVEON_VMAX_75, this);
+        return copy(SYLVEON_VMAX_75, this)
       case SYLVEON_VMAX_212:
-        return copy(SYLVEON_VMAX_75, this);
+        return copy(SYLVEON_VMAX_75, this)
       case LYCANROC_VMAX_213:
-        return copy(LYCANROC_VMAX_92, this);
+        return copy(LYCANROC_VMAX_92, this)
       case UMBREON_VMAX_214:
-        return copy(UMBREON_VMAX_95, this);
+        return copy(UMBREON_VMAX_95, this)
       case UMBREON_VMAX_215:
-        return copy(UMBREON_VMAX_95, this);
+        return copy(UMBREON_VMAX_95, this)
       case GARBODOR_VMAX_216:
-        return copy(GARBODOR_VMAX_101, this);
+        return copy(GARBODOR_VMAX_101, this)
       case RAYQUAZA_VMAX_217:
-        return copy(RAYQUAZA_VMAX_111, this);
+        return copy(RAYQUAZA_VMAX_111, this)
       case RAYQUAZA_VMAX_218:
-        return copy(RAYQUAZA_VMAX_111, this);
+        return copy(RAYQUAZA_VMAX_111, this)
       case DURALUDON_VMAX_219:
-        return copy(DURALUDON_VMAX_123, this);
+        return copy(DURALUDON_VMAX_123, this)
       case DURALUDON_VMAX_220:
-        return copy(DURALUDON_VMAX_123, this);
+        return copy(DURALUDON_VMAX_123, this)
       case AROMA_LADY_221:
-        return copy(AROMA_LADY_141, this);
+        return copy(AROMA_LADY_141, this)
       case COPYCAT_222:
-        return copy(COPYCAT_143, this);
+        return copy(COPYCAT_143, this)
       case GORDIE_223:
-        return copy(GORDIE_149, this);
+        return copy(GORDIE_149, this)
       case RAIHAN_224:
-        return copy(RAIHAN_152, this);
+        return copy(RAIHAN_152, this)
       case ZINNIA_S_RESOLVE_225:
-        return copy(ZINNIA_S_RESOLVE_164, this);
+        return copy(ZINNIA_S_RESOLVE_164, this)
       case FROSLASS_226:
-        return copy(ChillingReign.FROSLASS_36, this);
+        return copy(ChillingReign.FROSLASS_36, this)
       case INTELEON_227:
-        return copy(ChillingReign.INTELEON_43, this);
+        return copy(ChillingReign.INTELEON_43, this)
       case CRESSELIA_228:
-        return copy(ChillingReign.CRESSELIA_64, this);
+        return copy(ChillingReign.CRESSELIA_64, this)
       case BOOST_SHAKE_229:
-        return copy(BOOST_SHAKE_142, this);
+        return copy(BOOST_SHAKE_142, this)
       case CRYSTAL_CAVE_230:
-        return copy(CRYSTAL_CAVE_144, this);
+        return copy(CRYSTAL_CAVE_144, this)
       case FULL_FACE_GUARD_231:
-        return copy(FULL_FACE_GUARD_148, this);
+        return copy(FULL_FACE_GUARD_148, this)
       case STORMY_MOUNTAINS_232:
-        return copy(STORMY_MOUNTAINS_161, this);
+        return copy(STORMY_MOUNTAINS_161, this)
       case TOY_CATCHER_233:
-        return copy(TOY_CATCHER_163, this);
+        return copy(TOY_CATCHER_163, this)
       case TURFFIELD_STADIUM_234:
-        return copy(RebelClash.TURRFIELD_170, this);
+        return copy(RebelClash.TURRFIELD_170, this)
       case LIGHTNING_ENERGY_235:
-        return basicEnergy(this, L);
+        return basicEnergy(this, L)
       case DARKNESS_ENERGY_236:
-        return basicEnergy(this, D);
+        return basicEnergy(this, D)
       case METAL_ENERGY_237:
-        return basicEnergy(this, M);
+        return basicEnergy(this, M)
       default:
-        return null;
+        return null
     }
   }
 }

@@ -1,22 +1,22 @@
 package tcgwars.logic.impl.gen7
 
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
 import tcgwars.logic.card.*
-import tcgwars.logic.effect.*;
+import tcgwars.logic.effect.*
 import tcgwars.logic.effect.ability.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -103,53 +103,53 @@ public enum DragonMajesty implements LogicCardInfo {
   SWITCH_RAFT_77("Switch Raft", "77", Rarity.SECRET, [TRAINER,ITEM]),
   ULTRA_NECROZMA_GX_78 ("Ultra Necrozma-GX", "78", Rarity.SECRET, [BASIC, POKEMON, POKEMON_GX, ULTRA_BEAST, _DRAGON_]),
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   DragonMajesty(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.DRAGON_MAJESTY;
+    return tcgwars.logic.card.Collection.DRAGON_MAJESTY
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -166,7 +166,7 @@ public enum DragonMajesty implements LogicCardInfo {
               applyAfterDamage BURNED
             }
           }
-        };
+        }
       case CHARMELEON_2:
         return 	evolution (this, from:"Charmander", hp:HP080, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -193,7 +193,7 @@ public enum DragonMajesty implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CHARIZARD_3:
         return 	evolution (this, from:"Charmeleon", hp:HP160, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -221,7 +221,7 @@ public enum DragonMajesty implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case TORCHIC_4:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -232,7 +232,7 @@ public enum DragonMajesty implements LogicCardInfo {
               flip{apply BURNED}
             }
           }
-        };
+        }
       case COMBUSKEN_5:
         return 	evolution (this, from:"Torchic", hp:HP080, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -253,7 +253,7 @@ public enum DragonMajesty implements LogicCardInfo {
               flip 1,{damage 60},{bc "Lunge failed"}
             }
           }
-        };
+        }
       case BLAZIKEN_6:
         return 	evolution (this, from:"Combusken", hp:HP150, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -278,7 +278,7 @@ public enum DragonMajesty implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case VICTINI_PRISM_STAR_7:
         return basic (this, hp:HP090, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -292,7 +292,7 @@ public enum DragonMajesty implements LogicCardInfo {
               shuffleDeck()
             }
           }
-        };
+        }
       case DARUMAKA_8:
         return basic (this, hp:HP070, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -304,7 +304,7 @@ public enum DragonMajesty implements LogicCardInfo {
               flipUntilTails{damage 30}
             }
           }
-        };
+        }
       case DARMANITAN_9:
         return 	evolution (this, from:"Darumaka", hp:HP130, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -325,7 +325,7 @@ public enum DragonMajesty implements LogicCardInfo {
               flip 4,{damage 50}
             }
           }
-        };
+        }
       case HEATMOR_10:
         return basic (this, hp:HP110, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -346,7 +346,7 @@ public enum DragonMajesty implements LogicCardInfo {
               else{bc"Charring Breath has no effect"}
             }
           }
-        };
+        }
       case RESHIRAM_GX_11:
         return basic (this, hp:HP180, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -389,7 +389,7 @@ public enum DragonMajesty implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LITTEN_12:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -400,7 +400,7 @@ public enum DragonMajesty implements LogicCardInfo {
               flip 3,{damage 10}
             }
           }
-        };
+        }
       case SALANDIT_13:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -416,7 +416,7 @@ public enum DragonMajesty implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case SALAZZLE_14:
         return 	evolution (this, from:"Salandit", hp:HP110, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -441,7 +441,7 @@ public enum DragonMajesty implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case HORSEA_15:
         return basic (this, hp:HP040, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -452,7 +452,7 @@ public enum DragonMajesty implements LogicCardInfo {
               damage 20, opp.all.select("Select the Pokémon to target")
             }
           }
-        };
+        }
       case HORSEA_16:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -463,7 +463,7 @@ public enum DragonMajesty implements LogicCardInfo {
               damage 10+10*self.cards.energyCount(W)
             }
           }
-        };
+        }
       case SEADRA_17:
         return 	evolution (this, from:"Horsea", hp:HP090, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -474,7 +474,7 @@ public enum DragonMajesty implements LogicCardInfo {
               damage 10+20*self.cards.energyCount(W)
             }
           }
-        };
+        }
       case KINGDRA_GX_18:
         return 	evolution (this, from:"Seadra", hp:HP230, type:WATER, retreatCost:2) {
           weakness GRASS
@@ -510,7 +510,7 @@ public enum DragonMajesty implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MAGIKARP_19:
         return basic (this, hp:HP030, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -522,7 +522,7 @@ public enum DragonMajesty implements LogicCardInfo {
               flip {damage 10}
             }
           }
-        };
+        }
       case GYARADOS_20:
         return 	evolution (this, from:"Magikarp", hp:HP160, type:WATER, retreatCost:4) {
           weakness LIGHTNING
@@ -545,7 +545,7 @@ public enum DragonMajesty implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LAPRAS_21:
         return basic (this, hp:HP120, type:WATER, retreatCost:2) {
           weakness GRASS
@@ -566,7 +566,7 @@ public enum DragonMajesty implements LogicCardInfo {
               damage 70+10*self.cards.energyCount(W)
             }
           }
-        };
+        }
       case TOTODILE_22:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -584,7 +584,7 @@ public enum DragonMajesty implements LogicCardInfo {
               flip 3,{damage 10}
             }
           }
-        };
+        }
       case CROCONAW_23:
         return 	evolution (this, from:"Totodile", hp:HP090, type:WATER, retreatCost:2) {
           weakness GRASS
@@ -603,7 +603,7 @@ public enum DragonMajesty implements LogicCardInfo {
               my.deck.subList(0,3).discard()
             }
           }
-        };
+        }
       case FERALIGATR_24:
         return 	evolution (this, from:"Croconaw", hp:HP160, type:WATER, retreatCost:3) {
           weakness GRASS
@@ -624,7 +624,7 @@ public enum DragonMajesty implements LogicCardInfo {
               shuffleDeck()
             }
           }
-        };
+        }
       case WOOPER_25:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -642,7 +642,7 @@ public enum DragonMajesty implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case QUAGSIRE_26:
         return 	evolution (this, from:"Wooper", hp:HP120, type:WATER, retreatCost:2) {
           weakness GRASS
@@ -661,7 +661,7 @@ public enum DragonMajesty implements LogicCardInfo {
               damage 60+20*self.cards.energyCount(W)
             }
           }
-        };
+        }
       case CORSOLA_27:
         return basic (this, hp:HP090, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -672,7 +672,7 @@ public enum DragonMajesty implements LogicCardInfo {
               damage 20*self.cards.energyCount(W), opp.all.select("Select the Pokémon to target")
             }
           }
-        };
+        }
       case FEEBAS_28:
         return basic (this, hp:HP030, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -696,7 +696,7 @@ public enum DragonMajesty implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case MILOTIC_29:
         return 	evolution (this, from:"Feebas", hp:HP120, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -722,7 +722,7 @@ public enum DragonMajesty implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case PHIONE_30:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -757,7 +757,7 @@ public enum DragonMajesty implements LogicCardInfo {
               applyAfterDamage ASLEEP
             }
           }
-        };
+        }
       case WISHIWASHI_31:
         return basic (this, hp:HP030, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -795,7 +795,7 @@ public enum DragonMajesty implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case TRAPINCH_32:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -811,9 +811,9 @@ public enum DragonMajesty implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case HYDREIGON_33:
-        return copy(CrimsonInvasion.HYDREIGON_62, this);
+        return copy(CrimsonInvasion.HYDREIGON_62, this)
       case DRATINI_34:
         return basic (this, hp:HP060, type:DRAGON, retreatCost:2) {
           weakness FAIRY
@@ -825,7 +825,7 @@ public enum DragonMajesty implements LogicCardInfo {
               flipThenApplySC PARALYZED
             }
           }
-        };
+        }
       case DRATINI_35:
         return basic (this, hp:HP070, type:DRAGON, retreatCost:2) {
           weakness FAIRY
@@ -836,7 +836,7 @@ public enum DragonMajesty implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case DRAGONAIR_36:
         return 	evolution (this, from:"Dratini", hp:HP100, type:DRAGON, retreatCost:2) {
           weakness FAIRY
@@ -854,7 +854,7 @@ public enum DragonMajesty implements LogicCardInfo {
               damage 80
             }
           }
-        };
+        }
       case DRAGONITE_GX_37:
         return 	evolution (this, from:"Dragonair", hp:HP250, type:DRAGON, retreatCost:3) {
           weakness FAIRY
@@ -888,7 +888,7 @@ public enum DragonMajesty implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case VIBRAVA_38:
         return 	evolution (this, from:"Trapinch", hp:HP080, type:DRAGON, retreatCost:1) {
           resistance FAIRY, MINUS20
@@ -899,7 +899,7 @@ public enum DragonMajesty implements LogicCardInfo {
               shredDamage 50
             }
           }
-        };
+        }
       case FLYGON_39:
         return 	evolution (this, from:"Vibrava", hp:HP140, type:DRAGON, retreatCost:1) {
           weakness FAIRY
@@ -925,7 +925,7 @@ public enum DragonMajesty implements LogicCardInfo {
               cantRetreat defending
             }
           }
-        };
+        }
       case ALTARIA_40:
         return 	evolution (this, from:"Swablu", hp:HP080, type:DRAGON, retreatCost:1) {
           weakness FAIRY
@@ -951,7 +951,7 @@ public enum DragonMajesty implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case ALTARIA_GX_41:
         return 	evolution (this, from:"Swablu", hp:HP200, type:DRAGON, retreatCost:1) {
           weakness FAIRY
@@ -986,7 +986,7 @@ public enum DragonMajesty implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case BAGON_42:
         return basic (this, hp:HP060, type:DRAGON, retreatCost:1) {
           weakness FAIRY
@@ -1005,7 +1005,7 @@ public enum DragonMajesty implements LogicCardInfo {
               applyAfterDamage ASLEEP
             }
           }
-        };
+        }
       case SHELGON_43:
         return 	evolution (this, from:"Bagon", hp:HP080, type:DRAGON, retreatCost:2) {
           weakness FAIRY
@@ -1029,7 +1029,7 @@ public enum DragonMajesty implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case SALAMENCE_GX_44:
         return 	evolution (this, from:"Shelgon", hp:HP250, type:DRAGON, retreatCost:2) {
           weakness FAIRY
@@ -1062,7 +1062,7 @@ public enum DragonMajesty implements LogicCardInfo {
               damage 120, opp.all.select("Select the Pokémon to target.")
             }
           }
-        };
+        }
       case DRUGGIDON_45:
         return basic (this, hp:HP110, type:DRAGON, retreatCost:1) {
           weakness FAIRY
@@ -1080,7 +1080,7 @@ public enum DragonMajesty implements LogicCardInfo {
               damage 100
             }
           }
-        };
+        }
       case ZEKROM_46:
         return basic (this, hp:HP130, type:DRAGON, retreatCost:3) {
           weakness FAIRY
@@ -1101,7 +1101,7 @@ public enum DragonMajesty implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case KYUREM_47:
         return basic (this, hp:HP130, type:DRAGON, retreatCost:2) {
           weakness FAIRY
@@ -1122,7 +1122,7 @@ public enum DragonMajesty implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case WHITE_KYUREM_GX_48:
         return basic (this, hp:HP190, type:DRAGON, retreatCost:3) {
           weakness FAIRY
@@ -1155,7 +1155,7 @@ public enum DragonMajesty implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ZYGARDE_49:
         return basic (this, hp:HP130, type:DRAGON, retreatCost:3) {
           weakness FAIRY
@@ -1175,7 +1175,7 @@ public enum DragonMajesty implements LogicCardInfo {
               if(self.numberOfDamageCounters) damage 60
             }
           }
-        };
+        }
       case TURTONATOR_50:
         return basic (this, hp:HP110, type:DRAGON, retreatCost:3) {
           weakness FAIRY
@@ -1195,7 +1195,7 @@ public enum DragonMajesty implements LogicCardInfo {
               damage 50*count
             }
           }
-        };
+        }
       case DRAMPA_51:
         return basic (this, hp:HP120, type:DRAGON, retreatCost:1) {
           weakness FAIRY
@@ -1216,7 +1216,7 @@ public enum DragonMajesty implements LogicCardInfo {
               damage 80
             }
           }
-        };
+        }
       case JANGMO_O_52:
         return basic (this, hp:HP060, type:DRAGON, retreatCost:1) {
           weakness FAIRY
@@ -1234,7 +1234,7 @@ public enum DragonMajesty implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case HAKAMO_O_53:
         return 	evolution (this, from:"Jangmo-o", hp:HP090, type:DRAGON, retreatCost:2) {
           weakness FAIRY
@@ -1253,7 +1253,7 @@ public enum DragonMajesty implements LogicCardInfo {
               damage 70
             }
           }
-        };
+        }
       case KOMMO_O_54:
         return 	evolution (this, from:"Hakamo-o", hp:HP160, type:DRAGON, retreatCost:2) {
           weakness FAIRY
@@ -1273,7 +1273,7 @@ public enum DragonMajesty implements LogicCardInfo {
               if(self.numberOfDamageCounters >= 8) damage 120
             }
           }
-        };
+        }
       case KANGASKHAN_55:
         return basic (this, hp:HP120, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -1302,7 +1302,7 @@ public enum DragonMajesty implements LogicCardInfo {
               flip {damage 30}
             }
           }
-        };
+        }
       case SWABLU_56:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -1324,7 +1324,7 @@ public enum DragonMajesty implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case SWABLU_57:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -1336,7 +1336,7 @@ public enum DragonMajesty implements LogicCardInfo {
               apply ASLEEP
             }
           }
-        };
+        }
       case BLAINE_S_LAST_STAND_58:
         return supporter(this) {
           text "You can play this card only when it is the last card in your hand.\nDraw 2 cards for each [R] Pokémon you have in play.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
@@ -1346,7 +1346,7 @@ public enum DragonMajesty implements LogicCardInfo {
           playRequirement{
             assert !my.hand.getExcludedList(thisCard) : "this is not your only card in hand"
           }
-        };
+        }
       case DRAGON_TALON_59:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nIf the [N] Pokémon this card is attached to is your Active Pokémon and is damaged by an opponent's attack (even if that Pokémon is Knocked Out), put 3 damage counters on the Attacking Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack).\n"
@@ -1356,7 +1356,7 @@ public enum DragonMajesty implements LogicCardInfo {
               directDamage(30, ef.attacker, TRAINER_CARD)
             }
           }
-        };
+        }
       case FIERY_FLINT_60:
         return itemCard (this) {
           text "You can play this card only if you discard 2 other cards from your hand.\nSearch your deck for up to 4 [R] Energy cards, reveal them, and put them into your hand. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack).\n"
@@ -1369,7 +1369,7 @@ public enum DragonMajesty implements LogicCardInfo {
             assert my.hand.getExcludedList(thisCard).size() >= 2
             assert my.deck
           }
-        };
+        }
       case LANCE_PRISM_STAR_61:
         return supporter(this) {
           text "You can play this card only if 1 of your Pokémon was Knocked Out during your opponent's last turn.\nSearch your deck for up to 2 [N] Pokémon and put them onto your Bench. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
@@ -1393,7 +1393,7 @@ public enum DragonMajesty implements LogicCardInfo {
             assert bg.turnCount
             assert keyStore("Lance_Prism_KO", thisCard, null) == bg.turnCount - 1: "No Pokémon was Knocked Out during your opponent’s last turn"
           }
-        };
+        }
       case SWITCH_RAFT_62:
         return itemCard (this) {
           text "Switch your Active [W] Pokémon with 1 of your Benched Pokémon. If you do, heal 30 damage from the Pokémon you moved to your Bench.\nYou may play as many Item cards as you like during your turn (before your attack).\n"
@@ -1407,7 +1407,7 @@ public enum DragonMajesty implements LogicCardInfo {
             assert my.active.types.contains(W)
             assert my.bench
           }
-        };
+        }
       case WELA_VOLCANO_PARK_63:
         return stadium(this) {
           text "Whenever a player flips a coin for the Special Condition Burned between turns, that Special Condition isn't removed even if the result is heads.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card.\n"
@@ -1416,7 +1416,7 @@ public enum DragonMajesty implements LogicCardInfo {
           }
           onRemoveFromPlay{
           }
-        };
+        }
       case ZINNIA_64:
         return supporter(this) {
           text "You can play this card only if 1 of your Pokémon was Knocked Out during your opponent's last turn.\nAttach up to 2 basic Energy cards from your hand to 1 of your [N] Pokémon.\nYou may play only 1 Supporter card during your turn (before your attack).\n"
@@ -1439,37 +1439,37 @@ public enum DragonMajesty implements LogicCardInfo {
             assert keyStore("Zinnia_KO", thisCard, null) == bg.turnCount - 1: "No Pokémon was Knocked Out during your opponent’s last turn"
             assert my.all.findAll{it.types.contains(N)} : "You have no [N] type Pokémon in play"
           }
-        };
+        }
       case RESHIRAM_GX_65:
-        return copy(RESHIRAM_GX_11, this);
+        return copy(RESHIRAM_GX_11, this)
       case KINGDRA_GX_66:
-        return copy(KINGDRA_GX_18, this);
+        return copy(KINGDRA_GX_18, this)
       case DRAGONITE_GX_67:
-        return copy(DRAGONITE_GX_37, this);
+        return copy(DRAGONITE_GX_37, this)
       case ALTARIA_GX_68:
-        return copy(ALTARIA_GX_41, this);
+        return copy(ALTARIA_GX_41, this)
       case BLAINE_S_LAST_STAND_69:
-        return copy(BLAINE_S_LAST_STAND_58, this);
+        return copy(BLAINE_S_LAST_STAND_58, this)
       case ZINNIA_70:
-        return copy(ZINNIA_64, this);
+        return copy(ZINNIA_64, this)
       case RESHIRAM_GX_71:
-        return copy(RESHIRAM_GX_11, this);
+        return copy(RESHIRAM_GX_11, this)
       case ALTARIA_GX_72:
-        return copy(ALTARIA_GX_41, this);
+        return copy(ALTARIA_GX_41, this)
       case SALAMENCE_GX_73:
-        return copy(SALAMENCE_GX_44, this);
+        return copy(SALAMENCE_GX_44, this)
       case WHITE_KYUREM_GX_74:
-        return copy(WHITE_KYUREM_GX_48, this);
+        return copy(WHITE_KYUREM_GX_48, this)
       case DRAGON_TALON_75:
-        return copy(DRAGON_TALON_59, this);
+        return copy(DRAGON_TALON_59, this)
       case FIERY_FLINT_76:
-        return copy(FIERY_FLINT_60, this);
+        return copy(FIERY_FLINT_60, this)
       case SWITCH_RAFT_77:
-        return copy(SWITCH_RAFT_62, this);
+        return copy(SWITCH_RAFT_62, this)
       case ULTRA_NECROZMA_GX_78:
-        return copy(ForbiddenLight.ULTRA_NECROZMA_GX_95, this);
+        return copy(ForbiddenLight.ULTRA_NECROZMA_GX_95, this)
       default:
-        return null;
+        return null
     }
   }
 }

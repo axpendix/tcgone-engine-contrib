@@ -1,22 +1,22 @@
-package tcgwars.logic.impl.gen1;
+package tcgwars.logic.impl.gen1
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
+import static tcgwars.logic.effect.EffectType.*
 import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.*;
+import tcgwars.logic.*
 import tcgwars.logic.card.*
-import tcgwars.logic.effect.*;
+import tcgwars.logic.effect.*
 import tcgwars.logic.effect.ability.*
 import tcgwars.logic.effect.basic.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -109,108 +109,108 @@ public enum TeamRocketNG implements LogicCardInfo {
   DARK_RAICHU ("Dark Raichu", "83", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]);
 
   public static SimpleDeck devastation() {
-    SimpleDeck deck = new SimpleDeck("Devastation Theme Deck");
-    deck.setFormat(GameFormat.CLASSIC_EXTENDED);
-    Map<CardInfo, Integer> map = new HashMap<>();
-    map.put(BaseSet.WEEDLE, 3);
-    map.put(ODDISH, 3);
-    map.put(DARK_GLOOM, 1);
-    map.put(KOFFING, 4);
-    map.put(DARK_WEEZING, 1);
-    map.put(BaseSet.TANGELA, 3);
-    map.put(BaseSet.SQUIRTLE, 3);
-    map.put(BaseSet.WARTORTLE, 1);
-    map.put(DARK_WARTORTLE, 1);
-    map.put(BaseSet.MAGIKARP, 1);
-    map.put(DARK_VAPOREON, 1);
-    map.put(EEVEE, 3);
-    map.put(BaseSet.FULL_HEAL, 1);
-    map.put(BaseSet.GUST_OF_WIND, 1);
-    map.put(IMPOSTER_OAKS_REVENGE, 1);
-    map.put(BaseSet.POTION, 2);
-    map.put(BaseSet.SUPER_POTION, 1);
-    map.put(BaseSet.GRASS_ENERGY, 18);
-    map.put(BaseSet.WATER_ENERGY, 10);
-    deck.setMap(map);
-    return deck;
+    SimpleDeck deck = new SimpleDeck("Devastation Theme Deck")
+    deck.setFormat(GameFormat.CLASSIC_EXTENDED)
+    Map<CardInfo, Integer> map = new HashMap<>()
+    map.put(BaseSet.WEEDLE, 3)
+    map.put(ODDISH, 3)
+    map.put(DARK_GLOOM, 1)
+    map.put(KOFFING, 4)
+    map.put(DARK_WEEZING, 1)
+    map.put(BaseSet.TANGELA, 3)
+    map.put(BaseSet.SQUIRTLE, 3)
+    map.put(BaseSet.WARTORTLE, 1)
+    map.put(DARK_WARTORTLE, 1)
+    map.put(BaseSet.MAGIKARP, 1)
+    map.put(DARK_VAPOREON, 1)
+    map.put(EEVEE, 3)
+    map.put(BaseSet.FULL_HEAL, 1)
+    map.put(BaseSet.GUST_OF_WIND, 1)
+    map.put(IMPOSTER_OAKS_REVENGE, 1)
+    map.put(BaseSet.POTION, 2)
+    map.put(BaseSet.SUPER_POTION, 1)
+    map.put(BaseSet.GRASS_ENERGY, 18)
+    map.put(BaseSet.WATER_ENERGY, 10)
+    deck.setMap(map)
+    return deck
   }
 
   public static SimpleDeck trouble() {
-    SimpleDeck deck = new SimpleDeck("Trouble Theme Deck");
-    deck.setFormat(GameFormat.CLASSIC_EXTENDED);
-    Map<CardInfo, Integer> map = new HashMap<>();
-    map.put(BaseSet.ABRA, 2);
-    map.put(ABRA, 2);
-    map.put(BaseSet.KADABRA, 2);
-    map.put(DARK_KADABRA, 2);
-    map.put(DROWZEE, 3);
-    map.put(BaseSet.GASTLY, 2);
-    map.put(BaseSet.HAUNTER, 1);
-    map.put(BaseSet.JYNX, 1);
-    map.put(EKANS, 4);
-    map.put(DARK_ARBOK, 1);
-    map.put(BaseSet.WEEDLE, 2);
-    map.put(BaseSet.FARFETCHD, 2);
-    map.put(MEOWTH, 2);
-    map.put(BaseSet.BILL, 1);
-    map.put(BaseSet.GUST_OF_WIND, 1);
-    map.put(BaseSet.POTION, 2);
-    map.put(THE_BOSSS_WAY, 1);
-    map.put(BaseSet.SWITCH, 1);
-    map.put(BaseSet.PSYCHIC_ENERGY, 18);
-    map.put(BaseSet.GRASS_ENERGY, 10);
-    map.put(FULL_HEAL_ENERGY, 1);
-    deck.setMap(map);
-    return deck;
+    SimpleDeck deck = new SimpleDeck("Trouble Theme Deck")
+    deck.setFormat(GameFormat.CLASSIC_EXTENDED)
+    Map<CardInfo, Integer> map = new HashMap<>()
+    map.put(BaseSet.ABRA, 2)
+    map.put(ABRA, 2)
+    map.put(BaseSet.KADABRA, 2)
+    map.put(DARK_KADABRA, 2)
+    map.put(DROWZEE, 3)
+    map.put(BaseSet.GASTLY, 2)
+    map.put(BaseSet.HAUNTER, 1)
+    map.put(BaseSet.JYNX, 1)
+    map.put(EKANS, 4)
+    map.put(DARK_ARBOK, 1)
+    map.put(BaseSet.WEEDLE, 2)
+    map.put(BaseSet.FARFETCHD, 2)
+    map.put(MEOWTH, 2)
+    map.put(BaseSet.BILL, 1)
+    map.put(BaseSet.GUST_OF_WIND, 1)
+    map.put(BaseSet.POTION, 2)
+    map.put(THE_BOSSS_WAY, 1)
+    map.put(BaseSet.SWITCH, 1)
+    map.put(BaseSet.PSYCHIC_ENERGY, 18)
+    map.put(BaseSet.GRASS_ENERGY, 10)
+    map.put(FULL_HEAL_ENERGY, 1)
+    deck.setMap(map)
+    return deck
   }
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   TeamRocketNG(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.TEAM_ROCKET;
+    return tcgwars.logic.card.Collection.TEAM_ROCKET
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -239,7 +239,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_ARBOK_2:
         return evolution (this, from:"Ekans", hp:HP060, type:GRASS, retreatCost:2) {
           weakness PSYCHIC
@@ -278,7 +278,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_BLASTOISE_3:
         return evolution (this, from:"Dark Wartortle", hp:HP070, type:WATER, retreatCost:2) {
           weakness LIGHTNING
@@ -304,7 +304,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_CHARIZARD_4:
         return evolution (this, from:"Dark Charmeleon", hp:HP080, type:FIRE, retreatCost:3) {
           weakness WATER
@@ -330,7 +330,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_DRAGONITE_5:
         return evolution (this, from:"Dark Dragonair", hp:HP070, type:COLORLESS, retreatCost:2) {
           resistance FIGHTING, MINUS30
@@ -358,7 +358,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_DUGTRIO_6:
         return evolution (this, from:"Diglett", hp:HP050, type:FIGHTING, retreatCost:2) {
           weakness GRASS
@@ -384,7 +384,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_GOLBAT_7:
         return evolution (this, from:"Zubat", hp:HP050, type:GRASS, retreatCost:0) {
           weakness PSYCHIC
@@ -415,7 +415,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_GYARADOS_8:
         return evolution (this, from:"Magikarp", hp:HP070, type:WATER, retreatCost:2) {
           weakness GRASS
@@ -446,7 +446,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_HYPNO_9:
         return evolution (this, from:"Drowzee", hp:HP060, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -467,7 +467,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_MACHAMP_10:
         return evolution (this, from:"Dark Machoke", hp:HP070, type:FIGHTING, retreatCost:3) {
           weakness PSYCHIC
@@ -492,7 +492,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_MAGNETON_11:
         return evolution (this, from:"Magnemite", hp:HP060, type:LIGHTNING, retreatCost:2) {
           weakness FIGHTING
@@ -517,7 +517,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_SLOWBRO_12:
         return evolution (this, from:"Slowpoke", hp:HP060, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -538,7 +538,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_VILEPLUME_13:
         return evolution (this, from:"Dark Gloom", hp:HP060, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -569,7 +569,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_WEEZING_14:
         return evolution (this, from:"Koffing", hp:HP060, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -602,7 +602,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HERE_COMES_TEAM_ROCKET_15:
         return basicTrainer (this) {
           text "Each player plays with his or her Prize cards face up for the rest of the game."
@@ -614,7 +614,7 @@ public enum TeamRocketNG implements LogicCardInfo {
           playRequirement{
             assert !(my.prizeCardSet.allVisible && opp.prizeCardSet.allVisible) : "All prizes are already visible"
           }
-        };
+        }
       case ROCKETS_SNEAK_ATTACK_16:
         return basicTrainer (this) {
           text "Look at your opponent’s hand. If he or she has any Trainer cards, choose 1 of them. Your opponent shuffles that card into his or her deck."
@@ -633,7 +633,7 @@ public enum TeamRocketNG implements LogicCardInfo {
           playRequirement{
             assert opp.hand
           }
-        };
+        }
       case RAINBOW_ENERGY_17:
         return specialEnergy (this, [[]]) {
           text "Attach Rainbow Energy to 1 of your Pokémon. While in play, Rainbow Energy counts as every type of basic Energy but only provides 1 Energy at a time. (Doesn’t count as a basic Energy card when not in play.) When you attach this card from your hand to 1 of your Pokémon, it does 10 damage to that Pokémon. (Don’t apply Weakness and Resistance.)"
@@ -648,7 +648,7 @@ public enum TeamRocketNG implements LogicCardInfo {
           }
           onRemoveFromPlay {
           }
-        };
+        }
       case DARK_ALAKAZAM:
         return copy (DARK_ALAKAZAM_1, this)
       case DARK_ARBOK:
@@ -702,7 +702,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_DRAGONAIR:
         return evolution (this, from:"Dratini", hp:HP060, type:COLORLESS, retreatCost:2) {
           resistance PSYCHIC, MINUS30
@@ -725,7 +725,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_ELECTRODE:
         return evolution(this, from: "Voltorb", hp: HP060, type: LIGHTNING, retreatCost: 1) {
           weakness FIGHTING
@@ -755,7 +755,7 @@ public enum TeamRocketNG implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DARK_FLAREON:
         return evolution (this, from:"Eevee", hp:HP050, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -783,7 +783,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_GLOOM:
         return evolution (this, from:"Oddish", hp:HP050, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -806,7 +806,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_GOLDUCK:
         return evolution (this, from:"Psyduck", hp:HP060, type:WATER, retreatCost:2) {
           weakness LIGHTNING
@@ -830,7 +830,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_JOLTEON:
         return evolution (this, from:"Eevee", hp:HP050, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -853,7 +853,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_KADABRA:
         return evolution (this, from:"Abra", hp:HP050, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -879,7 +879,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_MACHOKE:
         return evolution (this, from:"Machop", hp:HP060, type:FIGHTING, retreatCost:2) {
           weakness PSYCHIC
@@ -908,7 +908,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_MUK:
         return evolution (this, from:"Grimer", hp:HP060, type:GRASS, retreatCost:2) {
           weakness PSYCHIC
@@ -930,7 +930,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_PERSIAN:
         return evolution (this, from:"Meowth", hp:HP060, type:COLORLESS, retreatCost:0) {
           weakness FIGHTING
@@ -958,7 +958,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_PRIMEAPE:
         return evolution (this, from:"Mankey", hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -987,7 +987,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_RAPIDASH:
         return evolution (this, from:"Ponyta", hp:HP060, type:FIRE, retreatCost:0) {
           weakness WATER
@@ -1013,7 +1013,7 @@ public enum TeamRocketNG implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DARK_VAPOREON:
         return evolution (this, from:"Eevee", hp:HP060, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1035,7 +1035,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_WARTORTLE:
         return evolution (this, from:"Squirtle", hp:HP060, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1079,7 +1079,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGIKARP:
         return basic (this, hp:HP030, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1105,7 +1105,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PORYGON:
         return basic (this, hp:HP040, type:COLORLESS, retreatCost:0) {
           weakness FIGHTING
@@ -1151,7 +1151,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ABRA:
         return basic (this, hp:HP040, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1179,7 +1179,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHARMANDER:
         return basic (this, hp:HP040, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -1203,7 +1203,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARK_RATICATE:
         return evolution (this, from:"Rattata", hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -1225,7 +1225,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DIGLETT:
         return basic (this, hp:HP040, type:FIGHTING, retreatCost:0) {
           weakness GRASS
@@ -1247,7 +1247,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DRATINI:
         return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
           resistance PSYCHIC, MINUS30
@@ -1261,7 +1261,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DROWZEE:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1284,7 +1284,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EEVEE:
         return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -1307,7 +1307,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EKANS:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -1329,7 +1329,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GRIMER:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -1354,7 +1354,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KOFFING:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -1376,7 +1376,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MACHOP:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -1397,7 +1397,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGNEMITE:
         return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1418,7 +1418,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MANKEY:
         return basic (this, hp:HP040, type:FIGHTING, retreatCost:0) {
           weakness PSYCHIC
@@ -1440,7 +1440,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MEOWTH:
         return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -1455,7 +1455,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ODDISH:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1476,7 +1476,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PONYTA:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -1490,7 +1490,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PSYDUCK:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1514,7 +1514,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RATTATA:
         return basic (this, hp:HP040, type:COLORLESS, retreatCost:0) {
           weakness FIGHTING
@@ -1542,7 +1542,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SLOWPOKE:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1565,7 +1565,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SQUIRTLE:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1578,7 +1578,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VOLTORB:
         return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1591,7 +1591,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ZUBAT:
         return basic (this, hp:HP040, type:GRASS, retreatCost:0) {
           weakness PSYCHIC
@@ -1613,7 +1613,7 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HERE_COMES_TEAM_ROCKET:
         return copy (HERE_COMES_TEAM_ROCKET_15, this)
       case ROCKETS_SNEAK_ATTACK:
@@ -1630,7 +1630,7 @@ public enum TeamRocketNG implements LogicCardInfo {
           playRequirement{
             assert my.deck
           }
-        };
+        }
       case CHALLENGE:
         return basicTrainer (this) {
           text "Ask your opponent if he or she accepts your challenge. If your opponent declines (or if both Benches are full), draw 2 cards. If you opponent accepts, each of you searches your decks for any number of Basic Pokémon cards and puts them face down onto your Benches. (A player can’t do this if his or her Bench is full.) When you both have finished, shuffle your decks and turn those cards face up."
@@ -1660,7 +1660,7 @@ public enum TeamRocketNG implements LogicCardInfo {
           }
           playRequirement{
           }
-        };
+        }
       case DIGGER:
         return basicTrainer (this) {
           text "Flip a coin. If tails, do 10 damage to your Active Pokémon. If heads, your opponent flips a coin. If tails, your opponent does 10 damage to his or her Active Pokémon. If heads, you flip a coin. Keep doing this until a player gets tails."
@@ -1681,7 +1681,7 @@ public enum TeamRocketNG implements LogicCardInfo {
           }
           playRequirement{
           }
-        };
+        }
       case IMPOSTER_OAKS_REVENGE:
         return basicTrainer (this) {
           text "Discard a card from your hand in order to play this card. Your opponent shuffles his or her hand into his or her deck, then draws 4 cards."
@@ -1694,7 +1694,7 @@ public enum TeamRocketNG implements LogicCardInfo {
           playRequirement{
             assert my.hand.findAll({it != thisCard})
           }
-        };
+        }
       case NIGHTLY_GARBAGE_RUN:
         return basicTrainer (this) {
           text "Choose up to 3 Basic Pokémon cards, Evolution cards, and/or basic Energy cards from your discard pile. Show them to your opponent and shuffle them into your deck."
@@ -1707,7 +1707,7 @@ public enum TeamRocketNG implements LogicCardInfo {
           playRequirement{
             assert my.discard
           }
-        };
+        }
       case GOOP_GAS_ATTACK:
         return basicTrainer (this) {
           text "All Pokémon Powers stop working until the end of your opponent’s next turn."
@@ -1736,7 +1736,7 @@ public enum TeamRocketNG implements LogicCardInfo {
           }
           playRequirement{
           }
-        };
+        }
       case SLEEP:
         return basicTrainer (this) {
           text "Flip a coin. If heads, the Defending Pokémon is now Asleep."
@@ -1745,7 +1745,7 @@ public enum TeamRocketNG implements LogicCardInfo {
           }
           playRequirement{
           }
-        };
+        }
       case RAINBOW_ENERGY:
         return copy (RAINBOW_ENERGY_17, this)
       case FULL_HEAL_ENERGY:
@@ -1756,7 +1756,7 @@ public enum TeamRocketNG implements LogicCardInfo {
           }
           onRemoveFromPlay {
           }
-        };
+        }
       case POTION_ENERGY:
         return specialEnergy (this, [[C]]) {
           text "If you play this card from your hand, remove 1 damage counter from the Pokémon you attach it to, if it has any.\nPotion Energy provides [C] energy. (Doesn’t count as a basic Energy card.)"
@@ -1765,7 +1765,7 @@ public enum TeamRocketNG implements LogicCardInfo {
           }
           onRemoveFromPlay {
           }
-        };
+        }
       case DARK_RAICHU:
         return evolution (this, from:"Pikachu", hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1789,9 +1789,9 @@ public enum TeamRocketNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       default:
-        return null;
+        return null
     }
   }
 

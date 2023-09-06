@@ -1,26 +1,26 @@
 package tcgwars.logic.impl.gen7
 
-import tcgwars.logic.effect.gm.ActivateSimpleTrainer;
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer
 import tcgwars.logic.effect.gm.Attack
 import tcgwars.logic.effect.gm.PlayTrainer
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.*;
+import tcgwars.logic.*
 import tcgwars.logic.card.*
 import tcgwars.logic.effect.*
 import tcgwars.logic.effect.basic.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -174,53 +174,53 @@ public enum ForbiddenLight implements LogicCardInfo {
   MYSTERIOUS_TREASURE_145 ("Mysterious Treasure", "145", Rarity.SECRET, [ITEM, TRAINER]),
   UNIT_ENERGY_FDY_146 ("Unit Energy FDY", "146", Rarity.SECRET, [SPECIAL_ENERGY, ENERGY]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   ForbiddenLight(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.FORBIDDEN_LIGHT;
+    return tcgwars.logic.card.Collection.FORBIDDEN_LIGHT
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -243,7 +243,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_EXEGGUTOR_2:
         return evolution (this, from:"Exeggcute", hp:HP160, type:GRASS, retreatCost:3) {
           weakness FIRE
@@ -262,7 +262,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SNOVER_3:
         return basic (this, hp:HP080, type:GRASS, retreatCost:3) {
           weakness FIRE
@@ -275,7 +275,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ABOMASNOW_4:
         return evolution (this, from:"Snover", hp:HP130, type:GRASS, retreatCost:3) {
           weakness FIRE
@@ -297,7 +297,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SCATTERBUG_5:
         return basic (this, hp:HP030, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -320,7 +320,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SCATTERBUG_6:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -339,7 +339,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SPEWPA_7:
         return evolution (this, from:"Scatterbug", hp:HP070, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -352,7 +352,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VIVILLON_8:
         return evolution (this, from:"Spewpa", hp:HP130, type:GRASS, retreatCost:1) {
           weakness LIGHTNING
@@ -369,7 +369,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SKIDDO_9:
         return basic (this, hp:HP070, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -391,7 +391,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOGOAT_10:
         return evolution (this, from:"Skiddo", hp:HP120, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -411,7 +411,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PHEROMOSA_11:
         return basic (this, hp:HP110, type:GRASS, retreatCost:0) {
           weakness FIRE
@@ -431,7 +431,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_MAROWAK_12:
         return evolution (this, from:"Cubone", hp:HP120, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -453,7 +453,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HEATRAN_13:
         return basic (this, hp:HP130, type:FIRE, retreatCost:3) {
           weakness WATER
@@ -476,7 +476,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FENNEKIN_14:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -491,7 +491,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FENNEKIN_15:
         return basic (this, hp:HP070, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -510,7 +510,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BRAIXEN_16:
         return evolution (this, from:"Fennekin", hp:HP090, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -532,7 +532,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DELPHOX_17:
         return evolution (this, from:"Braixen", hp:HP150, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -555,7 +555,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LITLEO_18:
         return basic (this, hp:HP070, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -567,7 +567,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PYROAR_19:
         return evolution (this, from:"Litleo", hp:HP120, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -602,7 +602,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PALKIA_GX_20:
         return basic (this, hp:HP180, type:WATER, retreatCost:3) {
           weakness GRASS
@@ -612,9 +612,9 @@ public enum ForbiddenLight implements LogicCardInfo {
             onAttack {
               while(1){
                 def pl=(my.bench.findAll {it.cards.energyCount(C)})
-                if(!pl) break;
+                if(!pl) break
                 def src =pl.select("source for energy (cancel to stop)", false)
-                if(!src) break;
+                if(!src) break
                 def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
                 energySwitch(src, self, card)
               }
@@ -643,7 +643,7 @@ public enum ForbiddenLight implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case FROAKIE_21:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -663,7 +663,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FROAKIE_22:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -682,7 +682,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FROGADIER_23:
         return evolution (this, from:"Froakie", hp:HP080, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -703,7 +703,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GRENINJA_GX_24:
         return evolution (this, from:"Frogadier", hp:HP230, type:WATER, retreatCost:2) {
           weakness GRASS
@@ -743,7 +743,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CLAUNCHER_25:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -755,7 +755,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CLAWITZER_26:
         return evolution (this, from:"Clauncher", hp:HP100, type:WATER, retreatCost:2) {
           weakness GRASS
@@ -774,7 +774,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AMAURA_27:
         return evolution (this, from:"Unidentified Fossil", hp:HP090, type:WATER, retreatCost:3) {
           weakness METAL
@@ -794,7 +794,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AURORUS_28:
         return evolution (this, from:"Amaura", hp:HP160, type:WATER, retreatCost:4) {
           weakness METAL
@@ -825,7 +825,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BERGMITE_29:
         return basic (this, hp:HP060, type:WATER, retreatCost:2) {
           weakness METAL
@@ -845,7 +845,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AVALUGG_30:
         return evolution (this, from:"Bergmite", hp:HP140, type:WATER, retreatCost:4) {
           weakness METAL
@@ -873,7 +873,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VOLCANION_PRISM_STAR_31:
         return basic (this, hp:HP160, type:WATER, retreatCost:3) {
           weakness LIGHTNING
@@ -898,7 +898,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DEWPIDER_32:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -917,7 +917,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARAQUANID_33:
         return evolution (this, from:"Dewpider", hp:HP100, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -947,7 +947,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGNEMITE_34:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -971,7 +971,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGNETON_35:
         return evolution (this, from:"Magnemite", hp:HP090, type:LIGHTNING, retreatCost:2) {
           weakness FIGHTING
@@ -992,7 +992,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGNEZONE_36:
         return evolution (this, from:"Magneton", hp:HP150, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1016,7 +1016,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HELIOPTILE_37:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1036,7 +1036,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HELIOLISK_38:
         return evolution (this, from:"Helioptile", hp:HP100, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1057,7 +1057,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case XURKITREE_39:
         return basic (this, hp:HP120, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1079,7 +1079,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ROTOM_40:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness DARKNESS
@@ -1108,7 +1108,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case UXIE_41:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1121,7 +1121,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MESPRIT_42:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1142,7 +1142,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AZELF_43:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1169,7 +1169,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ESPURR_44:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1186,7 +1186,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MEOWSTIC_45:
         return evolution (this, from:"Espurr", hp:HP090, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1207,7 +1207,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HONEDGE_46:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:2) {
           weakness DARKNESS
@@ -1231,7 +1231,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HONEDGE_47:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:2) {
           weakness DARKNESS
@@ -1244,7 +1244,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DOUBLADE_48:
         return evolution (this, from:"Honedge", hp:HP080, type:PSYCHIC, retreatCost:2) {
           weakness DRAGON
@@ -1259,7 +1259,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AEGISLASH_49:
         return evolution (this, from:"Doublade", hp:HP150, type:PSYCHIC, retreatCost:2) {
           weakness DARKNESS
@@ -1299,7 +1299,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case INKAY_50:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1311,7 +1311,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MALAMAR_51:
         return evolution (this, from:"Inkay", hp:HP090, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -1333,7 +1333,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SKRELP_52:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1345,7 +1345,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DRAGALGE_53:
         return evolution (this, from:"Skrelp", hp:HP120, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1370,7 +1370,7 @@ public enum ForbiddenLight implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case HOOPA_54:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1391,7 +1391,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case POIPOLE_55:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1424,7 +1424,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NAGANADEL_GX_56:
         return evolution (this, from:"Poipole", hp:HP210, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1461,7 +1461,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CUBONE_57:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:2) {
           weakness GRASS
@@ -1474,7 +1474,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TORTERRA_58:
         return evolution (this, from:"Grotle", hp:HP180, type:FIGHTING, retreatCost:4) {
           weakness GRASS
@@ -1495,7 +1495,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case INFERNAPE_59:
         return evolution (this, from:"Monferno", hp:HP130, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -1518,7 +1518,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GIBLE_60:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -1527,7 +1527,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             energyCost F
             ascension delegate
           }
-        };
+        }
       case GABITE_61:
         return evolution (this, from:"Gible", hp:HP080, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -1544,7 +1544,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GARCHOMP_62:
         return evolution (this, from:"Gabite", hp:HP150, type:FIGHTING, retreatCost:0) {
           weakness GRASS
@@ -1566,7 +1566,7 @@ public enum ForbiddenLight implements LogicCardInfo {
               }
             }
           }
-        };
+        }
 
       case CROAGUNK_63:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
@@ -1580,7 +1580,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TOXICROAK_64:
         return evolution (this, from:"Croagunk", hp:HP100, type:FIGHTING, retreatCost:2) {
           weakness PSYCHIC
@@ -1601,7 +1601,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PANCHAM_65:
         return basic (this, hp:HP070, type:FIGHTING, retreatCost:2) {
           weakness PSYCHIC
@@ -1614,7 +1614,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BINACLE_66:
         return basic (this, hp:HP070, type:FIGHTING, retreatCost:3) {
           weakness GRASS
@@ -1627,7 +1627,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BARBARACLE_67:
         return evolution (this, from:"Binacle", hp:HP130, type:FIGHTING, retreatCost:3) {
           weakness GRASS
@@ -1647,7 +1647,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TYRUNT_68:
         return evolution (this, from:"Unidentified Fossil", hp:HP090, type:FIGHTING, retreatCost:2) {
           weakness GRASS
@@ -1667,7 +1667,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TYRANTRUM_69:
         return evolution (this, from:"Tyrunt", hp:HP160, type:FIGHTING, retreatCost:3) {
           weakness GRASS
@@ -1699,7 +1699,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HAWLUCHA_70:
         return basic (this, hp:HP080, type:FIGHTING, retreatCost:1) {
           weakness LIGHTNING
@@ -1719,7 +1719,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ZYGARDE_71:
         return basic (this, hp:HP090, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -1751,7 +1751,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ZYGARDE_72:
         return basic (this, hp:HP130, type:FIGHTING, retreatCost:2) {
           weakness GRASS
@@ -1772,7 +1772,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ZYGARDE_GX_73:
         return basic (this, hp:HP200, type:FIGHTING, retreatCost:3) {
           weakness GRASS
@@ -1815,7 +1815,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DIANCIE_PRISM_STAR_74:
         return basic (this, hp:HP120, type:FIGHTING, retreatCost:2) {
           weakness GRASS
@@ -1847,7 +1847,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ROCKRUFF_75:
         return basic (this, hp:HP070, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -1859,7 +1859,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LYCANROC_76:
         return evolution (this, from:"Rockruff", hp:HP120, type:FIGHTING, retreatCost:2) {
           weakness GRASS
@@ -1878,7 +1878,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BUZZWOLE_77:
         return basic (this, hp:HP130, type:FIGHTING, retreatCost:2) {
           weakness PSYCHIC
@@ -1899,7 +1899,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PANGORO_78:
         return evolution (this, from:"Pancham", hp:HP130, type:DARKNESS, retreatCost:3) {
           weakness FIGHTING
@@ -1927,7 +1927,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case YVELTAL_GX_79:
         return basic (this, hp:HP180, type:DARKNESS, retreatCost:2) {
           weakness LIGHTNING
@@ -1964,7 +1964,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GUZZLORD_80:
         return basic (this, hp:HP160, type:DARKNESS, retreatCost:4) {
           weakness FIGHTING
@@ -1981,7 +1981,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EMPOLEON_81:
         return evolution (this, from:"Prinplup", hp:HP160, type:METAL, retreatCost:2) {
           weakness FIRE
@@ -2002,7 +2002,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DIALGA_GX_82:
         return basic (this, hp:HP180, type:METAL, retreatCost:3) {
           weakness FIRE
@@ -2060,7 +2060,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FLABEBE_83:
         return basic (this, hp:HP030, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -2084,7 +2084,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FLABEBE_84:
         return basic (this, hp:HP040, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -2099,7 +2099,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FLOETTE_85:
         return evolution (this, from:"Flabébé", hp:HP070, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -2118,7 +2118,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FLORGES_86:
         return evolution (this, from:"Floette", hp:HP120, type:FAIRY, retreatCost:2) {
           weakness METAL
@@ -2153,7 +2153,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SYLVEON_87:
         return evolution (this, from:"Eevee", hp:HP090, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -2187,7 +2187,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DEDENNE_88:
         return basic (this, hp:HP060, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -2212,7 +2212,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KLEFKI_89:
         return basic (this, hp:HP070, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -2233,7 +2233,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case XERNEAS_GX_90:
         return basic (this, hp:HP180, type:FAIRY, retreatCost:2) {
           weakness METAL
@@ -2268,7 +2268,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOOMY_91:
         return basic (this, hp:HP040, type:DRAGON, retreatCost:1) {
           weakness FAIRY
@@ -2294,7 +2294,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOOMY_92:
         return basic (this, hp:HP050, type:DRAGON, retreatCost:2) {
           weakness FAIRY
@@ -2313,7 +2313,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SLIGGOO_93:
         return evolution (this, from:"Goomy", hp:HP080, type:DRAGON, retreatCost:2) {
           resistance FAIRY, MINUS20
@@ -2333,7 +2333,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOODRA_94:
         return evolution (this, from:"Sliggoo", hp:HP160, type:DRAGON, retreatCost:3) {
           weakness FAIRY
@@ -2357,7 +2357,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ULTRA_NECROZMA_GX_95:
         return basic (this, hp:HP190, type:DRAGON, retreatCost:2) {
           weakness FAIRY
@@ -2391,7 +2391,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARCEUS_PRISM_STAR_96:
         return basic (this, hp:HP160, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -2420,7 +2420,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BUNNELBY_97:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -2439,7 +2439,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DIGGERSBY_98:
         return evolution (this, from:"Bunnelby", hp:HP130, type:COLORLESS, retreatCost:3) {
           weakness FIGHTING
@@ -2462,7 +2462,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FURFROU_99:
         return basic (this, hp:HP090, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -2479,7 +2479,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NOIBAT_100:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -2508,7 +2508,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NOIVERN_101:
         return evolution (this, from:"Noibat", hp:HP120, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -2530,7 +2530,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BEAST_RING_102:
         return itemCard (this) {
           text "You can play this card only if your opponent has exactly 3 or 4 Prize cards remaining.\nSearch your deck for up to 2 basic Energy cards and attach them to 1 of your Ultra Beasts. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -2543,7 +2543,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             assert (opp.prizeCardSet.size() == 3 || opp.prizeCardSet.size() == 4) : " Your opponent need to have exactly 3 or 4 Prize cards remaining"
             assert my.all.findAll{it.topPokemonCard.cardTypes.is(ULTRA_BEAST)} : "No Ultra Beast in play."
           }
-        };
+        }
       case BONNIE_103:
         return supporter (this) {
           text "You can play this card only if there is any Stadium card in play.\nDiscard that Stadium card. During this turn, your Zygarde-GX can use its GX attack even if you have used your GX attack.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -2558,7 +2558,7 @@ public enum ForbiddenLight implements LogicCardInfo {
           playRequirement{
             assert bg.stadiumInfoStruct : "There is no stadium in play"
           }
-        };
+        }
       case CRASHER_WAKE_104:
         return supporter (this) {
           text "Discard 2 [W] Energy cards from your hand. If you do, search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -2571,7 +2571,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             assert my.hand.filterByEnergyType(W).size() >= 2
             assert my.deck
           }
-        };
+        }
       case DIANTHA_105:
         return supporter (this) {
           text "You can play this card only if 1 of your [Y] Pokémon was Knocked Out during your opponent’s last turn.\nPut 2 cards from your discard pile into your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -2592,7 +2592,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             assert bg.turnCount
             assert keyStore("Diantha_KO", thisCard, null) == bg.turnCount - 1: "No Fairy Pokémon was Knocked Out during your opponent’s last turn"
           }
-        };
+        }
       case ENEPORTER_106:
         return itemCard (this) {
           text "Move a Special Energy from 1 of your opponent’s Pokémon to another of their Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -2605,7 +2605,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             assert opp.bench
             assert opp.all.findAll{it.cards.filterByType(SPECIAL_ENERGY)}
           }
-        };
+        }
       case FOSSIL_EXCAVATION_MAP_107:
         return itemCard (this) {
           text "Choose 1:\n Search your deck for an Unidentified Fossil card, reveal it, and put it into your hand. Then, shuffle your deck.\n Put an Unidentified Fossil card from your discard pile into your hand. \nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -2625,7 +2625,7 @@ public enum ForbiddenLight implements LogicCardInfo {
           playRequirement{
             assert my.deck.notEmpty || my.discard.findAll{it.name== "Unidentified Fossil"}
           }
-        };
+        }
       case JUDGE_108:
         return supporter (this) {
           text "Each player shuffles their hand into their deck and draws 4 cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -2639,7 +2639,7 @@ public enum ForbiddenLight implements LogicCardInfo {
           }
           playRequirement{
           }
-        };
+        }
       case LADY_109:
         return supporter (this) {
           text "Search your deck for up to 4 basic Energy cards, reveal them, and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -2650,7 +2650,7 @@ public enum ForbiddenLight implements LogicCardInfo {
           playRequirement{
             assert my.hand
           }
-        };
+        }
       case LYSANDRE_PRISM_STAR_110:
         return supporter (this) {
           text "♢ (Prism Star) Rule: You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead.\nFor each of your [R] Pokémon in play, put a card from your opponent’s discard pile in the Lost Zone.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -2662,7 +2662,7 @@ public enum ForbiddenLight implements LogicCardInfo {
           playRequirement{
             assert my.all.findAll{it.types.contains(R)}
           }
-        };
+        }
       case LYSANDRE_LABS_111:
         return stadium (this) {
           text "Pokémon Tool cards in play (both yours and your opponent’s) have no effect.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
@@ -2713,7 +2713,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
             if(count >= 0) bg.em().storeObject("Tool Concealment count", count)
           }
-        };
+        }
       case METAL_FRYING_PAN_112:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nThe [M] Pokémon this card is attached to takes 30 less damage from your opponent’s attacks (after applying Weakness and Resistance) and has no Weakness.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -2743,7 +2743,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             eff1.unregister()
             eff2.unregister()
           }
-        };
+        }
       case MYSTERIOUS_TREASURE_113:
         return itemCard (this) {
           text "Discard a card from your hand. If you do, search your deck for a [P] or [N] Pokémon, reveal it, and put it into your hand. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -2756,7 +2756,7 @@ public enum ForbiddenLight implements LogicCardInfo {
             assert my.hand.getExcludedList(thisCard)
             assert my.deck
           }
-        };
+        }
       case ULTRA_RECON_SQUAD_114:
         return supporter (this) {
           text "Discard up to 2 Ultra Beast cards from your hand. Draw 3 cards for each card you discarded in this way.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -2768,7 +2768,7 @@ public enum ForbiddenLight implements LogicCardInfo {
           playRequirement{
             assert my.hand.filterByType(ULTRA_BEAST) : "You don't have any Ultra Beast cards in your hand"
           }
-        };
+        }
       case ULTRA_SPACE_115:
         return stadium (this) {
           text "Once during each player’s turn, that player may search their deck for an Ultra Beast card, reveal it, put it into their hand, and shuffle their deck.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
@@ -2787,9 +2787,9 @@ public enum ForbiddenLight implements LogicCardInfo {
           onRemoveFromPlay{
             actions.each { bg().gm().unregisterAction(it) }
           }
-        };
+        }
       case UNIDENTIFIED_FOSSIL_116:
-        return copy (UltraPrism.UNIDENTIFIED_FOSSIL_134, this);
+        return copy (UltraPrism.UNIDENTIFIED_FOSSIL_134, this)
       case BEAST_ENERGY_PRISM_STAR_117:
         return specialEnergy (this, [[C]]) {
           text "♢ (Prism Star) Rule: You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead.\nThis card provides [C] Energy.\nWhile this card is attached to an Ultra Beast, it provides every type of Energy but provides only 1 Energy at a time. The attacks of the Ultra Beast this card is attached to do 30 more damage to your opponent’s Active Pokémon (before applying Weakness and Resistance)."
@@ -2819,7 +2819,7 @@ public enum ForbiddenLight implements LogicCardInfo {
               return [[C] as Set]
             }
           }
-        };
+        }
       case UNIT_ENERGY_FDY_118:
         return specialEnergy (this, [[C]]) {
           text "This card provides [C] Energy.\nWhile this card is attached to a Pokémon, it provides [F], [D], and [Y] Energy but provides only 1 Energy at a time."
@@ -2829,14 +2829,14 @@ public enum ForbiddenLight implements LogicCardInfo {
           getEnergyTypesOverride {
             self != null ? [[F,D,Y] as Set] : [[C] as Set]
           }
-        };
+        }
 
       case PALKIA_GX_119:
-        return copy (PALKIA_GX_20, this);
+        return copy (PALKIA_GX_20, this)
       case GRENINJA_GX_120:
-        return copy (GRENINJA_GX_24, this);
+        return copy (GRENINJA_GX_24, this)
       case NAGANADEL_GX_121:
-        return copy (NAGANADEL_GX_56, this);
+        return copy (NAGANADEL_GX_56, this)
       case LUCARIO_GX_122:
         return evolution (this, from:"Riolu", hp:HP210, type:FIGHTING, retreatCost:2) {
           weakness PSYCHIC
@@ -2869,57 +2869,57 @@ public enum ForbiddenLight implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ZYGARDE_GX_123:
-        return copy (ZYGARDE_GX_73, this);
+        return copy (ZYGARDE_GX_73, this)
       case YVELTAL_GX_124:
-        return copy (YVELTAL_GX_79, this);
+        return copy (YVELTAL_GX_79, this)
       case DIALGA_GX_125:
-        return copy (DIALGA_GX_82, this);
+        return copy (DIALGA_GX_82, this)
       case XERNEAS_GX_126:
-        return copy (XERNEAS_GX_90, this);
+        return copy (XERNEAS_GX_90, this)
       case ULTRA_NECROZMA_GX_127:
-        return copy (ULTRA_NECROZMA_GX_95, this);
+        return copy (ULTRA_NECROZMA_GX_95, this)
       case BONNIE_128:
-        return copy (BONNIE_103, this);
+        return copy (BONNIE_103, this)
       case CRASHER_WAKE_129:
-        return copy (CRASHER_WAKE_104, this);
+        return copy (CRASHER_WAKE_104, this)
       case DIANTHA_130:
-        return copy (DIANTHA_105, this);
+        return copy (DIANTHA_105, this)
       case ULTRA_RECON_SQUAD_131:
-        return copy (ULTRA_RECON_SQUAD_114, this);
+        return copy (ULTRA_RECON_SQUAD_114, this)
       case PALKIA_GX_132:
-        return copy (PALKIA_GX_20, this);
+        return copy (PALKIA_GX_20, this)
       case GRENINJA_GX_133:
-        return copy (GRENINJA_GX_24, this);
+        return copy (GRENINJA_GX_24, this)
       case NAGANADEL_GX_134:
-        return copy (NAGANADEL_GX_56, this);
+        return copy (NAGANADEL_GX_56, this)
       case LUCARIO_GX_135:
-        return copy (LUCARIO_GX_122, this);
+        return copy (LUCARIO_GX_122, this)
       case ZYGARDE_GX_136:
-        return copy (ZYGARDE_GX_73, this);
+        return copy (ZYGARDE_GX_73, this)
       case YVELTAL_GX_137:
-        return copy (YVELTAL_GX_79, this);
+        return copy (YVELTAL_GX_79, this)
       case DIALGA_GX_138:
-        return copy (DIALGA_GX_82, this);
+        return copy (DIALGA_GX_82, this)
       case XERNEAS_GX_139:
-        return copy (XERNEAS_GX_90, this);
+        return copy (XERNEAS_GX_90, this)
       case ULTRA_NECROZMA_GX_140:
-        return copy (ULTRA_NECROZMA_GX_95, this);
+        return copy (ULTRA_NECROZMA_GX_95, this)
       case BEAST_RING_141:
-        return copy (BEAST_RING_102, this);
+        return copy (BEAST_RING_102, this)
       case ENEPORTER_142:
-        return copy (ENEPORTER_106, this);
+        return copy (ENEPORTER_106, this)
       case ENERGY_RECYCLER_143:
-        return copy (GuardiansRising.ENERGY_RECYCLER_123, this);
+        return copy (GuardiansRising.ENERGY_RECYCLER_123, this)
       case METAL_FRYING_PAN_144:
-        return copy (METAL_FRYING_PAN_112, this);
+        return copy (METAL_FRYING_PAN_112, this)
       case MYSTERIOUS_TREASURE_145:
-        return copy (MYSTERIOUS_TREASURE_113, this);
+        return copy (MYSTERIOUS_TREASURE_113, this)
       case UNIT_ENERGY_FDY_146:
-        return copy (UNIT_ENERGY_FDY_118, this);
+        return copy (UNIT_ENERGY_FDY_118, this)
       default:
-        return null;
+        return null
     }
   }
 

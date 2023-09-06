@@ -1,23 +1,23 @@
-package tcgwars.logic.impl.gen1;
+package tcgwars.logic.impl.gen1
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.*;
+import tcgwars.logic.*
 import tcgwars.logic.card.*
 import tcgwars.logic.effect.*
-import tcgwars.logic.effect.advanced.*;
+import tcgwars.logic.effect.advanced.*
 import tcgwars.logic.effect.basic.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -90,101 +90,101 @@ public enum FossilNG implements LogicCardInfo {
   MYSTERIOUS_FOSSIL ("Mysterious Fossil", "62", Rarity.COMMON, [TRAINER]);
 
   static SimpleDeck lockdown() {
-    SimpleDeck deck = new SimpleDeck("LockDown Theme Deck");
-    deck.setFormat(GameFormat.CLASSIC_SERIES);
-    Map<CardInfo, Integer> map = new HashMap<>();
-    map.put(BaseSet.VULPIX, 3);
-    map.put(BaseSet.PONYTA, 3);
-    map.put(MAGMAR, 2);
-    map.put(KRABBY, 4);
-    map.put(KINGLER, 2);
-    map.put(HORSEA, 4);
-    map.put(SEADRA, 2);
-    map.put(LAPRAS, 1);
-    map.put(BaseSet.BILL, 2);
-    map.put(ENERGY_SEARCH, 1);
-    map.put(BaseSet.FULL_HEAL, 1);
-    map.put(GAMBLER, 1);
-    map.put(BaseSet.POTION, 2);
-    map.put(BaseSet.SUPER_POTION, 2);
-    map.put(BaseSet.SWITCH, 2);
-    map.put(BaseSet.FIRE_ENERGY, 14);
-    map.put(BaseSet.WATER_ENERGY, 14);
-    deck.setMap(map);
-    return deck;
+    SimpleDeck deck = new SimpleDeck("LockDown Theme Deck")
+    deck.setFormat(GameFormat.CLASSIC_SERIES)
+    Map<CardInfo, Integer> map = new HashMap<>()
+    map.put(BaseSet.VULPIX, 3)
+    map.put(BaseSet.PONYTA, 3)
+    map.put(MAGMAR, 2)
+    map.put(KRABBY, 4)
+    map.put(KINGLER, 2)
+    map.put(HORSEA, 4)
+    map.put(SEADRA, 2)
+    map.put(LAPRAS, 1)
+    map.put(BaseSet.BILL, 2)
+    map.put(ENERGY_SEARCH, 1)
+    map.put(BaseSet.FULL_HEAL, 1)
+    map.put(GAMBLER, 1)
+    map.put(BaseSet.POTION, 2)
+    map.put(BaseSet.SUPER_POTION, 2)
+    map.put(BaseSet.SWITCH, 2)
+    map.put(BaseSet.FIRE_ENERGY, 14)
+    map.put(BaseSet.WATER_ENERGY, 14)
+    deck.setMap(map)
+    return deck
   }
 
   static SimpleDeck bodyguard() {
-    SimpleDeck deck = new SimpleDeck("BodyGuard Theme Deck");
-    deck.setFormat(GameFormat.CLASSIC_SERIES);
-    Map<CardInfo, Integer> map = new HashMap<>();
-    map.put(BaseSet.BULBASAUR, 2);
-    map.put(ZUBAT, 4);
-    map.put(GOLBAT, 2);
-    map.put(GRIMER, 4);
-    map.put(MUK, 1);
-    map.put(BaseSet.KOFFING, 4);
-    map.put(GEODUDE, 3);
-    map.put(GRAVELER, 2);
-    map.put(BaseSet.ONIX, 1);
-    map.put(BaseSet.POKEMON_CENTER, 1);
-    map.put(BaseSet.POTION, 4);
-    map.put(BaseSet.PROFESSOR_OAK, 2);
-    map.put(BaseSet.SUPER_POTION, 2);
-    map.put(BaseSet.GRASS_ENERGY, 16);
-    map.put(BaseSet.FIGHTING_ENERGY, 12);
+    SimpleDeck deck = new SimpleDeck("BodyGuard Theme Deck")
+    deck.setFormat(GameFormat.CLASSIC_SERIES)
+    Map<CardInfo, Integer> map = new HashMap<>()
+    map.put(BaseSet.BULBASAUR, 2)
+    map.put(ZUBAT, 4)
+    map.put(GOLBAT, 2)
+    map.put(GRIMER, 4)
+    map.put(MUK, 1)
+    map.put(BaseSet.KOFFING, 4)
+    map.put(GEODUDE, 3)
+    map.put(GRAVELER, 2)
+    map.put(BaseSet.ONIX, 1)
+    map.put(BaseSet.POKEMON_CENTER, 1)
+    map.put(BaseSet.POTION, 4)
+    map.put(BaseSet.PROFESSOR_OAK, 2)
+    map.put(BaseSet.SUPER_POTION, 2)
+    map.put(BaseSet.GRASS_ENERGY, 16)
+    map.put(BaseSet.FIGHTING_ENERGY, 12)
     // map.put(,);
-    deck.setMap(map);
-    return deck;
+    deck.setMap(map)
+    return deck
   }
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   FossilNG(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.FOSSIL;
+    return tcgwars.logic.card.Collection.FOSSIL
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -214,7 +214,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARTICUNO_2:
         return basic (this, hp:HP070, type:WATER, retreatCost:2) {
           resistance FIGHTING, MINUS30
@@ -241,7 +241,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DITTO_3:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -252,7 +252,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DRAGONITE_4:
         return evolution (this, from:"Dragonair", hp:HP100, type:COLORLESS, retreatCost:1) {
           resistance FIGHTING, MINUS30
@@ -276,7 +276,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GENGAR_5:
         return evolution (this, from:"Haunter", hp:HP080, type:PSYCHIC, retreatCost:1) {
           resistance FIGHTING, MINUS30
@@ -303,7 +303,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HAUNTER_6:
         return evolution (this, from:"Gastly", hp:HP050, type:PSYCHIC, retreatCost:0) {
           resistance FIGHTING, MINUS30
@@ -350,7 +350,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HITMONLEE_7:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -373,7 +373,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HYPNO_8:
         return evolution (this, from:"Drowzee", hp:HP090, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -400,7 +400,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KABUTOPS_9:
         return evolution (this, from:"Kabuto", hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -422,7 +422,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LAPRAS_10:
         return basic (this, hp:HP080, type:WATER, retreatCost:2) {
           weakness LIGHTNING
@@ -446,7 +446,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGNETON_11:
         return evolution (this, from:"Magnemite", hp:HP080, type:LIGHTNING, retreatCost:2) {
           weakness FIGHTING
@@ -470,7 +470,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MOLTRES_12:
         return basic (this, hp:HP070, type:FIRE, retreatCost:2) {
           resistance FIGHTING, MINUS30
@@ -496,7 +496,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MUK_13:
         return evolution (this, from:"Grimer", hp:HP070, type:GRASS, retreatCost:2) {
           weakness PSYCHIC
@@ -531,7 +531,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAICHU_14:
         return evolution (this, from:"Pikachu", hp:HP090, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -551,7 +551,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ZAPDOS_15:
         return basic (this, hp:HP080, type:LIGHTNING, retreatCost:2) {
           resistance FIGHTING, MINUS30
@@ -576,37 +576,37 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AERODACTYL:
-        return copy (AERODACTYL_1, this);
+        return copy (AERODACTYL_1, this)
       case ARTICUNO:
-        return copy (ARTICUNO_2, this);
+        return copy (ARTICUNO_2, this)
       case DITTO:
-        return copy (DITTO_3, this);
+        return copy (DITTO_3, this)
       case DRAGONITE:
-        return copy (DRAGONITE_4, this);
+        return copy (DRAGONITE_4, this)
       case GENGAR:
-        return copy (GENGAR_5, this);
+        return copy (GENGAR_5, this)
       case HAUNTER:
-        return copy (HAUNTER_6, this);
+        return copy (HAUNTER_6, this)
       case HITMONLEE:
-        return copy (HITMONLEE_7, this);
+        return copy (HITMONLEE_7, this)
       case HYPNO:
-        return copy (HYPNO_8, this);
+        return copy (HYPNO_8, this)
       case KABUTOPS:
-        return copy (KABUTOPS_9, this);
+        return copy (KABUTOPS_9, this)
       case LAPRAS:
-        return copy (LAPRAS_10, this);
+        return copy (LAPRAS_10, this)
       case MAGNETON:
-        return copy (MAGNETON_11, this);
+        return copy (MAGNETON_11, this)
       case MOLTRES:
-        return copy (MOLTRES_12, this);
+        return copy (MOLTRES_12, this)
       case MUK:
-        return copy (MUK_13, this);
+        return copy (MUK_13, this)
       case RAICHU:
-        return copy (RAICHU_14, this);
+        return copy (RAICHU_14, this)
       case ZAPDOS:
-        return copy (ZAPDOS_15, this);
+        return copy (ZAPDOS_15, this)
       case ARBOK:
         return evolution (this, from:"Ekans", hp:HP060, type:GRASS, retreatCost:2) {
           weakness PSYCHIC
@@ -630,7 +630,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CLOYSTER:
         return evolution (this, from:"Shellder", hp:HP050, type:WATER, retreatCost:2) {
           weakness LIGHTNING
@@ -654,7 +654,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GASTLY:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:0) {
           resistance FIGHTING, MINUS30
@@ -678,7 +678,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOLBAT:
         return evolution (this, from:"Zubat", hp:HP060, type:GRASS, retreatCost:0) {
           weakness PSYCHIC
@@ -701,7 +701,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOLDUCK:
         return evolution (this, from:"Psyduck", hp:HP070, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -724,7 +724,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOLEM:
         return evolution (this, from:"Graveler", hp:HP080, type:FIGHTING, retreatCost:4) {
           weakness GRASS
@@ -748,7 +748,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GRAVELER:
         return evolution (this, from:"Geodude", hp:HP060, type:FIGHTING, retreatCost:2) {
           weakness GRASS
@@ -782,7 +782,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KINGLER:
         return evolution (this, from:"Krabby", hp:HP060, type:WATER, retreatCost:3) {
           weakness LIGHTNING
@@ -803,7 +803,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGMAR:
         return basic (this, hp:HP070, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -826,7 +826,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case OMASTAR:
         return evolution (this, from:"Omanyte", hp:HP070, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -848,7 +848,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SANDSLASH:
         return evolution (this, from:"Sandshrew", hp:HP070, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -870,7 +870,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SEADRA:
         return evolution (this, from:"Horsea", hp:HP060, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -893,7 +893,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SLOWBRO:
         return evolution (this, from:"Slowbro", hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -920,7 +920,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TENTACRUEL:
         return evolution (this, from:"Tentacool", hp:HP060, type:WATER, retreatCost:0) {
           weakness LIGHTNING
@@ -942,7 +942,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WEEZING:
         return evolution (this, from:"Koffing", hp:HP060, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -967,7 +967,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EKANS:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -989,7 +989,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GEODUDE:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -1002,7 +1002,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GRIMER:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -1024,7 +1024,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HORSEA:
         return basic (this, hp:HP040, type:WATER, retreatCost:0) {
           weakness LIGHTNING
@@ -1038,7 +1038,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KABUTO:
         return evolution (this, from:"Mysterious Fossil", hp:HP030, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -1073,7 +1073,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KRABBY:
         return basic (this, hp:HP050, type:WATER, retreatCost:2) {
           move "Call for Family", {
@@ -1099,7 +1099,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case OMANYTE:
         return evolution (this, from:"Mysterious Fossil", hp:HP040, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -1120,7 +1120,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PSYDUCK:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1149,7 +1149,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHELLDER:
         return basic (this, hp:HP030, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1170,7 +1170,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SLOWPOKE:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1196,7 +1196,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TENTACOOL:
         return basic (this, hp:HP030, type:WATER, retreatCost:0) {
           weakness LIGHTNING
@@ -1220,7 +1220,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ZUBAT:
         return basic (this, hp:HP040, type:GRASS, retreatCost:0) {
           weakness PSYCHIC
@@ -1243,7 +1243,7 @@ public enum FossilNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MR_FUJI:
         return basicTrainer (this) {
           text "Choose a Pokémon on your Bench. Shuffle it any any cards attached to it into your deck."
@@ -1255,7 +1255,7 @@ public enum FossilNG implements LogicCardInfo {
           playRequirement{
             assert my.bench : "There is no Benched Pokémon"
           }
-        };
+        }
       case ENERGY_SEARCH:
         return basicTrainer (this) {
           text "Search your deck for a basic Energy card and put it into your hand. Shuffle your deck afterward."
@@ -1266,7 +1266,7 @@ public enum FossilNG implements LogicCardInfo {
           playRequirement{
             assert my.deck
           }
-        };
+        }
       case GAMBLER:
         return basicTrainer (this) {
           text "Shuffle your hand into your deck. Flip a coin. If heads, draw 8 cards. If tails, draw 1 card."
@@ -1277,7 +1277,7 @@ public enum FossilNG implements LogicCardInfo {
           }
           playRequirement{
           }
-        };
+        }
       case RECYCLE:
         return basicTrainer (this) {
           text "Flip a coin. If heads, put a card in your discard pile on top of your deck."
@@ -1291,7 +1291,7 @@ public enum FossilNG implements LogicCardInfo {
           playRequirement{
             assert my.discard
           }
-        };
+        }
       case MYSTERIOUS_FOSSIL:
         return basicTrainer (this) {
           text "Play Mysterious Fossil as if it were a Basic Pokémon. While in play, Mysterious Fossil counts as a Pokémon (instead of a Trainer card). Mysterious Fossil has no attacks, can’t retreat, and can’t be Asleep, Confused, Paralyzed, or Poisoned. If Mysterious Fossil is Knocked Out, it doesn’t count as a Knocked Out Pokémon. (Discard it anyway.) At any time during your turn, before your attack, you may discard Mysterious Fossil from play."
@@ -1344,10 +1344,10 @@ public enum FossilNG implements LogicCardInfo {
           playRequirement{
             assert bench.notFull
           }
-        };
+        }
 
       default:
-        return null;
+        return null
     }
   }
 

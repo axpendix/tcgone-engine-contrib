@@ -1,39 +1,39 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
 
-import tcgwars.logic.impl.gen3.Emerald;
-import tcgwars.logic.impl.gen3.Deoxys;
-import tcgwars.logic.impl.gen3.CrystalGuardians;
-import tcgwars.logic.impl.gen6.Flashfire;
+import tcgwars.logic.impl.gen3.Emerald
+import tcgwars.logic.impl.gen3.Deoxys
+import tcgwars.logic.impl.gen3.CrystalGuardians
+import tcgwars.logic.impl.gen6.Flashfire
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -58,53 +58,53 @@ public enum PopSeries4 implements LogicCardInfo {
   WOBBUFFET_16 ("Wobbuffet", "16", Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
   DEOXYS_EX_17 ("Deoxys ex", "17", Rarity.RARE, [POKEMON, BASIC, EX, _PSYCHIC_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   PopSeries4(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.POP_SERIES_4;
+    return tcgwars.logic.card.Collection.POP_SERIES_4
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -127,9 +127,9 @@ public enum PopSeries4 implements LogicCardInfo {
             noWrDamage(30, defending)
           }
         }
-      };
+      }
       case DEOXYS_DELTA_2:
-      return copy(HolonPhantoms.DEOXYS_DELTA_5, this);
+      return copy(HolonPhantoms.DEOXYS_DELTA_5, this)
       case FLYGON_3:
       return evolution (this, from:"Vibrava", hp:HP120, type:F, retreatCost:2) {
         weakness W
@@ -156,7 +156,7 @@ public enum PopSeries4 implements LogicCardInfo {
             cantRetreat defending
           }
         }
-      };
+      }
       case MEW_4:
       return basic (this, hp:HP070, type:P, retreatCost:1) {
         weakness P
@@ -179,9 +179,9 @@ public enum PopSeries4 implements LogicCardInfo {
             flip { applyAfterDamage(PARALYZED) }
           }
         }
-      };
+      }
       case SCEPTILE_5:
-      return copy(RubySapphireNG.SCEPTILE_20, this);
+      return copy(RubySapphireNG.SCEPTILE_20, this)
       case COMBUSKEN_6:
       return evolution (this, from:"Torchic", hp:HP070, type:R, retreatCost:1) {
         weakness W
@@ -201,7 +201,7 @@ public enum PopSeries4 implements LogicCardInfo {
             dontApplyResistance()
           }
         }
-      };
+      }
       case GROVYLE_7:
       return evolution (this, from:"Treecko", hp:HP070, type:G, retreatCost:1) {
         weakness R
@@ -222,9 +222,9 @@ public enum PopSeries4 implements LogicCardInfo {
             heal 20, self
           }
         }
-      };
+      }
       case HEAL_ENERGY_8:
-      return copy(Deoxys.HEAL_ENERGY_94, this);
+      return copy(Deoxys.HEAL_ENERGY_94, this)
       case POKEMON_FAN_CLUB_9:
       return supporter (this) {
         text "Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Shuffle your deck afterward."
@@ -239,9 +239,9 @@ public enum PopSeries4 implements LogicCardInfo {
           assert bench.notFull : "Bench is full"
           assert deck.notEmpty : "Deck is empty"
         }
-      };
+      }
       case SCRAMBLE_ENERGY_10:
-      return copy(Deoxys.SCRAMBLE_ENERGY_95, this);
+      return copy(Deoxys.SCRAMBLE_ENERGY_95, this)
       case MUDKIP_11:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness G
@@ -253,7 +253,7 @@ public enum PopSeries4 implements LogicCardInfo {
             applyAfterDamage(ASLEEP)
           }
         }
-      };
+      }
       case PIDGEY_12:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness L
@@ -266,7 +266,7 @@ public enum PopSeries4 implements LogicCardInfo {
             flip { damage 10 }
           }
         }
-      };
+      }
       case PIKACHU_13:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -280,7 +280,7 @@ public enum PopSeries4 implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SQUIRTLE_14:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -304,9 +304,9 @@ public enum PopSeries4 implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case TREECKO_DELTA_15:
-        return copy (CrystalGuardians.TREECKO_DELTA_68, this);
+        return copy (CrystalGuardians.TREECKO_DELTA_68, this)
       case WOBBUFFET_16:
       return basic (this, hp:HP080, type:P, retreatCost:2) {
         weakness P
@@ -325,11 +325,11 @@ public enum PopSeries4 implements LogicCardInfo {
             reduceDamageNextTurn(hp(20), thisMove)
           }
         }
-      };
+      }
       case DEOXYS_EX_17:
-      return copy(Emerald.DEOXYS_EX_93, this);
+      return copy(Emerald.DEOXYS_EX_93, this)
         default:
-      return null;
+      return null
     }
   }
 }

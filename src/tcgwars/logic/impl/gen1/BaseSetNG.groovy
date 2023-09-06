@@ -1,33 +1,33 @@
 package tcgwars.logic.impl.gen1
 
-import tcgwars.logic.exception.EffectRequirementException;
-import tcgwars.logic.impl.gen3.FireRedLeafGreen;
-import tcgwars.logic.impl.gen4.Unleashed;
+import tcgwars.logic.exception.EffectRequirementException
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
+import tcgwars.logic.impl.gen4.Unleashed
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.*;
+import tcgwars.logic.*
 import tcgwars.logic.card.*
 import tcgwars.logic.card.pokemon.*
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -138,150 +138,150 @@ public enum BaseSetNG implements LogicCardInfo {
   WATER_ENERGY ("Water Energy", "102", Rarity.COMMON, [BASIC_ENERGY, ENERGY]);
 
   static SimpleDeck blackout() {
-    SimpleDeck blackout = new SimpleDeck("Blackout Theme Deck");
-    blackout.setFormat(GameFormat.CLASSIC_SERIES);
-    Map<CardInfo, Integer> map = new HashMap<>();
-    map.put(MACHOP, 4);
-    map.put(MACHOKE, 2);
-    map.put(SANDSHREW, 3);
-    map.put(ONIX, 3);
-    map.put(HITMONCHAN, 1);
-    map.put(STARYU, 3);
-    map.put(SQUIRTLE, 4);
-    map.put(WARTORTLE, 2);
-    map.put(FARFETCHD, 2);
-    map.put(ENERGY_REMOVAL, 4);
-    map.put(SUPER_ENERGY_REMOVAL, 1);
-    map.put(GUST_OF_WIND, 1);
-    map.put(PLUSPOWER, 1);
-    map.put(PROFESSOR_OAK, 1);
-    map.put(FIGHTING_ENERGY, 16);
-    map.put(WATER_ENERGY, 12);
-    blackout.setMap(map);
-    return blackout;
+    SimpleDeck blackout = new SimpleDeck("Blackout Theme Deck")
+    blackout.setFormat(GameFormat.CLASSIC_SERIES)
+    Map<CardInfo, Integer> map = new HashMap<>()
+    map.put(MACHOP, 4)
+    map.put(MACHOKE, 2)
+    map.put(SANDSHREW, 3)
+    map.put(ONIX, 3)
+    map.put(HITMONCHAN, 1)
+    map.put(STARYU, 3)
+    map.put(SQUIRTLE, 4)
+    map.put(WARTORTLE, 2)
+    map.put(FARFETCHD, 2)
+    map.put(ENERGY_REMOVAL, 4)
+    map.put(SUPER_ENERGY_REMOVAL, 1)
+    map.put(GUST_OF_WIND, 1)
+    map.put(PLUSPOWER, 1)
+    map.put(PROFESSOR_OAK, 1)
+    map.put(FIGHTING_ENERGY, 16)
+    map.put(WATER_ENERGY, 12)
+    blackout.setMap(map)
+    return blackout
   }
   static SimpleDeck brushfire(){
-    SimpleDeck brushfire = new SimpleDeck("Brushfire Theme Deck");
-    brushfire.setFormat(GameFormat.CLASSIC_SERIES);
-    Map<CardInfo, Integer> map = new HashMap<>();
-    map.put(CHARMANDER, 4);
-    map.put(CHARMELEON, 2);
-    map.put(VULPIX, 2);
-    map.put(NINETALES, 1);
-    map.put(GROWLITHE, 2);
-    map.put(ARCANINE, 1);
-    map.put(WEEDLE, 4);
-    map.put(NIDORAN_MALE, 4);
-    map.put(TANGELA, 2);
-    map.put(ENERGY_REMOVAL, 1);
-    map.put(ENERGY_RETRIEVAL, 2);
-    map.put(GUST_OF_WIND, 1);
-    map.put(LASS, 1);
-    map.put(PLUSPOWER, 1);
-    map.put(POTION, 3);
-    map.put(SWITCH, 1);
-    map.put(FIRE_ENERGY, 18);
-    map.put(GRASS_ENERGY, 10);
-    brushfire.setMap(map);
-    return brushfire;
+    SimpleDeck brushfire = new SimpleDeck("Brushfire Theme Deck")
+    brushfire.setFormat(GameFormat.CLASSIC_SERIES)
+    Map<CardInfo, Integer> map = new HashMap<>()
+    map.put(CHARMANDER, 4)
+    map.put(CHARMELEON, 2)
+    map.put(VULPIX, 2)
+    map.put(NINETALES, 1)
+    map.put(GROWLITHE, 2)
+    map.put(ARCANINE, 1)
+    map.put(WEEDLE, 4)
+    map.put(NIDORAN_MALE, 4)
+    map.put(TANGELA, 2)
+    map.put(ENERGY_REMOVAL, 1)
+    map.put(ENERGY_RETRIEVAL, 2)
+    map.put(GUST_OF_WIND, 1)
+    map.put(LASS, 1)
+    map.put(PLUSPOWER, 1)
+    map.put(POTION, 3)
+    map.put(SWITCH, 1)
+    map.put(FIRE_ENERGY, 18)
+    map.put(GRASS_ENERGY, 10)
+    brushfire.setMap(map)
+    return brushfire
   }
   static SimpleDeck zap(){
-    SimpleDeck zap = new SimpleDeck("Zap! Theme Deck");
-    zap.setFormat(GameFormat.CLASSIC_SERIES);
-    Map<CardInfo, Integer> map = new HashMap<>();
-    map.put(PIKACHU, 4);
-    map.put(MAGNEMITE, 3);
-    map.put(ABRA, 3);
-    map.put(KADABRA, 1);
-    map.put(GASTLY, 3);
-    map.put(HAUNTER, 2);
-    map.put(DROWZEE, 2);
-    map.put(JYNX, 2);
-    map.put(MEWTWO, 1);
-    map.put(BILL, 2);
-    map.put(COMPUTER_SEARCH, 1);
-    map.put(DEFENDER, 1);
-    map.put(GUST_OF_WIND, 2);
-    map.put(POTION, 1);
-    map.put(PROFESSOR_OAK, 1);
-    map.put(SUPER_POTION, 1);
-    map.put(SWITCH, 2);
-    map.put(LIGHTNING_ENERGY, 12);
-    map.put(PSYCHIC_ENERGY, 16);
-    zap.setMap(map);
-    return zap;
+    SimpleDeck zap = new SimpleDeck("Zap! Theme Deck")
+    zap.setFormat(GameFormat.CLASSIC_SERIES)
+    Map<CardInfo, Integer> map = new HashMap<>()
+    map.put(PIKACHU, 4)
+    map.put(MAGNEMITE, 3)
+    map.put(ABRA, 3)
+    map.put(KADABRA, 1)
+    map.put(GASTLY, 3)
+    map.put(HAUNTER, 2)
+    map.put(DROWZEE, 2)
+    map.put(JYNX, 2)
+    map.put(MEWTWO, 1)
+    map.put(BILL, 2)
+    map.put(COMPUTER_SEARCH, 1)
+    map.put(DEFENDER, 1)
+    map.put(GUST_OF_WIND, 2)
+    map.put(POTION, 1)
+    map.put(PROFESSOR_OAK, 1)
+    map.put(SUPER_POTION, 1)
+    map.put(SWITCH, 2)
+    map.put(LIGHTNING_ENERGY, 12)
+    map.put(PSYCHIC_ENERGY, 16)
+    zap.setMap(map)
+    return zap
   }
   static SimpleDeck overgrowth(){
-    SimpleDeck overgrowth = new SimpleDeck("Overgrowth Theme Deck");
-    overgrowth.setFormat(GameFormat.CLASSIC_SERIES);
-    Map<CardInfo, Integer> map = new HashMap<>();
-    map.put(BULBASAUR, 4);
-    map.put(IVYSAUR, 2);
-    map.put(WEEDLE, 4);
-    map.put(KAKUNA, 2);
-    map.put(BEEDRILL, 1);
-    map.put(STARYU, 4);
-    map.put(STARMIE, 3);
-    map.put(MAGIKARP, 2);
-    map.put(GYARADOS, 1);
-    map.put(BILL, 2);
-    map.put(GUST_OF_WIND, 2);
-    map.put(POTION, 1);
-    map.put(SUPER_POTION, 2);
-    map.put(SWITCH, 2);
-    map.put(GRASS_ENERGY, 16);
-    map.put(WATER_ENERGY, 12);
-    overgrowth.setMap(map);
-    return overgrowth;
+    SimpleDeck overgrowth = new SimpleDeck("Overgrowth Theme Deck")
+    overgrowth.setFormat(GameFormat.CLASSIC_SERIES)
+    Map<CardInfo, Integer> map = new HashMap<>()
+    map.put(BULBASAUR, 4)
+    map.put(IVYSAUR, 2)
+    map.put(WEEDLE, 4)
+    map.put(KAKUNA, 2)
+    map.put(BEEDRILL, 1)
+    map.put(STARYU, 4)
+    map.put(STARMIE, 3)
+    map.put(MAGIKARP, 2)
+    map.put(GYARADOS, 1)
+    map.put(BILL, 2)
+    map.put(GUST_OF_WIND, 2)
+    map.put(POTION, 1)
+    map.put(SUPER_POTION, 2)
+    map.put(SWITCH, 2)
+    map.put(GRASS_ENERGY, 16)
+    map.put(WATER_ENERGY, 12)
+    overgrowth.setMap(map)
+    return overgrowth
   }
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   BaseSetNG(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.BASE_SET;
+    return tcgwars.logic.card.Collection.BASE_SET
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -318,7 +318,7 @@ public enum BaseSetNG implements LogicCardInfo {
               flip{applyAfterDamage(CONFUSED)}
             }
           }
-        };
+        }
       case BLASTOISE:
         return evolution (this, from:"Wartortle", hp:HP100, type:WATER, retreatCost:3) {
           weakness LIGHTNING
@@ -343,7 +343,7 @@ public enum BaseSetNG implements LogicCardInfo {
               extraEnergyDamage(2,hp(10),W,thisMove)
             }
           }
-        };
+        }
       case CHANSEY:
         return basic (this, hp:HP120, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -365,7 +365,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 80, self
             }
           }
-        };
+        }
       case CHARIZARD:
         return evolution (this, from:"Charmeleon", hp:HP120, type:FIRE, retreatCost:3) {
           weakness WATER
@@ -412,7 +412,7 @@ public enum BaseSetNG implements LogicCardInfo {
               discardSelfEnergyInOrderTo(C) // one energy card
             }
           }
-        };
+        }
       case CLEFAIRY:
         return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -431,7 +431,7 @@ public enum BaseSetNG implements LogicCardInfo {
               metronome defending, delegate
             }
           }
-        };
+        }
       case GYARADOS:
         return evolution (this, from:"Magikarp", hp:HP100, type:WATER, retreatCost:3) {
           weakness GRASS
@@ -451,7 +451,7 @@ public enum BaseSetNG implements LogicCardInfo {
               flip{applyAfterDamage(PARALYZED)}
             }
           }
-        };
+        }
       case HITMONCHAN:
         return basic (this, hp:HP070, type:FIGHTING, retreatCost:2) {
           weakness PSYCHIC
@@ -469,7 +469,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 40
             }
           }
-        };
+        }
       case MACHAMP:
         return evolution (this, from:"Machoke", hp:HP100, type:FIGHTING, retreatCost:3) {
           weakness PSYCHIC
@@ -491,7 +491,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 60
             }
           }
-        };
+        }
       case MAGNETON:
         return evolution (this, from:"Magnemite", hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -515,7 +515,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 80, self
             }
           }
-        };
+        }
       case MEWTWO:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:3) {
           weakness PSYCHIC
@@ -534,7 +534,7 @@ public enum BaseSetNG implements LogicCardInfo {
               preventAllEffectsNextTurn()
             }
           }
-        };
+        }
       case NIDOKING:
         return evolution (this, from:"Nidorino", hp:HP090, type:GRASS, retreatCost:3) {
           weakness PSYCHIC
@@ -557,7 +557,7 @@ public enum BaseSetNG implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case NINETALES:
         return evolution (this, from:"Vulpix", hp:HP080, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -582,7 +582,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 80
             }
           }
-        };
+        }
       case POLIWRATH:
         return evolution (this, from:"Poliwhirl", hp:HP090, type:WATER, retreatCost:3) {
           weakness GRASS
@@ -602,7 +602,7 @@ public enum BaseSetNG implements LogicCardInfo {
               afterDamage{discardDefendingEnergy()}
             }
           }
-        };
+        }
       case RAICHU:
         return evolution (this, from:"Pikachu", hp:HP080, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -622,7 +622,7 @@ public enum BaseSetNG implements LogicCardInfo {
               flip 1, {}, {damage 30, self}
             }
           }
-        };
+        }
       case VENUSAUR:
         return evolution (this, from:"Ivysaur", hp:HP100, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -650,7 +650,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 60
             }
           }
-        };
+        }
       case ZAPDOS:
         return basic (this, hp:HP090, type:LIGHTNING, retreatCost:3) {
           resistance FIGHTING, MINUS30
@@ -670,7 +670,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 100
             }
           }
-        };
+        }
       case BEEDRILL:
         return evolution (this, from:"Kakuna", hp:HP080, type:GRASS, retreatCost:0) {
           weakness FIRE
@@ -691,7 +691,7 @@ public enum BaseSetNG implements LogicCardInfo {
               flip{applyAfterDamage(POISONED)}
             }
           }
-        };
+        }
       case DRAGONAIR:
         return evolution (this, from:"Dratini", hp:HP080, type:COLORLESS, retreatCost:2) {
           resistance PSYCHIC, MINUS30
@@ -710,7 +710,7 @@ public enum BaseSetNG implements LogicCardInfo {
               discardDefendingEnergy()
             }
           }
-        };
+        }
       case DUGTRIO:
         return evolution (this, from:"Diglett", hp:HP070, type:FIGHTING, retreatCost:2) {
           weakness GRASS
@@ -730,7 +730,7 @@ public enum BaseSetNG implements LogicCardInfo {
               my.bench.each({ damage 10, it})
             }
           }
-        };
+        }
       case ELECTABUZZ:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:2) {
           weakness FIGHTING
@@ -750,7 +750,7 @@ public enum BaseSetNG implements LogicCardInfo {
               flip 1, {damage 10}, {damage 10, self}
             }
           }
-        };
+        }
       case ELECTRODE://TODO: PLEASE IMPORT THIS NIGHTMARE FROM EVOLUTIONS
         return evolution (this, from:"Voltorb", hp:HP080, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -770,7 +770,7 @@ public enum BaseSetNG implements LogicCardInfo {
               flip 1, {}, {damage 10, self}
             }
           }
-        };
+        }
       case PIDGEOTTO:
         return evolution (this, from:"Pidgey", hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -806,7 +806,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage lastDamage.value
             }
           }
-        };
+        }
       case ARCANINE:
         return evolution (this, from:"Growlithe", hp:HP100, type:FIRE, retreatCost:3) {
           weakness WATER
@@ -828,7 +828,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 30, self
             }
           }
-        };
+        }
       case CHARMELEON:
         return evolution (this, from:"Charmander", hp:HP080, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -849,7 +849,7 @@ public enum BaseSetNG implements LogicCardInfo {
               discardSelfEnergyInOrderTo(R)
             }
           }
-        };
+        }
       case DEWGONG:
         return evolution (this, from:"Seel", hp:HP080, type:WATER, retreatCost:3) {
           weakness LIGHTNING
@@ -870,7 +870,7 @@ public enum BaseSetNG implements LogicCardInfo {
               flip{applyAfterDamage(PARALYZED)}
             }
           }
-        };
+        }
       case DRATINI:
         return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
           resistance PSYCHIC, MINUS30
@@ -882,7 +882,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case FARFETCHD:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -913,7 +913,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case GROWLITHE:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -925,7 +925,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case HAUNTER:
         return evolution (this, from:"Gastly", hp:HP060, type:PSYCHIC, retreatCost:1) {
           resistance FIGHTING, MINUS30
@@ -947,7 +947,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case IVYSAUR:
         return evolution (this, from:"Bulbasaur", hp:HP060, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -968,7 +968,7 @@ public enum BaseSetNG implements LogicCardInfo {
               applyAfterDamage(POISONED)
             }
           }
-        };
+        }
       case JYNX:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -988,7 +988,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 20+10*opp.active.numberOfDamageCounters
             }
           }
-        };
+        }
       case KADABRA:
         return evolution (this, from:"Abra", hp:HP060, type:PSYCHIC, retreatCost:3) {
           weakness PSYCHIC
@@ -1011,7 +1011,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case KAKUNA:
         return evolution (this, from:"Weedle", hp:HP080, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -1032,7 +1032,7 @@ public enum BaseSetNG implements LogicCardInfo {
               flip{applyAfterDamage(POISONED)}
             }
           }
-        };
+        }
       case MACHOKE:
         return evolution (this, from:"Machoke", hp:HP080, type:FIGHTING, retreatCost:3) {
           weakness PSYCHIC
@@ -1053,7 +1053,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 20, self
             }
           }
-        };
+        }
       case MAGIKARP:
         return basic (this, hp:HP030, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1073,7 +1073,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 10*self.numberOfDamageCounters
             }
           }
-        };
+        }
       case MAGMAR:
         return basic (this, hp:HP050, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -1094,7 +1094,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case NIDORINO:
         return evolution (this, from:"Nidoran♂", hp:HP060, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -1114,7 +1114,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case POLIWHIRL:
         return evolution (this, from:"Poliwag", hp:HP060, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -1134,7 +1134,7 @@ public enum BaseSetNG implements LogicCardInfo {
               flip 2, {damage 30}
             }
           }
-        };
+        }
       case PORYGON:
         return basic (this, hp:HP030, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -1192,7 +1192,7 @@ public enum BaseSetNG implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case RATICATE:
         return evolution (this, from:"Rattata", hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -1213,7 +1213,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage ceil((defending.hp/10)/2)*10
             }
           }
-        };
+        }
       case SEEL:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1225,7 +1225,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case WARTORTLE:
         return evolution (this, from:"Squirtle", hp:HP070, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1245,7 +1245,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 40
             }
           }
-        };
+        }
       case ABRA:
         return basic (this, hp:HP030, type:PSYCHIC, retreatCost:0) {
           weakness PSYCHIC
@@ -1258,7 +1258,7 @@ public enum BaseSetNG implements LogicCardInfo {
               flip{applyAfterDamage(PARALYZED)}
             }
           }
-        };
+        }
       case BULBASAUR:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1278,7 +1278,7 @@ public enum BaseSetNG implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CATERPIE:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1291,7 +1291,7 @@ public enum BaseSetNG implements LogicCardInfo {
               flip{applyAfterDamage(PARALYZED)}
             }
           }
-        };
+        }
       case CHARMANDER:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -1312,7 +1312,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case DIGLETT:
         return basic (this, hp:HP030, type:FIGHTING, retreatCost:0) {
           weakness GRASS
@@ -1333,7 +1333,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case DODUO:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:0) {
           weakness LIGHTNING
@@ -1346,7 +1346,7 @@ public enum BaseSetNG implements LogicCardInfo {
               flip 2, {damage 10}
             }
           }
-        };
+        }
       case DROWZEE:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1367,7 +1367,7 @@ public enum BaseSetNG implements LogicCardInfo {
               flip{applyAfterDamage(CONFUSED)}
             }
           }
-        };
+        }
       case GASTLY:
         return basic (this, hp:HP030, type:PSYCHIC, retreatCost:0) {
           resistance FIGHTING, MINUS30
@@ -1398,7 +1398,7 @@ public enum BaseSetNG implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case KOFFING:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -1411,7 +1411,7 @@ public enum BaseSetNG implements LogicCardInfo {
               flip 1, {applyAfterDamage(POISONED)}, {applyAfterDamage(CONFUSED)}
             }
           }
-        };
+        }
       case MACHOP:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -1423,7 +1423,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case MAGNEMITE:
         return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1447,7 +1447,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 40, self
             }
           }
-        };
+        }
       case METAPOD:
         return evolution (this, from:"Caterpie", hp:HP070, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -1468,7 +1468,7 @@ public enum BaseSetNG implements LogicCardInfo {
               flip{applyAfterDamage(PARALYZED)}
             }
           }
-        };
+        }
       case NIDORAN_MALE:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -1480,7 +1480,7 @@ public enum BaseSetNG implements LogicCardInfo {
               flip{damage 30}
             }
           }
-        };
+        }
       case ONIX:
         return basic (this, hp:HP090, type:FIGHTING, retreatCost:3) {
           weakness GRASS
@@ -1498,7 +1498,7 @@ public enum BaseSetNG implements LogicCardInfo {
               bg.em().run(new Harden("Harden", hp(30)))
             }
           }
-        };
+        }
       case PIDGEY:
         return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -1511,7 +1511,7 @@ public enum BaseSetNG implements LogicCardInfo {
               whirlwind()
             }
           }
-        };
+        }
       case PIKACHU:
         // Card used as base for PopSeries2.PIKACHU_16
         return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
@@ -1531,7 +1531,7 @@ public enum BaseSetNG implements LogicCardInfo {
               flipTails {damage 10, self}
             }
           }
-        };
+        }
       case POLIWAG:
         return basic (this, hp:HP040, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -1543,7 +1543,7 @@ public enum BaseSetNG implements LogicCardInfo {
               extraEnergyDamage(2,hp(10),W,thisMove)
             }
           }
-        };
+        }
       case PONYTA:
         return basic (this, hp:HP040, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -1561,7 +1561,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case RATTATA:
         return basic (this, hp:HP030, type:COLORLESS, retreatCost:0) {
           weakness FIGHTING
@@ -1573,7 +1573,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case SANDSHREW:
         return basic (this, hp:HP040, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -1586,7 +1586,7 @@ public enum BaseSetNG implements LogicCardInfo {
               sandAttack(thisMove)
             }
           }
-        };
+        }
       case SQUIRTLE:
         return basic (this, hp:HP040, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1605,7 +1605,7 @@ public enum BaseSetNG implements LogicCardInfo {
               flip{preventAllDamageNextTurn()}
             }
           }
-        };
+        }
       case STARMIE:
         return evolution (this, from:"Staryu", hp:HP060, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1626,7 +1626,7 @@ public enum BaseSetNG implements LogicCardInfo {
               flip{applyAfterDamage(PARALYZED)}
             }
           }
-        };
+        }
       case STARYU:
         return basic (this, hp:HP040, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1637,7 +1637,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case TANGELA:
         return basic (this, hp:HP050, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -1657,7 +1657,7 @@ public enum BaseSetNG implements LogicCardInfo {
               applyAfterDamage(POISONED)
             }
           }
-        };
+        }
       case VOLTORB:
         return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1668,7 +1668,7 @@ public enum BaseSetNG implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case VULPIX:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -1680,7 +1680,7 @@ public enum BaseSetNG implements LogicCardInfo {
               flip(applyAfterDamage(CONFUSED))
             }
           }
-        };
+        }
       case WEEDLE:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1692,7 +1692,7 @@ public enum BaseSetNG implements LogicCardInfo {
               flip{applyAfterDamage(POISONED)}
             }
           }
-        };
+        }
       case CLEFAIRY_DOLL:
         return basicTrainer (this) {
           text "Play Clefairy Doll as if it were a Basic Pokémon. While in play, Clefairy Doll counts a a Pokémon (instead of a Trainer card). Clefairy Doll has no attacks, can’t retreat, and can’t be Asleep, Confused, Paralyzed, or Poisoned. If Clefairy Doll is Knocked Out, it doesn’t count as a Knocked Out Pokémon. At any time during your turn before your attack, you may discard Clefairy Doll."
@@ -1744,7 +1744,7 @@ public enum BaseSetNG implements LogicCardInfo {
           playRequirement{
             assert bench.notFull
           }
-        };
+        }
       case COMPUTER_SEARCH:
         return basicTrainer (this) {
           text "Discard 2 of the other cards from you hand in order to search your deck for any card and put it into your hand. Shuffle your deck afterward."
@@ -1757,7 +1757,7 @@ public enum BaseSetNG implements LogicCardInfo {
             assert my.hand.getExcludedList(thisCard).size() >= 2
             assert my.deck
           }
-        };
+        }
       case DEVOLUTION_SPRAY:
         return basicTrainer (this) {
           text "Choose 1 of your own Pokémon in play and a Stage of Evolution. Discard all Evolution cards of that Stage or higher attached to that Pokémon. That Pokémon is no longer Asleep, Confused, Paralyzed, Poisoned, or anything else that might be the result of an attack (just as if you had evolved it)."
@@ -1772,7 +1772,7 @@ public enum BaseSetNG implements LogicCardInfo {
           playRequirement{
             assert my.all.findAll{it.evolution} : "You have no evolved pokemon in play"
           }
-        };
+        }
       case IMPOSTER_PROFESSOR_OAK:
         return basicTrainer (this) {
           text "Your opponent shuffles his or her hand into his or her deck, then draws 7 cards."
@@ -1784,7 +1784,7 @@ public enum BaseSetNG implements LogicCardInfo {
           playRequirement{
             assert opp.deck
           }
-        };
+        }
       case ITEM_FINDER:
         return basicTrainer (this) {
           text "Discard 2 of the other cards from your hand in order to put a Trainer card from your discard pile into your hand."
@@ -1797,7 +1797,7 @@ public enum BaseSetNG implements LogicCardInfo {
             assert my.hand.getExcludedList(thisCard).size() >= 2
             assert my.discard.hasType(TRAINER)
           }
-        };
+        }
       case LASS:
         return basicTrainer (this) {
           text "You and your opponent show each other your hands, then shuffle all the Trainer cards from your hands into your decks."
@@ -1819,7 +1819,7 @@ public enum BaseSetNG implements LogicCardInfo {
           playRequirement{
             assert (opp.hand || my.hand) : "Neither player has any cards in hand"
           }
-        };
+        }
       case POKEMON_BREEDER: //TODO: Use the implementation of Rare Candy (admin: they are not the same!)
         return basicTrainer (this) {
           text "Put a Stage 2 Evolution card from your hand on the matching Basic Pokémon. You can only play this card when you would be allowed to evolve that Pokémon anyway."
@@ -1841,7 +1841,7 @@ public enum BaseSetNG implements LogicCardInfo {
           playRequirement{
             assert stage2_to_basic : "No matching Stage 2 card in hand"
           }
-        };
+        }
       case POKEMON_TRADER:
         return basicTrainer (this) {
           text "Trade 1 of the Basic Pokémon or Evolution cards in your hand for 1 of the Basic Pokémon or Evolution cards from your deck. Show both cards to your opponent. Shuffle your deck afterward."
@@ -1853,7 +1853,7 @@ public enum BaseSetNG implements LogicCardInfo {
           playRequirement{
             assert my.hand.find(cardTypeFilter(POKEMON)) && my.deck.notEmpty
           }
-        };
+        }
       case SCOOP_UP:
         return basicTrainer (this) {
           text "Choose 1 of your own Pokémon in play and return its Basic Pokémon card to your hand. (Discard all cards attached to that card.)"
@@ -1865,7 +1865,7 @@ public enum BaseSetNG implements LogicCardInfo {
           playRequirement {
             confirmScoopLastPokemon()
           }
-        };
+        }
       case SUPER_ENERGY_REMOVAL:
         return basicTrainer (this) {
           text "Discard 1 Energy card attached to 1 of your Pokémon in order to choose 1 of your opponent’s Pokémon and up to 2 Energy cards attached to it. Discard those Energy cards."
@@ -1886,7 +1886,7 @@ public enum BaseSetNG implements LogicCardInfo {
             assert opp.all.findAll {it.cards.filterByType(ENERGY)} : "Opponent have no Pokemon with energy"
             assert my.all.findAll {it.cards.filterByType(ENERGY)} : "You have no Pokemon with energy"
           }
-        };
+        }
       case DEFENDER: //TODO
         return basicTrainer (this) {
           text "Attach Defender to 1 of your Pokémon. At the end of your opponent’s next turn, discard Defender. Damage done to that Pokémon by attacks is reduced by 20 (after applying Weakness and Resistance)."
@@ -1894,7 +1894,7 @@ public enum BaseSetNG implements LogicCardInfo {
           }
           playRequirement{
           }
-        };
+        }
       case ENERGY_RETRIEVAL:
         return basicTrainer (this) {
           text "Trade 1 of the other cards in your hand for up to 2 basic Energy cards from your discard pile."
@@ -1907,7 +1907,7 @@ public enum BaseSetNG implements LogicCardInfo {
             assert my.discard.hasType(BASIC_ENERGY) : "No Basic Energy in Discard"
             assert my.hand.getExcludedList(thisCard).size() >= 1
           }
-        };
+        }
       case FULL_HEAL:
         return basicTrainer (this) {
           text "Your Active Pokémon is no longer Asleep, Confused, Paralyzed, or Poisoned."
@@ -1961,7 +1961,7 @@ public enum BaseSetNG implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case POKEMON_CENTER:
         return basicTrainer (this) {
           text "Remove all damage counters from all of your own Pokémon with damage counters on them, then discard all Energy cards attached to those Pokémon."
@@ -1977,7 +1977,7 @@ public enum BaseSetNG implements LogicCardInfo {
           playRequirement{
             assert my.all.findAll{it.numberOfDamageCounters}
           }
-        };
+        }
       case POKEMON_FLUTE:
         return basicTrainer (this) {
           text "Choose 1 Basic Pokémon card from your opponent’s discard pile and put it onto his or her Bench. (You can’t play Pokémon Flute if your opponent’s Bench is full.)"
@@ -1990,7 +1990,7 @@ public enum BaseSetNG implements LogicCardInfo {
             assert opp.discard.find(cardTypeFilter(BASIC)) : "No basic in opponent's discard"
             assert opp.bench.notFull : "Opponent bench is full"
           }
-        };
+        }
       case POKEDEX:
         return copy(BlackWhite.POKEDEX_98, this)
       case PROFESSOR_OAK:
@@ -2003,7 +2003,7 @@ public enum BaseSetNG implements LogicCardInfo {
           playRequirement{
             assert my.deck
           }
-        };
+        }
       case REVIVE:
         return basicTrainer (this) {
           text "Put 1 Basic Pokémon card from your discard pile onto your Bench. Put damage counters on that Pokémon equal to half its HP (rounded down to the nearest 10). (You can’t play Revive if your Bench is full.)"
@@ -2018,7 +2018,7 @@ public enum BaseSetNG implements LogicCardInfo {
           playRequirement{
             assert my.discard.find(cardTypeFilter(BASIC)) && my.bench.notFull
           }
-        };
+        }
       case SUPER_POTION:
         return basicTrainer (this) {
           text "Discard 1 Energy card attached to your own Pokémon in order to remove up to 4 damage counters from that Pokémon."
@@ -2035,7 +2035,7 @@ public enum BaseSetNG implements LogicCardInfo {
           playRequirement{
             assert my.all.findAll {it.cards.energyCount(C) && it.numberOfDamageCounters} : "No suitable Pokémon to play this."
           }
-        };
+        }
       case BILL:
         return basicTrainer (this) {
           text "Draw 2 cards."
@@ -2045,7 +2045,7 @@ public enum BaseSetNG implements LogicCardInfo {
           playRequirement{
             assert my.deck : "No cards left in your deck."
           }
-        };
+        }
       case ENERGY_REMOVAL:
         return basicTrainer (this) {
           text "Choose 1 Energy card attached to 1 of your opponent’s Pokémon and discard it."
@@ -2059,7 +2059,7 @@ public enum BaseSetNG implements LogicCardInfo {
           playRequirement {
             assert opp.all.findAll {it.cards.filterByType(ENERGY)} : "Opponent does not have any Energy card in play "
           }
-        };
+        }
       case GUST_OF_WIND:
         return basicTrainer (this) {
           text "Choose 1 of your opponent’s Benched Pokémon and switch it with his or her Active Pokémon."
@@ -2072,30 +2072,30 @@ public enum BaseSetNG implements LogicCardInfo {
           playRequirement{
             assert opp.bench
           }
-        };
+        }
       case POTION:
-        return copy(FireRedLeafGreen.POTION_101, this);
+        return copy(FireRedLeafGreen.POTION_101, this)
       case SWITCH:
-        return copy(FireRedLeafGreen.SWITCH_102, this);
+        return copy(FireRedLeafGreen.SWITCH_102, this)
       case DOUBLE_COLORLESS_ENERGY:
         return specialEnergy (this, [[C],[C]]) {
           text "Double Colorless Energy provides [C][C] Energy."
           onPlay {}
-        };
+        }
       case FIGHTING_ENERGY:
-        return basicEnergy (this, FIGHTING);
+        return basicEnergy (this, FIGHTING)
       case FIRE_ENERGY:
-        return basicEnergy (this, FIRE);
+        return basicEnergy (this, FIRE)
       case GRASS_ENERGY:
-        return basicEnergy (this, GRASS);
+        return basicEnergy (this, GRASS)
       case LIGHTNING_ENERGY:
-        return basicEnergy (this, LIGHTNING);
+        return basicEnergy (this, LIGHTNING)
       case PSYCHIC_ENERGY:
-        return basicEnergy (this, PSYCHIC);
+        return basicEnergy (this, PSYCHIC)
       case WATER_ENERGY:
-        return basicEnergy (this, WATER);
+        return basicEnergy (this, WATER)
       default:
-        return null;
+        return null
     }
   }
 }

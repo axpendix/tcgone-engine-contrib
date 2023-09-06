@@ -1,37 +1,37 @@
 package tcgwars.logic.impl.gen8
 
 import tcgwars.logic.effect.gm.PlayCard
-import tcgwars.logic.effect.gm.PlayTrainer;
+import tcgwars.logic.effect.gm.PlayTrainer
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -160,53 +160,53 @@ public enum AmazingVoltTackle implements LogicCardInfo {
   TELEPHOTO_SCOPE_120 ("Telephoto Scope", "120", Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER, ITEM]),
   MEMORY_CAPSULE_121 ("Memory Capsule", "121", Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER, ITEM]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   AmazingVoltTackle(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.AMAZING_VOLT_TACKLE;
+    return tcgwars.logic.card.Collection.AMAZING_VOLT_TACKLE
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -222,7 +222,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case NUZLEAF_2:
       return evolution (this, from:"Seedot", hp:HP080, type:G, retreatCost:1) {
         weakness R
@@ -233,7 +233,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case SHIFTRY_3:
       return evolution (this, from:"Nuzleaf", hp:HP150, type:G, retreatCost:3) {
         weakness R
@@ -284,7 +284,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             whirlwind()
           }
         }
-      };
+      }
       case NINCADA_4:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -296,7 +296,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             heal 10, self
           }
         }
-      };
+      }
       case NINJASK_5:
       return evolution (this, from:"Nincada", hp:HP060, type:G, retreatCost:0) {
         weakness R
@@ -318,7 +318,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             heal 30, self
           }
         }
-      };
+      }
       case SKIDDO_6:
       return basic (this, hp:HP070, type:G, retreatCost:1) {
         weakness R
@@ -340,7 +340,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case GOGOAT_7:
       return evolution (this, from:"Skiddo", hp:HP130, type:G, retreatCost:2) {
         weakness R
@@ -359,7 +359,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 30, self
           }
         }
-      };
+      }
       case ORBEETLE_V_8:
       return basic (this, hp:HP180, type:G, retreatCost:1) {
         weakness R
@@ -379,7 +379,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 30 * defending.getEnergyCount(bg)
           }
         }
-      };
+      }
       case ORBEETLE_VMAX_9:
       return evolution (this, from:"Orbeetle V", hp:HP310, type:G, retreatCost:1) {
         weakness R
@@ -400,7 +400,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 50 * defending.getEnergyCount(bg)
           }
         }
-      };
+      }
       case CHARMANDER_10:
       return basic (this, hp:HP070, type:R, retreatCost:1) {
         weakness W
@@ -421,7 +421,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case CHARMELEON_11:
       return evolution (this, from:"Charmander", hp:HP090, type:R, retreatCost:2) {
         weakness W
@@ -440,7 +440,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             if (my.deck) my.deck.subList(0, 3).discard()
           }
         }
-      };
+      }
       case CHARIZARD_12:
       return evolution (this, from:"Charmeleon", hp:HP170, type:R, retreatCost:3) {
         weakness W
@@ -464,7 +464,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 50 * my.discard.findAll { it.name == "Leon" }.size()
           }
         }
-      };
+      }
       case FLAREON_13:
       return evolution (this, from:"Eevee", hp:HP110, type:R, retreatCost:2) {
         weakness W
@@ -498,7 +498,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 100
           }
         }
-      };
+      }
       case SLUGMA_14:
       return basic (this, hp:HP070, type:R, retreatCost:2) {
         weakness W
@@ -519,7 +519,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case MAGCARGO_15:
       return evolution (this, from:"Slugma", hp:HP130, type:R, retreatCost:3) {
         weakness W
@@ -538,7 +538,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             discardSelfEnergyAfterDamage C, C
           }
         }
-      };
+      }
       case TALONFLAME_V_16:
       return basic (this, hp:HP190, type:R, retreatCost:0) {
         weakness L
@@ -562,7 +562,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             discardSelfEnergyAfterDamage C
           }
         }
-      };
+      }
       case VAPOREON_17:
       return evolution (this, from:"Eevee", hp:HP110, type:W, retreatCost:2) {
         weakness L
@@ -596,7 +596,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case WAILMER_18:
       return basic (this, hp:HP100, type:W, retreatCost:3) {
         weakness L
@@ -608,7 +608,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 20 * self.cards.filterByEnergyType(W).size()
           }
         }
-      };
+      }
       case WAILORD_19:
       return evolution (this, from:"Wailmer", hp:HP200, type:W, retreatCost:4) {
         weakness L
@@ -631,7 +631,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 40 * self.cards.filterByEnergyType(W).size()
           }
         }
-      };
+      }
       case OSHAWOTT_20:
       return basic (this, hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -649,7 +649,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case DEWOTT_21:
       return evolution (this, from:"Oshawott", hp:HP090, type:W, retreatCost:2) {
         weakness L
@@ -671,7 +671,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             if (selectedEnergy) selectedEnergy.moveTo opp.hand
           }
         }
-      };
+      }
       case SAMUROTT_22:
       return evolution (this, from:"Dewott", hp:HP160, type:W, retreatCost:2) {
         weakness L
@@ -690,7 +690,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             if (selectedEnergy) selectedEnergy.moveTo opp.hand
           }
         }
-      };
+      }
       case GALARIAN_DARMANITAN_V_23:
       return basic (this, hp:HP220, type:W, retreatCost:2) {
         weakness M
@@ -710,7 +710,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 30, self
           }
         }
-      };
+      }
       case GALARIAN_DARMANITAN_VMAX_24:
       return evolution (this, from:"Galarian Darmanitan V", hp:HP320, type:W, retreatCost:3) {
         weakness M
@@ -722,7 +722,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             opp.bench.each { damage 30, it }
           }
         }
-      };
+      }
       case CHEWTLE_25:
       return basic (this, hp:HP080, type:W, retreatCost:2) {
         weakness L
@@ -734,7 +734,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             cantRetreat defending
           }
         }
-      };
+      }
       case DREDNAW_26:
       return evolution (this, from:"Chewtle", hp:HP140, type:W, retreatCost:4) {
         weakness L
@@ -754,7 +754,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 140
           }
         }
-      };
+      }
       case CRAMORANT_27:
       return basic (this, hp:HP110, type:W, retreatCost:1) {
         weakness L
@@ -782,7 +782,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 60 * count
           }
         }
-      };
+      }
       case ARROKUDA_28:
       return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness L
@@ -805,7 +805,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case BARRASKEWDA_29:
       return evolution (this, from:"Arrokuda", hp:HP120, type:W, retreatCost:1) {
         weakness L
@@ -828,7 +828,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case PIKACHU_V_30:
       return basic (this, hp:HP190, type:L, retreatCost:1) {
         weakness F
@@ -853,7 +853,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             discardAllSelfEnergy()
           }
         }
-      };
+      }
       case PIKACHU_VMAX_31:
       return evolution (this, from:"Pikachu V", hp:HP310, type:L, retreatCost:2) {
         weakness F
@@ -868,7 +868,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case VOLTORB_32:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness F
@@ -879,7 +879,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case ELECTRODE_33:
       return evolution (this, from:"Voltorb", hp:HP090, type:L, retreatCost:1) {
         weakness F
@@ -906,7 +906,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 100
           }
         }
-      };
+      }
       case JOLTEON_34:
       return evolution (this, from:"Eevee", hp:HP100, type:L, retreatCost:1) {
         weakness F
@@ -940,7 +940,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 90
           }
         }
-      };
+      }
       case ZAPDOS_35:
       return basic (this, hp:HP110, type:L, retreatCost:1) {
         weakness L
@@ -975,7 +975,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case BLITZLE_36:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness F
@@ -986,7 +986,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case ZEBSTRIKA_37:
       return evolution (this, from:"Blitzle", hp:HP110, type:L, retreatCost:1) {
         weakness F
@@ -1004,7 +1004,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case TYNAMO_38:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness F
@@ -1021,7 +1021,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case EELEKTRIK_39:
       return evolution (this, from:"Tynamo", hp:HP090, type:L, retreatCost:2) {
         weakness F
@@ -1045,7 +1045,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case EELEKTROSS_40:
       return evolution (this, from:"Eelektrik", hp:HP160, type:L, retreatCost:3) {
         weakness F
@@ -1087,7 +1087,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 30, pokes
           }
         }
-      };
+      }
       case ALAKAZAM_V_41:
       return basic (this, hp:HP190, type:P, retreatCost:1) {
         weakness D
@@ -1109,7 +1109,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 30 * opp.hand.size()
           }
         }
-      };
+      }
       case SHEDINJA_42:
       return basic (this, hp:HP030, type:P, retreatCost:1) {
         globalAbility {
@@ -1136,7 +1136,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             directDamage defending.remainingHP.value - 10, defending
           }
         }
-      };
+      }
       case DUSKULL_43:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness D
@@ -1146,7 +1146,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           energyCost C
           foresight 4, delegate
         }
-      };
+      }
       case DUSCLOPS_44:
       return evolution (this, from:"Duskull", hp:HP090, type:P, retreatCost:2) {
         weakness D
@@ -1168,7 +1168,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case DUSKNOIR_45:
       return evolution (this, from:"Dusclops", hp:HP150, type:P, retreatCost:2) {
         weakness D
@@ -1193,7 +1193,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 120
           }
         }
-      };
+      }
       case CHIMECHO_46:
       return basic (this, hp:HP070, type:P, retreatCost:1) {
         weakness D
@@ -1221,7 +1221,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             applyAfterDamage ASLEEP
           }
         }
-      };
+      }
       case WOOBAT_47:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness L
@@ -1236,7 +1236,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             opp.all.each { damage 30, it }
           }
         }
-      };
+      }
       case SWOOBAT_48:
       return evolution (this, from:"Woobat", hp:HP100, type:P, retreatCost:1) {
         weakness L
@@ -1259,7 +1259,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case COTTONEE_49:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness M
@@ -1270,7 +1270,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case WHIMSICOTT_50:
       return evolution (this, from:"Cottonee", hp:HP090, type:P, retreatCost:0) {
         weakness M
@@ -1291,7 +1291,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             additionalDamageByDiscardingCardTypeFromPokemon 10, 40, POKEMON_TOOL
           }
         }
-      };
+      }
       case MILCERY_51:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness M
@@ -1312,7 +1312,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case ALCREMIE_52:
       return evolution (this, from:"Milcery", hp:HP090, type:P, retreatCost:1) {
         weakness M
@@ -1333,7 +1333,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             applyAfterDamage CONFUSED
           }
         }
-      };
+      }
       case MACHOP_53:
       return copy(ChampionsPath.MACHOP_24, this)
       case MACHOKE_54:
@@ -1360,7 +1360,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 30 * self.numberOfDamageCounters
           }
         }
-      };
+      }
       case DONPHAN_57:
       return evolution (this, from:"Phanpy", hp:HP150, type:F, retreatCost:4) {
         weakness G
@@ -1379,7 +1379,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 90
           }
         }
-      };
+      }
       case HITMONTOP_58:
       return basic (this, hp:HP090, type:F, retreatCost:1) {
         weakness P
@@ -1403,7 +1403,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 80
           }
         }
-      };
+      }
       case DRILBUR_59:
       return basic (this, hp:HP070, type:F, retreatCost:2) {
         weakness G
@@ -1421,7 +1421,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             flip { damage 50 }
           }
         }
-      };
+      }
       case TERRAKION_60:
       return basic (this, hp:HP140, type:F, retreatCost:4) {
         weakness G
@@ -1443,7 +1443,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MUDBRAY_61:
       return basic (this, hp:HP080, type:F, retreatCost:2) {
         weakness G
@@ -1461,7 +1461,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case MUDSDALE_62:
       return evolution (this, from:"Mudbray", hp:HP140, type:F, retreatCost:3) {
         weakness G
@@ -1479,7 +1479,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 180 - (defending.retreatCost * 30)
           }
         }
-      };
+      }
       case CLOBBOPUS_63:
       return basic (this, hp:HP080, type:F, retreatCost:2) {
         weakness P
@@ -1497,7 +1497,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case GRAPPLOCT_64:
       return evolution (this, from:"Clobbopus", hp:HP130, type:F, retreatCost:2) {
         weakness P
@@ -1520,7 +1520,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case GALARIAN_SIRFETCH_D_V_65:
       return copy(SwordShieldPromos.GALARIAN_SIRFETCH_D_V_SWSH43, this)
       case POOCHYENA_66:
@@ -1540,7 +1540,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MIGHTYENA_67:
       return evolution (this, from:"Poochyena", hp:HP110, type:D, retreatCost:1) {
         weakness G
@@ -1559,7 +1559,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 100
           }
         }
-      };
+      }
       case SABLEYE_68:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness G
@@ -1581,7 +1581,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             amnesia delegate
           }
         }
-      };
+      }
       case DRAPION_V_69:
       return basic (this, hp:HP210, type:D, retreatCost:3) {
         weakness F
@@ -1602,7 +1602,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             applyAfterDamage POISONED
           }
         }
-      };
+      }
       case SANDILE_70:
       return basic (this, hp:HP070, type:D, retreatCost:2) {
         weakness G
@@ -1616,7 +1616,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             opp.deck.subList(0, 3).discard()
           }
         }
-      };
+      }
       case KROKOROK_71:
       return evolution (this, from:"Sandile", hp:HP090, type:D, retreatCost:2) {
         weakness G
@@ -1637,7 +1637,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             opp.deck.subList(0, 3).discard()
           }
         }
-      };
+      }
       case KROOKODILE_72:
       return evolution (this, from:"Krokorok", hp:HP150, type:D, retreatCost:3) {
         weakness G
@@ -1659,7 +1659,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             apply CONFUSED, self
           }
         }
-      };
+      }
       case TRUBBISH_73:
       return basic (this, hp:HP070, type:D, retreatCost:2) {
         weakness F
@@ -1682,7 +1682,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case GARBODOR_74:
       return evolution (this, from:"Trubbish", hp:HP120, type:D, retreatCost:3) {
         weakness F
@@ -1707,7 +1707,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             applyAfterDamage POISONED
           }
         }
-      };
+      }
       case GALARIAN_MEOWTH_75:
       return basic (this, hp:HP070, type:M, retreatCost:1) {
         weakness R
@@ -1726,7 +1726,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             flip 3, { damage 20 }
           }
         }
-      };
+      }
       case GALARIAN_PERRSERKER_76:
       return evolution (this, from:"Galarian Meowth", hp:HP120, type:M, retreatCost:2) {
         weakness R
@@ -1753,7 +1753,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 90
           }
         }
-      };
+      }
       case EXCADRILL_77:
       return evolution (this, from:"Drilbur", hp:HP130, type:M, retreatCost:3) {
         weakness R
@@ -1773,7 +1773,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 130
           }
         }
-      };
+      }
       case FERROSEED_78:
       return basic (this, hp:HP060, type:M, retreatCost:3) {
         weakness R
@@ -1786,7 +1786,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             switchYourActive()
           }
         }
-      };
+      }
       case FERROTHORN_79:
       return evolution (this, from:"Ferroseed", hp:HP110, type:M, retreatCost:3) {
         weakness R
@@ -1802,7 +1802,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             switchYourActive()
           }
         }
-      };
+      }
       case AEGISLASH_V_80:
       return basic (this, hp:HP210, type:M, retreatCost:3) {
         weakness R
@@ -1821,7 +1821,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             shredDamage 130
           }
         }
-      };
+      }
       case AEGISLASH_VMAX_81:
       return evolution (this, from:"Aegislash V", hp:HP320, type:M, retreatCost:3) {
         weakness R
@@ -1834,7 +1834,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 30 * my.prizeCardSet.takenCount
           }
         }
-      };
+      }
       case DURALUDON_82:
       return basic (this, hp:HP130, type:M, retreatCost:2) {
         weakness R
@@ -1855,7 +1855,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             discardSelfEnergyAfterDamage C
           }
         }
-      };
+      }
       case EEVEE_83:
       return basic (this, hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -1873,7 +1873,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SNORLAX_84:
       return basic (this, hp:HP130, type:C, retreatCost:3) {
         weakness F
@@ -1896,7 +1896,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             flip { applyAfterDamage PARALYZED }
           }
         }
-      };
+      }
       case TAILLOW_85:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness L
@@ -1908,7 +1908,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             flip 2, { damage 20 }
           }
         }
-      };
+      }
       case SWELLOW_86:
       return evolution (this, from:"Taillow", hp:HP090, type:C, retreatCost:0) {
         weakness L
@@ -1931,7 +1931,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case WHISMUR_87:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness F
@@ -1942,7 +1942,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             flipUntilTails { damage 40 }
           }
         }
-      };
+      }
       case LOUDRED_88:
       return evolution (this, from:"Whismur", hp:HP100, type:C, retreatCost:2) {
         weakness F
@@ -1960,7 +1960,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case EXPLOUD_89:
       return evolution (this, from:"Loudred", hp:HP160, type:C, retreatCost:3) {
         weakness F
@@ -1978,7 +1978,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             damage 120
           }
         }
-      };
+      }
       case DRONE_ROTOM_90:
       return itemCard (this) {
         text "Your opponent reveals their hand. Then" +
@@ -1990,7 +1990,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         playRequirement{
           assert opp.hand : "Opponent's hand is empty"
         }
-      };
+      }
       case TELEPHOTO_SCOPE_91:
       return pokemonTool (this) {
         text "The attacks of the Pokémon this card is attached to do 30 more damage to your opponent's Benched Pokémon V or Benched Pokémon-GX (before applying Weakness and Resistance)."
@@ -2010,7 +2010,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         onRemoveFromPlay{
           eff.unregister()
         }
-      };
+      }
       case MEMORY_CAPSULE_92:
       return pokemonTool (this) {
         text "The Pokémon this card is attached to can use any attack from its previous Evolutions. (You still need the necessary Energy to use each attack.)"
@@ -2029,7 +2029,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         onRemoveFromPlay {
           moveListGetter.unregister()
         }
-      };
+      }
       case BEA_93:
       return supporter (this) {
         text "Discard the top 5 cards of your deck. If any of those cards are Energy cards" +
@@ -2045,7 +2045,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           assert my.deck : "Deck is empty"
           assert my.bench.any { it.types.contains F } : "No $F Pokémon on your bench"
         }
-      };
+      }
       case LEON_94:
       return supporter (this) {
         text "During this turn" +
@@ -2063,7 +2063,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             unregisterAfter 1
           }
         }
-      };
+      }
       case LEAGUE_STAFF_95:
       return supporter (this) {
         text "Draw 2 cards. If Wyndon Stadium is in play" +
@@ -2075,7 +2075,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         playRequirement{
           assert my.deck : "Your deck is empty!"
         }
-      };
+      }
       case NESSA_96:
       return supporter (this) {
         text "Put up to 4 in any combination of [W] Pokémon and [W] Energy cards from your discard pile into your hand."
@@ -2091,7 +2091,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             (it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(W))
           } || my.discard.filterByEnergyType(W) : "No $W Pokémon or $W Energy in your discard pile"
         }
-      };
+      }
       case HERO_S_BATH_97:
       return stadium (this) {
         text "Basic Pokémon in play (both yours and your opponent's) take 20 less damage from attacks (after applying Weakness and Resistance)."
@@ -2112,7 +2112,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-      };
+      }
       case WYNDON_STADIUM_98:
       return stadium (this) {
         text "Whenever either player plays a Pokémon VMAX from their hand during their turn to evolve their Pokémon V" +
@@ -2129,7 +2129,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         onRemoveFromPlay{
           eff.unregister()
         }
-      };
+      }
       case WASH_W_ENERGY_99:
       return specialEnergy (this, [[]]) {
         text "As long as this card is attached to a Pokémon" +
@@ -2156,7 +2156,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           if (self != null) return [[W] as Set]
           else  return [[] as Set]
         }
-      };
+      }
       case COATING_M_ENERGY_100:
       return specialEnergy (this, [[]]) {
         text "As long as this card is attached to a Pokémon" +
@@ -2176,51 +2176,51 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           if (self != null) return [[M] as Set]
           else  return [[] as Set]
         }
-      };
+      }
       case ORBEETLE_V_101:
-      return copy (ORBEETLE_V_8, this);
+      return copy (ORBEETLE_V_8, this)
       case TALONFLAME_V_102:
-      return copy (TALONFLAME_V_16, this);
+      return copy (TALONFLAME_V_16, this)
       case GALARIAN_DARMANITAN_V_103:
-      return copy (GALARIAN_DARMANITAN_V_23, this);
+      return copy (GALARIAN_DARMANITAN_V_23, this)
       case PIKACHU_V_104:
-      return copy (PIKACHU_V_30, this);
+      return copy (PIKACHU_V_30, this)
       case ALAKAZAM_V_105:
-      return copy (ALAKAZAM_V_41, this);
+      return copy (ALAKAZAM_V_41, this)
       case GALARIAN_SIRFETCH_D_V_106:
-      return copy (GALARIAN_SIRFETCH_D_V_65, this);
+      return copy (GALARIAN_SIRFETCH_D_V_65, this)
       case DRAPION_V_107:
-      return copy (DRAPION_V_69, this);
+      return copy (DRAPION_V_69, this)
       case AEGISLASH_V_108:
-      return copy (AEGISLASH_V_80, this);
+      return copy (AEGISLASH_V_80, this)
       case BEA_109:
-      return copy (BEA_93, this);
+      return copy (BEA_93, this)
       case LEON_110:
-      return copy (LEON_94, this);
+      return copy (LEON_94, this)
       case NESSA_111:
-      return copy (NESSA_96, this);
+      return copy (NESSA_96, this)
       case ORBEETLE_VMAX_112:
-      return copy (ORBEETLE_VMAX_9, this);
+      return copy (ORBEETLE_VMAX_9, this)
       case GALARIAN_DARMANITAN_VMAX_113:
-      return copy (GALARIAN_DARMANITAN_VMAX_24, this);
+      return copy (GALARIAN_DARMANITAN_VMAX_24, this)
       case PIKACHU_VMAX_114:
-      return copy (PIKACHU_VMAX_31, this);
+      return copy (PIKACHU_VMAX_31, this)
       case AEGISLASH_VMAX_115:
-      return copy (AEGISLASH_VMAX_81, this);
+      return copy (AEGISLASH_VMAX_81, this)
       case BEA_116:
-      return copy (BEA_93, this);
+      return copy (BEA_93, this)
       case LEON_117:
-      return copy (LEON_94, this);
+      return copy (LEON_94, this)
       case NESSA_118:
-      return copy (NESSA_96, this);
+      return copy (NESSA_96, this)
       case GALARIAN_OBSTAGOON_119:
       return copy (SwordShield.GALARIAN_OBSTAGOON_119, this)
       case TELEPHOTO_SCOPE_120:
-      return copy (TELEPHOTO_SCOPE_91, this);
+      return copy (TELEPHOTO_SCOPE_91, this)
       case MEMORY_CAPSULE_121:
-      return copy (MEMORY_CAPSULE_92, this);
+      return copy (MEMORY_CAPSULE_92, this)
       default:
-      return null;
+      return null
     }
   }
 }

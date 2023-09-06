@@ -1,45 +1,45 @@
 package tcgwars.logic.impl.gen3
 
-import tcgwars.logic.effect.ability.custom.Safeguard;
-import tcgwars.logic.impl.gen1.FossilNG;
-import tcgwars.logic.impl.gen2.Expedition;
-import tcgwars.logic.impl.gen2.Aquapolis;
-import tcgwars.logic.impl.gen3.Deoxys;
-import tcgwars.logic.impl.gen3.Dragon;
-import tcgwars.logic.impl.gen3.Emerald;
-import tcgwars.logic.impl.gen3.UnseenForces;
-import tcgwars.logic.impl.gen3.LegendMaker;
-import tcgwars.logic.impl.gen3.FireRedLeafGreen;
+import tcgwars.logic.effect.ability.custom.Safeguard
+import tcgwars.logic.impl.gen1.FossilNG
+import tcgwars.logic.impl.gen2.Expedition
+import tcgwars.logic.impl.gen2.Aquapolis
+import tcgwars.logic.impl.gen3.Deoxys
+import tcgwars.logic.impl.gen3.Dragon
+import tcgwars.logic.impl.gen3.Emerald
+import tcgwars.logic.impl.gen3.UnseenForces
+import tcgwars.logic.impl.gen3.LegendMaker
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -155,53 +155,53 @@ public enum PowerKeepers implements LogicCardInfo {
   PSYCHIC_ENERGY_107 ("Psychic Energy", "107", Rarity.HOLORARE, [ENERGY, BASIC_ENERGY]),
   FIGHTING_ENERGY_108 ("Fighting Energy", "108", Rarity.HOLORARE, [ENERGY, BASIC_ENERGY]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   PowerKeepers(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.POWER_KEEPERS;
+    return tcgwars.logic.card.Collection.POWER_KEEPERS
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -240,7 +240,7 @@ public enum PowerKeepers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ALTARIA_2:
       return evolution (this, from:"Swablu", hp:HP080, type:C, retreatCost:1) {
         weakness C
@@ -271,7 +271,7 @@ public enum PowerKeepers implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case ARMALDO_3:
       return evolution (this, from:"Anorith", hp:HP120, type:F, retreatCost:3) {
         weakness G
@@ -302,7 +302,7 @@ public enum PowerKeepers implements LogicCardInfo {
             dontApplyResistance()
           }
         }
-      };
+      }
       case BANETTE_4:
       return evolution (this, from:"Shuppet", hp:HP070, type:P, retreatCost:1) {
         weakness D
@@ -325,9 +325,9 @@ public enum PowerKeepers implements LogicCardInfo {
             flip opp.bench.size(), {}, { noWrDamage 40, defending }
           }
         }
-      };
+      }
       case BLAZIKEN_5:
-      return copy (RubySapphireNG.BLAZIKEN_3, this);
+      return copy (RubySapphireNG.BLAZIKEN_3, this)
       case CHARIZARD_6:
       return evolution (this, from:"Charmeleon", hp:HP120, type:R, retreatCost:2) {
         weakness W
@@ -346,7 +346,7 @@ public enum PowerKeepers implements LogicCardInfo {
             applyAfterDamage BURNED
           }
         }
-      };
+      }
       case CRADILY_7:
       return evolution (this, from:"Lileep", hp:HP110, type:G, retreatCost:2) {
         weakness R
@@ -371,11 +371,11 @@ public enum PowerKeepers implements LogicCardInfo {
             cantRetreat defending
           }
         }
-      };
+      }
       case DELCATTY_8:
-      return copy(RubySapphireNG.DELCATTY_5, this);
+      return copy(RubySapphireNG.DELCATTY_5, this)
       case GARDEVOIR_9:
-      return copy(RubySapphireNG.GARDEVOIR_7, this);
+      return copy(RubySapphireNG.GARDEVOIR_7, this)
       case KABUTOPS_10:
       return evolution (this, from:"Kabuto", hp:HP110, type:F, retreatCost:2) {
         weakness G
@@ -408,7 +408,7 @@ public enum PowerKeepers implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case MACHAMP_11:
       return evolution (this, from:"Machoke", hp:HP120, type:F, retreatCost:2) {
         weakness P
@@ -443,7 +443,7 @@ public enum PowerKeepers implements LogicCardInfo {
             flip { damage 30 }
           }
         }
-      };
+      }
       case RAICHU_12:
       return evolution (this, from:"Pikachu", hp:HP070, type:L, retreatCost:1) {
         weakness F
@@ -467,9 +467,9 @@ public enum PowerKeepers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SLAKING_13:
-      return copy(RubySapphireNG.SLAKING_12, this);
+      return copy(RubySapphireNG.SLAKING_12, this)
       case DUSCLOPS_14:
       return evolution (this, from:"Duskull", hp:HP080, type:P, retreatCost:2) {
         weakness D
@@ -494,7 +494,7 @@ public enum PowerKeepers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case LANTURN_15:
       return evolution (this, from:"Chinchou", hp:HP080, type:L, retreatCost:2) {
         weakness F
@@ -520,7 +520,7 @@ public enum PowerKeepers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MAGNETON_16:
       return evolution (this, from:"Magnemite", hp:HP070, type:L, retreatCost:1) {
         weakness F
@@ -553,7 +553,7 @@ public enum PowerKeepers implements LogicCardInfo {
             damage amount
           }
         }
-      };
+      }
       case MAWILE_17:
       return basic (this, hp:HP060, type:M, retreatCost:1) {
         weakness R
@@ -576,7 +576,7 @@ public enum PowerKeepers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MIGHTYENA_18:
       return evolution (this, from:"Poochyena", hp:HP070, type:D, retreatCost:0) {
         weakness F
@@ -601,7 +601,7 @@ public enum PowerKeepers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case NINETALES_19:
       return evolution (this, from:"Vulpix", hp:HP070, type:R, retreatCost:1) {
         weakness W
@@ -623,7 +623,7 @@ public enum PowerKeepers implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case OMASTAR_20:
       return evolution (this, from:"Omanyte", hp:HP110, type:W, retreatCost:2) {
         weakness L
@@ -647,7 +647,7 @@ public enum PowerKeepers implements LogicCardInfo {
             extraEnergyDamage(2, hp(20), W, thisMove)
           }
         }
-      };
+      }
       case PICHU_21:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -673,7 +673,7 @@ public enum PowerKeepers implements LogicCardInfo {
             shuffleDeck()
           }
         }
-      };
+      }
       case SABLEYE_22:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         resistance C, MINUS30
@@ -714,7 +714,7 @@ public enum PowerKeepers implements LogicCardInfo {
             swiftDamage(20, opp.all.select())
           }
         }
-      };
+      }
       case SEVIPER_23:
       return basic (this, hp:HP070, type:G, retreatCost:1) {
         weakness P
@@ -733,7 +733,7 @@ public enum PowerKeepers implements LogicCardInfo {
             extraPoison 1
           }
         }
-      };
+      }
       case WOBBUFFET_24:
       return basic (this, hp:HP080, type:P, retreatCost:2) {
         weakness P
@@ -748,7 +748,7 @@ public enum PowerKeepers implements LogicCardInfo {
             noWrDamage 10, self
           }
         }
-      };
+      }
       case ZANGOOSE_25:
       return basic (this, hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -780,7 +780,7 @@ public enum PowerKeepers implements LogicCardInfo {
             flip { damage 20 }
           }
         }
-      };
+      }
       case ANORITH_26:
       return evolution (this, from:"Claw Fossil", hp:HP070, type:F, retreatCost:1) {
         weakness G
@@ -805,7 +805,7 @@ public enum PowerKeepers implements LogicCardInfo {
             flip 3,{},{}, [ 1:{damage 10}, 2:{damage 30}, 3:{damage 50} ]
           }
         }
-      };
+      }
       case CACTURNE_27:
       return evolution (this, from:"Cacnea", hp:HP070, type:D, retreatCost:1) {
         weakness F
@@ -827,7 +827,7 @@ public enum PowerKeepers implements LogicCardInfo {
             flip 4, { damage 20 }
           }
         }
-      };
+      }
       case CHARMELEON_28:
       return evolution (this, from:"Charmander", hp:HP070, type:R, retreatCost:1) {
         weakness W
@@ -848,7 +848,7 @@ public enum PowerKeepers implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case COMBUSKEN_29:
       return evolution (this, from:"Torchic", hp:HP080, type:R, retreatCost:1) {
         weakness W
@@ -870,7 +870,7 @@ public enum PowerKeepers implements LogicCardInfo {
             flip { damage 50 }
           }
         }
-      };
+      }
       case GLALIE_30:
       return evolution (this, from:"Snorunt", hp:HP080, type:W, retreatCost:1) {
         weakness M
@@ -905,7 +905,7 @@ public enum PowerKeepers implements LogicCardInfo {
             damage 10, self
           }
         }
-      };
+      }
       case KIRLIA_31:
       return evolution (this, from:"Ralts", hp:HP070, type:P, retreatCost:1) {
         weakness P
@@ -928,7 +928,7 @@ public enum PowerKeepers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case LAIRON_32:
       return evolution (this, from:"Aron", hp:HP070, type:M, retreatCost:2) {
         weakness R
@@ -949,7 +949,7 @@ public enum PowerKeepers implements LogicCardInfo {
             flip { damage 20 }
           }
         }
-      };
+      }
       case MACHOKE_33:
       return evolution (this, from:"Machop", hp:HP080, type:F, retreatCost:1) {
         weakness P
@@ -968,7 +968,7 @@ public enum PowerKeepers implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case MEDICHAM_34:
       return evolution (this, from:"Meditite", hp:HP080, type:F, retreatCost:1) {
         weakness P
@@ -1002,7 +1002,7 @@ public enum PowerKeepers implements LogicCardInfo {
             flip { applyAfterDamage PARALYZED }
           }
         }
-      };
+      }
       case METANG_35:
       return evolution (this, from:"Beldum", hp:HP080, type:M, retreatCost:2) {
         weakness R
@@ -1030,7 +1030,7 @@ public enum PowerKeepers implements LogicCardInfo {
             increasedBaseDamageNextTurn("Extra Comet Punch", hp(30))
           }
         }
-      };
+      }
       case NUZLEAF_36:
       return evolution (this, from:"Seedot", hp:HP070, type:D, retreatCost:1) {
         weakness F
@@ -1050,7 +1050,7 @@ public enum PowerKeepers implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case SEALEO_37:
       return evolution (this, from:"Spheal", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -1062,7 +1062,7 @@ public enum PowerKeepers implements LogicCardInfo {
             flip { applyAfterDamage PARALYZED }
           }
         }
-      };
+      }
       case SHARPEDO_38:
       return evolution (this, from:"Carvanha", hp:HP070, type:D, retreatCost:0) {
         weakness G
@@ -1083,7 +1083,7 @@ public enum PowerKeepers implements LogicCardInfo {
             directDamage 10, self
           }
         }
-      };
+      }
       case SHELGON_39:
       return evolution (this, from:"Bagon", hp:HP080, type:C, retreatCost:2) {
         weakness C
@@ -1103,7 +1103,7 @@ public enum PowerKeepers implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case VIBRAVA_40:
       return evolution (this, from:"Trapinch", hp:HP080, type:C, retreatCost:1) {
         weakness C
@@ -1126,7 +1126,7 @@ public enum PowerKeepers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case VIGOROTH_41:
       return evolution (this, from:"Slakoth", hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -1144,7 +1144,7 @@ public enum PowerKeepers implements LogicCardInfo {
             flip { damage 20 }
           }
         }
-      };
+      }
       case ARON_42:
       return basic (this, hp:HP050, type:M, retreatCost:2) {
         weakness R
@@ -1166,7 +1166,7 @@ public enum PowerKeepers implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case BAGON_43:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness C
@@ -1182,7 +1182,7 @@ public enum PowerKeepers implements LogicCardInfo {
             damage 10 * self.numberOfDamageCounters
           }
         }
-      };
+      }
       case BALTOY_44:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -1201,7 +1201,7 @@ public enum PowerKeepers implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case BELDUM_45:
       return basic (this, hp:HP050, type:M, retreatCost:2) {
         weakness R
@@ -1220,7 +1220,7 @@ public enum PowerKeepers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case CACNEA_46:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -1231,7 +1231,7 @@ public enum PowerKeepers implements LogicCardInfo {
             swiftDamage(10, opp.all.select())
           }
         }
-      };
+      }
       case CARVANHA_47:
       return basic (this, hp:HP040, type:D, retreatCost:1) {
         weakness G
@@ -1250,7 +1250,7 @@ public enum PowerKeepers implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case CHARMANDER_48:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1262,7 +1262,7 @@ public enum PowerKeepers implements LogicCardInfo {
             sandAttack(thisMove)
           }
         }
-      };
+      }
       case CHINCHOU_49:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1282,7 +1282,7 @@ public enum PowerKeepers implements LogicCardInfo {
             reduceDamageFromDefendingNextTurn(hp(10),thisMove,defending)
           }
         }
-      };
+      }
       case DUSKULL_50:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness D
@@ -1294,7 +1294,7 @@ public enum PowerKeepers implements LogicCardInfo {
             flip { damage 30 }
           }
         }
-      };
+      }
       case KABUTO_51:
       return evolution (this, from:"Mysterious Fossil", hp:HP060, type:F, retreatCost:2) {
         weakness G
@@ -1314,7 +1314,7 @@ public enum PowerKeepers implements LogicCardInfo {
             flip 2, { damage 20 }
           }
         }
-      };
+      }
       case LILEEP_52:
       return evolution (this, from:"Root Fossil", hp:HP080, type:G, retreatCost:2) {
         weakness R
@@ -1334,7 +1334,7 @@ public enum PowerKeepers implements LogicCardInfo {
             cantRetreat defending
           }
         }
-      };
+      }
       case MACHOP_53:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness P
@@ -1353,7 +1353,7 @@ public enum PowerKeepers implements LogicCardInfo {
             damage 10, self
           }
         }
-      };
+      }
       case MAGNEMITE_54:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1375,7 +1375,7 @@ public enum PowerKeepers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MEDITITE_55:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness P
@@ -1395,7 +1395,7 @@ public enum PowerKeepers implements LogicCardInfo {
             flip { damage 10 }
           }
         }
-      };
+      }
       case OMANYTE_56:
       return evolution (this, from:"Mysterious Fossil", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -1423,7 +1423,7 @@ public enum PowerKeepers implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case PIKACHU_57:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness F
@@ -1444,7 +1444,7 @@ public enum PowerKeepers implements LogicCardInfo {
             flip 2, { damage 20 }
           }
         }
-      };
+      }
       case POOCHYENA_58:
       return basic (this, hp:HP050, type:D, retreatCost:1) {
         weakness F
@@ -1456,7 +1456,7 @@ public enum PowerKeepers implements LogicCardInfo {
             flip 2, { damage 10 }
           }
         }
-      };
+      }
       case RALTS_59:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -1475,7 +1475,7 @@ public enum PowerKeepers implements LogicCardInfo {
             switchYourActive()
           }
         }
-      };
+      }
       case SEEDOT_60:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -1493,7 +1493,7 @@ public enum PowerKeepers implements LogicCardInfo {
             flip 2, { damage 20 }
           }
         }
-      };
+      }
       case SHUPPET_61:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness D
@@ -1506,7 +1506,7 @@ public enum PowerKeepers implements LogicCardInfo {
             flip 1, { applyAfterDamage ASLEEP }, { applyAfterDamage CONFUSED }
           }
         }
-      };
+      }
       case SKITTY_62:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1524,7 +1524,7 @@ public enum PowerKeepers implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SLAKOTH_63:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
@@ -1542,7 +1542,7 @@ public enum PowerKeepers implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SNORUNT_64:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness M
@@ -1565,7 +1565,7 @@ public enum PowerKeepers implements LogicCardInfo {
             flip 2, { damage 20 }
           }
         }
-      };
+      }
       case SPHEAL_65:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness L
@@ -1583,7 +1583,7 @@ public enum PowerKeepers implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SWABLU_66:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness L
@@ -1595,7 +1595,7 @@ public enum PowerKeepers implements LogicCardInfo {
             flip 3, { damage 10 }
           }
         }
-      };
+      }
       case TORCHIC_67:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1607,7 +1607,7 @@ public enum PowerKeepers implements LogicCardInfo {
             flip { applyAfterDamage BURNED }
           }
         }
-      };
+      }
       case TRAPINCH_68:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
@@ -1618,7 +1618,7 @@ public enum PowerKeepers implements LogicCardInfo {
             flip { damage 20 }
           }
         }
-      };
+      }
       case VULPIX_69:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1639,7 +1639,7 @@ public enum PowerKeepers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case WYNAUT_70:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -1662,9 +1662,9 @@ public enum PowerKeepers implements LogicCardInfo {
             damage 10*self.numberOfDamageCounters
           }
         }
-      };
+      }
       case BATTLE_FRONTIER_71:
-      return copy(Emerald.BATTLE_FRONTIER_75, this);
+      return copy(Emerald.BATTLE_FRONTIER_75, this)
       case DRAKE_S_STADIUM_72:
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
@@ -1685,11 +1685,11 @@ public enum PowerKeepers implements LogicCardInfo {
         onRemoveFromPlay{
           eff.unregister()
         }
-      };
+      }
       case ENERGY_RECYCLE_SYSTEM_73:
-      return copy(Dragon.ENERGY_RECYCLE_SYSTEM_84, this);
+      return copy(Dragon.ENERGY_RECYCLE_SYSTEM_84, this)
       case ENERGY_REMOVAL_2_74:
-      return copy(Expedition.ENERGY_REMOVAL_2_140, this);
+      return copy(Expedition.ENERGY_REMOVAL_2_140, this)
       case ENERGY_SWITCH_75:
       return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this)
       case GLACIA_S_STADIUM_76:
@@ -1707,11 +1707,11 @@ public enum PowerKeepers implements LogicCardInfo {
         onRemoveFromPlay{
           eff.unregister()
         }
-      };
+      }
       case GREAT_BALL_77:
-      return copy(FireRedLeafGreen.GREAT_BALL_92, this);
+      return copy(FireRedLeafGreen.GREAT_BALL_92, this)
       case MASTER_BALL_78:
-      return copy(Deoxys.MASTER_BALL_88, this);
+      return copy(Deoxys.MASTER_BALL_88, this)
       case PHOEBE_S_STADIUM_79:
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
@@ -1728,11 +1728,11 @@ public enum PowerKeepers implements LogicCardInfo {
         onRemoveFromPlay{
           eff.unregister()
         }
-      };
+      }
       case PROFESSOR_BIRCH_80:
-      return copy(Emerald.PROFESSOR_BIRCH_82, this);
+      return copy(Emerald.PROFESSOR_BIRCH_82, this)
       case SCOTT_81:
-      return copy(Emerald.SCOTT_84, this);
+      return copy(Emerald.SCOTT_84, this)
       case SIDNEY_S_STADIUM_82:
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
@@ -1760,7 +1760,7 @@ public enum PowerKeepers implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-      };
+      }
       case STEVEN_S_ADVICE_83:
       return supporter (this) {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
@@ -1772,21 +1772,21 @@ public enum PowerKeepers implements LogicCardInfo {
           assert my.deck : "Your deck is empty!"
           assert my.hand.size() < 7 : "You have 7 or more cards in your hand (including this card)"
         }
-      };
+      }
       case CLAW_FOSSIL_84:
-      return copy(LegendMaker.CLAW_FOSSIL_78, this);
+      return copy(LegendMaker.CLAW_FOSSIL_78, this)
       case MYSTERIOUS_FOSSIL_85:
-      return copy(LegendMaker.MYSTERIOUS_FOSSIL_79, this);
+      return copy(LegendMaker.MYSTERIOUS_FOSSIL_79, this)
       case ROOT_FOSSIL_86:
-      return copy(LegendMaker.ROOT_FOSSIL_80, this);
+      return copy(LegendMaker.ROOT_FOSSIL_80, this)
       case DARKNESS_ENERGY_87:
-      return copy (Emerald.DARKNESS_ENERGY_86, this);
+      return copy (Emerald.DARKNESS_ENERGY_86, this)
       case METAL_ENERGY_88:
-      return copy(RubySapphire.METAL_ENERGY_94, this);
+      return copy(RubySapphire.METAL_ENERGY_94, this)
       case MULTI_ENERGY_89:
-      return copy(FireRedLeafGreen.MULTI_ENERGY_103, this);
+      return copy(FireRedLeafGreen.MULTI_ENERGY_103, this)
       case CYCLONE_ENERGY_90:
-      return copy(UnseenForces.CYCLONE_ENERGY_99, this);
+      return copy(UnseenForces.CYCLONE_ENERGY_99, this)
       case WARP_ENERGY_91:
       return copy(Aquapolis.WARP_ENERGY_147, this)
       case ABSOL_EX_92:
@@ -1822,7 +1822,7 @@ public enum PowerKeepers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case CLAYDOL_EX_93:
       return evolution (this, from:"Baltoy", hp:HP120, type:P, retreatCost:2) {
         weakness P
@@ -1868,7 +1868,7 @@ public enum PowerKeepers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case FLYGON_EX_94:
       return evolution (this, from:"Vibrava", hp:HP150, type:C, retreatCost:0) {
         weakness C
@@ -1905,7 +1905,7 @@ public enum PowerKeepers implements LogicCardInfo {
             flip 1, {}, { cantUseAttack(thisMove, self) }
           }
         }
-      };
+      }
       case METAGROSS_EX_95:
       return evolution (this, from:"Metang", hp:HP150, type:M, retreatCost:4) {
         weakness R
@@ -1940,7 +1940,7 @@ public enum PowerKeepers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SALAMENCE_EX_96:
       return evolution (this, from:"Shelgon", hp:HP160, type:C, retreatCost:2) {
         weakness C
@@ -1971,7 +1971,7 @@ public enum PowerKeepers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SHIFTRY_EX_97:
       return evolution (this, from:"Nuzleaf", hp:HP140, type:D, retreatCost:1) {
         weakness G
@@ -2015,7 +2015,7 @@ public enum PowerKeepers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SKARMORY_EX_98:
       return basic (this, hp:HP100, type:M, retreatCost:1) {
         weakness R
@@ -2049,7 +2049,7 @@ public enum PowerKeepers implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case WALREIN_EX_99:
       return evolution (this, from:"Sealeo", hp:HP150, type:W, retreatCost:3) {
         weakness L
@@ -2084,7 +2084,7 @@ public enum PowerKeepers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case FLAREON_STAR_100:
       return basic (this, hp:HP070, type:R, retreatCost:1) {
         weakness W
@@ -2109,7 +2109,7 @@ public enum PowerKeepers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case JOLTEON_STAR_101:
       return basic (this, hp:HP070, type:L, retreatCost:1) {
         weakness F
@@ -2132,7 +2132,7 @@ public enum PowerKeepers implements LogicCardInfo {
             flip { preventAllEffectsNextTurn() }
           }
         }
-      };
+      }
       case VAPOREON_STAR_102:
       return basic (this, hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -2158,21 +2158,21 @@ public enum PowerKeepers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case GRASS_ENERGY_103:
-        return basicEnergy (this, G);
+        return basicEnergy (this, G)
       case FIRE_ENERGY_104:
-        return basicEnergy (this, R);
+        return basicEnergy (this, R)
       case WATER_ENERGY_105:
-        return basicEnergy (this, W);
+        return basicEnergy (this, W)
       case LIGHTNING_ENERGY_106:
-        return basicEnergy (this, L);
+        return basicEnergy (this, L)
       case PSYCHIC_ENERGY_107:
-        return basicEnergy (this, P);
+        return basicEnergy (this, P)
       case FIGHTING_ENERGY_108:
-        return basicEnergy (this, F);
+        return basicEnergy (this, F)
       default:
-      return null;
+      return null
     }
   }
 }

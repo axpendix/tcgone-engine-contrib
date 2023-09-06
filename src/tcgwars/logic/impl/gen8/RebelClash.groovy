@@ -1,25 +1,25 @@
-package tcgwars.logic.impl.gen8;
+package tcgwars.logic.impl.gen8
 
-import tcgwars.logic.impl.gen3.FireRedLeafGreen;
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
 import tcgwars.logic.impl.gen4.HeartgoldSoulsilver
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
 import tcgwars.logic.card.*
-import tcgwars.logic.effect.*;
+import tcgwars.logic.effect.*
 import tcgwars.logic.effect.ability.*
 import tcgwars.logic.effect.basic.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -236,53 +236,53 @@ public enum RebelClash implements LogicCardInfo {
   TOOL_SCRAPPER_208 ("Tool Scrapper", "208", Rarity.HOLORARE, [TRAINER, ITEM]),
   TWIN_ENERGY_209 ("Twin Energy", "209", Rarity.HOLORARE, [ENERGY, SPECIAL_ENERGY]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   RebelClash(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.REBEL_CLASH;
+    return tcgwars.logic.card.Collection.REBEL_CLASH
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -309,7 +309,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case METAPOD_2:
       return evolution (this, from:"Caterpie", hp:HP080, type:G, retreatCost:3) {
         weakness R
@@ -331,7 +331,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case BUTTERFREE_3:
       return evolution (this, from:"Metapod", hp:HP140, type:G, retreatCost:1) {
         weakness R
@@ -352,7 +352,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 80
           }
         }
-      };
+      }
       case SCYTHER_4:
       return basic (this, hp:HP080, type:G, retreatCost:1) {
         weakness R
@@ -370,7 +370,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SHUCKLE_5:
       return basic (this, hp:HP080, type:G, retreatCost:1) {
         weakness R
@@ -396,7 +396,7 @@ public enum RebelClash implements LogicCardInfo {
             flip { apply PARALYZED }
           }
         }
-      };
+      }
       case HERACROSS_6:
       return basic (this, hp:HP130, type:G, retreatCost:2) {
         weakness R
@@ -419,7 +419,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 110
           }
         }
-      };
+      }
       case LOTAD_7:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -438,7 +438,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case LOMBRE_8:
       return evolution (this, from:"Lotad", hp:HP090, type:G, retreatCost:1) {
         weakness R
@@ -463,7 +463,7 @@ public enum RebelClash implements LogicCardInfo {
             flip 3, { damage 40 }
           }
         }
-      };
+      }
       case LUDICOLO_9:
       return evolution (this, from:"Lombre", hp:HP160, type:G, retreatCost:2) {
         weakness R
@@ -482,7 +482,7 @@ public enum RebelClash implements LogicCardInfo {
             heal 30, self
           }
         }
-      };
+      }
       case SURSKIT_10:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -494,7 +494,7 @@ public enum RebelClash implements LogicCardInfo {
             flip { preventAllEffectsNextTurn() }
           }
         }
-      };
+      }
       case MASQUERAIN_11:
       return evolution (this, from:"Surskit", hp:HP090, type:G, retreatCost:1) {
         weakness R
@@ -534,7 +534,7 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SNOVER_12:
       return basic (this, hp:HP090, type:G, retreatCost:3) {
         weakness R
@@ -552,7 +552,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case ABOMASNOW_13:
       return evolution (this, from:"Snover", hp:HP140, type:G, retreatCost:3) {
         weakness R
@@ -571,7 +571,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 140
           }
         }
-      };
+      }
       case PHANTUMP_14:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -594,7 +594,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case TREVENANT_15:
       return evolution (this, from:"Phantump", hp:HP130, type:G, retreatCost:3) {
         weakness R
@@ -613,7 +613,7 @@ public enum RebelClash implements LogicCardInfo {
             cantRetreat(defending)
           }
         }
-      };
+      }
       case GRUBBIN_16:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -624,7 +624,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case RILLABOOM_V_17:
       return basic (this, hp:HP220, type:G, retreatCost:3) {
         weakness R
@@ -641,7 +641,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 30, self
           }
         }
-      };
+      }
       case RILLABOOM_VMAX_18:
       return evolution (this, from:"Rillaboom V", hp:HP330, type:G, retreatCost:3) {
         weakness R
@@ -663,7 +663,7 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ELDEGOSS_V_19:
       return basic (this, hp:HP180, type:G, retreatCost:1) {
         weakness R
@@ -690,7 +690,7 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case APPLIN_20:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -702,7 +702,7 @@ public enum RebelClash implements LogicCardInfo {
             flipUntilTails { damage 30 }
           }
         }
-      };
+      }
       case APPLIN_21:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -713,7 +713,7 @@ public enum RebelClash implements LogicCardInfo {
             flip { preventAllDamageNextTurn() }
           }
         }
-      };
+      }
       case FLAPPLE_22:
       return evolution (this, from:"Applin", hp:HP080, type:G, retreatCost:1) {
         weakness R
@@ -742,7 +742,7 @@ public enum RebelClash implements LogicCardInfo {
             flip { discardDefendingEnergyAfterDamage() }
           }
         }
-      };
+      }
       case APPLETUN_23:
       return evolution (this, from:"Applin", hp:HP090, type:G, retreatCost:3) {
         weakness R
@@ -767,7 +767,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case VULPIX_24:
       return basic (this, hp:HP060, type:R, retreatCost:1) {
         weakness W
@@ -785,7 +785,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case NINETALES_25:
       return evolution (this, from:"Vulpix", hp:HP120, type:R, retreatCost:1) {
         weakness W
@@ -807,7 +807,7 @@ public enum RebelClash implements LogicCardInfo {
             apply ASLEEP
           }
         }
-      };
+      }
       case NINETALES_V_26:
       return basic (this, hp:HP200, type:R, retreatCost:2) {
         weakness W
@@ -839,7 +839,7 @@ public enum RebelClash implements LogicCardInfo {
             discardSelfEnergyAfterDamage(C)
           }
         }
-      };
+      }
       case GROWLITHE_27:
       return basic (this, hp:HP080, type:R, retreatCost:2) {
         weakness W
@@ -862,7 +862,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case ARCANINE_28:
       return evolution (this, from:"Growlithe", hp:HP130, type:R, retreatCost:2) {
         weakness W
@@ -881,7 +881,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 130
           }
         }
-      };
+      }
       case MAGMAR_29:
       return basic (this, hp:HP090, type:R, retreatCost:2) {
         weakness W
@@ -900,7 +900,7 @@ public enum RebelClash implements LogicCardInfo {
             flip { damage 30 }
           }
         }
-      };
+      }
       case MAGMORTAR_30:
       return evolution (this, from:"Magmar", hp:HP140, type:R, retreatCost:3) {
         weakness W
@@ -927,7 +927,7 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case LITWICK_31:
       return basic (this, hp:HP060, type:R, retreatCost:1) {
         weakness W
@@ -938,7 +938,7 @@ public enum RebelClash implements LogicCardInfo {
             apply BURNED
           }
         }
-      };
+      }
       case LAMPENT_32:
       return evolution (this, from:"Litwick", hp:HP080, type:R, retreatCost:1) {
         weakness W
@@ -966,7 +966,7 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case CHANDELURE_33:
       return evolution (this, from:"Lampent", hp:HP140, type:R, retreatCost:2) {
         weakness W
@@ -987,7 +987,7 @@ public enum RebelClash implements LogicCardInfo {
             apply CONFUSED
           }
         }
-      };
+      }
       case HEATMOR_34:
       return basic (this, hp:HP120, type:R, retreatCost:2) {
         weakness W
@@ -1007,7 +1007,7 @@ public enum RebelClash implements LogicCardInfo {
             discardSelfEnergyAfterDamage(C)
           }
         }
-      };
+      }
       case CINDERACE_V_35:
       return basic (this, hp:HP210, type:R, retreatCost:2) {
         weakness W
@@ -1026,7 +1026,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 140
           }
         }
-      };
+      }
       case CINDERACE_VMAX_36:
       return evolution (this, from:"Cinderace V", hp:HP320, type:R, retreatCost:2) {
         weakness W
@@ -1060,7 +1060,7 @@ public enum RebelClash implements LogicCardInfo {
             apply BURNED
           }
         }
-      };
+      }
       case GALARIAN_MR_MIME_37:
       return basic (this, hp:HP080, type:W, retreatCost:1) {
         weakness M
@@ -1079,7 +1079,7 @@ public enum RebelClash implements LogicCardInfo {
             flip 3, { damage 20 }
           }
         }
-      };
+      }
       case GALARIAN_MR_RIME_38:
       return evolution (this, from:"Galarian Mr. Mime", hp:HP110, type:W, retreatCost:1) {
         weakness M
@@ -1102,7 +1102,7 @@ public enum RebelClash implements LogicCardInfo {
             flip 3, { damage 50 }
           }
         }
-      };
+      }
       case MAGIKARP_39:
       return basic (this, hp:HP030, type:W, retreatCost:1) {
         weakness L
@@ -1116,7 +1116,7 @@ public enum RebelClash implements LogicCardInfo {
             sw self, my.bench.select()
           }
         }
-      };
+      }
       case GYARADOS_40:
       return evolution (this, from:"Magikarp", hp:HP180, type:W, retreatCost:4) {
         weakness L
@@ -1137,7 +1137,7 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case WINGULL_41:
       return basic (this, hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -1156,7 +1156,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case PELIPPER_42:
       return evolution (this, from:"Wingull", hp:HP120, type:W, retreatCost:2) {
         weakness L
@@ -1179,7 +1179,7 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MILOTIC_V_43:
       return basic (this, hp:HP210, type:W, retreatCost:2) {
         weakness L
@@ -1198,7 +1198,7 @@ public enum RebelClash implements LogicCardInfo {
             apply ASLEEP
           }
         }
-      };
+      }
       case TYMPOLE_44:
       return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness L
@@ -1209,7 +1209,7 @@ public enum RebelClash implements LogicCardInfo {
             apply CONFUSED
           }
         }
-      };
+      }
       case PALPITOAD_45:
       return evolution (this, from:"Tympole", hp:HP090, type:W, retreatCost:2) {
         weakness L
@@ -1221,7 +1221,7 @@ public enum RebelClash implements LogicCardInfo {
             apply CONFUSED
           }
         }
-      };
+      }
       case SEISMITOAD_46:
       return evolution (this, from:"Palpitoad", hp:HP170, type:W, retreatCost:3) {
         weakness L
@@ -1241,7 +1241,7 @@ public enum RebelClash implements LogicCardInfo {
             if (opp.active.isSPC(CONFUSED)) damage 120
           }
         }
-      };
+      }
       case GALARIAN_DARUMAKA_47:
       return basic (this, hp:HP080, type:W, retreatCost:2) {
         weakness M
@@ -1253,7 +1253,7 @@ public enum RebelClash implements LogicCardInfo {
             flip { apply PARALYZED }
           }
         }
-      };
+      }
       case GALARIAN_DARMANITAN_48:
       return evolution (this, from:"Galarian Darumaka", hp:HP140, type:W, retreatCost:3) {
         weakness M
@@ -1275,7 +1275,7 @@ public enum RebelClash implements LogicCardInfo {
             cantUseAttack(thisMove, self)
           }
         }
-      };
+      }
       case INTELEON_V_49:
       return basic (this, hp:HP200, type:W, retreatCost:2) {
         weakness L
@@ -1294,7 +1294,7 @@ public enum RebelClash implements LogicCardInfo {
             if (opp.hand) opp.hand.shuffledCopy().showToMe("Opponent's hand.")
           }
         }
-      };
+      }
       case INTELEON_VMAX_50:
       return evolution (this, from:"Inteleon V", hp:HP320, type:W, retreatCost:2) {
         weakness L
@@ -1323,7 +1323,7 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case CRAMORANT_51:
       return basic (this, hp:HP110, type:W, retreatCost:1) {
         weakness L
@@ -1343,7 +1343,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 50+20*self.cards.energyCount(W)
           }
         }
-      };
+      }
       case ARROKUDA_52:
       return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness L
@@ -1354,7 +1354,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case BARRASKEWDA_53:
       return evolution (this, from:"Arrokuda", hp:HP120, type:W, retreatCost:1) {
         weakness L
@@ -1376,7 +1376,7 @@ public enum RebelClash implements LogicCardInfo {
             my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(W).select(count:2, "Discard 2 [W] Energies.").discard()
           }
         }
-      };
+      }
       case EISCUE_54:
       return basic (this, hp:HP120, type:W, retreatCost:2) {
         weakness M
@@ -1405,7 +1405,7 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case EISCUE_V_55:
       return basic (this, hp:HP210, type:W, retreatCost:2) {
         weakness M
@@ -1430,7 +1430,7 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case VOLTORB_56:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1441,7 +1441,7 @@ public enum RebelClash implements LogicCardInfo {
             flipUntilTails { damage 20 }
           }
         }
-      };
+      }
       case ELECTRODE_57:
       return evolution (this, from:"Voltorb", hp:HP090, type:L, retreatCost:0) {
         weakness F
@@ -1463,7 +1463,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case ELECTABUZZ_58:
       return basic (this, hp:HP090, type:L, retreatCost:2) {
         weakness F
@@ -1481,7 +1481,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case ELECTIVIRE_59:
       return evolution (this, from:"Electabuzz", hp:HP140, type:L, retreatCost:3) {
         weakness F
@@ -1501,7 +1501,7 @@ public enum RebelClash implements LogicCardInfo {
             if (self.cards.filterByType(SPECIAL_ENERGY)) damage 90
           }
         }
-      };
+      }
       case SHINX_60:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness F
@@ -1515,7 +1515,7 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case LUXIO_61:
       return evolution (this, from:"Shinx", hp:HP090, type:L, retreatCost:1) {
         weakness F
@@ -1540,7 +1540,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case LUXRAY_62:
       return evolution (this, from:"Luxio", hp:HP160, type:L, retreatCost:1) {
         weakness F
@@ -1562,7 +1562,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 120
           }
         }
-      };
+      }
       case HELIOPTILE_63:
       return basic (this, hp:HP070, type:L, retreatCost:1) {
         weakness F
@@ -1574,7 +1574,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 10, self
           }
         }
-      };
+      }
       case HELIOLISK_64:
       return evolution (this, from:"Helioptile", hp:HP110, type:L, retreatCost:1) {
         weakness F
@@ -1600,7 +1600,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 30, self
           }
         }
-      };
+      }
       case CHARJABUG_65:
       return evolution (this, from:"Grubbin", hp:HP090, type:L, retreatCost:2) {
         weakness F
@@ -1622,7 +1622,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case VIKAVOLT_66:
       return evolution (this, from:"Charjabug", hp:HP150, type:L, retreatCost:2) {
         weakness F
@@ -1642,7 +1642,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 30, self
           }
         }
-      };
+      }
       case BOLTUND_V_67:
       return basic (this, hp:HP200, type:L, retreatCost:2) {
         weakness F
@@ -1666,7 +1666,7 @@ public enum RebelClash implements LogicCardInfo {
             my.all.each { damage 30*it.cards.energyCount(L) }
           }
         }
-      };
+      }
       case TOXEL_68:
       return basic (this, hp:HP070, type:L, retreatCost:2) {
         weakness F
@@ -1678,7 +1678,7 @@ public enum RebelClash implements LogicCardInfo {
             flip { apply PARALYZED }
           }
         }
-      };
+      }
       case TOXTRICITY_69:
       return evolution (this, from:"Toxel", hp:HP130, type:L, retreatCost:2) {
         weakness F
@@ -1699,7 +1699,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 90
           }
         }
-      };
+      }
       case TOXTRICITY_V_70:
       return basic (this, hp:HP210, type:L, retreatCost:2) {
         weakness F
@@ -1719,7 +1719,7 @@ public enum RebelClash implements LogicCardInfo {
             if (opp.active.isSPC(POISONED)) damage 90
           }
         }
-      };
+      }
       case TOXTRICITY_VMAX_71:
       return evolution (this, from:"Toxtricity V", hp:HP320, type:L, retreatCost:2) {
         weakness F
@@ -1731,7 +1731,7 @@ public enum RebelClash implements LogicCardInfo {
             if (opp.active.isSPC(POISONED)) damage 80
           }
         }
-      };
+      }
       case PINCURCHIN_V_72:
       return basic (this, hp:HP170, type:L, retreatCost:2) {
         weakness F
@@ -1751,7 +1751,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 120
           }
         }
-      };
+      }
       case MORPEKO_73:
       return basic (this, hp:HP080, type:L, retreatCost:1) {
         weakness F
@@ -1775,7 +1775,7 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case CLEFAIRY_74:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness M
@@ -1793,7 +1793,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case CLEFABLE_75:
       return evolution (this, from:"Clefairy", hp:HP110, type:P, retreatCost:2) {
         weakness M
@@ -1815,7 +1815,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case NATU_76:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness D
@@ -1827,7 +1827,7 @@ public enum RebelClash implements LogicCardInfo {
             draw 1
           }
         }
-      };
+      }
       case XATU_77:
       return evolution (this, from:"Natu", hp:HP120, type:P, retreatCost:1) {
         weakness D
@@ -1839,7 +1839,7 @@ public enum RebelClash implements LogicCardInfo {
             assertOppBench(info: "with Energy attached to them", {it.cards.filterByType(ENERGY)})
           }
           onAttack {
-            def validSources = new PcsList();
+            def validSources = new PcsList()
             opp.bench.each {
               validSources.add(it)
             }
@@ -1854,7 +1854,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 10+30*opp.active.cards.filterByType(ENERGY).size()
           }
         }
-      };
+      }
       case GALARIAN_CORSOLA_78:
       return basic (this, hp:HP080, type:P, retreatCost:2) {
         weakness D
@@ -1866,7 +1866,7 @@ public enum RebelClash implements LogicCardInfo {
             putDamageCountersOnOpponentsPokemon(3)
           }
         }
-      };
+      }
       case GALARIAN_CURSOLA_79:
       return evolution (this, from:"Galarian Corsola", hp:HP100, type:P, retreatCost:2) {
         weakness D
@@ -1893,7 +1893,7 @@ public enum RebelClash implements LogicCardInfo {
             cantRetreat defending
           }
         }
-      };
+      }
       case SIGILYPH_80:
       return basic (this, hp:HP110, type:P, retreatCost:1) {
         weakness L
@@ -1912,7 +1912,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 30+10*opp.active.numberOfDamageCounters
           }
         }
-      };
+      }
       case SANDYGAST_81:
       return basic (this, hp:HP080, type:P, retreatCost:3) {
         weakness D
@@ -1924,7 +1924,7 @@ public enum RebelClash implements LogicCardInfo {
             directDamage 10, opp.all.select()
           }
         }
-      };
+      }
       case PALOSSAND_82:
       return evolution (this, from:"Sandygast", hp:HP140, type:P, retreatCost:4) {
         weakness D
@@ -1950,7 +1950,7 @@ public enum RebelClash implements LogicCardInfo {
             heal 30, self
           }
         }
-      };
+      }
       case HATENNA_83:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness D
@@ -1973,7 +1973,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case HATTREM_84:
       return evolution (this, from:"Hatenna", hp:HP080, type:P, retreatCost:1) {
         weakness D
@@ -1993,7 +1993,7 @@ public enum RebelClash implements LogicCardInfo {
             flip { damage 30 }
           }
         }
-      };
+      }
       case HATTERENE_85:
       return evolution (this, from:"Hattrem", hp:HP150, type:P, retreatCost:2) {
         weakness D
@@ -2034,7 +2034,7 @@ public enum RebelClash implements LogicCardInfo {
             directDamage my.discard.filterByType(POKEMON).size()*10, opp.active
           }
         }
-      };
+      }
       case MILCERY_86:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness M
@@ -2054,7 +2054,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case ALCREMIE_87:
       return evolution (this, from:"Milcery", hp:HP110, type:P, retreatCost:1) {
         weakness M
@@ -2081,7 +2081,7 @@ public enum RebelClash implements LogicCardInfo {
             heal 30, self
           }
         }
-      };
+      }
       case INDEEDEE_88:
       return basic (this, hp:HP100, type:P, retreatCost:1) {
         weakness D
@@ -2103,7 +2103,7 @@ public enum RebelClash implements LogicCardInfo {
             apply CONFUSED
           }
         }
-      };
+      }
       case DREEPY_89:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness D
@@ -2116,7 +2116,7 @@ public enum RebelClash implements LogicCardInfo {
             flip { damage 10 }
           }
         }
-      };
+      }
       case DRAKLOAK_90:
       return evolution (this, from:"Dreepy", hp:HP090, type:P, retreatCost:1) {
         weakness D
@@ -2141,7 +2141,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case DRAGAPULT_91:
       return evolution (this, from:"Drakloak", hp:HP150, type:P, retreatCost:0) {
         weakness D
@@ -2169,7 +2169,7 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case DRAGAPULT_V_92:
       return basic (this, hp:HP210, type:P, retreatCost:1) {
         weakness D
@@ -2191,7 +2191,7 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case DRAGAPULT_VMAX_93:
       return evolution (this, from:"Dragapult V", hp:HP320, type:P, retreatCost:1) {
         weakness D
@@ -2213,7 +2213,7 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case GALARIAN_FARFETCH_D_94:
       return basic (this, hp:HP080, type:F, retreatCost:1) {
         weakness P
@@ -2232,7 +2232,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case GALARIAN_SIRFETCH_D_95:
       return evolution (this, from:"Galarian Farfetch’d", hp:HP130, type:F, retreatCost:2) {
         weakness P
@@ -2264,7 +2264,7 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case NOSEPASS_96:
       return basic (this, hp:HP080, type:F, retreatCost:3) {
         weakness G
@@ -2282,7 +2282,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case MEDITITE_97:
       return basic (this, hp:HP070, type:F, retreatCost:1) {
         weakness P
@@ -2294,7 +2294,7 @@ public enum RebelClash implements LogicCardInfo {
             flip { apply PARALYZED }
           }
         }
-      };
+      }
       case MEDICHAM_98:
       return evolution (this, from:"Meditite", hp:HP110, type:F, retreatCost:1) {
         weakness P
@@ -2312,7 +2312,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 60+20*opp.active.cards.filterByType(ENERGY).size()
           }
         }
-      };
+      }
       case BARBOACH_99:
       return basic (this, hp:HP070, type:F, retreatCost:2) {
         weakness G
@@ -2323,7 +2323,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case WHISCASH_100:
       return evolution (this, from:"Barboach", hp:HP140, type:F, retreatCost:3) {
         weakness G
@@ -2350,7 +2350,7 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case GALARIAN_YAMASK_101:
       return basic (this, hp:HP070, type:F, retreatCost:2) {
         weakness G
@@ -2362,7 +2362,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 30, self
           }
         }
-      };
+      }
       case GALARIAN_RUNERIGUS_102:
       return evolution (this, from:"Galarian Yamask", hp:HP100, type:F, retreatCost:2) {
         weakness G
@@ -2386,7 +2386,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 30, self
           }
         }
-      };
+      }
       case BINACLE_103:
       return basic (this, hp:HP080, type:F, retreatCost:2) {
         weakness G
@@ -2397,7 +2397,7 @@ public enum RebelClash implements LogicCardInfo {
             flip 2, { damage 50 }
           }
         }
-      };
+      }
       case BARBARACLE_104:
       return evolution (this, from:"Binacle", hp:HP120, type:F, retreatCost:3) {
         weakness G
@@ -2419,7 +2419,7 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ROLYCOLY_105:
       return basic (this, hp:HP070, type:F, retreatCost:2) {
         weakness G
@@ -2430,7 +2430,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case CARKOAL_106:
       return evolution (this, from:"Rolycoly", hp:HP100, type:F, retreatCost:3) {
         weakness G
@@ -2448,7 +2448,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case COALOSSAL_107:
       return evolution (this, from:"Carkol", hp:HP160, type:F, retreatCost:4) {
         weakness G
@@ -2479,7 +2479,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 130
           }
         }
-      };
+      }
       case SANDACONDA_V_108:
       return basic (this, hp:HP220, type:F, retreatCost:3) {
         weakness G
@@ -2501,7 +2501,7 @@ public enum RebelClash implements LogicCardInfo {
             discardSelfEnergyAfterDamage(C, C)
           }
         }
-      };
+      }
       case FALINKS_109:
       return basic (this, hp:HP090, type:F, retreatCost:1) {
         weakness P
@@ -2517,7 +2517,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 30*my.bench.findAll { it.name.contains "Falinks" }.size()
           }
         }
-      };
+      }
       case FALINKS_V_110:
       return basic (this, hp:HP160, type:F, retreatCost:2) {
         weakness P
@@ -2542,7 +2542,7 @@ public enum RebelClash implements LogicCardInfo {
             cantAttackNextTurn self
           }
         }
-      };
+      }
       case STONJOURNER_111:
       return basic (this, hp:HP140, type:F, retreatCost:4) {
         weakness G
@@ -2563,7 +2563,7 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case KOFFING_112:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness F
@@ -2574,7 +2574,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case GALARIAN_WEEZING_113:
       return evolution (this, from:"Koffing", hp:HP130, type:D, retreatCost:3) {
         weakness F
@@ -2602,7 +2602,7 @@ public enum RebelClash implements LogicCardInfo {
             extraPoison 3
           }
         }
-      };
+      }
       case STUNKY_114:
       return basic (this, hp:HP070, type:D, retreatCost:2) {
         weakness F
@@ -2614,7 +2614,7 @@ public enum RebelClash implements LogicCardInfo {
             apply POISONED
           }
         }
-      };
+      }
       case SKUNTANK_115:
       return evolution (this, from:"Stunky", hp:HP120, type:D, retreatCost:3) {
         weakness F
@@ -2634,7 +2634,7 @@ public enum RebelClash implements LogicCardInfo {
             cantRetreat(defending)
           }
         }
-      };
+      }
       case SPIRITOMB_116:
       return basic (this, hp:HP060, type:D, retreatCost:2) {
         weakness G
@@ -2656,7 +2656,7 @@ public enum RebelClash implements LogicCardInfo {
             directDamage my.discard.filterByType(POKEMON).size()*10, opp.active
           }
         }
-      };
+      }
       case TRUBBISH_117:
       return basic (this, hp:HP060, type:D, retreatCost:1) {
         weakness F
@@ -2668,7 +2668,7 @@ public enum RebelClash implements LogicCardInfo {
             if (opp.active.isSPC(POISONED)) damage 50
           }
         }
-      };
+      }
       case GARBODOR_118:
       return evolution (this, from:"Trubbish", hp:HP120, type:D, retreatCost:2) {
         weakness F
@@ -2689,7 +2689,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 80
           }
         }
-      };
+      }
       case VULLABY_119:
       return basic (this, hp:HP060, type:D, retreatCost:1) {
         weakness L
@@ -2704,7 +2704,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case MANDIBUZZ_120:
       return evolution (this, from:"Vullaby", hp:HP120, type:D, retreatCost:2) {
         weakness L
@@ -2726,7 +2726,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 100, opp.all.findAll { it.numberOfDamageCounters }.select()
           }
         }
-      };
+      }
       case MALAMAR_V_121:
       return basic (this, hp:HP210, type:D, retreatCost:2) {
         weakness G
@@ -2749,7 +2749,7 @@ public enum RebelClash implements LogicCardInfo {
             apply CONFUSED
           }
         }
-      };
+      }
       case MALAMAR_VMAX_122:
       return evolution (this, from:"Malamar V", hp:HP310, type:D, retreatCost:2) {
         weakness G
@@ -2766,7 +2766,7 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case IMPIDIMP_123:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness G
@@ -2784,7 +2784,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MORGREM_124:
       return evolution (this, from:"Impidimp", hp:HP090, type:D, retreatCost:2) {
         weakness G
@@ -2802,7 +2802,7 @@ public enum RebelClash implements LogicCardInfo {
             swiftDamage(60, defending)
           }
         }
-      };
+      }
       case GRIMMSNARL_125:
       return evolution (this, from:"Morgrem", hp:HP170, type:D, retreatCost:3) {
         weakness G
@@ -2827,7 +2827,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 100+30*opp.active.cards.energyCount(C)
           }
         }
-      };
+      }
       case GALARIAN_MEOWTH_126:
       return basic (this, hp:HP060, type:M, retreatCost:2) {
         weakness R
@@ -2854,7 +2854,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case GALARIAN_PERRSERKER_127:
       return evolution (this, from:"Galarian Meowth", hp:HP120, type:M, retreatCost:2) {
         weakness R
@@ -2873,7 +2873,7 @@ public enum RebelClash implements LogicCardInfo {
             flip 3, { damage 80 }
           }
         }
-      };
+      }
       case SCIZOR_128:
       return evolution (this, from:"Scyther", hp:HP130, type:M, retreatCost:1) {
         weakness R
@@ -2897,7 +2897,7 @@ public enum RebelClash implements LogicCardInfo {
             reduceDamageNextTurn(hp(30), thisMove)
           }
         }
-      };
+      }
       case BRONZOR_129:
       return basic (this, hp:HP060, type:M, retreatCost:1) {
         weakness R
@@ -2916,7 +2916,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case BRONZONG_130:
       return evolution (this, from:"Bronzor", hp:HP130, type:M, retreatCost:3) {
         weakness R
@@ -2945,7 +2945,7 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case PROBOPASS_131:
       return evolution (this, from:"Nosepass", hp:HP140, type:M, retreatCost:4) {
         weakness R
@@ -2964,7 +2964,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 120
           }
         }
-      };
+      }
       case DURANT_132:
       return basic (this, hp:HP100, type:M, retreatCost:1) {
         weakness R
@@ -2985,7 +2985,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 80
           }
         }
-      };
+      }
       case HONEDGE_133:
       return basic (this, hp:HP060, type:M, retreatCost:1) {
         weakness R
@@ -2997,7 +2997,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case DOUBLADE_134:
       return evolution (this, from:"Honedge", hp:HP090, type:M, retreatCost:2) {
         weakness R
@@ -3016,7 +3016,7 @@ public enum RebelClash implements LogicCardInfo {
             flip 2, { damage 80 }
           }
         }
-      };
+      }
       case AEGISLASH_135:
       return evolution (this, from:"Doublade", hp:HP140, type:M, retreatCost:3) {
         weakness R
@@ -3044,7 +3044,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 130
           }
         }
-      };
+      }
       case COPPERAJAH_V_136:
       return basic (this, hp:HP220, type:M, retreatCost:4) {
         weakness R
@@ -3064,7 +3064,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 180
           }
         }
-      };
+      }
       case COPPERAJAH_VMAX_137:
       return evolution (this, from:"Copperajah V", hp:HP340, type:M, retreatCost:4) {
         weakness R
@@ -3086,7 +3086,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 240
           }
         }
-      };
+      }
       case DURALUDON_138:
       return basic (this, hp:HP130, type:M, retreatCost:2) {
         weakness R
@@ -3108,7 +3108,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 110
           }
         }
-      };
+      }
       case ZACIAN_139:
       return basic (this, hp:HP120, type:M, retreatCost:2) {
         weakness R
@@ -3133,7 +3133,7 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ZAMAZENTA_140:
       return basic (this, hp:HP120, type:M, retreatCost:2) {
         weakness R
@@ -3156,7 +3156,7 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SNORLAX_141:
       return basic (this, hp:HP150, type:C, retreatCost:4) {
         weakness F
@@ -3175,7 +3175,7 @@ public enum RebelClash implements LogicCardInfo {
             apply ASLEEP, self
           }
         }
-      };
+      }
       case CHATOT_142:
       return basic (this, hp:HP070, type:C, retreatCost:1) {
         weakness L
@@ -3198,7 +3198,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case PIDOVE_143:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness L
@@ -3223,7 +3223,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TRANQUILL_144:
       return evolution (this, from:"Pidove", hp:HP080, type:C, retreatCost:1) {
         weakness L
@@ -3242,7 +3242,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case UNFEZANT_145:
       return evolution (this, from:"Tranquill", hp:HP150, type:C, retreatCost:1) {
         weakness L
@@ -3263,7 +3263,7 @@ public enum RebelClash implements LogicCardInfo {
             discardSelfEnergyAfterDamage(C)
           }
         }
-      };
+      }
       case BUNNELBY_146:
       return basic (this, hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -3284,7 +3284,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case DIGGERSBY_147:
       return evolution (this, from:"Bunnelby", hp:HP130, type:C, retreatCost:3) {
         weakness F
@@ -3300,7 +3300,7 @@ public enum RebelClash implements LogicCardInfo {
               my.deck.subList(0,1).discard()
               n++
               if (!my.deck || (n < 6 && !confirm("Cards Discarded: ${n}/6. Damage being dealt: ${n * 30}. Discard another card from the top of the deck for +30 damage?") ) )
-                break;
+                break
             }
 
             damage 30 * n
@@ -3313,7 +3313,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 110
           }
         }
-      };
+      }
       case HAWLUCHA_148:
       return basic (this, hp:HP090, type:C, retreatCost:1) {
         weakness L
@@ -3333,7 +3333,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case STUFFUL_149:
       return basic (this, hp:HP080, type:C, retreatCost:2) {
         weakness F
@@ -3352,7 +3352,7 @@ public enum RebelClash implements LogicCardInfo {
             flip { damage 40 }
           }
         }
-      };
+      }
       case BEWEAR_150:
       return evolution (this, from:"Stufful", hp:HP140, type:C, retreatCost:3) {
         weakness F
@@ -3378,7 +3378,7 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SKWOVET_151:
       return basic (this, hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -3396,7 +3396,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case GREEDENT_152:
       return evolution (this, from:"Skwovet", hp:HP120, type:C, retreatCost:1) {
         weakness F
@@ -3417,7 +3417,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 80
           }
         }
-      };
+      }
       case DUBWOOL_V_153:
       return basic (this, hp:HP210, type:C, retreatCost:2) {
         weakness F
@@ -3441,7 +3441,7 @@ public enum RebelClash implements LogicCardInfo {
             damage 120+30*opp.prizeCardSet.takenCount
           }
         }
-      };
+      }
       case BOSS_S_ORDERS_154:
       return supporter (this) {
         text "Choose 1 of your opponent’s Benched Pokémon and switch it with their Active Pokémon. You may play only 1 Supporter card during your turn (before your attack)."
@@ -3451,7 +3451,7 @@ public enum RebelClash implements LogicCardInfo {
         playRequirement {
           assertOppBench()
         }
-      };
+      }
       case BURNING_SCARF_155:
       return pokemonTool (this) {
         text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If the [R] Pokémon this card is attached to is your Active Pokémon and is damaged by an opponent’s attack, the Attacking Pokémon is now Burned. You may play as many Item cards as you like during your turn (before your attack)."
@@ -3461,7 +3461,7 @@ public enum RebelClash implements LogicCardInfo {
             apply BURNED, ef.attacker, TRAINER_CARD
           }
         }
-      };
+      }
       case CAPACIOUS_BUCKET_156:
       return itemCard (this) {
         text "Search your deck for 2 [W] Energy, reveal them, and put them into your hand. Then, shuffle your deck. You may play as many Item cards as you like during your turn (before your attack)."
@@ -3472,7 +3472,7 @@ public enum RebelClash implements LogicCardInfo {
         playRequirement{
           assert my.deck : "Your deck is empty!."
         }
-      };
+      }
       case CURSED_SHOVEL_157:
       return pokemonTool (this) {
         text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If the Pokémon this Tool is attached to is Knocked Out by damage from an opponent’s attack, discard the top 2 cards of your opponent’s deck. You may play as many Item cards as you like during your turn (before your attack)."
@@ -3500,7 +3500,7 @@ public enum RebelClash implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-      };
+      }
       case DAN_158:
       return supporter (this) {
         text "Draw 2 cards. Play Rock-Paper-Scissors with your opponent. If you win, draw 2 more cards. You may play only 1 Supporter card during your turn (before your attack)."
@@ -3515,9 +3515,9 @@ public enum RebelClash implements LogicCardInfo {
         playRequirement {
           assert my.deck : "Your deck is empty!."
         }
-      };
+      }
       case FULL_HEAL_159:
-      return copy(HeartgoldSoulsilver.FULL_HEAL_93, this);
+      return copy(HeartgoldSoulsilver.FULL_HEAL_93, this)
       case GALAR_MINE_160:
       return stadium (this) {
         text "The Retreat Cost of each Active Pokémon (both yours and your opponent’s) is [C][C] more. This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
@@ -3530,7 +3530,7 @@ public enum RebelClash implements LogicCardInfo {
         onRemoveFromPlay{
           eff.unregister()
         }
-      };
+      }
       case MILO_161:
       return supporter (this) {
         text "Discard up to 2 cards from your hand. Then draw twice as many cards as you discarded. You may play only 1 Supporter card during your turn (before your attack)."
@@ -3542,7 +3542,7 @@ public enum RebelClash implements LogicCardInfo {
           assert my.hand.getExcludedList(thisCard) : "Not enough cards in your hand"
           assert my.deck : "Your deck is empty"
         }
-      };
+      }
       case NUGGET_162:
       return itemCard (this) {
         text "Play this card only when you draw it from your deck at the start of your turn (before putting it into your hand). Draw 3 cards. You may play as many Item cards as you like during your turn (before your attack)."
@@ -3564,7 +3564,7 @@ public enum RebelClash implements LogicCardInfo {
         playRequirement {
           assert false : "Play this card only when you draw it from your deck at the start of your turn"
         }
-      };
+      }
       case OLEANA_163:
       return supporter (this) {
         text "Discard 2 cards from your hand in order to play this card. Your opponent reveals their hand. Choose a Trainer you find there and put it at the bottom of your opponent’s deck. You may play only 1 Supporter card during your turn (before your attack)."
@@ -3580,9 +3580,9 @@ public enum RebelClash implements LogicCardInfo {
           assert my.hand.getExcludedList(thisCard).size() >= 2 : "You need 2 or more cards in your hand."
           assert opp.hand : "Opponent's hand is empty."
         }
-      };
+      }
       case POKEBALL_164:
-      return copy(FireRedLeafGreen.POKE_BALL_95, this);
+      return copy(FireRedLeafGreen.POKE_BALL_95, this)
       case SCOOP_UP_NET_165:
       return itemCard (this) {
         text "Put 1 of your Pokémon that isn’t a Pokémon V or a Pokémon-GX into your hand. (Discard all attached cards.)"
@@ -3596,7 +3596,7 @@ public enum RebelClash implements LogicCardInfo {
           assertMyAll(negateVariants: true, hasVariants: [POKEMON_V, POKEMON_GX])
           confirmScoopLastPokemon()
         }
-      };
+      }
       case SKYLA_166:
       return supporter (this) {
         text "Search your deck for a Trainer card, reveal it, and put it into your hand. Then, shuffle your deck. You may play only 1 Supporter card during your turn (before your attack)."
@@ -3607,7 +3607,7 @@ public enum RebelClash implements LogicCardInfo {
         playRequirement {
           assert my.deck : "Your deck is empty!."
         }
-      };
+      }
       case SONIA_167:
       return supporter (this) {
         text "Search your deck for up to 2 Basic Pokémon or up to 2 Basic Energy, reveal them, and put them into your hand. Then, shuffle your deck. You may play only 1 Supporter card during your turn (before your attack)."
@@ -3623,7 +3623,7 @@ public enum RebelClash implements LogicCardInfo {
         playRequirement {
           assert my.deck : "Your deck is empty!."
         }
-      };
+      }
       case TOOL_SCRAPPER_168:
       return itemCard (this) {
         text "Discard up to 2 Pokémon Tools from either player’s Pokémon. You may play as many Item cards during your turn as you like (before your attack)."
@@ -3672,7 +3672,7 @@ public enum RebelClash implements LogicCardInfo {
         playRequirement{
           assert all.findAll {it.cards.hasType(POKEMON_TOOL)} : "No Pokémon Tools in play."
         }
-      };
+      }
       case TRAINING_COURT_169:
       return stadium (this) {
         text "Once during each player’s turn, that player may choose a basic Energy card from their discard pile, reveal it, and put it into their hand. This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
@@ -3690,7 +3690,7 @@ public enum RebelClash implements LogicCardInfo {
         onRemoveFromPlay {
           actions.each { bg().gm().unregisterAction(it) }
         }
-      };
+      }
       case TURRFIELD_170:
       return stadium (this) {
         text "Once during each player’s turn, that player may search their deck for a [G] Evolution Pokémon, reveal it, and put it into their hand. Then, that player shuffles their deck. This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
@@ -3711,7 +3711,7 @@ public enum RebelClash implements LogicCardInfo {
         onRemoveFromPlay {
           actions.each { bg().gm().unregisterAction(it) }
         }
-      };
+      }
       case CAPTURE_ENERGY_171:
       return specialEnergy (this, [[]]) {
         text "This card provides [C] Energy only while attached to a Pokémon. When attaching this card from your hand to 1 of your Pokémon, search your deck for a Basic Pokémon and put it on your Bench. Then, shuffle your deck."
@@ -3727,7 +3727,7 @@ public enum RebelClash implements LogicCardInfo {
           if (self) return [[C] as Set]
           else return [[] as Set]
         }
-      };
+      }
       case HORROR_PSYCHIC_ENERGY_172:
       return specialEnergy (this, [[]]) {
         text "This card provides 1 [P] Energy while it’s attached to a Pokémon. When the [P] Pokémon this card is attached to is your Active Pokémon and is damaged by an opponents attack, put 2 damage counters on the Attacking Pokémon."
@@ -3761,7 +3761,7 @@ public enum RebelClash implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-      };
+      }
       case SPEED_LIGHTNING_ENERGY_173:
       return specialEnergy (this, [[]]) {
         text "This card provides 1 [L] Energy while it’s attached to a Pokémon. When you attach this card from your hand to an [L] Pokémon, draw 2 cards"
@@ -3774,7 +3774,7 @@ public enum RebelClash implements LogicCardInfo {
           if (self) return [[L] as Set]
           else return [[] as Set]
         }
-      };
+      }
       case TWIN_ENERGY_174:
       return specialEnergy (this, []) {
         text "As long as this card is attached to a Pokémon that isn’t a Pokémon V or a Pokémon-GX, it provides [C][C] Energy. If this card is attached to a Pokémon V or a Pokémon-GX, it provides [C] Energy instead."
@@ -3791,79 +3791,79 @@ public enum RebelClash implements LogicCardInfo {
             return [[] as Set]
           }
         }
-      };
+      }
       case RILLABOOM_V_175:
-      return copy (RILLABOOM_V_17, this);
+      return copy (RILLABOOM_V_17, this)
       case ELDEGOSS_V_176:
-      return copy (ELDEGOSS_V_19, this);
+      return copy (ELDEGOSS_V_19, this)
       case NINETALES_V_177:
-      return copy (NINETALES_V_26, this);
+      return copy (NINETALES_V_26, this)
       case CINDERACE_V_178:
-      return copy (CINDERACE_V_35, this);
+      return copy (CINDERACE_V_35, this)
       case MILOTIC_V_179:
-      return copy (MILOTIC_V_43, this);
+      return copy (MILOTIC_V_43, this)
       case INTELEON_V_180:
-      return copy (INTELEON_V_49, this);
+      return copy (INTELEON_V_49, this)
       case BOLTUND_V_181:
-      return copy (BOLTUND_V_67, this);
+      return copy (BOLTUND_V_67, this)
       case TOXTRICITY_V_182:
-      return copy (TOXTRICITY_V_70, this);
+      return copy (TOXTRICITY_V_70, this)
       case DRAGAPULT_V_183:
-      return copy (DRAGAPULT_V_92, this);
+      return copy (DRAGAPULT_V_92, this)
       case SANDACONDA_V_184:
-      return copy (SANDACONDA_V_108, this);
+      return copy (SANDACONDA_V_108, this)
       case FALINKS_V_185:
-      return copy (FALINKS_V_110, this);
+      return copy (FALINKS_V_110, this)
       case MALAMAR_V_186:
-      return copy (MALAMAR_V_121, this);
+      return copy (MALAMAR_V_121, this)
       case COPPERAJAH_V_187:
-      return copy (COPPERAJAH_V_136, this);
+      return copy (COPPERAJAH_V_136, this)
       case DUBWOOL_V_188:
-      return copy (DUBWOOL_V_153, this);
+      return copy (DUBWOOL_V_153, this)
       case BOSS_S_ORDERS_189:
-      return copy (BOSS_S_ORDERS_154, this);
+      return copy (BOSS_S_ORDERS_154, this)
       case MILO_190:
-      return copy (MILO_161, this);
+      return copy (MILO_161, this)
       case OLEANA_191:
-      return copy (OLEANA_163, this);
+      return copy (OLEANA_163, this)
       case SONIA_192:
-      return copy (SONIA_167, this);
+      return copy (SONIA_167, this)
       case RILLABOOM_VMAX_193:
-      return copy (RILLABOOM_VMAX_18, this);
+      return copy (RILLABOOM_VMAX_18, this)
       case CINDERACE_VMAX_194:
-      return copy (CINDERACE_VMAX_36, this);
+      return copy (CINDERACE_VMAX_36, this)
       case INTELEON_VMAX_195:
-      return copy (INTELEON_VMAX_50, this);
+      return copy (INTELEON_VMAX_50, this)
       case TOXTRICITY_VMAX_196:
-      return copy (TOXTRICITY_VMAX_71, this);
+      return copy (TOXTRICITY_VMAX_71, this)
       case DRAGAPULT_VMAX_197:
-      return copy (DRAGAPULT_VMAX_93, this);
+      return copy (DRAGAPULT_VMAX_93, this)
       case MALAMAR_VMAX_198:
-      return copy (MALAMAR_VMAX_122, this);
+      return copy (MALAMAR_VMAX_122, this)
       case COPPERAJAH_VMAX_199:
-      return copy (COPPERAJAH_VMAX_137, this);
+      return copy (COPPERAJAH_VMAX_137, this)
       case BOSS_S_ORDERS_200:
-      return copy (BOSS_S_ORDERS_154, this);
+      return copy (BOSS_S_ORDERS_154, this)
       case MILO_201:
-      return copy (MILO_161, this);
+      return copy (MILO_161, this)
       case OLEANA_202:
-      return copy (OLEANA_163, this);
+      return copy (OLEANA_163, this)
       case SONIA_203:
-      return copy (SONIA_167, this);
+      return copy (SONIA_167, this)
       case FROSMOTH_204:
-      return copy(SwordShield.FROSMOTH_64, this);
+      return copy(SwordShield.FROSMOTH_64, this)
       case GALARIAN_PERRSERKER_205:
-      return copy(SwordShield.GALARIAN_PERRSERKER_128, this);
+      return copy(SwordShield.GALARIAN_PERRSERKER_128, this)
       case BIG_CHARM_206:
-      return copy(SwordShield.BIG_CHARM_158, this);
+      return copy(SwordShield.BIG_CHARM_158, this)
       case SCOOP_UP_NET_207:
-      return copy(SCOOP_UP_NET_165, this);
+      return copy(SCOOP_UP_NET_165, this)
       case TOOL_SCRAPPER_208:
-      return copy (TOOL_SCRAPPER_168, this);
+      return copy (TOOL_SCRAPPER_168, this)
       case TWIN_ENERGY_209:
-      return copy (TWIN_ENERGY_174, this);
+      return copy (TWIN_ENERGY_174, this)
         default:
-      return null;
+      return null
     }
   }
 }

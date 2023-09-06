@@ -3,24 +3,24 @@ package tcgwars.logic.impl.gen7
 
 import tcgwars.logic.impl.gen2.Aquapolis
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
+import tcgwars.logic.*
+import tcgwars.logic.card.*
 import tcgwars.logic.card.energy.*
 import tcgwars.logic.effect.*
 import tcgwars.logic.effect.basic.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author itrezad@gmail.com
@@ -154,53 +154,53 @@ public enum CrimsonInvasion implements LogicCardInfo {
   WARP_ENERGY_123 ("Warp Energy", "123", Rarity.SECRET, [SPECIAL_ENERGY, ENERGY]),
   WATER_ENERGY_124 ("Water Energy", "124", Rarity.SECRET, [BASIC_ENERGY, ENERGY]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   CrimsonInvasion(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.CRIMSON_INVASION;
+    return tcgwars.logic.card.Collection.CRIMSON_INVASION
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -217,7 +217,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KAKUNA_2:
         return evolution (this, from:"Weedle", hp:HP080, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -237,7 +237,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BEEDRILL_3:
         return evolution (this, from:"Kakuna", hp:HP120, type:GRASS, retreatCost:0) {
           weakness FIRE
@@ -260,7 +260,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EXEGGCUTE_4:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -279,7 +279,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CACNEA_5:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -293,7 +293,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CACTURNE_6:
         return evolution (this, from:"Cacnea", hp:HP110, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -318,7 +318,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KARRABLAST_7:
         return basic (this, hp:HP060, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -345,7 +345,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHELMET_8:
         return basic (this, hp:HP060, type:GRASS, retreatCost:3) {
           weakness FIRE
@@ -358,7 +358,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ACCELGOR_9:
         return evolution (this, from:"Shelmet", hp:HP090, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -378,7 +378,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SKIDDO_10:
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -390,7 +390,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOGOAT_11:
         return evolution (this, from:"Skiddo", hp:HP120, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -416,7 +416,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_MAROWAK_12:
         return evolution (this, from:"Cubone", hp:HP100, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -441,7 +441,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NUMEL_13:
         return basic (this, hp:HP080, type:FIRE, retreatCost:3) {
           weakness WATER
@@ -453,7 +453,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CAMERUPT_14:
         return evolution (this, from:"Numel", hp:HP140, type:FIRE, retreatCost:4) {
           weakness WATER
@@ -473,7 +473,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STARYU_15:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -485,7 +485,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STARMIE_16:
         return evolution (this, from:"Staryu", hp:HP090, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -507,7 +507,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGIKARP_17:
         return basic (this, hp:HP030, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -540,7 +540,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GYARADOS_GX_18:
         return evolution (this, from:"Magikarp", hp:HP240, type:WATER, retreatCost:4) {
           weakness LIGHTNING
@@ -577,7 +577,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SWINUB_19:
         return basic (this, hp:HP060, type:WATER, retreatCost:3) {
           weakness METAL
@@ -589,7 +589,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PILOSWINE_20:
         return evolution (this, from:"Swinub", hp:HP100, type:WATER, retreatCost:4) {
           weakness METAL
@@ -609,7 +609,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAMOSWINE_21:
         return evolution (this, from:"Piloswine", hp:HP180, type:WATER, retreatCost:4) {
           weakness METAL
@@ -638,7 +638,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case REMORAID_22:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -650,7 +650,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case OCTILLERY_23:
         return evolution (this, from:"Remoraid", hp:HP100, type:WATER, retreatCost:2) {
           weakness GRASS
@@ -674,7 +674,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CORPHISH_24:
         return basic (this, hp:HP070, type:WATER, retreatCost:2) {
           weakness GRASS
@@ -686,7 +686,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CRAWDAUNT_25:
         return evolution (this, from:"Corphish", hp:HP110, type:WATER, retreatCost:2) {
           weakness GRASS
@@ -700,7 +700,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FEEBAS_26:
         return basic (this, hp:HP030, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -713,7 +713,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MILOTIC_27:
         return evolution (this, from:"Feebas", hp:HP120, type:WATER, retreatCost:2) {
           weakness GRASS
@@ -739,7 +739,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case REGICE_28:
         return basic (this, hp:HP130, type:WATER, retreatCost:3) {
           weakness METAL
@@ -776,7 +776,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHELLOS_29:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -795,7 +795,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIKACHU_30:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -820,7 +820,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_RAICHU_31:
         return evolution (this, from:"Pikachu", hp:HP110, type:LIGHTNING, retreatCost:2) {
           weakness FIGHTING
@@ -841,7 +841,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_GEODUDE_32:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:2) {
           weakness FIGHTING
@@ -860,7 +860,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_GRAVELER_33:
         return evolution (this, from:"Alolan Geodude", hp:HP100, type:LIGHTNING, retreatCost:3) {
           weakness FIGHTING
@@ -881,7 +881,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_GOLEM_GX_34:
         return evolution (this, from:"Alolan Graveler", hp:HP250, type:LIGHTNING, retreatCost:4) {
           weakness FIGHTING
@@ -940,7 +940,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EMOLGA_35:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness LIGHTNING
@@ -967,7 +967,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GASTLY_36:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness DARKNESS
@@ -980,7 +980,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HAUNTER_37:
         return evolution (this, from:"Gastly", hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness DARKNESS
@@ -998,7 +998,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GENGAR_38:
         return evolution (this, from:"Haunter", hp:HP130, type:PSYCHIC, retreatCost:0) {
           weakness DARKNESS
@@ -1021,7 +1021,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MISDREAVUS_39:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness DARKNESS
@@ -1034,7 +1034,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MISMAGIUS_40:
         return evolution (this, from:"Misdreavus", hp:HP110, type:PSYCHIC, retreatCost:1) {
           weakness DARKNESS
@@ -1069,7 +1069,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SPOINK_41:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1081,7 +1081,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GRUMPIG_42:
         return evolution (this, from:"Spoink", hp:HP120, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -1107,7 +1107,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHIMECHO_43:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1136,7 +1136,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PUMPKABOO_44:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:2) {
           weakness DARKNESS
@@ -1152,7 +1152,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOURGEIST_45:
         return evolution (this, from:"Pumpkaboo", hp:HP120, type:PSYCHIC, retreatCost:3) {
           weakness DARKNESS
@@ -1171,11 +1171,11 @@ public enum CrimsonInvasion implements LogicCardInfo {
               def toolsDiscarded = 0
               while(true) {
                 def pl = my.all.findAll{ it.cards.hasType(POKEMON_TOOL) }
-                if(!pl) break;
+                if(!pl) break
 
                 def info = "Tools already discarded: ${toolsDiscarded}<br>Current base damage: 10 + ${40 * toolsDiscarded}<br>Discard a Pokémon Tool card from which Pokémon? (cancel to stop)"
                 def src = pl.select(info, false)
-                if(!src) break;
+                if(!src) break
 
                 def options = src.cards.filterByType(POKEMON_TOOL)
                 def toDiscard = options.select(min: 0, max: options.size(), "Select any tools you want to discard from ${src}. Each will add 40 damage to $thisMove's base damage.")
@@ -1186,7 +1186,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SALANDIT_46:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1198,7 +1198,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SALAZZLE_47:
         return evolution (this, from:"Salandit", hp:HP110, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1222,7 +1222,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ORANGURU_48:
         return basic (this, hp:HP110, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -1244,7 +1244,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIHILEGO_GX_49:
         return basic (this, hp:HP180, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -1280,7 +1280,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MANKEY_50:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -1292,7 +1292,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PRIMEAPE_51:
         return evolution (this, from:"Mankey", hp:HP090, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -1326,7 +1326,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CUBONE_52:
         return basic (this, hp:HP070, type:FIGHTING, retreatCost:2) {
           weakness GRASS
@@ -1345,7 +1345,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case REGIROCK_53:
         return basic (this, hp:HP130, type:FIGHTING, retreatCost:3) {
           weakness GRASS
@@ -1373,7 +1373,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GASTRODON_54:
         return evolution (this, from:"Shellos", hp:HP120, type:FIGHTING, retreatCost:3) {
           weakness GRASS
@@ -1396,7 +1396,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STUFFUL_55:
         return basic (this, hp:HP070, type:FIGHTING, retreatCost:2) {
           weakness PSYCHIC
@@ -1408,7 +1408,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BEWEAR_56:
         return evolution (this, from:"Stufful", hp:HP130, type:FIGHTING, retreatCost:3) {
           weakness PSYCHIC
@@ -1436,7 +1436,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BUZZWOLE_GX_57:
         return basic (this, hp:HP190, type:FIGHTING, retreatCost:2) {
           weakness PSYCHIC
@@ -1466,7 +1466,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HOUNDOUR_58:
         return basic (this, hp:HP060, type:DARKNESS, retreatCost:1) {
           weakness FIGHTING
@@ -1486,7 +1486,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HOUNDOOM_59:
         return evolution (this, from:"Houndour", hp:HP110, type:DARKNESS, retreatCost:1) {
           weakness FIRE
@@ -1508,7 +1508,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DEINO_60:
         return basic (this, hp:HP070, type:DARKNESS, retreatCost:2) {
           weakness FIGHTING
@@ -1528,7 +1528,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ZWEILOUS_61:
         return evolution (this, from:"Deino", hp:HP090, type:DARKNESS, retreatCost:2) {
           weakness FIGHTING
@@ -1548,7 +1548,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HYDREIGON_62:
         return evolution (this, from:"Zweilous", hp:HP160, type:DARKNESS, retreatCost:2) {
           weakness FIGHTING
@@ -1584,7 +1584,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GUZZLORD_GX_63A:
       case GUZZLORD_GX_63:
         return basic (this, hp:HP210, type:DARKNESS, retreatCost:4) {
@@ -1638,7 +1638,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAWILE_64:
         return basic (this, hp:HP080, type:METAL, retreatCost:1) {
           weakness FIRE
@@ -1667,7 +1667,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARON_65:
         return basic (this, hp:HP060, type:METAL, retreatCost:1) {
           weakness FIRE
@@ -1687,7 +1687,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LAIRON_66:
         return evolution (this, from:"Aron", hp:HP100, type:METAL, retreatCost:3) {
           weakness FIRE
@@ -1707,7 +1707,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AGGRON_67:
         return evolution (this, from:"Lairon", hp:HP170, type:METAL, retreatCost:4) {
           weakness FIRE
@@ -1731,7 +1731,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case REGISTEEL_68:
         return basic (this, hp:HP130, type:METAL, retreatCost:3) {
           weakness FIRE
@@ -1754,7 +1754,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ESCAVALIER_69:
         return evolution (this, from:"Karrablast", hp:HP120, type:METAL, retreatCost:2) {
           weakness FIRE
@@ -1775,7 +1775,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KARTANA_GX_70:
         return basic (this, hp:HP170, type:METAL, retreatCost:1) {
           weakness FIRE
@@ -1815,7 +1815,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case JIGGLYPUFF_71:
         return basic (this, hp:HP060, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -1835,7 +1835,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WIGGLYTUFF_72:
         return evolution (this, from:"Jigglypuff", hp:HP120, type:FAIRY, retreatCost:2) {
           weakness METAL
@@ -1858,7 +1858,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case XERNEAS_73:
         return basic (this, hp:HP130, type:FAIRY, retreatCost:2) {
           weakness METAL
@@ -1880,7 +1880,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_EXEGGUTOR_GX_74:
         return evolution (this, from:"Exeggcute", hp:HP220, type:DRAGON, retreatCost:3) {
           weakness FAIRY
@@ -1909,19 +1909,19 @@ public enum CrimsonInvasion implements LogicCardInfo {
               damage 180
               while(1){
                 def pl=(my.all.findAll {it.cards.energyCount(C)})
-                if(!pl) break;
+                if(!pl) break
                 def src =pl.select("source for energy (cancel to stop)", false)
-                if(!src) break;
+                if(!src) break
                 def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
 
                 def tar=my.all.select("Target for energy (cancel to stop)", false)
-                if(!tar) break;
+                if(!tar) break
                 energySwitch(src, tar, card)
               }
             }
           }
 
-        };
+        }
       case JANGMO_O_75:
         return basic (this, hp:HP060, type:DRAGON, retreatCost:1) {
           weakness FAIRY
@@ -1940,7 +1940,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HAKAMO_O_76:
         return evolution (this, from:"Jangmo-o", hp:HP090, type:DRAGON, retreatCost:1) {
           weakness FAIRY
@@ -1959,7 +1959,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KOMMO_O_77:
         return evolution (this, from:"Hakamo-o", hp:HP160, type:DRAGON, retreatCost:2) {
           weakness FAIRY
@@ -1992,7 +1992,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MILTANK_78:
         return basic (this, hp:HP100, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -2014,7 +2014,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SWABLU_79:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -2027,7 +2027,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALTARIA_80:
         return evolution (this, from:"Swablu", hp:HP090, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -2056,7 +2056,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STARLY_81:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -2079,7 +2079,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STARAVIA_82:
         return evolution (this, from:"Starly", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -2099,7 +2099,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STARAPTOR_83:
         return evolution (this, from:"Staravia", hp:HP140, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -2132,7 +2132,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case REGIGIGAS_84:
         return basic (this, hp:HP180, type:COLORLESS, retreatCost:4) {
           weakness FIGHTING
@@ -2160,7 +2160,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MINCCINO_85:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -2173,7 +2173,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CINCCINO_86:
         return evolution (this, from:"Minccino", hp:HP090, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -2195,7 +2195,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BUNNELBY_87:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -2207,7 +2207,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DIGGERSBY_88:
         return evolution (this, from:"Bunnelby", hp:HP130, type:COLORLESS, retreatCost:3) {
           weakness FIGHTING
@@ -2228,7 +2228,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TYPE__NULL_89:
         return basic (this, hp:HP110, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -2248,7 +2248,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SILVALLY_GX_90:
         return evolution (this, from:"Type: Null", hp:HP210, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -2278,7 +2278,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case COUNTER_CATCHER_91:
         return itemCard (this) {
           text "You can play this card only if you have more Prize cards remaining than your opponent.\nSwitch 1 of your opponent's Benched Pokémon with their Active Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -2289,7 +2289,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
             assert my.prizeCardSet.size() > opp.prizeCardSet.size()
             assertOppBench()
           }
-        };
+        }
       case DASHING_POUCH_92:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nIf the Pokémon this card is attached to discards Energy for its Retreat Cost, put that Energy into your hand instead of the discard pile.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -2299,7 +2299,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
           onRemoveFromPlay {
             bg.em().storeObject("dashing_pouch_"+self.hashCode(), null)
           }
-        };
+        }
       case DEVOURED_FIELD_93:
         return stadium (this) {
           text "The attacks of [D] Pokémon and [N] Pokémon (both yours and your opponent's) do 10 more damage to the opponent's Active Pokémon (before applying Weakness and Resistance).\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card."
@@ -2319,7 +2319,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
           onRemoveFromPlay{
             eff.unregister()
           }
-        };
+        }
       case FIGHTING_MEMORY_94:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nThe Silvally-GX this card is attached to is a [F] Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -2336,7 +2336,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case GLADION_95:
         return supporter (this) {
           text "Look at your face-down Prize cards and put 1 of them into your hand. Then, shuffle this Gladion into your remaining Prize cards and put them back face down. If you didn't play this Gladion from your hand, it does nothing.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -2352,7 +2352,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
           }
           playRequirement{
           }
-        };
+        }
       case LUSAMINE_96:
         return supporter (this) {
           text "Put 2 in any combination of Supporter and Stadium cards from your discard pile into your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -2362,7 +2362,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
           playRequirement{
             assert my.discard.filterByType(SUPPORTER,STADIUM)
           }
-        };
+        }
       case PEEKING_RED_CARD_97:
         return itemCard (this) {
           text "Your opponent reveals their hand. You may have your opponent count the cards in their hand, shuffle those cards into their deck, then draw that many cards.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -2378,7 +2378,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
           playRequirement{
             assert opp.hand
           }
-        };
+        }
       case PSYCHIC_MEMORY_98:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nThe Silvally-GX this card is attached to is a [P] Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -2395,7 +2395,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case SEA_OF_NOTHINGNESS_99:
         return stadium (this) {
           text "Special Conditions are not removed when Pokémon (both yours and your opponent's) evolve or devolve.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card."
@@ -2432,7 +2432,7 @@ public enum CrimsonInvasion implements LogicCardInfo {
           onRemoveFromPlay{
             eff.unregister()
           }
-        };
+        }
       case COUNTER_ENERGY_100:
         return specialEnergy (this, [[C]]) {
           text "This card provides [C] Energy.\nIf you have more Prize cards remaining than your opponent, and if this card is attached to a Pokémon that isn't a Pokémon-GX or Pokémon-EX, this card provides every type of Energy but provides only 2 Energy at a time"
@@ -2446,57 +2446,57 @@ public enum CrimsonInvasion implements LogicCardInfo {
               return [[C] as Set]
             }
           }
-        };
+        }
       case GYARADOS_GX_101:
-        return copy (GYARADOS_GX_18, this);
+        return copy (GYARADOS_GX_18, this)
       case ALOLAN_GOLEM_GX_102:
-        return copy (ALOLAN_GOLEM_GX_34, this);
+        return copy (ALOLAN_GOLEM_GX_34, this)
       case NIHILEGO_GX_103:
-        return copy (NIHILEGO_GX_49, this);
+        return copy (NIHILEGO_GX_49, this)
       case BUZZWOLE_GX_104:
-        return copy (BUZZWOLE_GX_57, this);
+        return copy (BUZZWOLE_GX_57, this)
       case GUZZLORD_GX_105:
-        return copy (GUZZLORD_GX_63, this);
+        return copy (GUZZLORD_GX_63, this)
       case KARTANA_GX_106:
-        return copy (KARTANA_GX_70, this);
+        return copy (KARTANA_GX_70, this)
       case ALOLAN_EXEGGUTOR_GX_107:
-        return copy (ALOLAN_EXEGGUTOR_GX_74, this);
+        return copy (ALOLAN_EXEGGUTOR_GX_74, this)
       case SILVALLY_GX_108:
-        return copy (SILVALLY_GX_90, this);
+        return copy (SILVALLY_GX_90, this)
       case GLADION_109:
-        return copy (GLADION_95, this);
+        return copy (GLADION_95, this)
       case LUSAMINE_110:
-        return copy (LUSAMINE_96, this);
+        return copy (LUSAMINE_96, this)
       case OLIVIA_111:
-        return copy (BurningShadows.OLIVIA_119, this);
+        return copy (BurningShadows.OLIVIA_119, this)
       case GYARADOS_GX_112:
-        return copy (GYARADOS_GX_18, this);
+        return copy (GYARADOS_GX_18, this)
       case ALOLAN_GOLEM_GX_113:
-        return copy (ALOLAN_GOLEM_GX_34, this);
+        return copy (ALOLAN_GOLEM_GX_34, this)
       case NIHILEGO_GX_114:
-        return copy (NIHILEGO_GX_49, this);
+        return copy (NIHILEGO_GX_49, this)
       case BUZZWOLE_GX_115:
-        return copy (BUZZWOLE_GX_57, this);
+        return copy (BUZZWOLE_GX_57, this)
       case GUZZLORD_GX_116:
-        return copy (GUZZLORD_GX_63, this);
+        return copy (GUZZLORD_GX_63, this)
       case KARTANA_GX_117:
-        return copy (KARTANA_GX_70, this);
+        return copy (KARTANA_GX_70, this)
       case ALOLAN_EXEGGUTOR_GX_118:
-        return copy (ALOLAN_EXEGGUTOR_GX_74, this);
+        return copy (ALOLAN_EXEGGUTOR_GX_74, this)
       case SILVALLY_GX_119:
-        return copy (SILVALLY_GX_90, this);
+        return copy (SILVALLY_GX_90, this)
       case COUNTER_CATCHER_120:
-        return copy (COUNTER_CATCHER_91, this);
+        return copy (COUNTER_CATCHER_91, this)
       case WISHFUL_BATON_121:
         return copy(BurningShadows.WISHFUL_BATON_128, this)
       case COUNTER_ENERGY_122:
-        return copy (COUNTER_ENERGY_100, this);
+        return copy (COUNTER_ENERGY_100, this)
       case WARP_ENERGY_123:
-        return copy (Aquapolis.WARP_ENERGY_147, this);
+        return copy (Aquapolis.WARP_ENERGY_147, this)
       case WATER_ENERGY_124:
-        return basicEnergy (this, W);
+        return basicEnergy (this, W)
       default:
-        return null;
+        return null
     }
   }
 

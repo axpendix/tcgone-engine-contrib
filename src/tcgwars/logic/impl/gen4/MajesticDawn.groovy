@@ -2,42 +2,42 @@ package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.Action
 import tcgwars.logic.effect.Source
-import tcgwars.logic.impl.gen2.Expedition;
+import tcgwars.logic.impl.gen2.Expedition
 import tcgwars.logic.impl.gen3.FireRedLeafGreen
-import tcgwars.logic.impl.gen3.RubySapphire;
-import tcgwars.logic.impl.gen5.PlasmaStorm;
-import tcgwars.logic.impl.gen5.BlackWhite;
+import tcgwars.logic.impl.gen3.RubySapphire
+import tcgwars.logic.impl.gen5.PlasmaStorm
+import tcgwars.logic.impl.gen5.BlackWhite
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
 import static tcgwars.logic.card.CardType.*
-import static tcgwars.logic.effect.EffectPriority.BEFORE_LAST;
-import static tcgwars.logic.effect.EffectType.*;
+import static tcgwars.logic.effect.EffectPriority.BEFORE_LAST
+import static tcgwars.logic.effect.EffectType.*
 import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import tcgwars.logic.effect.gm.PlayTrainer
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
 
-import java.util.*;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 
 
@@ -148,53 +148,53 @@ public enum MajesticDawn implements LogicCardInfo {
   LEAFEON_LV_X_99 ("Leafeon Lv.X", "99", Rarity.HOLORARE, [LVL_X, POKEMON, _GRASS_]),
   PORYGON_Z_LV_X_100 ("Porygon-Z Lv.X", "100", Rarity.HOLORARE, [LVL_X, POKEMON, _COLORLESS_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   MajesticDawn(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.MAJESTIC_DAWN;
+    return tcgwars.logic.card.Collection.MAJESTIC_DAWN
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -222,7 +222,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CRESSELIA_2:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS20
@@ -240,7 +240,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARKRAI_3:
         return basic (this, hp:HP080, type:DARKNESS, retreatCost:2) {
           weakness F, PLUS20
@@ -327,7 +327,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GLACEON_5:
         return evolution (this, from:"Eevee", hp:HP080, type:WATER, retreatCost:1) {
           weakness M, PLUS20
@@ -347,7 +347,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KABUTOPS_6:
         return evolution (this, from:"Kabuto", hp:HP120, type:FIGHTING, retreatCost:2) {
           weakness G, PLUS30
@@ -375,7 +375,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LEAFEON_7:
         return evolution (this, from:"Eevee", hp:HP090, type:GRASS, retreatCost:2) {
           weakness R, PLUS20
@@ -398,7 +398,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MANAPHY_8:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness L, PLUS20
@@ -439,7 +439,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MEWTWO_9:
         return basic (this, hp:HP090, type:PSYCHIC, retreatCost:2) {
           weakness P
@@ -474,7 +474,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MOLTRES_10:
         return basic (this, hp:HP100, type:FIRE, retreatCost:2) {
           weakness W
@@ -504,7 +504,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PALKIA_11:
         return basic (this, hp:HP100, type:WATER, retreatCost:3) {
           weakness L, PLUS20
@@ -547,7 +547,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PHIONE_12:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness L, PLUS10
@@ -570,7 +570,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ROTOM_13:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness D, PLUS20
@@ -600,7 +600,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ZAPDOS_14:
         return basic (this, hp:HP100, type:LIGHTNING, retreatCost:2) {
           weakness L
@@ -627,7 +627,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AERODACTYL_15:
         return evolution (this, from:"Old Amber", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness L, PLUS20
@@ -654,7 +654,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BRONZONG_16:
         return evolution (this, from:"Bronzor", hp:HP090, type:PSYCHIC, retreatCost:3) {
           weakness P, PLUS20
@@ -669,7 +669,7 @@ public enum MajesticDawn implements LogicCardInfo {
 
                   self.owner.opposite.pbg.all.each {
                     for (Ability ability : it.getAbilities().keySet()) {
-                      if (ability instanceof PokePower) hasPokePower = true;
+                      if (ability instanceof PokePower) hasPokePower = true
                     }
                     if (hasPokePower) {
                       if (once) {
@@ -705,7 +705,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EMPOLEON_17:
         return evolution (this, from:"Prinplup", hp:HP130, type:WATER, retreatCost:2) {
           weakness L, PLUS30
@@ -731,7 +731,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ESPEON_18:
         return evolution (this, from:"Eevee", hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS20
@@ -780,7 +780,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FLAREON_19:
         return evolution (this, from:"Eevee", hp:HP090, type:FIRE, retreatCost:2) {
           weakness W, PLUS20
@@ -804,7 +804,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GLACEON_20:
         return evolution (this, from:"Eevee", hp:HP090, type:WATER, retreatCost:1) {
           weakness M, PLUS20
@@ -829,7 +829,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HIPPOWDON_21:
         return evolution (this, from:"Hippopotas", hp:HP100, type:FIGHTING, retreatCost:3) {
           weakness W, PLUS20
@@ -852,7 +852,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case INFERNAPE_22:
         return evolution (this, from:"Monferno", hp:HP110, type:FIRE, retreatCost:0) {
           weakness W, PLUS30
@@ -880,7 +880,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case JOLTEON_23:
         return evolution (this, from:"Eevee", hp:HP080, type:LIGHTNING, retreatCost:0) {
           weakness F, PLUS20
@@ -907,7 +907,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LEAFEON_24:
         return evolution (this, from:"Eevee", hp:HP090, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
@@ -931,7 +931,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MINUN_25:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -954,7 +954,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case OMASTAR_26:
         return evolution (this, from:"Omanyte", hp:HP110, type:WATER, retreatCost:1) {
           weakness G, PLUS30
@@ -981,7 +981,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PHIONE_27:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness L, PLUS10
@@ -1003,7 +1003,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PLUSLE_28:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -1024,7 +1024,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SCIZOR_29:
         return evolution (this, from:"Scyther", hp:HP090, type:METAL, retreatCost:1) {
           weakness R, PLUS30
@@ -1050,7 +1050,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TORTERRA_30:
         return evolution (this, from:"Grotle", hp:HP140, type:GRASS, retreatCost:4) {
           weakness R, PLUS30
@@ -1073,7 +1073,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TOXICROAK_31:
         return evolution (this, from:"Croagunk", hp:HP090, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS20
@@ -1096,7 +1096,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case UMBREON_32:
         return evolution (this, from:"Eevee", hp:HP080, type:DARKNESS, retreatCost:1) {
           weakness F, PLUS20
@@ -1126,7 +1126,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case UNOWN_P_33:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -1154,7 +1154,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VAPOREON_34:
         return evolution (this, from:"Eevee", hp:HP090, type:WATER, retreatCost:1) {
           weakness L, PLUS20
@@ -1192,7 +1192,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AMBIPOM_35:
         return evolution (this, from:"Aipom", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS20
@@ -1214,7 +1214,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FEAROW_36:
         return evolution (this, from:"Spearow", hp:HP080, type:COLORLESS, retreatCost:0) {
           weakness L, PLUS20
@@ -1236,7 +1236,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GROTLE_37:
         return evolution (this, from:"Turtwig", hp:HP090, type:GRASS, retreatCost:3) {
           weakness R, PLUS20
@@ -1263,7 +1263,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KANGASKHAN_38:
         return basic (this, hp:HP090, type:COLORLESS, retreatCost:3) {
           weakness F, PLUS20
@@ -1284,7 +1284,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LICKITUNG_39:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:2) {
           weakness F, PLUS20
@@ -1308,7 +1308,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MANECTRIC_40:
         return evolution (this, from:"Electrike", hp:HP080, type:LIGHTNING, retreatCost:0) {
           weakness F, PLUS20
@@ -1336,7 +1336,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MONFERNO_41:
         return evolution (this, from:"Chimchar", hp:HP070, type:FIRE, retreatCost:0) {
           weakness W, PLUS20
@@ -1359,7 +1359,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MOTHIM_42:
         return evolution (this, from:["Burmy","Burmy Plant Cloak","Burmy Sandy Cloak","Burmy Trash Cloak"], hp:HP080, type:GRASS, retreatCost:0) {
           weakness R, PLUS20
@@ -1418,7 +1418,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PACHIRISU_43:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS20
@@ -1444,7 +1444,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PRINPLUP_44:
         return evolution (this, from:"Piplup", hp:HP080, type:WATER, retreatCost:1) {
           weakness L, PLUS20
@@ -1468,7 +1468,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAICHU_45:
         return evolution (this, from:"Pikachu", hp:HP090, type:LIGHTNING, retreatCost:0) {
           weakness F, PLUS20
@@ -1496,7 +1496,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SCYTHER_46:
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
@@ -1518,7 +1518,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STARAVIA_47:
         return evolution (this, from:"Starly", hp:HP080, type:COLORLESS, retreatCost:0) {
           weakness L, PLUS20
@@ -1541,7 +1541,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SUDOWOODO_48:
         return basic (this, hp:HP080, type:FIGHTING, retreatCost:2) {
           weakness W, PLUS20
@@ -1561,7 +1561,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case UNOWN_Q_49:
         return basic (this, hp:HP030, type:PSYCHIC, retreatCost:0) {
           weakness P, PLUS10
@@ -1606,7 +1606,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AIPOM_50:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
@@ -1634,7 +1634,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AIPOM_51:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
@@ -1655,7 +1655,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BRONZOR_52:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -1679,7 +1679,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BUNEARY_53:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
@@ -1704,7 +1704,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BURMY_SANDY_CLOAK_54:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -1725,7 +1725,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHATOT_55:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:0) {
           weakness L, PLUS20
@@ -1751,7 +1751,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHIMCHAR_56:
         return basic (this, hp:HP040, type:FIRE, retreatCost:1) {
           weakness W, PLUS10
@@ -1772,7 +1772,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHIMCHAR_57:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
           weakness W, PLUS10
@@ -1797,7 +1797,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHINGLING_58:
         return basic (this, hp:HP040, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -1826,7 +1826,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case COMBEE_59:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -1849,7 +1849,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CROAGUNK_60:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -1870,7 +1870,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DRIFLOON_61:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness D, PLUS10
@@ -1896,7 +1896,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EEVEE_62:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
@@ -1924,7 +1924,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EEVEE_63:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
@@ -1943,7 +1943,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTRIKE_64:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -1963,7 +1963,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GLAMEOW_65:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
@@ -1983,7 +1983,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HIPPOPOTAS_66:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:2) {
           weakness W, PLUS10
@@ -2007,7 +2007,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KABUTO_67:
         return evolution (this, from:"Dome Fossil", hp:HP080, type:FIGHTING, retreatCost:1) {
           weakness G, PLUS20
@@ -2037,7 +2037,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MUNCHLAX_68:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:2) {
           weakness F, PLUS10
@@ -2065,7 +2065,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case OMANYTE_69:
         return evolution (this, from:"Helix Fossil", hp:HP070, type:WATER, retreatCost:1) {
           weakness G, PLUS20
@@ -2096,7 +2096,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIKACHU_70:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -2120,7 +2120,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIPLUP_71:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness L, PLUS10
@@ -2142,7 +2142,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIPLUP_72:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness L, PLUS10
@@ -2165,7 +2165,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHELLOS_EAST_SEA_73:
         return basic (this, hp:HP060, type:WATER, retreatCost:2) {
           weakness L, PLUS10
@@ -2187,7 +2187,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SPEAROW_74:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness L, PLUS10
@@ -2209,7 +2209,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STARLY_75:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness L, PLUS10
@@ -2230,7 +2230,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STUNKY_76:
         return basic (this, hp:HP060, type:DARKNESS, retreatCost:1) {
           weakness F, PLUS10
@@ -2252,7 +2252,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TURTWIG_77:
         return basic (this, hp:HP060, type:GRASS, retreatCost:2) {
           weakness R, PLUS10
@@ -2272,7 +2272,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TURTWIG_78:
         return basic (this, hp:HP060, type:GRASS, retreatCost:2) {
           weakness R, PLUS10
@@ -2296,7 +2296,7 @@ public enum MajesticDawn implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DAWN_STADIUM_79:
         return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nWhenever any player attaches an Energy card from his or her hand to [G] Pokémon or [W] Pokémon, remove 1 damage counter and all Special Conditions from that Pokémon."
@@ -2318,13 +2318,13 @@ public enum MajesticDawn implements LogicCardInfo {
           onRemoveFromPlay{
             eff.unregister()
           }
-        };
+        }
       case DUSK_BALL_80:
-        return copy (MysteriousTreasures.DUSK_BALL_110, this);
+        return copy (MysteriousTreasures.DUSK_BALL_110, this)
       case ENERGY_RESTORE_81:
-        return copy (Expedition.ENERGY_RESTORE_141, this);
+        return copy (Expedition.ENERGY_RESTORE_141, this)
       case FOSSIL_EXCAVATOR_82:
-        return copy (MysteriousTreasures.FOSSIL_EXCAVATOR_111, this);
+        return copy (MysteriousTreasures.FOSSIL_EXCAVATOR_111, this)
       case MOM_S_KINDNESS_83:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nDraw 2 cards."
@@ -2334,7 +2334,7 @@ public enum MajesticDawn implements LogicCardInfo {
           playRequirement{
             assert my.deck : "Your deck is empty"
           }
-        };
+        }
       case OLD_AMBER_84:
         return basicTrainer (this) {
           text "Play Old Amber as if it were a [C] Basic Pokémon. (Old Amber counts as a Trainer card as well, but if Old Amber is Knocked Out, this counts as a Knocked Out Pokémon.) Old Amber can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Old Amber from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Hard Amber As long as Old Amber is on your Bench, prevent all damage done to Old Amber by attacks (both yours and your opponent’s)."
@@ -2402,15 +2402,15 @@ public enum MajesticDawn implements LogicCardInfo {
           playRequirement{
             assert bench.notFull
           }
-        };
+        }
       case POKE_BALL_85:
-        return copy(FireRedLeafGreen.POKE_BALL_95, this);
+        return copy(FireRedLeafGreen.POKE_BALL_95, this)
       case QUICK_BALL_86:
-        return copy (MysteriousTreasures.QUICK_BALL_114, this);
+        return copy (MysteriousTreasures.QUICK_BALL_114, this)
       case SUPER_SCOOP_UP_87:
-        return copy(FireRedLeafGreen.SUPER_SCOOP_UP_99, this);
+        return copy(FireRedLeafGreen.SUPER_SCOOP_UP_99, this)
       case WARP_POINT_88:
-        return copy(PlasmaStorm.ESCAPE_ROPE_120, this);
+        return copy(PlasmaStorm.ESCAPE_ROPE_120, this)
       case DOME_FOSSIL_89:
         return basicTrainer (this) {
           text "Play Dome Fossil as if it were a [C] Basic Pokémon. (Dome Fossil counts as a Trainer card as well, but if Dome Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Dome Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Dome Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Rock Reaction When you attach a [F] Energy card from your hand to Dome Fossil (excluding effects of attacks or Poké-Powers), search your deck for a card that evolves from Dome Fossil and put it onto Dome Fossil (this counts as evolving Dome Fossil). Shuffle your deck afterward."
@@ -2479,9 +2479,9 @@ public enum MajesticDawn implements LogicCardInfo {
           playRequirement{
             assert bench.notFull
           }
-        };
+        }
       case ENERGY_SEARCH_90:
-        return copy(BlackWhite.ENERGY_SEARCH_93, this);
+        return copy(BlackWhite.ENERGY_SEARCH_93, this)
       case HELIX_FOSSIL_91:
         return basicTrainer (this) {
           text "Play Helix Fossil as if it were a [C] Basic Pokémon. (Helix Fossil counts as a Trainer card as well, but if Helix Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Helix Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Helix Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Aqua Reaction When you attach a [W] Energy card from your hand to Helix Fossil (excluding effects of attacks or Poké-Powers), search your deck for a card that evolves from Helix Fossil and put it onto Helix Fossil (this counts as evolving Helix Fossil). Shuffle your deck afterwards."
@@ -2550,7 +2550,7 @@ public enum MajesticDawn implements LogicCardInfo {
           playRequirement{
             assert bench.notFull
           }
-        };
+        }
       case CALL_ENERGY_92:
         return specialEnergy (this, [[C]]) {
           text "Call Energy provides [C] Energy. Once during your turn, if the Pokémon Call Energy is attached to is your Active Pokémon, you may search your deck for up to 2 Basic Pokémon and put them onto your Bench. If you do, shuffle your deck and your turn ends."
@@ -2575,9 +2575,9 @@ public enum MajesticDawn implements LogicCardInfo {
           onRemoveFromPlay {
             actions.each { bg().gm().unregisterAction(it as Action) }
           }
-        };
+        }
       case DARKNESS_ENERGY_93:
-        return copy (MysteriousTreasures.DARKNESS_ENERGY_119, this);
+        return copy (MysteriousTreasures.DARKNESS_ENERGY_119, this)
       case HEALTH_ENERGY_94:
         return specialEnergy (this, [[C]]) {
           text "Health Energy provides [C] Energy. When you attach this card from your hand to 1 of your Pokémon, remove 1 damage counter from that Pokémon."
@@ -2586,7 +2586,7 @@ public enum MajesticDawn implements LogicCardInfo {
               heal 10, self
             }
           }
-        };
+        }
       case METAL_ENERGY_95:
         return copy (RubySapphire.METAL_ENERGY_94, this)
       case RECOVER_ENERGY_96:
@@ -2597,7 +2597,7 @@ public enum MajesticDawn implements LogicCardInfo {
               clearSpecialCondition(self)
             }
           }
-        };
+        }
       case GARCHOMP_LV_X_97:
         return levelUp (this, from:"Garchomp", hp:HP140, type:COLORLESS, retreatCost:0) {
           weakness C
@@ -2629,7 +2629,7 @@ public enum MajesticDawn implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case GLACEON_LV_X_98:
         return levelUp (this, from:"Glaceon", hp:HP100, type:WATER, retreatCost:1) {
           weakness M, PLUS30
@@ -2667,7 +2667,7 @@ public enum MajesticDawn implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LEAFEON_LV_X_99:
         return levelUp (this, from:"Leafeon", hp:HP110, type:GRASS, retreatCost:2) {
           weakness R, PLUS30
@@ -2694,7 +2694,7 @@ public enum MajesticDawn implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case PORYGON_Z_LV_X_100:
         return levelUp (this, from:"Porygon-Z", hp:HP130, type:COLORLESS, retreatCost:2) {
           weakness F
@@ -2723,9 +2723,9 @@ public enum MajesticDawn implements LogicCardInfo {
               my.deck.addAll(0, list)
             }
           }
-        };
+        }
       default:
-        return null;
+        return null
     }
   }
 

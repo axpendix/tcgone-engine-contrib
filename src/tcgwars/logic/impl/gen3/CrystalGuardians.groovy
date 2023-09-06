@@ -1,46 +1,46 @@
 package tcgwars.logic.impl.gen3
 
 import tcgwars.logic.effect.ability.custom.Safeguard
-import tcgwars.logic.impl.gen3.Deoxys;
-import tcgwars.logic.impl.gen3.Emerald;
-import tcgwars.logic.impl.gen3.FireRedLeafGreen;
-import tcgwars.logic.impl.gen3.DeltaSpecies;
-import tcgwars.logic.impl.gen5.PlasmaStorm;
-import tcgwars.logic.impl.gen5.BlackWhite;
-import tcgwars.logic.impl.gen7.GuardiansRising;
+import tcgwars.logic.impl.gen3.Deoxys
+import tcgwars.logic.impl.gen3.Emerald
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
+import tcgwars.logic.impl.gen3.DeltaSpecies
+import tcgwars.logic.impl.gen5.PlasmaStorm
+import tcgwars.logic.impl.gen5.BlackWhite
+import tcgwars.logic.impl.gen7.GuardiansRising
 
 import tcgwars.logic.effect.gm.Attack
-import tcgwars.logic.effect.gm.PlayCard;
+import tcgwars.logic.effect.gm.PlayCard
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -148,53 +148,53 @@ public enum CrystalGuardians implements LogicCardInfo {
   ALAKAZAM_STAR_99 ("Alakazam Star", "99", Rarity.HOLORARE, [POKEMON_STAR, POKEMON, BASIC, _PSYCHIC_]),
   CELEBI_STAR_100 ("Celebi Star", "100", Rarity.HOLORARE, [POKEMON_STAR, POKEMON, BASIC, _GRASS_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   CrystalGuardians(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.CRYSTAL_GUARDIANS;
+    return tcgwars.logic.card.Collection.CRYSTAL_GUARDIANS
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -217,7 +217,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case BLASTOISE_DELTA_2:
       return evolution (this, from:"Wartortle", hp:HP110, type:[F, M], retreatCost:3) {
         weakness L
@@ -247,7 +247,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case CAMERUPT_3:
       return evolution (this, from:"Numel", hp:HP080, type:R, retreatCost:2) {
         weakness W
@@ -278,7 +278,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case CHARIZARD_DELTA_4:
       return evolution (this, from:"Charmeleon", hp:HP120, type:[L, M], retreatCost:2) {
         weakness W
@@ -309,7 +309,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case DUGTRIO_5:
       return evolution (this, from:"Diglett", hp:HP070, type:F, retreatCost:1) {
         weakness G
@@ -339,7 +339,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 10, self
           }
         }
-      };
+      }
       case LUDICOLO_DELTA_6:
       return evolution (this, from:"Lombre", hp:HP100, type:R, retreatCost:2) {
         weakness L
@@ -375,7 +375,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case LUVDISC_7:
       return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness L
@@ -412,7 +412,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MANECTRIC_8:
       return evolution (this, from:"Electrike", hp:HP080, type:L, retreatCost:1) {
         weakness F
@@ -441,7 +441,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MAWILE_9:
       return basic (this, hp:HP060, type:M, retreatCost:1) {
         weakness R
@@ -470,7 +470,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SABLEYE_10:
       return basic (this, hp:HP060, type:D, retreatCost:1) {
         resistance C, MINUS30
@@ -495,7 +495,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             amnesia delegate
           }
         }
-      };
+      }
       case SWALOT_11:
       return evolution (this, from:"Gulpin", hp:HP080, type:G, retreatCost:1) {
         weakness P
@@ -525,7 +525,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 50+20*defending.specialConditions.size()
           }
         }
-      };
+      }
       case TAUROS_12:
       return basic (this, hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -550,7 +550,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case WIGGLYTUFF_13:
       return evolution (this, from:"Jigglypuff", hp:HP090, type:C, retreatCost:2) {
         weakness F
@@ -577,7 +577,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             if(defending.specialConditions) damage 20
           }
         }
-      };
+      }
       case BLASTOISE_14:
       return evolution (this, from:"Wartortle", hp:HP120, type:W, retreatCost:2) {
         weakness L
@@ -604,7 +604,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             extraEnergyDamage(2, hp(20), W, thisMove)
           }
         }
-      };
+      }
       case CACTURNE_DELTA_15:
       return evolution (this, from:"Cacnea", hp:HP080, type:F, retreatCost:1) {
         weakness R
@@ -635,7 +635,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case COMBUSKEN_16:
       return evolution (this, from:"Torchic", hp:HP080, type:F, retreatCost:1) {
         weakness P
@@ -653,7 +653,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case DUSCLOPS_17:
       return evolution (this, from:"Duskull", hp:HP070, type:P, retreatCost:1) {
         weakness D
@@ -684,7 +684,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             preventAllEffectsFromCustomPokemonNextTurn(thisMove, self, {it.EX})
           }
         }
-      };
+      }
       case FEAROW_DELTA_18:
       return evolution (this, from:"Spearow", hp:HP060, type:L, retreatCost:1) {
         weakness L
@@ -709,7 +709,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case GROVYLE_DELTA_19:
       return evolution (this, from:"Treecko", hp:HP070, type:P, retreatCost:1) {
         weakness R
@@ -729,7 +729,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             flip { preventAllEffectsNextTurn() }
           }
         }
-      };
+      }
       case GRUMPIG_20:
       return evolution (this, from:"Spoink", hp:HP080, type:P, retreatCost:2) {
         weakness P
@@ -755,7 +755,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 10*(all.size() - 1)
           }
         }
-      };
+      }
       case IGGLYBUFF_21:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -776,7 +776,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             babyEvolution("Jigglypuff", self)
           }
         }
-      };
+      }
       case KINGLER_DELTA_22:
       return evolution (this, from:"Krabby", hp:HP080, type:[R, M], retreatCost:3) {
         weakness L
@@ -796,7 +796,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             if (self.cards.hasType(POKEMON_TOOL)) damage 40
           }
         }
-      };
+      }
       case LOUDRED_23:
       return evolution (this, from:"Whismur", hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -815,7 +815,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 40, opp.all.select()
           }
         }
-      };
+      }
       case MARSHTOMP_24:
       return evolution (this, from:"Mudkip", hp:HP070, type:W, retreatCost:1) {
         weakness G
@@ -836,7 +836,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MEDICHAM_25:
       return evolution (this, from:"Meditite", hp:HP080, type:F, retreatCost:1) {
         weakness P
@@ -862,7 +862,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             dontApplyResistance()
           }
         }
-      };
+      }
       case PELIPPER_DELTA_26:
       return evolution (this, from:"Wingull", hp:HP070, type:L, retreatCost:1) {
         weakness L
@@ -892,7 +892,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case SWAMPERT_27:
       return evolution (this, from:"Marshtomp", hp:HP120, type:F, retreatCost:2) {
         weakness G
@@ -914,7 +914,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             dontApplyResistance()
           }
         }
-      };
+      }
       case VENUSAUR_28:
       return evolution (this, from:"Ivysaur", hp:HP110, type:G, retreatCost:3) {
         weakness R
@@ -947,7 +947,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             extraPoison 1
           }
         }
-      };
+      }
       case CHARMELEON_29:
       return evolution (this, from:"Charmander", hp:HP070, type:R, retreatCost:1) {
         weakness W
@@ -968,7 +968,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case CHARMELEON_DELTA_30:
       return evolution (this, from:"Charmander", hp:HP070, type:L, retreatCost:1) {
         weakness W
@@ -987,7 +987,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             flip 1, {}, { damage 10, self }
           }
         }
-      };
+      }
       case COMBUSKEN_31:
       return evolution (this, from:"Torchic", hp:HP080, type:R, retreatCost:2) {
         weakness W
@@ -1007,7 +1007,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             flip { damage 20 }
           }
         }
-      };
+      }
       case GROVYLE_32:
       return evolution (this, from:"Treecko", hp:HP070, type:G, retreatCost:1) {
         weakness R
@@ -1026,7 +1026,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case GULPIN_33:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness P
@@ -1044,7 +1044,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case IVYSAUR_34:
       return evolution (this, from:"Bulbasaur", hp:HP080, type:G, retreatCost:1) {
         weakness P
@@ -1063,7 +1063,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case IVYSAUR_35:
       return evolution (this, from:"Bulbasaur", hp:HP070, type:G, retreatCost:1) {
         weakness R
@@ -1087,7 +1087,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             flip { damage 20 }
           }
         }
-      };
+      }
       case LAIRON_36:
       return evolution (this, from:"Aron", hp:HP080, type:M, retreatCost:2) {
         weakness R
@@ -1107,7 +1107,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             directDamage 10, self
           }
         }
-      };
+      }
       case LOMBRE_37:
       return evolution (this, from:"Lotad", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -1128,7 +1128,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case MARSHTOMP_38:
       return evolution (this, from:"Mudkip", hp:HP070, type:F, retreatCost:1) {
         weakness G
@@ -1147,7 +1147,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case NUZLEAF_39:
       return evolution (this, from:"Seedot", hp:HP080, type:D, retreatCost:1) {
         weakness F
@@ -1169,7 +1169,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case SHUPPET_40:
       return basic (this, hp:HP040, type:P, retreatCost:1) {
         weakness D
@@ -1186,7 +1186,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SKITTY_41:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1204,7 +1204,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             swiftDamage(20, opp.all.select())
           }
         }
-      };
+      }
       case WARTORTLE_42:
       return evolution (this, from:"Squirtle", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -1223,7 +1223,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case WARTORTLE_43:
       return evolution (this, from:"Squirtle", hp:HP080, type:W, retreatCost:1) {
         weakness L
@@ -1241,7 +1241,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case ARON_44:
       return basic (this, hp:HP050, type:M, retreatCost:1) {
         weakness R
@@ -1256,7 +1256,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 10*self.numberOfDamageCounters
           }
         }
-      };
+      }
       case BULBASAUR_45:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness P
@@ -1274,7 +1274,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             apply POISONED
           }
         }
-      };
+      }
       case BULBASAUR_46:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -1295,7 +1295,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case CACNEA_47:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -1312,7 +1312,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             flip { damage 20 }
           }
         }
-      };
+      }
       case CHARMANDER_48:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1333,7 +1333,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case CHARMANDER_DELTA_49:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness W
@@ -1351,7 +1351,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case DIGLETT_50:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
@@ -1370,7 +1370,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             cantRetreat defending
           }
         }
-      };
+      }
       case DUSKULL_51:
       return basic (this, hp:HP040, type:P, retreatCost:1) {
         weakness D
@@ -1390,7 +1390,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case ELECTRIKE_52:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1411,7 +1411,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             flip { damage 10 }
           }
         }
-      };
+      }
       case JIGGLYPUFF_53:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1423,7 +1423,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             applyAfterDamage ASLEEP
           }
         }
-      };
+      }
       case KRABBY_54:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness L
@@ -1435,7 +1435,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             flip { damage 10 }
           }
         }
-      };
+      }
       case LOTAD_55:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -1454,7 +1454,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MEDITITE_56:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness P
@@ -1472,7 +1472,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             putDamageCountersOnOpponentsPokemon(2)
           }
         }
-      };
+      }
       case MUDKIP_57:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness G
@@ -1496,7 +1496,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case MUDKIP_58:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness G
@@ -1514,7 +1514,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case NUMEL_59:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1526,7 +1526,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 10, self
           }
         }
-      };
+      }
       case SEEDOT_60:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -1537,7 +1537,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SPEAROW_61:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness L
@@ -1550,7 +1550,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             draw 1
           }
         }
-      };
+      }
       case SPOINK_62:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -1568,7 +1568,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SQUIRTLE_63:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -1586,7 +1586,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SQUIRTLE_64:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness L
@@ -1611,7 +1611,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             flip { applyAfterDamage PARALYZED }
           }
         }
-      };
+      }
       case TORCHIC_65:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1622,7 +1622,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             flip { damage 20 }
           }
         }
-      };
+      }
       case TORCHIC_66:
       return basic (this, hp:HP040, type:R, retreatCost:1) {
         weakness W
@@ -1634,7 +1634,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             sandAttack(thisMove)
           }
         }
-      };
+      }
       case TREECKO_67:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -1653,7 +1653,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TREECKO_DELTA_68:
       return basic (this, hp:HP040, type:P, retreatCost:1) {
         weakness R
@@ -1673,7 +1673,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             flip { applyAfterDamage CONFUSED }
           }
         }
-      };
+      }
       case WHISMUR_69:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1691,7 +1691,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case WINGULL_70:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness L
@@ -1703,7 +1703,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case BILL_S_MAINTENANCE_71:
       return copy(FireRedLeafGreen.BILL_S_MAINTENANCE_87, this)
       case CASTAWAY_72:
@@ -1719,7 +1719,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         playRequirement{
           assert my.deck : "Deck is empty"
         }
-      };
+      }
       case CELIO_S_NETWORK_73:
       return copy(FireRedLeafGreen.CELIO_S_NETWORK_88, this)
       case CESSATION_CRYSTAL_74:
@@ -1750,7 +1750,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         allowAttach { to->
           !to.EX
         }
-      };
+      }
       case CRYSTAL_BEACH_75:
       return stadium (this) {
         text "Each Special Energy card that provides 2 or more Energy (both yours and your opponent's) now provides only 1 [C] Energy. This isn't affected by any Poké-Powers or Poké-Bodies."
@@ -1765,7 +1765,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         onRemoveFromPlay{
           eff.unregister()
         }
-      };
+      }
       case CRYSTAL_SHARD_76:
       return copy(Deoxys.CRYSTAL_SHARD_85, this)
       case DOUBLE_FULL_HEAL_77:
@@ -1795,7 +1795,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-      };
+      }
       case MEMORY_BERRY_80:
       return pokemonTool (this) {
         text "The Pokémon this card is attached to can use any attack from its Basic Pokémon or its Stage 1 Evolution card. (You still have to pay for that attack's Energy cost.) If that Pokémon attacks, discard this card at the end of the turn."
@@ -1822,7 +1822,7 @@ public enum CrystalGuardians implements LogicCardInfo {
           eff.unregister()
           eff2.unregister()
         }
-      };
+      }
       case MYSTERIOUS_SHARD_81:
       return pokemonTool (this) {
         text "Prevent all effects of attacks, including damage, done to the Pokémon that Mysterious Shard is attached to by your opponent's Pokémon-ex. Discard this card at the end of your opponent's next turn."
@@ -1866,21 +1866,21 @@ public enum CrystalGuardians implements LogicCardInfo {
         allowAttach { to->
           !to.EX
         }
-      };
+      }
       case POKE_BALL_82:
       return copy(FireRedLeafGreen.POKE_BALL_95, this)
       case POKENAV_83:
-      return copy(RubySapphire.POKENAV_88, this);
+      return copy(RubySapphire.POKENAV_88, this)
       case WARP_POINT_84:
       return copy(PlasmaStorm.ESCAPE_ROPE_120, this)
       case WINDSTORM_85:
       return copy(GuardiansRising.FIELD_BLOWER_125, this)
       case ENERGY_SEARCH_86:
-      return copy(BlackWhite.ENERGY_SEARCH_93, this);
+      return copy(BlackWhite.ENERGY_SEARCH_93, this)
       case POTION_87:
       return copy (FireRedLeafGreen.POTION_101, this)
       case DOUBLE_RAINBOW_ENERGY_88:
-      return copy (Emerald.DOUBLE_RAINBOW_ENERGY_87, this);
+      return copy (Emerald.DOUBLE_RAINBOW_ENERGY_87, this)
       case AGGRON_EX_89:
       return evolution (this, from:"Lairon", hp:HP150, type:M, retreatCost:4) {
         weakness R
@@ -1935,7 +1935,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             cantUseAttack(thisMove, self)
           }
         }
-      };
+      }
       case BLAZIKEN_EX_90:
       return evolution (this, from:"Combusken", hp:HP150, type:F, retreatCost:2) {
         weakness P
@@ -1960,7 +1960,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             swiftDamage(100, defending)
           }
         }
-      };
+      }
       case DELCATTY_EX_91:
       return evolution (this, from:"Skitty", hp:HP090, type:C, retreatCost:0) {
         weakness F
@@ -2001,7 +2001,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case EXPLOUD_EX_92:
       return evolution (this, from:"Loudred", hp:HP150, type:C, retreatCost:3) {
         weakness F
@@ -2040,13 +2040,13 @@ public enum CrystalGuardians implements LogicCardInfo {
             def hasPokeBody = false
             def hasPokePower = false
             for (Ability ability : defending.getAbilities().keySet()) {
-              if (ability instanceof PokeBody) hasPokeBody = true;
-              if (ability instanceof PokePower) hasPokePower = true;
+              if (ability instanceof PokeBody) hasPokeBody = true
+              if (ability instanceof PokePower) hasPokePower = true
             }
             if (hasPokeBody || hasPokePower) damage 20
           }
         }
-      };
+      }
       case GROUDON_EX_93:
       return basic (this, hp:HP100, type:F, retreatCost:2) {
         weakness G
@@ -2076,7 +2076,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case JIRACHI_EX_94:
       return basic (this, hp:HP090, type:P, retreatCost:1) {
         pokeBody "Star Light", {
@@ -2123,7 +2123,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case KYOGRE_EX_95:
       return basic (this, hp:HP100, type:W, retreatCost:2) {
         weakness L
@@ -2147,7 +2147,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SCEPTILE_EX_DELTA_96:
       return evolution (this, from:"Grovyle", hp:HP140, type:P, retreatCost:1) {
         weakness G
@@ -2205,7 +2205,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 60+10*opp.prizeCardSet.takenCount
           }
         }
-      };
+      }
       case SHIFTRY_EX_97:
       return evolution (this, from:"Nuzleaf", hp:HP140, type:D, retreatCost:0) {
         weakness G
@@ -2241,7 +2241,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case SWAMPERT_EX_98:
       return evolution (this, from:"Marshtomp", hp:HP150, type:W, retreatCost:3) {
         weakness G
@@ -2270,7 +2270,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ALAKAZAM_STAR_99:
       return basic (this, hp:HP080, type:P, retreatCost:1) {
         weakness P
@@ -2299,7 +2299,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             bef.unregisterItself(bg().em())
           }
         }
-      };
+      }
       case CELEBI_STAR_100:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -2328,9 +2328,9 @@ public enum CrystalGuardians implements LogicCardInfo {
             directDamage count*10, opp.all.select()
           }
         }
-      };
+      }
       default:
-      return null;
+      return null
     }
   }
 

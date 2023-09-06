@@ -3,25 +3,25 @@ package tcgwars.logic.impl.gen7
 import tcgwars.logic.impl.gen3.FireRedLeafGreen
 import tcgwars.logic.impl.gen5.BlackWhite
 import tcgwars.logic.impl.gen5.PlasmaStorm
-import tcgwars.logic.impl.gen6.PrimalClash;
+import tcgwars.logic.impl.gen6.PrimalClash
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
+import static tcgwars.logic.effect.EffectType.*
 import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.*;
+import tcgwars.logic.*
 import tcgwars.logic.card.*
 import tcgwars.logic.effect.*
-import tcgwars.logic.effect.advanced.*;
+import tcgwars.logic.effect.advanced.*
 import tcgwars.logic.effect.basic.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -198,53 +198,53 @@ public enum BurningShadows implements LogicCardInfo {
   DARKNESS_ENERGY_168 ("Darkness Energy", "168", Rarity.SECRET, [BASIC_ENERGY, ENERGY]),
   FAIRY_ENERGY_169 ("Fairy Energy", "169", Rarity.SECRET, [BASIC_ENERGY, ENERGY]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   BurningShadows(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.BURNING_SHADOWS;
+    return tcgwars.logic.card.Collection.BURNING_SHADOWS
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -261,7 +261,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case METAPOD_2:
         return evolution (this, from:"Caterpie", hp:HP080, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -280,7 +280,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BUTTERFREE_3:
         return evolution (this, from:"Metapod", hp:HP120, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -306,7 +306,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ODDISH_4:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -318,7 +318,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GLOOM_5:
         return evolution (this, from:"Oddish", hp:HP080, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -337,7 +337,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VILEPLUME_6:
         return evolution (this, from:"Gloom", hp:HP140, type:GRASS, retreatCost:3) {
           weakness FIRE
@@ -366,7 +366,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TANGELA_7:
         return basic (this, hp:HP080, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -379,7 +379,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TANGROWTH_8:
         return evolution (this, from:"Tangela", hp:HP140, type:GRASS, retreatCost:4) {
           weakness FIRE
@@ -399,7 +399,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LEDYBA_9:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -412,7 +412,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LEDIAN_10:
         return evolution (this, from:"Ledyba", hp:HP090, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -431,7 +431,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HERACROSS_11:
         return basic (this, hp:HP110, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -458,7 +458,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PANSAGE_12:
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -470,7 +470,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SIMISAGE_13:
         return evolution (this, from:"Pansage", hp:HP090, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -492,7 +492,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DEWPIDER_14:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -505,7 +505,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARAQUANID_15:
         return evolution (this, from:"Dewpider", hp:HP100, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -541,7 +541,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WIMPOD_16:
         return basic (this, hp:HP070, type:GRASS, retreatCost:3) {
           weakness FIRE
@@ -561,7 +561,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOLISOPOD_GX_17:
         return evolution (this, from:"Wimpod", hp:HP210, type:GRASS, retreatCost:3) {
           weakness FIRE
@@ -595,7 +595,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHARMANDER_18:
         return basic (this, hp:HP070, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -614,7 +614,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHARMELEON_19:
         return evolution (this, from:"Charmander", hp:HP090, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -633,7 +633,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHARIZARD_GX_20:
         return evolution (this, from:"Charmeleon", hp:HP250, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -667,7 +667,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HO_OH_GX_21:
         return basic (this, hp:HP190, type:FIRE, retreatCost:2) {
           weakness LIGHTNING
@@ -698,12 +698,12 @@ public enum BurningShadows implements LogicCardInfo {
             onAttack {
               gxPerform()
               my.discard.filterByType(POKEMON_GX, POKEMON_EX).filterByType(_FIRE_).select(max: Math.min(3, my.bench.freeBenchCount)).each {
-                benchPCS(it);
+                benchPCS(it)
               }
             }
           }
 
-        };
+        }
       case PANSEAR_22:
         return basic (this, hp:HP070, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -715,7 +715,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SIMISEAR_23:
         return evolution (this, from:"Pansear", hp:HP090, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -737,7 +737,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HEATMOR_24:
         return basic (this, hp:HP110, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -757,7 +757,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SALAZZLE_GX_25:
         return evolution (this, from:"Salandit", hp:HP200, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -789,7 +789,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TURTONATOR_26:
         return copy (SunMoonPromos.TURTONATOR_SM27, this)
       case ALOLAN_VULPIX_27:
@@ -809,7 +809,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_NINETALES_28:
         return evolution (this, from:"Alolan Vulpix", hp:HP110, type:WATER, retreatCost:1) {
           weakness METAL
@@ -825,7 +825,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HORSEA_29:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -837,7 +837,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SEADRA_30:
         return evolution (this, from:"Horsea", hp:HP080, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -849,7 +849,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KINGDRA_31:
         return evolution (this, from:"Seadra", hp:HP140, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -875,7 +875,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGIKARP_32:
         return basic (this, hp:HP030, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -888,7 +888,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GYARADOS_33:
         return evolution (this, from:"Magikarp", hp:HP150, type:WATER, retreatCost:4) {
           weakness LIGHTNING
@@ -908,7 +908,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MARILL_34:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -927,7 +927,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AZUMARILL_35:
         return evolution (this, from:"Marill", hp:HP120, type:WATER, retreatCost:3) {
           weakness GRASS
@@ -954,7 +954,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PANPOUR_36:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -966,7 +966,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SIMIPOUR_37:
         return evolution (this, from:"Panpour", hp:HP090, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -988,7 +988,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BRUXISH_38:
         return basic (this, hp:HP100, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -1011,7 +1011,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TAPU_FINI_GX_39:
         return basic (this, hp:HP170, type:WATER, retreatCost:1) {
           move "Aqua Ring", {
@@ -1046,7 +1046,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIKACHU_40:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1067,7 +1067,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAICHU_41:
         return evolution (this, from:"Pikachu", hp:HP110, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1090,7 +1090,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTABUZZ_42:
         return basic (this, hp:HP080, type:LIGHTNING, retreatCost:2) {
           weakness FIGHTING
@@ -1111,7 +1111,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTIVIRE_43:
         return evolution (this, from:"Electabuzz", hp:HP140, type:LIGHTNING, retreatCost:4) {
           weakness FIGHTING
@@ -1133,7 +1133,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TYNAMO_44:
         return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1147,7 +1147,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EELEKTRIK_45:
         return evolution (this, from:"Tynamo", hp:HP090, type:LIGHTNING, retreatCost:2) {
           weakness FIGHTING
@@ -1163,7 +1163,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EELEKTROSS_46:
         return evolution (this, from:"Eelektrik", hp:HP140, type:LIGHTNING, retreatCost:3) {
           weakness FIGHTING
@@ -1188,7 +1188,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TOGEDEMARU_47:
         return basic (this, hp:HP080, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1209,7 +1209,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SLOWKING_48:
         return evolution (this, from:"Slowpoke", hp:HP120, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -1233,7 +1233,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WOBBUFFET_49:
         return basic (this, hp:HP120, type:PSYCHIC, retreatCost:3) {
           weakness PSYCHIC
@@ -1245,7 +1245,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SEVIPER_50:
         return copy (SunMoonPromos.SEVIPER_SM46, this)
       case DUSKULL_51:
@@ -1272,7 +1272,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DUSCLOPS_52:
         return evolution (this, from:"Duskull", hp:HP090, type:PSYCHIC, retreatCost:3) {
           weakness DARKNESS
@@ -1295,7 +1295,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DUSKNOIR_53:
         return evolution (this, from:"Dusclops", hp:HP150, type:PSYCHIC, retreatCost:3) {
           weakness DARKNESS
@@ -1324,7 +1324,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CROAGUNK_54:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1344,7 +1344,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TOXICROAK_55:
         return evolution (this, from:"Croagunk", hp:HP110, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -1368,7 +1368,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VENIPEDE_56:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -1388,7 +1388,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WHIRLIPEDE_57:
         return evolution (this, from:"Venipede", hp:HP090, type:PSYCHIC, retreatCost:3) {
           weakness PSYCHIC
@@ -1408,7 +1408,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SCOLIPEDE_58:
         return evolution (this, from:"Whirlipede", hp:HP160, type:PSYCHIC, retreatCost:4) {
           weakness PSYCHIC
@@ -1429,7 +1429,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ESPURR_59:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1460,7 +1460,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MEOWSTIC_60:
         return evolution (this, from:"Espurr", hp:HP090, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1479,7 +1479,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SANDYGAST_61:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:3) {
           weakness DARKNESS
@@ -1493,7 +1493,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PALOSSAND_62:
         return evolution (this, from:"Sandygast", hp:HP130, type:PSYCHIC, retreatCost:4) {
           weakness DARKNESS
@@ -1520,7 +1520,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NECROZMA_GX_63:
         return basic (this, hp:HP180, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -1560,7 +1560,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MACHAMP_GX_64:
         return evolution (this, from:"Machoke", hp:HP250, type:FIGHTING, retreatCost:3) {
           weakness PSYCHIC
@@ -1593,7 +1593,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RHYHORN_65:
         return basic (this, hp:HP080, type:FIGHTING, retreatCost:3) {
           weakness GRASS
@@ -1612,7 +1612,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RHYDON_66:
         return evolution (this, from:"Rhyhorn", hp:HP110, type:FIGHTING, retreatCost:4) {
           weakness GRASS
@@ -1632,7 +1632,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RHYPERIOR_67:
         return evolution (this, from:"Rhydon", hp:HP160, type:FIGHTING, retreatCost:4) {
           weakness GRASS
@@ -1654,7 +1654,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUNATONE_68:
         return basic (this, hp:HP090, type:FIGHTING, retreatCost:2) {
           weakness GRASS
@@ -1677,7 +1677,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SOLROCK_69:
         return basic (this, hp:HP090, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -1697,7 +1697,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RIOLU_70:
         return basic (this, hp:HP070, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -1716,7 +1716,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUCARIO_71:
         return evolution (this, from:"Riolu", hp:HP120, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -1759,7 +1759,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SAWK_72:
         return basic (this, hp:HP090, type:FIGHTING, retreatCost:2) {
           weakness PSYCHIC
@@ -1779,7 +1779,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CRABRAWLER_73:
         return basic (this, hp:HP080, type:FIGHTING, retreatCost:2) {
           weakness PSYCHIC
@@ -1791,7 +1791,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CRABOMINABLE_74:
         return copy (SunMoonPromos.CRABOMINABLE_SM47, this)
       case LYCANROC_75:
@@ -1814,7 +1814,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LYCANROC_76:
         return evolution (this, from:"Rockruff", hp:HP110, type:FIGHTING, retreatCost:2) {
           weakness GRASS
@@ -1833,7 +1833,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MUDBRAY_77:
         return basic (this, hp:HP080, type:FIGHTING, retreatCost:2) {
           weakness GRASS
@@ -1846,7 +1846,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MUDSDALE_78:
         return evolution (this, from:"Mudbray", hp:HP130, type:FIGHTING, retreatCost:3) {
           weakness GRASS
@@ -1868,7 +1868,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PASSIMIAN_79:
         return basic (this, hp:HP110, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -1891,7 +1891,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MARSHADOW_GX_80:
         return basic (this, hp:HP150, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -1918,7 +1918,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_RATTATA_81:
         return basic (this, hp:HP040, type:DARKNESS, retreatCost:1) {
           weakness FIGHTING
@@ -1937,7 +1937,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_RATICATE_82:
         return evolution (this, from:"Alolan Rattata", hp:HP120, type:DARKNESS, retreatCost:3) {
           weakness FIGHTING
@@ -1957,7 +1957,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_GRIMER_83:
         return basic (this, hp:HP080, type:DARKNESS, retreatCost:3) {
           weakness FIGHTING
@@ -1983,7 +1983,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_MUK_GX_84:
         return evolution (this, from:"Alolan Grimer", hp:HP220, type:DARKNESS, retreatCost:4) {
           weakness FIGHTING
@@ -2021,7 +2021,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SNEASEL_85:
         return basic (this, hp:HP070, type:DARKNESS, retreatCost:1) {
           weakness FIGHTING
@@ -2041,7 +2041,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WEAVILE_86:
         return evolution (this, from:"Sneasel", hp:HP090, type:DARKNESS, retreatCost:0) {
           weakness FIGHTING
@@ -2061,7 +2061,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARKRAI_87:
         return basic (this, hp:HP120, type:DARKNESS, retreatCost:2) {
           weakness FIGHTING
@@ -2083,7 +2083,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARKRAI_GX_88:
         return basic (this, hp:HP180, type:DARKNESS, retreatCost:2) {
           weakness FIGHTING
@@ -2127,7 +2127,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case INKAY_89:
         return basic (this, hp:HP060, type:DARKNESS, retreatCost:1) {
           weakness FIGHTING
@@ -2147,7 +2147,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MALAMAR_90:
         return evolution (this, from:"Inkay", hp:HP100, type:DARKNESS, retreatCost:1) {
           weakness FIGHTING
@@ -2174,7 +2174,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RALTS_91:
         return basic (this, hp:HP060, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -2188,7 +2188,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KIRLIA_92:
         return evolution (this, from:"Ralts", hp:HP080, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -2208,7 +2208,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GARDEVOIR_GX_93:
         return evolution (this, from:"Kirlia", hp:HP230, type:FAIRY, retreatCost:2) {
           weakness METAL
@@ -2243,7 +2243,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DIANCIE_94:
         return basic (this, hp:HP090, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -2269,7 +2269,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CUTIEFLY_95:
         return basic (this, hp:HP030, type:FAIRY, retreatCost:0) {
           weakness METAL
@@ -2282,7 +2282,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RIBOMBEE_96:
         return evolution (this, from:"Cutiefly", hp:HP070, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -2305,7 +2305,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MORELULL_97:
         return basic (this, hp:HP060, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -2318,7 +2318,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHIINOTIC_98:
         return evolution (this, from:"Morelull", hp:HP100, type:FAIRY, retreatCost:2) {
           weakness METAL
@@ -2340,7 +2340,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NOIVERN_GX_99:
         return evolution (this, from:"Noibat", hp:HP200, type:DRAGON, retreatCost:0) {
           weakness FAIRY
@@ -2389,7 +2389,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ZYGARDE_100:
         return copy (SunMoonPromos.ZYGARDE_SM48, this)
       case MEOWTH_101:
@@ -2404,7 +2404,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PERSIAN_102:
         return evolution (this, from:"Meowth", hp:HP090, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -2423,7 +2423,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PORYGON_103:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -2442,7 +2442,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PORYGON2_104:
         return evolution (this, from:"Porygon", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -2465,7 +2465,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PORYGON_Z_105:
         return evolution (this, from:"Porygon2", hp:HP130, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -2495,7 +2495,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HOOTHOOT_106:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -2518,7 +2518,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NOCTOWL_107:
         return evolution (this, from:"Hoothoot", hp:HP090, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -2549,7 +2549,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BOUFFALANT_108:
         return basic (this, hp:HP120, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -2574,7 +2574,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NOIBAT_109:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -2588,7 +2588,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STUFFUL_110:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -2607,7 +2607,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BEWEAR_111:
         return copy (SunMoonPromos.BEWEAR_SM49, this)
       case ACEROLA_112:
@@ -2621,7 +2621,7 @@ public enum BurningShadows implements LogicCardInfo {
             assert my.all.findAll {it.numberOfDamageCounters} : "No damaged pokemon in play"
             confirmScoopLastPokemon()
           }
-        };
+        }
       case BODYBUILDING_DUMBBELLS_113:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nThe Stage 1 Pokémon this card is attached to gets +40 HP.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -2636,7 +2636,7 @@ public enum BurningShadows implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case ESCAPE_ROPE_114:
         return copy(PlasmaStorm.ESCAPE_ROPE_120, this)
       case GUZMA_115:
@@ -2651,7 +2651,7 @@ public enum BurningShadows implements LogicCardInfo {
           playRequirement{
             assert opp.bench.notEmpty
           }
-        };
+        }
       case KIAWE_116:
         return supporter (this) {
           text "Search your deck for up to 4 [R] Energy cards and attach them to 1 of your Pokémon. Then, shuffle your deck. Your turn ends.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -2665,7 +2665,7 @@ public enum BurningShadows implements LogicCardInfo {
           playRequirement{
             assert my.deck
           }
-        };
+        }
       case LANA_117:
         return supporter (this) {
           text "Heal 50 damage from each of your Pokémon that has any [W] Energy attached to it.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -2675,7 +2675,7 @@ public enum BurningShadows implements LogicCardInfo {
           playRequirement{
             assert my.all.findAll {it.numberOfDamageCounters && it.cards.energyCount(W)}
           }
-        };
+        }
       case MOUNT_LANAKILA_118:
         return stadium (this) {
           text "The Retreat Cost of each Basic Pokémon in play (both yours and your opponent's) is [C] more.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card."
@@ -2690,7 +2690,7 @@ public enum BurningShadows implements LogicCardInfo {
           onRemoveFromPlay{
             eff.unregister()
           }
-        };
+        }
       case OLIVIA_119:
         return supporter (this) {
           text "Search your deck for up to 2 Pokémon-GX, reveal them, and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -2701,7 +2701,7 @@ public enum BurningShadows implements LogicCardInfo {
           playRequirement{
             assert my.deck
           }
-        };
+        }
       case PLUMERIA_120:
         return supporter (this) {
           text "Discard 2 cards from your hand. If you do, discard an Energy attached to 1 of your opponent's Pokémon.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -2719,7 +2719,7 @@ public enum BurningShadows implements LogicCardInfo {
             assert my.hand.getExcludedList(thisCard).size() >= 2 : "You can't play $thisCard if you can't discard 2 cards from your hand"
             assert opp.all.any{it.cards.energyCount(C)} : "You can't play $thisCard if your Opponent has no Energy attached to any of their Pokémon"
           }
-        };
+        }
       case PO_TOWN_121:
         return stadium (this) {
           text "Whenever any player plays a Pokémon from their hand to evolve 1 of their Pokémon, put 3 damage counters on that Pokémon.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card."
@@ -2739,7 +2739,7 @@ public enum BurningShadows implements LogicCardInfo {
           onRemoveFromPlay{
             eff.unregister()
           }
-        };
+        }
       case ROTOM_DEX_POKE_FINDER_MODE_122:
         return itemCard (this) {
           text "Look at the top 4 cards of your deck and put them back in any order or shuffle them into your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -2753,7 +2753,7 @@ public enum BurningShadows implements LogicCardInfo {
           playRequirement{
             assert deck
           }
-        };
+        }
       case SOPHOCLES_123:
         return supporter (this) {
           text "Discard 2 cards from your hand. If you do, draw 4 cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -2765,9 +2765,9 @@ public enum BurningShadows implements LogicCardInfo {
             assert my.hand.getExcludedList(thisCard).size() >= 2 : "You cannot play $thisCard if you can't discard 2 cards from your hand"
             assert my.deck : "You can't play $thisCard if you don't have cards in deck."
           }
-        };
+        }
       case SUPER_SCOOP_UP_124:
-        return copy(FireRedLeafGreen.SUPER_SCOOP_UP_99, this);
+        return copy(FireRedLeafGreen.SUPER_SCOOP_UP_99, this)
       case TORMENTING_SPRAY_125:
         return itemCard (this) {
           text "Choose a random card from your opponent's hand. Your opponent reveals that card. If it's a Supporter card, discard it.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -2777,7 +2777,7 @@ public enum BurningShadows implements LogicCardInfo {
           playRequirement{
             assert opp.hand
           }
-        };
+        }
       case WEAKNESS_POLICY_126:
         return copy (PrimalClash.WEAKNESS_POLICY_142, this)
       case WICKE_127:
@@ -2795,7 +2795,7 @@ public enum BurningShadows implements LogicCardInfo {
           }
           playRequirement{
           }
-        };
+        }
       case WISHFUL_BATON_128:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nIf the Pokémon this card is attached to is your Active Pokémon and is Knocked Out by damage from an opponent's attack, move up to 3 basic Energy cards from that Pokémon to 1 of your Benched Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -2813,7 +2813,7 @@ public enum BurningShadows implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case GOLISOPOD_GX_129:
         return copy (GOLISOPOD_GX_17, this)
       case TAPU_BULU_GX_130:
@@ -2849,7 +2849,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HO_OH_GX_131:
         return copy (SunMoonPromos.HO_OH_GX_SM57, this)
       case SALAZZLE_GX_132:
@@ -2891,7 +2891,7 @@ public enum BurningShadows implements LogicCardInfo {
             }
           }
 
-        };
+        }
 
       case MARSHADOW_GX_137:
         return copy (MARSHADOW_GX_80, this)
@@ -2920,9 +2920,9 @@ public enum BurningShadows implements LogicCardInfo {
       case TAPU_BULU_GX_149:
         return copy (TAPU_BULU_GX_130, this)
       case CHARIZARD_GX_150:
-        return copy (CHARIZARD_GX_20, this);
+        return copy (CHARIZARD_GX_20, this)
       case SALAZZLE_GX_151:
-        return copy (SALAZZLE_GX_25, this);
+        return copy (SALAZZLE_GX_25, this)
       case TAPU_FINI_GX_152:
         return copy (TAPU_FINI_GX_39, this)
       case NECROZMA_GX_153:
@@ -2954,13 +2954,13 @@ public enum BurningShadows implements LogicCardInfo {
       case SUPER_SCOOP_UP_166:
         return copy (SUPER_SCOOP_UP_124, this)
       case FIRE_ENERGY_167:
-        return basicEnergy (this, FIRE);
+        return basicEnergy (this, FIRE)
       case DARKNESS_ENERGY_168:
-        return basicEnergy (this, DARKNESS);
+        return basicEnergy (this, DARKNESS)
       case FAIRY_ENERGY_169:
-        return basicEnergy (this, FAIRY);
+        return basicEnergy (this, FAIRY)
       default:
-        return null;
+        return null
     }
   }
 

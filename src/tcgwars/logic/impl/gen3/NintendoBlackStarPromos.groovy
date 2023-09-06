@@ -1,39 +1,39 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
 
 import tcgwars.logic.impl.gen1.WizardsBlackStarPromosNG
-import tcgwars.logic.impl.gen2.Aquapolis;
-import tcgwars.logic.impl.gen3.UnseenForces;
-import tcgwars.logic.impl.gen3.LegendMaker;
+import tcgwars.logic.impl.gen2.Aquapolis
+import tcgwars.logic.impl.gen3.UnseenForces
+import tcgwars.logic.impl.gen3.LegendMaker
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -81,53 +81,53 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
   RAYQUAZA_EX_39 ("Rayquaza ex", "039", Rarity.PROMO, [POKEMON, BASIC, EX, _COLORLESS_]),
   MEW_40 ("Mew", "040", Rarity.PROMO, [POKEMON, BASIC, _PSYCHIC_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   NintendoBlackStarPromos(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.NINTENDO_BLACK_STAR_PROMOS;
+    return tcgwars.logic.card.Collection.NINTENDO_BLACK_STAR_PROMOS
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -151,7 +151,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case GROUDON_EX_2:
       return basic (this, hp:HP120, type:F, retreatCost:3) {
         weakness G
@@ -168,25 +168,25 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case TREECKO_3:
-        return copy(RubySapphire.TREECKO_76, this);
+        return copy(RubySapphire.TREECKO_76, this)
       case GROVYLE_4:
-        return copy(RubySapphire.GROVYLE_31, this);
+        return copy(RubySapphire.GROVYLE_31, this)
       case MUDKIP_5:
-        return copy(RubySapphire.MUDKIP_60, this);
+        return copy(RubySapphire.MUDKIP_60, this)
       case TORCHIC_6:
-        return copy(RubySapphire.TORCHIC_73, this);
+        return copy(RubySapphire.TORCHIC_73, this)
       case TREECKO_7:
-      return copy (TREECKO_3, this);
+      return copy (TREECKO_3, this)
       case TORCHIC_8:
-      return copy (TORCHIC_6, this);
+      return copy (TORCHIC_6, this)
       case COMBUSKEN_9:
-        return copy(RubySapphire.COMBUSKEN_27, this);
+        return copy(RubySapphire.COMBUSKEN_27, this)
       case MUDKIP_10:
-      return copy (MUDKIP_5, this);
+      return copy (MUDKIP_5, this)
       case MARSHTOMP_11:
-        return copy(RubySapphire.MARSHTOMP_40, this);
+        return copy(RubySapphire.MARSHTOMP_40, this)
       case PIKACHU_12:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -205,7 +205,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
             flip { applyAfterDamage(PARALYZED) }
           }
         }
-      };
+      }
       case MEOWTH_13:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -226,7 +226,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case LATIAS_14:
       return basic (this, hp:HP070, type:C, retreatCost:2) {
         weakness P
@@ -245,7 +245,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
             flip { applyAfterDamage(BURNED) }
           }
         }
-      };
+      }
       case LATIOS_15:
       return basic (this, hp:HP080, type:C, retreatCost:3) {
         weakness P
@@ -264,7 +264,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
             flip { applyAfterDamage(PARALYZED) }
           }
         }
-      };
+      }
       case TREECKO_16:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -286,7 +286,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case TORCHIC_17:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -300,7 +300,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MUDKIP_18:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -321,7 +321,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case WHISMUR_19:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -339,7 +339,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case LUDICOLO_20:
       return evolution (this, from:"Lombre", hp:HP090, type:W, retreatCost:2) {
         weakness L
@@ -361,7 +361,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
             flip 3, { damage 30 }
           }
         }
-      };
+      }
       case JIRACHI_21:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -380,11 +380,11 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
             damage 10 * defending.cards.energyCount(C)
           }
         }
-      };
+      }
       case BELDUM_22:
-        return copy(HiddenLegends.BELDUM_29, this);
+        return copy(HiddenLegends.BELDUM_29, this)
       case METANG_23:
-        return copy(HiddenLegends.METANG_21, this);
+        return copy(HiddenLegends.METANG_21, this)
       case CHIMECHO_24:
       return basic (this, hp:HP070, type:P, retreatCost:1) {
         weakness P
@@ -403,7 +403,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
             apply ASLEEP
           }
         }
-      };
+      }
       case FLYGON_25:
       return evolution (this, from:"Vibrava", hp:HP120, type:C, retreatCost:2) {
         weakness C
@@ -427,7 +427,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case TROPICAL_WIND_26:
       return itemCard (this) {
         text "Flip a coin. If heads, remove 2 damage counters from each Active Pokémon (remove 1 damage counter if a Pokémon has only 1). If tails, each Active Pokémon is now Asleep."
@@ -441,7 +441,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         playRequirement{
           assert [my.active, opp.active].any{it.numberOfDamageCounters || !it.isSPC(ASLEEP)} : "Neither Active Pokémon has any damage counters on it, and both are already asleep"
         }
-      };
+      }
       case TROPICAL_TIDAL_WAVE_27:
       return itemCard (this) {
         text "Flip a coin. If heads, discard all Trainer cards your opponent has in play. If tails, discard all Trainer cards (excluding Supporter cards) you have in play."
@@ -450,7 +450,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case CHAMPIONSHIP_ARENA_28:
       return stadium (this) {
         text "At the end of each player's turn, if that player has 8 or more cards in his or her hand, that player discards a number of cards until the player has 7 cards left in his or her hand."
@@ -468,11 +468,11 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         onRemoveFromPlay{
           eff.unregister()
         }
-      };
+      }
       case CELEBI_29:
-        return copy(WizardsBlackStarPromosNG.CELEBI_50, this);
+        return copy(WizardsBlackStarPromosNG.CELEBI_50, this)
       case SUICUNE_30:
-        return copy(Aquapolis.SUICUNE_H25, this);
+        return copy(Aquapolis.SUICUNE_H25, this)
         //TODO: Implement in Groovy.
 //      return basic (this, hp:HP070, type:W, retreatCost:1) {
 //        weakness L
@@ -523,7 +523,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ARTICUNO_EX_32:
       return basic (this, hp:HP100, type:W, retreatCost:2) {
         weakness M
@@ -555,7 +555,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
             flip { applyAfterDamage ASLEEP }
           }
         }
-      };
+      }
       case ZAPDOS_EX_33:
       return basic (this, hp:HP100, type:L, retreatCost:2) {
         weakness L
@@ -589,13 +589,13 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case TYPHLOSION_34:
-      return copy(UnseenForces.TYPHLOSION_17, this);
+      return copy(UnseenForces.TYPHLOSION_17, this)
       case PIKACHU_DELTA_35:
-      return copy(LegendMaker.PIKACHU_DELTA_93, this);
+      return copy(LegendMaker.PIKACHU_DELTA_93, this)
       case TROPICAL_TIDAL_WAVE_36:
-      return copy (TROPICAL_TIDAL_WAVE_27, this);
+      return copy (TROPICAL_TIDAL_WAVE_27, this)
       case KYOGRE_EX_37:
       return basic (this, hp:HP100, type:W, retreatCost:2) {
         weakness L
@@ -634,7 +634,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case GROUDON_EX_38:
       return basic (this, hp:HP100, type:F, retreatCost:2) {
         weakness W
@@ -674,7 +674,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case RAYQUAZA_EX_39:
       return basic (this, hp:HP100, type:C, retreatCost:1) {
         weakness C
@@ -717,7 +717,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MEW_40:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -742,9 +742,9 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
             }
           }
         }
-      };
+      }
         default:
-      return null;
+      return null
     }
   }
 }

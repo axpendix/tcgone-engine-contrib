@@ -1,34 +1,34 @@
-package tcgwars.logic.impl.gen8;
+package tcgwars.logic.impl.gen8
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -50,53 +50,53 @@ public enum ShinyStarV implements LogicCardInfo {
   RUSTED_SHIELD_13 ("Rusted Shield", "13", Rarity.HOLORARE, [TRAINER, POKEMON_TOOL, ITEM]),
   BALL_GUY_14 ("Ball Guy", "14", Rarity.ULTRARARE, [TRAINER, SUPPORTER]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   ShinyStarV(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.SHINY_STAR_V;
+    return tcgwars.logic.card.Collection.SHINY_STAR_V
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -109,7 +109,7 @@ public enum ShinyStarV implements LogicCardInfo {
           text "If you have any Stadium card in play, this Pokémon has no Retreat Cost."
           getterA GET_RETREAT_COST, BEFORE_LAST, self, { h->
             if (bg.stadiumInfoStruct?.stadiumCard?.player == self.owner) {
-              h.object = 0;
+              h.object = 0
             }
           }
         }
@@ -120,7 +120,7 @@ public enum ShinyStarV implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case RESHIRAM_2:
       return basic (this, hp:HP120, type:R, retreatCost:3) {
         weakness W
@@ -132,7 +132,7 @@ public enum ShinyStarV implements LogicCardInfo {
             damage 60, self
           }
         }
-      };
+      }
       case KYOGRE_3:
       return basic (this, hp:HP120, type:W, retreatCost:3) {
         weakness L
@@ -143,7 +143,7 @@ public enum ShinyStarV implements LogicCardInfo {
             opp.all.each { damage 80, it }
           }
         }
-      };
+      }
       case SNOM_4:
       return basic (this, hp:HP050, type:W, retreatCost:2) {
         weakness M
@@ -152,7 +152,7 @@ public enum ShinyStarV implements LogicCardInfo {
           energyCost W
           callForFamily basic:true, 1, delegate
         }
-      };
+      }
       case ROTOM_5:
       return basic (this, hp:HP080, type:L, retreatCost:1) {
         weakness F
@@ -175,7 +175,7 @@ public enum ShinyStarV implements LogicCardInfo {
             flip { applyAfterDamage PARALYZED }
           }
         }
-      };
+      }
       case KOFFING_6:
       return basic (this, hp:HP060, type:D, retreatCost:1) {
         weakness F
@@ -184,7 +184,7 @@ public enum ShinyStarV implements LogicCardInfo {
           energyCost D
           ascension delegate
         }
-      };
+      }
       case CROBAT_VMAX_7:
       return evolution (this, from:"Crobat V", hp:HP300, type:D, retreatCost:1) {
         weakness F
@@ -204,7 +204,7 @@ public enum ShinyStarV implements LogicCardInfo {
             damage 180
           }
         }
-      };
+      }
       case YVELTAL_8:
       return basic (this, hp:HP110, type:D, retreatCost:2) {
         weakness L
@@ -218,7 +218,7 @@ public enum ShinyStarV implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case DITTO_V_9:
       return basic (this, hp:HP170, type:C, retreatCost:2) {
         weakness F
@@ -245,7 +245,7 @@ public enum ShinyStarV implements LogicCardInfo {
             attachEnergyFrom basic:true, my.discard, self
           }
         }
-      };
+      }
       case DITTO_VMAX_10:
       return evolution (this, from:"Ditto V", hp:HP320, type:C, retreatCost:3) {
         weakness F
@@ -256,7 +256,7 @@ public enum ShinyStarV implements LogicCardInfo {
             metronome defending, delegate
           }
         }
-      };
+      }
       case TEAM_YELL_S_CHEERING_TOWEL_11:
       return itemCard (this) {
         text "Heal 50 damage from both Active Pokémon."
@@ -267,7 +267,7 @@ public enum ShinyStarV implements LogicCardInfo {
         playRequirement{
           assert my.active.numberOfDamageCounters || opp.active.numberOfDamageCounters : "Neither Active Pokémon is damaged"
         }
-      };
+      }
       case RUSTED_SWORD_12:
       return pokemonTool (this) {
         text "The attacks of the Zacian V this card is attached to do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
@@ -288,7 +288,7 @@ public enum ShinyStarV implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-      };
+      }
       case RUSTED_SHIELD_13:
       return pokemonTool (this) {
         text "The Zamazenta V this card is attached to gets +70 HP."
@@ -302,7 +302,7 @@ public enum ShinyStarV implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-      };
+      }
       case BALL_GUY_14:
       return supporter (this) {
         text "Search your deck for up to 3 different Item cards that have the word 'Ball' in their name " +
@@ -326,9 +326,9 @@ public enum ShinyStarV implements LogicCardInfo {
         playRequirement{
           assert my.deck : "Deck is empty"
         }
-      };
+      }
       default:
-      return null;
+      return null
     }
   }
 }

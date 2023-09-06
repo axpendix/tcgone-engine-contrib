@@ -1,29 +1,29 @@
 package tcgwars.logic.impl.gen7
 
 import tcgwars.logic.effect.getter.GetterEffect
-import tcgwars.logic.groovy.TcgStatics;
+import tcgwars.logic.groovy.TcgStatics
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
+import tcgwars.logic.*
+import tcgwars.logic.card.*
 import tcgwars.logic.card.energy.*
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
 import tcgwars.logic.effect.basic.*
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -265,53 +265,53 @@ public enum UnbrokenBonds implements LogicCardInfo {
   POKEGEAR_3_0_233 ("Pokégear 3.0", "233", Rarity.SECRET, [TRAINER, ITEM]),
   TRIPLE_ACCELERATION_ENERGY_234 ("Triple Acceleration Energy", "234", Rarity.SECRET, [ENERGY, SPECIAL_ENERGY]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   UnbrokenBonds(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.UNBROKEN_BONDS;
+    return tcgwars.logic.card.Collection.UNBROKEN_BONDS
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -368,7 +368,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CATERPIE_2:
         return basic (this, hp:HP040, type:G, retreatCost:1) {
           weakness R
@@ -392,7 +392,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case METAPOD_3:
         return evolution (this, from:"Caterpie", hp:HP070, type:G, retreatCost:3) {
           weakness R
@@ -416,7 +416,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BUTTERFREE_4:
         return evolution (this, from:"Metapod", hp:HP130, type:G, retreatCost:1) {
           weakness R
@@ -441,7 +441,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ODDISH_5:
         return basic (this, hp:HP050, type:G, retreatCost:1) {
           weakness R
@@ -460,7 +460,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ODDISH_6:
         return basic (this, hp:HP060, type:G, retreatCost:1) {
           weakness R
@@ -472,7 +472,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GLOOM_7:
         return evolution (this, from:"Oddish", hp:HP080, type:G, retreatCost:2) {
           weakness R
@@ -501,7 +501,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VILEPLUME_8:
         return evolution (this, from:"Gloom", hp:HP140, type:G, retreatCost:3) {
           weakness R
@@ -524,7 +524,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VENONAT_9:
         return basic (this, hp:HP060, type:G, retreatCost:1) {
           weakness R
@@ -547,7 +547,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VENONAT_10:
         return basic (this, hp:HP060, type:G, retreatCost:1) {
           weakness R
@@ -560,7 +560,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VENOMOTH_11:
         return evolution (this, from:"Venonat", hp:HP090, type:G, retreatCost:0) {
           weakness R
@@ -584,7 +584,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VENOMOTH_GX_12:
         return evolution (this, from:"Venonat", hp:HP200, type:G, retreatCost:1) {
           weakness R
@@ -619,7 +619,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BELLSPROUT_13:
         return basic (this, hp:HP050, type:G, retreatCost:1) {
           weakness R
@@ -631,7 +631,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WEEPINBELL_14:
         return evolution (this, from:"Bellsprout", hp:HP080, type:G, retreatCost:2) {
           weakness R
@@ -651,7 +651,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VICTREEBEL_15:
         return evolution (this, from:"Weepinbell", hp:HP140, type:G, retreatCost:2) {
           weakness R
@@ -687,7 +687,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TANGELA_16:
         return basic (this, hp:HP080, type:G, retreatCost:2) {
           weakness R
@@ -709,7 +709,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TANGROWTH_17:
         return evolution (this, from:"Tangela", hp:HP130, type:G, retreatCost:3) {
           weakness R
@@ -732,7 +732,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GRUBBIN_18:
         return basic (this, hp:HP060, type:G, retreatCost:2) {
           weakness R
@@ -755,7 +755,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KARTANA_19:
         return basic (this, hp:HP070, type:G, retreatCost:0) {
           weakness R
@@ -779,7 +779,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RESHIRAM_CHARIZARD_GX_20:
         return basic (this, hp:HP270, type:R, retreatCost:3) {
           weakness W
@@ -812,7 +812,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GROWLITHE_21:
         return basic (this, hp:HP080, type:R, retreatCost:2) {
           weakness W
@@ -831,7 +831,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARCANINE_22:
         return evolution (this, from:"Growlithe", hp:HP140, type:R, retreatCost:4) {
           weakness W
@@ -858,7 +858,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARUMAKA_23:
         return basic (this, hp:HP080, type:R, retreatCost:2) {
           weakness W
@@ -881,7 +881,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARMANITAN_24:
         return evolution (this, from:"Darumaka", hp:HP130, type:R, retreatCost:3) {
           weakness W
@@ -905,7 +905,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VOLCANION_25:
         return basic (this, hp:HP120, type:R, retreatCost:2) {
           weakness W
@@ -935,7 +935,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LITTEN_26:
         return basic (this, hp:HP050, type:R, retreatCost:1) {
           weakness W
@@ -947,7 +947,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LITTEN_27:
         return basic (this, hp:HP060, type:R, retreatCost:1) {
           weakness W
@@ -971,7 +971,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TORRACAT_28:
         return evolution (this, from:"Litten", hp:HP080, type:R, retreatCost:1) {
           weakness W
@@ -984,7 +984,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case INCINEROAR_29:
         return evolution (this, from:"Torracat", hp:HP160, type:R, retreatCost:2) {
           weakness W
@@ -1013,7 +1013,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SALANDIT_30:
         return basic (this, hp:HP070, type:R, retreatCost:1) {
           weakness W
@@ -1032,7 +1032,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SALAZZLE_31:
         return evolution (this, from:"Salandit", hp:HP100, type:R, retreatCost:1) {
           weakness W
@@ -1054,7 +1054,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BLACEPHALON_32:
         return basic (this, hp:HP120, type:R, retreatCost:2) {
           weakness W
@@ -1082,7 +1082,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SQUIRTLE_33:
         return basic (this, hp:HP060, type:W, retreatCost:1) {
           weakness G
@@ -1095,7 +1095,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WARTORTLE_34:
         return evolution (this, from:"Squirtle", hp:HP070, type:W, retreatCost:2) {
           weakness G
@@ -1119,7 +1119,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BLASTOISE_GX_35:
         return evolution (this, from:"Wartortle", hp:HP240, type:W, retreatCost:3) {
           weakness G
@@ -1171,7 +1171,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case POLIWAG_36:
         return basic (this, hp:HP050, type:W, retreatCost:1) {
           weakness G
@@ -1192,7 +1192,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case POLIWAG_37:
         return basic (this, hp:HP060, type:W, retreatCost:1) {
           weakness G
@@ -1202,7 +1202,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             callForFamily(basic:true,1,delegate)
           }
 
-        };
+        }
       case POLIWHIRL_38:
         return evolution (this, from:"Poliwag", hp:HP090, type:W, retreatCost:2) {
           weakness G
@@ -1222,7 +1222,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case POLIWRATH_39:
         return evolution (this, from:"Poliwhirl", hp:HP150, type:W, retreatCost:3) {
           weakness G
@@ -1244,7 +1244,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TENTACOOL_40:
         return basic (this, hp:HP060, type:W, retreatCost:1) {
           weakness G
@@ -1259,7 +1259,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TENTACRUEL_41:
         return evolution (this, from:"Tentacool", hp:HP100, type:W, retreatCost:1) {
           weakness G
@@ -1271,7 +1271,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               assertOppAll(info: "with Energy attached to them", {it.cards.filterByType(ENERGY)})
             }
             onAttack {
-              def bothAll = new PcsList();
+              def bothAll = new PcsList()
               opp.all.each{
                 bothAll.add(it)
               }
@@ -1290,7 +1290,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SLOWPOKE_42:
         return basic (this, hp:HP070, type:W, retreatCost:2) {
           weakness G
@@ -1309,7 +1309,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SLOWBRO_43:
         return evolution (this, from:"Slowpoke", hp:HP120, type:W, retreatCost:2) {
           weakness G
@@ -1328,7 +1328,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SEEL_44:
         return basic (this, hp:HP080, type:W, retreatCost:2) {
           weakness G
@@ -1340,7 +1340,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DEWGONG_45:
         return evolution (this, from:"Seel", hp:HP120, type:W, retreatCost:2) {
           weakness M
@@ -1360,7 +1360,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KRABBY_46:
         return basic (this, hp:HP070, type:W, retreatCost:1) {
           weakness G
@@ -1379,7 +1379,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KINGLER_47:
         return evolution (this, from:"Krabby", hp:HP130, type:W, retreatCost:4) {
           weakness G
@@ -1399,7 +1399,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOLDEEN_48:
         return basic (this, hp:HP060, type:W, retreatCost:1) {
           weakness G
@@ -1412,7 +1412,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SEAKING_49:
         return evolution (this, from:"Goldeen", hp:HP100, type:W, retreatCost:1) {
           weakness G
@@ -1424,7 +1424,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KYUREM_50:
         return basic (this, hp:HP130, type:W, retreatCost:2) {
           weakness M
@@ -1449,7 +1449,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FROAKIE_51:
         return basic (this, hp:HP060, type:W, retreatCost:1) {
           weakness G
@@ -1462,7 +1462,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FROGADIER_52:
         return evolution (this, from:"Froakie", hp:HP080, type:W, retreatCost:1) {
           weakness G
@@ -1491,7 +1491,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PYUKUMUKU_53:
         return basic (this, hp:HP070, type:W, retreatCost:1) {
           weakness G
@@ -1509,7 +1509,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIKACHU_54:
         return basic (this, hp:HP070, type:L, retreatCost:1) {
           weakness F
@@ -1522,7 +1522,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAICHU_55:
         return evolution (this, from:"Pikachu", hp:HP120, type:L, retreatCost:2) {
           weakness F
@@ -1549,7 +1549,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STUNFISK_56:
         return basic (this, hp:HP110, type:L, retreatCost:3) {
           weakness F
@@ -1572,7 +1572,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DEDENNE_GX_57:
         return basic (this, hp:HP160, type:L, retreatCost:1) {
           weakness F
@@ -1609,7 +1609,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHARJABUG_58:
         return evolution (this, from:"Grubbin", hp:HP080, type:L, retreatCost:3) {
           weakness F
@@ -1650,7 +1650,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VIKAVOLT_59:
         return evolution (this, from:"Charjabug", hp:HP150, type:L, retreatCost:2) {
           weakness F
@@ -1674,7 +1674,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ZERAORA_60:
         return basic (this, hp:HP120, type:L, retreatCost:1) {
           weakness F
@@ -1695,7 +1695,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MUK_ALOLAN_MUK_GX_61:
         return basic (this, hp:HP270, type:P, retreatCost:4) {
           weakness P
@@ -1728,7 +1728,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EKANS_62:
         return basic (this, hp:HP070, type:P, retreatCost:2) {
           weakness P
@@ -1749,7 +1749,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARBOK_63:
         return evolution (this, from:"Ekans", hp:HP120, type:P, retreatCost:2) {
           weakness P
@@ -1772,7 +1772,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ZUBAT_64:
         return basic (this, hp:HP050, type:P, retreatCost:1) {
           weakness L
@@ -1793,7 +1793,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOLBAT_65:
         return evolution (this, from:"Zubat", hp:HP080, type:P, retreatCost:1) {
           weakness L
@@ -1814,7 +1814,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CROBAT_66:
         return evolution (this, from:"Golbat", hp:HP130, type:P, retreatCost:0) {
           weakness L
@@ -1840,7 +1840,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GASTLY_67:
         return basic (this, hp:HP040, type:P, retreatCost:1) {
           weakness D
@@ -1854,7 +1854,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
                   tryWithDeterministicCurrentThreadPlayerType(self.owner) {
                     def count = Math.min(my.bench.freeBenchCount, 2)
                     my.deck.search(max:count, "When this Pokémon is Knocked Out, search your deck for up to 2 Haunter and put them onto your Bench. Then, shuffle your deck.", {it.name=="Haunter"}).each {
-                      my.deck.remove(it);
+                      my.deck.remove(it)
                       benchPCS(it)
                     }
                     shuffleDeck()
@@ -1871,7 +1871,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GASTLY_68:
         return basic (this, hp:HP060, type:P, retreatCost:1) {
           weakness D
@@ -1884,7 +1884,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HAUNTER_69:
         return evolution (this, from:"Gastly", hp:HP070, type:P, retreatCost:1) {
           weakness D
@@ -1898,7 +1898,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GENGAR_70:
         return evolution (this, from:"Haunter", hp:HP130, type:P, retreatCost:0) {
           weakness D
@@ -1927,7 +1927,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DROWZEE_71:
         return basic (this, hp:HP070, type:P, retreatCost:2) {
           weakness P
@@ -1946,7 +1946,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HYPNO_72:
         return evolution (this, from:"Drowzee", hp:HP110, type:P, retreatCost:2) {
           weakness P
@@ -1972,7 +1972,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KOFFING_73:
         return basic (this, hp:HP070, type:P, retreatCost:2) {
           weakness P
@@ -1985,7 +1985,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WEEZING_74:
         return evolution (this, from:"Koffing", hp:HP120, type:P, retreatCost:3) {
           weakness P
@@ -2014,7 +2014,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MEWTWO_75:
         return basic (this, hp:HP120, type:P, retreatCost:2) {
           weakness P
@@ -2035,7 +2035,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MEW_76:
         return basic (this, hp:HP060, type:P, retreatCost:1) {
           weakness P
@@ -2058,7 +2058,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MISDREAVUS_77:
         return basic (this, hp:HP060, type:P, retreatCost:1) {
           weakness D
@@ -2071,7 +2071,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MISMAGIUS_78:
         return evolution (this, from:"Misdreavus", hp:HP110, type:P, retreatCost:1) {
           weakness D
@@ -2096,7 +2096,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ESPURR_79:
         return basic (this, hp:HP060, type:P, retreatCost:1) {
           weakness P
@@ -2123,7 +2123,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MEOWSTIC_80:
         return evolution (this, from:"Espurr", hp:HP090, type:P, retreatCost:1) {
           weakness P
@@ -2166,7 +2166,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MARSHADOW_81:
         return basic (this, hp:HP080, type:P, retreatCost:1) {
           weakness D
@@ -2192,7 +2192,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MARSHADOW_MACHAMP_GX_82:
         return basic (this, hp:HP270, type:F, retreatCost:3) {
           weakness P
@@ -2236,7 +2236,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SANDSHREW_83:
         return basic (this, hp:HP070, type:F, retreatCost:1) {
           weakness G
@@ -2255,7 +2255,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SANDSLASH_84:
         return evolution (this, from:"Sandshrew", hp:HP110, type:F, retreatCost:1) {
           weakness G
@@ -2275,7 +2275,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DIGLETT_85:
         return basic (this, hp:HP050, type:F, retreatCost:1) {
           weakness G
@@ -2291,7 +2291,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DUGTRIO_86:
         return evolution (this, from:"Diglett", hp:HP090, type:F, retreatCost:1) {
           weakness G
@@ -2306,7 +2306,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GEODUDE_87:
         return basic (this, hp:HP070, type:F, retreatCost:2) {
           weakness G
@@ -2325,7 +2325,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GRAVELER_88:
         return evolution (this, from:"Geodude", hp:HP110, type:F, retreatCost:4) {
           weakness G
@@ -2345,7 +2345,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOLEM_89:
         return evolution (this, from:"Graveler", hp:HP180, type:F, retreatCost:4) {
           weakness G
@@ -2365,7 +2365,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CUBONE_90:
         return basic (this, hp:HP060, type:F, retreatCost:1) {
           weakness G
@@ -2384,7 +2384,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAROWAK_91:
         return evolution (this, from:"Cubone", hp:HP110, type:F, retreatCost:2) {
           weakness G
@@ -2404,7 +2404,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RHYHORN_92:
         return basic (this, hp:HP080, type:F, retreatCost:2) {
           weakness G
@@ -2417,7 +2417,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RHYHORN_93:
         return basic (this, hp:HP090, type:F, retreatCost:4) {
           weakness G
@@ -2436,7 +2436,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RHYDON_94:
         return evolution (this, from:"Rhyhorn", hp:HP110, type:F, retreatCost:4) {
           weakness G
@@ -2462,7 +2462,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RHYPERIOR_95:
         return evolution (this, from:"Rhydon", hp:HP170, type:F, retreatCost:4) {
           weakness G
@@ -2485,7 +2485,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WOOPER_96:
         return basic (this, hp:HP070, type:F, retreatCost:1) {
           weakness G
@@ -2497,7 +2497,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case QUAGSIRE_97:
         return evolution (this, from:"Wooper", hp:HP120, type:F, retreatCost:2) {
           weakness G
@@ -2516,7 +2516,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GLIGAR_98:
         return basic (this, hp:HP060, type:F, retreatCost:2) {
           weakness G
@@ -2538,7 +2538,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GLISCOR_99:
         return evolution (this, from:"Gligar", hp:HP110, type:F, retreatCost:1) {
           weakness G
@@ -2561,7 +2561,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TYROGUE_100:
         return basic (this, hp:HP060, type:F, retreatCost:0) {
           bwAbility "Bratty Kick", {
@@ -2576,7 +2576,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HITMONTOP_101:
         return basic (this, hp:HP090, type:F, retreatCost:1) {
           weakness P
@@ -2598,7 +2598,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RIOLU_102:
         return basic (this, hp:HP070, type:F, retreatCost:1) {
           weakness P
@@ -2611,7 +2611,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LANDORUS_103:
         return basic (this, hp:HP120, type:F, retreatCost:1) {
           weakness G
@@ -2633,7 +2633,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CRABRAWLER_104:
         return basic (this, hp:HP080, type:F, retreatCost:2) {
           weakness P
@@ -2653,7 +2653,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CRABOMINABLE_105:
         return evolution (this, from:"Crabrawler", hp:HP140, type:F, retreatCost:4) {
           weakness P
@@ -2674,7 +2674,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STAKATAKA_106:
         return basic (this, hp:HP120, type:F, retreatCost:4) {
           weakness G
@@ -2693,7 +2693,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GRENINJA_ZOROARK_GX_107:
         return basic (this, hp:HP250, type:D, retreatCost:2) {
           weakness F
@@ -2729,7 +2729,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MURKROW_108:
         return basic (this, hp:HP070, type:D, retreatCost:1) {
           weakness L
@@ -2742,7 +2742,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HONCHKROW_GX_109:
         return evolution (this, from:"Murkrow", hp:HP210, type:D, retreatCost:2) {
           weakness L
@@ -2785,7 +2785,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CARVANHA_110:
         return basic (this, hp:HP060, type:D, retreatCost:1) {
           weakness F
@@ -2798,7 +2798,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHARPEDO_111:
         return evolution (this, from:"Carvanha", hp:HP110, type:D, retreatCost:1) {
           weakness F
@@ -2825,7 +2825,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SPIRITOMB_112:
         return basic (this, hp:HP060, type:D, retreatCost:1) {
           bwAbility "Building Spite", {
@@ -2844,7 +2844,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SANDILE_113:
         return basic (this, hp:HP060, type:D, retreatCost:2) {
           weakness F
@@ -2868,7 +2868,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SANDILE_114:
         return basic (this, hp:HP070, type:D, retreatCost:2) {
           weakness F
@@ -2889,7 +2889,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KROKOROK_115:
         return evolution (this, from:"Sandile", hp:HP090, type:D, retreatCost:2) {
           weakness F
@@ -2910,7 +2910,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KROOKODILE_116:
         return evolution (this, from:"Krokorok", hp:HP150, type:D, retreatCost:3) {
           weakness F
@@ -2931,7 +2931,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GRENINJA_117:
         return evolution (this, from:"Frogadier", hp:HP130, type:D, retreatCost:0) {
           weakness F
@@ -2949,7 +2949,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case INKAY_118:
         return basic (this, hp:HP060, type:D, retreatCost:1) {
           weakness F
@@ -2962,7 +2962,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MALAMAR_119:
         return evolution (this, from:"Inkay", hp:HP100, type:D, retreatCost:1) {
           weakness F
@@ -3005,7 +3005,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUCARIO_MELMETAL_GX_120:
         return basic (this, hp:HP260, type:M, retreatCost:3) {
           weakness R
@@ -3049,7 +3049,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_DIGLETT_121:
         return basic (this, hp:HP050, type:M, retreatCost:1) {
           weakness R
@@ -3061,7 +3061,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_DUGTRIO_122:
         return evolution (this, from:"Alolan Diglett", hp:HP080, type:M, retreatCost:1) {
           weakness R
@@ -3087,7 +3087,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARON_123:
         return basic (this, hp:HP060, type:M, retreatCost:1) {
           weakness R
@@ -3107,7 +3107,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LAIRON_124:
         return evolution (this, from:"Aron", hp:HP090, type:M, retreatCost:3) {
           weakness R
@@ -3127,7 +3127,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AGGRON_125:
         return evolution (this, from:"Lairon", hp:HP170, type:M, retreatCost:4) {
           weakness R
@@ -3152,7 +3152,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUCARIO_126:
         return evolution (this, from:"Riolu", hp:HP130, type:M, retreatCost:2) {
           weakness R
@@ -3173,7 +3173,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GENESECT_127:
         return basic (this, hp:HP130, type:M, retreatCost:2) {
           weakness R
@@ -3193,7 +3193,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MELTAN_128:
         return basic (this, hp:HP070, type:M, retreatCost:1) {
           weakness R
@@ -3207,7 +3207,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MELMETAL_129:
         return evolution (this, from:"Meltan", hp:HP150, type:M, retreatCost:4) {
           weakness R
@@ -3230,7 +3230,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GARDEVOIR_SYLVEON_GX_130:
         return basic (this, hp:HP260, type:Y, retreatCost:2) {
           weakness M
@@ -3257,13 +3257,13 @@ public enum UnbrokenBonds implements LogicCardInfo {
               afterDamage {
                 while(1){
                   def pl=(my.all.findAll {it.cards.energyCount(C)})
-                  if(!pl) break;
+                  if(!pl) break
                   def src =pl.select("source for energy (cancel to stop)", false)
-                  if(!src) break;
+                  if(!src) break
                   def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
 
                   def tar=my.all.select("Target for energy (cancel to stop)", false)
-                  if(!tar) break;
+                  if(!tar) break
                   energySwitch(src, tar, card)
                 }
               }
@@ -3285,7 +3285,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CLEFFA_131:
         return basic (this, hp:HP060, type:Y, retreatCost:0) {
           bwAbility "Excitable Draw", {
@@ -3302,7 +3302,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CLEFAIRY_132:
         return basic (this, hp:HP060, type:Y, retreatCost:1) {
           weakness M
@@ -3315,7 +3315,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CLEFABLE_133:
         return evolution (this, from:"Clefairy", hp:HP110, type:Y, retreatCost:1) {
           weakness M
@@ -3328,7 +3328,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case JIGGLYPUFF_134:
         return basic (this, hp:HP070, type:Y, retreatCost:2) {
           weakness M
@@ -3341,7 +3341,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WIGGLYTUFF_135:
         return evolution (this, from:"Jigglypuff", hp:HP110, type:Y, retreatCost:1) {
           weakness M
@@ -3365,7 +3365,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TOGEPI_136:
         return basic (this, hp:HP050, type:Y, retreatCost:1) {
           weakness M
@@ -3379,7 +3379,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TOGETIC_137:
         return evolution (this, from:"Togepi", hp:HP080, type:Y, retreatCost:1) {
           weakness M
@@ -3403,7 +3403,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TOGEKISS_138:
         return evolution (this, from:"Togetic", hp:HP140, type:Y, retreatCost:1) {
           weakness M
@@ -3424,7 +3424,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case COTTONEE_139:
         return basic (this, hp:HP050, type:Y, retreatCost:1) {
           weakness M
@@ -3438,7 +3438,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WHIMSICOTT_GX_140:
         return evolution (this, from:"Cottonee", hp:HP190, type:Y, retreatCost:1) {
           weakness M
@@ -3476,7 +3476,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SPRITZEE_141:
         return basic (this, hp:HP060, type:Y, retreatCost:1) {
           weakness M
@@ -3499,7 +3499,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AROMATISSE_142:
         return evolution (this, from:"Spritzee", hp:HP090, type:Y, retreatCost:1) {
           weakness M
@@ -3532,7 +3532,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RATTATA_143:
         return basic (this, hp:HP030, type:C, retreatCost:1) {
           weakness F
@@ -3544,7 +3544,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RATICATE_144:
         return evolution (this, from:"Rattata", hp:HP070, type:C, retreatCost:1) {
           weakness F
@@ -3559,7 +3559,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SPEAROW_145:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
           weakness L
@@ -3579,7 +3579,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FEAROW_146:
         return evolution (this, from:"Spearow", hp:HP100, type:C, retreatCost:1) {
           weakness L
@@ -3593,7 +3593,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MEOWTH_147:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
           weakness F
@@ -3616,7 +3616,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PERSIAN_148:
         return evolution (this, from:"Meowth", hp:HP100, type:C, retreatCost:0) {
           weakness F
@@ -3643,7 +3643,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PERSIAN_GX_149:
         return evolution (this, from:"Meowth", hp:HP200, type:C, retreatCost:2) {
           weakness F
@@ -3681,7 +3681,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DODUO_150:
         return basic (this, hp:HP070, type:C, retreatCost:1) {
           weakness L
@@ -3701,7 +3701,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DODRIO_151:
         return evolution (this, from:"Doduo", hp:HP100, type:C, retreatCost:0) {
           weakness L
@@ -3722,7 +3722,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LICKITUNG_152:
         return basic (this, hp:HP090, type:C, retreatCost:2) {
           weakness F
@@ -3735,7 +3735,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LICKILICKY_153:
         return evolution (this, from:"Lickitung", hp:HP130, type:C, retreatCost:4) {
           weakness F
@@ -3760,7 +3760,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PORYGON_154:
         return basic (this, hp:HP050, type:C, retreatCost:1) {
           weakness F
@@ -3783,7 +3783,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PORYGON_155:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
           weakness F
@@ -3802,7 +3802,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PORYGON2_156:
         return evolution (this, from:"Porygon", hp:HP080, type:C, retreatCost:2) {
           weakness F
@@ -3821,7 +3821,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PORYGON_Z_157:
         return evolution (this, from:"Porygon2", hp:HP130, type:C, retreatCost:2) {
           weakness F
@@ -3844,7 +3844,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SNORLAX_158:
         return basic (this, hp:HP150, type:C, retreatCost:4) {
           weakness F
@@ -3870,7 +3870,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GLAMEOW_159:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
           weakness F
@@ -3893,7 +3893,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PURUGLY_160:
         return evolution (this, from:"Glameow", hp:HP120, type:C, retreatCost:3) {
           weakness F
@@ -3914,7 +3914,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HAPPINY_161:
         return basic (this, hp:HP060, type:C, retreatCost:0) {
           bwAbility "Playhouse Heal", {
@@ -3930,7 +3930,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHATOT_162:
         return basic (this, hp:HP070, type:C, retreatCost:1) {
           weakness L
@@ -3953,7 +3953,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CELESTEELA_GX_163:
         return basic (this, hp:HP200, type:C, retreatCost:4) {
           weakness L
@@ -4005,7 +4005,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BEAST_BRINGER_164:
         return pokemonTool (this) {
           text "If you have exactly 6 Prize cards remaining, and if your opponent's Active Pokémon-GX or Pokémon-EX is Knocked Out by damage from an attack of the Ultra Beast this card is attached to, take 1 more Prize card."
@@ -4029,7 +4029,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             eff1.unregister()
             eff2.unregister()
           }
-        };
+        }
       case CHIP_CHIP_ICE_AXE_165:
         return itemCard (this) {
           text "Look at the top 3 cards of your opponent's deck and choose 1 of them. Your opponent shuffles the other cards back into their deck. Then, put the card you chose on top of their deck."
@@ -4042,7 +4042,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           playRequirement{
             assert opp.deck
           }
-        };
+        }
         case DEVOLUTION_SPRAY_Z_166:
         return itemCard (this) {
           text "Devolve 1 of your evolved Pokémon by shuffling any number of Evolution cards on it into your deck. (That Pokémon can't evolve this turn.)"
@@ -4059,7 +4059,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           playRequirement{
             assertMyAll(isStage: EVOLVED)
           }
-        };
+        }
       case DUSK_STONE_167:
         return itemCard (this) {
           text "Search your deck for a Mismagius, Honchkrow, Chandelure, or Aegislash, including Pokémon-GX, that evolves from 1 of your Pokémon in play, and put it onto that Pokémon to evolve it. Then, shuffle your deck. You can use this card during your first turn or on a Pokémon that was put into play this turn."
@@ -4076,7 +4076,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
               ['Misdreavus', 'Murkrow', 'Lampent', 'Doublade'].contains(it.name)
             })
           }
-        };
+        }
       case DUST_ISLAND_168:
         return stadium (this) {
           text "Whenever either player switches their Poisoned Active Pokémon with 1 of their Benched Pokémon with the effect of a Trainer card, the new Active Pokémon is now affected by that Special Condition."
@@ -4100,7 +4100,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           onRemoveFromPlay{
             eff.unregister()
           }
-        };
+        }
       case ELECTROMAGNETIC_RADAR_169:
         return itemCard (this) {
           text "You can play this card only if you discard 2 other cards from your hand." +
@@ -4114,7 +4114,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             assert my.hand.getExcludedList(thisCard).size() >= 2
             assert deck
           }
-        };
+        }
       case ENERGY_SPINNER_170:
         return itemCard (this) {
           text "Search your deck for a basic Energy card, reveal it, and put it into your hand. If you go second and it's your first turn, search for up to 3 basic Energy cards instead of 1. Then, shuffle your deck."
@@ -4125,7 +4125,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           playRequirement{
             assert my.deck
           }
-        };
+        }
       case FAIRY_CHARM_ABILITY_171:
         return pokemonTool (this) {
           text "Prevent all damage done to the [Y] Pokémon this card is attached to by attacks from your opponent's Pokémon-GX and Pokémon-EX that have Abilities."
@@ -4145,7 +4145,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case FAIRY_CHARM_LIGHTNING_172:
         return pokemonTool (this) {
           text "Prevent all damage done to the [Y] Pokémon this card is attached to by attacks from your opponent's [L] Pokémon-GX and [L] Pokémon-EX."
@@ -4165,7 +4165,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case FIRE_CRYSTAL_173:
         return itemCard (this) {
           text "Put 3 [R] Energy cards from your discard pile into your hand."
@@ -4175,7 +4175,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           playRequirement{
             assert my.discard.filterByEnergyType(R)
           }
-        };
+        }
       case GIOVANNI_S_EXILE_174:
         return supporter (this) {
           text "Discard up to 2 of your Benched Pokémon that have no damage counters on them and all cards attached to them."
@@ -4202,7 +4202,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           playRequirement{
             assert list() : "You got no benched pokemon with no damage counters"
           }
-        };
+        }
       case GREEN_S_EXPLORATION_175:
         return supporter (this) {
           text "You can play this card only if you have no Pokémon with Abilities in play." +
@@ -4214,7 +4214,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           playRequirement{
             assert !my.all.find{it.hasModernAbility()}
           }
-        };
+        }
       case JANINE_176:
         return supporter (this) {
           text "Look at the top 4 cards of your deck and put 2 of them into your hand. Shuffle the other cards back into your deck."
@@ -4226,7 +4226,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           playRequirement{
             assert my.deck
           }
-        };
+        }
       case KOGA_S_TRAP_177:
         return supporter (this) {
           text "Your opponent's Active Pokémon is now Confused and Poisoned."
@@ -4247,7 +4247,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             }
             assert !defendingConfused || !defendingPoisoned || extraPoisonCount : "Your opponent's Active Pokémon is already Confused and Poisoned"
           }
-        };
+        }
       case LT_SURGE_S_STRATEGY_178:
         return supporter (this) {
           text "You can play this card only if you have more Prize cards remaining than your opponent." +
@@ -4269,7 +4269,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           playRequirement{
             assert my.prizeCardSet.size()>opp.prizeCardSet.size()
           }
-        };
+        }
       case MARTIAL_ARTS_DOJO_179:
         return stadium (this) {
           text "The attacks of non-Ultra Beast Pokémon that have any basic [F] Energy attached to them (both yours and your opponent's) do 10 more damage to the opponent's Active Pokémon (before applying Weakness and Resistance). If the attacking player has more Prize cards remaining than their opponent, those attacks do 40 more damage instead."
@@ -4290,7 +4290,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           onRemoveFromPlay{
             eff.unregister()
           }
-        };
+        }
       case METAL_CORE_BARRIER_180:
         return pokemonTool (this) {
           text "If this card is attached to 1 of your Pokémon, discard it at the end of your opponent's turn." +
@@ -4321,7 +4321,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             eff1.unregister()
             eff2.unregister()
           }
-        };
+        }
       case MOLAYNE_181:
         return supporter (this) {
           text "You can play this card only if you discard 2 [M] Energy cards from your hand." +
@@ -4335,7 +4335,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             assert my.hand.filterByEnergyType(M).size()>=2:"Not enough [M] energy in hand"
             assert my.discard.filterByType(TRAINER):"No Trainer in discard"
           }
-        };
+        }
       case POKEGEAR_3_0_182:
         return itemCard (this) {
           text "Look at the top 7 cards of your deck. You may reveal a Supporter card you find there and put it into your hand. Shuffle the other cards back into your deck."
@@ -4346,7 +4346,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           playRequirement{
             assert deck
           }
-        };
+        }
       case POWER_PLANT_183:
         return stadium (this) {
           text "Pokémon-GX and Pokémon-EX in play (both yours and your opponent's) have no Abilities."
@@ -4370,7 +4370,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             effect2.unregister()
             new CheckAbilities().run(bg)
           }
-        };
+        }
       case RED_S_CHALLENGE_184:
         return supporter (this) {
           text "You can play this card only if you discard 2 other cards from your hand." +
@@ -4384,7 +4384,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             assert my.hand.getExcludedList(thisCard).size() >= 2 : "Not enough cards in hand"
             assert deck : "Empty deck"
           }
-        };
+        }
       case SAMSON_OAK_185:
         return supporter (this) {
           text "Draw 2 cards. If both Active Pokémon are the same type, draw 2 more cards."
@@ -4395,7 +4395,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           playRequirement{
             assert deck
           }
-        };
+        }
       case STEALTHY_HOOD_186:
         return pokemonTool (this) {
           text "Prevent all effects of your opponent's Abilities done to the Pokémon this card is attached to. Remove any such existing effects."
@@ -4418,7 +4418,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
             eff.unregister()
             new CheckAbilities().run(bg)
           }
-        };
+        }
       case SURPRISE_BOX_187:
         return itemCard (this) {
           text "Put a card from your opponent’s discard pile into their hand."
@@ -4428,7 +4428,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           playRequirement{
             assert opp.discard : "No cards in opponent discard"
           }
-        };
+        }
       case ULTRA_FOREST_KARTENVOY_188:
         return supporter (this) {
           text "During this turn, damage from your Ultra Beasts' attacks isn't affected by any effects on your opponent's Active Pokémon."
@@ -4452,7 +4452,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           }
           playRequirement{
           }
-        };
+        }
       case WELDER_189:
         return supporter (this) {
           text "Attach up to 2 [R] Energy cards from your hand to 1 of your Pokémon. If you do, draw 3 cards."
@@ -4465,7 +4465,7 @@ public enum UnbrokenBonds implements LogicCardInfo {
           playRequirement{
             assert my.hand.filterByEnergyType(R)
           }
-        };
+        }
       case TRIPLE_ACCELERATION_ENERGY_190:
         return specialEnergy (this, [[]]) {
           text "This card can only be attached to Evolution Pokémon. If this card is attached to 1 of your Pokémon, discard it at the end of the turn." +
@@ -4506,97 +4506,97 @@ public enum UnbrokenBonds implements LogicCardInfo {
               return [[] as Set]
             }
           }
-        };
+        }
       case PHEROMOSA_BUZZWOLE_GX_191:
-        return copy (PHEROMOSA_BUZZWOLE_GX_1, this);
+        return copy (PHEROMOSA_BUZZWOLE_GX_1, this)
       case PHEROMOSA_BUZZWOLE_GX_192:
-        return copy (PHEROMOSA_BUZZWOLE_GX_1, this);
+        return copy (PHEROMOSA_BUZZWOLE_GX_1, this)
       case VENOMOTH_GX_193:
-        return copy (VENOMOTH_GX_12, this);
+        return copy (VENOMOTH_GX_12, this)
       case RESHIRAM_CHARIZARD_GX_194:
-        return copy (RESHIRAM_CHARIZARD_GX_20, this);
+        return copy (RESHIRAM_CHARIZARD_GX_20, this)
       case DEDENNE_GX_195:
-        return copy (DEDENNE_GX_57, this);
+        return copy (DEDENNE_GX_57, this)
       case MUK_ALOLAN_MUK_GX_196:
-        return copy (MUK_ALOLAN_MUK_GX_61, this);
+        return copy (MUK_ALOLAN_MUK_GX_61, this)
       case MUK_ALOLAN_MUK_GX_197:
-        return copy (MUK_ALOLAN_MUK_GX_61, this);
+        return copy (MUK_ALOLAN_MUK_GX_61, this)
       case MARSHADOW_MACHAMP_GX_198:
-        return copy (MARSHADOW_MACHAMP_GX_82, this);
+        return copy (MARSHADOW_MACHAMP_GX_82, this)
       case MARSHADOW_MACHAMP_GX_199:
-        return copy (MARSHADOW_MACHAMP_GX_82, this);
+        return copy (MARSHADOW_MACHAMP_GX_82, this)
       case GRENINJA_ZOROARK_GX_200:
-        return copy (GRENINJA_ZOROARK_GX_107, this);
+        return copy (GRENINJA_ZOROARK_GX_107, this)
       case GRENINJA_ZOROARK_GX_201:
-        return copy (GRENINJA_ZOROARK_GX_107, this);
+        return copy (GRENINJA_ZOROARK_GX_107, this)
       case HONCHKROW_GX_202:
-        return copy (HONCHKROW_GX_109, this);
+        return copy (HONCHKROW_GX_109, this)
       case LUCARIO_MELMETAL_GX_203:
-        return copy (LUCARIO_MELMETAL_GX_120, this);
+        return copy (LUCARIO_MELMETAL_GX_120, this)
       case GARDEVOIR_SYLVEON_GX_204:
-        return copy (GARDEVOIR_SYLVEON_GX_130, this);
+        return copy (GARDEVOIR_SYLVEON_GX_130, this)
       case GARDEVOIR_SYLVEON_GX_205:
-        return copy (GARDEVOIR_SYLVEON_GX_130, this);
+        return copy (GARDEVOIR_SYLVEON_GX_130, this)
       case WHIMSICOTT_GX_206:
-        return copy (WHIMSICOTT_GX_140, this);
+        return copy (WHIMSICOTT_GX_140, this)
       case PERSIAN_GX_207:
-        return copy (PERSIAN_GX_149, this);
+        return copy (PERSIAN_GX_149, this)
       case CELESTEELA_GX_208:
-        return copy (CELESTEELA_GX_163, this);
+        return copy (CELESTEELA_GX_163, this)
       case GREEN_S_EXPLORATION_209:
-        return copy (GREEN_S_EXPLORATION_175, this);
+        return copy (GREEN_S_EXPLORATION_175, this)
       case JANINE_210:
-        return copy (JANINE_176, this);
+        return copy (JANINE_176, this)
       case KOGA_S_TRAP_211:
-        return copy (KOGA_S_TRAP_177, this);
+        return copy (KOGA_S_TRAP_177, this)
       case MOLAYNE_212:
-        return copy (MOLAYNE_181, this);
+        return copy (MOLAYNE_181, this)
       case RED_S_CHALLENGE_213:
-        return copy (RED_S_CHALLENGE_184, this);
+        return copy (RED_S_CHALLENGE_184, this)
       case WELDER_214:
-        return copy (WELDER_189, this);
+        return copy (WELDER_189, this)
       case PHEROMOSA_BUZZWOLE_GX_215:
-        return copy (PHEROMOSA_BUZZWOLE_GX_1, this);
+        return copy (PHEROMOSA_BUZZWOLE_GX_1, this)
       case VENOMOTH_GX_216:
-        return copy (VENOMOTH_GX_12, this);
+        return copy (VENOMOTH_GX_12, this)
       case RESHIRAM_CHARIZARD_GX_217:
-        return copy (RESHIRAM_CHARIZARD_GX_20, this);
+        return copy (RESHIRAM_CHARIZARD_GX_20, this)
       case BLASTOISE_GX_218:
-        return copy (BLASTOISE_GX_35, this);
+        return copy (BLASTOISE_GX_35, this)
       case DEDENNE_GX_219:
-        return copy (DEDENNE_GX_57, this);
+        return copy (DEDENNE_GX_57, this)
       case MUK_ALOLAN_MUK_GX_220:
-        return copy (MUK_ALOLAN_MUK_GX_61, this);
+        return copy (MUK_ALOLAN_MUK_GX_61, this)
       case MARSHADOW_MACHAMP_GX_221:
-        return copy (MARSHADOW_MACHAMP_GX_82, this);
+        return copy (MARSHADOW_MACHAMP_GX_82, this)
       case GRENINJA_ZOROARK_GX_222:
-        return copy (GRENINJA_ZOROARK_GX_107, this);
+        return copy (GRENINJA_ZOROARK_GX_107, this)
       case HONCHKROW_GX_223:
-        return copy (HONCHKROW_GX_109, this);
+        return copy (HONCHKROW_GX_109, this)
       case LUCARIO_MELMETAL_GX_224:
-        return copy (LUCARIO_MELMETAL_GX_120, this);
+        return copy (LUCARIO_MELMETAL_GX_120, this)
       case GARDEVOIR_SYLVEON_GX_225:
-        return copy (GARDEVOIR_SYLVEON_GX_130, this);
+        return copy (GARDEVOIR_SYLVEON_GX_130, this)
       case WHIMSICOTT_GX_226:
-        return copy (WHIMSICOTT_GX_140, this);
+        return copy (WHIMSICOTT_GX_140, this)
       case PERSIAN_GX_227:
-        return copy (PERSIAN_GX_149, this);
+        return copy (PERSIAN_GX_149, this)
       case CELESTEELA_GX_228:
-        return copy (CELESTEELA_GX_163, this);
+        return copy (CELESTEELA_GX_163, this)
       case BEAST_BRINGER_229:
-        return copy (BEAST_BRINGER_164, this);
+        return copy (BEAST_BRINGER_164, this)
       case ELECTROMAGNETIC_RADAR_230:
-        return copy (ELECTROMAGNETIC_RADAR_169, this);
+        return copy (ELECTROMAGNETIC_RADAR_169, this)
       case FIRE_CRYSTAL_231:
-        return copy (FIRE_CRYSTAL_173, this);
+        return copy (FIRE_CRYSTAL_173, this)
       case METAL_CORE_BARRIER_232:
-        return copy (METAL_CORE_BARRIER_180, this);
+        return copy (METAL_CORE_BARRIER_180, this)
       case POKEGEAR_3_0_233:
-        return copy (POKEGEAR_3_0_182, this);
+        return copy (POKEGEAR_3_0_182, this)
       case TRIPLE_ACCELERATION_ENERGY_234:
-        return copy (TRIPLE_ACCELERATION_ENERGY_190, this);
+        return copy (TRIPLE_ACCELERATION_ENERGY_190, this)
       default:
-        return null;
+        return null
     }
   }
 

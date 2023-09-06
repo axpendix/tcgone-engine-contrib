@@ -1,20 +1,20 @@
 package tcgwars.logic.impl.gen4
 
-import tcgwars.logic.impl.gen8.SwordShield;
+import tcgwars.logic.impl.gen8.SwordShield
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
 import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.effect.EffectType.BEGIN_TURN
 import static tcgwars.logic.effect.EffectType.BETWEEN_TURNS
-import static tcgwars.logic.effect.EffectType.PREVENT_EVOLVE;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.effect.EffectType.PREVENT_EVOLVE
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
 
 import tcgwars.logic.card.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -39,70 +39,70 @@ public enum PopSeries6 implements LogicCardInfo {
   STARLY_16 ("Starly", "16", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
   TURTWIG_17 ("Turtwig", "17", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   PopSeries6(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.POP_SERIES_6;
+    return tcgwars.logic.card.Collection.POP_SERIES_6
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
   public Card getImplementation() {
     switch (this) {
       case BASTIODON_1:
-        return copy (MysteriousTreasures.BASTIODON_21, this);
+        return copy (MysteriousTreasures.BASTIODON_21, this)
       case LUCARIO_2:
-        return copy (DiamondPearl.LUCARIO_6, this);
+        return copy (DiamondPearl.LUCARIO_6, this)
       case MANAPHY_3:
-        return copy (DiamondPearl.MANAPHY_9, this);
+        return copy (DiamondPearl.MANAPHY_9, this)
       case PACHIRISU_4:
-        return copy (DiamondPearl.PACHIRISU_35, this);
+        return copy (DiamondPearl.PACHIRISU_35, this)
       case RAMPARDOS_5:
-        return copy (MysteriousTreasures.RAMPARDOS_33, this);
+        return copy (MysteriousTreasures.RAMPARDOS_33, this)
       case DRIFLOON_6:
-        return copy (DiamondPearl.DRIFLOON_46, this);
+        return copy (DiamondPearl.DRIFLOON_46, this)
       case GIBLE_7:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness C, PLUS10
@@ -125,9 +125,9 @@ public enum PopSeries6 implements LogicCardInfo {
               flip { damage 30 }
             }
           }
-        };
+        }
       case RIOLU_8:
-        return copy (DiamondPearl.RIOLU_61, this);
+        return copy (DiamondPearl.RIOLU_61, this)
       case PIKACHU_9:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -156,25 +156,25 @@ public enum PopSeries6 implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case STARAVIA_10:
-        return copy (DiamondPearl.STARAVIA_64, this);
+        return copy (DiamondPearl.STARAVIA_64, this)
       case BIDOOF_11:
-        return copy (DiamondPearl.BIDOOF_70, this);
+        return copy (DiamondPearl.BIDOOF_70, this)
       case BUNEARY_12:
-        return copy (DiamondPearl.BUNEARY_73, this);
+        return copy (DiamondPearl.BUNEARY_73, this)
       case CHERUBI_13:
-        return copy (DiamondPearl.CHERUBI_75, this);
+        return copy (DiamondPearl.CHERUBI_75, this)
       case CHIMCHAR_14:
-        return copy (DiamondPearl.CHIMCHAR_76, this);
+        return copy (DiamondPearl.CHIMCHAR_76, this)
       case PIPLUP_15:
-        return copy (DiamondPearl.PIPLUP_93, this);
+        return copy (DiamondPearl.PIPLUP_93, this)
       case STARLY_16:
-        return copy (DiamondPearl.STARLY_101, this);
+        return copy (DiamondPearl.STARLY_101, this)
       case TURTWIG_17:
-        return copy (DiamondPearl.TURTWIG_103, this);
+        return copy (DiamondPearl.TURTWIG_103, this)
       default:
-        return null;
+        return null
     }
   }
 

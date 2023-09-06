@@ -9,23 +9,23 @@ import tcgwars.logic.effect.ability.PokeBody
 import tcgwars.logic.effect.basic.LevelUp
 import tcgwars.logic.impl.gen3.NintendoBlackStarPromos
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
 import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.effect.EffectPriority.BEFORE_LAST
 import static tcgwars.logic.effect.EffectType.*
 import static tcgwars.logic.effect.Source.POKEBODY
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.OTHER
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
 
 
 import tcgwars.logic.card.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -89,104 +89,104 @@ public enum DiamondPearlPromos implements LogicCardInfo {
   ULTIMATE_ZONE_DP55 ("Ultimate Zone", "DP55", Rarity.PROMO, [TRAINER, STADIUM]),
   ARCEUS_LV_X_DP56 ("Arceus Lv.X", "DP56", Rarity.PROMO, [LVL_X, POKEMON, _COLORLESS_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   DiamondPearlPromos(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.DIAMOND_PEARL_PROMOS;
+    return tcgwars.logic.card.Collection.DIAMOND_PEARL_PROMOS
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
   public Card getImplementation() {
     switch (this) {
       case TURTWIG_DP01:
-        return copy(DiamondPearl.TURTWIG_103, this);
+        return copy(DiamondPearl.TURTWIG_103, this)
       case CHIMCHAR_DP02:
-        return copy(DiamondPearl.CHIMCHAR_76, this);
+        return copy(DiamondPearl.CHIMCHAR_76, this)
       case PIPLUP_DP03:
-        return copy(DiamondPearl.PIPLUP_93, this);
+        return copy(DiamondPearl.PIPLUP_93, this)
       case PACHIRISU_DP04:
-        return copy(DiamondPearl.PACHIRISU_35, this);
+        return copy(DiamondPearl.PACHIRISU_35, this)
       case TROPICAL_WIND_DP05:
-        return copy(NintendoBlackStarPromos.TROPICAL_WIND_26, this);
+        return copy(NintendoBlackStarPromos.TROPICAL_WIND_26, this)
       case BUNEARY_DP06:
-        return copy(DiamondPearl.BUNEARY_73, this);
+        return copy(DiamondPearl.BUNEARY_73, this)
       case CRANIDOS_DP07:
-        return copy(MysteriousTreasures.CRANIDOS_43, this);
+        return copy(MysteriousTreasures.CRANIDOS_43, this)
       case SHIELDON_DP08:
-        return copy(MysteriousTreasures.SHIELDON_63, this);
+        return copy(MysteriousTreasures.SHIELDON_63, this)
       case TORTERRA_LV_X_DP09:
-        return copy(DiamondPearl.TORTERRA_LV_X_122, this);
+        return copy(DiamondPearl.TORTERRA_LV_X_122, this)
       case INFERNAPE_LV_X_DP10:
-        return copy(DiamondPearl.INFERNAPE_LV_X_121, this);
+        return copy(DiamondPearl.INFERNAPE_LV_X_121, this)
       case EMPOLEON_LV_X_DP11:
-        return copy(DiamondPearl.EMPOLEON_LV_X_120, this);
+        return copy(DiamondPearl.EMPOLEON_LV_X_120, this)
       case LUCARIO_LV_X_DP12:
-        return copy(MysteriousTreasures.LUCARIO_LV_X_122, this);
+        return copy(MysteriousTreasures.LUCARIO_LV_X_122, this)
       case BUIZEL_DP13:
-        return copy(DiamondPearl.BUIZEL_72, this);
+        return copy(DiamondPearl.BUIZEL_72, this)
       case CHATOT_DP14:
-        return copy(DiamondPearl.CHATOT_74, this);
+        return copy(DiamondPearl.CHATOT_74, this)
       case SHINX_DP15:
-        return copy(DiamondPearl.SHINX_98, this);
+        return copy(DiamondPearl.SHINX_98, this)
       case PIKACHU_DP16:
-        return copy(MysteriousTreasures.PIKACHU_94, this);
+        return copy(MysteriousTreasures.PIKACHU_94, this)
       case DIALGA_LV_X_DP17:
-        return copy(GreatEncounters.DIALGA_LV_X_105, this);
+        return copy(GreatEncounters.DIALGA_LV_X_105, this)
       case PALKIA_LV_X_DP18:
-        return copy(GreatEncounters.PALKIA_LV_X_106, this);
+        return copy(GreatEncounters.PALKIA_LV_X_106, this)
       case DARKRAI_LV_X_DP19:
-        return copy(GreatEncounters.DARKRAI_LV_X_104, this);
+        return copy(GreatEncounters.DARKRAI_LV_X_104, this)
       case MAGMORTAR_DP20:
-        return copy(MysteriousTreasures.MAGMORTAR_12, this);
+        return copy(MysteriousTreasures.MAGMORTAR_12, this)
       case RAICHU_DP21:
-        return copy(MysteriousTreasures.RAICHU_15, this);
+        return copy(MysteriousTreasures.RAICHU_15, this)
       case MIME_JR__DP22:
-        return copy(DiamondPearl.MIME_JR__90, this);
+        return copy(DiamondPearl.MIME_JR__90, this)
       case GLAMEOW_DP23:
-        return copy(DiamondPearl.GLAMEOW_83, this);
+        return copy(DiamondPearl.GLAMEOW_83, this)
       case DARKRAI_DP24:
         return basic (this, hp:HP080, type:DARKNESS, retreatCost:1) {
           weakness F
@@ -239,21 +239,21 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case TROPICAL_WIND_DP25:
         return copy (TROPICAL_WIND_DP05, this)
       case DIALGA_DP26:
-        return copy(DiamondPearl.DIALGA_1, this);
+        return copy(DiamondPearl.DIALGA_1, this)
       case PALKIA_DP27:
-        return copy(DiamondPearl.PALKIA_11, this);
+        return copy(DiamondPearl.PALKIA_11, this)
       case MEWTWO_LV_X_DP28:
-        return copy(LegendsAwakened.MEWTWO_LV_X_144, this);
+        return copy(LegendsAwakened.MEWTWO_LV_X_144, this)
       case RHYPERIOR_LV_X_DP29:
-        return copy(LegendsAwakened.RHYPERIOR_LV_X_145, this);
+        return copy(LegendsAwakened.RHYPERIOR_LV_X_145, this)
       case REGIGIGAS_LV_X_DP30:
-        return copy(Stormfront.REGIGIGAS_LV_X_100, this);
+        return copy(Stormfront.REGIGIGAS_LV_X_100, this)
       case HEATRAN_LV_X_DP31:
-        return copy(Stormfront.HEATRAN_LV_X_97, this);
+        return copy(Stormfront.HEATRAN_LV_X_97, this)
       case MAGNEZONE_DP32:
         return evolution (this, from:"Magneton", hp:HP130, type:METAL, retreatCost:2) {
           weakness R, PLUS30
@@ -278,7 +278,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DUSKNOIR_DP33:
         return evolution (this, from:"Dusclops", hp:HP130, type:PSYCHIC, retreatCost:2) {
           weakness D, PLUS30
@@ -320,9 +320,9 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DRIFBLIM_DP34:
-        return copy(DiamondPearl.DRIFBLIM_24, this);
+        return copy(DiamondPearl.DRIFBLIM_24, this)
       case PORYGON_Z_DP35:
         return evolution (this, from:"Porygon2", hp:HP120, type:COLORLESS, retreatCost:2) {
           weakness F, PLUS30
@@ -379,7 +379,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               damage 40 + (20 * self.cards.filterByType(TECHNICAL_MACHINE).size())
             }
           }
-        };
+        }
       case GLISCOR_DP36:
         return evolution (this, from:"Gligar", hp:HP090, type:FIGHTING, retreatCost:0) {
           weakness W, PLUS20
@@ -416,13 +416,13 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DIALGA_LV_X_DP37:
-        return copy(GreatEncounters.DIALGA_LV_X_105, this);
+        return copy(GreatEncounters.DIALGA_LV_X_105, this)
       case GIRATINA_LV_X_DP38:
-        return copy(Platinum.GIRATINA_LV_X_124, this);
+        return copy(Platinum.GIRATINA_LV_X_124, this)
       case SHAYMIN_LV_X_DP39:
-        return copy(Platinum.SHAYMIN_LV_X_127, this);
+        return copy(Platinum.SHAYMIN_LV_X_127, this)
       case REGIGIGAS_DP40:
         return basic (this, hp:HP100, type:COLORLESS, retreatCost:4) {
           weakness F
@@ -451,7 +451,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               cantUseAttack(thisMove, self)
             }
           }
-        };
+        }
       case TOXICROAK_G_DP41:
         return basic (this, hp:HP090, type:FIGHTING, retreatCost:2) {
           weakness P
@@ -479,7 +479,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CARNIVINE_G_DP42:
         return basic (this, hp:HP080, type:GRASS, retreatCost:1) {
           weakness R
@@ -503,7 +503,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PROBOPASS_G_DP43:
         return basic (this, hp:HP090, type:FIGHTING, retreatCost:3) {
           weakness W
@@ -547,7 +547,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGNEZONE_DP44:
         return evolution (this, from:"Magneton", hp:HP130, type:LIGHTNING, retreatCost:2) {
           weakness F, PLUS30
@@ -575,13 +575,13 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHARIZARD_G_LV_X_DP45:
-        return copy(SupremeVictors.CHARIZARD_G_LV_X_143, this);
+        return copy(SupremeVictors.CHARIZARD_G_LV_X_143, this)
       case GARCHOMP_C_LV_X_DP46:
-        return copy(SupremeVictors.GARCHOMP_C_LV_X_145, this);
+        return copy(SupremeVictors.GARCHOMP_C_LV_X_145, this)
       case RAYQUAZA_C_LV_X_DP47:
-        return copy(SupremeVictors.RAYQUAZA_C_LV_X_146, this);
+        return copy(SupremeVictors.RAYQUAZA_C_LV_X_146, this)
       case TROPICAL_WIND_DP48:
         return copy (TROPICAL_WIND_DP05, this)
       case DIALGA_DP49:
@@ -609,7 +609,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARCEUS_DP50:
         return basic (this, hp:HP090, type:COLORLESS, retreatCost:2) {
           weakness F
@@ -625,7 +625,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CRESSELIA_DP51:
         return basic (this, hp:HP090, type:PSYCHIC, retreatCost:2) {
           weakness P
@@ -647,7 +647,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               damage 80 - (10 * self.numberOfDamageCounters)
             }
           }
-        };
+        }
       case DARKRAI_DP52:
         return basic (this, hp:HP090, type:DARKNESS, retreatCost:2) {
           weakness F
@@ -676,17 +676,17 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               flipThenApplySC(ASLEEP)
             }
           }
-        };
+        }
       case ARCEUS_LV_X_DP53:
-        return copy(Arceus.ARCEUS_LV_X_94, this);
+        return copy(Arceus.ARCEUS_LV_X_94, this)
       case BEGINNING_DOOR_DP54:
-        return copy(Arceus.BEGINNING_DOOR_82, this);
+        return copy(Arceus.BEGINNING_DOOR_82, this)
       case ULTIMATE_ZONE_DP55:
-        return copy(Arceus.ULTIMATE_ZONE_91, this);
+        return copy(Arceus.ULTIMATE_ZONE_91, this)
       case ARCEUS_LV_X_DP56:
-        return copy(Arceus.ARCEUS_LV_X_95, this);
+        return copy(Arceus.ARCEUS_LV_X_95, this)
       default:
-        return null;
+        return null
     }
   }
 }

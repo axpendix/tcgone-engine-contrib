@@ -3,23 +3,23 @@ package tcgwars.logic.impl.gen7
 
 import tcgwars.logic.impl.gen6.Flashfire
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.*;
+import tcgwars.logic.*
 import tcgwars.logic.card.*
 import tcgwars.logic.effect.ability.*
 import tcgwars.logic.effect.basic.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author itrezad@gmail.com
@@ -202,53 +202,53 @@ public enum UltraPrism implements LogicCardInfo {
   LUNALA_GX_172 ("Lunala-GX", "172", Rarity.SECRET, [STAGE2, EVOLUTION, POKEMON, POKEMON_GX, _PSYCHIC_]),
   SOLGALEO_GX_173 ("Solgaleo-GX", "173", Rarity.SECRET, [STAGE2, EVOLUTION, POKEMON, POKEMON_GX, _METAL_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   UltraPrism(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.ULTRA_PRISM;
+    return tcgwars.logic.card.Collection.ULTRA_PRISM
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -265,7 +265,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case YANMA_2:
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
           weakness LIGHTNING
@@ -279,7 +279,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case YANMEGA_3:
         return evolution (this, from:"Yanma", hp:HP120, type:GRASS, retreatCost:1) {
           weakness LIGHTNING
@@ -302,7 +302,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ROSELIA_4:
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -315,7 +315,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ROSERADE_5:
         return evolution (this, from:"Roselia", hp:HP100, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -337,17 +337,17 @@ public enum UltraPrism implements LogicCardInfo {
               damage 100
               while(1){
                 def pl=(my.all.findAll {it.cards.energyCount(G)})
-                if(!pl) break;
+                if(!pl) break
                 def src =pl.select("Source for energy (cancel to stop)", false)
-                if(!src) break;
+                if(!src) break
                 def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
                 def tar=my.all.select("Target for energy (cancel to stop)", false)
-                if(!tar) break;
+                if(!tar) break
                 energySwitch(src, tar, card)
               }
             }
           }
-        };
+        }
       case TURTWIG_6:
         return basic (this, hp:HP070, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -370,7 +370,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TURTWIG_7:
         return basic (this, hp:HP080, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -389,7 +389,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GROTLE_8:
         return evolution (this, from:"Turtwig", hp:HP110, type:GRASS, retreatCost:4) {
           weakness FIRE
@@ -409,7 +409,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TORTERRA_9:
         return evolution (this, from:"Grotle", hp:HP180, type:GRASS, retreatCost:4) {
           weakness FIRE
@@ -430,7 +430,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHERUBI_10:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -442,7 +442,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHERRIM_11:
         return evolution (this, from:"Cherubi", hp:HP080, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -462,7 +462,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CARNIVINE_12:
         return basic (this, hp:HP090, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -482,7 +482,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LEAFEON_GX_13:
         return evolution (this, from:"Eevee", hp:HP200, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -531,7 +531,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MOW_ROTOM_14:
         return basic (this, hp:HP090, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -559,7 +559,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHAYMIN_15:
         return basic (this, hp:HP080, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -595,7 +595,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DEWPIDER_16:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -608,7 +608,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARAQUANID_17:
         return evolution (this, from:"Dewpider", hp:HP100, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -633,7 +633,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGMAR_18:
         return basic (this, hp:HP080, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -658,7 +658,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGMORTAR_19:
         return evolution (this, from:"Magmar", hp:HP130, type:FIRE, retreatCost:3) {
           weakness WATER
@@ -681,7 +681,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHIMCHAR_20:
         return basic (this, hp:HP040, type:FIRE, retreatCost:0) {
           weakness WATER
@@ -693,7 +693,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHIMCHAR_21:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -705,7 +705,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MONFERNO_22:
         return evolution (this, from:"Chimchar", hp:HP080, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -718,7 +718,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case INFERNAPE_23:
         return evolution (this, from:"Monferno", hp:HP130, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -740,7 +740,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HEAT_ROTOM_24:
         return basic (this, hp:HP090, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -767,7 +767,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SALANDIT_25:
         return basic (this, hp:HP070, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -786,7 +786,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SALAZZLE_26:
         return evolution (this, from:"Salandit", hp:HP110, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -812,7 +812,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TURTONATOR_27:
         return basic (this, hp:HP130, type:FIRE, retreatCost:4) {
           weakness WATER
@@ -832,7 +832,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_SANDSHREW_28:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness METAL
@@ -843,7 +843,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_SANDSLASH_29:
         return evolution (this, from:"Alolan Sandshrew", hp:HP120, type:WATER, retreatCost:1) {
           weakness METAL
@@ -865,7 +865,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_VULPIX_30:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness METAL
@@ -883,7 +883,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIPLUP_31:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -895,7 +895,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIPLUP_32:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -914,7 +914,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PRINPLUP_33:
         return evolution (this, from:"Piplup", hp:HP090, type:WATER, retreatCost:2) {
           weakness LIGHTNING
@@ -934,7 +934,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EMPOLEON_34:
         return evolution (this, from:"Prinplup", hp:HP160, type:WATER, retreatCost:2) {
           weakness LIGHTNING
@@ -954,7 +954,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BUIZEL_35:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -966,7 +966,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FLOATZEL_36:
         return evolution (this, from:"Buizel", hp:HP100, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -989,7 +989,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SNOVER_37:
         return basic (this, hp:HP080, type:WATER, retreatCost:3) {
           weakness METAL
@@ -1002,7 +1002,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ABOMASNOW_38:
         return evolution (this, from:"Snover", hp:HP130, type:WATER, retreatCost:3) {
           weakness METAL
@@ -1024,7 +1024,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GLACEON_GX_39:
         return evolution (this, from:"Eevee", hp:HP200, type:WATER, retreatCost:2) {
           weakness METAL
@@ -1066,7 +1066,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WASH_ROTOM_40:
         return basic (this, hp:HP090, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -1096,7 +1096,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FROST_ROTOM_41:
         return basic (this, hp:HP090, type:WATER, retreatCost:1) {
           weakness METAL
@@ -1125,7 +1125,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MANAPHY_42:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -1149,7 +1149,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTABUZZ_43:
         return basic (this, hp:HP080, type:LIGHTNING, retreatCost:2) {
           weakness FIGHTING
@@ -1170,7 +1170,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTIVIRE_44:
         return evolution (this, from:"Electabuzz", hp:HP140, type:LIGHTNING, retreatCost:4) {
           weakness FIGHTING
@@ -1191,7 +1191,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHINX_45:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1215,7 +1215,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHINX_46:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1232,7 +1232,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUXIO_47:
         return evolution (this, from:"Shinx", hp:HP080, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1254,7 +1254,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUXRAY_48:
         return evolution (this, from:"Luxio", hp:HP150, type:LIGHTNING, retreatCost:0) {
           weakness FIGHTING
@@ -1279,7 +1279,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PACHIRISU_49:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1310,7 +1310,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ROTOM_50:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1339,7 +1339,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DRIFLOON_51:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness LIGHTNING
@@ -1359,7 +1359,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DRIFBLIM_52:
         return evolution (this, from:"Drifloon", hp:HP110, type:PSYCHIC, retreatCost:1) {
           weakness LIGHTNING
@@ -1386,7 +1386,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SPIRITOMB_53:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
           move "Lightless World", {
@@ -1408,7 +1408,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SKORUPI_54:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -1427,7 +1427,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DRAPION_55:
         return evolution (this, from:"Skorupi", hp:HP130, type:PSYCHIC, retreatCost:3) {
           weakness PSYCHIC
@@ -1443,7 +1443,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CROAGUNK_56:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1456,7 +1456,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TOXICROAK_57:
         return evolution (this, from:"Croagunk", hp:HP100, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -1477,7 +1477,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GIRATINA_PRISM_STAR_58:
         return basic (this, hp:HP160, type:PSYCHIC, retreatCost:2) {
           weakness DARKNESS
@@ -1503,7 +1503,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CRESSELIA_59:
         return basic (this, hp:HP120, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1528,7 +1528,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case COSMOG_60:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1540,9 +1540,9 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case COSMOEM_61:
-        return copy (SunMoon.COSMOEM_65, this);
+        return copy (SunMoon.COSMOEM_65, this)
       case LUNALA_PRISM_STAR_62:
         return basic (this, hp:HP160, type:PSYCHIC, retreatCost:3) {
           weakness DARKNESS
@@ -1568,7 +1568,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DAWN_WINGS_NECROZMA_GX_63:
         return basic (this, hp:HP180, type:PSYCHIC, retreatCost:2) {
           weakness DARKNESS
@@ -1604,7 +1604,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CRANIDOS_64:
         return evolution (this, from:"Unidentified Fossil", hp:HP090, type:FIGHTING, retreatCost:1) {
           //TODO: Does the evolution from unidentified fossil take extra checks?
@@ -1624,7 +1624,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAMPARDOS_65:
         return evolution (this, from:"Cranidos", hp:HP150, type:FIGHTING, retreatCost:2) {
           weakness GRASS
@@ -1649,7 +1649,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RIOLU_66:
         return basic (this, hp:HP070, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -1668,7 +1668,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUCARIO_67:
         return evolution (this, from:"Riolu", hp:HP110, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -1692,7 +1692,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HIPPOPOTAS_68:
         return basic (this, hp:HP090, type:FIGHTING, retreatCost:3) {
           weakness GRASS
@@ -1706,7 +1706,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HIPPOWDON_69:
         return evolution (this, from:"Hippopotas", hp:HP140, type:FIGHTING, retreatCost:4) {
           weakness GRASS
@@ -1726,7 +1726,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PASSIMIAN_70:
         return basic (this, hp:HP110, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -1752,7 +1752,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MURKROW_71:
         return basic (this, hp:HP070, type:DARKNESS, retreatCost:1) {
           weakness LIGHTNING
@@ -1766,7 +1766,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HONCHKROW_72:
         return evolution (this, from:"Murkrow", hp:HP110, type:DARKNESS, retreatCost:1) {
           weakness LIGHTNING
@@ -1787,7 +1787,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SNEASEL_73:
         return basic (this, hp:HP070, type:DARKNESS, retreatCost:1) {
           weakness FIGHTING
@@ -1817,7 +1817,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WEAVILE_74:
         return evolution (this, from:"Sneasel", hp:HP090, type:DARKNESS, retreatCost:1) {
           weakness FIGHTING
@@ -1838,7 +1838,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STUNKY_75:
         return basic (this, hp:HP070, type:DARKNESS, retreatCost:2) {
           weakness FIGHTING
@@ -1853,7 +1853,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SKUNTANK_76:
         return evolution (this, from:"Stunky", hp:HP120, type:DARKNESS, retreatCost:3) {
           weakness FIGHTING
@@ -1875,7 +1875,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARKRAI_PRISM_STAR_77:
         return basic (this, hp:HP160, type:DARKNESS, retreatCost:2) {
           weakness FIGHTING
@@ -1909,7 +1909,7 @@ public enum UltraPrism implements LogicCardInfo {
                   before ASLEEP_SPC, null, null, BEGIN_TURN, {
                     if(ef.target == self.owner.opposite.pbg.active){ //MARK parentEvent
                       flip "Asleep (Abyssal Sleep)", 2, {}, {}, [2:{
-                        ef.unregisterItself(bg.em());
+                        ef.unregisterItself(bg.em())
                       },1:{
                         bc "$self is still asleep."
                       },0:{
@@ -1923,7 +1923,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_DIGLETT_78:
         return basic (this, hp:HP050, type:METAL, retreatCost:1) {
           weakness FIRE
@@ -1935,7 +1935,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_DUGTRIO_79:
         return evolution (this, from:"Alolan Diglett", hp:HP060, type:METAL, retreatCost:1) {
           weakness FIRE
@@ -1950,7 +1950,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGNEMITE_80:
         return basic (this, hp:HP060, type:METAL, retreatCost:1) {
           weakness FIRE
@@ -1973,7 +1973,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGNEMITE_81:
         return basic (this, hp:HP060, type:METAL, retreatCost:1) {
           weakness FIRE
@@ -1999,7 +1999,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGNETON_82:
         return evolution (this, from:"Magnemite", hp:HP090, type:METAL, retreatCost:2) {
           weakness FIRE
@@ -2020,7 +2020,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGNEZONE_83:
         return evolution (this, from:"Magneton", hp:HP150, type:METAL, retreatCost:2) {
           weakness FIRE
@@ -2044,7 +2044,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHIELDON_84:
         return evolution (this, from:"Unidentified Fossil", hp:HP100, type:METAL, retreatCost:2) {
           weakness FIRE
@@ -2065,7 +2065,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BASTIODON_85:
         return evolution (this, from:"Shieldon", hp:HP160, type:METAL, retreatCost:3) {
           weakness FIRE
@@ -2092,7 +2092,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BRONZOR_86:
         return basic (this, hp:HP060, type:METAL, retreatCost:2) {
           weakness FIRE
@@ -2112,7 +2112,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BRONZONG_87:
         return evolution (this, from:"Bronzor", hp:HP110, type:METAL, retreatCost:3) {
           weakness FIRE
@@ -2135,7 +2135,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HEATRAN_88:
         return basic (this, hp:HP130, type:METAL, retreatCost:3) {
           weakness FIRE
@@ -2159,7 +2159,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SOLGALEO_PRISM_STAR_89:
         return basic (this, hp:HP160, type:METAL, retreatCost:3) {
           weakness FIRE
@@ -2187,7 +2187,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DUSK_MANE_NECROZMA_GX_90:
         return basic (this, hp:HP190, type:METAL, retreatCost:3) {
           weakness FIRE
@@ -2223,7 +2223,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGEARNA_91:
         return basic (this, hp:HP090, type:METAL, retreatCost:1) {
           weakness FIRE
@@ -2249,7 +2249,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MORELULL_92:
         return basic (this, hp:HP060, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -2269,7 +2269,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHIINOTIC_93:
         return evolution (this, from:"Morelull", hp:HP100, type:FAIRY, retreatCost:2) {
           weakness METAL
@@ -2293,7 +2293,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TAPU_LELE_94:
         return basic (this, hp:HP110, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -2320,13 +2320,13 @@ public enum UltraPrism implements LogicCardInfo {
               }
               while(1){
                 def pl=(opp.all.findAll {it.numberOfDamageCounters})
-                if(!pl) break;
+                if(!pl) break
                 def src =pl.select("Source for damage counter (cancel to stop)", false)
-                if(!src) break;
+                if(!src) break
                 def tar = opp.all
                 tar.remove(src)
                 tar = tar.select("Target for damage counter (cancel to stop)", false)
-                if(!tar) break;
+                if(!tar) break
 
                 src.damage-=hp(10)
                 directDamage 10, tar
@@ -2336,7 +2336,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALOLAN_EXEGGUTOR_95:
         return evolution (this, from:"Exeggcute", hp:HP130, type:DRAGON, retreatCost:3) {
           weakness FAIRY
@@ -2364,7 +2364,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GIBLE_96:
         return basic (this, hp:HP050, type:DRAGON, retreatCost:1) {
           weakness FAIRY
@@ -2374,7 +2374,7 @@ public enum UltraPrism implements LogicCardInfo {
             ascension delegate
           }
 
-        };
+        }
       case GIBLE_97:
         return basic (this, hp:HP060, type:DRAGON, retreatCost:1) {
           weakness FAIRY
@@ -2394,7 +2394,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GABITE_98:
         return evolution (this, from:"Gible", hp:HP080, type:DRAGON, retreatCost:1) {
           weakness FAIRY
@@ -2411,7 +2411,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GARCHOMP_99:
         return evolution (this, from:"Gabite", hp:HP150, type:DRAGON, retreatCost:0) {
           weakness FAIRY
@@ -2434,7 +2434,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DIALGA_GX_100:
         return basic (this, hp:HP180, type:DRAGON, retreatCost:3) {
           weakness FAIRY
@@ -2491,7 +2491,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PALKIA_GX_101:
         return basic (this, hp:HP180, type:DRAGON, retreatCost:3) {
           weakness FAIRY
@@ -2501,9 +2501,9 @@ public enum UltraPrism implements LogicCardInfo {
             onAttack {
               while(1){
                 def pl=(my.bench.findAll {it.cards.energyCount(C)})
-                if(!pl) break;
+                if(!pl) break
                 def src =pl.select("source for energy (cancel to stop)", false)
-                if(!src) break;
+                if(!src) break
                 def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
                 energySwitch(src, self, card)
               }
@@ -2533,7 +2533,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LICKITUNG_102:
         return basic (this, hp:HP100, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -2552,7 +2552,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LICKILICKY_103:
         return evolution (this, from:"Lickitung", hp:HP130, type:COLORLESS, retreatCost:3) {
           weakness FIGHTING
@@ -2577,7 +2577,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EEVEE_104:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -2589,7 +2589,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EEVEE_105:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -2608,7 +2608,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BUNEARY_106:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -2627,7 +2627,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LOPUNNY_107:
         return evolution (this, from:"Buneary", hp:HP090, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -2653,7 +2653,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GLAMEOW_108:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -2666,7 +2666,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PURUGLY_109:
         return evolution (this, from:"Glameow", hp:HP110, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -2691,7 +2691,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FAN_ROTOM_110:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:0) {
           weakness LIGHTNING
@@ -2719,7 +2719,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHAYMIN_111:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -2748,7 +2748,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case YUNGOOS_112:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -2771,7 +2771,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GUMSHOOS_113:
         return evolution (this, from:"Yungoos", hp:HP110, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -2794,7 +2794,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ORANGURU_114:
         return basic (this, hp:HP120, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -2819,7 +2819,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TYPE__NULL_115:
         return basic (this, hp:HP110, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -2840,9 +2840,9 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SILVALLY_GX_116:
-        return copy (CrimsonInvasion.SILVALLY_GX_90, this);
+        return copy (CrimsonInvasion.SILVALLY_GX_90, this)
 
       case DRAMPA_117:
         return basic (this, hp:HP130, type:COLORLESS, retreatCost:3) {
@@ -2863,7 +2863,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ANCIENT_CRYSTAL_118:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nThe Regirock, Regice, Registeel, or Regigigas this card is attached to takes 30 less damage from your opponent’s attacks (after applying Weakness and Resistance).\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -2883,7 +2883,7 @@ public enum UltraPrism implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case CYNTHIA_119:
         return supporter (this) {
           text "Shuffle your hand into your deck. Then, draw 6 cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -2896,7 +2896,7 @@ public enum UltraPrism implements LogicCardInfo {
           playRequirement{
             assert my.deck.notEmpty || (my.hand.getExcludedList(thisCard).size() != 0)
           }
-        };
+        }
       case CYRUS_PRISM_STAR_120:
         return supporter (this) {
           text "♢ (Prism Star) Rule: You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead.\nYou can play this card only if your Active Pokémon is a [W] or [M] Pokémon.\nYour opponent chooses 2 Benched Pokémon and shuffles the others, and all cards attached to them, into their deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -2913,7 +2913,7 @@ public enum UltraPrism implements LogicCardInfo {
             assert my.active.types.contains(W) || my.active.types.contains(M) : "Your Active Pokémon needs to be [W] or [M]. (The card text was officially changed)"
             assert opp.bench.size() > 2 : "Opponent needs to have more than 2 benched Pokémon"
           }
-        };
+        }
       case ELECTRIC_MEMORY_121:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nThe Silvally-GX this card is attached to is a Lightning Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -2931,7 +2931,7 @@ public enum UltraPrism implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case ESCAPE_BOARD_122:
         return pokemonTool (this) {
           text "The Retreat Cost of the Pokémon this card is attached to is [C] less, and it can retreat even if it’s Asleep or Paralyzed.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -2950,7 +2950,7 @@ public enum UltraPrism implements LogicCardInfo {
             eff1.unregister()
             eff2.unregister()
           }
-        };
+        }
       case FIRE_MEMORY_123:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nThe Silvally-GX this card is attached to is a [R] Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -2967,7 +2967,7 @@ public enum UltraPrism implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case GARDENIA_124:
         return supporter (this) {
           text "Heal 80 damage from 1 of your Pokémon that has any [G] Energy attached to it.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -2979,9 +2979,9 @@ public enum UltraPrism implements LogicCardInfo {
           playRequirement{
             assert my.all.any {it.cards.energyCount(G) && it.numberOfDamageCounters }
           }
-        };
+        }
       case LILLIE_125:
-        return copy(SunMoon.LILLIE_122,this);
+        return copy(SunMoon.LILLIE_122,this)
       case LOOKER_126:
         return supporter (this) {
           text "Draw 3 cards from the bottom of your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -2992,7 +2992,7 @@ public enum UltraPrism implements LogicCardInfo {
           playRequirement{
             assert my.deck
           }
-        };
+        }
       case LOOKER_WHISTLE_127:
         return itemCard (this) {
           text "Search your deck for up to 2 cards named Looker, reveal them, and put them into your hand. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -3003,7 +3003,7 @@ public enum UltraPrism implements LogicCardInfo {
           playRequirement{
             assert my.deck
           }
-        };
+        }
       case MARS_128:
         return supporter (this) {
           text "Draw 2 cards. If you do, discard a random card from your opponent’s hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -3014,7 +3014,7 @@ public enum UltraPrism implements LogicCardInfo {
           playRequirement{
             assert my.deck
           }
-        };
+        }
       case MISSING_CLOVER_129:
         return itemCard (this) {
           text "You may play 4 Missing Clover cards at once. \n-If you played 1 card, look at the top card of your deck \n if you played 4 cards, take a prize card \nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -3031,7 +3031,7 @@ public enum UltraPrism implements LogicCardInfo {
           playRequirement{
             assert (my.hand.count{it.name=="Missing Clover"} >= 4 || my.deck) : "You have no cards in your deck"
           }
-        };
+        }
       case MT__CORONET_130:
         return stadium (this) {
           text "Once during each player’s turn, that player may put 2 [M] Energy cards from their discard pile into their hand.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
@@ -3049,7 +3049,7 @@ public enum UltraPrism implements LogicCardInfo {
           onRemoveFromPlay{
             actions.each { bg().gm().unregisterAction(it) }
           }
-        };
+        }
       case ORDER_PAD_131:
         return itemCard (this) {
           text "Flip a coin. If heads, search your deck for an Item card, reveal it, and put it into your hand. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -3062,7 +3062,7 @@ public enum UltraPrism implements LogicCardInfo {
           playRequirement{
             assert my.deck.notEmpty
           }
-        };
+        }
       case PAL_PAD_132:
         return itemCard (this) {
           text "Shuffle 2 Supporter cards from your discard pile into your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -3073,9 +3073,9 @@ public enum UltraPrism implements LogicCardInfo {
           playRequirement{
             assert my.discard.filterByType(SUPPORTER) : "No supporter in discard"
           }
-        };
+        }
       case POKEMON_FAN_CLUB_133:
-        return copy(Flashfire.POKEMON_FAN_CLUB_94,this);
+        return copy(Flashfire.POKEMON_FAN_CLUB_94,this)
       case UNIDENTIFIED_FOSSIL_134:
         return itemCard (this) {
           text "Play this card as if it were a 60-HP [C] Basic Pokémon. At any time during your turn (before your attack), you may discard this card from play.\nThis card can’t retreat.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -3127,7 +3127,7 @@ public enum UltraPrism implements LogicCardInfo {
           playRequirement{
             assert bench.notFull
           }
-        };
+        }
       case VOLKNER_135:
         return supporter (this) {
           text "Search your deck for an Item card and a [L] Energy card, reveal them, and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -3139,7 +3139,7 @@ public enum UltraPrism implements LogicCardInfo {
           playRequirement{
             assert my.deck.notEmpty
           }
-        };
+        }
       case SUPER_BOOST_ENERGY_PRISM_STAR_136:
         return specialEnergy (this, [[C]]) {
           text "♢ (Prism Star) Rule: You can’t have more than 1 ♢ card with the same name in your deck. If a ♢ card would go to the discard pile, put it in the Lost Zone instead.\n" +
@@ -3163,7 +3163,7 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case UNIT_ENERGY_GRW_137:
         return specialEnergy (this, [[C]]) {
           text "This card provides [C] Energy.\n While this card is attached to a Pokémon, it provides [G], [W], and [R] Energy but provides only 1 Energy at a time."
@@ -3173,7 +3173,7 @@ public enum UltraPrism implements LogicCardInfo {
           getEnergyTypesOverride {
             self != null ? [[G,R,W] as Set] : [[C] as Set]
           }
-        };
+        }
       case UNIT_ENERGY_LPM_138:
         return specialEnergy (this, [[C]]) {
           text "This card provides [C] Energy.\n While this card is attached to a Pokémon, it provides [L], [P], and [M] Energy but provides only 1 Energy at a time."
@@ -3183,9 +3183,9 @@ public enum UltraPrism implements LogicCardInfo {
           getEnergyTypesOverride {
             self != null ? [[L,P,M] as Set] : [[C] as Set]
           }
-        };
+        }
       case LEAFEON_GX_139:
-        return copy (LEAFEON_GX_13, this);
+        return copy (LEAFEON_GX_13, this)
       case PHEROMOSA_GX_140:
         return basic (this, hp:HP170, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -3218,9 +3218,9 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GLACEON_GX_141:
-        return copy (GLACEON_GX_39, this);
+        return copy (GLACEON_GX_39, this)
       case XURKITREE_GX_142:
         return basic (this, hp:HP180, type:LIGHTNING, retreatCost:2) {
           weakness FIGHTING
@@ -3264,9 +3264,9 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DAWN_WINGS_NECROZMA_GX_143:
-        return copy (DAWN_WINGS_NECROZMA_GX_63, this);
+        return copy (DAWN_WINGS_NECROZMA_GX_63, this)
       case CELESTEELA_GX_144:
         return basic (this, hp:HP200, type:METAL, retreatCost:4) {
           weakness LIGHTNING
@@ -3300,67 +3300,67 @@ public enum UltraPrism implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DUSK_MANE_NECROZMA_GX_145:
-        return copy (DUSK_MANE_NECROZMA_GX_90, this);
+        return copy (DUSK_MANE_NECROZMA_GX_90, this)
       case DIALGA_GX_146:
-        return copy (DIALGA_GX_100, this);
+        return copy (DIALGA_GX_100, this)
       case PALKIA_GX_147:
-        return copy (PALKIA_GX_101, this);
+        return copy (PALKIA_GX_101, this)
       case CYNTHIA_148:
-        return copy (CYNTHIA_119, this);
+        return copy (CYNTHIA_119, this)
       case GARDENIA_149:
-        return copy (GARDENIA_124, this);
+        return copy (GARDENIA_124, this)
       case LANA_150:
-        return copy (BurningShadows.LANA_117,this);
+        return copy (BurningShadows.LANA_117,this)
       case LILLIE_151:
-        return copy (LILLIE_125, this);
+        return copy (LILLIE_125, this)
       case LOOKER_152:
-        return copy (LOOKER_126, this);
+        return copy (LOOKER_126, this)
       case LUSAMINE_153:
-        return copy (CrimsonInvasion.LUSAMINE_96,this);
+        return copy (CrimsonInvasion.LUSAMINE_96,this)
       case MARS_154:
-        return copy (MARS_128, this);
+        return copy (MARS_128, this)
       case POKEMON_FAN_CLUB_155:
-        return copy (POKEMON_FAN_CLUB_133, this);
+        return copy (POKEMON_FAN_CLUB_133, this)
       case VOLKNER_156:
-        return copy (VOLKNER_135, this);
+        return copy (VOLKNER_135, this)
       case LEAFEON_GX_157:
-        return copy (LEAFEON_GX_13, this);
+        return copy (LEAFEON_GX_13, this)
       case PHEROMOSA_GX_158:
-        return copy (PHEROMOSA_GX_140, this);
+        return copy (PHEROMOSA_GX_140, this)
       case GLACEON_GX_159:
-        return copy (GLACEON_GX_39, this);
+        return copy (GLACEON_GX_39, this)
       case XURKITREE_GX_160:
-        return copy (XURKITREE_GX_142, this);
+        return copy (XURKITREE_GX_142, this)
       case DAWN_WINGS_NECROZMA_GX_161:
         return copy (DAWN_WINGS_NECROZMA_GX_63, this)
       case CELESTEELA_GX_162:
-        return copy (CELESTEELA_GX_144, this);
+        return copy (CELESTEELA_GX_144, this)
       case DUSK_MANE_NECROZMA_GX_163:
-        return copy (DUSK_MANE_NECROZMA_GX_90, this);
+        return copy (DUSK_MANE_NECROZMA_GX_90, this)
       case DIALGA_GX_164:
-        return copy (DIALGA_GX_100, this);
+        return copy (DIALGA_GX_100, this)
       case PALKIA_GX_165:
-        return copy (PALKIA_GX_101, this);
+        return copy (PALKIA_GX_101, this)
       case CRUSHING_HAMMER_166:
-        return copy (SunMoon.CRUSHING_HAMMER_115, this);
+        return copy (SunMoon.CRUSHING_HAMMER_115, this)
       case ESCAPE_BOARD_167:
-        return copy (ESCAPE_BOARD_122, this);
+        return copy (ESCAPE_BOARD_122, this)
       case MISSING_CLOVER_168:
-        return copy (MISSING_CLOVER_129, this);
+        return copy (MISSING_CLOVER_129, this)
       case PEEKING_RED_CARD_169:
-        return copy (CrimsonInvasion.PEEKING_RED_CARD_97,this);
+        return copy (CrimsonInvasion.PEEKING_RED_CARD_97,this)
       case UNIT_ENERGY_GRW_170:
-        return copy (UNIT_ENERGY_GRW_137, this);
+        return copy (UNIT_ENERGY_GRW_137, this)
       case UNIT_ENERGY_LPM_171:
-        return copy (UNIT_ENERGY_LPM_138, this);
+        return copy (UNIT_ENERGY_LPM_138, this)
       case LUNALA_GX_172:
-        return copy (SunMoonPromos.LUNALA_GX_SM17, this);
+        return copy (SunMoonPromos.LUNALA_GX_SM17, this)
       case SOLGALEO_GX_173:
-        return copy (SunMoonPromos.SOLGALEO_GX_SM16, this);
+        return copy (SunMoonPromos.SOLGALEO_GX_SM16, this)
       default:
-        return null;
+        return null
     }
   }
 

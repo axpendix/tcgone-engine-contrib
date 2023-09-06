@@ -1,27 +1,27 @@
 package tcgwars.logic.impl.gen3
 
-import tcgwars.logic.effect.ability.custom.Safeguard;
+import tcgwars.logic.effect.ability.custom.Safeguard
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
+import tcgwars.logic.*
+import tcgwars.logic.card.*
 import tcgwars.logic.card.energy.*
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
 import tcgwars.logic.effect.basic.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -137,53 +137,53 @@ public enum Deoxys implements LogicCardInfo {
   RAYQUAZA_STAR_107 ("Rayquaza Star", "107", Rarity.SECRET, [POKEMON_STAR, BASIC, POKEMON, _COLORLESS_]),
   ROCKET_S_RAIKOU_EX_108 ("Rocket's Raikou ex", "108", Rarity.ULTRARARE, [BASIC, POKEMON, _DARKNESS_, EX]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   Deoxys(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.DEOXYS;
+    return tcgwars.logic.card.Collection.DEOXYS
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -211,7 +211,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BEAUTIFLY_2:
         return evolution (this, from:"Silcoon", hp:HP100, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -248,7 +248,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BRELOOM_3:
         return evolution (this, from:"Shroomish", hp:HP080, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -269,7 +269,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CAMERUPT_4:
         return evolution (this, from:"Numel", hp:HP090, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -293,7 +293,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CLAYDOL_5:
         return evolution (this, from:"Baltoy", hp:HP080, type:FIGHTING, retreatCost:1) {
           weakness WATER
@@ -319,7 +319,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CRAWDAUNT_6:
         return evolution (this, from:"Corphish", hp:HP070, type:DARKNESS, retreatCost:1) {
           weakness GRASS
@@ -355,7 +355,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DUSCLOPS_7:
         return evolution (this, from:"Duskull", hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness DARKNESS
@@ -382,7 +382,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GYARADOS_8:
         return evolution (this, from:"Magikarp", hp:HP090, type:WATER, retreatCost:2) {
           weakness LIGHTNING
@@ -415,7 +415,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case JIRACHI_9:
         return basic (this, hp:HP060, type:METAL, retreatCost:1) {
           weakness FIRE
@@ -440,13 +440,13 @@ public enum Deoxys implements LogicCardInfo {
               damage 20
               def hasPokeBody = false
               for (Ability ability : defending.getAbilities().keySet()) {
-                if (ability instanceof PokeBody) hasPokeBody = true;
+                if (ability instanceof PokeBody) hasPokeBody = true
               }
               if(hasPokeBody) damage 30
             }
           }
 
-        };
+        }
       case LUDICOLO_10:
         return evolution (this, from:"Lombre", hp:HP100, type:WATER, retreatCost:2) {
           weakness LIGHTNING
@@ -480,7 +480,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case METAGROSS_11:
         return evolution (this, from:"Metang", hp:HP100, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -507,7 +507,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MIGHTYENA_12:
         return evolution (this, from:"Poochyena", hp:HP070, type:DARKNESS, retreatCost:0) {
           weakness FIGHTING
@@ -536,7 +536,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NINJASK_13:
         return evolution (this, from:"Nincada", hp:HP070, type:GRASS, retreatCost:0) {
           weakness LIGHTNING
@@ -580,7 +580,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHEDINJA_14:
         return evolution (this, from:"Nincada", hp:HP050, type:PSYCHIC, retreatCost:0) {
 
@@ -604,7 +604,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SLAKING_15:
         return evolution (this, from:"Vigoroth", hp:HP120, type:COLORLESS, retreatCost:3) {
           weakness FIGHTING
@@ -640,7 +640,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DEOXYS_16:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -663,7 +663,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DEOXYS_17:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -685,7 +685,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DEOXYS_18:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -704,7 +704,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUDICOLO_19:
         return evolution (this, from:"Lombre", hp:HP100, type:WATER, retreatCost:2) {
           weakness LIGHTNING
@@ -730,7 +730,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGCARGO_20:
         return evolution (this, from:"Slugma", hp:HP080, type:FIRE, retreatCost:3) {
           weakness WATER
@@ -764,7 +764,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PELIPPER_21:
         return evolution (this, from:"Wingull", hp:HP070, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -788,7 +788,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAYQUAZA_22:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness COLORLESS
@@ -812,7 +812,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SABLEYE_23:
         return basic (this, hp:HP060, type:DARKNESS, retreatCost:1) {
           resistance COLORLESS, MINUS30
@@ -842,7 +842,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SEAKING_24:
         return evolution (this, from:"Goldeen", hp:HP070, type:WATER, retreatCost:0) {
           weakness LIGHTNING
@@ -862,7 +862,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHIFTRY_25:
         return evolution (this, from:"Nuzleaf", hp:HP110, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -885,7 +885,7 @@ public enum Deoxys implements LogicCardInfo {
               if(bg.stadiumInfoStruct) damage 20
             }
           }
-        };
+        }
       case SKARMORY_26:
         return basic (this, hp:HP070, type:METAL, retreatCost:1) {
           weakness LIGHTNING
@@ -914,7 +914,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TROPIUS_27:
         return basic (this, hp:HP080, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -944,7 +944,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WHISCASH_28:
         return evolution (this, from:"Barboach", hp:HP090, type:FIGHTING, retreatCost:2) {
           weakness GRASS
@@ -963,7 +963,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case XATU_29:
         return evolution (this, from:"Natu", hp:HP070, type:PSYCHIC, retreatCost:0) {
           weakness LIGHTNING
@@ -1013,7 +1013,7 @@ public enum Deoxys implements LogicCardInfo {
               damage 30 * addDmg
             }
           }
-        };
+        }
       case DONPHAN_30:
         return evolution (this, from:"Phanpy", hp:HP080, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -1035,7 +1035,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOLBAT_31:
         return evolution (this, from:"Zubat", hp:HP070, type:GRASS, retreatCost:0) {
           weakness PSYCHIC
@@ -1059,7 +1059,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GRUMPIG_32:
         return evolution (this, from:"Spoink", hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1091,7 +1091,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LOMBRE_33:
         return evolution (this, from:"Lotad", hp:HP070, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1112,7 +1112,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LOMBRE_34:
         return evolution (this, from:"Lotad", hp:HP070, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1135,7 +1135,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LOTAD_35:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1148,7 +1148,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUNATONE_36:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness WATER
@@ -1177,7 +1177,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGCARGO_37:
         return evolution (this, from:"Slugma", hp:HP080, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -1197,7 +1197,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MANECTRIC_38:
         return evolution (this, from:"Electrike", hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1224,7 +1224,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MASQUERAIN_39:
         return evolution (this, from:"Surskit", hp:HP060, type:GRASS, retreatCost:0) {
           weakness LIGHTNING
@@ -1251,7 +1251,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case METANG_40:
         return evolution (this, from:"Beldum", hp:HP080, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -1271,7 +1271,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MINUN_41:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1293,13 +1293,13 @@ public enum Deoxys implements LogicCardInfo {
               opp.all.each{
                 hasPokeBody = false
                 for (Ability ability : it.getAbilities().keySet()) {
-                  if (ability instanceof PokeBody) hasPokeBody = true;
+                  if (ability instanceof PokeBody) hasPokeBody = true
                 }
                 if(hasPokeBody) noWrDamage 20,it
               }
             }
           }
-        };
+        }
       case NOSEPASS_42:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness WATER
@@ -1324,7 +1324,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NUZLEAF_43:
         return evolution (this, from:"Seedot", hp:HP070, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1344,7 +1344,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PLUSLE_44:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1361,14 +1361,14 @@ public enum Deoxys implements LogicCardInfo {
               opp.all.each{
                 hasPokePower = false
                 for (Ability ability : it.getAbilities().keySet()) {
-                  if (ability instanceof PokePower) hasPokePower = true;
+                  if (ability instanceof PokePower) hasPokePower = true
                 }
                 if(hasPokePower) noWrDamage 20,it
               }
             }
           }
 
-        };
+        }
       case SHELGON_45:
         return evolution (this, from:"Bagon", hp:HP080, type:COLORLESS, retreatCost:2) {
           weakness COLORLESS
@@ -1396,7 +1396,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SILCOON_46:
         return evolution (this, from:"Wurmple", hp:HP080, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -1424,7 +1424,7 @@ public enum Deoxys implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SOLROCK_47:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:2) {
           weakness GRASS
@@ -1457,7 +1457,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STARMIE_48:
         return evolution (this, from:"Staryu", hp:HP070, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1498,7 +1498,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SWELLOW_49:
         return evolution (this, from:"Taillow", hp:HP070, type:COLORLESS, retreatCost:0) {
           weakness LIGHTNING
@@ -1525,7 +1525,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VIGOROTH_50:
         return evolution (this, from:"Slakoth", hp:HP080, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -1550,7 +1550,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WEEZING_51:
         return evolution (this, from:"Koffing", hp:HP070, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -1572,7 +1572,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BAGON_52:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness COLORLESS
@@ -1593,7 +1593,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BALTOY_53:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness WATER
@@ -1619,7 +1619,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BARBOACH_54:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -1638,7 +1638,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BELDUM_55:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1651,7 +1651,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CARVANHA_56:
         return basic (this, hp:HP050, type:DARKNESS, retreatCost:1) {
           weakness GRASS
@@ -1671,7 +1671,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CORPHISH_57:
         return basic (this, hp:HP040, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1696,7 +1696,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DUSKULL_58:
         return basic (this, hp:HP040, type:PSYCHIC, retreatCost:1) {
           weakness DARKNESS
@@ -1716,7 +1716,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTRIKE_59:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1746,7 +1746,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTRIKE_60:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1766,7 +1766,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOLDEEN_61:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1785,7 +1785,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KOFFING_62:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -1797,7 +1797,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LOTAD_63:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1817,7 +1817,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGIKARP_64:
         return basic (this, hp:HP030, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1839,7 +1839,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAKUHITA_65:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -1863,7 +1863,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NATU_66:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1887,7 +1887,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NINCADA_67:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1906,7 +1906,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NUMEL_68:
         return basic (this, hp:HP040, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -1931,7 +1931,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PHANPY_69:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -1950,7 +1950,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case POOCHYENA_70:
         return basic (this, hp:HP050, type:DARKNESS, retreatCost:1) {
           weakness FIGHTING
@@ -1970,7 +1970,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SEEDOT_71:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1990,7 +1990,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHROOMISH_72:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -2011,7 +2011,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SLAKOTH_73:
         return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -2030,7 +2030,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SLUGMA_74:
         return basic (this, hp:HP050, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -2049,7 +2049,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SLUGMA_75:
         return basic (this, hp:HP050, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -2069,7 +2069,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SPOINK_76:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -2088,7 +2088,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STARYU_77:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -2102,7 +2102,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SURSKIT_78:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -2115,7 +2115,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SWABLU_79:
         return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -2170,7 +2170,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TAILLOW_80:
         return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -2187,7 +2187,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WINGULL_81:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -2201,7 +2201,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WURMPLE_82:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -2220,7 +2220,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ZUBAT_83:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -2242,9 +2242,9 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BALLOON_BERRY_84:
-        return copy(Dragon.BALLOON_BERRY_82, BALLOON_BERRY_84);
+        return copy(Dragon.BALLOON_BERRY_82, BALLOON_BERRY_84)
       case CRYSTAL_SHARD_85:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nAs long as this card is attached to a Pokémon, that Pokémon’s type is [C]. If that Pokémon attacks, discard this card at the end of the turn."
@@ -2269,7 +2269,7 @@ public enum Deoxys implements LogicCardInfo {
             eff1.unregister()
             eff2.unregister()
           }
-        };
+        }
       case ENERGY_CHARGE_86:
         return basicTrainer (this) {
           text "Flip a coin. If heads, search your discard pile for 2 Energy cards (1 if there is only 1), show them to your opponent, and shuffle them into your deck."
@@ -2284,9 +2284,9 @@ public enum Deoxys implements LogicCardInfo {
           playRequirement{
             assert my.discard.filterByType(ENERGY) : "There are no Energy cards in your discard"
           }
-        };
+        }
       case LADY_OUTING_87:
-        return copy (RubySapphire.LADY_OUTING_83, this);
+        return copy (RubySapphire.LADY_OUTING_83, this)
       case MASTER_BALL_88:
         return basicTrainer (this) {
           text "Look at the top 7 cards from your deck. Choose a Basic Pokémon or Evolution card from those cards, show it to your opponent, and put it into your hand. Put the other 6 cards back on top of your deck. Shuffle your deck afterward."
@@ -2297,7 +2297,7 @@ public enum Deoxys implements LogicCardInfo {
           playRequirement{
             assert my.deck : "There are no cards left in your deck."
           }
-        };
+        }
       case METEOR_FALLS_89:
         return stadium (this) {
           text "Each player’s Active Evolved Pokémon (excluding Pokémon-ex) can use any attack from its Basic Pokémon or its Stage 1 Evolution card. (You still have to pay for that attack’s Energy cost.)\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
@@ -2317,7 +2317,7 @@ public enum Deoxys implements LogicCardInfo {
           onRemoveFromPlay{
             eff.unregister()
           }
-        };
+        }
       case PROFESSOR_COZMO_S_DISCOVERY_90:
         return supporter (this) {
           text "Flip a coin. If heads, draw the bottom 3 cards of your deck. If tails, draw the top 2 cards of your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -2332,7 +2332,7 @@ public enum Deoxys implements LogicCardInfo {
           playRequirement{
             assert my.deck
           }
-        };
+        }
       case SPACE_CENTER_91:
         return stadium (this) {
           text "Ignore Poké-Bodies for all Basic Pokémon in play (both yours and your opponent’s) (excluding Pokémon-ex and Pokémon that has an owner in its name).\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
@@ -2356,7 +2356,7 @@ public enum Deoxys implements LogicCardInfo {
             eff2.unregister()
             new CheckAbilities().run(bg)
           }
-        };
+        }
       case STRENGTH_CHARM_92:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nWhenever an attack from the Pokémon that Strength Charm is attached to does damage to the Active Pokémon, the attack does 10 more damage (before applying Weakness and Resistance). Discard Strength Charm at the end of the turn in which this Pokémon attacks."
@@ -2385,7 +2385,7 @@ public enum Deoxys implements LogicCardInfo {
           onRemoveFromPlay {
             eff1.unregister()
           }
-        };
+        }
       case BOOST_ENERGY_93:
         return specialEnergy (this, [[C],[C],[C]]) {
           text "Boost Energy can be attached only to an Evolved Pokémon. Discard Boost Energy at the end of the turn it was attached. Boost Energy provides [C][C][C] Energy. The Pokémon Boost Energy is attached to can’t retreat. If the Pokémon Boost Energy is attached to isn’t an Evolved Pokémon, discard Boost Energy."
@@ -2422,7 +2422,7 @@ public enum Deoxys implements LogicCardInfo {
           allowAttach {to->
             to.evolution
           }
-        };
+        }
       case HEAL_ENERGY_94:
         return specialEnergy (this, [[C]]) {
           text "Heal Energy provides [C] Energy. When you attach this card from your hand to 1 of your Pokémon, remove 1 damage counter and all Special Conditions from that Pokémon. If heal Energy is attached to Pokémon-ex, Heal Energy has no effect other than providing Energy."
@@ -2434,7 +2434,7 @@ public enum Deoxys implements LogicCardInfo {
           }
           onRemoveFromPlay {
           }
-        };
+        }
       case SCRAMBLE_ENERGY_95:
         return specialEnergy (this, [[C]]) {
           text "Scramble Energy can be attached only to an Evolved Pokémon (excluding Pokémon-ex). Scramble Energy provides [C] Energy. While in play, if you have more prizes left than your opponent, Scramble Energy provides every type of Energy but provides only 3 in any combination at a time. If the Pokémon Scramble Energy is attached to isn’t an Evolved Pokémon (or evolves into Pokémon-ex), discard Scramble Energy."
@@ -2469,7 +2469,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CROBAT_EX_96:
         return evolution (this, from:"Golbat", hp:HP130, type:GRASS, retreatCost:0) {
           weakness LIGHTNING
@@ -2505,7 +2505,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DEOXYS_EX_97:
         return basic (this, hp:HP100, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -2523,7 +2523,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DEOXYS_EX_98:
         return basic (this, hp:HP110, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -2547,7 +2547,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DEOXYS_EX_99:
         return basic (this, hp:HP090, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -2591,7 +2591,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HARIYAMA_EX_100:
         return evolution (this, from:"Makuhita", hp:HP110, type:FIGHTING, retreatCost:2) {
           weakness PSYCHIC
@@ -2637,7 +2637,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MANECTRIC_EX_101:
         return evolution (this, from:"Electrike", hp:HP100, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -2667,7 +2667,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAYQUAZA_EX_102:
         return basic (this, hp:HP100, type:COLORLESS, retreatCost:2) {
           weakness COLORLESS
@@ -2680,9 +2680,9 @@ public enum Deoxys implements LogicCardInfo {
                 powerUsed()
                 while(1){
                   def pl = (my.all.findAll{ it.cards.filterByType(BASIC_ENERGY) && it != self })
-                  if (pl.empty) break;
+                  if (pl.empty) break
                   def src = pl.select("source for energy (cancel to stop)", false)
-                  if (!src) break;
+                  if (!src) break
                   def card=src.cards.select("Card to move",cardTypeFilter(ENERGY)).first()
                   energySwitch(src, self, card)
                 }
@@ -2697,7 +2697,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SALAMENCE_EX_103:
         return evolution (this, from:"Shelgon", hp:HP160, type:COLORLESS, retreatCost:2) {
           weakness COLORLESS
@@ -2729,7 +2729,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHARPEDO_EX_104:
         return evolution (this, from:"Carvanha", hp:HP100, type:DARKNESS, retreatCost:0) {
           weakness GRASS
@@ -2759,7 +2759,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LATIAS_STAR_105:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness COLORLESS
@@ -2789,7 +2789,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LATIOS_STAR_106:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness COLORLESS
@@ -2818,7 +2818,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAYQUAZA_STAR_107:
         return basic (this, hp:HP090, type:COLORLESS, retreatCost:2) {
           weakness COLORLESS
@@ -2842,7 +2842,7 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ROCKET_S_RAIKOU_EX_108:
         return basic (this, hp:HP100, type:DARKNESS, retreatCost:2) {
           weakness FIGHTING
@@ -2868,9 +2868,9 @@ public enum Deoxys implements LogicCardInfo {
             }
           }
 
-        };
+        }
       default:
-        return null;
+        return null
     }
   }
 

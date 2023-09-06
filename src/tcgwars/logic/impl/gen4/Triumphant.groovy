@@ -1,33 +1,33 @@
 package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.effect.EffectPriority
-import tcgwars.logic.effect.basic.Knockout;
+import tcgwars.logic.effect.basic.Knockout
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
 import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.effect.EffectPriority.*
-import static tcgwars.logic.effect.EffectType.*;
+import static tcgwars.logic.effect.EffectType.*
 import static tcgwars.logic.effect.EffectType.ATTACH_ENERGY
 import static tcgwars.logic.effect.EffectType.DEVOLVE
 import static tcgwars.logic.effect.EffectType.EVOLVE
 import static tcgwars.logic.effect.EffectType.KNOCKOUT
-import static tcgwars.logic.effect.EffectType.KNOCKOUT;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.effect.EffectType.KNOCKOUT
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
 import tcgwars.logic.card.*
 import tcgwars.logic.card.energy.*
-import tcgwars.logic.effect.*;
-import tcgwars.logic.util.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
+import tcgwars.logic.effect.*
+import tcgwars.logic.util.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
 import tcgwars.logic.effect.basic.*
-import tcgwars.logic.*;
+import tcgwars.logic.*
 
 
 
@@ -142,53 +142,53 @@ public enum Triumphant implements LogicCardInfo {
   PALKIA_AND_DIALGA_LEGEND_102 ("Palkia & Dialga LEGEND", "102", Rarity.HOLORARE, [POKEMON, _WATER_, LEGEND]),
   ALPH_LITHOGRAPH_FOUR ("Alph Lithograph", "FOUR", Rarity.HOLORARE, [TRAINER, ITEM]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   Triumphant(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.TRIUMPHANT;
+    return tcgwars.logic.card.Collection.TRIUMPHANT
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -217,7 +217,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALTARIA_2:
         return evolution (this, from:"Swablu", hp:HP090, type:COLORLESS, retreatCost:0) {
           weakness C
@@ -241,7 +241,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CELEBI_3:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness P
@@ -283,7 +283,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DRAPION_4:
         return evolution (this, from:"Skorupi", hp:HP100, type:DARKNESS, retreatCost:3) {
           weakness F
@@ -307,7 +307,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAMOSWINE_5:
         return evolution (this, from:"Piloswine", hp:HP140, type:WATER, retreatCost:4) {
           weakness M
@@ -330,7 +330,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDOKING_6:
         return evolution (this, from:"Nidorino", hp:HP140, type:FIGHTING, retreatCost:3) {
           weakness W
@@ -350,7 +350,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PORYGON_Z_7:
         return evolution (this, from:"Porygon2", hp:HP110, type:COLORLESS, retreatCost:2) {
           weakness F
@@ -380,7 +380,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAPIDASH_8:
         return evolution (this, from:"Ponyta", hp:HP090, type:FIRE, retreatCost:1) {
           weakness W
@@ -408,7 +408,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SOLROCK_9:
         return basic (this, hp:HP070, type:FIGHTING, retreatCost:1) {
           weakness G
@@ -432,7 +432,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SPIRITOMB_10:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           resistance C, MINUS20
@@ -458,7 +458,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VENOMOTH_11:
         return evolution (this, from:"Venonat", hp:HP080, type:GRASS, retreatCost:1) {
           weakness R
@@ -486,7 +486,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VICTREEBEL_12:
         return evolution (this, from:"Weepinbell", hp:HP110, type:GRASS, retreatCost:2) {
           weakness R
@@ -509,7 +509,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AMBIPOM_13:
         return evolution (this, from:"Aipom", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness F
@@ -535,7 +535,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BANETTE_14:
         return evolution (this, from:"Shuppet", hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness D
@@ -564,7 +564,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BRONZONG_15:
         return evolution (this, from:"Bronzor", hp:HP090, type:METAL, retreatCost:3) {
           weakness R
@@ -601,7 +601,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CARNIVINE_16:
         return basic (this, hp:HP080, type:GRASS, retreatCost:2) {
           weakness R
@@ -626,7 +626,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DITTO_17:
         return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
           weakness F
@@ -654,7 +654,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DRAGONITE_18:
         return evolution (this, from:"Dragonair", hp:HP140, type:COLORLESS, retreatCost:4) {
           weakness C
@@ -680,7 +680,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DUGTRIO_19:
         return evolution (this, from:"Diglett", hp:HP080, type:FIGHTING, retreatCost:0) {
           weakness W
@@ -703,7 +703,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTIVIRE_20:
         return evolution (this, from:"Electabuzz", hp:HP100, type:LIGHTNING, retreatCost:3) {
           weakness F
@@ -731,7 +731,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELEKID_21:
         return basic (this, hp:HP030, type:LIGHTNING, retreatCost:0) {
           pokeBody "Sweet Sleeping Face", {
@@ -758,7 +758,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOLDUCK_22:
         return evolution (this, from:"Psyduck", hp:HP090, type:WATER, retreatCost:1) {
           weakness L
@@ -783,7 +783,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GRUMPIG_23:
         return evolution (this, from:"Spoink", hp:HP090, type:PSYCHIC, retreatCost:2) {
           weakness P
@@ -820,7 +820,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KRICKETUNE_24:
         return evolution (this, from:"Kricketot", hp:HP080, type:GRASS, retreatCost:1) {
           weakness R
@@ -843,7 +843,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUNATONE_25:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness G
@@ -869,7 +869,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MACHAMP_26:
         return evolution (this, from:"Machoke", hp:HP130, type:FIGHTING, retreatCost:2) {
           weakness P
@@ -892,7 +892,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGMORTAR_27:
         return evolution (this, from:"Magmar", hp:HP100, type:FIRE, retreatCost:2) {
           weakness W
@@ -919,7 +919,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDOQUEEN_28:
         return evolution (this, from:"Nidorina", hp:HP130, type:PSYCHIC, retreatCost:2) {
           weakness P
@@ -944,7 +944,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIDGEOT_29:
         return evolution (this, from:"Pidgeotto", hp:HP120, type:COLORLESS, retreatCost:0) {
           weakness L
@@ -968,7 +968,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHARPEDO_30:
         return evolution (this, from:"Carvanha", hp:HP090, type:DARKNESS, retreatCost:1) {
           weakness L
@@ -988,7 +988,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WAILORD_31:
         return evolution (this, from:"Wailmer", hp:HP180, type:WATER, retreatCost:4) {
           weakness L
@@ -1016,7 +1016,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DRAGONAIR_32:
         return evolution (this, from:"Dratini", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness C
@@ -1041,7 +1041,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTABUZZ_33:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:2) {
           weakness F
@@ -1066,7 +1066,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTRODE_34:
         return evolution (this, from:"Voltorb", hp:HP080, type:LIGHTNING, retreatCost:1) {
           weakness F
@@ -1091,7 +1091,7 @@ public enum Triumphant implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case HAUNTER_35:
         return evolution (this, from:"Gastly", hp:HP070, type:PSYCHIC, retreatCost:0) {
           weakness D
@@ -1112,7 +1112,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KANGASKHAN_36:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:3) {
           weakness F
@@ -1134,7 +1134,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LAIRON_37:
         return evolution (this, from:"Aron", hp:HP080, type:METAL, retreatCost:3) {
           weakness R
@@ -1148,7 +1148,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LICKILICKY_38:
         return evolution (this, from:"Lickitung", hp:HP100, type:COLORLESS, retreatCost:3) {
           weakness F
@@ -1169,7 +1169,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUVDISC_39:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness L
@@ -1195,7 +1195,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MACHOKE_40:
         return evolution (this, from:"Machop", hp:HP090, type:FIGHTING, retreatCost:2) {
           weakness P
@@ -1214,7 +1214,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGBY_41:
         return basic (this, hp:HP030, type:FIRE, retreatCost:0) {
           pokeBody "Sweet Sleeping Face", {
@@ -1239,7 +1239,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGMAR_42:
         return basic (this, hp:HP070, type:FIRE, retreatCost:2) {
           weakness W
@@ -1270,7 +1270,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGNETON_43:
         return evolution (this, from:"Magnemite", hp:HP080, type:LIGHTNING, retreatCost:1) {
           weakness F
@@ -1292,7 +1292,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAROWAK_44:
         return evolution (this, from:"Cubone", hp:HP090, type:FIGHTING, retreatCost:1) {
           weakness W
@@ -1320,7 +1320,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDORINA_45:
         return evolution (this, from:"Nidoran♀", hp:HP080, type:PSYCHIC, retreatCost:2) {
           weakness P
@@ -1342,7 +1342,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDORINO_46:
         return evolution (this, from:"Nidoran♂", hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness P
@@ -1363,7 +1363,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIDGEOTTO_47:
         return evolution (this, from:"Pidgey", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness L
@@ -1395,7 +1395,7 @@ public enum Triumphant implements LogicCardInfo {
                 }]
             }
           }
-        };
+        }
       case PILOSWINE_48:
         return evolution (this, from:"Swinub", hp:HP100, type:WATER, retreatCost:3) {
           weakness M
@@ -1423,7 +1423,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PORYGON2_49:
         return evolution (this, from:"Porygon", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness F
@@ -1447,7 +1447,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TENTACRUEL_50:
         return evolution (this, from:"Tentacool", hp:HP090, type:WATER, retreatCost:2) {
           weakness L
@@ -1475,7 +1475,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case UNOWN_51:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P
@@ -1496,7 +1496,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WAILMER_52:
         return basic (this, hp:HP090, type:WATER, retreatCost:3) {
           weakness L
@@ -1517,7 +1517,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WEEPINBELL_53:
         return evolution (this, from:"Bellsprout", hp:HP080, type:GRASS, retreatCost:1) {
           weakness R
@@ -1541,7 +1541,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case YANMEGA_54:
         return evolution (this, from:"Yanma", hp:HP090, type:GRASS, retreatCost:1) {
           weakness L
@@ -1567,7 +1567,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AIPOM_55:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness F
@@ -1589,7 +1589,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARON_56:
         return basic (this, hp:HP060, type:METAL, retreatCost:2) {
           weakness R
@@ -1613,7 +1613,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BELLSPROUT_57:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness R
@@ -1638,7 +1638,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BRONZOR_58:
         return basic (this, hp:HP060, type:METAL, retreatCost:1) {
           weakness R
@@ -1660,7 +1660,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CARVANHA_59:
         return basic (this, hp:HP050, type:DARKNESS, retreatCost:1) {
           weakness L
@@ -1679,7 +1679,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CUBONE_60:
         return basic (this, hp:HP040, type:FIGHTING, retreatCost:1) {
           weakness W
@@ -1708,7 +1708,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DIGLETT_61:
         return basic (this, hp:HP040, type:FIGHTING, retreatCost:1) {
           weakness W
@@ -1733,7 +1733,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DRATINI_62:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness C
@@ -1753,7 +1753,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GASTLY_63:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness D
@@ -1766,7 +1766,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ILLUMISE_64:
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
           weakness R
@@ -1793,7 +1793,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KRICKETOT_65:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R
@@ -1805,7 +1805,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LICKITUNG_66:
         return basic (this, hp:HP090, type:COLORLESS, retreatCost:2) {
           weakness F
@@ -1827,7 +1827,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MACHOP_67:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:2) {
           weakness P
@@ -1849,7 +1849,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGNEMITE_68:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
           weakness F
@@ -1875,7 +1875,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDORAN_FEMALE_69:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P
@@ -1900,7 +1900,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDORAN_MALE_70:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P
@@ -1922,7 +1922,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIDGEY_71:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness L
@@ -1946,7 +1946,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PONYTA_72:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
           weakness W
@@ -1965,7 +1965,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PORYGON_73:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness F
@@ -1988,7 +1988,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PSYDUCK_74:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness L
@@ -2004,7 +2004,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHUPPET_75:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness D
@@ -2029,7 +2029,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SKORUPI_76:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness P
@@ -2044,7 +2044,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SPOINK_77:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P
@@ -2057,7 +2057,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SWABLU_78:
         return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
           weakness L
@@ -2073,7 +2073,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SWINUB_79:
         return basic (this, hp:HP060, type:WATER, retreatCost:2) {
           weakness M
@@ -2092,7 +2092,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TENTACOOL_80:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness L
@@ -2105,7 +2105,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VENONAT_81:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R
@@ -2125,7 +2125,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VOLBEAT_82:
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
           weakness R
@@ -2150,7 +2150,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VOLTORB_83:
         return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
           weakness F
@@ -2168,7 +2168,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case YANMA_84:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness L
@@ -2189,7 +2189,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BLACK_BELT_85:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nYou may use this card only if you have more Prize cards left than your opponent. During this turn, each of your Active Pokémon’s attacks does 40 more damage to your opponent’s Active Pokémon (before applying Weakness and Resistance)."
@@ -2209,7 +2209,7 @@ public enum Triumphant implements LogicCardInfo {
           playRequirement{
             assert my.prizeCardSet.size() > opp.prizeCardSet.size() : "You don't have more prize cards remaining than your opponent"
           }
-        };
+        }
       case INDIGO_PLATEAU_86:
         return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nEach Pokémon LEGEND in play (both yours and your opponent’s) gets +30 HP."
@@ -2224,7 +2224,7 @@ public enum Triumphant implements LogicCardInfo {
           onRemoveFromPlay{
             eff.unregister()
           }
-        };
+        }
       case JUNK_ARM_87:
         return basicTrainer (this) {
           text "Discard 2 cards from you hand. Search your discard pile for a Trainer card, show it to your opponent, and put it into your hand. You can’t choose Junk Arm with the effect of this card."
@@ -2236,7 +2236,7 @@ public enum Triumphant implements LogicCardInfo {
             assert my.hand.getExcludedList(thisCard).size() >= 2 : "You don't have 2 other cards to discard"
             assert my.discard.filterByType(ITEM).any{it.name != "Junk Arm"} : "You don't have any Trainer-Item cards not named \"Junk Arm\""
           }
-        };
+        }
       case SEEKER_88:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nEach player returns 1 of his or her Benched Pokémon and all cards attached to it to his or her hand. (You return your Pokémon first.)"
@@ -2254,7 +2254,7 @@ public enum Triumphant implements LogicCardInfo {
           playRequirement{
             assert my.bench || opp.bench : "No benched Pokémon in play"
           }
-        };
+        }
       case TWINS_89:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nYou may use this card only if you have more Prize cards left than your opponent. Search your deck for any 2 cards and put them into your hand. Shuffle your deck afterward."
@@ -2267,7 +2267,7 @@ public enum Triumphant implements LogicCardInfo {
             assert my.deck : "Your deck is empty"
             assert my.prizeCardSet.size() > opp.prizeCardSet.size() : "You don't have more prize cards remaining than your opponent"
           }
-        };
+        }
       case RESCUE_ENERGY_90:
         return specialEnergy (this, [[C]]) {
           text "Rescue Energy provides 1 [C] Energy. If the Pokémon this card is attached to is Knocked Out by damage from an attack, put that Pokémon back into your hand. (Discard all cards attached to that Pokémon.)"
@@ -2295,7 +2295,7 @@ public enum Triumphant implements LogicCardInfo {
             if (self) return [[C] as Set]
             else return [[] as Set]
           }
-        };
+        }
       case ABSOL_91:
         return basic (this, hp:HP080, type:DARKNESS, retreatCost:1) {
           weakness F
@@ -2324,7 +2324,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CELEBI_92:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness R
@@ -2348,7 +2348,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTRODE_93:
         return evolution (this, from:"Voltorb", hp:HP090, type:LIGHTNING, retreatCost:1) {
           weakness F
@@ -2378,7 +2378,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GENGAR_94:
         return evolution (this, from:"Haunter", hp:HP130, type:PSYCHIC, retreatCost:0) {
           weakness D
@@ -2428,7 +2428,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MACHAMP_95:
         return evolution (this, from:"Machoke", hp:HP150, type:FIGHTING, retreatCost:3) {
           weakness P
@@ -2459,7 +2459,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGNEZONE_96:
         return evolution (this, from:"Magneton", hp:HP140, type:LIGHTNING, retreatCost:3) {
           weakness F
@@ -2497,7 +2497,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MEW_97:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:0) {
           weakness P
@@ -2522,7 +2522,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case YANMEGA_98:
         return evolution (this, from:"Yanma", hp:HP110, type:GRASS, retreatCost:0) {
           weakness L
@@ -2556,7 +2556,7 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARKRAI_AND_CRESSELIA_LEGEND_99:
         return basic (this, hp:HP150, type:[PSYCHIC, D], retreatCost:2) {
           weakness P
@@ -2576,13 +2576,13 @@ public enum Triumphant implements LogicCardInfo {
               }
               while(1){
                 def pl=(opp.all.findAll {it.numberOfDamageCounters})
-                if(!pl) break;
+                if(!pl) break
                 def src =pl.select("Source for damage counter (cancel to stop)", false)
-                if(!src) break;
+                if(!src) break
                 def tar = opp.all
                 tar.remove(src)
                 tar = tar.select("Target for damage counter (cancel to stop)", false)
-                if(!tar) break;
+                if(!tar) break
 
                 src.damage-=hp(10)
                 directDamage 10, tar
@@ -2616,9 +2616,9 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARKRAI_AND_CRESSELIA_LEGEND_100:
-        return copy (DARKRAI_AND_CRESSELIA_LEGEND_99, this);
+        return copy (DARKRAI_AND_CRESSELIA_LEGEND_99, this)
       case PALKIA_AND_DIALGA_LEGEND_101:
         return basic (this, hp:HP160, type:[WATER, M], retreatCost:3) {
           weakness R
@@ -2646,9 +2646,9 @@ public enum Triumphant implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PALKIA_AND_DIALGA_LEGEND_102:
-        return copy (PALKIA_AND_DIALGA_LEGEND_101, this);
+        return copy (PALKIA_AND_DIALGA_LEGEND_101, this)
       case ALPH_LITHOGRAPH_FOUR:
         return basicTrainer (this) {
           text "LOOK AT ALL OF YOUR FACE DOWN PRIZE CARDS!"
@@ -2658,9 +2658,9 @@ public enum Triumphant implements LogicCardInfo {
           playRequirement{
             assert my.prizeCardSet.faceDownCards : "You have no face down Prize cards"
           }
-        };
+        }
       default:
-        return null;
+        return null
     }
   }
 

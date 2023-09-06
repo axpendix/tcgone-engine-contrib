@@ -1,36 +1,36 @@
 package tcgwars.logic.impl.gen8
 
-import tcgwars.logic.effect.gm.PlayTrainer;
+import tcgwars.logic.effect.gm.PlayTrainer
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -241,354 +241,354 @@ public enum VividVoltage implements LogicCardInfo {
   MEMORY_CAPSULE_202 ("Memory Capsule", "202", Rarity.UNCOMMON, [TRAINER, POKEMON_TOOL, ITEM]),
   TELESCOPIC_SIGHT_203 ("Telescopic Sight", "203", Rarity.UNCOMMON, [TRAINER, POKEMON_TOOL, ITEM]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   VividVoltage(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.VIVID_VOLTAGE;
+    return tcgwars.logic.card.Collection.VIVID_VOLTAGE
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
   public Card getImplementation() {
     switch (this) {
       case WEEDLE_1:
-      return copy (LegendaryHeartbeat.WEEDLE_1, this);
+      return copy (LegendaryHeartbeat.WEEDLE_1, this)
       case KAKUNA_2:
-      return copy (LegendaryHeartbeat.KAKUNA_2, this);
+      return copy (LegendaryHeartbeat.KAKUNA_2, this)
       case BEEDRILL_3:
-      return copy (LegendaryHeartbeat.BEEDRILL_3, this);
+      return copy (LegendaryHeartbeat.BEEDRILL_3, this)
       case EXEGGCUTE_4:
-      return copy (LegendaryHeartbeat.EXEGGCUTE_4, this);
+      return copy (LegendaryHeartbeat.EXEGGCUTE_4, this)
       case EXEGGUTOR_5:
-      return copy (LegendaryHeartbeat.EXEGGUTOR_5, this);
+      return copy (LegendaryHeartbeat.EXEGGUTOR_5, this)
       case YANMA_6:
-      return copy (LegendaryHeartbeat.YANMA_6, this);
+      return copy (LegendaryHeartbeat.YANMA_6, this)
       case YANMEGA_7:
-      return copy (LegendaryHeartbeat.YANMEGA_7, this);
+      return copy (LegendaryHeartbeat.YANMEGA_7, this)
       case PINECO_8:
-      return copy (LegendaryHeartbeat.PINECO_8, this);
+      return copy (LegendaryHeartbeat.PINECO_8, this)
       case CELEBI_9:
-      return copy (LegendaryHeartbeat.CELEBI_9, this);
+      return copy (LegendaryHeartbeat.CELEBI_9, this)
       case SEEDOT_10:
-      return copy (AmazingVoltTackle.SEEDOT_1, this);
+      return copy (AmazingVoltTackle.SEEDOT_1, this)
       case NUZLEAF_11:
-      return copy (AmazingVoltTackle.NUZLEAF_2, this);
+      return copy (AmazingVoltTackle.NUZLEAF_2, this)
       case SHIFTRY_12:
-      return copy (AmazingVoltTackle.SHIFTRY_3, this);
+      return copy (AmazingVoltTackle.SHIFTRY_3, this)
       case NINCADA_13:
-      return copy (AmazingVoltTackle.NINCADA_4, this);
+      return copy (AmazingVoltTackle.NINCADA_4, this)
       case NINJASK_14:
-      return copy (AmazingVoltTackle.NINJASK_5, this);
+      return copy (AmazingVoltTackle.NINJASK_5, this)
       case SHAYMIN_15:
-      return copy (LegendaryHeartbeat.SHAYMIN_10, this);
+      return copy (LegendaryHeartbeat.SHAYMIN_10, this)
       case GENESECT_16:
-      return copy (LegendaryHeartbeat.GENESECT_11, this);
+      return copy (LegendaryHeartbeat.GENESECT_11, this)
       case SKIDDO_17:
-      return copy (AmazingVoltTackle.SKIDDO_6, this);
+      return copy (AmazingVoltTackle.SKIDDO_6, this)
       case GOGOAT_18:
-      return copy (AmazingVoltTackle.GOGOAT_7, this);
+      return copy (AmazingVoltTackle.GOGOAT_7, this)
       case DHELMISE_19:
-      return copy (LegendaryHeartbeat.DHELMISE_12, this);
+      return copy (LegendaryHeartbeat.DHELMISE_12, this)
       case ORBEETLE_V_20:
-      return copy (AmazingVoltTackle.ORBEETLE_V_8, this);
+      return copy (AmazingVoltTackle.ORBEETLE_V_8, this)
       case ORBEETLE_VMAX_21:
-      return copy (AmazingVoltTackle.ORBEETLE_VMAX_9, this);
+      return copy (AmazingVoltTackle.ORBEETLE_VMAX_9, this)
       case ZARUDE_V_22:
-      return copy (LegendaryHeartbeat.ZARUDE_V_13, this);
+      return copy (LegendaryHeartbeat.ZARUDE_V_13, this)
       case CHARMANDER_23:
-      return copy (AmazingVoltTackle.CHARMANDER_10, this);
+      return copy (AmazingVoltTackle.CHARMANDER_10, this)
       case CHARMELEON_24:
-      return copy (AmazingVoltTackle.CHARMELEON_11, this);
+      return copy (AmazingVoltTackle.CHARMELEON_11, this)
       case CHARIZARD_25:
-      return copy (AmazingVoltTackle.CHARIZARD_12, this);
+      return copy (AmazingVoltTackle.CHARIZARD_12, this)
       case FLAREON_26:
-      return copy (AmazingVoltTackle.FLAREON_13, this);
+      return copy (AmazingVoltTackle.FLAREON_13, this)
       case SLUGMA_27:
-      return copy (AmazingVoltTackle.SLUGMA_14, this);
+      return copy (AmazingVoltTackle.SLUGMA_14, this)
       case MAGCARGO_28:
-      return copy (AmazingVoltTackle.MAGCARGO_15, this);
+      return copy (AmazingVoltTackle.MAGCARGO_15, this)
       case TALONFLAME_V_29:
-      return copy (AmazingVoltTackle.TALONFLAME_V_16, this);
+      return copy (AmazingVoltTackle.TALONFLAME_V_16, this)
       case VAPOREON_30:
-      return copy (AmazingVoltTackle.VAPOREON_17, this);
+      return copy (AmazingVoltTackle.VAPOREON_17, this)
       case WAILMER_31:
-      return copy (AmazingVoltTackle.WAILMER_18, this);
+      return copy (AmazingVoltTackle.WAILMER_18, this)
       case WAILORD_32:
-      return copy (AmazingVoltTackle.WAILORD_19, this);
+      return copy (AmazingVoltTackle.WAILORD_19, this)
       case OSHAWOTT_33:
-      return copy (AmazingVoltTackle.OSHAWOTT_20, this);
+      return copy (AmazingVoltTackle.OSHAWOTT_20, this)
       case DEWOTT_34:
-      return copy (AmazingVoltTackle.DEWOTT_21, this);
+      return copy (AmazingVoltTackle.DEWOTT_21, this)
       case SAMUROTT_35:
-      return copy (AmazingVoltTackle.SAMUROTT_22, this);
+      return copy (AmazingVoltTackle.SAMUROTT_22, this)
       case GALARIAN_DARMANITAN_V_36:
-      return copy (AmazingVoltTackle.GALARIAN_DARMANITAN_V_23, this);
+      return copy (AmazingVoltTackle.GALARIAN_DARMANITAN_V_23, this)
       case GALARIAN_DARMANITAN_VMAX_37:
-      return copy (AmazingVoltTackle.GALARIAN_DARMANITAN_VMAX_24, this);
+      return copy (AmazingVoltTackle.GALARIAN_DARMANITAN_VMAX_24, this)
       case CHEWTLE_38:
-      return copy (AmazingVoltTackle.CHEWTLE_25, this);
+      return copy (AmazingVoltTackle.CHEWTLE_25, this)
       case DREDNAW_39:
-      return copy (AmazingVoltTackle.DREDNAW_26, this);
+      return copy (AmazingVoltTackle.DREDNAW_26, this)
       case CRAMORANT_40:
-      return copy (AmazingVoltTackle.CRAMORANT_27, this);
+      return copy (AmazingVoltTackle.CRAMORANT_27, this)
       case ARROKUDA_41:
-      return copy (AmazingVoltTackle.ARROKUDA_28, this);
+      return copy (AmazingVoltTackle.ARROKUDA_28, this)
       case BARRASKEWDA_42:
-      return copy (AmazingVoltTackle.BARRASKEWDA_29, this);
+      return copy (AmazingVoltTackle.BARRASKEWDA_29, this)
       case PIKACHU_V_43:
-      return copy (AmazingVoltTackle.PIKACHU_V_30, this);
+      return copy (AmazingVoltTackle.PIKACHU_V_30, this)
       case PIKACHU_VMAX_44:
-      return copy (AmazingVoltTackle.PIKACHU_VMAX_31, this);
+      return copy (AmazingVoltTackle.PIKACHU_VMAX_31, this)
       case VOLTORB_45:
-      return copy (AmazingVoltTackle.VOLTORB_32, this);
+      return copy (AmazingVoltTackle.VOLTORB_32, this)
       case ELECTRODE_46:
-      return copy (AmazingVoltTackle.ELECTRODE_33, this);
+      return copy (AmazingVoltTackle.ELECTRODE_33, this)
       case JOLTEON_47:
-      return copy (AmazingVoltTackle.JOLTEON_34, this);
+      return copy (AmazingVoltTackle.JOLTEON_34, this)
       case ZAPDOS_48:
-      return copy (AmazingVoltTackle.ZAPDOS_35, this);
+      return copy (AmazingVoltTackle.ZAPDOS_35, this)
       case AMPHAROS_V_49:
-      return copy (LegendaryHeartbeat.AMPHAROS_V_14, this);
+      return copy (LegendaryHeartbeat.AMPHAROS_V_14, this)
       case RAIKOU_50:
-      return copy (LegendaryHeartbeat.RAIKOU_15, this);
+      return copy (LegendaryHeartbeat.RAIKOU_15, this)
       case ELECTRIKE_51:
-      return copy (LegendaryHeartbeat.ELECTRIKE_16, this);
+      return copy (LegendaryHeartbeat.ELECTRIKE_16, this)
       case MANECTRIC_52:
-      return copy (LegendaryHeartbeat.MANECTRIC_17, this);
+      return copy (LegendaryHeartbeat.MANECTRIC_17, this)
       case BLITZLE_53:
-      return copy (AmazingVoltTackle.BLITZLE_36, this);
+      return copy (AmazingVoltTackle.BLITZLE_36, this)
       case ZEBSTRIKA_54:
-      return copy (AmazingVoltTackle.ZEBSTRIKA_37, this);
+      return copy (AmazingVoltTackle.ZEBSTRIKA_37, this)
       case JOLTIK_55:
-      return copy (LegendaryHeartbeat.JOLTIK_18, this);
+      return copy (LegendaryHeartbeat.JOLTIK_18, this)
       case GALVANTULA_56:
-      return copy (LegendaryHeartbeat.GALVANTULA_19, this);
+      return copy (LegendaryHeartbeat.GALVANTULA_19, this)
       case TYNAMO_57:
-      return copy (AmazingVoltTackle.TYNAMO_38, this);
+      return copy (AmazingVoltTackle.TYNAMO_38, this)
       case EELEKTRIK_58:
-      return copy (AmazingVoltTackle.EELEKTRIK_39, this);
+      return copy (AmazingVoltTackle.EELEKTRIK_39, this)
       case EELEKTROSS_59:
-      return copy (AmazingVoltTackle.EELEKTROSS_40, this);
+      return copy (AmazingVoltTackle.EELEKTROSS_40, this)
       case ZEKROM_60:
-      return copy (LegendaryHeartbeat.ZEKROM_20, this);
+      return copy (LegendaryHeartbeat.ZEKROM_20, this)
       case ZERAORA_61:
-      return copy (LegendaryHeartbeat.ZERAORA_21, this);
+      return copy (LegendaryHeartbeat.ZERAORA_21, this)
       case PINCURCHIN_62:
-      return copy (LegendaryHeartbeat.PINCURCHIN_22, this);
+      return copy (LegendaryHeartbeat.PINCURCHIN_22, this)
       case CLEFAIRY_63:
-      return copy (LegendaryHeartbeat.CLEFAIRY_23, this);
+      return copy (LegendaryHeartbeat.CLEFAIRY_23, this)
       case CLEFABLE_64:
-      return copy (LegendaryHeartbeat.CLEFABLE_24, this);
+      return copy (LegendaryHeartbeat.CLEFABLE_24, this)
       case GIRAFARIG_65:
-      return copy (LegendaryHeartbeat.GIRAFARIG_25, this);
+      return copy (LegendaryHeartbeat.GIRAFARIG_25, this)
       case SHEDINJA_66:
-      return copy (AmazingVoltTackle.SHEDINJA_42, this);
+      return copy (AmazingVoltTackle.SHEDINJA_42, this)
       case SHUPPET_67:
-      return copy (LegendaryHeartbeat.SHUPPET_26, this);
+      return copy (LegendaryHeartbeat.SHUPPET_26, this)
       case BANETTE_68:
-      return copy (LegendaryHeartbeat.BANETTE_27, this);
+      return copy (LegendaryHeartbeat.BANETTE_27, this)
       case DUSKULL_69:
-      return copy (AmazingVoltTackle.DUSKULL_43, this);
+      return copy (AmazingVoltTackle.DUSKULL_43, this)
       case DUSCLOPS_70:
-      return copy (AmazingVoltTackle.DUSCLOPS_44, this);
+      return copy (AmazingVoltTackle.DUSCLOPS_44, this)
       case DUSKNOIR_71:
-      return copy (AmazingVoltTackle.DUSKNOIR_45, this);
+      return copy (AmazingVoltTackle.DUSKNOIR_45, this)
       case CHIMECHO_72:
-      return copy (AmazingVoltTackle.CHIMECHO_46, this);
+      return copy (AmazingVoltTackle.CHIMECHO_46, this)
       case WOOBAT_73:
-      return copy (AmazingVoltTackle.WOOBAT_47, this);
+      return copy (AmazingVoltTackle.WOOBAT_47, this)
       case SWOOBAT_74:
-      return copy (AmazingVoltTackle.SWOOBAT_48, this);
+      return copy (AmazingVoltTackle.SWOOBAT_48, this)
       case COTTONEE_75:
-      return copy (AmazingVoltTackle.COTTONEE_49, this);
+      return copy (AmazingVoltTackle.COTTONEE_49, this)
       case WHIMSICOTT_76:
-      return copy (AmazingVoltTackle.WHIMSICOTT_50, this);
+      return copy (AmazingVoltTackle.WHIMSICOTT_50, this)
       case DEDENNE_77:
-      return copy (LegendaryHeartbeat.DEDENNE_28, this);
+      return copy (LegendaryHeartbeat.DEDENNE_28, this)
       case XERNEAS_78:
-      return copy (LegendaryHeartbeat.XERNEAS_29, this);
+      return copy (LegendaryHeartbeat.XERNEAS_29, this)
       case DIANCIE_79:
-      return copy (LegendaryHeartbeat.DIANCIE_30, this);
+      return copy (LegendaryHeartbeat.DIANCIE_30, this)
       case MILCERY_80:
-      return copy (AmazingVoltTackle.MILCERY_51, this);
+      return copy (AmazingVoltTackle.MILCERY_51, this)
       case ALCREMIE_81:
-      return copy (AmazingVoltTackle.ALCREMIE_52, this);
+      return copy (AmazingVoltTackle.ALCREMIE_52, this)
       case ZACIAN_82:
-      return copy (LegendaryHeartbeat.ZACIAN_33, this);
+      return copy (LegendaryHeartbeat.ZACIAN_33, this)
       case WOOPER_83:
-      return copy (LegendaryHeartbeat.WOOPER_34, this);
+      return copy (LegendaryHeartbeat.WOOPER_34, this)
       case QUAGSIRE_84:
-      return copy (LegendaryHeartbeat.QUAGSIRE_35, this);
+      return copy (LegendaryHeartbeat.QUAGSIRE_35, this)
       case SHUCKLE_85:
-      return copy (LegendaryHeartbeat.SHUCKLE_36, this);
+      return copy (LegendaryHeartbeat.SHUCKLE_36, this)
       case PHANPY_86:
-      return copy (AmazingVoltTackle.PHANPY_56, this);
+      return copy (AmazingVoltTackle.PHANPY_56, this)
       case DONPHAN_87:
-      return copy (AmazingVoltTackle.DONPHAN_57, this);
+      return copy (AmazingVoltTackle.DONPHAN_57, this)
       case HITMONTOP_88:
-      return copy (AmazingVoltTackle.HITMONTOP_58, this);
+      return copy (AmazingVoltTackle.HITMONTOP_58, this)
       case REGIROCK_89:
-      return copy (LegendaryHeartbeat.REGIROCK_37, this);
+      return copy (LegendaryHeartbeat.REGIROCK_37, this)
       case RIOLU_90:
-      return copy (LegendaryHeartbeat.RIOLU_38, this);
+      return copy (LegendaryHeartbeat.RIOLU_38, this)
       case DRILBUR_91:
-      return copy (AmazingVoltTackle.DRILBUR_59, this);
+      return copy (AmazingVoltTackle.DRILBUR_59, this)
       case TERRAKION_92:
-      return copy (AmazingVoltTackle.TERRAKION_60, this);
+      return copy (AmazingVoltTackle.TERRAKION_60, this)
       case ZYGARDE_93:
-      return copy (LegendaryHeartbeat.ZYGARDE_39, this);
+      return copy (LegendaryHeartbeat.ZYGARDE_39, this)
       case ROCKRUFF_94:
-      return copy (LegendaryHeartbeat.ROCKRUFF_40, this);
+      return copy (LegendaryHeartbeat.ROCKRUFF_40, this)
       case LYCANROC_95:
-      return copy (LegendaryHeartbeat.LYCANROC_41, this);
+      return copy (LegendaryHeartbeat.LYCANROC_41, this)
       case MUDBRAY_96:
-      return copy (AmazingVoltTackle.MUDBRAY_61, this);
+      return copy (AmazingVoltTackle.MUDBRAY_61, this)
       case MUDSDALE_97:
-      return copy (AmazingVoltTackle.MUDSDALE_62, this);
+      return copy (AmazingVoltTackle.MUDSDALE_62, this)
       case COALOSSAL_V_98:
-      return copy (LegendaryHeartbeat.COALOSSAL_V_42, this);
+      return copy (LegendaryHeartbeat.COALOSSAL_V_42, this)
       case COALOSSAL_VMAX_99:
-      return copy (LegendaryHeartbeat.COALOSSAL_VMAX_43, this);
+      return copy (LegendaryHeartbeat.COALOSSAL_VMAX_43, this)
       case CLOBBOPUS_100:
-      return copy (AmazingVoltTackle.CLOBBOPUS_63, this);
+      return copy (AmazingVoltTackle.CLOBBOPUS_63, this)
       case GRAPPLOCT_101:
-      return copy (AmazingVoltTackle.GRAPPLOCT_64, this);
+      return copy (AmazingVoltTackle.GRAPPLOCT_64, this)
       case ZAMAZENTA_102:
-      return copy (LegendaryHeartbeat.ZAMAZENTA_44, this);
+      return copy (LegendaryHeartbeat.ZAMAZENTA_44, this)
       case POOCHYENA_103:
-      return copy (AmazingVoltTackle.POOCHYENA_66, this);
+      return copy (AmazingVoltTackle.POOCHYENA_66, this)
       case MIGHTYENA_104:
-      return copy (AmazingVoltTackle.MIGHTYENA_67, this);
+      return copy (AmazingVoltTackle.MIGHTYENA_67, this)
       case SABLEYE_105:
-      return copy (AmazingVoltTackle.SABLEYE_68, this);
+      return copy (AmazingVoltTackle.SABLEYE_68, this)
       case DRAPION_V_106:
-      return copy (AmazingVoltTackle.DRAPION_V_69, this);
+      return copy (AmazingVoltTackle.DRAPION_V_69, this)
       case SANDILE_107:
-      return copy (AmazingVoltTackle.SANDILE_70, this);
+      return copy (AmazingVoltTackle.SANDILE_70, this)
       case KROKOROK_108:
-      return copy (AmazingVoltTackle.KROKOROK_71, this);
+      return copy (AmazingVoltTackle.KROKOROK_71, this)
       case KROOKODILE_109:
-      return copy (AmazingVoltTackle.KROOKODILE_72, this);
+      return copy (AmazingVoltTackle.KROOKODILE_72, this)
       case TRUBBISH_110:
-      return copy (AmazingVoltTackle.TRUBBISH_73, this);
+      return copy (AmazingVoltTackle.TRUBBISH_73, this)
       case GARBODOR_111:
-      return copy (AmazingVoltTackle.GARBODOR_74, this);
+      return copy (AmazingVoltTackle.GARBODOR_74, this)
       case GALARIAN_MEOWTH_112:
-      return copy (AmazingVoltTackle.GALARIAN_MEOWTH_75, this);
+      return copy (AmazingVoltTackle.GALARIAN_MEOWTH_75, this)
       case GALARIAN_PERRSERKER_113:
-      return copy (AmazingVoltTackle.GALARIAN_PERRSERKER_76, this);
+      return copy (AmazingVoltTackle.GALARIAN_PERRSERKER_76, this)
       case FORRETRESS_114:
-      return copy (LegendaryHeartbeat.FORRETRESS_45, this);
+      return copy (LegendaryHeartbeat.FORRETRESS_45, this)
       case STEELIX_V_115:
-      return copy (LegendaryHeartbeat.STEELIX_V_46, this);
+      return copy (LegendaryHeartbeat.STEELIX_V_46, this)
       case BELDUM_116:
-      return copy (LegendaryHeartbeat.BELDUM_47, this);
+      return copy (LegendaryHeartbeat.BELDUM_47, this)
       case METANG_117:
-      return copy (LegendaryHeartbeat.METANG_48, this);
+      return copy (LegendaryHeartbeat.METANG_48, this)
       case METAGROSS_118:
-      return copy (LegendaryHeartbeat.METAGROSS_49, this);
+      return copy (LegendaryHeartbeat.METAGROSS_49, this)
       case JIRACHI_119:
-      return copy (LegendaryHeartbeat.JIRACHI_50, this);
+      return copy (LegendaryHeartbeat.JIRACHI_50, this)
       case LUCARIO_120:
-      return copy (LegendaryHeartbeat.LUCARIO_51, this);
+      return copy (LegendaryHeartbeat.LUCARIO_51, this)
       case DIALGA_121:
-      return copy (LegendaryHeartbeat.DIALGA_52, this);
+      return copy (LegendaryHeartbeat.DIALGA_52, this)
       case EXCADRILL_122:
-      return copy (AmazingVoltTackle.EXCADRILL_77, this);
+      return copy (AmazingVoltTackle.EXCADRILL_77, this)
       case FERROSEED_123:
-      return copy (AmazingVoltTackle.FERROSEED_78, this);
+      return copy (AmazingVoltTackle.FERROSEED_78, this)
       case FERROTHORN_124:
-      return copy (AmazingVoltTackle.FERROTHORN_79, this);
+      return copy (AmazingVoltTackle.FERROTHORN_79, this)
       case GALARIAN_STUNFISK_125:
-      return copy (LegendaryHeartbeat.GALARIAN_STUNFISK_53, this);
+      return copy (LegendaryHeartbeat.GALARIAN_STUNFISK_53, this)
       case AEGISLASH_V_126:
-      return copy (AmazingVoltTackle.AEGISLASH_V_80, this);
+      return copy (AmazingVoltTackle.AEGISLASH_V_80, this)
       case AEGISLASH_VMAX_127:
-      return copy (AmazingVoltTackle.AEGISLASH_VMAX_81, this);
+      return copy (AmazingVoltTackle.AEGISLASH_VMAX_81, this)
       case MAGEARNA_128:
-      return copy (LegendaryHeartbeat.MAGEARNA_54, this);
+      return copy (LegendaryHeartbeat.MAGEARNA_54, this)
       case DURALUDON_129:
-      return copy (AmazingVoltTackle.DURALUDON_82, this);
+      return copy (AmazingVoltTackle.DURALUDON_82, this)
       case EEVEE_130:
-      return copy (AmazingVoltTackle.EEVEE_83, this);
+      return copy (AmazingVoltTackle.EEVEE_83, this)
       case SNORLAX_131:
-      return copy (AmazingVoltTackle.SNORLAX_84, this);
+      return copy (AmazingVoltTackle.SNORLAX_84, this)
       case LUGIA_132:
-      return copy (LegendaryHeartbeat.LUGIA_55, this);
+      return copy (LegendaryHeartbeat.LUGIA_55, this)
       case TAILLOW_133:
-      return copy (AmazingVoltTackle.TAILLOW_85, this);
+      return copy (AmazingVoltTackle.TAILLOW_85, this)
       case SWELLOW_134:
-      return copy (AmazingVoltTackle.SWELLOW_86, this);
+      return copy (AmazingVoltTackle.SWELLOW_86, this)
       case WHISMUR_135:
-      return copy (AmazingVoltTackle.WHISMUR_87, this);
+      return copy (AmazingVoltTackle.WHISMUR_87, this)
       case LOUDRED_136:
-      return copy (AmazingVoltTackle.LOUDRED_88, this);
+      return copy (AmazingVoltTackle.LOUDRED_88, this)
       case EXPLOUD_137:
-      return copy (AmazingVoltTackle.EXPLOUD_89, this);
+      return copy (AmazingVoltTackle.EXPLOUD_89, this)
       case RAYQUAZA_138:
-      return copy (LegendaryHeartbeat.RAYQUAZA_56, this);
+      return copy (LegendaryHeartbeat.RAYQUAZA_56, this)
       case CHATOT_139:
-      return copy (LegendaryHeartbeat.CHATOT_57, this);
+      return copy (LegendaryHeartbeat.CHATOT_57, this)
       case TOGEKISS_V_140:
-      return copy (LegendaryHeartbeat.TOGEKISS_V_58, this);
+      return copy (LegendaryHeartbeat.TOGEKISS_V_58, this)
       case TOGEKISS_VMAX_141:
-      return copy (LegendaryHeartbeat.TOGEKISS_VMAX_59, this);
+      return copy (LegendaryHeartbeat.TOGEKISS_VMAX_59, this)
       case TORNADUS_142:
-      return copy (LegendaryHeartbeat.TORNADUS_60, this);
+      return copy (LegendaryHeartbeat.TORNADUS_60, this)
       case PIKIPEK_143:
-      return copy (LegendaryHeartbeat.PIKIPEK_61, this);
+      return copy (LegendaryHeartbeat.PIKIPEK_61, this)
       case TRUMBEAK_144:
-      return copy (LegendaryHeartbeat.TRUMBEAK_62, this);
+      return copy (LegendaryHeartbeat.TRUMBEAK_62, this)
       case TOUCANNON_145:
-      return copy (LegendaryHeartbeat.TOUCANNON_63, this);
+      return copy (LegendaryHeartbeat.TOUCANNON_63, this)
       case ALLISTER_146:
-      return copy (LegendaryHeartbeat.ALLISTER_71, this);
+      return copy (LegendaryHeartbeat.ALLISTER_71, this)
       case BEA_147:
-      return copy (AmazingVoltTackle.BEA_93, this);
+      return copy (AmazingVoltTackle.BEA_93, this)
       case BEAUTY_148:
-      return copy (LegendaryHeartbeat.BEAUTY_70, this);
+      return copy (LegendaryHeartbeat.BEAUTY_70, this)
       case CARA_LISS_149:
       return supporter (this) {
         text "Search your deck for up to 2 Rare Fossil cards and put them onto your Bench. Then" +
@@ -605,117 +605,117 @@ public enum VividVoltage implements LogicCardInfo {
           assert my.bench.notFull : "Bench is already full"
           assert my.deck : "Deck is empty"
         }
-      };
+      }
       case CIRCHESTER_BATH_150:
       return copy (AmazingVoltTackle.HERO_S_BATH_97, this)
       case DRONE_ROTOM_151:
-      return copy (AmazingVoltTackle.DRONE_ROTOM_90, this);
+      return copy (AmazingVoltTackle.DRONE_ROTOM_90, this)
       case HERO_S_MEDAL_152:
-      return copy (LegendaryHeartbeat.HERO_S_MEDAL_68, this);
+      return copy (LegendaryHeartbeat.HERO_S_MEDAL_68, this)
       case LEAGUE_STAFF_153:
-      return copy (AmazingVoltTackle.LEAGUE_STAFF_95, this);
+      return copy (AmazingVoltTackle.LEAGUE_STAFF_95, this)
       case LEON_154:
-      return copy (AmazingVoltTackle.LEON_94, this);
+      return copy (AmazingVoltTackle.LEON_94, this)
       case MEMORY_CAPSULE_155:
-      return copy (AmazingVoltTackle.MEMORY_CAPSULE_92, this);
+      return copy (AmazingVoltTackle.MEMORY_CAPSULE_92, this)
       case MOOMOO_CHEESE_156:
-      return copy (LegendaryHeartbeat.MOOMOO_CHEESE_67, this);
+      return copy (LegendaryHeartbeat.MOOMOO_CHEESE_67, this)
       case NESSA_157:
-      return copy (AmazingVoltTackle.NESSA_96, this);
+      return copy (AmazingVoltTackle.NESSA_96, this)
       case OPAL_158:
-      return copy (LegendaryHeartbeat.OPAL_72, this);
+      return copy (LegendaryHeartbeat.OPAL_72, this)
       case ROCKY_HELMET_159:
-      return copy (LegendaryHeartbeat.ROCKY_HELMET_69, this);
+      return copy (LegendaryHeartbeat.ROCKY_HELMET_69, this)
       case TELESCOPIC_SIGHT_160:
-      return copy (AmazingVoltTackle.TELEPHOTO_SCOPE_91, this);
+      return copy (AmazingVoltTackle.TELEPHOTO_SCOPE_91, this)
       case WYNDON_STADIUM_161:
-      return copy (AmazingVoltTackle.WYNDON_STADIUM_98, this);
+      return copy (AmazingVoltTackle.WYNDON_STADIUM_98, this)
       case AROMATIC_G_ENERGY_162:
-      return copy (LegendaryHeartbeat.AROMA_G_ENERGY_74, this);
+      return copy (LegendaryHeartbeat.AROMA_G_ENERGY_74, this)
       case COATING_M_ENERGY_163:
-      return copy (AmazingVoltTackle.COATING_M_ENERGY_100, this);
+      return copy (AmazingVoltTackle.COATING_M_ENERGY_100, this)
       case STONE_F_ENERGY_164:
-      return copy (LegendaryHeartbeat.STONE_F_ENERGY_75, this);
+      return copy (LegendaryHeartbeat.STONE_F_ENERGY_75, this)
       case WASH_W_ENERGY_165:
-      return copy (AmazingVoltTackle.WASH_W_ENERGY_99, this);
+      return copy (AmazingVoltTackle.WASH_W_ENERGY_99, this)
       case ORBEETLE_V_166:
-      return copy (ORBEETLE_V_20, this);
+      return copy (ORBEETLE_V_20, this)
       case ZARUDE_V_167:
-      return copy (ZARUDE_V_22, this);
+      return copy (ZARUDE_V_22, this)
       case TALONFLAME_V_168:
-      return copy (TALONFLAME_V_29, this);
+      return copy (TALONFLAME_V_29, this)
       case GALARIAN_DARMANITAN_V_169:
-      return copy (GALARIAN_DARMANITAN_V_36, this);
+      return copy (GALARIAN_DARMANITAN_V_36, this)
       case PIKACHU_V_170:
-      return copy (PIKACHU_V_43, this);
+      return copy (PIKACHU_V_43, this)
       case AMPHAROS_V_171:
-      return copy (AMPHAROS_V_49, this);
+      return copy (AMPHAROS_V_49, this)
       case ALAKAZAM_V_172:
-      return copy (AmazingVoltTackle.ALAKAZAM_V_41, this);
+      return copy (AmazingVoltTackle.ALAKAZAM_V_41, this)
       case COALOSSAL_V_173:
-      return copy (COALOSSAL_V_98, this);
+      return copy (COALOSSAL_V_98, this)
       case GALARIAN_SIRFETCH_D_V_174:
-      return copy (AmazingVoltTackle.GALARIAN_SIRFETCH_D_V_106, this);
+      return copy (AmazingVoltTackle.GALARIAN_SIRFETCH_D_V_106, this)
       case DRAPION_V_175:
-      return copy (DRAPION_V_106, this);
+      return copy (DRAPION_V_106, this)
       case STEELIX_V_176:
-      return copy (STEELIX_V_115, this);
+      return copy (STEELIX_V_115, this)
       case AEGISLASH_V_177:
-      return copy (AEGISLASH_V_126, this);
+      return copy (AEGISLASH_V_126, this)
       case TOGEKISS_V_178:
-      return copy (TOGEKISS_V_140, this);
+      return copy (TOGEKISS_V_140, this)
       case ALLISTER_179:
-      return copy (ALLISTER_146, this);
+      return copy (ALLISTER_146, this)
       case BEA_180:
-      return copy (BEA_147, this);
+      return copy (BEA_147, this)
       case BEAUTY_181:
-      return copy (BEAUTY_148, this);
+      return copy (BEAUTY_148, this)
       case LEON_182:
-      return copy (LEON_154, this);
+      return copy (LEON_154, this)
       case NESSA_183:
-      return copy (NESSA_157, this);
+      return copy (NESSA_157, this)
       case OPAL_184:
-      return copy (OPAL_158, this);
+      return copy (OPAL_158, this)
       case POKEMON_CENTER_LADY_185:
-      return copy (SwordShield.POKEMON_CENTER_LADY_176, this);
+      return copy (SwordShield.POKEMON_CENTER_LADY_176, this)
       case ORBEETLE_VMAX_186:
-      return copy (ORBEETLE_VMAX_21, this);
+      return copy (ORBEETLE_VMAX_21, this)
       case GALARIAN_DARMANITAN_VMAX_187:
-      return copy (GALARIAN_DARMANITAN_VMAX_37, this);
+      return copy (GALARIAN_DARMANITAN_VMAX_37, this)
       case PIKACHU_VMAX_188:
-      return copy (PIKACHU_VMAX_44, this);
+      return copy (PIKACHU_VMAX_44, this)
       case COALOSSAL_VMAX_189:
-      return copy (COALOSSAL_VMAX_99, this);
+      return copy (COALOSSAL_VMAX_99, this)
       case AEGISLASH_VMAX_190:
-      return copy (AEGISLASH_VMAX_127, this);
+      return copy (AEGISLASH_VMAX_127, this)
       case TOGEKISS_VMAX_191:
-      return copy (TOGEKISS_VMAX_141, this);
+      return copy (TOGEKISS_VMAX_141, this)
       case ALLISTER_192:
-      return copy (ALLISTER_146, this);
+      return copy (ALLISTER_146, this)
       case BEA_193:
-      return copy (BEA_147, this);
+      return copy (BEA_147, this)
       case BEAUTY_194:
-      return copy (BEAUTY_148, this);
+      return copy (BEAUTY_148, this)
       case LEON_195:
-      return copy (LEON_154, this);
+      return copy (LEON_154, this)
       case NESSA_196:
-      return copy (NESSA_157, this);
+      return copy (NESSA_157, this)
       case OPAL_197:
-      return copy (OPAL_158, this);
+      return copy (OPAL_158, this)
       case GALARIAN_OBSTAGOON_198:
-      return copy (SwordShield.GALARIAN_OBSTAGOON_119, this);
+      return copy (SwordShield.GALARIAN_OBSTAGOON_119, this)
       case ORANGURU_199:
-      return copy (LegendaryHeartbeat.ORANGURU_92, this);
+      return copy (LegendaryHeartbeat.ORANGURU_92, this)
       case CAPE_OF_TOUGHNESS_200:
-      return copy (DarknessAblaze.CAPE_OF_TOUGHNESS_160, this);
+      return copy (DarknessAblaze.CAPE_OF_TOUGHNESS_160, this)
       case HERO_S_MEDAL_201:
-      return copy (HERO_S_MEDAL_152, this);
+      return copy (HERO_S_MEDAL_152, this)
       case MEMORY_CAPSULE_202:
-      return copy (MEMORY_CAPSULE_155, this);
+      return copy (MEMORY_CAPSULE_155, this)
       case TELESCOPIC_SIGHT_203:
-      return copy (TELESCOPIC_SIGHT_160, this);
+      return copy (TELESCOPIC_SIGHT_160, this)
       default:
-      return null;
+      return null
     }
   }
 }

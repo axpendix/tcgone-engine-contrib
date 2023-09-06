@@ -2,16 +2,16 @@ package tcgwars.logic.impl.gen8
 
 import tcgwars.logic.card.pokemon.PokemonCard
 import tcgwars.logic.effect.EffectPriority
-import tcgwars.logic.effect.gm.Attack;
+import tcgwars.logic.effect.gm.Attack
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
 import static tcgwars.logic.card.CardType.*
-import static tcgwars.logic.effect.EffectPriority.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.effect.EffectPriority.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
+import static tcgwars.logic.effect.EffectType.*
 import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
@@ -124,53 +124,53 @@ public enum EeveeHeroes implements LogicCardInfo {
   GORDIE_97 ("Gordie", "97", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   RAPID_SHAKE_98 ("Rapid Shake", "98", Rarity.UNCOMMON, [TRAINER, ITEM]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   EeveeHeroes(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.EEVEE_HEROES;
+    return tcgwars.logic.card.Collection.EEVEE_HEROES
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -197,7 +197,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             damage 110
           }
         }
-      };
+      }
       case LEAFEON_V_2:
       return basic (this, hp:HP200, type:G, retreatCost:1) {
         weakness R
@@ -219,7 +219,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             flip { damage 60 }
           }
         }
-      };
+      }
       case LEAFEON_VMAX_3:
       return evolution (this, from:"Leafeon V", hp:HP310, type:G, retreatCost:2) {
         weakness R
@@ -241,7 +241,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             heal 30, self
           }
         }
-      };
+      }
       case SEWADDLE_4:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -253,7 +253,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             discardDefendingEnergyAfterDamage G
           }
         }
-      };
+      }
       case SWADLOON_5:
       return evolution (this, from:"Sewaddle", hp:HP080, type:G, retreatCost:2) {
         weakness R
@@ -272,7 +272,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case LEAVANNY_6:
       return evolution (this, from:"Swadloon", hp:HP130, type:G, retreatCost:1) {
         weakness R
@@ -294,7 +294,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             damage 120
           }
         }
-      };
+      }
       case DEWPIDER_7:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -305,7 +305,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case ARAQUANID_8:
       return evolution (this, from:"Dewpider", hp:HP120, type:G, retreatCost:2) {
         weakness R
@@ -324,7 +324,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             moveSelfEnergyAfterDamage my.bench.select("Move an Energy from $self to which Benched Pokémon?")
           }
         }
-      };
+      }
       case GOSSIFLEUR_9:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -336,7 +336,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             heal 10, self
           }
         }
-      };
+      }
       case ELDEGOSS_10:
       return evolution (this, from:"Gossifleur", hp:HP080, type:G, retreatCost:1) {
         weakness R
@@ -359,7 +359,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             reduceDamageNextTurn hp(30), thisMove
           }
         }
-      };
+      }
       case FLAREON_V_11:
       return basic (this, hp:HP210, type:R, retreatCost:2) {
         weakness W
@@ -381,7 +381,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             applyAfterDamage BURNED
           }
         }
-      };
+      }
       case SLUGMA_12:
       return basic (this, hp:HP080, type:R, retreatCost:3) {
         weakness W
@@ -399,7 +399,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MAGCARGO_13:
       return evolution (this, from:"Slugma", hp:HP130, type:R, retreatCost:3) {
         weakness W
@@ -421,7 +421,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             discardSelfEnergyAfterDamage types
           }
         }
-      };
+      }
       case ENTEI_14:
       return basic (this, hp:HP120, type:R, retreatCost:2) {
         weakness W
@@ -443,7 +443,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             damage 30, self
           }
         }
-      };
+      }
       case VAPOREON_V_15:
       return basic (this, hp:HP210, type:W, retreatCost:2) {
         weakness L
@@ -465,7 +465,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             switchYourActive()
           }
         }
-      };
+      }
       case MARILL_16:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -484,7 +484,7 @@ public enum EeveeHeroes implements LogicCardInfo {
           energyCost C, C
           damageForEachCardWithMove thisMove.name, 20, my.bench, delegate
         }
-      };
+      }
       case AZUMARILL_17:
       return evolution (this, from:"Marill", hp:HP120, type:W, retreatCost:2) {
         weakness L
@@ -507,7 +507,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             damage 90
           }
         }
-      };
+      }
       case MANTINE_18:
       return basic (this, hp:HP110, type:W, retreatCost:1) {
         weakness L
@@ -526,7 +526,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             damage 80
           }
         }
-      };
+      }
       case MUDKIP_19:
       return basic (this, hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -544,7 +544,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case MARSHTOMP_20:
       return evolution (this, from:"Mudkip", hp:HP090, type:W, retreatCost:2) {
         weakness L
@@ -563,7 +563,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             moveSelfEnergyAfterDamage hand
           }
         }
-      };
+      }
       case SWAMPERT_21:
       return evolution (this, from:"Marshtomp", hp:HP170, type:W, retreatCost:3) {
         weakness L
@@ -586,7 +586,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case FEEBAS_22:
       return basic (this, hp:HP030, type:W, retreatCost:1) {
         weakness L
@@ -597,7 +597,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             flip 3, { damage 10 }
           }
         }
-      };
+      }
       case MILOTIC_23:
       return evolution (this, from:"Feebas", hp:HP120, type:W, retreatCost:2) {
         weakness L
@@ -618,7 +618,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             flip 2, { damage 70 }
           }
         }
-      };
+      }
       case GLACEON_V_24:
       return basic (this, hp:HP210, type:W, retreatCost:2) {
         weakness M
@@ -637,7 +637,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case GLACEON_VMAX_25:
       return evolution (this, from:"Glaceon V", hp:HP310, type:W, retreatCost:2) {
         weakness M
@@ -666,7 +666,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case PIKACHU_26:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness F
@@ -687,7 +687,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case RAICHU_27:
       return evolution (this, from:"Pikachu", hp:HP130, type:L, retreatCost:2) {
         weakness F
@@ -713,7 +713,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case VOLTORB_28:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness F
@@ -724,7 +724,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             flip { damage 30 }
           }
         }
-      };
+      }
       case ELECTRODE_29:
       return evolution (this, from:"Voltorb", hp:HP090, type:L, retreatCost:1) {
         weakness F
@@ -743,7 +743,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             damage 90, self
           }
         }
-      };
+      }
       case JOLTEON_V_30:
       return basic (this, hp:HP190, type:L, retreatCost:0) {
         weakness F
@@ -761,7 +761,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             flip 4, { damage 60 }
           }
         }
-      };
+      }
       case ROTOM_31:
       return basic (this, hp:HP080, type:L, retreatCost:1) {
         weakness F
@@ -786,7 +786,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case TYNAMO_32:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness F
@@ -804,7 +804,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case EELEKTRIK_33:
       return evolution (this, from:"Tynamo", hp:HP090, type:L, retreatCost:2) {
         weakness F
@@ -823,7 +823,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             damage 20, self
           }
         }
-      };
+      }
       case EELEKTROSS_34:
       return evolution (this, from:"Eelektrik", hp:HP160, type:L, retreatCost:3) {
         weakness F
@@ -845,7 +845,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             damage 30, self
           }
         }
-      };
+      }
       case ESPEON_V_35:
       return basic (this, hp:HP200, type:P, retreatCost:1) {
         weakness D
@@ -867,7 +867,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             damage 120
           }
         }
-      };
+      }
       case MAWILE_36:
       return basic (this, hp:HP090, type:P, retreatCost:1) {
         weakness M
@@ -880,7 +880,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             defendingRetreatsCostsMore defending, 1
           }
         }
-      };
+      }
       case FLABEBE_37:
       return basic (this, hp:HP040, type:P, retreatCost:1) {
         weakness M
@@ -894,7 +894,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             apply ASLEEP
           }
         }
-      };
+      }
       case FLOETTE_38:
       return evolution (this, from:"Flabébé", hp:HP070, type:P, retreatCost:1) {
         weakness M
@@ -912,7 +912,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             flip 2, { damage 50 }
           }
         }
-      };
+      }
       case FLORGES_39:
       return evolution (this, from:"Floette", hp:HP130, type:P, retreatCost:2) {
         weakness M
@@ -933,7 +933,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             applyAfterDamage CONFUSED
           }
         }
-      };
+      }
       case SYLVEON_V_40:
       return basic (this, hp:HP200, type:P, retreatCost:1) {
         weakness M
@@ -956,7 +956,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case SYLVEON_VMAX_41:
       return evolution (this, from:"Sylveon V", hp:HP310, type:P, retreatCost:2) {
         weakness M
@@ -986,7 +986,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SANDYGAST_42:
       return basic (this, hp:HP080, type:P, retreatCost:3) {
         weakness D
@@ -1005,7 +1005,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case PALOSSAND_43:
       return evolution (this, from:"Sandygast", hp:HP140, type:P, retreatCost:4) {
         weakness D
@@ -1027,7 +1027,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             new Knockout(defending).run(bg)
           }
         }
-      };
+      }
       case MARSHADOW_44:
       return basic (this, hp:HP080, type:P, retreatCost:1) {
         weakness D
@@ -1052,7 +1052,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             additionalPrizesIfDefendingKnockedOutNextTurn 1, delegate
           }
         }
-      };
+      }
       case INDEEDEE_45:
       return basic (this, hp:HP100, type:P, retreatCost:1) {
         weakness D
@@ -1069,7 +1069,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             damage 80
           }
         }
-      };
+      }
       case PANCHAM_46:
       return basic (this, hp:HP060, type:F, retreatCost:2) {
         weakness P
@@ -1090,7 +1090,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case UMBREON_V_47:
       return basic (this, hp:HP200, type:D, retreatCost:2) {
         weakness G
@@ -1110,7 +1110,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             if (self.numberOfDamageCounters) damage 100
           }
         }
-      };
+      }
       case UMBREON_VMAX_48:
       return evolution (this, from:"Umbreon V", hp:HP310, type:D, retreatCost:2) {
         weakness G
@@ -1133,7 +1133,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             damage 160
           }
         }
-      };
+      }
       case ZORUA_49:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness G
@@ -1144,7 +1144,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case ZOROARK_50:
       return evolution (this, from:"Zorua", hp:HP120, type:D, retreatCost:2) {
         weakness G
@@ -1166,7 +1166,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case PANGORO_51:
       return evolution (this, from:"Pancham", hp:HP140, type:D, retreatCost:4) {
         weakness G
@@ -1188,7 +1188,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case IMPIDIMP_52:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness G
@@ -1200,7 +1200,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             flip { damage 30 }
           }
         }
-      };
+      }
       case MORGREM_53:
       return evolution (this, from:"Impidimp", hp:HP090, type:D, retreatCost:2) {
         weakness G
@@ -1219,7 +1219,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             flip { discardDefendingEnergyAfterDamage C }
           }
         }
-      };
+      }
       case GRIMMSNARL_54:
       return evolution (this, from:"Morgrem", hp:HP170, type:D, retreatCost:3) {
         weakness G
@@ -1238,7 +1238,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             if (bench.size() <= 2) damage 140
           }
         }
-      };
+      }
       case MEOWTH_55:
       return basic (this, hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -1250,7 +1250,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             draw 1
           }
         }
-      };
+      }
       case PERSIAN_56:
       return evolution (this, from:"Meowth", hp:HP110, type:C, retreatCost:1) {
         weakness F
@@ -1269,7 +1269,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case KANGASKHAN_57:
       return basic (this, hp:HP120, type:C, retreatCost:2) {
         weakness F
@@ -1288,7 +1288,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             flip { damage 100 }
           }
         }
-      };
+      }
       case EEVEE_58:
       return basic (this, hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -1309,7 +1309,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SMEARGLE_59:
       return basic (this, hp:HP080, type:C, retreatCost:1) {
         weakness F
@@ -1333,7 +1333,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case RAPID_SHAKE_60:
       return itemCard (this) {
         text "Search your deck for a card that evolves from 1 of your Pokémon and put it onto that Pokémon to evolve it. Then" +
@@ -1353,7 +1353,7 @@ public enum EeveeHeroes implements LogicCardInfo {
           assert my.deck : "Your deck is empty"
           assert my.all.any { bg().gm().hasEvolution it.name } : "No Pokémon that evolve in play"
         }
-      };
+      }
       case DREAM_BALL_61:
       return itemCard (this) {
         text "You can play this card only if you took it as a face-down Prize card" +
@@ -1380,7 +1380,7 @@ public enum EeveeHeroes implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ELEMENTAL_BADGE_62:
       return pokemonTool (this) {
         text "If the Pokémon V this card is attached to has 'Flareon'" +
@@ -1404,7 +1404,7 @@ public enum EeveeHeroes implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-      };
+      }
       case SNOW_LEAF_BADGE_63:
       return pokemonTool (this) {
         text "If the Pokémon V this card is attached to has 'Leafeon' or 'Glaceon' in its name," +
@@ -1427,7 +1427,7 @@ public enum EeveeHeroes implements LogicCardInfo {
           eff1.unregister()
           eff2.unregister()
         }
-      };
+      }
       case MOON_AND_SUN_BADGE_64:
       return pokemonTool (this) {
         text "If the Pokémon V this card is attached to has 'Espeon' or 'Umbreon' in its name" +
@@ -1461,7 +1461,7 @@ public enum EeveeHeroes implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case RIBBON_BADGE_65:
       return pokemonTool (this) {
         text "If the Pokémon V this card is attached to has 'Sylveon' in its name and is Knocked Out by damage from an opponent's attack" +
@@ -1478,7 +1478,7 @@ public enum EeveeHeroes implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-      };
+      }
       case AROMA_LADY_66:
       return supporter (this) {
         text "Draw 2 cards. Then" +
@@ -1490,7 +1490,7 @@ public enum EeveeHeroes implements LogicCardInfo {
         playRequirement{
           assert deck : "Your deck is empty"
         }
-      };
+      }
       case GORDIE_67:
       return supporter (this) {
         text "Look at the top 7 cards of your deck" +
@@ -1506,7 +1506,7 @@ public enum EeveeHeroes implements LogicCardInfo {
         playRequirement{
           assert deck : "Your deck is empty"
         }
-      };
+      }
       case FASHION_MALL_68:
       return stadium (this) {
         text "Once during each player's turn" +
@@ -1533,7 +1533,7 @@ public enum EeveeHeroes implements LogicCardInfo {
         onRemoveFromPlay{
           actions.each { bg.gm().unregisterAction it }
         }
-      };
+      }
       case TREASURE_ENERGY_69:
       return specialEnergy (this, [[]]) {
         text "As long as this card is attached to a Pokémon" +
@@ -1563,67 +1563,67 @@ public enum EeveeHeroes implements LogicCardInfo {
         getEnergyTypesOverride {
           self != null ? [C] : []
         }
-      };
+      }
       case LEAFEON_V_70:
-      return copy (LEAFEON_V_2, this);
+      return copy (LEAFEON_V_2, this)
       case LEAFEON_V_71:
-      return copy (LEAFEON_V_2, this);
+      return copy (LEAFEON_V_2, this)
       case FLAREON_V_72:
-      return copy (FLAREON_V_11, this);
+      return copy (FLAREON_V_11, this)
       case FLAREON_V_73:
-      return copy (FLAREON_V_11, this);
+      return copy (FLAREON_V_11, this)
       case VAPOREON_V_74:
-      return copy (VAPOREON_V_15, this);
+      return copy (VAPOREON_V_15, this)
       case VAPOREON_V_75:
-      return copy (VAPOREON_V_15, this);
+      return copy (VAPOREON_V_15, this)
       case GLACEON_V_76:
-      return copy (GLACEON_V_24, this);
+      return copy (GLACEON_V_24, this)
       case GLACEON_V_77:
-      return copy (GLACEON_V_24, this);
+      return copy (GLACEON_V_24, this)
       case JOLTEON_V_78:
-      return copy (JOLTEON_V_30, this);
+      return copy (JOLTEON_V_30, this)
       case JOLTEON_V_79:
-      return copy (JOLTEON_V_30, this);
+      return copy (JOLTEON_V_30, this)
       case ESPEON_V_80:
-      return copy (ESPEON_V_35, this);
+      return copy (ESPEON_V_35, this)
       case ESPEON_V_81:
-      return copy (ESPEON_V_35, this);
+      return copy (ESPEON_V_35, this)
       case SYLVEON_V_82:
-      return copy (SYLVEON_V_40, this);
+      return copy (SYLVEON_V_40, this)
       case SYLVEON_V_83:
-      return copy (SYLVEON_V_40, this);
+      return copy (SYLVEON_V_40, this)
       case UMBREON_V_84:
-      return copy (UMBREON_V_47, this);
+      return copy (UMBREON_V_47, this)
       case UMBREON_V_85:
-      return copy (UMBREON_V_47, this);
+      return copy (UMBREON_V_47, this)
       case AROMA_LADY_86:
-      return copy (AROMA_LADY_66, this);
+      return copy (AROMA_LADY_66, this)
       case GORDIE_87:
-      return copy (GORDIE_67, this);
+      return copy (GORDIE_67, this)
       case LEAFEON_VMAX_88:
-      return copy (LEAFEON_VMAX_3, this);
+      return copy (LEAFEON_VMAX_3, this)
       case LEAFEON_VMAX_89:
-      return copy (LEAFEON_VMAX_3, this);
+      return copy (LEAFEON_VMAX_3, this)
       case GLACEON_VMAX_90:
-      return copy (GLACEON_VMAX_25, this);
+      return copy (GLACEON_VMAX_25, this)
       case GLACEON_VMAX_91:
-      return copy (GLACEON_VMAX_25, this);
+      return copy (GLACEON_VMAX_25, this)
       case SYLVEON_VMAX_92:
-      return copy (SYLVEON_VMAX_41, this);
+      return copy (SYLVEON_VMAX_41, this)
       case SYLVEON_VMAX_93:
-      return copy (SYLVEON_VMAX_41, this);
+      return copy (SYLVEON_VMAX_41, this)
       case UMBREON_VMAX_94:
-      return copy (UMBREON_VMAX_48, this);
+      return copy (UMBREON_VMAX_48, this)
       case UMBREON_VMAX_95:
-      return copy (UMBREON_VMAX_48, this);
+      return copy (UMBREON_VMAX_48, this)
       case AROMA_LADY_96:
-      return copy (AROMA_LADY_66, this);
+      return copy (AROMA_LADY_66, this)
       case GORDIE_97:
-      return copy (GORDIE_67, this);
+      return copy (GORDIE_67, this)
       case RAPID_SHAKE_98:
-      return copy (RAPID_SHAKE_60, this);
+      return copy (RAPID_SHAKE_60, this)
       default:
-      return null;
+      return null
     }
   }
 }

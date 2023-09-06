@@ -2,42 +2,42 @@ package tcgwars.logic.impl.gen3
 
 import tcgwars.logic.effect.gm.AttachEnergy
 import tcgwars.logic.effect.gm.PlayEnergy
-import tcgwars.logic.effect.gm.PlayTrainer;
-import tcgwars.logic.impl.gen1.FossilNG;
-import tcgwars.logic.impl.gen3.TeamRocketReturns;
-import tcgwars.logic.impl.gen3.LegendMaker;
-import tcgwars.logic.impl.gen3.DragonFrontiers;
-import tcgwars.logic.impl.gen3.FireRedLeafGreen;
+import tcgwars.logic.effect.gm.PlayTrainer
+import tcgwars.logic.impl.gen1.FossilNG
+import tcgwars.logic.impl.gen3.TeamRocketReturns
+import tcgwars.logic.impl.gen3.LegendMaker
+import tcgwars.logic.impl.gen3.DragonFrontiers
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -156,53 +156,53 @@ public enum HolonPhantoms implements LogicCardInfo {
   FIGHTING_ENERGY_110 ("Fighting Energy", "110", Rarity.HOLORARE, [ENERGY, BASIC_ENERGY]),
   MEW_111 ("Mew", "111", Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   HolonPhantoms(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.HOLON_PHANTOMS;
+    return tcgwars.logic.card.Collection.HOLON_PHANTOMS
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -235,7 +235,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case CRADILY_DELTA_2:
       return evolution (this, from:"Lileep", hp:HP100, type:[D, M], retreatCost:2) {
         weakness R
@@ -269,7 +269,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             apply POISONED
           }
         }
-      };
+      }
       case DEOXYS_DELTA_3:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness P
@@ -287,7 +287,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             moveSelfEnergyAfterDamage my.hand, C, C
           }
         }
-      };
+      }
       case DEOXYS_DELTA_4:
       return basic (this, hp:HP080, type:M, retreatCost:2) {
         weakness P
@@ -319,7 +319,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case DEOXYS_DELTA_5:
       return basic (this, hp:HP070, type:C, retreatCost:1) {
         weakness P
@@ -337,7 +337,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             doMoreDamageNextTurn(thisMove, 40, self)
           }
         }
-      };
+      }
       case DEOXYS_DELTA_6:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness P
@@ -357,7 +357,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case FLYGON_DELTA_7:
       return evolution (this, from:"Vibrava", hp:HP110, type:[G, M], retreatCost:2) {
         weakness C
@@ -384,7 +384,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             swiftDamage(60, defending)
           }
         }
-      };
+      }
       case GYARADOS_DELTA_8:
       return evolution (this, from:"Magikarp", hp:HP090, type:[L, M], retreatCost:2) {
         weakness L
@@ -418,7 +418,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 80
           }
         }
-      };
+      }
       case KABUTOPS_DELTA_9:
       return evolution (this, from:"Kabuto", hp:HP100, type:L, retreatCost:1) {
         weakness G
@@ -444,7 +444,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 40+10*self.cards.energyCount(L)
           }
         }
-      };
+      }
       case KINGDRA_DELTA_10:
       return evolution (this, from:"Seadra", hp:HP110, type:[R, M], retreatCost:2) {
         weakness L
@@ -476,7 +476,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 80
           }
         }
-      };
+      }
       case LATIAS_DELTA_11:
       return basic (this, hp:HP070, type:R, retreatCost:1) {
         weakness C
@@ -517,7 +517,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case LATIOS_DELTA_12:
       return basic (this, hp:HP080, type:W, retreatCost:1) {
         weakness C
@@ -561,7 +561,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case OMASTAR_DELTA_13:
       return evolution (this, from:"Omanyte", hp:HP110, type:P, retreatCost:2) {
         weakness L
@@ -585,7 +585,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage amount
           }
         }
-      };
+      }
       case PIDGEOT_DELTA_14:
       return evolution (this, from:"Pidgeotto", hp:HP100, type:[L, M], retreatCost:1) {
         weakness L
@@ -625,7 +625,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case RAICHU_DELTA_15:
       return evolution (this, from:"Pikachu", hp:HP070, type:M, retreatCost:0) {
         weakness F
@@ -637,8 +637,8 @@ public enum HolonPhantoms implements LogicCardInfo {
               def hasPokeBody = false
               def hasPokePower = false
               for (Ability ability : it.getAbilities().keySet()) {
-                if (ability instanceof PokeBody) hasPokeBody = true;
-                if (ability instanceof PokePower) hasPokePower = true;
+                if (ability instanceof PokeBody) hasPokeBody = true
+                if (ability instanceof PokePower) hasPokePower = true
               }
               if (hasPokeBody || hasPokePower) noWrDamage 20, it
             }
@@ -658,7 +658,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case RAYQUAZA_DELTA_16:
       return basic (this, hp:HP080, type:[W, M], retreatCost:2) {
         weakness C
@@ -695,7 +695,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case VILEPLUME_DELTA_17:
       return evolution (this, from:"Gloom", hp:HP090, type:[P, M], retreatCost:1) {
         weakness P
@@ -728,7 +728,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 30+10*trainerSize
           }
         }
-      };
+      }
       case ABSOL_18:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness F
@@ -748,7 +748,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case BELLOSSOM_DELTA_19:
       return evolution (this, from:"Gloom", hp:HP100, type:W, retreatCost:1) {
         weakness R
@@ -782,7 +782,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case BLAZIKEN_20:
       return evolution (this, from:"Combusken", hp:HP100, type:R, retreatCost:2) {
         weakness W
@@ -805,7 +805,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case LATIAS_DELTA_21:
       return basic (this, hp:HP070, type:R, retreatCost:1) {
         weakness C
@@ -826,7 +826,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             flip { applyAfterDamage BURNED }
           }
         }
-      };
+      }
       case LATIOS_DELTA_22:
       return basic (this, hp:HP080, type:W, retreatCost:2) {
         weakness C
@@ -850,7 +850,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MAWILE_23:
       return basic (this, hp:HP060, type:M, retreatCost:1) {
         weakness R
@@ -870,7 +870,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             afterDamage { astonish() }
           }
         }
-      };
+      }
       case MEWTWO_DELTA_24:
       return basic (this, hp:HP070, type:L, retreatCost:1) {
         weakness P
@@ -888,7 +888,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             swiftDamage(40, defending)
           }
         }
-      };
+      }
       case NOSEPASS_25:
       return basic (this, hp:HP060, type:F, retreatCost:1) {
         weakness W
@@ -912,7 +912,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case RAYQUAZA_DELTA_26:
       return basic (this, hp:HP080, type:R, retreatCost:2) {
         weakness C
@@ -935,7 +935,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case REGICE_27:
       return basic (this, hp:HP080, type:W, retreatCost:2) {
         weakness M
@@ -962,7 +962,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             flip { applyAfterDamage ASLEEP }
           }
         }
-      };
+      }
       case REGIROCK_28:
       return basic (this, hp:HP080, type:F, retreatCost:2) {
         weakness W
@@ -993,7 +993,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case REGISTEEL_29:
       return basic (this, hp:HP080, type:M, retreatCost:2) {
         weakness R
@@ -1023,7 +1023,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case RELICANTH_30:
       return basic (this, hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -1043,7 +1043,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             flip { damage 10 }
           }
         }
-      };
+      }
       case SABLEYE_31:
       return basic (this, hp:HP060, type:D, retreatCost:1) {
         resistance C, MINUS30
@@ -1062,7 +1062,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             discardRandomCardFromOpponentsHand()
           }
         }
-      };
+      }
       case SEVIPER_32:
       return basic (this, hp:HP070, type:G, retreatCost:1) {
         weakness P
@@ -1080,7 +1080,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case TORKOAL_33:
       return basic (this, hp:HP080, type:R, retreatCost:2) {
         weakness W
@@ -1098,7 +1098,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case ZANGOOSE_34:
       return basic (this, hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -1117,7 +1117,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             flip 3,{},{}, [ 1:{damage 10}, 2:{damage 20}, 3:{damage 40} ]
           }
         }
-      };
+      }
       case AERODACTYL_DELTA_35:
       return evolution (this, from:"Mysterious Fossil", hp:HP070, type:R, retreatCost:0) {
         weakness L
@@ -1141,7 +1141,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             reduceDamageNextTurn(hp(10),thisMove)
           }
         }
-      };
+      }
       case CAMERUPT_36:
       return evolution (this, from:"Numel", hp:HP090, type:R, retreatCost:2) {
         weakness W
@@ -1165,7 +1165,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 10, self
           }
         }
-      };
+      }
       case CHIMECHO_DELTA_37:
       return basic (this, hp:HP060, type:M, retreatCost:1) {
         weakness P
@@ -1187,7 +1187,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case CLAYDOL_38:
       return evolution (this, from:"Baltoy", hp:HP080, type:P, retreatCost:1) {
         weakness P
@@ -1210,7 +1210,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case COMBUSKEN_39:
       return evolution (this, from:"Torchic", hp:HP070, type:R, retreatCost:1) {
         weakness W
@@ -1229,7 +1229,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             flip { applyAfterDamage BURNED }
           }
         }
-      };
+      }
       case DONPHAN_40:
       return evolution (this, from:"Phanpy", hp:HP080, type:F, retreatCost:1) {
         weakness G
@@ -1248,7 +1248,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             flip 2, { damage 50 }
           }
         }
-      };
+      }
       case EXEGGUTOR_DELTA_41:
       return evolution (this, from:"Exeggcute", hp:HP080, type:F, retreatCost:1) {
         weakness P
@@ -1268,7 +1268,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case GLOOM_DELTA_42:
       return evolution (this, from:"Oddish", hp:HP070, type:P, retreatCost:1) {
         weakness P
@@ -1287,7 +1287,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             cantRetreat defending
           }
         }
-      };
+      }
       case GOLDUCK_DELTA_43:
       return evolution (this, from:"Psyduck", hp:HP070, type:L, retreatCost:1) {
         weakness L
@@ -1324,7 +1324,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             chosenCard.showToMe("The card you selected. ${result}").showToOpponent("Mind Play: Your opponent chose a random card from your hand. ${result}")
           }
         }
-      };
+      }
       case HOLON_S_CASTFORM_44:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1340,7 +1340,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             draw choose(1..maxCards, "Draw how many cards?")
           }
         }
-      };
+      }
       case LAIRON_45:
       return evolution (this, from:"Aron", hp:HP080, type:M, retreatCost:2) {
         weakness R
@@ -1359,7 +1359,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             flipUntilTails { damage 30 }
           }
         }
-      };
+      }
       case MANECTRIC_46:
       return evolution (this, from:"Electrike", hp:HP080, type:L, retreatCost:1) {
         weakness F
@@ -1382,7 +1382,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             flip { damage 20 }
           }
         }
-      };
+      }
       case MASQUERAIN_47:
       return evolution (this, from:"Surskit", hp:HP070, type:G, retreatCost:0) {
         weakness R
@@ -1401,7 +1401,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             flip { damage 10 }
           }
         }
-      };
+      }
       case PERSIAN_DELTA_48:
       return evolution (this, from:"Meowth", hp:HP070, type:[D, M], retreatCost:0) {
         weakness F
@@ -1424,7 +1424,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             directDamage 40, opp.all.oppSelect("Put 4 damage counters on which Pokémon?")
           }
         }
-      };
+      }
       case PIDGEOTTO_DELTA_49:
       return evolution (this, from:"Pidgey", hp:HP070, type:L, retreatCost:1) {
         weakness L
@@ -1441,7 +1441,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case PRIMEAPE_DELTA_50:
       return evolution (this, from:"Mankey", hp:HP070, type:R, retreatCost:0) {
         weakness P
@@ -1469,7 +1469,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case RAICHU_51:
       return evolution (this, from:"Pikachu", hp:HP080, type:L, retreatCost:1) {
         weakness F
@@ -1488,7 +1488,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case SEADRA_DELTA_52:
       return evolution (this, from:"Horsea", hp:HP070, type:R, retreatCost:1) {
         weakness L
@@ -1507,7 +1507,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case SHARPEDO_DELTA_53:
       return evolution (this, from:"Carvanha", hp:HP070, type:F, retreatCost:0) {
         weakness L
@@ -1530,7 +1530,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             if(defending.resistances.find{it.type==F}) damage 30
           }
         }
-      };
+      }
       case VIBRAVA_DELTA_54:
       return evolution (this, from:"Trapinch", hp:HP080, type:G, retreatCost:1) {
         weakness C
@@ -1551,7 +1551,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case WHISCASH_55:
       return evolution (this, from:"Barboach", hp:HP080, type:F, retreatCost:1) {
         weakness G
@@ -1573,7 +1573,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case WOBBUFFET_56:
       return basic (this, hp:HP070, type:P, retreatCost:2) {
         weakness P
@@ -1592,7 +1592,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 10*self.numberOfDamageCounters
           }
         }
-      };
+      }
       case ANORITH_DELTA_57:
       return evolution (this, from:"Claw Fossil", hp:HP070, type:M, retreatCost:1) {
         weakness G
@@ -1611,7 +1611,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             flip { damage 20 }
           }
         }
-      };
+      }
       case ARON_58:
       return basic (this, hp:HP040, type:M, retreatCost:1) {
         weakness R
@@ -1630,7 +1630,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case BALTOY_59:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -1648,7 +1648,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             flip 2, {damage 20}
           }
         }
-      };
+      }
       case BARBOACH_60:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
@@ -1669,7 +1669,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 10*self.numberOfDamageCounters
           }
         }
-      };
+      }
       case CARVANHA_DELTA_61:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness L
@@ -1690,7 +1690,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case CORPHISH_62:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -1708,7 +1708,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case CORPHISH_63:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness L
@@ -1729,7 +1729,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case ELECTRIKE_64:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness F
@@ -1742,7 +1742,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             flip { applyAfterDamage PARALYZED }
           }
         }
-      };
+      }
       case EXEGGCUTE_DELTA_65:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness P
@@ -1765,7 +1765,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case HORSEA_DELTA_66:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness L
@@ -1783,7 +1783,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case KABUTO_DELTA_67:
       return evolution (this, from:"Mysterious Fossil", hp:HP070, type:L, retreatCost:2) {
         weakness G
@@ -1801,7 +1801,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case LILEEP_DELTA_68:
       return evolution (this, from:"Root Fossil", hp:HP080, type:D, retreatCost:2) {
         weakness R
@@ -1819,7 +1819,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MAGIKARP_DELTA_69:
       return basic (this, hp:HP030, type:M, retreatCost:1) {
         weakness L
@@ -1830,7 +1830,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case MANKEY_DELTA_70:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness P
@@ -1848,7 +1848,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MEOWTH_DELTA_71:
       return basic (this, hp:HP050, type:[D, M], retreatCost:1) {
         weakness F
@@ -1867,7 +1867,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             draw 1
           }
         }
-      };
+      }
       case NUMEL_72:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1885,7 +1885,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case ODDISH_DELTA_73:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness R
@@ -1904,7 +1904,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             heal 20, self
           }
         }
-      };
+      }
       case OMANYTE_DELTA_74:
       return evolution (this, from:"Mysterious Fossil", hp:HP070, type:P, retreatCost:1) {
         weakness L
@@ -1922,7 +1922,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 20, opp.all.select()
           }
         }
-      };
+      }
       case PHANPY_75:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
@@ -1940,7 +1940,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case PICHU_DELTA_76:
       return basic (this, hp:HP050, type:M, retreatCost:1) {
         weakness F
@@ -1964,7 +1964,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             attachEnergyFrom(my.discard, my.all.findAll{ it.topPokemonCard.cardTypes.is(DELTA) }.select("Attach an Energy to?"))
           }
         }
-      };
+      }
       case PIDGEY_DELTA_77:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness L
@@ -1976,7 +1976,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case PIKACHU_78:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1995,7 +1995,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             flip { damage 10 }
           }
         }
-      };
+      }
       case PIKACHU_DELTA_79:
       return basic (this, hp:HP050, type:M, retreatCost:1) {
         weakness F
@@ -2014,7 +2014,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             flip { damage 10 }
           }
         }
-      };
+      }
       case POOCHYENA_80:
       return basic (this, hp:HP040, type:D, retreatCost:1) {
         weakness F
@@ -2033,7 +2033,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case PSYDUCK_DELTA_81:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness L
@@ -2051,7 +2051,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             amnesia delegate
           }
         }
-      };
+      }
       case SURSKIT_82:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -2063,7 +2063,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             applyAfterDamage ASLEEP
           }
         }
-      };
+      }
       case TORCHIC_83:
       return basic (this, hp:HP040, type:R, retreatCost:1) {
         weakness W
@@ -2081,7 +2081,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TRAPINCH_DELTA_84:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness G
@@ -2100,7 +2100,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case HOLON_ADVENTURER_85:
       return supporter (this) {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
@@ -2115,7 +2115,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           assert my.hand.getExcludedList(thisCard) : "One other card in hand is required to play this card."
           assert my.deck : "Deck is empty"
         }
-      };
+      }
       case HOLON_FOSSIL_86:
       return itemCard (this) {
         text "Flip a coin. If heads, search your deck for an Omanyte, Kabuto, Aerodactyl, Aerodactyl ex, Lileep, or Anorith and put it onto your Bench. Shuffle your deck afterward. If tails, put an Omanyte, Kabuto, Aerodactyl, Aerodactyl ex, Lileep, or Anorith from your hand onto your Bench. Treat the new Benched Pokémon as a Basic Pokémon."
@@ -2140,7 +2140,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           assert my.bench.notFull : "Your bench is full."
           assert my.deck || my.hand.getExcludedList(thisCard) : "You cannot play this card if its your only card in hand, and you have no more cards in deck"
         }
-      };
+      }
       case HOLON_LAKE_87:
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
@@ -2169,27 +2169,27 @@ public enum HolonPhantoms implements LogicCardInfo {
         onRemoveFromPlay{
           eff.unregister()
         }
-      };
+      }
       case MR_STONE_S_PROJECT_88:
-      return copy(DragonFrontiers.MR_STONE_S_PROJECT_77, this);
+      return copy(DragonFrontiers.MR_STONE_S_PROJECT_77, this)
       case PROFESSOR_COZMO_S_DISCOVERY_89:
-      return copy(Deoxys.PROFESSOR_COZMO_S_DISCOVERY_90, this);
+      return copy(Deoxys.PROFESSOR_COZMO_S_DISCOVERY_90, this)
       case RARE_CANDY_90:
-      return copy (Sandstorm.RARE_CANDY_88, this);
+      return copy (Sandstorm.RARE_CANDY_88, this)
       case CLAW_FOSSIL_91:
-      return copy(LegendMaker.CLAW_FOSSIL_78, this);
+      return copy(LegendMaker.CLAW_FOSSIL_78, this)
       case MYSTERIOUS_FOSSIL_92:
-      return copy(LegendMaker.MYSTERIOUS_FOSSIL_79, this);
+      return copy(LegendMaker.MYSTERIOUS_FOSSIL_79, this)
       case ROOT_FOSSIL_93:
-      return copy(LegendMaker.ROOT_FOSSIL_80, this);
+      return copy(LegendMaker.ROOT_FOSSIL_80, this)
       case DARKNESS_ENERGY_94:
-      return copy (Emerald.DARKNESS_ENERGY_86, this);
+      return copy (Emerald.DARKNESS_ENERGY_86, this)
       case METAL_ENERGY_95:
-      return copy (RubySapphire.METAL_ENERGY_94, this);
+      return copy (RubySapphire.METAL_ENERGY_94, this)
       case MULTI_ENERGY_96:
-      return copy(FireRedLeafGreen.MULTI_ENERGY_103, this);
+      return copy(FireRedLeafGreen.MULTI_ENERGY_103, this)
       case DARK_METAL_ENERGY_97:
-      return copy(TeamRocketReturns.DARK_METAL_ENERGY_94, this);
+      return copy(TeamRocketReturns.DARK_METAL_ENERGY_94, this)
       case DELTA_RAINBOW_ENERGY_98:
       return specialEnergy (this, [[C]]) {
         text "δ Rainbow Energy provides [C] Energy. While attached to a Pokémon that has δ on its card, δ Rainbow Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.)"
@@ -2206,7 +2206,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             return [[C] as Set]
           }
         }
-      };
+      }
       case CRAWDAUNT_EX_99:
       return evolution (this, from:"Corphish", hp:HP110, type:W, retreatCost:2) {
         weakness L
@@ -2228,7 +2228,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 20*self.cards.energyCount(C)
           }
         }
-      };
+      }
       case MEW_EX_100:
       return basic (this, hp:HP090, type:P, retreatCost:1) {
         weakness P
@@ -2264,7 +2264,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MIGHTYENA_EX_101:
       return evolution (this, from:"Poochyena", hp:HP100, type:D, retreatCost:0) {
         weakness F
@@ -2296,7 +2296,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case GYARADOS_STAR_DELTA_102:
       return basic (this, hp:HP080, type:R, retreatCost:2) {
         weakness L
@@ -2329,7 +2329,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MEWTWO_STAR_103:
       return basic (this, hp:HP080, type:P, retreatCost:1) {
         weakness P
@@ -2351,7 +2351,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case PIKACHU_STAR_104:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness F
@@ -2373,19 +2373,19 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case GRASS_ENERGY_105:
-        return basicEnergy (this, G);
+        return basicEnergy (this, G)
       case FIRE_ENERGY_106:
-        return basicEnergy (this, R);
+        return basicEnergy (this, R)
       case WATER_ENERGY_107:
-        return basicEnergy (this, W);
+        return basicEnergy (this, W)
       case LIGHTNING_ENERGY_108:
-        return basicEnergy (this, L);
+        return basicEnergy (this, L)
       case PSYCHIC_ENERGY_109:
-        return basicEnergy (this, P);
+        return basicEnergy (this, P)
       case FIGHTING_ENERGY_110:
-        return basicEnergy (this, F);
+        return basicEnergy (this, F)
       case MEW_111:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -2403,9 +2403,9 @@ public enum HolonPhantoms implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       default:
-      return null;
+      return null
     }
   }
 }

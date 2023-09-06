@@ -1,26 +1,26 @@
 package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.effect.blocking.CantRetreat
-import tcgwars.logic.impl.gen3.FireRedLeafGreen;
-import tcgwars.logic.impl.gen5.*;
-import tcgwars.logic.impl.gen7.*;
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
+import tcgwars.logic.impl.gen5.*
+import tcgwars.logic.impl.gen7.*
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.*;
+import tcgwars.logic.*
 import tcgwars.logic.card.*
-import tcgwars.logic.effect.*;
+import tcgwars.logic.effect.*
 import tcgwars.logic.effect.ability.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -124,7 +124,7 @@ public enum Unleashed implements LogicCardInfo {
   SUICUNE_AND_ENTEI_LEGEND_95 ("Suicune & Entei LEGEND", "95", Rarity.HOLORARE, [POKEMON, _WATER_, LEGEND]),
   ALPH_LITHOGRAPH_TWO ("Alph Lithograph", "TWO", Rarity.HOLORARE, [TRAINER, ITEM]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
   static SimpleDeck chaosControl() {
     def d = new SimpleDeck("Chaos Control Theme Deck")
@@ -139,51 +139,51 @@ public enum Unleashed implements LogicCardInfo {
     d
   }
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   Unleashed(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.UNLEASHED;
+    return tcgwars.logic.card.Collection.UNLEASHED
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -216,7 +216,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGMORTAR_2:
         return evolution (this, from:"Magmar", hp:HP110, type:FIRE, retreatCost:2) {
           weakness W
@@ -239,7 +239,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MANAPHY_3:
         return basic (this, hp:HP060, type:WATER, retreatCost:0) {
           weakness L
@@ -259,7 +259,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case METAGROSS_4:
         return evolution (this, from:"Metang", hp:HP130, type:PSYCHIC, retreatCost:4) {
           weakness P
@@ -294,7 +294,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MISMAGIUS_5:
         return evolution (this, from:"Misdreavus", hp:HP090, type:PSYCHIC, retreatCost:1) {
           weakness D
@@ -318,7 +318,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case OCTILLERY_6:
         return evolution (this, from:"Remoraid", hp:HP080, type:WATER, retreatCost:2) {
           weakness L
@@ -338,7 +338,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case POLITOED_7:
         return evolution (this, from:"Poliwhirl", hp:HP120, type:WATER, retreatCost:2) {
           weakness L
@@ -360,7 +360,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHAYMIN_8:
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
           weakness R
@@ -372,13 +372,13 @@ public enum Unleashed implements LogicCardInfo {
                 powerUsed()
                 while(1){
                   def pl=(my.all.findAll {it.cards.filterByType(ENERGY)})
-                  if(!pl) break;
+                  if(!pl) break
                   def src =pl.select("Source for energy (cancel to stop)", false)
-                  if(!src) break;
+                  if(!src) break
                   def card=src.cards.filterByType(ENERGY).select("Energy to move").first()
 
                   def tar=my.all.select("Target for energy (cancel to stop)", false)
-                  if(!tar) break;
+                  if(!tar) break
                   energySwitch(src, tar, card)
                 }
               }
@@ -393,7 +393,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SUDOWOODO_9:
         return basic (this, hp:HP090, type:FIGHTING, retreatCost:2) {
           weakness W
@@ -413,7 +413,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TORTERRA_10:
         return evolution (this, from:"Grotle", hp:HP140, type:GRASS, retreatCost:4) {
           weakness R
@@ -433,7 +433,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case XATU_11:
         return evolution (this, from:"Natu", hp:HP090, type:PSYCHIC, retreatCost:1) {
           weakness L
@@ -454,7 +454,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BEEDRILL_12:
         return evolution (this, from:"Kakuna", hp:HP110, type:GRASS, retreatCost:0) {
           weakness R
@@ -475,7 +475,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BLASTOISE_13:
         return evolution (this, from:"Wartortle", hp:HP130, type:WATER, retreatCost:3) {
           weakness L
@@ -498,7 +498,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CROBAT_14:
         return evolution (this, from:"Golbat", hp:HP110, type:PSYCHIC, retreatCost:0) {
           weakness P
@@ -519,7 +519,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FEAROW_15:
         return evolution (this, from:"Spearow", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness L
@@ -539,7 +539,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FLOATZEL_16:
         return evolution (this, from:"Buizel", hp:HP080, type:WATER, retreatCost:0) {
           weakness L
@@ -561,7 +561,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KINGDRA_17:
         return evolution (this, from:"Seadra", hp:HP130, type:WATER, retreatCost:1) {
           weakness L
@@ -584,7 +584,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LANTURN_18:
         return evolution (this, from:"Chinchou", hp:HP090, type:LIGHTNING, retreatCost:2) {
           weakness F
@@ -607,7 +607,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUCARIO_19:
         return evolution (this, from:"Riolu", hp:HP090, type:FIGHTING, retreatCost:1) {
           weakness P
@@ -627,7 +627,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NINETALES_20:
         return evolution (this, from:"Vulpix", hp:HP090, type:FIRE, retreatCost:1) {
           weakness W
@@ -650,7 +650,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case POLIWRATH_21:
         return evolution (this, from:"Poliwhirl", hp:HP130, type:WATER, retreatCost:3) {
           weakness L
@@ -674,7 +674,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PRIMEAPE_22:
         return evolution (this, from:"Mankey", hp:HP090, type:FIGHTING, retreatCost:1) {
           weakness P
@@ -694,7 +694,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ROSERADE_23:
         return evolution (this, from:"Roselia", hp:HP090, type:GRASS, retreatCost:1) {
           weakness R
@@ -723,7 +723,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STEELIX_24:
         return evolution (this, from:"Onix", hp:HP120, type:METAL, retreatCost:4) {
           weakness R
@@ -744,7 +744,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TORKOAL_25:
         return basic (this, hp:HP080, type:FIRE, retreatCost:2) {
           weakness W
@@ -764,7 +764,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TYRANITAR_26:
         return evolution (this, from:"Pupitar", hp:HP140, type:DARKNESS, retreatCost:3) {
           weakness F
@@ -785,7 +785,7 @@ public enum Unleashed implements LogicCardInfo {
               discardDefendingEnergy()
             }
           }
-        };
+        }
       case URSARING_27:
         return evolution (this, from:"Teddiursa", hp:HP100, type:COLORLESS, retreatCost:3) {
           weakness F
@@ -805,7 +805,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHERRIM_28:
         return evolution (this, from:"Cherubi", hp:HP080, type:GRASS, retreatCost:1) {
           weakness R
@@ -828,7 +828,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DUNSPARCE_29:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness F
@@ -841,7 +841,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOLBAT_30:
         return evolution (this, from:"Zubat", hp:HP080, type:PSYCHIC, retreatCost:0) {
           weakness L
@@ -855,7 +855,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GROTLE_31:
         return evolution (this, from:"Turtwig", hp:HP090, type:GRASS, retreatCost:2) {
           weakness R
@@ -876,7 +876,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KAKUNA_32:
         return evolution (this, from:"Weedle", hp:HP080, type:GRASS, retreatCost:2) {
           weakness R
@@ -896,7 +896,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case METANG_33:
         return evolution (this, from:"Beldum", hp:HP080, type:PSYCHIC, retreatCost:3) {
           weakness P
@@ -915,7 +915,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MINUN_34:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F
@@ -934,7 +934,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NUMEL_35:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
           weakness W
@@ -956,7 +956,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PLUSLE_36:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F
@@ -977,7 +977,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case POLIWHIRL_37:
         return evolution (this, from:"Poliwag", hp:HP080, type:WATER, retreatCost:1) {
           weakness L
@@ -997,7 +997,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PUPITAR_38:
         return evolution (this, from:"Larvitar", hp:HP070, type:FIGHTING, retreatCost:1) {
           weakness W
@@ -1017,7 +1017,7 @@ public enum Unleashed implements LogicCardInfo {
               damage 20 + 10*self.numberOfDamageCounters
             }
           }
-        };
+        }
       case PUPITAR_39:
         return evolution (this, from:"Larvitar", hp:HP080, type:FIGHTING, retreatCost:1) {
           weakness W
@@ -1037,7 +1037,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SEADRA_40:
         return evolution (this, from:"Horsea", hp:HP080, type:WATER, retreatCost:1) {
           weakness L
@@ -1057,7 +1057,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TAUROS_41:
         return basic (this, hp:HP090, type:COLORLESS, retreatCost:2) {
           weakness F
@@ -1077,7 +1077,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WARTORTLE_42:
         return evolution (this, from:"Squirtle", hp:HP080, type:WATER, retreatCost:1) {
           weakness L
@@ -1096,7 +1096,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AIPOM_43:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness F
@@ -1117,7 +1117,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BELDUM_44:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:2) {
           weakness P
@@ -1130,7 +1130,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BUIZEL_45:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness L
@@ -1145,7 +1145,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CARNIVINE_46:
         return basic (this, hp:HP080, type:GRASS, retreatCost:1) {
           weakness R
@@ -1166,7 +1166,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHERUBI_47:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R
@@ -1179,7 +1179,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHINCHOU_48:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F
@@ -1198,7 +1198,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HORSEA_49:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness L
@@ -1217,7 +1217,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LARVITAR_50:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness W
@@ -1239,7 +1239,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LARVITAR_51:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness W
@@ -1259,7 +1259,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGMAR_52:
         return basic (this, hp:HP070, type:FIRE, retreatCost:1) {
           weakness W
@@ -1278,7 +1278,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MANKEY_53:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness P
@@ -1297,7 +1297,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MISDREAVUS_54:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness D
@@ -1310,7 +1310,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NATU_55:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness L
@@ -1330,7 +1330,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ONIX_56:
         return basic (this, hp:HP090, type:FIGHTING, retreatCost:4) {
           weakness G
@@ -1353,7 +1353,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ONIX_57:
         return basic (this, hp:HP090, type:FIGHTING, retreatCost:3) {
           weakness G
@@ -1366,7 +1366,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case POLIWAG_58:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness L
@@ -1383,7 +1383,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case REMORAID_59:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness L
@@ -1402,7 +1402,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RIOLU_60:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness P
@@ -1421,7 +1421,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ROSELIA_61:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness R
@@ -1436,7 +1436,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SPEAROW_62:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness L
@@ -1457,7 +1457,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SQUIRTLE_63:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness L
@@ -1476,7 +1476,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STANTLER_64:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
           weakness F
@@ -1494,7 +1494,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TEDDIURSA_65:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness F
@@ -1507,7 +1507,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TROPIUS_66:
         return basic (this, hp:HP080, type:GRASS, retreatCost:1) {
           weakness R
@@ -1532,7 +1532,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TURTWIG_67:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R
@@ -1560,7 +1560,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VULPIX_68:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
           weakness W
@@ -1575,7 +1575,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WEEDLE_69:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness R
@@ -1597,7 +1597,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ZUBAT_70:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness L
@@ -1621,7 +1621,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHEERLEADER_S_CHEER_71:
         return supporter (this) {
           text "Draw 3 cards. Your opponent may draw a card."
@@ -1634,7 +1634,7 @@ public enum Unleashed implements LogicCardInfo {
           playRequirement{
             assert my.deck : "No cards left in your deck"
           }
-        };
+        }
       case DUAL_BALL_72:
         return basicTrainer (this) {
           text "Flip 2 coins. For each heads, search your deck for a Basic Pokémon, show it to your opponent, and put it into your hand. If you do, shuffle your deck afterward."
@@ -1647,7 +1647,7 @@ public enum Unleashed implements LogicCardInfo {
           playRequirement{
             assert my.deck.notEmpty
           }
-        };
+        }
       case EMCEE_S_CHATTER_73:
         return supporter (this) {
           text "Flip a coin. If heads, draw 3 cards. If tails, draw 2 cards."
@@ -1657,7 +1657,7 @@ public enum Unleashed implements LogicCardInfo {
           playRequirement{
             assert my.deck.notEmpty
           }
-        };
+        }
       case ENERGY_RETURNER_74:
         return basicTrainer (this) {
           text "Search your discard pile for 4 basic Energy cards, show them to your opponent, and shuffle them into your deck."
@@ -1668,7 +1668,7 @@ public enum Unleashed implements LogicCardInfo {
           playRequirement{
             assert my.discard.filterByType(BASIC_ENERGY) : "No basic Energy in your discard"
           }
-        };
+        }
       case ENGINEER_S_ADJUSTMENTS_75:
         return supporter (this) {
           text "Discard an Energy card from your hand. Then, draw 4 cards."
@@ -1680,7 +1680,7 @@ public enum Unleashed implements LogicCardInfo {
             assert my.hand.filterByType(ENERGY) : "No Energy card in hand"
             assert my.deck : "No cards in deck"
           }
-        };
+        }
       case GOOD_ROD_76:
         return basicTrainer (this) {
           text "Flip a coin. If heads, search your discard pile for a Pokémon, show it to your opponent, and put it on top of your deck. If tails, search your discard pile for a Trainer card, show it to your opponent, and put it on top of your deck."
@@ -1698,7 +1698,7 @@ public enum Unleashed implements LogicCardInfo {
           playRequirement{
             assert my.discard.filterByType(POKEMON,TRAINER) : "No Pokémon or Trainer in your discard"
           }
-        };
+        }
       case INTERVIEWER_S_QUESTIONS_77:
         return supporter (this) {
           text "Look at the top 8 cards of your deck. Choose as many Energy cards as you like, show them to your opponent, and put them into your hand. Shuffle the other cards back into your deck."
@@ -1709,9 +1709,9 @@ public enum Unleashed implements LogicCardInfo {
           playRequirement{
             assert my.deck : "No cards in deck"
           }
-        };
+        }
       case JUDGE_78:
-        return copy (ForbiddenLight.JUDGE_108, this);
+        return copy (ForbiddenLight.JUDGE_108, this)
       case LIFE_HERB_79:
         return basicTrainer (this) {
           text "Flip a coin. If heads, choose 1 of your Pokémon, and remove all Special Conditions and 6 damage counters from that Pokémon (all if there are less than 6)."
@@ -1726,7 +1726,7 @@ public enum Unleashed implements LogicCardInfo {
           playRequirement{
             assert my.all.findAll {it.numberOfDamageCounters || it.specialConditions} : "No valid targets"
           }
-        };
+        }
       case PLUSPOWER_80:
         return basicTrainer (this) {
           text "During this turn, your Pokémon’s attacks do 10 more damage to the Active Pokémon (before applying Weakness and Resistance)."
@@ -1743,13 +1743,13 @@ public enum Unleashed implements LogicCardInfo {
           }
           playRequirement{
           }
-        };
+        }
       case POKEMON_CIRCULATOR_81:
-        return copy (SunMoon.REPEL_130, this);
+        return copy (SunMoon.REPEL_130, this)
       case RARE_CANDY_82:
         return copy(DarkExplorers.RARE_CANDY_100, this)
       case SUPER_SCOOP_UP_83:
-        return copy(FireRedLeafGreen.SUPER_SCOOP_UP_99, this);
+        return copy(FireRedLeafGreen.SUPER_SCOOP_UP_99, this)
       case CROBAT_84:
         return evolution (this, from:"Golbat", hp:HP130, type:PSYCHIC, retreatCost:0) {
           weakness L
@@ -1770,7 +1770,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KINGDRA_85:
         return evolution (this, from:"Seadra", hp:HP130, type:WATER, retreatCost:1) {
           weakness L
@@ -1795,7 +1795,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LANTURN_86:
         return evolution (this, from:"Chinchou", hp:HP110, type:LIGHTNING, retreatCost:2) {
           weakness F
@@ -1832,7 +1832,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STEELIX_87:
         return evolution (this, from:"Onix", hp:HP140, type:METAL, retreatCost:4) {
           weakness R
@@ -1874,7 +1874,7 @@ public enum Unleashed implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case TYRANITAR_88:
         return evolution (this, from:"Pupitar", hp:HP160, type:DARKNESS, retreatCost:3) {
           weakness F
@@ -1905,7 +1905,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case URSARING_89:
         return evolution (this, from:"Teddiursa", hp:HP110, type:COLORLESS, retreatCost:3) {
           weakness F
@@ -1940,7 +1940,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ENTEI_AND_RAIKOU_LEGEND_90:
         return basic (this, hp:HP140, type:[FIRE, L], retreatCost:0) {
           weakness W
@@ -1967,7 +1967,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ENTEI_AND_RAIKOU_LEGEND_91:
         return copy (ENTEI_AND_RAIKOU_LEGEND_90, this)
       case RAIKOU_AND_SUICUNE_LEGEND_92:
@@ -1991,7 +1991,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAIKOU_AND_SUICUNE_LEGEND_93:
         return copy (RAIKOU_AND_SUICUNE_LEGEND_92, this)
       case SUICUNE_AND_ENTEI_LEGEND_94:
@@ -2021,7 +2021,7 @@ public enum Unleashed implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SUICUNE_AND_ENTEI_LEGEND_95:
         return copy (SUICUNE_AND_ENTEI_LEGEND_94, this)
       case ALPH_LITHOGRAPH_TWO:
@@ -2033,9 +2033,9 @@ public enum Unleashed implements LogicCardInfo {
           playRequirement{
             assert my.deck : "No cards in deck"
           }
-        };
+        }
       default:
-        return null;
+        return null
     }
   }
 

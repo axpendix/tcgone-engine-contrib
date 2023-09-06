@@ -16,25 +16,25 @@ import tcgwars.logic.effect.gm.PlayPokemonToolFlare
 import tcgwars.logic.effect.gm.PlayTrainer
 import tcgwars.logic.effect.special.SpecialConditionType
 import tcgwars.logic.impl.gen3.FireRedLeafGreen
-import tcgwars.logic.impl.gen7.CelestialStorm;
+import tcgwars.logic.impl.gen7.CelestialStorm
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
 import static tcgwars.logic.card.CardType.*
-import static tcgwars.logic.effect.Source.POKEPOWER;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.effect.Source.POKEPOWER
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
-import tcgwars.logic.effect.basic.Knockout;
+import tcgwars.logic.effect.basic.Knockout
 
 import tcgwars.logic.card.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author ufodynasty12@gmail.com
@@ -195,53 +195,53 @@ public enum SupremeVictors implements LogicCardInfo {
   RELICANTH_SH8 ("Relicanth", "SH8", Rarity.HOLORARE, [BASIC, POKEMON, _FIGHTING_]),
   YANMA_SH9 ("Yanma", "SH9", Rarity.HOLORARE, [BASIC, POKEMON, _GRASS_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   SupremeVictors(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.SUPREME_VICTORS;
+    return tcgwars.logic.card.Collection.SUPREME_VICTORS
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -284,7 +284,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case BLAZIKEN_FB_2:
         return basic (this, hp:HP080, type:R, retreatCost:1) {
           weakness W
@@ -310,7 +310,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DRIFBLIM_FB_3:
         return basic (this, hp:HP080, type:P, retreatCost:2) {
           weakness D
@@ -336,7 +336,7 @@ public enum SupremeVictors implements LogicCardInfo {
               new ResolvedDamage(hp(40), my.active, pcs, Source.ATTACK, DamageManager.DamageFlag.FORCE_WEAKNESS_RESISTANCE).run(bg)
             }
           }
-        };
+        }
       case ELECTIVIRE_FB_4:
         return basic (this, hp:HP090, type:L, retreatCost:3) {
           weakness F
@@ -369,7 +369,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case GARCHOMP_5:
         return evolution (this, from:"Gabite", hp:HP130, type:C, retreatCost:0) {
           weakness C, PLUS30
@@ -399,7 +399,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 120 - 20 * defending.cards.energyCount(C)
             }
           }
-        };
+        }
       case MAGMORTAR_6:
         return evolution (this, from:"Magmar", hp:HP110, type:R, retreatCost:2) {
           weakness W, PLUS30
@@ -436,7 +436,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case METAGROSS_7:
         return evolution (this, from:"Metang", hp:HP130, type:M, retreatCost:3) {
           weakness R, PLUS30
@@ -483,7 +483,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case RAYQUAZA_C_8:
         return basic (this, hp:HP100, type:C, retreatCost:3) {
           weakness C
@@ -517,7 +517,7 @@ public enum SupremeVictors implements LogicCardInfo {
                 }]
             }
           }
-        };
+        }
       case REGIGIGAS_FB_9:
         return basic (this, hp:HP100, type:C, retreatCost:4) {
           weakness F
@@ -543,7 +543,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case RHYPERIOR_10:
         return evolution (this, from:"Rhydon", hp:HP140, type:F, retreatCost:4) {
           weakness W, PLUS30
@@ -574,7 +574,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case STARAPTOR_FB_11:
         return basic (this, hp:HP080, type:C, retreatCost:1) {
           weakness L
@@ -601,7 +601,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SWAMPERT_12:
         return evolution (this, from:"Marshtomp", hp:HP130, type:W, retreatCost:2) {
           weakness G, PLUS30
@@ -637,7 +637,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 60 + 10 * self.cards.energyCount(F)
             }
           }
-        };
+        }
       case VENUSAUR_13:
         return evolution (this, from:"Ivysaur", hp:HP140, type:G, retreatCost:4) {
           weakness R, PLUS40
@@ -684,7 +684,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 40 + 40 * defending.specialConditions.size()
             }
           }
-        };
+        }
       case YANMEGA_14:
         return evolution (this, from:"Yanma", hp:HP100, type:G, retreatCost:0) {
           weakness L, PLUS20
@@ -722,7 +722,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 70
             }
           }
-        };
+        }
       case ARCANINE_G_15:
         return basic (this, hp:HP090, type:R, retreatCost:2) {
           weakness W
@@ -745,7 +745,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ARTICUNO_16:
         return basic (this, hp:HP100, type:W, retreatCost:2) {
           weakness M, PLUS30
@@ -772,7 +772,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case BUTTERFREE_FB_17:
         return basic (this, hp:HP090, type:G, retreatCost:1) {
           weakness R
@@ -801,7 +801,7 @@ public enum SupremeVictors implements LogicCardInfo {
               afterDamage {apply spc, defending}
             }
           }
-        };
+        }
       case CAMERUPT_18:
         return evolution (this, from:"Numel", hp:HP120, type:R, retreatCost:4) {
           weakness W, PLUS30
@@ -839,7 +839,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CAMERUPT_G_19:
         return basic (this, hp:HP100, type:R, retreatCost:3) {
           weakness W
@@ -865,7 +865,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CHARIZARD_G_20:
         return basic (this, hp:HP100, type:R, retreatCost:3) {
           weakness W
@@ -888,7 +888,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case CHIMECHO_21:
         return basic (this, hp:HP070, type:P, retreatCost:1) {
           weakness P, PLUS20
@@ -915,7 +915,7 @@ public enum SupremeVictors implements LogicCardInfo {
               directDamage 10*tar.cards.energyCount(C), tar
             }
           }
-        };
+        }
       case CLAYDOL_22:
         return evolution (this, from:"Baltoy", hp:HP090, type:P, retreatCost:1) {
           weakness P, PLUS20
@@ -938,7 +938,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CRAWDAUNT_G_23:
         return basic (this, hp:HP080, type:D, retreatCost:1) {
           weakness L
@@ -962,7 +962,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DEWGONG_24:
         return evolution (this, from:"Seel", hp:HP100, type:W, retreatCost:3) {
           weakness M, PLUS20
@@ -998,7 +998,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 70
             }
           }
-        };
+        }
       case DODRIO_25:
         return evolution (this, from:"Doduo", hp:HP080, type:C, retreatCost:0) {
           weakness L, PLUS20
@@ -1021,7 +1021,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case DUSKNOIR_FB_26:
         return basic (this, hp:HP090, type:P, retreatCost:2) {
           weakness D
@@ -1047,7 +1047,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 10 * my.discard.filterByType(POKEMON_SP).size()
             }
           }
-        };
+        }
       case EMPOLEON_FB_27:
         return basic (this, hp:HP090, type:W, retreatCost:2) {
           weakness L
@@ -1075,7 +1075,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case EXPLOUD_28:
         return evolution (this, from:"Loudred", hp:HP130, type:C, retreatCost:2) {
           weakness F, PLUS30
@@ -1109,7 +1109,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case HONCHKROW_29:
         return evolution (this, from:"Murkrow", hp:HP090, type:D, retreatCost:1) {
           weakness L, PLUS20
@@ -1135,7 +1135,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 30 + 10 * all.findAll{!it.evolution}.size()
             }
           }
-        };
+        }
       case LICKILICKY_C_30:
         return basic (this, hp:HP090, type:C, retreatCost:2) {
           weakness F
@@ -1165,7 +1165,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LUCARIO_C_31:
         return basic (this, hp:HP090, type:F, retreatCost:2) {
           weakness P
@@ -1188,7 +1188,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LUNATONE_32:
         return basic (this, hp:HP070, type:P, retreatCost:0) {
           weakness P, PLUS20
@@ -1231,7 +1231,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MAWILE_33:
         return basic (this, hp:HP070, type:M, retreatCost:1) {
           weakness R, PLUS20
@@ -1262,7 +1262,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case MEDICHAM_34:
         return evolution (this, from:"Meditite", hp:HP090, type:P, retreatCost:1) {
           weakness P, PLUS20
@@ -1285,7 +1285,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 10 + 10 * self.owner.opposite.pbg.hand.size()
             }
           }
-        };
+        }
       case MILOTIC_C_35:
         return basic (this, hp:HP090, type:W, retreatCost:1) {
           weakness L
@@ -1311,7 +1311,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MOLTRES_36:
         return basic (this, hp:HP100, type:R, retreatCost:2) {
           weakness W, PLUS30
@@ -1334,7 +1334,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MR__MIME_37:
         return basic (this, hp:HP070, type:P, retreatCost:1) {
           pokeBody "Focus Wall", {
@@ -1368,7 +1368,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case PARASECT_38:
         return evolution (this, from:"Paras", hp:HP080, type:G, retreatCost:1) {
           weakness R, PLUS20
@@ -1398,7 +1398,7 @@ public enum SupremeVictors implements LogicCardInfo {
                     delayed {
                       before ASLEEP_SPC, null, null, BEGIN_TURN, {
                         flip "Asleep (Hibernation Spore)", 2, {}, {}, [2: {
-                          ef.unregisterItself(bg.em());
+                          ef.unregisterItself(bg.em())
                         }, 1:{
                           bc "$pcs is still asleep."
                         }, 0:{
@@ -1420,7 +1420,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case PRIMEAPE_39:
         return evolution (this, from:"Mankey", hp:HP090, type:F, retreatCost:1) {
           weakness P, PLUS20
@@ -1448,7 +1448,7 @@ public enum SupremeVictors implements LogicCardInfo {
               noResistanceOrAnyEffectDamage(40, defending)
             }
           }
-        };
+        }
       case ROSERADE_C_40:
         return basic (this, hp:HP090, type:P, retreatCost:2) {
           weakness P
@@ -1474,7 +1474,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SABLEYE_G_41:
         return basic (this, hp:HP070, type:D, retreatCost:1) {
           resistance C, MINUS20
@@ -1495,7 +1495,7 @@ public enum SupremeVictors implements LogicCardInfo {
               astonish()
             }
           }
-        };
+        }
       case SANDSLASH_42:
         return evolution (this, from:"Sandshrew", hp:HP090, type:F, retreatCost:1) {
           weakness W, PLUS20
@@ -1526,7 +1526,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SEAKING_43:
         return evolution (this, from:"Goldeen", hp:HP090, type:W, retreatCost:1) {
           weakness L, PLUS20
@@ -1560,7 +1560,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SHEDINJA_44:
         return evolution (this, from:"Nincada", hp:HP060, type:G, retreatCost:1) {
           weakness R, PLUS20
@@ -1599,7 +1599,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 30, opp.all.findAll{it.numberOfDamageCounters}.select(text)
             }
           }
-        };
+        }
       case SOLROCK_45:
         return basic (this, hp:HP080, type:P, retreatCost:1) {
           weakness G, PLUS20
@@ -1632,7 +1632,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SPINDA_46:
         return basic (this, hp:HP070, type:C, retreatCost:1) {
           weakness F, PLUS20
@@ -1673,7 +1673,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case WAILORD_47:
         return evolution (this, from:"Wailmer", hp:HP180, type:W, retreatCost:4) {
           weakness L
@@ -1696,7 +1696,7 @@ public enum SupremeVictors implements LogicCardInfo {
               cantUseAttack(thisMove, self)
             }
           }
-        };
+        }
       case ZAPDOS_48:
         return basic (this, hp:HP100, type:L, retreatCost:2) {
           weakness L, PLUS30
@@ -1720,7 +1720,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ALTARIA_C_49:
         return basic (this, hp:HP080, type:C, retreatCost:1) {
           weakness C
@@ -1743,7 +1743,7 @@ public enum SupremeVictors implements LogicCardInfo {
               dontApplyResistance()
             }
           }
-        };
+        }
       case ARCANINE_50:
         return evolution (this, from:"Growlithe", hp:HP080, type:R, retreatCost:3) {
           weakness W, PLUS20
@@ -1766,7 +1766,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 40
             }
           }
-        };
+        }
       case BIBAREL_51:
         return evolution (this, from:"Bidoof", hp:HP090, type:C, retreatCost:3) {
           weakness F, PLUS20
@@ -1788,7 +1788,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case BRELOOM_52:
         return evolution (this, from:"Shroomish", hp:HP090, type:F, retreatCost:1) {
           weakness R, PLUS20
@@ -1831,7 +1831,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CARNIVINE_53:
         return basic (this, hp:HP080, type:G, retreatCost:2) {
           weakness R, PLUS20
@@ -1855,7 +1855,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CHATOT_G_54:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
           weakness L
@@ -1885,7 +1885,7 @@ public enum SupremeVictors implements LogicCardInfo {
               removePCS(self)
             }
           }
-        };
+        }
       case CHERRIM_55:
         return evolution (this, from:"Cherubi", hp:HP080, type:G, retreatCost:1) {
           weakness R, PLUS20
@@ -1911,7 +1911,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DRAGONITE_FB_56:
         return basic (this, hp:HP100, type:C, retreatCost:3) {
           weakness C
@@ -1937,7 +1937,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DRIFBLIM_57:
         return evolution (this, from:"Drifloon", hp:HP080, type:P, retreatCost:1) {
           weakness D, PLUS20
@@ -1958,7 +1958,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 40
             }
           }
-        };
+        }
       case FLOATZEL_58:
         return evolution (this, from:"Buizel", hp:HP070, type:W, retreatCost:1) {
           weakness L, PLUS20
@@ -1981,7 +1981,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case GABITE_59:
         return evolution (this, from:"Gible", hp:HP080, type:C, retreatCost:1) {
           weakness C, PLUS20
@@ -2006,7 +2006,7 @@ public enum SupremeVictors implements LogicCardInfo {
               cantRetreat defending
             }
           }
-        };
+        }
       case GARCHOMP_C_60:
         return basic (this, hp:HP080, type:C, retreatCost:1) {
           weakness C
@@ -2029,7 +2029,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case HIPPOPOTAS_61:
         return basic (this, hp:HP070, type:F, retreatCost:2) {
           weakness W, PLUS10
@@ -2051,7 +2051,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 40
             }
           }
-        };
+        }
       case IVYSAUR_62:
         return evolution (this, from:"Bulbasaur", hp:HP080, type:G, retreatCost:2) {
           weakness R, PLUS20
@@ -2072,7 +2072,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case LOPUNNY_63:
         return evolution (this, from:"Buneary", hp:HP080, type:C, retreatCost:1) {
           weakness F, PLUS20
@@ -2095,7 +2095,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 40
             }
           }
-        };
+        }
       case LOUDRED_64:
         return evolution (this, from:"Whismur", hp:HP080, type:C, retreatCost:2) {
           weakness F, PLUS20
@@ -2120,7 +2120,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MAGMAR_65:
         return basic (this, hp:HP070, type:R, retreatCost:1) {
           weakness W, PLUS20
@@ -2143,7 +2143,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MANECTRIC_G_66:
         return basic (this, hp:HP080, type:L, retreatCost:1) {
           weakness F
@@ -2169,7 +2169,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MARSHTOMP_67:
         return evolution (this, from:"Mudkip", hp:HP080, type:W, retreatCost:1) {
           weakness G, PLUS20
@@ -2197,7 +2197,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case MASQUERAIN_68:
         return evolution (this, from:"Surskit", hp:HP080, type:G, retreatCost:0) {
           weakness L, PLUS20
@@ -2226,7 +2226,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case METANG_69:
         return evolution (this, from:"Beldum", hp:HP080, type:M, retreatCost:2) {
           weakness R, PLUS20
@@ -2247,7 +2247,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 40 + 10 * defending.cards.energyCount(C)
             }
           }
-        };
+        }
       case MILOTIC_70:
         return evolution (this, from:"Feebas", hp:HP090, type:W, retreatCost:1) {
           weakness L, PLUS20
@@ -2274,7 +2274,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 90 - 10 * my.hand.size()
             }
           }
-        };
+        }
       case MINUN_71:
         return basic (this, hp:HP060, type:L, retreatCost:1) {
           weakness F, PLUS10
@@ -2293,7 +2293,7 @@ public enum SupremeVictors implements LogicCardInfo {
               attachEnergyFrom(type:L,my.discard,my.all)
             }
           }
-        };
+        }
       case MURKROW_72:
         return basic (this, hp:HP070, type:D, retreatCost:1) {
           weakness L, PLUS10
@@ -2325,7 +2325,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case NINJASK_73:
         return evolution (this, from:"Nincada", hp:HP080, type:G, retreatCost:0) {
           weakness R, PLUS20
@@ -2361,7 +2361,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case NUMEL_74:
         return basic (this, hp:HP070, type:R, retreatCost:2) {
           weakness W, PLUS20
@@ -2383,7 +2383,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 40
             }
           }
-        };
+        }
       case PINSIR_75:
         return basic (this, hp:HP090, type:G, retreatCost:2) {
           weakness R, PLUS20
@@ -2408,7 +2408,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case PLUSLE_76:
         return basic (this, hp:HP060, type:L, retreatCost:1) {
           weakness F, PLUS10
@@ -2435,7 +2435,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case RAICHU_77:
         return evolution (this, from:"Pikachu", hp:HP090, type:L, retreatCost:0) {
           weakness F, PLUS20
@@ -2464,7 +2464,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case RATICATE_G_78:
         return basic (this, hp:HP070, type:C, retreatCost:0) {
           weakness F
@@ -2489,7 +2489,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case RELICANTH_79:
         return basic (this, hp:HP080, type:F, retreatCost:1) {
           weakness G, PLUS20
@@ -2519,7 +2519,7 @@ public enum SupremeVictors implements LogicCardInfo {
               amnesia delegate
             }
           }
-        };
+        }
       case RHYDON_80:
         return evolution (this, from:"Rhyhorn", hp:HP090, type:F, retreatCost:3) {
           weakness W, PLUS20
@@ -2543,7 +2543,7 @@ public enum SupremeVictors implements LogicCardInfo {
               dontApplyResistance()
             }
           }
-        };
+        }
       case ROSERADE_81:
         return evolution (this, from:"Roselia", hp:HP080, type:G, retreatCost:2) {
           weakness R, PLUS20
@@ -2564,7 +2564,7 @@ public enum SupremeVictors implements LogicCardInfo {
               applyAfterDamage POISONED
             }
           }
-        };
+        }
       case ROTOM_82:
         return basic (this, hp:HP070, type:L, retreatCost:1) {
           weakness D, PLUS20
@@ -2593,7 +2593,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SKARMORY_FB_83:
         return basic (this, hp:HP080, type:M, retreatCost:1) {
           weakness L
@@ -2629,7 +2629,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SPIRITOMB_C_84:
         return basic (this, hp:HP070, type:P, retreatCost:1) {
           resistance C, MINUS20
@@ -2650,7 +2650,7 @@ public enum SupremeVictors implements LogicCardInfo {
               cantRetreat defending
             }
           }
-        };
+        }
       case STARAVIA_85:
         return evolution (this, from:"Starly", hp:HP070, type:C, retreatCost:1) {
           weakness L, PLUS20
@@ -2676,7 +2676,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case TOGEKISS_C_86:
         return basic (this, hp:HP070, type:C, retreatCost:0) {
           weakness L
@@ -2700,7 +2700,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 10, self
             }
           }
-        };
+        }
       case WAILMER_87:
         return basic (this, hp:HP080, type:W, retreatCost:3) {
           weakness L, PLUS20
@@ -2722,7 +2722,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 20, self
             }
           }
-        };
+        }
       case YANMA_88:
         return basic (this, hp:HP070, type:G, retreatCost:1) {
           weakness L, PLUS20
@@ -2748,7 +2748,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case BALTOY_89:
         return basic (this, hp:HP050, type:P, retreatCost:1) {
           weakness P, PLUS10
@@ -2770,7 +2770,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case BELDUM_90:
         return basic (this, hp:HP050, type:M, retreatCost:2) {
           weakness R, PLUS10
@@ -2794,7 +2794,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case BIDOOF_91:
         return basic (this, hp:HP060, type:C, retreatCost:2) {
           weakness F, PLUS10
@@ -2808,7 +2808,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case BUIZEL_92:
         return basic (this, hp:HP050, type:W, retreatCost:1) {
           weakness L, PLUS10
@@ -2828,7 +2828,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case BULBASAUR_93:
         return basic (this, hp:HP060, type:G, retreatCost:1) {
           weakness R, PLUS10
@@ -2848,7 +2848,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case BUNEARY_94:
         return basic (this, hp:HP050, type:C, retreatCost:1) {
           weakness F, PLUS10
@@ -2871,7 +2871,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CHATOT_95:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
           weakness L, PLUS10
@@ -2892,7 +2892,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CHERUBI_96:
         return basic (this, hp:HP050, type:G, retreatCost:1) {
           weakness R, PLUS10
@@ -2915,7 +2915,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case CHIMCHAR_97:
         return basic (this, hp:HP050, type:R, retreatCost:1) {
           weakness W, PLUS10
@@ -2938,7 +2938,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CHINGLING_98:
         return basic (this, hp:HP050, type:P, retreatCost:1) {
           weakness P, PLUS10
@@ -2966,7 +2966,7 @@ public enum SupremeVictors implements LogicCardInfo {
               bg.em().run(new ActivateSimpleTrainer(card))
             }
           }
-        };
+        }
       case COMBEE_99:
         return basic (this, hp:HP040, type:G, retreatCost:1) {
           weakness R, PLUS10
@@ -2989,7 +2989,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case CORPHISH_100:
         return basic (this, hp:HP050, type:W, retreatCost:1) {
           weakness L, PLUS10
@@ -3012,7 +3012,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CROAGUNK_101:
         return basic (this, hp:HP060, type:P, retreatCost:1) {
           weakness P, PLUS10
@@ -3032,7 +3032,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case DODUO_102:
         return basic (this, hp:HP050, type:C, retreatCost:0) {
           weakness L, PLUS10
@@ -3046,7 +3046,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 10, self
             }
           }
-        };
+        }
       case DRIFLOON_103:
         return basic (this, hp:HP040, type:P, retreatCost:1) {
           weakness D, PLUS10
@@ -3070,7 +3070,7 @@ public enum SupremeVictors implements LogicCardInfo {
               draw 1
             }
           }
-        };
+        }
       case FEEBAS_104:
         return basic (this, hp:HP030, type:W, retreatCost:1) {
           weakness L, PLUS10
@@ -3095,7 +3095,7 @@ public enum SupremeVictors implements LogicCardInfo {
               draw opp.all.findAll{!it.evolution}.size()
             }
           }
-        };
+        }
       case GEODUDE_105:
         return basic (this, hp:HP060, type:F, retreatCost:2) {
           weakness W, PLUS10
@@ -3117,7 +3117,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case GIBLE_106:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
           weakness C, PLUS10
@@ -3137,7 +3137,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case GOLDEEN_107:
         return basic (this, hp:HP050, type:W, retreatCost:1) {
           weakness L, PLUS10
@@ -3161,7 +3161,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case GROWLITHE_108:
         return basic (this, hp:HP060, type:R, retreatCost:1) {
           weakness W, PLUS10
@@ -3184,7 +3184,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case KRICKETOT_109:
         return basic (this, hp:HP050, type:G, retreatCost:1) {
           weakness R, PLUS10
@@ -3204,7 +3204,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case MAGIKARP_110:
         return basic (this, hp:HP030, type:W, retreatCost:1) {
           weakness L, PLUS10
@@ -3218,7 +3218,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MAGNEMITE_111:
         return basic (this, hp:HP040, type:L, retreatCost:1) {
           weakness F, PLUS10
@@ -3242,7 +3242,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MANKEY_112:
         return basic (this, hp:HP050, type:F, retreatCost:1) {
           weakness P, PLUS10
@@ -3257,7 +3257,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MEDITITE_113:
         return basic (this, hp:HP060, type:P, retreatCost:1) {
           weakness P, PLUS10
@@ -3279,7 +3279,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 30 - 10 * self.numberOfDamageCounters
             }
           }
-        };
+        }
       case MEOWTH_114:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
           weakness F, PLUS10
@@ -3301,7 +3301,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MIME_JR__115:
         return basic (this, hp:HP050, type:P, retreatCost:1) {
           weakness P, PLUS10
@@ -3341,7 +3341,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MUDKIP_116:
         return basic (this, hp:HP060, type:W, retreatCost:1) {
           weakness G, PLUS10
@@ -3364,7 +3364,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case NINCADA_117:
         return basic (this, hp:HP040, type:G, retreatCost:1) {
           weakness R, PLUS10
@@ -3383,7 +3383,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 10, opp.bench.select(text)
             }
           }
-        };
+        }
       case PACHIRISU_118:
         return basic (this, hp:HP060, type:L, retreatCost:1) {
           weakness F, PLUS10
@@ -3407,7 +3407,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case PARAS_119:
         return basic (this, hp:HP050, type:G, retreatCost:1) {
           weakness R, PLUS10
@@ -3430,7 +3430,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case PIKACHU_120:
         return basic (this, hp:HP050, type:L, retreatCost:1) {
           weakness F, PLUS10
@@ -3454,7 +3454,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case PIPLUP_121:
         return basic (this, hp:HP060, type:W, retreatCost:1) {
           weakness L, PLUS10
@@ -3474,7 +3474,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case RHYHORN_122:
         return basic (this, hp:HP070, type:F, retreatCost:2) {
           weakness W, PLUS10
@@ -3498,7 +3498,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case ROSELIA_123:
         return basic (this, hp:HP060, type:G, retreatCost:1) {
           weakness R, PLUS10
@@ -3521,7 +3521,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SANDSHREW_124:
         return basic (this, hp:HP050, type:F, retreatCost:1) {
           weakness W, PLUS10
@@ -3534,7 +3534,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case SEEL_125:
         return basic (this, hp:HP060, type:W, retreatCost:2) {
           weakness M, PLUS10
@@ -3557,7 +3557,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SHINX_126:
         return basic (this, hp:HP060, type:L, retreatCost:1) {
           weakness F, PLUS10
@@ -3570,7 +3570,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case SHROOMISH_127:
         return basic (this, hp:HP060, type:G, retreatCost:1) {
           weakness R, PLUS10
@@ -3593,7 +3593,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case SKORUPI_128:
         return basic (this, hp:HP050, type:P, retreatCost:2) {
           weakness P, PLUS10
@@ -3618,7 +3618,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case STARLY_129:
         return basic (this, hp:HP050, type:C, retreatCost:1) {
           weakness L, PLUS10
@@ -3631,7 +3631,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case SURSKIT_130:
         return basic (this, hp:HP050, type:G, retreatCost:1) {
           weakness R, PLUS10
@@ -3646,7 +3646,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case TURTWIG_131:
         return basic (this, hp:HP060, type:G, retreatCost:2) {
           weakness R, PLUS10
@@ -3670,7 +3670,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case WHISMUR_132:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
           weakness F, PLUS10
@@ -3692,7 +3692,7 @@ public enum SupremeVictors implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case ZUBAT_133:
         return basic (this, hp:HP050, type:P, retreatCost:1) {
           weakness P, PLUS10
@@ -3707,7 +3707,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case BATTLE_TOWER_134:
         return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
@@ -3726,7 +3726,7 @@ public enum SupremeVictors implements LogicCardInfo {
           onRemoveFromPlay{
             eff.unregister()
           }
-        };
+        }
       case CHAMPION_S_ROOM_135:
         return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
@@ -3742,7 +3742,7 @@ public enum SupremeVictors implements LogicCardInfo {
           onRemoveFromPlay{
             eff.unregister()
           }
-        };
+        }
       case CYNTHIA_S_GUIDANCE_136:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
@@ -3754,7 +3754,7 @@ public enum SupremeVictors implements LogicCardInfo {
           playRequirement{
             assert my.deck : "Your deck is empty"
           }
-        };
+        }
       case CYRUS_S_INITIATIVE_137:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
@@ -3771,7 +3771,7 @@ public enum SupremeVictors implements LogicCardInfo {
           playRequirement{
             assert opp.hand : "Your opponent's hand is empty"
           }
-        };
+        }
       case NIGHT_TELEPORTER_138:
         return itemCard (this) {
           text "Flip a coin. If heads, put all cards in your hand on top of your deck. Then, search your deck for any 1 card and put it into your hand. Shuffle your deck afterward."
@@ -3786,7 +3786,7 @@ public enum SupremeVictors implements LogicCardInfo {
           playRequirement{
             assert my.hand.getExcludedList(thisCard) || my.deck : "You have no other cards in your hand or deck"
           }
-        };
+        }
       case PALMER_S_CONTRIBUTION_139:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
@@ -3801,9 +3801,9 @@ public enum SupremeVictors implements LogicCardInfo {
           playRequirement{
             assert my.discard.filterByType(POKEMON, BASIC_ENERGY) : "You have no Pokémon or basic Energy cards in your discard pile"
           }
-        };
+        }
       case VS_SEEKER_140:
-        return copy(FireRedLeafGreen.VS_SEEKER_100, this);
+        return copy(FireRedLeafGreen.VS_SEEKER_100, this)
       case ABSOL_G_LV_X_141:
         return levelUp (this, from:"Absol G", hp:HP100, type:D, retreatCost:1) {
           weakness F
@@ -3836,7 +3836,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case BLAZIKEN_FB_LV_X_142:
         return levelUp (this, from:"Blaziken FB", hp:HP110, type:R, retreatCost:1) {
           weakness W
@@ -3879,7 +3879,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CHARIZARD_G_LV_X_143:
         return levelUp (this, from:"Charizard G", hp:HP120, type:R, retreatCost:3) {
           weakness W
@@ -3908,7 +3908,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ELECTIVIRE_FB_LV_X_144:
         return levelUp (this, from:"Electivire FB", hp:HP120, type:L, retreatCost:3) {
           weakness F
@@ -3938,7 +3938,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case GARCHOMP_C_LV_X_145:
         return levelUp (this, from:"Garchomp C", hp:HP110, type:C, retreatCost:0) {
           weakness C
@@ -3965,7 +3965,7 @@ public enum SupremeVictors implements LogicCardInfo {
               cantUseAttack thisMove, self
             }
           }
-        };
+        }
       case RAYQUAZA_C_LV_X_146:
         return levelUp (this, from:"Rayquaza C", hp:HP120, type:C, retreatCost:3) {
           weakness C
@@ -3999,7 +3999,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case STARAPTOR_FB_LV_X_147:
         return levelUp (this, from:"Staraptor FB", hp:HP100, type:C, retreatCost:0) {
           weakness L
@@ -4026,7 +4026,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ARTICUNO_148:
         return basic (this, hp:HP070, type:W, retreatCost:1) {
           resistance F, MINUS30
@@ -4045,7 +4045,7 @@ public enum SupremeVictors implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MOLTRES_149:
         return basic (this, hp:HP070, type:R, retreatCost:1) {
           resistance F, MINUS30
@@ -4067,7 +4067,7 @@ public enum SupremeVictors implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ZAPDOS_150:
         return basic (this, hp:HP070, type:L, retreatCost:1) {
           resistance F, MINUS30
@@ -4086,7 +4086,7 @@ public enum SupremeVictors implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MILOTIC_SH7:
         return evolution (this, from:"Feebas", hp:HP080, type:W, retreatCost:1) {
           weakness L, PLUS20
@@ -4114,7 +4114,7 @@ public enum SupremeVictors implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RELICANTH_SH8:
         return basic (this, hp:HP080, type:F, retreatCost:1) {
           weakness G, PLUS20
@@ -4139,7 +4139,7 @@ public enum SupremeVictors implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case YANMA_SH9:
         return basic (this, hp:HP070, type:G, retreatCost:1) {
           weakness L, PLUS20
@@ -4170,9 +4170,9 @@ public enum SupremeVictors implements LogicCardInfo {
             }
           }
 
-        };
+        }
       default:
-        return null;
+        return null
     }
   }
 

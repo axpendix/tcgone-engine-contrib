@@ -1,22 +1,22 @@
-package tcgwars.logic.impl.gen7;
+package tcgwars.logic.impl.gen7
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.*;
+import tcgwars.logic.*
 import tcgwars.logic.card.*
 import tcgwars.logic.effect.*
 import tcgwars.logic.effect.basic.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author Thomas Luong
@@ -285,53 +285,53 @@ public enum UnifiedMinds implements LogicCardInfo {
   RECYCLE_ENERGY_257 ("Recycle Energy", "257", Rarity.SECRET, [ENERGY, SPECIAL_ENERGY]),
   WEAKNESS_GUARD_ENERGY_258 ("Weakness Guard Energy", "258", Rarity.SECRET, [ENERGY, SPECIAL_ENERGY]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   UnifiedMinds(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.UNIFIED_MINDS;
+    return tcgwars.logic.card.Collection.UNIFIED_MINDS
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -387,7 +387,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case YANMA_2:
         return basic (this, hp:HP070, type:G, retreatCost:1) {
           weakness R
@@ -405,7 +405,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case YANMEGA_3:
         return evolution (this, from:"Yanma", hp:HP120, type:G, retreatCost:1) {
           weakness R
@@ -424,7 +424,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               discardSelfEnergy C
             }
           }
-        };
+        }
       case CELEBI_4:
         return basic (this, hp:HP080, type:G, retreatCost:1) {
           weakness R
@@ -450,7 +450,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               applyAfterDamage CONFUSED
             }
           }
-        };
+        }
       case SHROOMISH_5:
         return basic (this, hp:HP060, type:G, retreatCost:1) {
           weakness R
@@ -461,7 +461,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               apply POISONED
             }
           }
-        };
+        }
       case SEWADDLE_6:
         return basic (this, hp:HP050, type:G, retreatCost:1) {
           weakness R
@@ -483,7 +483,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case SEWADDLE_7:
         return basic (this, hp:HP050, type:G, retreatCost:1) {
           weakness R
@@ -507,7 +507,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               flip { damage 20 }
             }
           }
-        };
+        }
       case SWADLOON_8:
         return evolution (this, from:"Sewaddle", hp:HP070, type:G, retreatCost:2) {
           weakness R
@@ -531,7 +531,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case LEAVANNY_9:
         return evolution (this, from:"Swadloon", hp:HP120, type:G, retreatCost:1) {
           weakness R
@@ -558,7 +558,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 70
             }
           }
-        };
+        }
       case DWEBBLE_10:
         return basic (this, hp:HP070, type:G, retreatCost:2) {
           weakness R
@@ -569,7 +569,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case CRUSTLE_11:
         return evolution (this, from:"Dwebble", hp:HP120, type:G, retreatCost:3) {
           weakness R
@@ -594,7 +594,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               flip 3,{},{}, [ 1:{damage 40}, 2:{damage 80}, 3:{damage 150} ]
             }
           }
-        };
+        }
       case KARRABLAST_12:
         return basic (this, hp:HP070, type:G, retreatCost:2) {
           weakness R
@@ -606,7 +606,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 10, self
             }
           }
-        };
+        }
       case FOONGUS_13:
         return basic (this, hp:HP040, type:G, retreatCost:1) {
           weakness R
@@ -617,7 +617,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               apply ASLEEP
             }
           }
-        };
+        }
       case AMOONGUSS_14:
         return evolution (this, from:"Foongus", hp:HP100, type:G, retreatCost:2) {
           weakness R
@@ -648,7 +648,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               if (defending.isSPC(POISONED)) damage 70
             }
           }
-        };
+        }
       case FOMANTIS_15:
         return basic (this, hp:HP070, type:G, retreatCost:1) {
           weakness R
@@ -669,7 +669,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case LURANTIS_16:
         return evolution (this, from:"Fomantis", hp:HP110, type:G, retreatCost:1) {
           weakness R
@@ -688,7 +688,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               if (self.cards.energyCount(R)) damage 50
             }
           }
-        };
+        }
       case BOUNSWEET_17:
         return basic (this, hp:HP060, type:G, retreatCost:1) {
           weakness R
@@ -706,7 +706,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case STEENEE_18:
         return evolution (this, from:"Bounsweet", hp:HP090, type:G, retreatCost:2) {
           weakness R
@@ -724,7 +724,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 60
             }
           }
-        };
+        }
       case TSAREENA_19:
         return evolution (this, from:"Steenee", hp:HP140, type:G, retreatCost:2) {
           weakness R
@@ -744,7 +744,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 90
             }
           }
-        };
+        }
       case DHELMISE_20:
         return basic (this, hp:HP100, type:G, retreatCost:1) {
           weakness R
@@ -760,7 +760,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 40
             }
           }
-        };
+        }
       case MAGMAR_21:
         return basic (this, hp:HP080, type:R, retreatCost:2) {
           weakness W
@@ -772,7 +772,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               sandAttack(thisMove)
             }
           }
-        };
+        }
       case MAGMORTAR_22:
         return evolution (this, from:"Magmar", hp:HP130, type:R, retreatCost:3) {
           weakness W
@@ -792,7 +792,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               discardSelfEnergy C
             }
           }
-        };
+        }
       case NUMEL_23:
         return basic (this, hp:HP090, type:R, retreatCost:4) {
           weakness W
@@ -811,7 +811,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               discardSelfEnergy C
             }
           }
-        };
+        }
       case CAMERUPT_24:
         return evolution (this, from:"Numel", hp:HP140, type:R, retreatCost:4) {
           weakness W
@@ -830,7 +830,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               discardSelfEnergy C, C
             }
           }
-        };
+        }
       case HEATRAN_GX_25:
         return basic (this, hp:HP190, type:R, retreatCost:3) {
           weakness W
@@ -843,9 +843,9 @@ public enum UnifiedMinds implements LogicCardInfo {
                   powerUsed()
                   while(1){
                     def pl=(my.all.findAll {it.cards.filterByEnergyType(R) && it!=self})
-                    if(!pl) break;
+                    if(!pl) break
                     def src=pl.select("Source for [R] Energy (cancel to stop moving).", false)
-                    if(!src) break;
+                    if(!src) break
                     def card=src.cards.filterByEnergyType(R).select("Select a [R] Energy to move to Heatran-GX.").first()
                     energySwitch(src, self, card)
                   }
@@ -871,7 +871,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 50*self.cards.energyCount(R)
             }
           }
-        };
+        }
       case VICTINI_26:
         return basic (this, hp:HP070, type:R, retreatCost:1) {
           weakness W
@@ -905,7 +905,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case LITWICK_27:
         return basic (this, hp:HP060, type:R, retreatCost:1) {
           weakness W
@@ -920,9 +920,9 @@ public enum UnifiedMinds implements LogicCardInfo {
               shuffleDeck()
             }
           }
-        };
+        }
       case LITWICK_28:
-        return copy (LITWICK_27, this);
+        return copy (LITWICK_27, this)
       case LAMPENT_29:
         return evolution (this, from:"Litwick", hp:HP080, type:R, retreatCost:1) {
           weakness W
@@ -935,7 +935,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHANDELURE_30:
         return evolution (this, from:"Lampent", hp:HP140, type:R, retreatCost:2) {
           weakness W
@@ -958,13 +958,13 @@ public enum UnifiedMinds implements LogicCardInfo {
               afterDamage{
                 if (firePokemon && my.bench.freeBenchCount) {
                   firePokemon.select(max: my.bench.freeBenchCount, min: 0).each {
-                    benchPCS(it);
+                    benchPCS(it)
                   }
                 }
               }
             }
           }
-        };
+        }
       case FLETCHINDER_31:
         return evolution (this, from:"Fletchling", hp:HP080, type:R, retreatCost:1) {
           weakness W
@@ -979,7 +979,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case TALONFLAME_32:
         return evolution (this, from:"Fletchinder", hp:HP130, type:R, retreatCost:0) {
           weakness W
@@ -1004,7 +1004,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SALANDIT_33:
         return basic (this, hp:HP070, type:R, retreatCost:1) {
           weakness W
@@ -1015,7 +1015,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case SALAZZLE_34:
         return evolution (this, from:"Salandit", hp:HP100, type:R, retreatCost:1) {
           weakness W
@@ -1026,7 +1026,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 70
             }
           }
-        };
+        }
       case SLOWPOKE_PSYDUCK_GX_35:
         return basic (this, hp:HP250, type:W, retreatCost:2) {
           weakness G
@@ -1055,7 +1055,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LAPRAS_36:
         return basic (this, hp:HP110, type:W, retreatCost:1) {
           weakness G
@@ -1077,7 +1077,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 90
             }
           }
-        };
+        }
       case SNORUNT_37:
         return basic (this, hp:HP050, type:W, retreatCost:1) {
           weakness M
@@ -1088,7 +1088,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case FROSLASS_38:
         return evolution (this, from:"Snorunt", hp:HP080, type:W, retreatCost:1) {
           weakness M
@@ -1111,7 +1111,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               applyAfterDamage ASLEEP
             }
           }
-        };
+        }
       case FINNEON_39:
         return basic (this, hp:HP050, type:W, retreatCost:1) {
           weakness G
@@ -1122,7 +1122,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case LUMINEON_40:
         return evolution (this, from:"Finneon", hp:HP090, type:W, retreatCost:0) {
           weakness G
@@ -1136,7 +1136,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SNOVER_41:
         return basic (this, hp:HP090, type:W, retreatCost:4) {
           weakness M
@@ -1148,7 +1148,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               applyAfterDamage ASLEEP
             }
           }
-        };
+        }
       case ABOMASNOW_42:
         return evolution (this, from:"Snover", hp:HP140, type:W, retreatCost:4) {
           weakness M
@@ -1168,7 +1168,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 20, self
             }
           }
-        };
+        }
       case BASCULIN_43:
         return basic (this, hp:HP080, type:W, retreatCost:1) {
           weakness G
@@ -1191,7 +1191,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case TIRTOUGA_44:
         return evolution (this, from:"Unidentified Fossil", hp:HP100, type:W, retreatCost:3) {
           weakness G
@@ -1209,7 +1209,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 60
             }
           }
-        };
+        }
       case CARRACOSTA_45:
         return evolution (this, from:"Tirtouga", hp:HP160, type:W, retreatCost:3) {
           weakness G
@@ -1271,7 +1271,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 20*opp.active.retreatCost
             }
           }
-        };
+        }
       case CRYOGONAL_46:
         return basic (this, hp:HP090, type:W, retreatCost:1) {
           weakness M
@@ -1291,7 +1291,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case KELDEO_GX_47:
         return basic (this, hp:HP170, type:W, retreatCost:2) {
           weakness G
@@ -1315,7 +1315,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 50*opp.bench.size()
             }
           }
-        };
+        }
       case DEWPIDER_48:
         return basic (this, hp:HP060, type:W, retreatCost:1) {
           weakness G
@@ -1333,7 +1333,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case ARAQUANID_49:
         return evolution (this, from:"Dewpider", hp:HP100, type:W, retreatCost:1) {
           weakness G
@@ -1358,7 +1358,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case WIMPOD_50:
         return basic (this, hp:HP070, type:W, retreatCost:1) {
           weakness G
@@ -1370,7 +1370,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               sandAttack(thisMove)
             }
           }
-        };
+        }
       case GOLISOPOD_51:
         return evolution (this, from:"Wimpod", hp:HP140, type:W, retreatCost:4) {
           weakness G
@@ -1392,7 +1392,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case PYUKUMUKU_52:
         return basic (this, hp:HP080, type:W, retreatCost:1) {
           weakness G
@@ -1410,7 +1410,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case TAPU_FINI_53:
         return basic (this, hp:HP120, type:W, retreatCost:1) {
           weakness G
@@ -1432,7 +1432,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 100
             }
           }
-        };
+        }
       case RAICHU_ALOLAN_RAICHU_GX_54:
         return basic (this, hp:HP260, type:L, retreatCost:2) {
           weakness F
@@ -1461,7 +1461,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case PIKACHU_55:
         return basic (this, hp:HP060, type:L, retreatCost:1) {
           weakness F
@@ -1480,7 +1480,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case PIKACHU_56:
         return basic (this, hp:HP070, type:L, retreatCost:1) {
           weakness F
@@ -1499,7 +1499,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case ALOLAN_RAICHU_57:
         return evolution (this, from:"Pikachu", hp:HP110, type:L, retreatCost:1) {
           weakness F
@@ -1529,7 +1529,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 90
             }
           }
-        };
+        }
       case MAGNEMITE_58:
         return basic (this, hp:HP060, type:L, retreatCost:1) {
           weakness F
@@ -1543,7 +1543,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MAGNETON_59:
         return evolution (this, from:"Magnemite", hp:HP090, type:L, retreatCost:2) {
           weakness F
@@ -1562,7 +1562,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               flip 3, { damage 40 }
             }
           }
-        };
+        }
       case MAGNEZONE_60:
         return evolution (this, from:"Magneton", hp:HP160, type:L, retreatCost:3) {
           weakness F
@@ -1581,7 +1581,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               my.discard.filterByType(TRAINER).select().moveTo(my.hand)
             }
           }
-        };
+        }
       case JOLTIK_61:
         return basic (this, hp:HP040, type:L, retreatCost:1) {
           weakness F
@@ -1593,7 +1593,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               flip { apply PARALYZED }
             }
           }
-        };
+        }
       case GALVANTULA_62:
         return evolution (this, from:"Joltik", hp:HP090, type:L, retreatCost:1) {
           weakness F
@@ -1612,7 +1612,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               bg.em().run(new DirectDamage(damage, pcs))
             }
           }
-        };
+        }
       case TYNAMO_63:
         return basic (this, hp:HP030, type:L, retreatCost:1) {
           weakness F
@@ -1627,7 +1627,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               switchYourActive()
             }
           }
-        };
+        }
       case TYNAMO_64:
         return basic (this, hp:HP040, type:L, retreatCost:1) {
           weakness F
@@ -1640,7 +1640,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               shuffleDeck()
             }
           }
-        };
+        }
       case EELEKTRIK_65:
         return evolution (this, from:"Tynamo", hp:HP090, type:L, retreatCost:2) {
           weakness F
@@ -1652,7 +1652,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 30*discardAllSelfEnergy(L).size()
             }
           }
-        };
+        }
       case EELEKTROSS_66:
         return evolution (this, from:"Eelektrik", hp:HP150, type:L, retreatCost:3) {
           weakness F
@@ -1675,9 +1675,9 @@ public enum UnifiedMinds implements LogicCardInfo {
               assert pcs : "Benching was unsuccessful."
               while(1){
                 def pl=(my.all.findAll {it.cards.filterByEnergyType(L) && it!=pcs})
-                if(!pl) break;
+                if(!pl) break
                 def src=pl.select("Source for [L] Energy (cancel to stop).", false)
-                if(!src) break;
+                if(!src) break
                 def card=src.cards.filterByEnergyType(L).select("Select a [L] Energy to move to Eelektross.").first()
                 energySwitch(src, pcs, card)
               }
@@ -1694,7 +1694,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               cantRetreat defending
             }
           }
-        };
+        }
       case STUNFISK_67:
         return basic (this, hp:HP090, type:L, retreatCost:1) {
           weakness F
@@ -1707,7 +1707,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               if (defending.getRemainingHP() > self.getRemainingHP()) damage 30
             }
           }
-        };
+        }
       case THUNDURUS_68:
         return basic (this, hp:HP120, type:L, retreatCost:1) {
           weakness F
@@ -1730,7 +1730,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case TAPU_KOKO_69:
         return basic (this, hp:HP120, type:L, retreatCost:1) {
           weakness F
@@ -1753,7 +1753,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case XURKITREE_70:
         return basic (this, hp:HP120, type:L, retreatCost:2) {
           weakness F
@@ -1775,7 +1775,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MEWTWO_MEW_GX_71:
         return basic (this, hp:HP270, type:P, retreatCost:2) {
           weakness P
@@ -1796,7 +1796,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ESPEON_DEOXYS_GX_72:
         return basic (this, hp:HP260, type:P, retreatCost:2) {
           weakness P
@@ -1820,7 +1820,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               putDamageCountersOnOpponentsPokemon(counters)
             }
           }
-        };
+        }
       case EXEGGCUTE_73:
         return basic (this, hp:HP050, type:P, retreatCost:1) {
           weakness P
@@ -1832,7 +1832,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               heal 10, self
             }
           }
-        };
+        }
       case EXEGGUTOR_74:
         return evolution (this, from:"Exeggcute", hp:HP140, type:P, retreatCost:3) {
           weakness P
@@ -1852,7 +1852,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               afterDamage{my.hand.discard()}
             }
           }
-        };
+        }
       case ALOLAN_MAROWAK_75:
         return evolution (this, from:"Cubone", hp:HP120, type:P, retreatCost:2) {
           weakness D
@@ -1877,7 +1877,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 60
             }
           }
-        };
+        }
       case JYNX_76:
         return basic (this, hp:HP080, type:P, retreatCost:1) {
           weakness P
@@ -1906,7 +1906,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               flip { applyAfterDamage PARALYZED }
             }
           }
-        };
+        }
       case WYNAUT_77:
         return basic (this, hp:HP060, type:P, retreatCost:0) {
           bwAbility "Peppy Pick", {
@@ -1916,7 +1916,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               bg.gm().betweenTurns()
             }
           }
-        };
+        }
       case LATIOS_GX_78:
         return basic (this, hp:HP170, type:P, retreatCost:0) {
           weakness P
@@ -1969,7 +1969,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case JIRACHI_GX_79A:
       case JIRACHI_GX_79:
         return basic (this, hp:HP160, type:P, retreatCost:1) {
@@ -1999,7 +1999,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               preventAllEffectsNextTurn()
             }
           }
-        };
+        }
       case DRIFLOON_80:
         return basic (this, hp:HP070, type:P, retreatCost:1) {
           weakness D
@@ -2012,7 +2012,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DRIFBLIM_81:
         return evolution (this, from:"Drifloon", hp:HP100, type:P, retreatCost:1) {
           weakness D
@@ -2034,7 +2034,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 70
             }
           }
-        };
+        }
       case SKORUPI_82:
         return basic (this, hp:HP070, type:P, retreatCost:2) {
           weakness P
@@ -2052,7 +2052,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 40
             }
           }
-        };
+        }
       case UXIE_83:
         return basic (this, hp:HP070, type:P, retreatCost:1) {
           weakness P
@@ -2076,7 +2076,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case MESPRIT_84:
         return basic (this, hp:HP060, type:P, retreatCost:1) {
           weakness P
@@ -2098,7 +2098,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case AZELF_85:
         return basic (this, hp:HP070, type:P, retreatCost:1) {
           weakness P
@@ -2109,7 +2109,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               putDamageCountersOnOpponentsPokemon(3)
             }
           }
-        };
+        }
       case GIRATINA_86:
         return basic (this, hp:HP130, type:P, retreatCost:1) {
           weakness D
@@ -2133,7 +2133,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               applyAfterDamage CONFUSED
             }
           }
-        };
+        }
       case CRESSELIA_87:
         return basic (this, hp:HP130, type:P, retreatCost:2) {
           weakness P
@@ -2155,7 +2155,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MUNNA_88:
         return basic (this, hp:HP060, type:P, retreatCost:1) {
           weakness P
@@ -2164,7 +2164,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             energyCost C
             foresight(4, delegate)
           }
-        };
+        }
       case MUSHARNA_89:
         return evolution (this, from:"Munna", hp:HP100, type:P, retreatCost:2) {
           weakness P
@@ -2184,7 +2184,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case ELGYEM_90:
         return basic (this, hp:HP060, type:P, retreatCost:1) {
           weakness P
@@ -2196,7 +2196,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               applyAfterDamage(CONFUSED)
             }
           }
-        };
+        }
       case BEHEEYEM_91:
         return evolution (this, from:"Elgyem", hp:HP080, type:P, retreatCost:1) {
           weakness P
@@ -2228,7 +2228,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case HONEDGE_92:
         return basic (this, hp:HP050, type:P, retreatCost:1) {
           weakness D
@@ -2251,7 +2251,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case HONEDGE_93:
         return basic (this, hp:HP070, type:P, retreatCost:3) {
           weakness D
@@ -2263,7 +2263,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               noWrDamage 10, defending
             }
           }
-        };
+        }
       case DOUBLADE_94:
         return evolution (this, from:"Honedge", hp:HP090, type:P, retreatCost:3) {
           weakness D
@@ -2275,7 +2275,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               noWrDamage 30, defending
             }
           }
-        };
+        }
       case AEGISLASH_95:
         return evolution (this, from:"Doublade", hp:HP130, type:P, retreatCost:3) {
           weakness D
@@ -2304,7 +2304,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage Math.min(10*my.discard.filterByType(ITEM).size(), 130)
             }
           }
-        };
+        }
       case MAREANIE_96:
         return basic (this, hp:HP070, type:P, retreatCost:2) {
           weakness P
@@ -2315,7 +2315,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case TOXAPEX_97:
         return evolution (this, from:"Mareanie", hp:HP110, type:P, retreatCost:2) {
           weakness P
@@ -2326,7 +2326,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 70
             }
           }
-        };
+        }
       case SALANDIT_98:
         return basic (this, hp:HP070, type:P, retreatCost:1) {
           weakness P
@@ -2344,7 +2344,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case SALAZZLE_99:
         return evolution (this, from:"Salandit", hp:HP110, type:P, retreatCost:1) {
           weakness P
@@ -2363,7 +2363,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case COSMOG_100:
         return basic (this, hp:HP040, type:P, retreatCost:0) {
           weakness P
@@ -2374,7 +2374,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case NECROZMA_101:
         return basic (this, hp:HP130, type:P, retreatCost:2) {
           weakness P
@@ -2394,7 +2394,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               if (self.cards.filterByType(SPECIAL_ENERGY)) damage 60
             }
           }
-        };
+        }
       case POIPOLE_102:
         return basic (this, hp:HP070, type:P, retreatCost:1) {
           weakness P
@@ -2415,7 +2415,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ONIX_103:
         return basic (this, hp:HP110, type:F, retreatCost:4) {
           weakness G
@@ -2427,7 +2427,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               reduceDamageNextTurn(hp(20), thisMove)
             }
           }
-        };
+        }
       case STEELIX_104:
         return evolution (this, from:"Onix", hp:HP170, type:F, retreatCost:4) {
           weakness G
@@ -2462,7 +2462,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CUBONE_105:
         return basic (this, hp:HP060, type:F, retreatCost:1) {
           weakness G
@@ -2480,7 +2480,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               flip 2, { damage 20 }
             }
           }
-        };
+        }
       case AERODACTYL_GX_106:
         return evolution (this, from:"Unidentified Fossil", hp:HP210, type:F, retreatCost:0) {
           weakness G
@@ -2517,7 +2517,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HERACROSS_107:
         return basic (this, hp:HP100, type:F, retreatCost:1) {
           weakness P
@@ -2541,7 +2541,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 70
             }
           }
-        };
+        }
       case BRELOOM_108:
         return evolution (this, from:"Shroomish", hp:HP120, type:F, retreatCost:2) {
           weakness P
@@ -2560,7 +2560,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               if (defending.isSPC(ASLEEP)) damage 90
             }
           }
-        };
+        }
       case MEDITITE_109:
         return basic (this, hp:HP060, type:F, retreatCost:1) {
           weakness P
@@ -2573,7 +2573,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MEDICHAM_110:
         return evolution (this, from:"Meditite", hp:HP110, type:F, retreatCost:1) {
           weakness P
@@ -2592,7 +2592,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               if (self.cards.findAll { it.name=="Karate Belt" }) damage 60
             }
           }
-        };
+        }
       case RELICANTH_111:
         return basic (this, hp:HP090, type:F, retreatCost:1) {
           weakness G
@@ -2613,7 +2613,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               applyAfterDamage ASLEEP
             }
           }
-        };
+        }
       case GIBLE_112:
         return basic (this, hp:HP060, type:F, retreatCost:1) {
           weakness G
@@ -2631,7 +2631,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case GABITE_113:
         return evolution (this, from:"Gible", hp:HP090, type:F, retreatCost:1) {
           weakness G
@@ -2649,7 +2649,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 40
             }
           }
-        };
+        }
       case GARCHOMP_114:
         return evolution (this, from:"Gabite", hp:HP150, type:F, retreatCost:0) {
           weakness G
@@ -2679,7 +2679,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case RIOLU_115:
         return basic (this, hp:HP060, type:F, retreatCost:1) {
           weakness P
@@ -2690,9 +2690,9 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case RIOLU_116:
-        return copy (RIOLU_115, this);
+        return copy (RIOLU_115, this)
       case LUCARIO_117:
         return evolution (this, from:"Riolu", hp:HP120, type:F, retreatCost:2) {
           weakness P
@@ -2716,7 +2716,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 90
             }
           }
-        };
+        }
       case DRILBUR_118:
         return basic (this, hp:HP070, type:F, retreatCost:2) {
           weakness G
@@ -2727,7 +2727,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case EXCADRILL_119:
         return evolution (this, from:"Drilbur", hp:HP120, type:F, retreatCost:2) {
           weakness G
@@ -2749,7 +2749,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 90
             }
           }
-        };
+        }
       case ARCHEN_120:
         return evolution (this, from:"Unidentified Fossil", hp:HP080, type:F, retreatCost:1) {
           weakness L
@@ -2762,7 +2762,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               flip 2, { damage 20 }
             }
           }
-        };
+        }
       case ARCHEOPS_121:
         return evolution (this, from:"Archen", hp:HP130, type:F, retreatCost:1) {
           weakness L
@@ -2783,7 +2783,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               discardDefendingEnergy()
             }
           }
-        };
+        }
       case TERRAKION_122:
         return basic (this, hp:HP140, type:F, retreatCost:4) {
           weakness G
@@ -2805,7 +2805,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 110
             }
           }
-        };
+        }
       case MELOETTA_123:
         return basic (this, hp:HP090, type:F, retreatCost:1) {
           weakness P
@@ -2826,7 +2826,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               flipUntilTails { damage 30 }
             }
           }
-        };
+        }
       case ZYGARDE_124:
         return basic (this, hp:HP090, type:F, retreatCost:1) {
           weakness G
@@ -2856,7 +2856,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case UMBREON_DARKRAI_GX_125:
         return basic (this, hp:HP270, type:D, retreatCost:2) {
           weakness F
@@ -2899,7 +2899,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MEGA_SABLEYE_TYRANITAR_GX_126:
         return basic (this, hp:HP280, type:D, retreatCost:4) {
           weakness F
@@ -2944,7 +2944,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ALOLAN_GRIMER_127:
         return basic (this, hp:HP080, type:D, retreatCost:2) {
           weakness F
@@ -2962,7 +2962,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case MURKROW_128:
         return basic (this, hp:HP070, type:D, retreatCost:1) {
           weakness L
@@ -2977,7 +2977,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               astonish()
             }
           }
-        };
+        }
       case MURKROW_129:
         return basic (this, hp:HP070, type:D, retreatCost:1) {
           weakness L
@@ -2989,7 +2989,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case HONCHKROW_130:
         return evolution (this, from:"Murkrow", hp:HP110, type:D, retreatCost:1) {
           weakness L
@@ -3008,7 +3008,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 60
             }
           }
-        };
+        }
       case SNEASEL_131:
         return basic (this, hp:HP070, type:D, retreatCost:1) {
           weakness F
@@ -3020,7 +3020,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case WEAVILE_GX_132:
         return evolution (this, from:"Sneasel", hp:HP200, type:D, retreatCost:1) {
           weakness F
@@ -3057,7 +3057,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               shuffleDeck()
             }
           }
-        };
+        }
       case SABLEYE_133:
         return basic (this, hp:HP080, type:D, retreatCost:1) {
           move "Mirror Gem", {
@@ -3071,7 +3071,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DRAPION_134:
         return evolution (this, from:"Skorupi", hp:HP140, type:D, retreatCost:4) {
           weakness F
@@ -3104,7 +3104,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 120
             }
           }
-        };
+        }
       case PURRLOIN_135:
         return basic (this, hp:HP070, type:D, retreatCost:1) {
           weakness F
@@ -3120,7 +3120,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               target.cards.filterByType(POKEMON_TOOL).select("Choose a Pokémon Tool to discard.").discard()
             }
           }
-        };
+        }
       case LIEPARD_136:
         return evolution (this, from:"Purrloin", hp:HP100, type:D, retreatCost:1) {
           weakness F
@@ -3142,7 +3142,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SCRAGGY_137:
         return basic (this, hp:HP070, type:D, retreatCost:2) {
           weakness F
@@ -3161,7 +3161,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case SCRAFTY_138:
         return evolution (this, from:"Scraggy", hp:HP110, type:D, retreatCost:2) {
           weakness F
@@ -3181,7 +3181,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 70
             }
           }
-        };
+        }
       case YVELTAL_139:
         return basic (this, hp:HP130, type:D, retreatCost:2) {
           weakness L
@@ -3203,7 +3203,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HOOPA_140:
         return basic (this, hp:HP130, type:D, retreatCost:2) {
           weakness F
@@ -3223,7 +3223,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               noWrDamage 80, defending
             }
           }
-        };
+        }
       case MAWILE_GX_141:
         return basic (this, hp:HP170, type:M, retreatCost:1) {
           weakness R
@@ -3263,7 +3263,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               opp.hand.filterByType(SUPPORTER).showToOpponent("Your opponent used Big Eater GX: These Supporter cards will now be discarded.").discard()
             }
           }
-        };
+        }
       case ESCAVALIER_142:
         return evolution (this, from:"Karrablast", hp:HP130, type:M, retreatCost:3) {
           weakness R
@@ -3285,7 +3285,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 90
             }
           }
-        };
+        }
       case COTTONEE_143:
         return basic (this, hp:HP060, type:Y, retreatCost:1) {
           weakness M
@@ -3297,7 +3297,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               draw 1
             }
           }
-        };
+        }
       case WHIMSICOTT_144:
         return evolution (this, from:"Cottonee", hp:HP080, type:Y, retreatCost:0) {
           weakness M
@@ -3319,7 +3319,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 40
             }
           }
-        };
+        }
       case DEDENNE_145:
         return basic (this, hp:HP070, type:Y, retreatCost:1) {
           weakness M
@@ -3336,7 +3336,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case GARCHOMP_GIRATINA_GX_146:
         return basic (this, hp:HP270, type:N, retreatCost:3) {
           weakness Y
@@ -3372,7 +3372,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DRATINI_147:
         return basic (this, hp:HP060, type:N, retreatCost:2) {
           weakness Y
@@ -3385,7 +3385,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DRATINI_148:
         return basic (this, hp:HP060, type:N, retreatCost:2) {
           weakness Y
@@ -3406,7 +3406,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DRAGONAIR_149:
         return evolution (this, from:"Dratini", hp:HP090, type:N, retreatCost:2) {
           weakness Y
@@ -3424,7 +3424,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DRAGONAIR_150:
         return evolution (this, from:"Dratini", hp:HP100, type:N, retreatCost:2) {
           weakness Y
@@ -3443,7 +3443,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               discardDefendingEnergy()
             }
           }
-        };
+        }
       case DRAGONITE_151:
         return evolution (this, from:"Dragonair", hp:HP160, type:N, retreatCost:2) {
           weakness Y
@@ -3470,7 +3470,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DRAGONITE_GX_152:
         return evolution (this, from:"Dragonair", hp:HP250, type:N, retreatCost:2) {
           weakness Y
@@ -3506,7 +3506,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               draw 10 - my.hand.size()
             }
           }
-        };
+        }
       case LATIAS_153:
         return basic (this, hp:HP120, type:N, retreatCost:1) {
           weakness Y
@@ -3525,7 +3525,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 100
             }
           }
-        };
+        }
       case AXEW_154:
         return basic (this, hp:HP060, type:N, retreatCost:1) {
           weakness Y
@@ -3547,7 +3547,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case FRAXURE_155:
         return evolution (this, from:"Axew", hp:HP090, type:N, retreatCost:2) {
           weakness Y
@@ -3567,7 +3567,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HAXORUS_156:
         return evolution (this, from:"Fraxure", hp:HP150, type:N, retreatCost:3) {
           weakness Y
@@ -3596,7 +3596,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DRUDDIGON_157:
         return basic (this, hp:HP120, type:N, retreatCost:2) {
           weakness Y
@@ -3619,7 +3619,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               flip { damage 100 }
             }
           }
-        };
+        }
       case NOIBAT_158:
         return basic (this, hp:HP060, type:N, retreatCost:1) {
           weakness Y
@@ -3631,7 +3631,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               discardSelfEnergy C
             }
           }
-        };
+        }
       case NOIVERN_159:
         return evolution (this, from:"Noibat", hp:HP120, type:N, retreatCost:0) {
           weakness Y
@@ -3650,7 +3650,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               my.deck.subList(0,1).discard()
             }
           }
-        };
+        }
       case NAGANADEL_GX_160:
         return evolution (this, from:"Poipole", hp:HP210, type:N, retreatCost:1) {
           weakness Y
@@ -3689,7 +3689,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               bc "Injection GX added 1 card to prizes and shuffled them."
             }
           }
-        };
+        }
       case LICKITUNG_161:
         return basic (this, hp:HP100, type:C, retreatCost:4) {
           weakness F
@@ -3708,7 +3708,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 40
             }
           }
-        };
+        }
       case LICKILICKY_162:
         return evolution (this, from:"Lickitung", hp:HP130, type:C, retreatCost:4) {
           weakness F
@@ -3730,7 +3730,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KANGASKHAN_163:
         return basic (this, hp:HP130, type:C, retreatCost:2) {
           weakness F
@@ -3749,7 +3749,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 50*tagTeams.size()
             }
           }
-        };
+        }
       case TAUROS_164:
         return basic (this, hp:HP110, type:C, retreatCost:1) {
           weakness F
@@ -3766,7 +3766,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 10, self
             }
           }
-        };
+        }
       case HOOTHOOT_165:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
           weakness L
@@ -3779,7 +3779,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               discardSelfEnergy C
             }
           }
-        };
+        }
       case NOCTOWL_166:
         return evolution (this, from:"Hoothoot", hp:HP090, type:C, retreatCost:1) {
           weakness L
@@ -3798,7 +3798,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 60
             }
           }
-        };
+        }
       case SLAKOTH_167:
         return basic (this, hp:HP050, type:C, retreatCost:2) {
           weakness F
@@ -3831,7 +3831,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case SLAKOTH_168:
         return basic (this, hp:HP070, type:C, retreatCost:3) {
           weakness F
@@ -3850,7 +3850,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               cantAttackNextTurn self
             }
           }
-        };
+        }
       case VIGOROTH_169:
         return evolution (this, from:"Slakoth", hp:HP090, type:C, retreatCost:1) {
           weakness F
@@ -3868,7 +3868,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 70
             }
           }
-        };
+        }
       case SLAKING_170:
         return evolution (this, from:"Vigoroth", hp:HP180, type:C, retreatCost:4) {
           weakness F
@@ -3904,7 +3904,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case BIDOOF_171:
         return basic (this, hp:HP070, type:C, retreatCost:2) {
           weakness F
@@ -3922,7 +3922,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               flip { damage 60 }
             }
           }
-        };
+        }
       case BIBAREL_172:
         return evolution (this, from:"Bidoof", hp:HP120, type:C, retreatCost:2) {
           weakness F
@@ -3946,7 +3946,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               amnesia delegate
             }
           }
-        };
+        }
       case MUNCHLAX_173:
         return basic (this, hp:HP060, type:C, retreatCost:0) {
           bwAbility "Snack Search", {
@@ -3963,7 +3963,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case PIDOVE_174:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
           weakness L
@@ -3982,7 +3982,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case TRANQUILL_175:
         return evolution (this, from:"Pidove", hp:HP080, type:C, retreatCost:1) {
           weakness L
@@ -4002,7 +4002,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               discardSelfEnergy C
             }
           }
-        };
+        }
       case UNFEZANT_176:
         return evolution (this, from:"Tranquill", hp:HP140, type:C, retreatCost:1) {
           weakness L
@@ -4029,7 +4029,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case AUDINO_177:
         return basic (this, hp:HP090, type:C, retreatCost:1) {
           weakness F
@@ -4050,7 +4050,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               heal 30, self
             }
           }
-        };
+        }
       case TORNADUS_178:
         return basic (this, hp:HP120, type:C, retreatCost:1) {
           weakness L
@@ -4072,7 +4072,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case FLETCHLING_179:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
           weakness L
@@ -4084,7 +4084,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case YUNGOOS_180:
         return basic (this, hp:HP070, type:C, retreatCost:1) {
           weakness F
@@ -4095,7 +4095,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case GUMSHOOS_181:
         return evolution (this, from:"Yungoos", hp:HP100, type:C, retreatCost:1) {
           weakness F
@@ -4110,7 +4110,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ORANGURU_182:
         return basic (this, hp:HP120, type:C, retreatCost:3) {
           weakness F
@@ -4135,7 +4135,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               damage 80
             }
           }
-        };
+        }
       case TYPE_NULL_183:
         return basic (this, hp:HP100, type:C, retreatCost:1) {
           weakness F
@@ -4154,7 +4154,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               flip { damage 30 }
             }
           }
-        };
+        }
       case SILVALLY_184:
         return evolution (this, from:"Type: Null", hp:HP130, type:C, retreatCost:2) {
           weakness F
@@ -4174,7 +4174,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               discardSelfEnergy C
             }
           }
-        };
+        }
       case KOMALA_185:
         return basic (this, hp:HP090, type:C, retreatCost:1) {
           weakness F
@@ -4196,7 +4196,7 @@ public enum UnifiedMinds implements LogicCardInfo {
               apply ASLEEP, self
             }
           }
-        };
+        }
       case BLAINE_S_QUIZ_SHOW_186:
         return supporter (this) {
           text "Put a Pokémon from your hand face down in front of you and tell your opponent the name of an attack it has. Your opponent guesses the name of that Pokémon, and then you reveal it. If your opponent guessed right, they draw 4 cards. If they guessed wrong, you draw 4 cards. Return the Pokémon to your hand."
@@ -4205,7 +4205,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           }
           playRequirement{
           }
-        };
+        }
       case BLIZZARD_TOWN_187:
         return stadium (this) {
           text "Pokémon with 40 HP or less remaining (both yours and your opponent’s) can’t attack."
@@ -4223,7 +4223,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           onRemoveFromPlay{
             eff.unregister()
           }
-        };
+        }
       case BLUE_S_TACTICS_188:
         return supporter (this) {
           text "At the end of this turn, draw cards until you have 8 cards in your hand."
@@ -4241,7 +4241,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           playRequirement{
             assert my.deck : "Your deck is empty."
           }
-        };
+        }
       case BUG_CATCHER_189:
         return supporter (this) {
           text "Draw 2 cards. Flip a coin. If heads, draw 2 more cards."
@@ -4252,7 +4252,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           playRequirement{
             assert my.deck : "Your deck is empty."
           }
-        };
+        }
       case CHANNELER_190:
         return supporter (this) {
           text "Remove all effects of attacks on you and each of your Pokémon."
@@ -4261,7 +4261,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           }
           playRequirement{
           }
-        };
+        }
       case CHERISH_BALL_191:
         return itemCard (this) {
           text "Search your deck for a Pokémon-GX, reveal it, and put it into your hand. Then, shuffle your deck."
@@ -4272,7 +4272,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           playRequirement{
             assert my.deck : "Your deck is empty."
           }
-        };
+        }
       case COACH_TRAINER_192:
         return supporter (this) {
           text "Draw 2 cards. If your Active Pokémon is a TAG TEAM Pokémon, draw 2 more cards."
@@ -4285,7 +4285,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           playRequirement{
             assert my.deck : "Your deck is empty."
           }
-        };
+        }
       case DARK_CITY_193:
         return stadium (this) {
           text "Basic [D] Pokémon in play (both your and your opponent’s) have no Retreat Cost."
@@ -4301,7 +4301,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           onRemoveFromPlay{
             eff.unregister()
           }
-        };
+        }
       case EAR_RINGING_BELL_194:
         return pokemonTool (this) {
           text "If the Pokémon this card is attached to is your Active Pokémon and is damaged by an opponent’s attack (even if that Pokémon is Knocked Out), the Attacking Pokémon is now Confused."
@@ -4309,7 +4309,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             bc "Ear-Ringing Bell activates."
             apply CONFUSED, ef.attacker, TRAINER_CARD
           }
-        };
+        }
       case FLYINIUM_Z_AIR_SLASH_195:
         return pokemonTool (this) {
           text "If the Pokémon this card is attached to has the Air Slash attack, it can use the GX attack on this card. (You still need the necessary Energy to use this attack.)" +
@@ -4337,7 +4337,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case GIANT_BOMB_196:
         return pokemonTool (this) {
           text "If this card is attached to 1 of your Pokémon, discard it at the end of your opponent’s turn." +
@@ -4368,7 +4368,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case GIANT_HEARTH_197:
         return stadium(this) {
           text "Once during each player’s turn, that player may discard a card from their hand. If they do, that player searches their deck for up to 2 [R] Energy cards, reveals them, and puts them into their hand. Then, that player shuffles their deck."
@@ -4389,7 +4389,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           onRemoveFromPlay{
             actions.each { bg().gm().unregisterAction(it) }
           }
-        };
+        }
       case GREAT_POTION_198:
         return itemCard (this) {
           text "Heal 50 damage from your Active Pokémon-GX."
@@ -4400,7 +4400,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             assert my.active.pokemonGX : "Your Active Pokémon is not a Pokémon-GX."
             assert my.active.numberOfDamageCounters : "Your Active Pokémon-GX has no damage."
           }
-        };
+        }
       case GRIMSLEY_199:
         return supporter (this) {
           text "Move up to 3 damage counters from 1 of your opponent’s Pokémon to another of their Pokémon."
@@ -4426,7 +4426,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             assert opp.all.size() > 1 : "Your opponent only has one Pokémon in play"
             assertOppAll(overrideText: true, info: "There are no damage counters to move", {it.numberOfDamageCounters})
           }
-        };
+        }
       case HAPU_200:
         return supporter (this) {
           text "Look at the top 6 cards of your deck and put 2 of them into your hand. Discard the other cards."
@@ -4439,7 +4439,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           playRequirement{
             assert my.deck : "Your deck is empty."
           }
-        };
+        }
       case KARATE_BELT_201:
         return pokemonTool (this) {
           text "If you have more Prize cards remaining than your opponent, the attacks of the Pokémon this card is attached to cost [F] less."
@@ -4460,7 +4460,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           onRemoveFromPlay {
             eff1.unregister()
           }
-        };
+        }
       case MISTY_S_FAVOR_202:
         return supporter (this) {
           text "Search your deck for up to 3 Supporter cards, reveal them, and put them into your hand. Then, shuffle your deck."
@@ -4471,7 +4471,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           playRequirement{
             assert my.deck : "Your deck is empty."
           }
-        };
+        }
       case NORMALIUM_Z_TACKLE_203:
         return pokemonTool (this) {
           text "If the Pokémon this card is attached to has the Tackle attack, it can use the GX attack on this card. (You still need the necessary Energy to use this attack.)" +
@@ -4499,7 +4499,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case POKE_MANIAC_204:
         return supporter (this) {
           text "Search your deck for up to 3 Pokémon that have a Retreat Cost of exactly 4, reveal them, and put them into your hand. Then, shuffle your deck."
@@ -4510,7 +4510,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           playRequirement{
             assert my.deck : "Your deck is empty."
           }
-        };
+        }
       case POKEMON_RESEARCH_LAB_205:
         return stadium (this) {
           text "Once during each player’s turn, that player may search their deck for up to 2 Pokémon that evolve from Unidentified Fossil, put those Pokémon onto their Bench, and shuffle their deck. If a player searches their deck in this way, their turn ends."
@@ -4537,7 +4537,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           onRemoveFromPlay{
             actions.each { bg().gm().unregisterAction(it) }
           }
-        };
+        }
       case RESET_STAMP_206:
         return itemCard (this) {
           text "Your opponent shuffles their hand into their deck and draws a card for each of their remaining Prize cards."
@@ -4548,7 +4548,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           }
           playRequirement{
           }
-        };
+        }
       case SLUMBERING_FOREST_207:
         return stadium (this) {
           text "If a Pokémon is Asleep, its owner flips 2 coins instead of 1 for that Special Condition between turns. If either of them is tails, that Pokémon is still Asleep."
@@ -4557,7 +4557,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             eff = delayed {
               before ASLEEP_SPC, null, null, BEGIN_TURN, {
                 flip "Asleep (Slumbering Forest)", 2, {}, {}, [2:{
-                  ef.unregisterItself(bg.em());
+                  ef.unregisterItself(bg.em())
                 },1:{
                   bc "$ef.target is still asleep."
                 },0:{
@@ -4570,7 +4570,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case STADIUM_NAV_208:
         return itemCard (this) {
           text "Flip 2 coins. For each heads, search your deck for a Stadium card, reveal it, and put it into your hand. Then, shuffle your deck."
@@ -4581,7 +4581,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           playRequirement{
             assert my.deck : "Your deck is empty."
           }
-        };
+        }
       case TAG_SWITCH_209:
         return itemCard (this) {
           text "Move up to 2 Energy from 1 of your TAG TEAM Pokémon to another of your Pokémon."
@@ -4594,9 +4594,9 @@ public enum UnifiedMinds implements LogicCardInfo {
             assert my.all.size() > 1 : "You only have one Pokémon in play"
             assertMyAll(hasVariants: TAG_TEAM, info: "with Energy attached to them", {it.cards.filterByType(ENERGY)})
           }
-        };
+        }
       case UNIDENTIFIED_FOSSIL_210:
-        return copy(UltraPrism.UNIDENTIFIED_FOSSIL_134, this);
+        return copy(UltraPrism.UNIDENTIFIED_FOSSIL_134, this)
       case U_TURN_BOARD_211:
         return pokemonTool (this) {
           text "The Retreat Cost of the Pokémon this card is attached to is [C] less." +
@@ -4625,7 +4625,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             eff.unregister()
             eff2.unregister()
           }
-        };
+        }
       case RECYCLE_ENERGY_212:
         return specialEnergy (this, [[C]]) {
           text "This card provides [C] Energy." +
@@ -4649,7 +4649,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case WEAKNESS_GUARD_ENERGY_213:
         return specialEnergy (this, [[C]]) {
           text "This card provides [C] Energy." +
@@ -4663,99 +4663,99 @@ public enum UnifiedMinds implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case ROWLET_ALOLAN_EXEGGUTOR_GX_214:
-        return copy (ROWLET_ALOLAN_EXEGGUTOR_GX_1, this);
+        return copy (ROWLET_ALOLAN_EXEGGUTOR_GX_1, this)
       case ROWLET_ALOLAN_EXEGGUTOR_GX_215:
-        return copy (ROWLET_ALOLAN_EXEGGUTOR_GX_1, this);
+        return copy (ROWLET_ALOLAN_EXEGGUTOR_GX_1, this)
       case HEATRAN_GX_216:
-        return copy (HEATRAN_GX_25, this);
+        return copy (HEATRAN_GX_25, this)
       case SLOWPOKE_PSYDUCK_GX_217:
-        return copy (SLOWPOKE_PSYDUCK_GX_35, this);
+        return copy (SLOWPOKE_PSYDUCK_GX_35, this)
       case SLOWPOKE_PSYDUCK_GX_218:
-        return copy (SLOWPOKE_PSYDUCK_GX_35, this);
+        return copy (SLOWPOKE_PSYDUCK_GX_35, this)
       case KELDEO_GX_219:
-        return copy (KELDEO_GX_47, this);
+        return copy (KELDEO_GX_47, this)
       case RAICHU_ALOLAN_RAICHU_GX_220:
-        return copy (RAICHU_ALOLAN_RAICHU_GX_54, this);
+        return copy (RAICHU_ALOLAN_RAICHU_GX_54, this)
       case RAICHU_ALOLAN_RAICHU_GX_221:
-        return copy (RAICHU_ALOLAN_RAICHU_GX_54, this);
+        return copy (RAICHU_ALOLAN_RAICHU_GX_54, this)
       case MEWTWO_MEW_GX_222:
-        return copy (MEWTWO_MEW_GX_71, this);
+        return copy (MEWTWO_MEW_GX_71, this)
       case LATIOS_GX_223:
-        return copy (LATIOS_GX_78, this);
+        return copy (LATIOS_GX_78, this)
       case AERODACTYL_GX_224:
-        return copy (AERODACTYL_GX_106, this);
+        return copy (AERODACTYL_GX_106, this)
       case MEGA_SABLEYE_TYRANITAR_GX_225:
-        return copy (MEGA_SABLEYE_TYRANITAR_GX_126, this);
+        return copy (MEGA_SABLEYE_TYRANITAR_GX_126, this)
       case MEGA_SABLEYE_TYRANITAR_GX_226:
-        return copy (MEGA_SABLEYE_TYRANITAR_GX_126, this);
+        return copy (MEGA_SABLEYE_TYRANITAR_GX_126, this)
       case MAWILE_GX_227:
-        return copy (MAWILE_GX_141, this);
+        return copy (MAWILE_GX_141, this)
       case GARCHOMP_GIRATINA_GX_228:
-        return copy (GARCHOMP_GIRATINA_GX_146, this);
+        return copy (GARCHOMP_GIRATINA_GX_146, this)
       case DRAGONITE_GX_229:
-        return copy (DRAGONITE_GX_152, this);
+        return copy (DRAGONITE_GX_152, this)
       case NAGANADEL_GX_230:
-        return copy (NAGANADEL_GX_160, this);
+        return copy (NAGANADEL_GX_160, this)
       case BLUE_S_TACTICS_231:
-        return copy (BLUE_S_TACTICS_188, this);
+        return copy (BLUE_S_TACTICS_188, this)
       case CHANNELER_232:
-        return copy (CHANNELER_190, this);
+        return copy (CHANNELER_190, this)
       case COACH_TRAINER_233:
-        return copy (COACH_TRAINER_192, this);
+        return copy (COACH_TRAINER_192, this)
       case GRIMSLEY_234:
-        return copy (GRIMSLEY_199, this);
+        return copy (GRIMSLEY_199, this)
       case MISTY_S_FAVOR_235:
-        return copy (MISTY_S_FAVOR_202, this);
+        return copy (MISTY_S_FAVOR_202, this)
       case POKE_MANIAC_236:
-        return copy (POKE_MANIAC_204, this);
+        return copy (POKE_MANIAC_204, this)
       case ROWLET_ALOLAN_EXEGGUTOR_GX_237:
-        return copy (ROWLET_ALOLAN_EXEGGUTOR_GX_1, this);
+        return copy (ROWLET_ALOLAN_EXEGGUTOR_GX_1, this)
       case HEATRAN_GX_238:
-        return copy (HEATRAN_GX_25, this);
+        return copy (HEATRAN_GX_25, this)
       case SLOWPOKE_PSYDUCK_GX_239:
-        return copy (SLOWPOKE_PSYDUCK_GX_35, this);
+        return copy (SLOWPOKE_PSYDUCK_GX_35, this)
       case KELDEO_GX_240:
-        return copy (KELDEO_GX_47, this);
+        return copy (KELDEO_GX_47, this)
       case RAICHU_ALOLAN_RAICHU_GX_241:
-        return copy (RAICHU_ALOLAN_RAICHU_GX_54, this);
+        return copy (RAICHU_ALOLAN_RAICHU_GX_54, this)
       case MEWTWO_MEW_GX_242:
-        return copy (MEWTWO_MEW_GX_71, this);
+        return copy (MEWTWO_MEW_GX_71, this)
       case LATIOS_GX_243:
-        return copy (LATIOS_GX_78, this);
+        return copy (LATIOS_GX_78, this)
       case AERODACTYL_GX_244:
-        return copy (AERODACTYL_GX_106, this);
+        return copy (AERODACTYL_GX_106, this)
       case MEGA_SABLEYE_TYRANITAR_GX_245:
-        return copy (MEGA_SABLEYE_TYRANITAR_GX_126, this);
+        return copy (MEGA_SABLEYE_TYRANITAR_GX_126, this)
       case MAWILE_GX_246:
-        return copy (MAWILE_GX_141, this);
+        return copy (MAWILE_GX_141, this)
       case GARCHOMP_GIRATINA_GX_247:
-        return copy (GARCHOMP_GIRATINA_GX_146, this);
+        return copy (GARCHOMP_GIRATINA_GX_146, this)
       case DRAGONITE_GX_248:
-        return copy (DRAGONITE_GX_152, this);
+        return copy (DRAGONITE_GX_152, this)
       case NAGANADEL_GX_249:
-        return copy (NAGANADEL_GX_160, this);
+        return copy (NAGANADEL_GX_160, this)
       case CHERISH_BALL_250:
-        return copy (CHERISH_BALL_191, this);
+        return copy (CHERISH_BALL_191, this)
       case GIANT_BOMB_251:
-        return copy (GIANT_BOMB_196, this);
+        return copy (GIANT_BOMB_196, this)
       case KARATE_BELT_252:
-        return copy (KARATE_BELT_201, this);
+        return copy (KARATE_BELT_201, this)
       case RESET_STAMP_253:
-        return copy (RESET_STAMP_206, this);
+        return copy (RESET_STAMP_206, this)
       case TAG_SWITCH_254:
-        return copy (TAG_SWITCH_209, this);
+        return copy (TAG_SWITCH_209, this)
       case U_TURN_BOARD_255:
-        return copy (U_TURN_BOARD_211, this);
+        return copy (U_TURN_BOARD_211, this)
       case VIRIDIAN_FOREST_256:
         return copy(TeamUp.VIRIDIAN_FOREST_156, this)
       case RECYCLE_ENERGY_257:
-        return copy (RECYCLE_ENERGY_212, this);
+        return copy (RECYCLE_ENERGY_212, this)
       case WEAKNESS_GUARD_ENERGY_258:
-        return copy (WEAKNESS_GUARD_ENERGY_213, this);
+        return copy (WEAKNESS_GUARD_ENERGY_213, this)
       default:
-        return null;
+        return null
     }
   }
 }

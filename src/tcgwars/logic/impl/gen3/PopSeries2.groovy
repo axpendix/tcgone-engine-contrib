@@ -1,39 +1,39 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
 
-import tcgwars.logic.impl.gen1.BaseSetNG;
-import tcgwars.logic.impl.gen2.Expedition;
-import tcgwars.logic.impl.gen3.FireRedLeafGreen;
-import tcgwars.logic.impl.gen7.CelestialStorm;
+import tcgwars.logic.impl.gen1.BaseSetNG
+import tcgwars.logic.impl.gen2.Expedition
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
+import tcgwars.logic.impl.gen7.CelestialStorm
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -58,53 +58,53 @@ public enum PopSeries2 implements LogicCardInfo {
   PIKACHU_16 ("Pikachu", "16", Rarity.COMMON, [POKEMON, BASIC, _LIGHTNING_]),
   CELEBI_EX_17 ("Celebi ex", "17", Rarity.RARE, [POKEMON, BASIC, EX, _PSYCHIC_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   PopSeries2(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.POP_SERIES_2;
+    return tcgwars.logic.card.Collection.POP_SERIES_2
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -132,7 +132,7 @@ public enum PopSeries2 implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case PIDGEOT_2:
       return evolution (this, from:"Pidgeotto", hp:HP080, type:C, retreatCost:0) {
         weakness L
@@ -162,7 +162,7 @@ public enum PopSeries2 implements LogicCardInfo {
             flip { damage 30 }
           }
         }
-      };
+      }
       case RAIKOU_3:
       return basic (this, hp:HP070, type:L, retreatCost:1) {
         weakness F
@@ -181,7 +181,7 @@ public enum PopSeries2 implements LogicCardInfo {
             flip 1, {}, { damage 20, self }
           }
         }
-      };
+      }
       case SUICUNE_4:
       return basic (this, hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -204,7 +204,7 @@ public enum PopSeries2 implements LogicCardInfo {
             flip { applyAfterDamage(PARALYZED) }
           }
         }
-      };
+      }
       case TAUROS_5:
       return basic (this, hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -223,7 +223,7 @@ public enum PopSeries2 implements LogicCardInfo {
             damage 10, self
           }
         }
-      };
+      }
       case VENUSAUR_6:
       return evolution (this, from:"Ivysaur", hp:HP120, type:G, retreatCost:3) {
         weakness R
@@ -249,9 +249,9 @@ public enum PopSeries2 implements LogicCardInfo {
             cantUseAttack(thisMove, self)
           }
         }
-      };
+      }
       case IVYSAUR_7:
-        return copy(FireRedLeafGreen.IVYSAUR_35, this);
+        return copy(FireRedLeafGreen.IVYSAUR_35, this)
       case MR__BRINEY_S_COMPASSION_8:
       return supporter (this) {
         text "Choose 1 of your Pokémon in play (excluding Pokémon ex). Return that Pokémon and all cards attached to it to your hand."
@@ -267,10 +267,10 @@ public enum PopSeries2 implements LogicCardInfo {
         playRequirement {
           assert my.all.findAll { !it.EX } : "No eligible Pokémon to return back to your hand"
         }
-      };
+      }
       case MULTI_TECHNICAL_MACHINE_01_9:
       // Commented for now, TechnicalMachineGroovyImpl needs to be made first.
-        return copy(Expedition.MULTI_TECHNICAL_MACHINE_01_144, this);
+        return copy(Expedition.MULTI_TECHNICAL_MACHINE_01_144, this)
       /*return basicTrainer (this) {
         text "Attach this card to 1 of your Pokémon in play. This Pokémon may use this card's attack instead of its own. At the end of your turn, discard Multi Technical Machine 01"
         def eff1, eff2
@@ -331,9 +331,9 @@ public enum PopSeries2 implements LogicCardInfo {
         onRemoveFromPlay{
           eff.unregister()
         }
-      };
+      }
       case TV_REPORTER_11:
-      return copy(CelestialStorm.TV_REPORTER_149, this);
+      return copy(CelestialStorm.TV_REPORTER_149, this)
       case BULBASAUR_12:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness P
@@ -351,7 +351,7 @@ public enum PopSeries2 implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case CACNEA_13:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -363,7 +363,7 @@ public enum PopSeries2 implements LogicCardInfo {
             sandAttack(thisMove)
           }
         }
-      };
+      }
       case LUVDISC_14:
       return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness L
@@ -383,7 +383,7 @@ public enum PopSeries2 implements LogicCardInfo {
             // Only one defending Pokémon in single battles, so the effect is ignored.
           }
         }
-      };
+      }
       case PHANPY_15:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
@@ -402,9 +402,9 @@ public enum PopSeries2 implements LogicCardInfo {
             flip { applyAfterDamage(PARALYZED) }
           }
         }
-      };
+      }
       case PIKACHU_16:
-        return copy(BaseSetNG.PIKACHU, this);
+        return copy(BaseSetNG.PIKACHU, this)
       case CELEBI_EX_17:
       return basic (this, hp:HP080, type:P, retreatCost:1) {
         weakness P
@@ -425,9 +425,9 @@ public enum PopSeries2 implements LogicCardInfo {
             preventAllEffectsFromCustomPokemonNextTurn(thisMove, self, {it.EX})
           }
         }
-      };
+      }
         default:
-      return null;
+      return null
     }
   }
 }

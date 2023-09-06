@@ -5,35 +5,35 @@ import tcgwars.logic.impl.gen1.Jungle
 import tcgwars.logic.impl.gen5.BlackWhite
 import tcgwars.logic.impl.gen7.CelestialStorm
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -150,53 +150,53 @@ public enum RubySapphireNG implements LogicCardInfo {
   FIRE_ENERGY_108 ("Fire Energy", "108", Rarity.COMMON, [ENERGY, BASIC, BASIC_ENERGY]),
   LIGHTNING_ENERGY_109 ("Lightning Energy", "109", Rarity.COMMON, [ENERGY, BASIC, BASIC_ENERGY]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   RubySapphireNG(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.RUBY_SAPPHIRE_NG;
+    return tcgwars.logic.card.Collection.RUBY_SAPPHIRE_NG
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -229,7 +229,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             flip 2, {damage 70}
           }
         }
-      };
+      }
       case BEAUTIFLY_2:
       return evolution (this, from:"Silcoon", hp:HP080, type:G, retreatCost:0) {
         weakness R
@@ -262,7 +262,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             my.all.each {heal 10, it}
           }
         }
-      };
+      }
       case BLAZIKEN_3:
       return evolution (this, from:"Combusken", hp:HP100, type:R, retreatCost:2) {
         weakness W
@@ -290,7 +290,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             discardSelfEnergyAfterDamage R
           }
         }
-      };
+      }
       case CAMERUPT_4:
       return evolution (this, from:"Numel", hp:HP090, type:R, retreatCost:3) {
         weakness W
@@ -316,7 +316,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case DELCATTY_5:
       return evolution (this, from:"Skitty", hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -343,7 +343,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 10*self.cards.energyCount(C)
           }
         }
-      };
+      }
       case DUSTOX_6:
       return evolution (this, from:"Cascoon", hp:HP090, type:G, retreatCost:0) {
         weakness P
@@ -373,7 +373,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case GARDEVOIR_7:
       return evolution (this, from:"Kirlia", hp:HP100, type:P, retreatCost:2) {
         weakness P
@@ -400,7 +400,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 10 * (self.cards.energyCount(C) + defending.cards.energyCount(C))
           }
         }
-      };
+      }
       case HARIYAMA_8:
       return evolution (this, from:"Makuhita", hp:HP090, type:F, retreatCost:2) {
         weakness P
@@ -419,7 +419,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             if (defending.EX) damage 40
           }
         }
-      };
+      }
       case MANECTRIC_9:
       return evolution (this, from:"Electrike", hp:HP070, type:L, retreatCost:1) {
         weakness F
@@ -440,7 +440,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             flip 1, {}, {damage 10, self}
           }
         }
-      };
+      }
       case MIGHTYENA_10:
       return evolution (this, from:"Poochyena", hp:HP070, type:D, retreatCost:1) {
         weakness F
@@ -470,7 +470,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SCEPTILE_11:
       return evolution (this, from:"Grovyle", hp:HP120, type:G, retreatCost:3) {
         weakness R
@@ -494,7 +494,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case SLAKING_12:
       return evolution (this, from:"Vigoroth", hp:HP120, type:C, retreatCost:3) {
         weakness F
@@ -534,7 +534,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SWAMPERT_13:
       return evolution (this, from:"Marshtomp", hp:HP110, type:W, retreatCost:3) {
         weakness L
@@ -558,7 +558,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             applyAfterDamage(ASLEEP)
           }
         }
-      };
+      }
       case WAILORD_14:
       return evolution (this, from:"Wailmer", hp:HP120, type:W, retreatCost:4) {
         weakness L
@@ -577,7 +577,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case BLAZIKEN_15:
       return evolution (this, from:"Combusken", hp:HP110, type:R, retreatCost:2) {
         weakness W
@@ -597,7 +597,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             discardSelfEnergyAfterDamage R
           }
         }
-      };
+      }
       case BRELOOM_16:
       return evolution (this, from:"Shroomish", hp:HP070, type:G, retreatCost:1) {
         weakness R
@@ -615,7 +615,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 40 + 10 * self.cards.energyCount(F)
           }
         }
-      };
+      }
       case DONPHAN_17:
       return evolution (this, from:"Phanpy", hp:HP080, type:F, retreatCost:1) {
         weakness G
@@ -636,7 +636,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             flip 2, {damage 60}
           }
         }
-      };
+      }
       case NOSEPASS_18:
       return basic (this, hp:HP060, type:F, retreatCost:1) {
         weakness W
@@ -662,7 +662,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case PELIPPER_19:
       return evolution (this, from:"Wingull", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -690,7 +690,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             removeDamageCounterEqualToDamageDone()
           }
         }
-      };
+      }
       case SCEPTILE_20:
       return evolution (this, from:"Grovyle", hp:HP100, type:G, retreatCost:3) {
         weakness R
@@ -718,7 +718,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             flip 2, { damage 50 }
           }
         }
-      };
+      }
       case SEAKING_21:
       return evolution (this, from:"Goldeen", hp:HP070, type:W, retreatCost:0) {
         weakness L
@@ -738,7 +738,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             // Only one defending Pokémon in single battles, so the effect is ignored.
           }
         }
-      };
+      }
       case SHARPEDO_22:
       return evolution (this, from:"Carvanha", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -761,7 +761,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SWAMPERT_23:
       return evolution (this, from:"Marshtomp", hp:HP100, type:W, retreatCost:2) {
         weakness L
@@ -786,7 +786,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case WEEZING_24:
       return evolution (this, from:"Koffing", hp:HP080, type:G, retreatCost:2) {
         weakness P
@@ -806,7 +806,7 @@ public enum RubySapphireNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case ARON_25:
       return basic (this, hp:HP050, type:M, retreatCost:1) {
         weakness R
@@ -827,7 +827,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case CASCOON_26:
       return evolution (this, from:"Wurmple", hp:HP070, type:G, retreatCost:2) {
         weakness R
@@ -844,7 +844,7 @@ public enum RubySapphireNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case COMBUSKEN_27:
       return evolution (this, from:"Torchic", hp:HP070, type:R, retreatCost:1) {
         weakness W
@@ -864,7 +864,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case COMBUSKEN_28:
       return evolution (this, from:"Torchic", hp:HP080, type:R, retreatCost:1) {
         weakness W
@@ -881,7 +881,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case DELCATTY_29:
       return evolution (this, from:"Skitty", hp:HP080, type:C, retreatCost:1) {
         weakness F
@@ -901,7 +901,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case ELECTRIKE_30:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -922,7 +922,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case GROVYLE_31:
       return evolution (this, from:"Treecko", hp:HP070, type:G, retreatCost:1) {
         weakness R
@@ -943,7 +943,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case GROVYLE_32:
       return evolution (this, from:"Treecko", hp:HP080, type:G, retreatCost:1) {
         weakness R
@@ -961,7 +961,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case HARIYAMA_33:
       return evolution (this, from:"Makuhita", hp:HP080, type:F, retreatCost:1) {
         weakness P
@@ -981,7 +981,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case KIRLIA_34:
       return evolution (this, from:"Ralts", hp:HP070, type:P, retreatCost:1) {
         weakness P
@@ -1001,7 +1001,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case KIRLIA_35:
       return evolution (this, from:"Ralts", hp:HP070, type:P, retreatCost:1) {
         weakness P
@@ -1021,7 +1021,7 @@ public enum RubySapphireNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case LAIRON_36:
       return evolution (this, from:"Aron", hp:HP070, type:M, retreatCost:2) {
         weakness R
@@ -1042,7 +1042,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case LAIRON_37:
       return evolution (this, from:"Aron", hp:HP080, type:M, retreatCost:2) {
         weakness R
@@ -1063,7 +1063,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case LINOONE_38:
       return evolution (this, from:"Zigzagoon", hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -1083,7 +1083,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case MANECTRIC_39:
       return evolution (this, from:"Electrike", hp:HP070, type:L, retreatCost:1) {
         weakness F
@@ -1104,7 +1104,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case MARSHTOMP_40:
       return evolution (this, from:"Mudkip", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -1124,7 +1124,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case MARSHTOMP_41:
       return evolution (this, from:"Mudkip", hp:HP080, type:W, retreatCost:1) {
         weakness L
@@ -1141,7 +1141,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MIGHTYENA_42:
       return evolution (this, from:"Poochyena", hp:HP070, type:D, retreatCost:1) {
         weakness F
@@ -1162,7 +1162,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SILCOON_43:
       return evolution (this, from:"Wurmple", hp:HP060, type:G, retreatCost:2) {
         weakness R
@@ -1179,7 +1179,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SKITTY_44:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
@@ -1199,7 +1199,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SLAKOTH_45:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
@@ -1219,7 +1219,7 @@ public enum RubySapphireNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case SWELLOW_46:
       return evolution (this, from:"Taillow", hp:HP070, type:C, retreatCost:0) {
         weakness L
@@ -1237,7 +1237,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case VIGOROTH_47:
       return evolution (this, from:"Slakoth", hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -1257,7 +1257,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case WAILMER_48:
       return basic (this, hp:HP080, type:W, retreatCost:3) {
         weakness L
@@ -1277,7 +1277,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case ARON_49:
       return basic (this, hp:HP040, type:M, retreatCost:1) {
         weakness R
@@ -1298,7 +1298,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case ARON_50:
       return basic (this, hp:HP050, type:M, retreatCost:2) {
         weakness R
@@ -1311,7 +1311,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case CARVANHA_51:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness L
@@ -1328,7 +1328,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case ELECTRIKE_52:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1341,7 +1341,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case ELECTRIKE_53:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1362,7 +1362,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case KOFFING_54:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness P
@@ -1382,7 +1382,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case GOLDEEN_55:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -1394,7 +1394,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case MAKUHITA_56:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness P
@@ -1414,7 +1414,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MAKUHITA_57:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness P
@@ -1434,7 +1434,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case MAKUHITA_58:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness P
@@ -1446,7 +1446,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case MUDKIP_59:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -1458,7 +1458,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case MUDKIP_60:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -1478,7 +1478,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case NUMEL_61:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1498,7 +1498,7 @@ public enum RubySapphireNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case PHANPY_62:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
@@ -1518,7 +1518,7 @@ public enum RubySapphireNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case POOCHYENA_63:
       return basic (this, hp:HP040, type:D, retreatCost:1) {
         weakness F
@@ -1531,7 +1531,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case POOCHYENA_64:
       return basic (this, hp:HP050, type:D, retreatCost:1) {
         weakness F
@@ -1552,7 +1552,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case POOCHYENA_65:
       return basic (this, hp:HP050, type:D, retreatCost:1) {
         weakness F
@@ -1565,7 +1565,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case RALTS_66:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -1577,7 +1577,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case RALTS_67:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -1597,7 +1597,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case RALTS_68:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -1617,7 +1617,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case SHROOMISH_69:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -1630,7 +1630,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SKITTY_70:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
@@ -1650,7 +1650,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SKITTY_71:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1670,7 +1670,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case TAILLOW_72:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness L
@@ -1691,7 +1691,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TORCHIC_73:
       return basic (this, hp:HP040, type:R, retreatCost:1) {
         weakness W
@@ -1711,7 +1711,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case TORCHIC_74:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1723,7 +1723,7 @@ public enum RubySapphireNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case TREECKO_75:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -1736,7 +1736,7 @@ public enum RubySapphireNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case TREECKO_76:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -1757,7 +1757,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case WINGULL_77:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness L
@@ -1770,7 +1770,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case WURMPLE_78:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -1790,7 +1790,7 @@ public enum RubySapphireNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case ZIGZAGOON_79:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
@@ -1802,7 +1802,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       //TODO: Reimplement
       case ENERGY_REMOVAL_2_80:
       return itemCard (this) {
@@ -1811,7 +1811,7 @@ public enum RubySapphireNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       //TODO: Reimplement
       case ENERGY_RESTORE_81:
       return itemCard (this) {
@@ -1820,7 +1820,7 @@ public enum RubySapphireNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case ENERGY_SWITCH_82:
         return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this)
       case LADY_OUTING_83:
@@ -1849,7 +1849,7 @@ public enum RubySapphireNG implements LogicCardInfo {
         playRequirement{
           assert my.deck
         }
-      };
+      }
       case LUM_BERRY_84:
         return copy(Emerald.LUM_BERRY_78, this)
       case ORAN_BERRY_85:
@@ -1876,7 +1876,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             bc "${thisCard.player} rearranged the top $rearrangeSize cards of their deck."
           }
         }
-      };
+      }
       case PROFESSOR_BIRCH_89:
       return copy(Emerald.PROFESSOR_BIRCH_82, this)
       case ENERGY_SEARCH_90:
@@ -1930,7 +1930,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 80
           }
         }
-      };
+      }
       case ELECTABUZZ_EX_97:
       return basic (this, hp:HP090, type:L, retreatCost:2) {
         weakness F
@@ -1951,7 +1951,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case HITMONCHAN_EX_98:
       return basic (this, hp:HP090, type:F, retreatCost:2) {
         weakness P
@@ -1971,7 +1971,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case LAPRAS_EX_99:
       return basic (this, hp:HP110, type:W, retreatCost:3) {
         weakness L
@@ -1991,7 +1991,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case MAGMAR_EX_100:
       return basic (this, hp:HP090, type:R, retreatCost:2) {
         weakness W
@@ -2011,7 +2011,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case MEWTWO_EX_101:
       return basic (this, hp:HP100, type:P, retreatCost:3) {
         weakness P
@@ -2031,7 +2031,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case SCYTHER_EX_102:
       return basic (this, hp:HP080, type:G, retreatCost:1) {
         weakness R
@@ -2052,7 +2052,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case SNEASEL_EX_103:
       return basic (this, hp:HP080, type:D, retreatCost:1) {
         weakness F
@@ -2073,33 +2073,33 @@ public enum RubySapphireNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case GRASS_ENERGY_104:
       return basic (this, hp:null, type:null, retreatCost:null) {
 
-      };
+      }
       case FIGHTING_ENERGY_105:
       return basic (this, hp:null, type:null, retreatCost:null) {
 
-      };
+      }
       case WATER_ENERGY_106:
       return basic (this, hp:null, type:null, retreatCost:null) {
 
-      };
+      }
       case PSYCHIC_ENERGY_107:
       return basic (this, hp:null, type:null, retreatCost:null) {
 
-      };
+      }
       case FIRE_ENERGY_108:
       return basic (this, hp:null, type:null, retreatCost:null) {
 
-      };
+      }
       case LIGHTNING_ENERGY_109:
       return basic (this, hp:null, type:null, retreatCost:null) {
 
-      };
+      }
       default:
-      return null;
+      return null
     }
   }
 }

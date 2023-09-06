@@ -1,10 +1,10 @@
 package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.impl.gen3.NintendoBlackStarPromos
-import tcgwars.logic.impl.gen8.SwordShield;
+import tcgwars.logic.impl.gen8.SwordShield
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
 import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.effect.EffectPriority.BEFORE_LAST
 import static tcgwars.logic.effect.EffectType.APPLY_SPECIAL_CONDITION
@@ -13,14 +13,14 @@ import static tcgwars.logic.effect.EffectType.GET_RETREAT_COST
 import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.PLAY_FROM_HAND
 import static tcgwars.logic.effect.special.SpecialConditionType.ASLEEP
-import static tcgwars.logic.effect.special.SpecialConditionType.ASLEEP;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.effect.special.SpecialConditionType.ASLEEP
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
 
 import tcgwars.logic.card.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -53,53 +53,53 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
   HITMONCHAN_HGSS24 ("Hitmonchan", "24", Rarity.PROMO, [BASIC, POKEMON, _FIGHTING_]),
   HITMONLEE_HGSS25 ("Hitmonlee", "25", Rarity.PROMO, [BASIC, POKEMON, _FIGHTING_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   HeartgoldSoulsilverPromos(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.HEARTGOLD_SOULSILVER_PROMOS;
+    return tcgwars.logic.card.Collection.HEARTGOLD_SOULSILVER_PROMOS
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -128,7 +128,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LUGIA_HGSS02:
         return basic (this, hp:HP090, type:WATER, retreatCost:2) {
           weakness L
@@ -153,7 +153,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case PIKACHU_HGSS03:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -178,7 +178,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               afterDamage { discardAllSelfEnergy() }
             }
           }
-        };
+        }
       case WOBBUFFET_HGSS04:
         return basic (this, hp:HP090, type:PSYCHIC, retreatCost:3) {
           weakness P
@@ -199,7 +199,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               flip { damage 30 }
             }
           }
-        };
+        }
       case HOOTHOOT_HGSS05:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness L
@@ -226,7 +226,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case NOCTOWL_HGSS06:
         return evolution (this, from:"Hoothoot", hp:HP090, type:COLORLESS, retreatCost:1) {
           weakness L
@@ -250,13 +250,13 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               applyAfterDamage(ASLEEP)
             }
           }
-        };
+        }
       case FERALIGATR_HGSS07:
-        return copy (HeartgoldSoulsilver.FERALIGATR_108, this);
+        return copy (HeartgoldSoulsilver.FERALIGATR_108, this)
       case MEGANIUM_HGSS08:
-        return copy (HeartgoldSoulsilver.MEGANIUM_109, this);
+        return copy (HeartgoldSoulsilver.MEGANIUM_109, this)
       case TYPHLOSION_HGSS09:
-        return copy (HeartgoldSoulsilver.TYPHLOSION_110, this);
+        return copy (HeartgoldSoulsilver.TYPHLOSION_110, this)
       case LATIAS_HGSS10:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness C
@@ -282,7 +282,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LATIOS_HGSS11:
         return basic (this, hp:HP090, type:COLORLESS, retreatCost:2) {
           weakness C
@@ -303,11 +303,11 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               discardSelfEnergyAfterDamage(C, C)
             }
           }
-        };
+        }
       case CLEFFA_HGSS12:
-        return copy (HeartgoldSoulsilver.CLEFFA_17, this);
+        return copy (HeartgoldSoulsilver.CLEFFA_17, this)
       case SMOOCHUM_HGSS13:
-        return copy (HeartgoldSoulsilver.SMOOCHUM_30, this);
+        return copy (HeartgoldSoulsilver.SMOOCHUM_30, this)
       case LAPRAS_HGSS14:
         return basic (this, hp:HP090, type:WATER, retreatCost:2) {
           weakness M
@@ -331,7 +331,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               damage 40
             }
           }
-        };
+        }
       case SHUCKLE_HGSS15:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness W
@@ -354,13 +354,13 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               flip { preventAllDamageNextTurn() }
             }
           }
-        };
+        }
       case PLUSLE_HGSS16:
-        return copy (Unleashed.PLUSLE_36, this);
+        return copy (Unleashed.PLUSLE_36, this)
       case MINUN_HGSS17:
-        return copy (Unleashed.MINUN_34, this);
+        return copy (Unleashed.MINUN_34, this)
       case TROPICAL_TIDAL_WAVE_HGSS18:
-        return copy (NintendoBlackStarPromos.TROPICAL_TIDAL_WAVE_27, this);
+        return copy (NintendoBlackStarPromos.TROPICAL_TIDAL_WAVE_27, this)
       case RAIKOU_HGSS19:
         return basic (this, hp:HP080, type:LIGHTNING, retreatCost:1) {
           weakness F
@@ -374,7 +374,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               cantUseAttack(thisMove, self)
             }
           }
-        };
+        }
       case ENTEI_HGSS20:
         return basic (this, hp:HP080, type:FIRE, retreatCost:1) {
           weakness W
@@ -389,7 +389,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SUICUNE_HGSS21:
         return basic (this, hp:HP080, type:WATER, retreatCost:1) {
           weakness L
@@ -402,7 +402,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               flip { cantAttackNextTurn(defending) }
             }
           }
-        };
+        }
       case PORYGON_HGSS22:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness F
@@ -426,7 +426,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               shuffleDeck()
             }
           }
-        };
+        }
       case PORYGON2_HGSS23:
         return evolution (this, from:"Porygon", hp:HP080, type:COLORLESS, retreatCost:2) {
           weakness F
@@ -448,13 +448,13 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               damage 10, self
             }
           }
-        };
+        }
       case HITMONCHAN_HGSS24:
-        return copy (Undaunted.HITMONCHAN_51, this);
+        return copy (Undaunted.HITMONCHAN_51, this)
       case HITMONLEE_HGSS25:
-        return copy (Undaunted.HITMONLEE_52, this);
+        return copy (Undaunted.HITMONLEE_52, this)
       default:
-        return null;
+        return null
     }
   }
 

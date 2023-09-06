@@ -1,20 +1,20 @@
-package tcgwars.logic.impl.gen1;
+package tcgwars.logic.impl.gen1
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.EffectType.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.*;
+import tcgwars.logic.*
 import tcgwars.logic.card.*
 import tcgwars.logic.effect.*
 import tcgwars.logic.effect.basic.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -87,103 +87,103 @@ public enum JungleNG implements LogicCardInfo {
   VENONAT ("Venonat", "63", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]),
   POKE_BALL ("Poké Ball", "64", Rarity.COMMON, [TRAINER]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING
 
   static SimpleDeck waterBlast() {
-    SimpleDeck deck = new SimpleDeck("Water Blast Theme Deck");
-    deck.setFormat(GameFormat.CLASSIC_SERIES);
-    Map<CardInfo, Integer> map = new HashMap<>();
-    map.put(BaseSet.POLIWAG, 4);
-    map.put(BaseSet.POLIWHIRL, 2);
-    map.put(BaseSet.SEEL, 1);
-    map.put(VAPOREON, 1);
-    map.put(BaseSet.MACHOP, 2);
-    map.put(RHYHORN, 3);
-    map.put(RHYDON, 1);
-    map.put(MEOWTH, 4);
-    map.put(PERSIAN, 2);
-    map.put(EEVEE, 4);
-    map.put(BaseSet.GUST_OF_WIND, 2);
-    map.put(BaseSet.POTION, 2);
-    map.put(BaseSet.PROFESSOR_OAK, 1);
-    map.put(BaseSet.SUPER_POTION, 2);
-    map.put(BaseSet.SWITCH, 1);
-    map.put(BaseSet.WATER_ENERGY, 14);
-    map.put(BaseSet.FIGHTING_ENERGY, 14);
-    deck.setMap(map);
-    return deck;
+    SimpleDeck deck = new SimpleDeck("Water Blast Theme Deck")
+    deck.setFormat(GameFormat.CLASSIC_SERIES)
+    Map<CardInfo, Integer> map = new HashMap<>()
+    map.put(BaseSet.POLIWAG, 4)
+    map.put(BaseSet.POLIWHIRL, 2)
+    map.put(BaseSet.SEEL, 1)
+    map.put(VAPOREON, 1)
+    map.put(BaseSet.MACHOP, 2)
+    map.put(RHYHORN, 3)
+    map.put(RHYDON, 1)
+    map.put(MEOWTH, 4)
+    map.put(PERSIAN, 2)
+    map.put(EEVEE, 4)
+    map.put(BaseSet.GUST_OF_WIND, 2)
+    map.put(BaseSet.POTION, 2)
+    map.put(BaseSet.PROFESSOR_OAK, 1)
+    map.put(BaseSet.SUPER_POTION, 2)
+    map.put(BaseSet.SWITCH, 1)
+    map.put(BaseSet.WATER_ENERGY, 14)
+    map.put(BaseSet.FIGHTING_ENERGY, 14)
+    deck.setMap(map)
+    return deck
   }
 
   static SimpleDeck powerReserve() {
-    SimpleDeck deck = new SimpleDeck("Power Reserve Theme Deck");
-    deck.setFormat(GameFormat.CLASSIC_SERIES);
-    Map<CardInfo, Integer> map = new HashMap<>();
-    map.put(NIDORAN_FEMALE, 4);
-    map.put(NIDORINA, 2);
-    map.put(ODDISH, 2);
-    map.put(GLOOM, 1);
-    map.put(BELLSPROUT, 4);
-    map.put(WEEPINBELL, 2);
-    map.put(BaseSet.ABRA, 4);
-    map.put(BaseSet.KADABRA, 2);
-    map.put(BaseSet.JYNX, 1);
-    map.put(KANGASKHAN, 1);
-    map.put(BaseSet.BILL, 2);
-    map.put(BaseSet.GUST_OF_WIND, 2);
-    map.put(BaseSet.POKEDEX, 1);
-    map.put(BaseSet.POTION, 3);
-    map.put(BaseSet.SWITCH, 1);
-    map.put(BaseSet.GRASS_ENERGY, 17);
-    map.put(BaseSet.PSYCHIC_ENERGY, 11);
-    deck.setMap(map);
-    return deck;
+    SimpleDeck deck = new SimpleDeck("Power Reserve Theme Deck")
+    deck.setFormat(GameFormat.CLASSIC_SERIES)
+    Map<CardInfo, Integer> map = new HashMap<>()
+    map.put(NIDORAN_FEMALE, 4)
+    map.put(NIDORINA, 2)
+    map.put(ODDISH, 2)
+    map.put(GLOOM, 1)
+    map.put(BELLSPROUT, 4)
+    map.put(WEEPINBELL, 2)
+    map.put(BaseSet.ABRA, 4)
+    map.put(BaseSet.KADABRA, 2)
+    map.put(BaseSet.JYNX, 1)
+    map.put(KANGASKHAN, 1)
+    map.put(BaseSet.BILL, 2)
+    map.put(BaseSet.GUST_OF_WIND, 2)
+    map.put(BaseSet.POKEDEX, 1)
+    map.put(BaseSet.POTION, 3)
+    map.put(BaseSet.SWITCH, 1)
+    map.put(BaseSet.GRASS_ENERGY, 17)
+    map.put(BaseSet.PSYCHIC_ENERGY, 11)
+    deck.setMap(map)
+    return deck
   }
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   JungleNG(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.JUNGLE;
+    return tcgwars.logic.card.Collection.JUNGLE
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -201,7 +201,7 @@ public enum JungleNG implements LogicCardInfo {
               def moveList = []
               def labelList = []
 
-              moveList.addAll(defending.topPokemonCard.moves);
+              moveList.addAll(defending.topPokemonCard.moves)
               labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
 
               def move=choose(moveList, labelList, "Which move do you want to use")
@@ -219,7 +219,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTRODE_2:
         return evolution (this, from:"Voltorb", hp:HP090, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -246,7 +246,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FLAREON_3:
         return evolution (this, from:"Eevee", hp:HP070, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -269,7 +269,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case JOLTEON_4:
         return evolution (this, from:"Eevee", hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -291,7 +291,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KANGASKHAN_5:
         return basic (this, hp:HP090, type:COLORLESS, retreatCost:3) {
           weakness FIGHTING
@@ -313,7 +313,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MR_MIME_6:
         return basic (this, hp:HP040, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -341,7 +341,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDOQUEEN_7:
         return evolution (this, from:"Nidorina", hp:HP090, type:GRASS, retreatCost:3) {
           weakness PSYCHIC
@@ -365,7 +365,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIDGEOT_8:
         return evolution (this, from:"Pidgeotto", hp:HP080, type:COLORLESS, retreatCost:0) {
           weakness LIGHTNING
@@ -393,7 +393,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PINSIR_9:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -415,7 +415,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SCYTHER_10:
         return basic (this, hp:HP070, type:GRASS, retreatCost:0) {
           weakness FIRE
@@ -437,7 +437,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SNORLAX_11:
         return basic (this, hp:HP090, type:COLORLESS, retreatCost:4) {
           weakness FIGHTING
@@ -463,7 +463,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VAPOREON_12:
         return evolution (this, from:"Eevee", hp:HP080, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -486,7 +486,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VENOMOTH_13:
         return evolution (this, from:"Venonat", hp:HP070, type:GRASS, retreatCost:0) {
           weakness FIRE
@@ -535,7 +535,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VICTREEBEL_14:
         return evolution (this, from:"Weepinbell", hp:HP080, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -558,7 +558,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VILEPLUME_15:
         return evolution (this, from:"Gloom", hp:HP080, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -585,7 +585,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WIGGLYTUFF_16:
         return evolution (this, from:"Jigglypuff", hp:HP080, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -607,7 +607,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CLEFABLE:
         return copy (CLEFABLE_1, this)
       case ELECTRODE:
@@ -665,7 +665,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DODRIO:
         return evolution (this, from:"Doduo", hp:HP070, type:COLORLESS, retreatCost:0) {
           weakness LIGHTNING
@@ -687,7 +687,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EXEGGUTOR:
         return evolution (this, from:"Exeggcute", hp:HP080, type:GRASS, retreatCost:3) {
           weakness FIRE
@@ -713,7 +713,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FEAROW:
         return evolution (this, from:"Spearow", hp:HP070, type:COLORLESS, retreatCost:0) {
           weakness LIGHTNING
@@ -736,7 +736,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GLOOM:
         return evolution (this, from:"Oddish", hp:HP060, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -759,7 +759,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LICKITUNG:
         return basic (this, hp:HP090, type:COLORLESS, retreatCost:3) {
           weakness FIGHTING
@@ -782,7 +782,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAROWAK:
         return evolution (this, from:"Cubone", hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -810,7 +810,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDORINA:
         return evolution (this, from:"Nidoran♀", hp:HP070, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -831,7 +831,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PARASECT:
         return evolution (this, from:"Paras", hp:HP060, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -852,7 +852,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PERSIAN:
         return evolution (this, from:"Meowth", hp:HP070, type:COLORLESS, retreatCost:0) {
           weakness FIGHTING
@@ -889,7 +889,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PRIMEAPE:
         return evolution (this, from:"Mankey", hp:HP070, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -911,7 +911,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAPIDASH:
         return evolution (this, from:"Ponyta", hp:HP070, type:FIRE, retreatCost:0) {
           weakness WATER
@@ -934,7 +934,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RHYDON:
         return evolution (this, from:"Rhyhorn", hp:HP100, type:FIGHTING, retreatCost:3) {
           weakness GRASS
@@ -962,7 +962,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SEAKING:
         return evolution (this, from:"Goldeen", hp:HP070, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -983,7 +983,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TAUROS:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -1009,7 +1009,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WEEPINBELL:
         return evolution (this, from:"Bellsprout", hp:HP070, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1031,7 +1031,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BELLSPROUT:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1057,7 +1057,7 @@ public enum JungleNG implements LogicCardInfo {
               shuffleDeck()
             }
           }
-        };
+        }
       case CUBONE:
         return basic (this, hp:HP040, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -1095,7 +1095,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EEVEE:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -1135,7 +1135,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EXEGGCUTE:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1164,7 +1164,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOLDEEN:
         return basic (this, hp:HP040, type:WATER, retreatCost:0) {
           weakness LIGHTNING
@@ -1177,7 +1177,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case JIGGLYPUFF:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -1199,7 +1199,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MANKEY:
         return basic (this, hp:HP030, type:FIGHTING, retreatCost:0) {
           weakness PSYCHIC
@@ -1211,11 +1211,11 @@ public enum JungleNG implements LogicCardInfo {
               powerUsed()
               def choice = choose([0,1,2,3,4],["Top of your deck", "Top of your opponent's deck", "Your opponent’s hand ", "Your Prizes", "Opponent's Prizes"])
               switch (choice){
-                case 0: my.deck.subList(0,1).showToMe("Top of your deck"); break;
-                case 1: opp.deck.subList(0,1).showToMe("Top of your opponent's deck"); break;
-                case 2: opp.hand.shuffledCopy().select(hidden: true, "Select a random card from opponent's hand").showToMe("Selected card"); break;
-                case 3: my.prizeCardSet.select(hidden: true, "Select a random card from your prizes").showToMe("Selected card"); break;
-                case 4: opp.prizeCardSet.select(hidden: true, "Select a random card from your opponent's prizes").showToMe("Selected card"); break;
+                case 0: my.deck.subList(0,1).showToMe("Top of your deck"); break
+                case 1: opp.deck.subList(0,1).showToMe("Top of your opponent's deck"); break
+                case 2: opp.hand.shuffledCopy().select(hidden: true, "Select a random card from opponent's hand").showToMe("Selected card"); break
+                case 3: my.prizeCardSet.select(hidden: true, "Select a random card from your prizes").showToMe("Selected card"); break
+                case 4: opp.prizeCardSet.select(hidden: true, "Select a random card from your opponent's prizes").showToMe("Selected card"); break
               }
             }
           }
@@ -1228,7 +1228,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MEOWTH:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -1243,7 +1243,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDORAN_FEMALE:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -1270,7 +1270,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ODDISH:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1298,7 +1298,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PARAS:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1319,7 +1319,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIKACHU:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1333,7 +1333,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RHYHORN:
         return basic (this, hp:HP070, type:FIGHTING, retreatCost:3) {
           weakness GRASS
@@ -1372,7 +1372,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SPEAROW:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:0) {
           weakness LIGHTNING
@@ -1409,7 +1409,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VENONAT:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1432,7 +1432,7 @@ public enum JungleNG implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case POKE_BALL:
         return basicTrainer (this) {
           text "Flip a coin. If heads, you may search your deck for any Basic Pokémon or Evolution card. Show that card to your opponent, then put it into your hand. Shuffle your deck afterward."
@@ -1444,9 +1444,9 @@ public enum JungleNG implements LogicCardInfo {
           playRequirement{
             assert my.deck
           }
-        };
+        }
       default:
-        return null;
+        return null
     }
   }
 

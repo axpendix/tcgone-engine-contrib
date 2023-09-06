@@ -4,35 +4,35 @@ import tcgwars.logic.impl.gen1.Fossil
 import tcgwars.logic.impl.gen7.CelestialStorm
 import tcgwars.logic.impl.gen7.GuardiansRising
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -131,53 +131,53 @@ public enum PokemodFossil implements LogicCardInfo {
   MOLTRES_EX_87("Moltres", "86", Rarity.ULTRARARE, [BASIC, POKEMON, _FIRE_]),
   ZAPDOS_EX_88("Zapdos", "87", Rarity.ULTRARARE, [BASIC, POKEMON, _LIGHTNING_]),
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   PokemodFossil(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.POKEMOD_FOSSIL;
+    return tcgwars.logic.card.Collection.POKEMOD_FOSSIL
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -207,7 +207,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARTICUNO_2:
         return basic(this, hp: HP070, type: WATER, retreatCost: 2) {
           weakness METAL
@@ -235,11 +235,11 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DITTO_3:
         break
       case DRAGONITE_4:
-        return copy(Fossil.DRAGONITE_4, this);
+        return copy(Fossil.DRAGONITE_4, this)
       case GENGAR_5:
         return evolution(this, from: "Haunter", hp: HP080, type: PSYCHIC, retreatCost: 1) {
           weakness DARKNESS
@@ -268,7 +268,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HAUNTER_6:
         return evolution(this, from: "Gastly", hp: HP060, type: PSYCHIC, retreatCost: 0) {
           weakness DARKNESS
@@ -316,7 +316,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HITMONLEE_7:
         return basic(this, hp: HP080, type: FIGHTING, retreatCost: 1) {
           weakness PSYCHIC
@@ -339,7 +339,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HYPNO_8:
         return evolution(this, from: "Drowzee", hp: HP090, type: PSYCHIC, retreatCost: 2) {
           weakness PSYCHIC
@@ -358,7 +358,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KABUTOPS_9:
         return evolution(this, from: "Kabuto", hp: HP080, type: FIGHTING, retreatCost: 1) {
           weakness GRASS
@@ -381,7 +381,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LAPRAS_10:
         return basic(this, hp: HP080, type: WATER, retreatCost: 2) {
           weakness LIGHTNING
@@ -405,9 +405,9 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGNETON_11:
-        return copy(Fossil.MAGNETON_11, this);
+        return copy(Fossil.MAGNETON_11, this)
       case MOLTRES_12:
         return basic(this, hp: HP080, type: FIRE, retreatCost: 2) {
           resistance FIGHTING, MINUS30
@@ -433,7 +433,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MUK_13:
         return evolution(this, from: "Grimer", hp: HP060, type: PSYCHIC, retreatCost: 0) {
           weakness PSYCHIC
@@ -462,7 +462,7 @@ public enum PokemodFossil implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case RAICHU_14:
         return evolution(this, from: "Pikachu", hp: HP090, type: LIGHTNING, retreatCost: 1) {
           weakness FIGHTING
@@ -482,7 +482,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ZAPDOS_15:
         return basic(this, hp: HP080, type: LIGHTNING, retreatCost: 2) {
           move "Thunderstorm", {
@@ -506,37 +506,37 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AERODACTYL_16:
-        return copy(AERODACTYL_1, this);
+        return copy(AERODACTYL_1, this)
       case ARTICUNO_17:
-        return copy(ARTICUNO_2, this);
+        return copy(ARTICUNO_2, this)
       case DITTO_18:
-        return copy(DITTO_3, this);
+        return copy(DITTO_3, this)
       case DRAGONITE_19:
-        return copy(Fossil.DRAGONITE_4, this);
+        return copy(Fossil.DRAGONITE_4, this)
       case GENGAR_20:
-        return copy(GENGAR_5, this);
+        return copy(GENGAR_5, this)
       case HAUNTER_21:
-        return copy(HAUNTER_6, this);
+        return copy(HAUNTER_6, this)
       case HITMONLEE_22:
-        return copy(HITMONLEE_7, this);
+        return copy(HITMONLEE_7, this)
       case HYPNO_23:
-        return copy(HYPNO_8, this);
+        return copy(HYPNO_8, this)
       case KABUTOPS_24:
-        return copy(KABUTOPS_9, this);
+        return copy(KABUTOPS_9, this)
       case LAPRAS_25:
-        return copy(LAPRAS_10, this);
+        return copy(LAPRAS_10, this)
       case MAGNETON_26:
-        return copy(Fossil.MAGNETON_11, this);
+        return copy(Fossil.MAGNETON_11, this)
       case MOLTRES_27:
-        return copy(MOLTRES_12, this);
+        return copy(MOLTRES_12, this)
       case MUK_28:
-        return copy(MUK_13, this);
+        return copy(MUK_13, this)
       case RAICHU_29:
-        return copy(RAICHU_14, this);
+        return copy(RAICHU_14, this)
       case ZAPDOS_30:
-        return copy(ZAPDOS_15, this);
+        return copy(ZAPDOS_15, this)
       case ARBOK_31:
         return evolution(this, from: "Ekans", hp: HP060, type: GRASS, retreatCost: 2) {
           weakness PSYCHIC
@@ -560,7 +560,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CLOYSTER_32:
         return evolution(this, from: "Shellder", hp: HP080, type: WATER, retreatCost: 2) {
           weakness LIGHTNING
@@ -582,7 +582,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GASTLY_33:
         return basic(this, hp: HP050, type: PSYCHIC, retreatCost: 0) {
           weakness DARKNESS
@@ -607,7 +607,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOLBAT_34:
         return evolution(this, from: "Zubat", hp: HP060, type: GRASS, retreatCost: 0) {
           weakness PSYCHIC
@@ -630,7 +630,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOLDUCK_35:
         return evolution(this, from: "Psyduck", hp: HP080, type: WATER, retreatCost: 1) {
           weakness LIGHTNING
@@ -653,7 +653,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOLEM_36:
         return evolution(this, from: "Graveler", hp: HP100, type: FIGHTING, retreatCost: 4) {
           weakness GRASS
@@ -677,7 +677,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GRAVELER_37:
         return evolution(this, from: "Geodude", hp: HP070, type: FIGHTING, retreatCost: 2) {
           weakness GRASS
@@ -711,7 +711,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KINGLER_38:
         return evolution(this, from: "Krabby", hp: HP060, type: WATER, retreatCost: 3) {
           weakness LIGHTNING
@@ -732,9 +732,9 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGMAR_39:
-        return copy(Fossil.MAGMAR_39, this);
+        return copy(Fossil.MAGMAR_39, this)
       case OMASTAR_40:
         return evolution(this, from: "Omanyte", hp: HP070, type: WATER, retreatCost: 1) {
           weakness GRASS
@@ -757,7 +757,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SANDSLASH_41:
         return evolution(this, from: "Sandshrew", hp: HP070, type: FIGHTING, retreatCost: 1) {
           weakness GRASS
@@ -779,7 +779,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SEADRA_42:
         return evolution(this, from: "Horsea", hp: HP070, type: WATER, retreatCost: 1) {
           weakness LIGHTNING
@@ -802,7 +802,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SLOWBRO_43:
         return evolution(this, from: "Slowbro", hp: HP060, type: PSYCHIC, retreatCost: 1) {
           weakness PSYCHIC
@@ -829,7 +829,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TENTACRUEL_44:
         return evolution(this, from: "Tentacool", hp: HP060, type: WATER, retreatCost: 0) {
           weakness LIGHTNING
@@ -852,11 +852,11 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WEEZING_45:
-        return copy(Fossil.WEEZING, this);
+        return copy(Fossil.WEEZING, this)
       case EKANS_46:
-        return copy(Fossil.EKANS, this);
+        return copy(Fossil.EKANS, this)
       case GEODUDE_47:
         return basic(this, hp: HP050, type: FIGHTING, retreatCost: 1) {
           weakness GRASS
@@ -869,11 +869,11 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GRIMER_48:
-        return copy(Fossil.GRIMER, this);
+        return copy(Fossil.GRIMER, this)
       case HORSEA_49:
-        return copy(Fossil.HORSEA, this);
+        return copy(Fossil.HORSEA, this)
       case KABUTO_50:
         return evolution(this, from: "Mysterious Fossil", hp: HP040, type: FIGHTING, retreatCost: 1) {
           weakness GRASS
@@ -908,7 +908,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KRABBY_51:
         return basic(this, hp: HP050, type: WATER, retreatCost: 2) {
           weakness LIGHTNING
@@ -935,7 +935,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case OMANYTE_52:
         return evolution(this, from: "Mysterious Fossil", hp: HP050, type: WATER, retreatCost: 1) {
           weakness GRASS
@@ -959,7 +959,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PSYDUCK_53:
         return basic(this, hp: HP050, type: WATER, retreatCost: 1) {
           weakness LIGHTNING
@@ -990,7 +990,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHELLDER_54:
         return basic(this, hp: HP050, type: WATER, retreatCost: 1) {
           weakness LIGHTNING
@@ -1012,9 +1012,9 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SLOWPOKE_55:
-        return copy(Fossil.SLOWPOKE, this);
+        return copy(Fossil.SLOWPOKE, this)
       case TENTACOOL_56:
         return basic(this, hp: HP040, type: WATER, retreatCost: 0) {
           weakness LIGHTNING
@@ -1038,9 +1038,9 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ZUBAT_57:
-        return copy(Fossil.ZUBAT, this);
+        return copy(Fossil.ZUBAT, this)
       case MR_FUJI_58:
         return supporter(this) {
           text "Choose a Pokémon on your Bench. Shuffle it any any cards attached to it into your deck."
@@ -1052,15 +1052,15 @@ public enum PokemodFossil implements LogicCardInfo {
           playRequirement {
             assert my.bench: "There is no Benched Pokémon"
           }
-        };
+        }
       case ENERGY_SEARCH_59:
-        return copy(Fossil.ENERGY_SEARCH, this);
+        return copy(Fossil.ENERGY_SEARCH, this)
       case GAMBLER_60:
-        return copy(Fossil.GAMBLER, this);
+        return copy(Fossil.GAMBLER, this)
       case RECYCLE_61:
-        return copy(Fossil.RECYCLE, this);
+        return copy(Fossil.RECYCLE, this)
       case MYSTERIOUS_FOSSIL_62:
-        return copy(Fossil.MYSTERIOUS_FOSSIL, this);
+        return copy(Fossil.MYSTERIOUS_FOSSIL, this)
       case CRYSTAL_GUARD_63:
         break
       case HEAVY_BALL_64:
@@ -1073,7 +1073,7 @@ public enum PokemodFossil implements LogicCardInfo {
           playRequirement {
             assert my.deck: "Your deck is empty."
           }
-        };
+        }
       case POKEMON_BREEDER_FIELDS_65:
         break
       case RELIC_HUNTER_66:
@@ -1085,7 +1085,7 @@ public enum PokemodFossil implements LogicCardInfo {
           playRequirement {
             assert my.discard.filterByType(STADIUM)
           }
-        };
+        }
       case LOST_EXPEDITION_67:
         return basicTrainer(this) {
           text "You may play 2 Lost Expedition at the same time. If you play 1 Lost Expedition, draw a card. If you play 2 Lost Expedition, search your deck for any 1 card and put it into your hand. Shuffle your deck afterward."
@@ -1101,9 +1101,9 @@ public enum PokemodFossil implements LogicCardInfo {
           playRequirement {
             assert my.deck: "Your deck is empty"
           }
-        };
+        }
       case UNDERGROUND_EXPEDITION_68:
-        return copy(CelestialStorm.UNDERGROUND_EXPEDITION_150, this);
+        return copy(CelestialStorm.UNDERGROUND_EXPEDITION_150, this)
       case LOST_WORLD_69:
         break
       case CRYSTAL_BEACH_70:
@@ -1120,11 +1120,11 @@ public enum PokemodFossil implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case DNA_ENERGY_71:
         break
       case DOUBLE_COLORLESS_ENERGY_72:
-        return copy(GuardiansRising.DOUBLE_COLORLESS_ENERGY_166, this);
+        return copy(GuardiansRising.DOUBLE_COLORLESS_ENERGY_166, this)
       case LOST_ENERGY_73:
         break
       case SEEKER_74:
@@ -1136,11 +1136,11 @@ public enum PokemodFossil implements LogicCardInfo {
       case DITTO_77:
         break
       case PSYDUCK_78:
-        return copy(PSYDUCK_53, this);
+        return copy(PSYDUCK_53, this)
       case DRAGONITE_79:
-        return copy(DRAGONITE_4, this);
+        return copy(DRAGONITE_4, this)
       case GENGAR_80:
-        return copy(GENGAR_5, this);
+        return copy(GENGAR_5, this)
       case HO_OH_81:
         break
       case LUGIA_82:
@@ -1166,13 +1166,13 @@ public enum PokemodFossil implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ARTICUNO_83:
-        return copy(ARTICUNO_2, this);
+        return copy(ARTICUNO_2, this)
       case MOLTRES_84:
-        return copy(MOLTRES_12, this);
+        return copy(MOLTRES_12, this)
       case ZAPDOS_85:
-        return copy(ZAPDOS_15, this);
+        return copy(ZAPDOS_15, this)
       case ARTICUNO_EX_86:
         return basic(this, hp: HP100, type: WATER, retreatCost: 2) {
           weakness METAL
@@ -1184,9 +1184,9 @@ public enum PokemodFossil implements LogicCardInfo {
                 sw my.active, self
                 while (1) {
                   def pl = (my.all.findAll { it.cards.filterByBasicEnergyType(W) && it != self })
-                  if (!pl) break;
+                  if (!pl) break
                   def src = pl.select("Source for basic [W] Energy (cancel to stop moving)", false)
-                  if (!src) break;
+                  if (!src) break
                   def card = src.cards.filterByBasicEnergyType(W).select("Card to move").first()
                   energySwitch(src, self, card)
                 }
@@ -1207,7 +1207,7 @@ public enum PokemodFossil implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MOLTRES_EX_87:
         return basic(this, hp: HP100, type: FIRE, retreatCost: 2) {
           weakness WATER
@@ -1219,9 +1219,9 @@ public enum PokemodFossil implements LogicCardInfo {
                 sw my.active, self
                 while (1) {
                   def pl = (my.all.findAll { it.cards.filterByBasicEnergyType(R) && it != self })
-                  if (!pl) break;
+                  if (!pl) break
                   def src = pl.select("Source for basic [R] Energy (cancel to stop moving)", false)
-                  if (!src) break;
+                  if (!src) break
                   def card = src.cards.filterByBasicEnergyType(R).select("Card to move").first()
                   energySwitch(src, self, card)
                 }
@@ -1239,7 +1239,7 @@ public enum PokemodFossil implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ZAPDOS_EX_88:
         return basic(this, hp: HP100, type: LIGHTNING, retreatCost: 2) {
           weakness LIGHTNING
@@ -1251,9 +1251,9 @@ public enum PokemodFossil implements LogicCardInfo {
                 sw my.active, self
                 while (1) {
                   def pl = (my.all.findAll { it.cards.filterByBasicEnergyType(L) && it != self })
-                  if (!pl) break;
+                  if (!pl) break
                   def src = pl.select("Source for basic [L] Energy (cancel to stop moving)", false)
-                  if (!src) break;
+                  if (!src) break
                   def card = src.cards.filterByBasicEnergyType(L).select("Card to move").first()
                   energySwitch(src, self, card)
                 }
@@ -1271,9 +1271,9 @@ public enum PokemodFossil implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       default:
-        return null;
+        return null
     }
   }
 }

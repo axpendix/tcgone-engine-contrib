@@ -1,36 +1,36 @@
 package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.effect.gm.Attack
-import tcgwars.logic.impl.gen3.LegendMaker;
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import tcgwars.logic.impl.gen3.LegendMaker
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -184,53 +184,53 @@ public enum LegendsAwakened implements LogicCardInfo {
   RHYPERIOR_LV_X_145 ("Rhyperior Lv.X", "145", Rarity.HOLORARE, [LVL_X, POKEMON, _FIGHTING_]),
   UXIE_LV_X_146 ("Uxie Lv.X", "146", Rarity.HOLORARE, [LVL_X, POKEMON, _PSYCHIC_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   LegendsAwakened(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.LEGENDS_AWAKENED;
+    return tcgwars.logic.card.Collection.LEGENDS_AWAKENED
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -257,7 +257,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 20 + 10 * addDmg
             }
           }
-        };
+        }
       case DRAGONITE_2:
         return evolution (this, from:"Dragonair", hp:HP140, type:C, retreatCost:3) {
           weakness C, '+30'
@@ -281,7 +281,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case FROSLASS_3:
         return evolution (this, from:"Snorunt", hp:HP090, type:W, retreatCost:1) {
           weakness M, '+20'
@@ -321,7 +321,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case GIRATINA_4:
         return basic (this, hp:HP100, type:P, retreatCost:3) {
           weakness D
@@ -343,7 +343,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 50 + 10 * defending.numberOfDamageCounters
             }
           }
-        };
+        }
       case GLISCOR_5:
         return evolution (this, from:"Gligar", hp:HP080, type:F, retreatCost:1) {
           weakness W, '+20'
@@ -373,7 +373,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               if (defending.specialConditions) damage 40
             }
           }
-        };
+        }
       case HEATRAN_6:
         return basic (this, hp:HP100, type:R, retreatCost:4) {
           weakness W
@@ -405,7 +405,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case KINGDRA_7:
         return evolution (this, from:"Seadra", hp:HP130, type:W, retreatCost:1) {
           weakness L, '+30'
@@ -438,7 +438,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LUXRAY_8:
         return evolution (this, from:"Luxio", hp:HP120, type:L, retreatCost:0) {
           weakness F, '+30'
@@ -478,7 +478,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               afterDamage { discardAllSelfEnergy(L) }
             }
           }
-        };
+        }
       case MAMOSWINE_9:
         return evolution (this, from:"Piloswine", hp:HP140, type:W, retreatCost:4) {
           weakness M, '+40'
@@ -510,7 +510,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case METAGROSS_10:
         return evolution (this, from:"Metang", hp:HP120, type:M, retreatCost:3) {
           weakness R, '+30'
@@ -536,7 +536,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               increasedBaseDamageNextTurn("Extra Comet Punch", hp(50))
             }
           }
-        };
+        }
       case MEWTWO_11:
         return basic (this, hp:HP080, type:P, retreatCost:2) {
           weakness P, '+20'
@@ -557,7 +557,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 40 + 10 * defending.cards.energyCount(C)
             }
           }
-        };
+        }
       case POLITOED_12:
         return evolution (this, from:"Poliwhirl", hp:HP120, type:W, retreatCost:1) {
           weakness G, '+30'
@@ -593,7 +593,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               flip { damage 40 }
             }
           }
-        };
+        }
       case PROBOPASS_13:
         return evolution (this, from:"Nosepass", hp:HP090, type:F, retreatCost:3) {
           weakness W, '+20'
@@ -623,7 +623,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case RAYQUAZA_14:
         return basic (this, hp:HP100, type:C, retreatCost:3) {
           weakness C
@@ -655,7 +655,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case REGIGIGAS_15:
         return basic (this, hp:HP120, type:C, retreatCost:4) {
           weakness F
@@ -682,7 +682,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SPIRITOMB_16:
         return basic (this, hp:HP070, type:P, retreatCost:2) {
           resistance C, MINUS20
@@ -715,7 +715,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               checkFaint()
             }
           }
-        };
+        }
       case YANMEGA_17:
         return evolution (this, from:"Yanma", hp:HP090, type:G, retreatCost:0) {
           weakness L, '+20'
@@ -748,7 +748,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ARMALDO_18:
         return evolution (this, from:"Anorith", hp:HP140, type:F, retreatCost:2) {
           weakness G, '+30'
@@ -776,7 +776,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case AZELF_19:
         return basic (this, hp:HP070, type:P, retreatCost:1) {
           weakness P, '+20'
@@ -810,7 +810,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               cantRetreat(defending)
             }
           }
-        };
+        }
       case BELLOSSOM_20:
         return evolution (this, from:"Gloom", hp:HP100, type:G, retreatCost:1) {
           weakness R, '+30'
@@ -840,7 +840,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CRADILY_21:
         return evolution (this, from:"Lileep", hp:HP120, type:G, retreatCost:3) {
           weakness R, '+30'
@@ -876,7 +876,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               cantRetreat(defending)
             }
           }
-        };
+        }
       case CRAWDAUNT_22:
         return evolution (this, from:"Corphish", hp:HP090, type:W, retreatCost:2) {
           weakness L, '+20'
@@ -902,7 +902,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DELCATTY_23:
         return evolution (this, from:"Skitty", hp:HP080, type:C, retreatCost:1) {
           weakness F, '+20'
@@ -924,7 +924,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               attachEnergyFrom(basic: true, my.discard, my.bench)
             }
           }
-        };
+        }
       case DEOXYS_ATTACK_FORME_24:
         return basic (this, hp:HP080, type:P, retreatCost:2) {
           weakness P
@@ -945,7 +945,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DEOXYS_DEFENSE_FORME_25:
         return basic (this, hp:HP100, type:P, retreatCost:2) {
           weakness P
@@ -965,7 +965,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               reduceDamageNextTurn(hp(20), thisMove)
             }
           }
-        };
+        }
       case DEOXYS_SPEED_FORME_26:
         return basic (this, hp:HP070, type:P, retreatCost:0) {
           weakness P
@@ -983,7 +983,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               swiftDamage 30, opp.all.select("Deal damage to?")
             }
           }
-        };
+        }
       case DITTO_27:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
           weakness F, '+20'
@@ -1000,7 +1000,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             }
             metronomeA delegate, { self.owner.opposite.pbg.active }
           }
-        };
+        }
       case FORRETRESS_28:
         return evolution (this, from:"Pineco", hp:HP090, type:M, retreatCost:2) {
           weakness R, '+20'
@@ -1031,7 +1031,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 40, self
             }
           }
-        };
+        }
       case GROUDON_29:
         return basic (this, hp:HP100, type:F, retreatCost:3) {
           weakness G
@@ -1057,7 +1057,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case HEATRAN_30:
         return basic (this, hp:HP100, type:M, retreatCost:3) {
           weakness W
@@ -1086,7 +1086,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case JIRACHI_31:
         return basic (this, hp:HP070, type:M, retreatCost:1) {
           weakness R, '+20'
@@ -1121,7 +1121,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                     if (activatedTurn < bg.turnCount) {
                       if (defending.inPlay) {
                         bc "Doom Desire activates"
-                        new Knockout(defending).run(bg);
+                        new Knockout(defending).run(bg)
                       }
                       unregister()
                     }
@@ -1137,7 +1137,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case KYOGRE_32:
         return basic (this, hp:HP100, type:W, retreatCost:3) {
           weakness L
@@ -1162,7 +1162,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               discardSelfEnergyAfterDamage W, W
             }
           }
-        };
+        }
       case LOPUNNY_33:
         return evolution (this, from:"Buneary", hp:HP080, type:C, retreatCost:1) {
           weakness F, '+20'
@@ -1200,7 +1200,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MESPRIT_34:
         return basic (this, hp:HP070, type:P, retreatCost:1) {
           weakness P, '+20'
@@ -1240,7 +1240,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case POLIWRATH_35:
         return evolution (this, from:"Poliwhirl", hp:HP130, type:W, retreatCost:2) {
           weakness L, '+30'
@@ -1275,7 +1275,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 20, self
             }
           }
-        };
+        }
       case REGICE_36:
         return basic (this, hp:HP090, type:W, retreatCost:3) {
           weakness M
@@ -1319,7 +1319,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case REGIGIGAS_37:
         return basic (this, hp:HP100, type:C, retreatCost:4) {
           weakness F
@@ -1347,7 +1347,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case REGIROCK_38:
         return basic (this, hp:HP090, type:F, retreatCost:3) {
           weakness W
@@ -1373,7 +1373,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               flip { damage 30 }
             }
           }
-        };
+        }
       case REGISTEEL_39:
         return basic (this, hp:HP090, type:M, retreatCost:4) {
           weakness R
@@ -1404,7 +1404,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SHEDINJA_40:
         return evolution (this, from:"Nincada", hp:HP060, type:G, retreatCost:0) {
           pokePower "Resent", {
@@ -1440,7 +1440,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case TORKOAL_41:
         return basic (this, hp:HP080, type:R, retreatCost:2) {
           weakness W, '+20'
@@ -1478,7 +1478,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case UNOWN_EXCLAMATION_MARK_42:
         return basic (this, hp:HP050, type:P, retreatCost:1) {
           weakness P, '+10'
@@ -1508,7 +1508,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case UXIE_43:
         return basic (this, hp:HP070, type:P, retreatCost:1) {
           weakness P, '+20'
@@ -1536,7 +1536,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case VICTREEBEL_44:
         return evolution (this, from:"Weepinbell", hp:HP120, type:G, retreatCost:3) {
           weakness R, '+30'
@@ -1576,7 +1576,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case VILEPLUME_45:
         return evolution (this, from:"Gloom", hp:HP120, type:G, retreatCost:2) {
           weakness P, '+30'
@@ -1617,7 +1617,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ANORITH_46:
         return evolution (this, from:"Claw Fossil", hp:HP080, type:F, retreatCost:1) {
           weakness G, '+20'
@@ -1639,7 +1639,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               flip { damage 20 }
             }
           }
-        };
+        }
       case CAMERUPT_47:
         return evolution (this, from:"Numel", hp:HP100, type:R, retreatCost:3) {
           weakness W, '+20'
@@ -1673,7 +1673,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 20, self
             }
           }
-        };
+        }
       case CASTFORM_48:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
           weakness F, '+10'
@@ -1698,7 +1698,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CASTFORM_RAIN_FORM_49:
         return basic (this, hp:HP070, type:W, retreatCost:1) {
           weakness L, '+10'
@@ -1717,7 +1717,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               applyAfterDamage ASLEEP
             }
           }
-        };
+        }
       case CASTFORM_SNOW_CLOUD_FORM_50:
         return basic (this, hp:HP070, type:W, retreatCost:1) {
           weakness M, '+10'
@@ -1737,7 +1737,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CASTFORM_SUNNY_FORM_51:
         return basic (this, hp:HP070, type:R, retreatCost:1) {
           weakness W, '+10'
@@ -1756,7 +1756,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               discardSelfEnergyAfterDamage R
             }
           }
-        };
+        }
       case DRAGONAIR_52:
         return evolution (this, from:"Dratini", hp:HP070, type:C, retreatCost:1) {
           weakness C, '+20'
@@ -1779,7 +1779,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DRIFBLIM_53:
         return evolution (this, from:"Drifloon", hp:HP090, type:P, retreatCost:0) {
           weakness D, '+20'
@@ -1804,7 +1804,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case EXEGGUTOR_54:
         return evolution (this, from:"Exeggcute", hp:HP080, type:P, retreatCost:1) {
           weakness P, '+20'
@@ -1838,11 +1838,11 @@ public enum LegendsAwakened implements LogicCardInfo {
                 def pl = my.all.findAll {
                   it.cards.filterByType(ENERGY).any { energy -> !toBeDiscarded.contains(energy) }
                 }
-                if (!pl) break;
+                if (!pl) break
 
                 def info = "Current number of energy cards to discard + ${toBeDiscarded.size()}\n. Discard an Energy card from which Pokémon? (cancel to stop)"
                 def src = pl.select(info, false)
-                if (!src) break;
+                if (!src) break
 
                 def selection = src.cards.filterByType(ENERGY).findAll{!toBeDiscarded.contains(it)}.select("Card to discard")
                 toBeDiscarded.addAll(selection)
@@ -1851,7 +1851,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               afterDamage { toBeDiscarded.discard() }
             }
           }
-        };
+        }
       case GLISCOR_55:
         return evolution (this, from:"Gligar", hp:HP090, type:F, retreatCost:1) {
           weakness W, '+20'
@@ -1874,7 +1874,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               flip { damage 40 }
             }
           }
-        };
+        }
       case GRUMPIG_56:
         return evolution (this, from:"Spoink", hp:HP090, type:P, retreatCost:2) {
           weakness P, '+20'
@@ -1894,7 +1894,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 20 * self.cards.energyCount(C)
             }
           }
-        };
+        }
       case HOUNDOOM_57:
         return evolution (this, from:"Houndour", hp:HP080, type:R, retreatCost:1) {
           weakness W, '+20'
@@ -1933,7 +1933,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               flip 1, {}, { discardSelfEnergyAfterDamage R, R }
             }
           }
-        };
+        }
       case LANTURN_58:
         return evolution (this, from:"Chinchou", hp:HP090, type:W, retreatCost:1) {
           weakness G, '+20'
@@ -1955,7 +1955,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               applyAfterDamage CONFUSED
             }
           }
-        };
+        }
       case LANTURN_59:
         return evolution (this, from:"Chinchou", hp:HP090, type:L, retreatCost:2) {
           weakness F, '+20'
@@ -1979,7 +1979,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 60 + 10 * self.cards.energyCount(W)
             }
           }
-        };
+        }
       case LEDIAN_60:
         return evolution (this, from:"Ledyba", hp:HP080, type:G, retreatCost:1) {
           weakness R, '+20'
@@ -2010,7 +2010,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LUCARIO_61:
         return evolution (this, from:"Riolu", hp:HP090, type:F, retreatCost:1) {
           weakness P, '+20'
@@ -2033,7 +2033,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LUXIO_62:
         return evolution (this, from:"Shinx", hp:HP080, type:L, retreatCost:1) {
           weakness F, '+20'
@@ -2062,7 +2062,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MAROWAK_63:
         return evolution (this, from:"Cubone", hp:HP090, type:F, retreatCost:2) {
           weakness W, '+20'
@@ -2088,7 +2088,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case METANG_64:
         return evolution (this, from:"Beldum", hp:HP080, type:M, retreatCost:2) {
           weakness R, '+20'
@@ -2110,7 +2110,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case METANG_65:
         return evolution (this, from:"Beldum", hp:HP080, type:M, retreatCost:2) {
           weakness R, '+20'
@@ -2135,7 +2135,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               flip 2, { damage 20 }
             }
           }
-        };
+        }
       case MIGHTYENA_66:
         return evolution (this, from:"Poochyena", hp:HP090, type:D, retreatCost:1) {
           weakness F, '+20'
@@ -2183,7 +2183,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 10 * my.all.size()
             }
           }
-        };
+        }
       case NINJASK_67:
         return evolution (this, from:"Nincada", hp:HP080, type:G, retreatCost:0) {
           weakness R, '+20'
@@ -2223,7 +2223,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case PERSIAN_68:
         return evolution (this, from:"Meowth", hp:HP080, type:C, retreatCost:0) {
           weakness F, '+20'
@@ -2244,7 +2244,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               flip { damage 10 }
             }
           }
-        };
+        }
       case PILOSWINE_69:
         return evolution (this, from:"Swinub", hp:HP100, type:W, retreatCost:3) {
           weakness M, '+20'
@@ -2270,7 +2270,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               applyAfterDamage ASLEEP
             }
           }
-        };
+        }
       case SEADRA_70:
         return evolution (this, from:"Horsea", hp:HP080, type:W, retreatCost:1) {
           weakness L, '+20'
@@ -2302,7 +2302,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case STARMIE_71:
         return evolution (this, from:"Staryu", hp:HP080, type:W, retreatCost:0) {
           weakness L, '+20'
@@ -2335,7 +2335,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 50, validTargets.select(text)
             }
           }
-        };
+        }
       case SWALOT_72:
         return evolution (this, from:"Gulpin", hp:HP090, type:P, retreatCost:2) {
           weakness P, '+20'
@@ -2360,7 +2360,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               applyAfterDamage POISONED
             }
           }
-        };
+        }
       case SWELLOW_73:
         return evolution (this, from:"Taillow", hp:HP080, type:C, retreatCost:1) {
           weakness L, '+20'
@@ -2386,7 +2386,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case TAUROS_74:
         return basic (this, hp:HP080, type:C, retreatCost:2) {
           weakness F, '+20'
@@ -2409,7 +2409,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               flip 1, {damage 20}, {damage 10, self}
             }
           }
-        };
+        }
       case TENTACRUEL_75:
         return evolution (this, from:"Tentacool", hp:HP090, type:W, retreatCost:1) {
           weakness L, '+20'
@@ -2440,7 +2440,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case UNOWN_J_76:
         return basic (this, hp:HP050, type:P, retreatCost:1) {
           weakness P, '+10'
@@ -2466,7 +2466,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case UNOWN_R_77:
         return basic (this, hp:HP060, type:P, retreatCost:1) {
           weakness P, '+10'
@@ -2486,18 +2486,18 @@ public enum LegendsAwakened implements LogicCardInfo {
             onAttack {
               while(1) {
                 def pl = (my.all.findAll { it.cards.filterByType(BASIC_ENERGY) })
-                if (!pl) break;
+                if (!pl) break
                 def src = pl.select("Source for energy (cancel to stop)", false)
-                if (!src) break;
+                if (!src) break
                 def card = src.cards.select("Card to move", cardTypeFilter(BASIC_ENERGY)).first()
 
                 def tar = my.all.select("Target for energy (cancel to stop)", false)
-                if (!tar) break;
+                if (!tar) break
                 energySwitch(src, tar, card)
               }
             }
           }
-        };
+        }
       case UNOWN_U_78:
         return basic (this, hp:HP050, type:P, retreatCost:1) {
           weakness P, '+10'
@@ -2536,7 +2536,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               shuffleDeck()
             }
           }
-        };
+        }
       case UNOWN_V_79:
         return basic (this, hp:HP060, type:P, retreatCost:1) {
           weakness P, '+10'
@@ -2564,7 +2564,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case UNOWN_W_80:
         return basic (this, hp:HP090, type:P, retreatCost:3) {
           weakness P, '+30'
@@ -2590,7 +2590,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               draw 1
             }
           }
-        };
+        }
       case UNOWN_Y_81:
         return basic (this, hp:HP050, type:P, retreatCost:1) {
           weakness P, '+10'
@@ -2617,7 +2617,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               shuffleDeck()
             }
           }
-        };
+        }
       case UNOWN_QUESTION_MARK_82:
         return basic (this, hp:HP070, type:P, retreatCost:1) {
           weakness P, '+10'
@@ -2659,7 +2659,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               draw num
             }
           }
-        };
+        }
       case BELDUM_83:
         return basic (this, hp:HP050, type:M, retreatCost:2) {
           weakness R, '+10'
@@ -2688,7 +2688,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 10, self
             }
           }
-        };
+        }
       case BELDUM_84:
         return basic (this, hp:HP050, type:M, retreatCost:1) {
           weakness R, '+10'
@@ -2709,7 +2709,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case BELLSPROUT_85:
         return basic (this, hp:HP050, type:G, retreatCost:1) {
           weakness R, '+10'
@@ -2749,7 +2749,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 10, self
             }
           }
-        };
+        }
       case BUNEARY_86:
         return basic (this, hp:HP050, type:C, retreatCost:1) {
           weakness F, '+10'
@@ -2771,7 +2771,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               flip 2, { damage 20 }
             }
           }
-        };
+        }
       case CHINCHOU_87:
         return basic (this, hp:HP060, type:W, retreatCost:2) {
           weakness G, '+10'
@@ -2791,7 +2791,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case CHINCHOU_88:
         return basic (this, hp:HP050, type:L, retreatCost:1) {
           weakness F, '+10'
@@ -2812,7 +2812,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               if (self.cards.energyCount(W)) damage 10
             }
           }
-        };
+        }
       case CORPHISH_89:
         return basic (this, hp:HP050, type:W, retreatCost:1) {
           weakness L, '+10'
@@ -2834,7 +2834,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case CUBONE_90:
         return basic (this, hp:HP060, type:F, retreatCost:1) {
           weakness W, '+10'
@@ -2855,7 +2855,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               flip 2, { damage 20 }
             }
           }
-        };
+        }
       case DRATINI_91:
         return basic (this, hp:HP040, type:C, retreatCost:1) {
           weakness C, '+10'
@@ -2875,7 +2875,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               flip 2, { damage 20 }
             }
           }
-        };
+        }
       case DRIFLOON_92:
         return basic (this, hp:HP050, type:P, retreatCost:1) {
           weakness D, '+10'
@@ -2897,7 +2897,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case EXEGGCUTE_93:
         return basic (this, hp:HP050, type:P, retreatCost:1) {
           weakness P, '+10'
@@ -2915,7 +2915,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               applyAfterDamage ASLEEP
             }
           }
-        };
+        }
       case GLIGAR_94:
         return basic (this, hp:HP060, type:F, retreatCost:1) {
           weakness W, '+10'
@@ -2939,7 +2939,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               flip { damage 10 }
             }
           }
-        };
+        }
       case GLIGAR_95:
         return basic (this, hp:HP050, type:F, retreatCost:1) {
           weakness W, '+10'
@@ -2960,7 +2960,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case GLOOM_96:
         return evolution (this, from:"Oddish", hp:HP070, type:G, retreatCost:1) {
           weakness R, '+20'
@@ -2985,7 +2985,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }.select("Deal 30 damage to which Pokémon?")
             }
           }
-        };
+        }
       case GLOOM_97:
         return evolution (this, from:"Oddish", hp:HP080, type:P, retreatCost:2) {
           weakness P, '+20'
@@ -3009,7 +3009,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case GULPIN_98:
         return basic (this, hp:HP060, type:P, retreatCost:2) {
           weakness P, '+10'
@@ -3029,7 +3029,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               flip { apply PARALYZED }
             }
           }
-        };
+        }
       case HITMONCHAN_99:
         return basic (this, hp:HP070, type:F, retreatCost:1) {
           weakness P, '+20'
@@ -3055,7 +3055,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case HITMONLEE_100:
         return basic (this, hp:HP080, type:F, retreatCost:1) {
           weakness P, '+20'
@@ -3079,7 +3079,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 60
             }
           }
-        };
+        }
       case HITMONTOP_101:
         return basic (this, hp:HP080, type:F, retreatCost:1) {
           weakness P, '+20'
@@ -3102,7 +3102,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case HORSEA_102:
         return basic (this, hp:HP050, type:W, retreatCost:1) {
           weakness L, '+10'
@@ -3123,7 +3123,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               switchYourActive()
             }
           }
-        };
+        }
       case HOUNDOUR_103:
         return basic (this, hp:HP050, type:D, retreatCost:1) {
           weakness W, '+10'
@@ -3144,7 +3144,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case LEDYBA_104:
         return basic (this, hp:HP050, type:G, retreatCost:1) {
           weakness R, '+10'
@@ -3166,7 +3166,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 10, self
             }
           }
-        };
+        }
       case LILEEP_105:
         return evolution (this, from:"Root Fossil", hp:HP080, type:G, retreatCost:2) {
           weakness R, '+20'
@@ -3190,7 +3190,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               heal 20, self
             }
           }
-        };
+        }
       case MEOWTH_106:
         return basic (this, hp:HP050, type:C, retreatCost:1) {
           weakness F, '+10'
@@ -3211,7 +3211,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               flip 3, { damage 10 }
             }
           }
-        };
+        }
       case MISDREAVUS_107:
         return basic (this, hp:HP060, type:P, retreatCost:1) {
           weakness D, '+10'
@@ -3237,7 +3237,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case NINCADA_108:
         return basic (this, hp:HP040, type:G, retreatCost:1) {
           weakness R, '+10'
@@ -3257,7 +3257,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               cantRetreat(defending)
             }
           }
-        };
+        }
       case NOSEPASS_109:
         return basic (this, hp:HP070, type:F, retreatCost:1) {
           weakness W, '+20'
@@ -3278,7 +3278,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               if (my.bench.find { it.name == "Probopass" }) damage 20
             }
           }
-        };
+        }
       case NUMEL_110:
         return basic (this, hp:HP060, type:R, retreatCost:2) {
           weakness W, '+10'
@@ -3301,7 +3301,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ODDISH_111:
         return basic (this, hp:HP040, type:G, retreatCost:1) {
           weakness R, '+10'
@@ -3322,7 +3322,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               heal 10, self
             }
           }
-        };
+        }
       case ODDISH_112:
         return basic (this, hp:HP050, type:P, retreatCost:1) {
           weakness P, '+10'
@@ -3342,7 +3342,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case PINECO_113:
         return basic (this, hp:HP050, type:G, retreatCost:1) {
           weakness R, '+10'
@@ -3369,7 +3369,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 50, self
             }
           }
-        };
+        }
       case POLIWAG_114:
         return basic (this, hp:HP040, type:W, retreatCost:1) {
           weakness L, '+10'
@@ -3393,7 +3393,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case POLIWHIRL_115:
         return evolution (this, from:"Poliwag", hp:HP080, type:W, retreatCost:1) {
           weakness L, '+20'
@@ -3416,7 +3416,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case POOCHYENA_116:
         return basic (this, hp:HP050, type:D, retreatCost:1) {
           weakness F, '+10'
@@ -3438,7 +3438,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               flip { damage 20 }
             }
           }
-        };
+        }
       case RIOLU_117:
         return basic (this, hp:HP060, type:F, retreatCost:1) {
           weakness P, '+10'
@@ -3458,7 +3458,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case SHINX_118:
         return basic (this, hp:HP050, type:L, retreatCost:1) {
           weakness F, '+10'
@@ -3483,7 +3483,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SKITTY_119:
         return basic (this, hp:HP050, type:C, retreatCost:1) {
           weakness F, '+10'
@@ -3503,7 +3503,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case SNEASEL_120:
         return basic (this, hp:HP060, type:D, retreatCost:1) {
           weakness F, '+10'
@@ -3528,7 +3528,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case SPOINK_121:
         return basic (this, hp:HP050, type:P, retreatCost:1) {
           weakness P, '+10'
@@ -3549,7 +3549,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               switchYourActive(may: true)
             }
           }
-        };
+        }
       case STARYU_122:
         return basic (this, hp:HP050, type:W, retreatCost:1) {
           weakness L, '+10'
@@ -3572,7 +3572,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case SWINUB_123:
         return basic (this, hp:HP060, type:W, retreatCost:2) {
           weakness M, '+10'
@@ -3597,7 +3597,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case TAILLOW_124:
         return basic (this, hp:HP050, type:C, retreatCost:1) {
           weakness L, '+10'
@@ -3618,7 +3618,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case TENTACOOL_125:
         return basic (this, hp:HP050, type:W, retreatCost:1) {
           weakness L, '+10'
@@ -3638,7 +3638,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               flip { discardDefendingEnergy() }
             }
           }
-        };
+        }
       case TYROGUE_126:
         return basic (this, hp:HP060, type:F, retreatCost:1) {
           weakness P, '+10'
@@ -3670,7 +3670,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case WEEPINBELL_127:
         return evolution (this, from:"Bellsprout", hp:HP080, type:G, retreatCost:2) {
           weakness R, '+20'
@@ -3691,7 +3691,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 40
             }
           }
-        };
+        }
       case YANMA_128:
         return basic (this, hp:HP070, type:G, retreatCost:1) {
           weakness L, '+20'
@@ -3714,7 +3714,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               flip { preventAllEffectsNextTurn() }
             }
           }
-        };
+        }
       case BUBBLE_COAT_129:
         return pokemonTool (this) {
           text "Attach Bubble Coat to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card."+
@@ -3745,7 +3745,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             effect1.unregister()
             effect2.unregister()
           }
-        };
+        }
       case BUCK_S_TRAINING_130:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card."+
@@ -3766,7 +3766,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           }
           playRequirement{
           }
-        };
+        }
       case CYNTHIA_S_FEELINGS_131:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card."+
@@ -3789,7 +3789,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           }
           playRequirement{
           }
-        };
+        }
       case ENERGY_PICKUP_132:
         return itemCard (this) {
           text "Flip a coin. If heads, search your discard pile for a basic Energy card and attach it to 1 of your Pokémon."
@@ -3801,7 +3801,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           playRequirement{
             assert my.discard.filterByType(BASIC_ENERGY) : "There are no basic Energy cards in your discard pile"
           }
-        };
+        }
       case POKE_RADAR_133:
         return itemCard (this) {
           text "Look at the top 5 cards of your deck, choose as many Pokémon as you like, show them to your opponent, and put them into your hand. Put the other cards back on top of your deck. Shuffle your deck afterward."
@@ -3812,7 +3812,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           playRequirement{
             assert my.deck : "Deck is empty"
           }
-        };
+        }
       case SNOWPOINT_TEMPLE_134:
         return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card."+
@@ -3828,7 +3828,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           onRemoveFromPlay{
             eff.unregister()
           }
-        };
+        }
       case STARK_MOUNTAIN_135:
         return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card."+
@@ -3854,7 +3854,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           onRemoveFromPlay{
             actions.each { bg().gm().unregisterAction(it) }
           }
-        };
+        }
       case TECHNICAL_MACHINE_TS_1_136:
         return basicTrainer (this) {
           text "Evoluter - Attach this card to 1 of your Pokémon in play. That Pokémon may use this card's attack instead of its own. " + "Search your deck for a card that evolves from 1 of your Pokémon and put it onto that Pokémon. (This counts as evolving that Pokémon.) Shuffle your deck afterward."
@@ -3863,7 +3863,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           }
           playRequirement{
           }
-        };
+        }
       case TECHNICAL_MACHINE_TS_2_137:
         return basicTrainer (this) {
           text "Devoluter - Attach this card to 1 of your Pokémon in play. That Pokémon may use this card's attack instead of its own. " + "Choose 1 of your opponent's Evolved Pokémon (excluding Pokémon LV.X). Remove the highest Stage Evolution card from that Pokémon and put that card back into your opponent's hand.\n"
@@ -3872,7 +3872,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           }
           playRequirement{
           }
-        };
+        }
       case CLAW_FOSSIL_138:
         return itemCard (this) {
           text "Play Claw Fossil as if it were a [C] Basic Pokémon. (Claw Fossil counts as a Trainer card as well, but if Claw Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Claw Fossil can't be affected by any Special Conditions and can't retreat. At any time during your turn before your attack, you may discard Claw Fossil from play. (This doesn't count as a Knocked Out Pokémon.)" +
@@ -3934,7 +3934,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           playRequirement{
             assert bench.notFull
           }
-        };
+        }
       case ROOT_FOSSIL_139:
         return itemCard (this) {
           text "Play Root Fossil as if it were a [C] Basic Pokémon. (Root Fossil counts as a Trainer card as well, but if Root Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Root Fossil can't be affected by any Special Conditions and can't retreat. At any time during your turn before your attack, you may discard Root Fossil from play. (This doesn't count as a Knocked Out Pokémon.)" +
@@ -4001,7 +4001,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           playRequirement{
             assert bench.notFull
           }
-        };
+        }
       case AZELF_LV_X_140:
         return levelUp (this, from:"Azelf", hp:HP090, type:PSYCHIC, retreatCost:1) {
           weakness P
@@ -4027,7 +4027,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               directDamage 10*count, tar
             }
           }
-        };
+        }
       case GLISCOR_LV_X_141:
         return levelUp (this, from:"Gliscor", hp:HP110, type:F, retreatCost:0) {
           weakness W
@@ -4051,7 +4051,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               switchYourActive(may: true)
             }
           }
-        };
+        }
       case MAGNEZONE_LV_X_142:
         return levelUp (this, from:"Magnezone", hp:HP140, type:M, retreatCost:4) {
           weakness R
@@ -4083,7 +4083,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               applyAfterDamage PARALYZED
             }
           }
-        };
+        }
       case MESPRIT_LV_X_143:
         return levelUp (this, from:"Mesprit", hp:HP090, type:P, retreatCost:1) {
           weakness P
@@ -4115,7 +4115,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MEWTWO_LV_X_144:
         return levelUp (this, from:"Mewtwo", hp:HP120, type:P, retreatCost:2) {
           weakness P
@@ -4149,7 +4149,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               afterDamage {discardAllSelfEnergy()}
             }
           }
-        };
+        }
       case RHYPERIOR_LV_X_145:
         return levelUp (this, from:"Rhyperior", hp:HP170, type:F, retreatCost:4) {
           weakness W
@@ -4177,7 +4177,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case UXIE_LV_X_146:
         return levelUp (this, from:"Uxie", hp:HP090, type:P, retreatCost:1) {
           weakness P
@@ -4204,9 +4204,9 @@ public enum LegendsAwakened implements LogicCardInfo {
               cantUseAttack thisMove, self
             }
           }
-        };
+        }
       default:
-        return null;
+        return null
     }
   }
 }

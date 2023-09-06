@@ -1,34 +1,34 @@
 package tcgwars.logic.impl.gen3
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -136,53 +136,53 @@ public enum SandstormNG implements LogicCardInfo {
   TYPHLOSION_EX_99 ("Typhlosion ex", "99", Rarity.ULTRARARE, [POKEMON, EVOLUTION, EX, STAGE2, _FIRE_]),
   WAILORD_EX_100 ("Wailord ex", "100", Rarity.ULTRARARE, [POKEMON, EVOLUTION, EX, STAGE1, _WATER_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   SandstormNG(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.SANDSTORM;
+    return tcgwars.logic.card.Collection.SANDSTORM
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -204,7 +204,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case CACTURNE_2:
       return evolution (this, from:"Cacnea", hp:HP080, type:G, retreatCost:1) {
         weakness R
@@ -221,7 +221,7 @@ public enum SandstormNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case CRADILY_3:
       return evolution (this, from:"Lileep", hp:HP100, type:G, retreatCost:2) {
         weakness R
@@ -246,7 +246,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case DUSCLOPS_4:
       return evolution (this, from:"Duskull", hp:HP070, type:P, retreatCost:1) {
         weakness D
@@ -267,7 +267,7 @@ public enum SandstormNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case FLAREON_5:
       return evolution (this, from:"Eevee", hp:HP080, type:R, retreatCost:2) {
         weakness W
@@ -287,7 +287,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case JOLTEON_6:
       return evolution (this, from:"Eevee", hp:HP070, type:L, retreatCost:1) {
         weakness F
@@ -308,7 +308,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case LUDICOLO_7:
       return evolution (this, from:"Lombre", hp:HP090, type:W, retreatCost:2) {
         weakness L
@@ -325,7 +325,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case LUNATONE_8:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -350,7 +350,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case MAWILE_9:
       return basic (this, hp:HP060, type:M, retreatCost:1) {
         weakness R
@@ -370,7 +370,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SABLEYE_10:
       return basic (this, hp:HP060, type:D, retreatCost:1) {
         weakness F
@@ -390,7 +390,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SEVIPER_11:
       return basic (this, hp:HP080, type:G, retreatCost:2) {
         weakness P
@@ -410,7 +410,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SHIFTRY_12:
       return evolution (this, from:"Nuzleaf", hp:HP120, type:G, retreatCost:2) {
         weakness R
@@ -427,7 +427,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 80
           }
         }
-      };
+      }
       case SOLROCK_13:
       return basic (this, hp:HP070, type:F, retreatCost:1) {
         weakness G
@@ -452,7 +452,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case ZANGOOSE_14:
       return basic (this, hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -477,7 +477,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case ARCANINE_15:
       return evolution (this, from:"Growlithe", hp:HP080, type:R, retreatCost:1) {
         weakness W
@@ -494,7 +494,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case ESPEON_16:
       return evolution (this, from:"Eevee", hp:HP080, type:P, retreatCost:1) {
         weakness P
@@ -514,7 +514,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case GOLDUCK_17:
       return evolution (this, from:"Psyduck", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -531,7 +531,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case KECLEON_18:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness F
@@ -548,7 +548,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case OMASTAR_19:
       return evolution (this, from:"Omanyte", hp:HP110, type:W, retreatCost:2) {
         weakness L
@@ -568,7 +568,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case PICHU_20:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness F
@@ -585,7 +585,7 @@ public enum SandstormNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case SANDSLASH_21:
       return evolution (this, from:"Sandshrew", hp:HP070, type:F, retreatCost:0) {
         weakness G
@@ -605,7 +605,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case SHIFTRY_22:
       return evolution (this, from:"Nuzleaf", hp:HP120, type:G, retreatCost:2) {
         weakness R
@@ -625,7 +625,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case STEELIX_23:
       return evolution (this, from:"Onix", hp:HP100, type:M, retreatCost:4) {
         weakness R
@@ -646,7 +646,7 @@ public enum SandstormNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case UMBREON_24:
       return evolution (this, from:"Eevee", hp:HP080, type:D, retreatCost:1) {
         weakness F
@@ -667,7 +667,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case VAPOREON_25:
       return evolution (this, from:"Eevee", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -687,7 +687,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case WOBBUFFET_26:
       return basic (this, hp:HP080, type:P, retreatCost:2) {
         weakness P
@@ -704,7 +704,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case ANORITH_27:
       return evolution (this, from:"Claw Fossil", hp:HP080, type:F, retreatCost:1) {
         weakness G
@@ -724,7 +724,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case ANORITH_28:
       return evolution (this, from:"Claw Fossil", hp:HP080, type:F, retreatCost:2) {
         weakness G
@@ -744,7 +744,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case ARBOK_29:
       return evolution (this, from:"Ekans", hp:HP070, type:G, retreatCost:1) {
         weakness P
@@ -761,7 +761,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case AZUMARILL_30:
       return evolution (this, from:"Marill", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -781,7 +781,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case AZURILL_31:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
@@ -798,7 +798,7 @@ public enum SandstormNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case BALTOY_32:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
@@ -810,7 +810,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case BRELOOM_33:
       return evolution (this, from:"Shroomish", hp:HP070, type:G, retreatCost:1) {
         weakness R
@@ -830,7 +830,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case DELCATTY_34:
       return evolution (this, from:"Skitty", hp:HP080, type:C, retreatCost:1) {
         weakness F
@@ -850,7 +850,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case ELECTABUZZ_35:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness F
@@ -871,7 +871,7 @@ public enum SandstormNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case ELEKID_36:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness F
@@ -888,7 +888,7 @@ public enum SandstormNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case FEAROW_37:
       return evolution (this, from:"Spearow", hp:HP070, type:C, retreatCost:0) {
         weakness L
@@ -909,7 +909,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case ILLUMISE_38:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -934,7 +934,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case KABUTO_39:
       return evolution (this, from:"Mysterious Fossil", hp:HP060, type:W, retreatCost:2) {
         weakness G
@@ -959,7 +959,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case KIRLIA_40:
       return evolution (this, from:"Ralts", hp:HP070, type:P, retreatCost:1) {
         weakness P
@@ -979,7 +979,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case LAIRON_41:
       return evolution (this, from:"Aron", hp:HP070, type:M, retreatCost:2) {
         weakness R
@@ -1000,7 +1000,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case LILEEP_42:
       return evolution (this, from:"Root Fossil", hp:HP080, type:G, retreatCost:2) {
         weakness R
@@ -1020,7 +1020,7 @@ public enum SandstormNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case LILEEP_43:
       return evolution (this, from:"Root Fossil", hp:HP080, type:G, retreatCost:2) {
         weakness R
@@ -1040,7 +1040,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case LINOONE_44:
       return evolution (this, from:"Zigzagoon", hp:HP070, type:C, retreatCost:0) {
         weakness F
@@ -1060,7 +1060,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case LOMBRE_45:
       return evolution (this, from:"Lotad", hp:HP060, type:W, retreatCost:1) {
         weakness L
@@ -1077,7 +1077,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case LOMBRE_46:
       return evolution (this, from:"Lotad", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -1097,7 +1097,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MURKROW_47:
       return basic (this, hp:HP060, type:D, retreatCost:1) {
         weakness F
@@ -1118,7 +1118,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case NUZLEAF_48:
       return evolution (this, from:"Seedot", hp:HP080, type:G, retreatCost:1) {
         weakness R
@@ -1138,7 +1138,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case NUZLEAF_49:
       return evolution (this, from:"Seedot", hp:HP080, type:G, retreatCost:1) {
         weakness R
@@ -1158,7 +1158,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case PELIPPER_50:
       return evolution (this, from:"Wingull", hp:HP070, type:W, retreatCost:0) {
         weakness L
@@ -1171,7 +1171,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case QUILAVA_51:
       return evolution (this, from:"Cyndaquil", hp:HP080, type:R, retreatCost:2) {
         weakness W
@@ -1191,7 +1191,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case VIGOROTH_52:
       return evolution (this, from:"Slakoth", hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -1211,7 +1211,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case VOLBEAT_53:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -1236,7 +1236,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case WYNAUT_54:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -1253,7 +1253,7 @@ public enum SandstormNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case XATU_55:
       return evolution (this, from:"Natu", hp:HP070, type:P, retreatCost:0) {
         weakness P
@@ -1271,7 +1271,7 @@ public enum SandstormNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case ARON_56:
       return basic (this, hp:HP050, type:M, retreatCost:1) {
         weakness R
@@ -1284,7 +1284,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case CACNEA_57:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -1301,7 +1301,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case CACNEA_58:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -1313,7 +1313,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case CYNDAQUIL_59:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1333,7 +1333,7 @@ public enum SandstormNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case DUNSPARCE_60:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1353,7 +1353,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case DUSKULL_61:
       return basic (this, hp:HP040, type:P, retreatCost:1) {
         weakness D
@@ -1374,7 +1374,7 @@ public enum SandstormNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case DUSKULL_62:
       return basic (this, hp:HP040, type:P, retreatCost:1) {
         weakness D
@@ -1395,7 +1395,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case EEVEE_63:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1415,7 +1415,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case EKANS_64:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness P
@@ -1427,7 +1427,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case GROWLITHE_65:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1444,7 +1444,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case LOTAD_66:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness L
@@ -1461,7 +1461,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case LOTAD_67:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -1481,7 +1481,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MARILL_68:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -1493,7 +1493,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case NATU_69:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -1513,7 +1513,7 @@ public enum SandstormNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case OMANYTE_70:
       return evolution (this, from:"Mysterious Fossil", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -1533,7 +1533,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case ONIX_71:
       return basic (this, hp:HP080, type:F, retreatCost:3) {
         weakness W
@@ -1553,7 +1553,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case PIKACHU_72:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1573,7 +1573,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case PSYDUCK_73:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -1585,7 +1585,7 @@ public enum SandstormNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case RALTS_74:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -1605,7 +1605,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SANDSHREW_75:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
@@ -1617,7 +1617,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SEEDOT_76:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -1629,7 +1629,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SEEDOT_77:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -1641,7 +1641,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SHROOMISH_78:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -1662,7 +1662,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SKITTY_79:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1682,7 +1682,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SLAKOTH_80:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
@@ -1694,7 +1694,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SPEAROW_81:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness L
@@ -1715,7 +1715,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case TRAPINCH_82:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness G
@@ -1735,7 +1735,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case WAILMER_83:
       return basic (this, hp:HP080, type:W, retreatCost:3) {
         weakness L
@@ -1755,7 +1755,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case WINGULL_84:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness L
@@ -1768,7 +1768,7 @@ public enum SandstormNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case ZIGZAGOON_85:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
@@ -1788,7 +1788,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case DOUBLE_FULL_HEAL_86:
       return itemCard (this) {
         text "Remove all Special Conditions from each of your Active Pokémon."
@@ -1798,7 +1798,7 @@ public enum SandstormNG implements LogicCardInfo {
         playRequirement{
           assert my.active.specialConditions : "Your Active Pokémon needs to have some Special Condition applied to it"
         }
-      };
+      }
       case LANETTE_S_NET_SEARCH_87:
       return supporter (this) {
         text "Search your deck for up to 3 different types of Basic Pokémon cards (excluding Baby Pokémon), show them to your opponent, and put them into your hand. Shuffle your deck afterward." +
@@ -1821,7 +1821,7 @@ public enum SandstormNG implements LogicCardInfo {
         playRequirement{
           assert my.deck
         }
-      };
+      }
       case RARE_CANDY_88:
       return itemCard (this) {
         text "Choose 1 of your Basic Pokémon in play. If you have a Stage 1 or Stage 2 card that evolves from that Pokémon in your hand, put that card on the Basic Pokémon. (This counts as evolving that Pokémon.)"
@@ -1852,17 +1852,17 @@ public enum SandstormNG implements LogicCardInfo {
           sel = possibleEvolutions.select(min: 0)
           assert sel : "Cancelled"
         }
-      };
+      }
       case WALLY_S_TRAINING_89:
-        return copy(Emerald.WALLY_S_TRAINING_85, this);
+        return copy(Emerald.WALLY_S_TRAINING_85, this)
       case CLAW_FOSSIL_90:
-        return copy(LegendMaker.CLAW_FOSSIL_78, this);
+        return copy(LegendMaker.CLAW_FOSSIL_78, this)
       case MYSTERIOUS_FOSSIL_91:
-        return copy(LegendMaker.MYSTERIOUS_FOSSIL_79, this);
+        return copy(LegendMaker.MYSTERIOUS_FOSSIL_79, this)
       case ROOT_FOSSIL_92:
-        return copy(LegendMaker.ROOT_FOSSIL_80, this);
+        return copy(LegendMaker.ROOT_FOSSIL_80, this)
       case MULTI_ENERGY_93:
-        return copy (FireRedLeafGreen.MULTI_ENERGY_103, this);
+        return copy (FireRedLeafGreen.MULTI_ENERGY_103, this)
       case AERODACTYL_EX_94:
       return evolution (this, from:"Mysterious Fossil", hp:HP100, type:C, retreatCost:1) {
         weakness L
@@ -1888,7 +1888,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case AGGRON_EX_95:
       return evolution (this, from:"Lairon", hp:HP150, type:M, retreatCost:4) {
         weakness F
@@ -1910,7 +1910,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case GARDEVOIR_EX_96:
       return evolution (this, from:"Kirlia", hp:HP150, type:P, retreatCost:2) {
         weakness G
@@ -1931,7 +1931,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case KABUTOPS_EX_97:
       return evolution (this, from:"Kabuto", hp:HP150, type:W, retreatCost:2) {
         weakness G
@@ -1952,7 +1952,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case RAICHU_EX_98:
       return evolution (this, from:"Pikachu", hp:HP100, type:L, retreatCost:1) {
         weakness F
@@ -1972,7 +1972,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 120
           }
         }
-      };
+      }
       case TYPHLOSION_EX_99:
       return evolution (this, from:"Quilava", hp:HP160, type:R, retreatCost:2) {
         weakness F
@@ -1993,7 +1993,7 @@ public enum SandstormNG implements LogicCardInfo {
             damage 100
           }
         }
-      };
+      }
       case WAILORD_EX_100:
       return evolution (this, from:"Wailmer", hp:HP200, type:W, retreatCost:5) {
         weakness G
@@ -2014,9 +2014,9 @@ public enum SandstormNG implements LogicCardInfo {
             damage 100
           }
         }
-      };
+      }
         default:
-      return null;
+      return null
     }
   }
 }

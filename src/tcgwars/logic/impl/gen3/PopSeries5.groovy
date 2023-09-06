@@ -1,39 +1,39 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
 
-import tcgwars.logic.impl.gen3.CrystalGuardians;
-import tcgwars.logic.impl.gen3.Deoxys;
-import tcgwars.logic.impl.gen3.FireRedLeafGreen;
-import tcgwars.logic.impl.gen3.HolonPhantoms;
+import tcgwars.logic.impl.gen3.CrystalGuardians
+import tcgwars.logic.impl.gen3.Deoxys
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
+import tcgwars.logic.impl.gen3.HolonPhantoms
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -58,53 +58,53 @@ public enum PopSeries5 implements LogicCardInfo {
   ESPEON_STAR_16 ("Espeon Star", "16", Rarity.HOLORARE, [POKEMON_STAR, POKEMON, BASIC, _PSYCHIC_]),
   UMBREON_STAR_17 ("Umbreon Star", "17", Rarity.HOLORARE, [POKEMON_STAR, POKEMON, BASIC, _DARKNESS_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   PopSeries5(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.POP_SERIES_5;
+    return tcgwars.logic.card.Collection.POP_SERIES_5
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -128,7 +128,7 @@ public enum PopSeries5 implements LogicCardInfo {
             discardSelfEnergy(R)
           }
         }
-      };
+      }
       case LUGIA_2:
       return basic (this, hp:HP080, type:P, retreatCost:2) {
         weakness P
@@ -150,7 +150,7 @@ public enum PopSeries5 implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MEW_DELTA_3:
       return basic (this, hp:HP060, type:R, retreatCost:1) {
         weakness P
@@ -183,21 +183,21 @@ public enum PopSeries5 implements LogicCardInfo {
             shuffleDeck()
           }
         }
-      };
+      }
       case DOUBLE_RAINBOW_ENERGY_4:
-        return copy (Emerald.DOUBLE_RAINBOW_ENERGY_87, this);
+        return copy (Emerald.DOUBLE_RAINBOW_ENERGY_87, this)
       case CHARMELEON_DELTA_5:
-        return copy(CrystalGuardians.CHARMELEON_DELTA_30, this);
+        return copy(CrystalGuardians.CHARMELEON_DELTA_30, this)
       case BILL_S_MAINTENANCE_6:
-        return copy(FireRedLeafGreen.BILL_S_MAINTENANCE_87, this);
+        return copy(FireRedLeafGreen.BILL_S_MAINTENANCE_87, this)
       case RARE_CANDY_7:
-        return copy (Sandstorm.RARE_CANDY_88, this);
+        return copy (Sandstorm.RARE_CANDY_88, this)
       case BOOST_ENERGY_8:
-        return copy(Deoxys.BOOST_ENERGY_93, this);
+        return copy(Deoxys.BOOST_ENERGY_93, this)
       case DELTA_RAINBOW_ENERGY_9:
-        return copy(HolonPhantoms.DELTA_RAINBOW_ENERGY_98, this);
+        return copy(HolonPhantoms.DELTA_RAINBOW_ENERGY_98, this)
       case CHARMANDER_DELTA_10:
-        return copy(CrystalGuardians.CHARMANDER_DELTA_49, this);
+        return copy(CrystalGuardians.CHARMANDER_DELTA_49, this)
       case MEOWTH_DELTA_11:
       return basic (this, hp:HP050, type:D, retreatCost:1) {
         weakness F
@@ -208,7 +208,7 @@ public enum PopSeries5 implements LogicCardInfo {
             swiftDamage(10, opp.all.select("Select Feint Attack's target."))
           }
         }
-      };
+      }
       case PIKACHU_12:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -227,7 +227,7 @@ public enum PopSeries5 implements LogicCardInfo {
             discardAllSelfEnergy(null)
           }
         }
-      };
+      }
       case PIKACHU_DELTA_13:
       return basic (this, hp:HP040, type:M, retreatCost:1) {
         weakness F
@@ -248,7 +248,7 @@ public enum PopSeries5 implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case PELIPPER_DELTA_14:
       return evolution (this, from:"Wingull", hp:HP070, type:L, retreatCost:0) {
         weakness L
@@ -277,7 +277,7 @@ public enum PopSeries5 implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ZANGOOSE_DELTA_15:
       return basic (this, hp:HP070, type:M, retreatCost:1) {
         weakness F
@@ -295,7 +295,7 @@ public enum PopSeries5 implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case ESPEON_STAR_16:
       return basic (this, hp:HP070, type:P, retreatCost:1) {
         weakness P
@@ -317,7 +317,7 @@ public enum PopSeries5 implements LogicCardInfo {
             damage 10*defending.cards.energyCount(C)
           }
         }
-      };
+      }
       case UMBREON_STAR_17:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness F
@@ -338,9 +338,9 @@ public enum PopSeries5 implements LogicCardInfo {
             swiftDamage(30, opp.all.select("Use Feint Attack on which Pokémon?"))
           }
         }
-      };
+      }
         default:
-      return null;
+      return null
     }
   }
 }

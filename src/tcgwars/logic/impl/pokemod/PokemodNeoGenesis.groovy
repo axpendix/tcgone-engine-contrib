@@ -1,34 +1,34 @@
 package tcgwars.logic.impl.pokemod
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -162,53 +162,53 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
   FERALIGATR_EX_125 ("Feraligatr ex", "125", Rarity.ULTRARARE, [POKEMON, EVOLUTION, EX, STAGE2, _METAL_]),
   MEGANIUM_EX_126 ("Meganium ex", "126", Rarity.ULTRARARE, [POKEMON, EVOLUTION, EX, STAGE2, _GRASS_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   PokemodNeoGenesis(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.POKEMOD_NEO_GENESIS;
+    return tcgwars.logic.card.Collection.POKEMOD_NEO_GENESIS
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -225,7 +225,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case AZUMARILL_2:
       return evolution (this, from:"Marill", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -245,7 +245,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case BELLOSSOM_3:
       return evolution (this, from:"Gloom", hp:HP070, type:G, retreatCost:2) {
         weakness R
@@ -266,7 +266,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case FERALIGATR_4:
       return evolution (this, from:"Croconaw", hp:HP100, type:W, retreatCost:3) {
         weakness G
@@ -283,7 +283,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case FERALIGATR_5:
       return evolution (this, from:"Croconaw", hp:HP120, type:W, retreatCost:3) {
         weakness G
@@ -300,7 +300,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case HERACROSS_6:
       return basic (this, hp:HP060, type:G, retreatCost:2) {
         weakness R
@@ -317,7 +317,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case JUMPLUFF_7:
       return evolution (this, from:"Skiploom", hp:HP070, type:G, retreatCost:0) {
         weakness R
@@ -338,7 +338,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case KINGDRA_8:
       return evolution (this, from:"Seadra", hp:HP090, type:W, retreatCost:2) {
         weakness L
@@ -358,7 +358,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case LUGIA_9:
       return basic (this, hp:HP090, type:C, retreatCost:2) {
         weakness P
@@ -371,7 +371,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 90
           }
         }
-      };
+      }
       case MEGANIUM_10:
       return evolution (this, from:"Bayleef", hp:HP100, type:G, retreatCost:3) {
         weakness R
@@ -389,7 +389,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case MEGANIUM_11:
       return evolution (this, from:"Bayleef", hp:HP100, type:G, retreatCost:3) {
         weakness R
@@ -402,7 +402,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case PICHU_12:
       return baby (this, successors:'SUCCESSOR(S)', hp:HP030, type:L, retreatCost:0) {
         move "Zzzap", {
@@ -413,7 +413,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case SKARMORY_13:
       return basic (this, hp:HP060, type:M, retreatCost:2) {
         weakness R
@@ -434,7 +434,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SLOWKING_14:
       return evolution (this, from:"Slowpoke", hp:HP080, type:P, retreatCost:3) {
         weakness P
@@ -451,7 +451,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case STEELIX_15:
       return evolution (this, from:"Onix", hp:HP110, type:M, retreatCost:4) {
         weakness R
@@ -472,7 +472,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case TOGETIC_16:
       return evolution (this, from:"Togepi", hp:HP060, type:C, retreatCost:0) {
         weakness L
@@ -493,7 +493,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case TYPHLOSION_17:
       return evolution (this, from:"Quilava", hp:HP100, type:R, retreatCost:2) {
         weakness W
@@ -510,7 +510,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case TYPHLOSION_18:
       return evolution (this, from:"Quilava", hp:HP100, type:R, retreatCost:2) {
         weakness W
@@ -527,7 +527,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 80
           }
         }
-      };
+      }
       case METAL_ENERGY_19:
       return specialEnergy (this, [[C]]) {
         text "Damage done to the Pokémon Metal Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon Metal Energy is attached isn't [M]. Metal Energy provides[M] Energy. (Doesn't count as a basic Energy card.)"
@@ -539,7 +539,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case CLEFFA_20:
       return baby (this, successors:'SUCCESSOR(S)', hp:HP030, type:C, retreatCost:0) {
         move "Eeeeeeek", {
@@ -550,7 +550,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case DONPHAN_21:
       return evolution (this, from:"Phanpy", hp:HP070, type:F, retreatCost:3) {
         weakness G
@@ -571,7 +571,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case ELEKID_22:
       return baby (this, successors:'SUCCESSOR(S)', hp:HP030, type:L, retreatCost:0) {
         pokePower "Playful Punch", {
@@ -580,7 +580,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
           }
         }
 
-      };
+      }
       case MAGBY_23:
       return baby (this, successors:'SUCCESSOR(S)', hp:HP030, type:R, retreatCost:0) {
         move "Sputter", {
@@ -591,7 +591,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case MURKROW_24:
       return basic (this, hp:HP060, type:D, retreatCost:0) {
         weakness L
@@ -612,7 +612,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SNEASEL_25:
       return basic (this, hp:HP060, type:D, retreatCost:1) {
         weakness F
@@ -633,7 +633,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case AIPOM_26:
       return basic (this, hp:HP040, type:C, retreatCost:0) {
         weakness F
@@ -654,7 +654,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case ARIADOS_27:
       return evolution (this, from:"Spinarak", hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -674,7 +674,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case BAYLEEF_28:
       return evolution (this, from:"Chikorita", hp:HP070, type:G, retreatCost:2) {
         weakness R
@@ -695,7 +695,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case BAYLEEF_29:
       return evolution (this, from:"Chikorita", hp:HP080, type:G, retreatCost:2) {
         weakness R
@@ -716,7 +716,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case CLEFAIRY_30:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
@@ -737,7 +737,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case CROCONAW_31:
       return evolution (this, from:"Totodile", hp:HP070, type:W, retreatCost:2) {
         weakness G
@@ -757,7 +757,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case CROCONAW_32:
       return evolution (this, from:"Totodile", hp:HP080, type:W, retreatCost:2) {
         weakness G
@@ -777,7 +777,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case ELECTABUZZ_33:
       return basic (this, hp:HP070, type:L, retreatCost:2) {
         weakness F
@@ -797,7 +797,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case FLAAFFY_34:
       return evolution (this, from:"Mareep", hp:HP060, type:L, retreatCost:1) {
         weakness F
@@ -817,7 +817,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case FURRET_35:
       return evolution (this, from:"Sentret", hp:HP060, type:C, retreatCost:1) {
         weakness F
@@ -838,7 +838,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case GLOOM_36:
       return evolution (this, from:"Oddish", hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -858,7 +858,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case GRANBULL_37:
       return evolution (this, from:"Snubbull", hp:HP070, type:C, retreatCost:2) {
         weakness F
@@ -879,7 +879,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case LANTURN_38:
       return evolution (this, from:"Chinchou", hp:HP070, type:L, retreatCost:2) {
         weakness F
@@ -896,7 +896,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case LEDIAN_39:
       return evolution (this, from:"Ledyba", hp:HP060, type:G, retreatCost:0) {
         weakness R
@@ -909,7 +909,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case MAGMAR_40:
       return basic (this, hp:HP070, type:R, retreatCost:2) {
         weakness W
@@ -929,7 +929,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case MILTANK_41:
       return basic (this, hp:HP070, type:C, retreatCost:2) {
         weakness F
@@ -950,7 +950,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case NOCTOWL_42:
       return evolution (this, from:"Hoothoot", hp:HP060, type:C, retreatCost:0) {
         weakness L
@@ -968,7 +968,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case PHANPY_43:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
@@ -989,7 +989,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case PILOSWINE_44:
       return evolution (this, from:"Swinub", hp:HP080, type:W, retreatCost:3) {
         weakness M
@@ -1010,7 +1010,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case QUAGSIRE_45:
       return evolution (this, from:"Wooper", hp:HP070, type:W, retreatCost:2) {
         weakness G
@@ -1031,7 +1031,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case QUILAVA_46:
       return evolution (this, from:"Cyndaquil", hp:HP060, type:R, retreatCost:1) {
         weakness W
@@ -1051,7 +1051,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case QUILAVA_47:
       return evolution (this, from:"Cyndaquil", hp:HP070, type:R, retreatCost:1) {
         weakness W
@@ -1071,7 +1071,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SEADRA_48:
       return evolution (this, from:"Horsea", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -1091,7 +1091,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SKIPLOOM_49:
       return evolution (this, from:"Hoppip", hp:HP060, type:G, retreatCost:0) {
         weakness R
@@ -1112,7 +1112,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SUNFLORA_50:
       return evolution (this, from:"Sunkern", hp:HP070, type:G, retreatCost:1) {
         weakness R
@@ -1125,7 +1125,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case TOGEPI_51:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         resistance P, MINUS30
@@ -1137,7 +1137,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case XATU_52:
       return evolution (this, from:"Natu", hp:HP080, type:P, retreatCost:1) {
         weakness P
@@ -1158,7 +1158,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case CHIKORITA_53:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -1179,7 +1179,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case CHIKORITA_54:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -1200,7 +1200,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case CHINCHOU_55:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1220,7 +1220,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case CYNDAQUIL_56:
       return basic (this, hp:HP040, type:R, retreatCost:1) {
         weakness W
@@ -1240,7 +1240,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case CYNDAQUIL_57:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1260,7 +1260,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case GIRAFARIG_58:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         move "Agility", {
@@ -1279,7 +1279,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case GLIGAR_59:
       return basic (this, hp:HP060, type:F, retreatCost:0) {
         weakness G
@@ -1300,7 +1300,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case HOOTHOOT_60:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness L
@@ -1321,7 +1321,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case HOPPIP_61:
       return basic (this, hp:HP050, type:G, retreatCost:0) {
         weakness R
@@ -1342,7 +1342,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case HORSEA_62:
       return basic (this, hp:HP050, type:W, retreatCost:0) {
         weakness L
@@ -1354,7 +1354,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case LEDYBA_63:
       return basic (this, hp:HP040, type:G, retreatCost:0) {
         weakness R
@@ -1375,7 +1375,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case MANTINE_64:
       return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness L
@@ -1388,7 +1388,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MAREEP_65:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness F
@@ -1408,7 +1408,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MARILL_66:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness L
@@ -1428,7 +1428,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case NATU_67:
       return basic (this, hp:HP030, type:P, retreatCost:0) {
         weakness P
@@ -1449,7 +1449,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case ODDISH_68:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -1469,7 +1469,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case ONIX_69:
       return basic (this, hp:HP070, type:F, retreatCost:2) {
         weakness G
@@ -1489,7 +1489,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case PIKACHU_70:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1509,7 +1509,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SENTRET_71:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
@@ -1522,7 +1522,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SHUCKLE_72:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -1542,7 +1542,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SLOWPOKE_73:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -1562,7 +1562,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SNUBBULL_74:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1583,7 +1583,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SPINARAK_75:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -1603,7 +1603,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case STANTLER_76:
       return basic (this, hp:HP060, type:C, retreatCost:2) {
         weakness F
@@ -1624,7 +1624,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SUDOWOODO_77:
       return basic (this, hp:HP060, type:F, retreatCost:3) {
         weakness W
@@ -1644,7 +1644,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SUNKERN_78:
       return basic (this, hp:HP040, type:G, retreatCost:2) {
         weakness R
@@ -1665,7 +1665,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SWINUB_79:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness M
@@ -1678,7 +1678,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case TOTODILE_80:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness G
@@ -1698,7 +1698,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case TOTODILE_81:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness G
@@ -1718,7 +1718,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case WOOPER_82:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness G
@@ -1739,7 +1739,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case Falkner_83:
       return supporter (this) {
         text "Choose 1 of your opponent's Benched Pokémonand switch it with his or her Active Pokémon."
@@ -1747,7 +1747,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case ECOGYM_84:
       return stadium (this) {
         text "Whenever an attack, Poké-Power, or Trainer card discards another player's basic Energy card from a Pokémon, shuffle that Energy card into its owner's deck. (Energy cards that are discarded when that Pokémon is Knocked Out don't count.)"
@@ -1755,7 +1755,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         }
         onRemoveFromPlay{
         }
-      };
+      }
       case ENERGY_CHARGE_85:
       return basicTrainer (this) {
         text "Flip a coin. If heads, shuffle up to 2 Energy cards from your discard pile into your deck."
@@ -1763,7 +1763,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case EUSINE_86:
       return supporter (this) {
         text "Discard an Energy card from your hand. Then, draw 4 cards."
@@ -1771,7 +1771,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case KURT_87:
       return supporter (this) {
         text "Search your deck for up to 2 Evolution cards with 90HP or more, show them to your opponent, and then put them into your hand. Shuffle your deck afterward."
@@ -1779,7 +1779,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case RANDOM_RECEIVER_88:
       return basicTrainer (this) {
         text "Reveal cards for the top of your deck until you reveal a Supporter card. Put it into your hand. Shuffle the other cards back into your deck."
@@ -1787,7 +1787,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case SUPER_ENERGY_RETRIEVAL_89:
       return basicTrainer (this) {
         text "Trade 2 of the other cards in your hand for 4 basic Energy cards from your discard pile. If you have fewer than 4 basic Energy cards there, take all of them."
@@ -1795,7 +1795,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case DARK_PATCH_90:
       return basicTrainer (this) {
         text "If it's your first turn, you can't play this card. Attach a basic [D] Energy from your discard pile to 1 of your Benched [D] Pokémon."
@@ -1803,7 +1803,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case METAL_PATCH_91:
       return basicTrainer (this) {
         text "If it's your first turn, you can't play this card. Attach a basic [M] Energy from your discard pile to 1 of your Benched [M] Pokémon."
@@ -1811,7 +1811,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case YOUNGSTER_JOEY_92:
       return supporter (this) {
         text "Search your deck for a Pokémon, show it to your opponent and put it into your hand. Shuffle your deck afterward."
@@ -1819,7 +1819,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case SILENT_LAB_93:
       return stadium (this) {
         text "Each Basic Pokémon in play, and in each player's discard pile have their Poké-Powers Disabled."
@@ -1827,7 +1827,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         }
         onRemoveFromPlay{
         }
-      };
+      }
       case MIRACLE_BERRY_94:
       return pokemonTool (this) {
         text "At any time between turns, if the Pokémon Miracle Berry is attached to is affected by a Special Condition, you may remove all of those effects from that Pokémon and discard Miracle Berry. At the start of each turn, if the Pokémon Miracle Berry is attached to is affected by a Special Condition, remove all of those effects from that Pokémon and discard Miracle Berry."
@@ -1837,7 +1837,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case NEW_POKEDEX_95:
       return basicTrainer (this) {
         text "Shuffle your deck. Then, look at up to 5 cards from the top of your deck and rearrange them as you like."
@@ -1845,7 +1845,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case PROFESSOR_ELM_96:
       return supporter (this) {
         text "Shuffle your hand into your deck. Then, draw 7 cards. You can't play any more Trainer cards this turn."
@@ -1853,7 +1853,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case SPROUT_TOWER_97:
       return stadium (this) {
         text "All damage done by [C] Pokémon's attacks is reduce by 30 (after applying Weakness and Resistance)."
@@ -1861,7 +1861,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         }
         onRemoveFromPlay{
         }
-      };
+      }
       case SUPER_SCOOP_UP_98:
       return basicTrainer (this) {
         text "Flip a coin. If heads, return 1 of your Pokémon and all cards attached to it to your hand."
@@ -1869,7 +1869,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case ITEM_FINDER_99:
       return basicTrainer (this) {
         text "You may choose to Discard 1 card from your hand in order to search your discard pile for a Supporter card. Show it to your opponent and put it into your hand. Or" +
@@ -1878,7 +1878,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case BATTLE_FRONTIER_100:
       return stadium (this) {
         text "Each Player's [C] Evolved Pokémon, [D] Evolved Pokémon, and [M] Evolved Pokémon can't use any Poké-Powers."
@@ -1886,7 +1886,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         }
         onRemoveFromPlay{
         }
-      };
+      }
       case BROKEN_TIME_SPACE_101:
       return stadium (this) {
         text "Once during each player's turn, he or she may evolve a Stage 1 Pokémon that he or she just evolved during that turn."
@@ -1894,7 +1894,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         }
         onRemoveFromPlay{
         }
-      };
+      }
       case POKEMON_MARCH_102:
       return basicTrainer (this) {
         text "Your opponent may search his or her deck for 1 Basic Pokémon card and put it onto his or her Bench. Then, you may search your deck for 1 Basic Pokémon card and put it onto your Bench. Then, each player shuffles his or her deck. (A player can't do any of this if his or her Bench is full.)"
@@ -1902,7 +1902,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case BATTLE_ARENA_103:
       return stadium (this) {
         text "Once during each player's turn, if the or she evolves 1 of their Pokémon (excluding Pokémon-ex), remove 2 damage counters from that Pokémon."
@@ -1910,7 +1910,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         }
         onRemoveFromPlay{
         }
-      };
+      }
       case DARKNESS_ENERGY_104:
       return specialEnergy (this, [[C]]) {
         text "If the Pokémon Darkness Energy is attached to damages the Defending Pokémon (after applying Weakness and Resistance), the attack does 10 more damage to the Defending Pokémon. At the end of every turn, put 1 damage counter on the Pokémon Darkness Energy is attached to, unless it's [D]. Darkness Energy provides [D] Energy. (Doesn't count as a basic Energy card.)"
@@ -1922,7 +1922,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case RECYCLE_ENERGY_105:
       return specialEnergy (this, [[C]]) {
         text "Recycle Energy provides 1 Energy. (Doesn't count as a basic Energy card.) If this card is put into your discard pile from play, return it to your hand."
@@ -1934,31 +1934,31 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case FIGHTING_ENERGY_106:
-      return basicEnergy (this, F);
+      return basicEnergy (this, F)
       case FIRE_ENERGY_107:
-      return basicEnergy (this, R);
+      return basicEnergy (this, R)
       case GRASS_ENERGY_108:
-      return basicEnergy (this, G);
+      return basicEnergy (this, G)
       case LIGHTNING_ENERGY_109:
-      return basicEnergy (this, L);
+      return basicEnergy (this, L)
       case PSYCHIC_ENERGY_110:
-      return basicEnergy (this, P);
+      return basicEnergy (this, P)
       case WATER_ENERGY_111:
-      return basicEnergy (this, W);
+      return basicEnergy (this, W)
       case FIGHTING_ENERGY_112:
-      return copy (FIGHTING_ENERGY_106, this);
+      return copy (FIGHTING_ENERGY_106, this)
       case FIRE_ENERGY_113:
-      return copy (FIRE_ENERGY_107, this);
+      return copy (FIRE_ENERGY_107, this)
       case GRASS_ENERGY_114:
-      return copy (GRASS_ENERGY_108, this);
+      return copy (GRASS_ENERGY_108, this)
       case LIGHTNING_ENERGY_115:
-      return copy (LIGHTNING_ENERGY_109, this);
+      return copy (LIGHTNING_ENERGY_109, this)
       case PSYCHIC_ENERGY_116:
-      return copy (PSYCHIC_ENERGY_110, this);
+      return copy (PSYCHIC_ENERGY_110, this)
       case WATER_ENERGY_117:
-      return copy (WATER_ENERGY_111, this);
+      return copy (WATER_ENERGY_111, this)
       case BLEND_ENERGY_WGR_118:
       return specialEnergy (this, [[C]]) {
         text "This card provides [C] Energy. While this card attached to a Pokémon, it provides [W], [G], and [R] Energy but provides only 1 Energy at a time."
@@ -1970,7 +1970,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case BLEND_ENERGY_FLP_119:
       return specialEnergy (this, [[C]]) {
         text "This card provides [C] Energy. While this card attached to a Pokémon, it provides [F], [L], and [P] Energy but provides only 1 Energy at a time."
@@ -1982,7 +1982,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case DONPHAN_120:
       return evolution (this, from:"Phanpy", hp:HP060, type:F, retreatCost:3) {
         weakness G
@@ -2000,7 +2000,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SKARMORY_EX_121:
       return basic (this, hp:HP100, type:M, retreatCost:1) {
         weakness R
@@ -2026,7 +2026,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case CROBAT_EX_122:
       return evolution (this, from:"Golbat", hp:HP130, type:G, retreatCost:0) {
         weakness L
@@ -2052,7 +2052,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case STEELIX_EX_123:
       return evolution (this, from:"Onix", hp:HP120, type:M, retreatCost:3) {
         weakness R
@@ -2080,7 +2080,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case MEW_EX_124:
       return basic (this, hp:HP090, type:P, retreatCost:1) {
         weakness P
@@ -2096,7 +2096,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case FERALIGATR_EX_125:
       return evolution (this, from:"Croconaw", hp:HP150, type:M, retreatCost:3) {
         weakness G
@@ -2122,7 +2122,7 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case MEGANIUM_EX_126:
       return evolution (this, from:"Bayleef", hp:HP150, type:G, retreatCost:2) {
         weakness G
@@ -2149,9 +2149,9 @@ public enum PokemodNeoGenesis implements LogicCardInfo {
             damage 90
           }
         }
-      };
+      }
         default:
-      return null;
+      return null
     }
   }
 }

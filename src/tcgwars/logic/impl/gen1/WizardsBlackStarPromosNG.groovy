@@ -1,36 +1,36 @@
-package tcgwars.logic.impl.gen1;
+package tcgwars.logic.impl.gen1
 
-import tcgwars.logic.impl.gen1.BaseSetNG;
+import tcgwars.logic.impl.gen1.BaseSetNG
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -91,53 +91,53 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
   HO_OH_52 ("Ho-oh", "52", Rarity.PROMO, [POKEMON, BASIC, _FIRE_]),
   SUICUNE_53 ("Suicune", "53", Rarity.PROMO, [POKEMON, BASIC, _WATER_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   WizardsBlackStarPromosNG(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.WIZARDS_BLACK_STAR_PROMOS_NG;
+    return tcgwars.logic.card.Collection.WIZARDS_BLACK_STAR_PROMOS_NG
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -164,7 +164,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             flip { apply PARALYZED }
           }
         }
-      };
+      }
       case ELECTABUZZ_2:
       return basic (this, hp:HP060, type:L, retreatCost:2) {
         weakness F
@@ -185,7 +185,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             flip { damage 20 }
           }
         }
-      };
+      }
       case MEWTWO_3:
       return basic (this, hp:HP070, type:P, retreatCost:2) {
         weakness P
@@ -209,7 +209,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case PIKACHU_4:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -231,7 +231,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             discardAllSelfEnergy(null)
           }
         }
-      };
+      }
       case DRAGONITE_5:
       return evolution (this, from:"Dragonair", hp:HP090, type:C, retreatCost:2) {
         resistance F, MINUS30
@@ -249,7 +249,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             flip { damage 60 }
           }
         }
-      };
+      }
       case ARCANINE_6:
       return evolution (this, from:"Growlithe", hp:HP070, type:R, retreatCost:1) {
         weakness W
@@ -271,7 +271,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             discardSelfEnergy C,C
           }
         }
-      };
+      }
       case JIGGLYPUFF_7:
       return basic (this, hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -293,7 +293,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             damage 20, self
           }
         }
-      };
+      }
       case MEW_8:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -313,9 +313,9 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             // TODO
           }
         }
-      };
+      }
       case MEW_9:
-      return copy (MEW_8, this);
+      return copy (MEW_8, this)
       case MEOWTH_10:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -333,7 +333,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case EEVEE_11:
       return basic (this, hp:HP030, type:C, retreatCost:0) {
         weakness F
@@ -352,7 +352,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MEWTWO_12:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -375,7 +375,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             noWrDamage 30, opp.all.select()
           }
         }
-      };
+      }
       case VENUSAUR_13:
       return evolution (this, from:"Ivysaur", hp:HP100, type:G, retreatCost:1) {
         weakness R
@@ -393,9 +393,9 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case MEWTWO_14:
-      return copy (MEWTWO_3, this);
+      return copy (MEWTWO_3, this)
       case COOL_PORYGON_15:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -416,7 +416,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             flip 3, { damage 20 }
           }
         }
-      };
+      }
       case COMPUTER_ERROR_16:
       return basicTrainer (this) {
         text "You may draw up to 5 cards, then your opponent may draw up to 5 cards. Your turn is over now (you don't get to attack)."
@@ -425,7 +425,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case DARK_PERSIAN_17:
       return evolution (this, from:"Meowth", hp:HP060, type:C, retreatCost:0) {
         weakness F
@@ -450,7 +450,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             flip { apply POISONED }
           }
         }
-      };
+      }
       case TEAM_ROCKET_S_MEOWTH_18:
       return basic (this, hp:HP040, type:C, retreatCost:2) {
         weakness F
@@ -467,7 +467,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SABRINA_S_ABRA_19:
       return basic (this, hp:HP040, type:P, retreatCost:0) {
         weakness P
@@ -489,7 +489,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case PSYDUCK_20:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -517,7 +517,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             flip 3, { damage 10 }
           }
         }
-      };
+      }
       case MOLTRES_21:
       return basic (this, hp:HP070, type:R, retreatCost:1) {
         resistance F, MINUS30
@@ -535,7 +535,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ARTICUNO_22:
       return basic (this, hp:HP070, type:W, retreatCost:1) {
         resistance F, MINUS30
@@ -554,7 +554,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ZAPDOS_23:
       return basic (this, hp:HP070, type:L, retreatCost:1) {
         resistance F, MINUS30
@@ -575,7 +575,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case BIRTHDAY_PIKACHU_24:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -592,7 +592,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case FLYING_PIKACHU_25:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         resistance F, MINUS30
@@ -614,7 +614,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             flip { preventAllEffectsNextTurn() }
           }
         }
-      };
+      }
       case PIKACHU_26:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness F
@@ -635,7 +635,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             discardAllSelfEnergy(null)
           }
         }
-      };
+      }
       case PIKACHU_27:
       return basic (this, hp:HP030, type:L, retreatCost:0) {
         weakness F
@@ -657,7 +657,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             flip { preventAllEffectsNextTurn() }
           }
         }
-      };
+      }
       case SURFING_PIKACHU_28:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -669,7 +669,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case MARILL_29:
       return basic (this, hp:HP050, type:W, retreatCost:2) {
         weakness L
@@ -682,7 +682,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             // TODO
           }
         }
-      };
+      }
       case TOGEPI_30:
       return basic (this, hp:HP030, type:C, retreatCost:1) {
         resistance P, MINUS30
@@ -700,7 +700,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             flip { metronome defending, delegate }
           }
         }
-      };
+      }
       case CLEFFA_31:
       return basic (this, hp:HP030, type:C, retreatCost:0) {
         move "Eek", {
@@ -711,7 +711,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             draw 2
           }
         }
-      };
+      }
       case SMEARGLE_32:
       return basic (this, hp:HP040, type:C, retreatCost:0) {
         weakness F
@@ -724,7 +724,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             // TODO
           }
         }
-      };
+      }
       case SCIZOR_33:
       return evolution (this, from:"Scyther", hp:HP070, type:M, retreatCost:2) {
         weakness R
@@ -763,7 +763,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             flipUntilTails { damage 10 }
           }
         }
-      };
+      }
       case ENTEI_34:
       return basic (this, hp:HP080, type:R, retreatCost:1) {
         weakness W
@@ -782,7 +782,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             // TODO
           }
         }
-      };
+      }
       case PICHU_35:
       return basic (this, hp:HP030, type:L, retreatCost:0) {
         move "Let's Play!", {
@@ -793,7 +793,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             // TODO
           }
         }
-      };
+      }
       case IGGLYBUFF_36:
       return basic (this, hp:HP030, type:C, retreatCost:0) {
         move "Good Night Song", {
@@ -804,7 +804,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             apply ASLEEP
           }
         }
-      };
+      }
       case HITMONTOP_37:
       return basic (this, hp:HP060, type:F, retreatCost:1) {
         weakness P
@@ -831,7 +831,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case UNOWN_J__38:
       return basic (this, hp:HP040, type:P, retreatCost:1) {
         weakness P
@@ -849,7 +849,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case MISDREAVUS_39:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         resistance F, MINUS30
@@ -870,7 +870,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             flip { apply CONFUSED }
           }
         }
-      };
+      }
       case POKEMON_CENTER_40:
       return copy(BaseSetNG.POKEMON_CENTER, this)
       case LUCKY_STADIUM_41:
@@ -893,7 +893,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             bg().gm().unregisterAction(it)
           }
         }
-      };
+      }
       case POKEMON_TOWER_42:
       return stadium (this) {
         text "If the effect of a Pokémon Power, attack, Energy card, or Trainer card would put a card in a discard pile into its owner's hand, that card stays in that discard pile instead."
@@ -913,7 +913,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
         onRemoveFromPlay{
           eff.unregister()
         }
-      };
+      }
       case MACHAMP_43:
       return evolution (this, from:"Machoke", hp:HP090, type:F, retreatCost:3) {
         weakness P
@@ -939,7 +939,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MAGMAR_44:
       return basic (this, hp:HP060, type:R, retreatCost:2) {
         weakness W
@@ -961,7 +961,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case SCYTHER_45:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -975,7 +975,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             cantUseAttack(thisMove,self)
           }
         }
-      };
+      }
       case ELECTABUZZ_46:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness F
@@ -996,7 +996,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             // TODO
           }
         }
-      };
+      }
       case MEW_47:
       // Card used as base for WizardsBlackStarPromos.MEW_47
       return basic (this, hp:HP040, type:P, retreatCost:1) {
@@ -1031,7 +1031,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             flip { apply CONFUSED }
           }
         }
-      };
+      }
       case ARTICUNO_48:
       return basic (this, hp:HP080, type:W, retreatCost:2) {
         resistance F, MINUS30
@@ -1050,7 +1050,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             flip { PARALYZED }
           }
         }
-      };
+      }
       case SNORLAX_49:
       return basic (this, hp:HP090, type:C, retreatCost:4) {
         weakness F
@@ -1071,7 +1071,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             flip { apply ASLEEP }
           }
         }
-      };
+      }
       case CELEBI_50:
       // Card used as base for NintendoBlackStarPromos.CELEBI_29
       return basic (this, hp:HP050, type:G, retreatCost:1) {
@@ -1084,7 +1084,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             flip 2, { damage 20 }
           }
         }
-      };
+      }
       case RAPIDASH_51:
       return evolution (this, from:"Ponyta", hp:HP060, type:R, retreatCost:0) {
         weakness W
@@ -1107,7 +1107,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             flip { apply BURNED }
           }
         }
-      };
+      }
       case HO_OH_52:
       return basic (this, hp:HP080, type:R, retreatCost:2) {
         weakness W
@@ -1120,7 +1120,7 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             flip 1, { damage 60 }, { damage 20 }
           }
         }
-      };
+      }
       case SUICUNE_53:
       return basic (this, hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -1139,9 +1139,9 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
             flip 1, { damage 20 }, { apply ASLEEP }
           }
         }
-      };
+      }
       default:
-      return null;
+      return null
     }
   }
 }

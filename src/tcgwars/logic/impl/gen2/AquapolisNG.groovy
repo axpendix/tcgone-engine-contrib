@@ -3,35 +3,35 @@ package tcgwars.logic.impl.gen2
 import tcgwars.logic.impl.gen3.CrystalGuardians
 import tcgwars.logic.impl.gen3.FireRedLeafGreen
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -221,53 +221,53 @@ public enum AquapolisNG implements LogicCardInfo {
   VILEPLUME_H31 ("Vileplume", "H31", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
   ZAPDOS_H32 ("Zapdos", "H32", Rarity.RARE, [POKEMON, BASIC, _LIGHTNING_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   AquapolisNG(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.AQUAPOLIS;
+    return tcgwars.logic.card.Collection.AQUAPOLIS
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -292,7 +292,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case ARCANINE_2:
       return evolution (this, from:"Growlithe", hp:HP090, type:R, retreatCost:3) {
         weakness W
@@ -309,7 +309,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case ARIADOS_3:
       return evolution (this, from:"Spinarak", hp:HP070, type:G, retreatCost:null) {
         weakness R
@@ -326,7 +326,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case AZUMARILL_4:
       return evolution (this, from:"Marill", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -343,7 +343,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case BELLOSSOM_5:
       return evolution (this, from:"Gloom", hp:HP090, type:G, retreatCost:2) {
         weakness R
@@ -361,7 +361,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case BLISSEY_6:
       return evolution (this, from:"Chansey", hp:HP120, type:C, retreatCost:2) {
         weakness F
@@ -378,7 +378,7 @@ public enum AquapolisNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case DONPHAN_7:
       return evolution (this, from:"Phanpy", hp:HP080, type:F, retreatCost:2) {
         weakness G
@@ -399,7 +399,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case ELECTRODE_8:
       return evolution (this, from:"Voltorb", hp:HP070, type:L, retreatCost:1) {
         weakness F
@@ -416,7 +416,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case ELEKID_9:
       return basic (this, hp:HP030, type:L, retreatCost:1) {
         move "Energy Kick", {
@@ -427,7 +427,7 @@ public enum AquapolisNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case ENTEI_10:
       return basic (this, hp:HP070, type:R, retreatCost:1) {
         weakness W
@@ -444,7 +444,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case ESPEON_11:
       return evolution (this, from:"Eevee", hp:HP080, type:P, retreatCost:null) {
         weakness P
@@ -461,7 +461,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case EXEGGUTOR_12:
       return evolution (this, from:"Exeggcute", hp:HP080, type:G, retreatCost:1) {
         weakness R
@@ -481,7 +481,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case EXEGGUTOR_13:
       return evolution (this, from:"Exeggcute", hp:HP080, type:P, retreatCost:1) {
         weakness P
@@ -501,7 +501,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case HOUNDOOM_14:
       return evolution (this, from:"Houndour", hp:HP080, type:R, retreatCost:1) {
         weakness W
@@ -521,7 +521,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case HOUNDOOM_15:
       return evolution (this, from:"Houndour", hp:HP070, type:D, retreatCost:1) {
         weakness F
@@ -542,7 +542,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case HYPNO_16:
       return evolution (this, from:"Drowzee", hp:HP080, type:P, retreatCost:1) {
         weakness P
@@ -559,7 +559,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case JUMPLUFF_17:
       return evolution (this, from:"Skiploom", hp:HP070, type:G, retreatCost:null) {
         weakness R
@@ -577,7 +577,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case JYNX_18:
       return basic (this, hp:HP060, type:P, retreatCost:2) {
         weakness P
@@ -597,7 +597,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case KINGDRA_19:
       return evolution (this, from:"Seadra", hp:HP120, type:W, retreatCost:3) {
         weakness L
@@ -614,7 +614,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case LANTURN_20:
       return evolution (this, from:"Chinchou", hp:HP080, type:W, retreatCost:1) {
         weakness G
@@ -634,7 +634,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case LANTURN_21:
       return evolution (this, from:"Chinchou", hp:HP080, type:L, retreatCost:1) {
         weakness F
@@ -651,7 +651,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MAGNETON_22:
       return evolution (this, from:"Magnemite", hp:HP070, type:M, retreatCost:2) {
         weakness R
@@ -669,7 +669,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case MUK_23:
       return evolution (this, from:"Grimer", hp:HP070, type:G, retreatCost:1) {
         weakness P
@@ -686,7 +686,7 @@ public enum AquapolisNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case NIDOKING_24:
       return evolution (this, from:"Nidorino", hp:HP110, type:F, retreatCost:3) {
         weakness G
@@ -704,7 +704,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case NINETALES_25:
       return evolution (this, from:"Vulpix", hp:HP080, type:R, retreatCost:1) {
         weakness W
@@ -724,7 +724,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case OCTILLERY_26:
       return evolution (this, from:"Remoraid", hp:HP080, type:W, retreatCost:2) {
         weakness L
@@ -741,7 +741,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case PARASECT_27:
       return evolution (this, from:"Paras", hp:HP070, type:G, retreatCost:1) {
         weakness R
@@ -761,7 +761,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case PORYGON2_28:
       return evolution (this, from:"Porygon", hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -778,7 +778,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case PRIMEAPE_29:
       return evolution (this, from:"Mankey", hp:HP080, type:F, retreatCost:1) {
         weakness P
@@ -798,7 +798,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case QUAGSIRE_30:
       return evolution (this, from:"Wooper", hp:HP080, type:W, retreatCost:2) {
         weakness G
@@ -818,7 +818,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case RAPIDASH_31:
       return evolution (this, from:"Ponyta", hp:HP070, type:R, retreatCost:null) {
         weakness W
@@ -838,7 +838,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SCIZOR_32:
       return evolution (this, from:"Scyther", hp:HP080, type:M, retreatCost:2) {
         weakness R
@@ -863,7 +863,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SLOWBRO_33:
       return evolution (this, from:"Slowpoke", hp:HP080, type:W, retreatCost:2) {
         weakness L
@@ -880,7 +880,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SLOWKING_34:
       return evolution (this, from:"Slowpoke", hp:HP080, type:P, retreatCost:1) {
         weakness P
@@ -900,7 +900,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case STEELIX_35:
       return evolution (this, from:"Onix", hp:HP100, type:M, retreatCost:4) {
         weakness R
@@ -921,7 +921,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case SUDOWOODO_36:
       return basic (this, hp:HP060, type:F, retreatCost:2) {
         weakness W
@@ -942,7 +942,7 @@ public enum AquapolisNG implements LogicCardInfo {
             attachEnergyFrom(basic:true, my.deck, self)
           }
         }
-      };
+      }
       case SUICUNE_37:
       return basic (this, hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -959,7 +959,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case TENTACRUEL_38:
       return evolution (this, from:"Tentacool", hp:HP070, type:W, retreatCost:null) {
         weakness L
@@ -976,7 +976,7 @@ public enum AquapolisNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case TOGETIC_39:
       return evolution (this, from:"Togepi", hp:HP060, type:C, retreatCost:1) {
         weakness L
@@ -994,7 +994,7 @@ public enum AquapolisNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case TYRANITAR_40:
       return evolution (this, from:"Pupitar", hp:HP120, type:D, retreatCost:3) {
         weakness F
@@ -1023,7 +1023,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case UMBREON_41:
       return evolution (this, from:"Eevee", hp:HP080, type:D, retreatCost:1) {
         weakness F
@@ -1041,7 +1041,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case VICTREEBEL_42:
       return evolution (this, from:"Weepinbell", hp:HP090, type:G, retreatCost:2) {
         weakness R
@@ -1058,7 +1058,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case VILEPLUME_43:
       return evolution (this, from:"Gloom", hp:HP100, type:G, retreatCost:2) {
         weakness FIRE
@@ -1083,7 +1083,7 @@ public enum AquapolisNG implements LogicCardInfo {
             flip {opponentCantPlaySupporterNextTurn(delegate)}
           }
         }
-      };
+      }
       case ZAPDOS_44:
       return basic (this, hp:HP080, type:L, retreatCost:2) {
         weakness L
@@ -1109,7 +1109,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case BELLSPROUT_45:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -1121,7 +1121,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case DODRIO_46:
       return evolution (this, from:"Doduo", hp:HP070, type:C, retreatCost:1) {
         weakness L
@@ -1142,7 +1142,7 @@ public enum AquapolisNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case FLAAFFY_47:
       return evolution (this, from:"Mareep", hp:HP080, type:L, retreatCost:1) {
         weakness F
@@ -1162,7 +1162,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case FURRET_48:
       return evolution (this, from:"Sentret", hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -1179,7 +1179,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case GLOOM_49:
       return evolution (this, from:"Oddish", hp:HP070, type:G, retreatCost:2) {
         weakness R
@@ -1196,7 +1196,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case GOLDUCK_50:
       return evolution (this, from:"Psyduck", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -1216,7 +1216,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case GROWLITHE_51:
       return basic (this, hp:HP060, type:R, retreatCost:1) {
         weakness W
@@ -1228,7 +1228,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case MAGNEMITE_52:
       return basic (this, hp:HP040, type:M, retreatCost:1) {
         weakness R
@@ -1249,7 +1249,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MARILL_53:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -1269,7 +1269,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case MAROWAK_54:
       return evolution (this, from:"Cubone", hp:HP070, type:F, retreatCost:1) {
         weakness G
@@ -1290,7 +1290,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case NIDORINO_55:
       return evolution (this, from:"Nidoran♂", hp:HP070, type:G, retreatCost:1) {
         weakness P
@@ -1310,7 +1310,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case PUPITAR_56:
       return evolution (this, from:"Larvitar", hp:HP080, type:F, retreatCost:1) {
         weakness W
@@ -1322,7 +1322,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SCYTHER_57:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -1342,7 +1342,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SEADRA_58:
       return evolution (this, from:"Horsea", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -1362,7 +1362,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SEAKING_59:
       return evolution (this, from:"Goldeen", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -1382,7 +1382,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SKIPLOOM_60:
       return evolution (this, from:"Hoppip", hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -1400,7 +1400,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SMOOCHUM_61:
       return basic (this, hp:HP030, type:P, retreatCost:1) {
         move "Energy Kiss", {
@@ -1411,7 +1411,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SPINARAK_62:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -1431,7 +1431,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TYROGUE_63:
       return basic (this, hp:HP030, type:F, retreatCost:1) {
         move "Energy Punch", {
@@ -1442,7 +1442,7 @@ public enum AquapolisNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case VOLTORB_64:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1462,7 +1462,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case WEEPINBELL_65:
       return evolution (this, from:"Bellsprout", hp:HP070, type:G, retreatCost:1) {
         weakness R
@@ -1482,7 +1482,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case WOOPER_66:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness G
@@ -1502,7 +1502,7 @@ public enum AquapolisNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case AIPOM_67:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1522,7 +1522,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case BELLSPROUT_68:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness P
@@ -1542,7 +1542,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case CHANSEY_69:
       return basic (this, hp:HP100, type:C, retreatCost:2) {
         weakness F
@@ -1562,7 +1562,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case CHINCHOU_70:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness G
@@ -1582,7 +1582,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case CHINCHOU_71:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1602,7 +1602,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case CUBONE_72:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness G
@@ -1623,7 +1623,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case DODUO_73:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness L
@@ -1644,7 +1644,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case DROWZEE_74:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -1664,7 +1664,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case EEVEE_75:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1684,7 +1684,7 @@ public enum AquapolisNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case EXEGGCUTE_76:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -1704,7 +1704,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case EXEGGCUTE_77:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -1724,7 +1724,7 @@ public enum AquapolisNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case GOLDEEN_78:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness L
@@ -1736,7 +1736,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case GRIMER_79:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness P
@@ -1748,7 +1748,7 @@ public enum AquapolisNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case GROWLITHE_80:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1768,7 +1768,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case HITMONCHAN_81:
       return basic (this, hp:HP060, type:F, retreatCost:2) {
         weakness P
@@ -1788,7 +1788,7 @@ public enum AquapolisNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case HITMONTOP_82:
       return basic (this, hp:HP060, type:F, retreatCost:1) {
         weakness P
@@ -1808,7 +1808,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case HOPPIP_83:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -1826,7 +1826,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case HORSEA_84:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness L
@@ -1838,7 +1838,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case HORSEA_85:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -1850,7 +1850,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case HOUNDOUR_86:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1870,7 +1870,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case HOUNDOUR_87:
       return basic (this, hp:HP050, type:D, retreatCost:1) {
         weakness F
@@ -1882,7 +1882,7 @@ public enum AquapolisNG implements LogicCardInfo {
             swiftDamage 20, opp.all.select("Choose 1 of your opponent's Pokémon. This attack does 20 damage to that Pokémon.")
           }
         }
-      };
+      }
       case KANGASKHAN_88:
       return basic (this, hp:HP070, type:C, retreatCost:2) {
         weakness F
@@ -1902,7 +1902,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case LARVITAR_89:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness W
@@ -1922,7 +1922,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case LICKITUNG_90:
       return basic (this, hp:HP080, type:C, retreatCost:2) {
         weakness F
@@ -1942,7 +1942,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MAGNEMITE_91:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1959,7 +1959,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MANKEY_92:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness P
@@ -1979,7 +1979,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case MAREEP_93:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness F
@@ -1999,7 +1999,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MILTANK_94:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness F
@@ -2019,7 +2019,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MR_MIME_95:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -2031,7 +2031,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case NIDORAN_MALE_96:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness P
@@ -2051,7 +2051,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case ODDISH_97:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -2071,7 +2071,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case ONIX_98:
       return basic (this, hp:HP060, type:F, retreatCost:2) {
         weakness W
@@ -2083,7 +2083,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case PARAS_99:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -2103,7 +2103,7 @@ public enum AquapolisNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case PHANPY_100:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness G
@@ -2124,7 +2124,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case PINSIR_101:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -2144,7 +2144,7 @@ public enum AquapolisNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case PONYTA_102:
       return basic (this, hp:HP040, type:R, retreatCost:1) {
         weakness W
@@ -2164,7 +2164,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case PORYGON_103:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
@@ -2184,7 +2184,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case PSYDUCK_104:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -2204,7 +2204,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case REMORAID_105:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -2216,7 +2216,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SCYTHER_106:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness L
@@ -2237,7 +2237,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SENTRET_107:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -2257,7 +2257,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SLOWPOKE_108:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -2277,7 +2277,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SMEARGLE_109:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness F
@@ -2297,7 +2297,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SNEASEL_110:
       return basic (this, hp:HP060, type:D, retreatCost:1) {
         weakness F
@@ -2318,7 +2318,7 @@ public enum AquapolisNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case SPINARAK_111:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness P
@@ -2330,7 +2330,7 @@ public enum AquapolisNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case TANGELA_112:
       return basic (this, hp:HP060, type:G, retreatCost:2) {
         weakness R
@@ -2351,7 +2351,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case TENTACOOL_113:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -2371,7 +2371,7 @@ public enum AquapolisNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case TOGEPI_114:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
@@ -2391,7 +2391,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case VOLTORB_115:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness F
@@ -2403,7 +2403,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case VULPIX_116:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -2415,7 +2415,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case WOOPER_117:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness L
@@ -2435,7 +2435,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case APRICORN_FOREST_118:
       return stadium (this) {
         text "Once during each player's turn (before attacking), if that player's Bench isn't full, that player flips a coin. If heads, that player shows his or her opponent a basic Energy card from his or her hand. Then, that player searches his or her deck for a Basic Pokémon card of the same type (color) as the revealed Energy card and puts it onto his or her Bench. The player shuffles his or her deck afterward."
@@ -2443,7 +2443,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         onRemoveFromPlay{
         }
-      };
+      }
       case DARKNESS_CUBE_01_119:
       return basicTrainer (this) {
         text "Before doing damage, discard all Trainer cards attached to the Defending Pokémon."
@@ -2451,7 +2451,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case ENERGY_SWITCH_120:
         return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this)
       case FIGHTING_CUBE_01_121:
@@ -2461,7 +2461,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case FIRE_CUBE_01_122:
       return basicTrainer (this) {
         text "The Defending Pokémon is now Burned."
@@ -2469,7 +2469,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case FOREST_GUARDIAN_123:
       return supporter (this) {
         text "Shuffle your deck. Then, look at the top 7 cards of your deck. Choose 1 of those cards and put it into your hand. Shuffle the rest into your deck afterward."
@@ -2477,7 +2477,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case GRASS_CUBE_01_124:
       return basicTrainer (this) {
         text "The Defending Pokémon is now Asleep and Poisoned."
@@ -2485,7 +2485,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case HEALING_BERRY_125:
       return pokemonTool (this) {
         text "At the end of any turn, if the Pokémon this card is attached to has 20 HP or less, remove 3 damage counters from that Pokémon and discard this card."
@@ -2495,7 +2495,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case JUGGLER_126:
       return supporter (this) {
         text "Discard up to 2 basic Energy cards from your hand. If you discarded 1 basic Energy card, draw 3 cards. If you discarded 2 basic Energy cards, draw 5 cards."
@@ -2503,7 +2503,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case LIGHTNING_CUBE_01_127:
       return basicTrainer (this) {
         text "Discard all [L] Energy cards attached to this Pokémon. Then, flip a number of coins equal to the number of Energy cards discarded that way. This attack does 40 damage times the number of heads."
@@ -2511,10 +2511,10 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case MEMORY_BERRY_128:
         // "The Pokémon this card is attached to can use any attack from its Basic Pokémon card or any Evolution card from which the Pokémon evolved. (You still have to pay for that attack's Energy cost.) Discard this card at the end of any turn the Pokémon attacks."
-        return copy(CrystalGuardians.MEMORY_BERRY_80, this);
+        return copy(CrystalGuardians.MEMORY_BERRY_80, this)
       case METAL_CUBE_01_129:
       return basicTrainer (this) {
         text "Before doing damage, you may choose 1 of your opponent's Benched Pokémon and switch it with the Defending Pokémon."
@@ -2522,7 +2522,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case POKEMON_FAN_CLUB_130:
       return supporter (this) {
         text "Search your deck for up to 2 Baby Pokémon and/or Basic Pokémon cards and put them onto your Bench. Shuffle your deck afterward."
@@ -2530,7 +2530,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case POKEMON_PARK_131:
       return stadium (this) {
         text "Once during each of his or her turns, when a player attaches an Energy card from his or her hand to 1 of his or her Benched Pokémon, he or she removes 1 damage counter, if any, from that Pokémon."
@@ -2538,7 +2538,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         onRemoveFromPlay{
         }
-      };
+      }
       case PSYCHIC_CUBE_01_132:
       return basicTrainer (this) {
         text "The Defending Pokémon is now Confused."
@@ -2546,7 +2546,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case SEER_133:
       return supporter (this) {
         text "Look at the top 6 cards of your deck. Take all basic Energy cards you find there, show them to your opponent, and then put them into your hand. Shuffle your deck afterward."
@@ -2554,7 +2554,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case SUPER_ENERGY_REMOVAL_2_134:
       return basicTrainer (this) {
         text "Flip 2 coins. If both are heads, discard all Energy cards attached to the Defending Pokémon. If both are tails, discard all Energy cards attached to your Active Pokémon. If 1 is heads and 1 is tails, this card does nothing."
@@ -2562,7 +2562,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case TIME_SHARD_135:
       return pokemonTool (this) {
         text "If the Pokémon this card is attached to is Knocked Out by damage from the Defending Pokémon's attack during your opponent's next turn, you may return up to 2 basic Energy cards attached to that Pokémon to your hand."
@@ -2572,7 +2572,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case TOWN_VOLUNTEERS_136:
       return supporter (this) {
         text "Take 5 Baby Pokémon, Basic Pokémon, Evolution, and/or basic Energy cards from your discard pile and then show them to your opponent. Shuffle them into your deck."
@@ -2580,7 +2580,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case TRAVELING_SALESMAN_137:
       return supporter (this) {
         text "Search your deck for up to 2 Technical Machine and/or Pokémon Tool cards, show them to your opponent, and then put them into your hand. Shuffle your deck afterward."
@@ -2588,7 +2588,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case UNDERSEA_RUINS_138:
       return stadium (this) {
         text "Once during each player's turn (before attacking), that player may flip a coin. If heads, that player chooses 1 of his or her Evolved Pokémon in play and discards the top Evolution card from that Pokémon, devolving it."
@@ -2596,7 +2596,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         onRemoveFromPlay{
         }
-      };
+      }
       case POWER_PLANT_139:
       return stadium (this) {
         text "Once during each of his or her turns, a player may discard a basic Energy card from his or her hand. If that player does, he or she chooses a basic Energy card from his or her discard pile, shows it to his or her opponent, and then puts it into his or her hand."
@@ -2604,7 +2604,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         onRemoveFromPlay{
         }
-      };
+      }
       case WATER_CUBE_01_140:
       return basicTrainer (this) {
         text "Choose 1 of your opponent's Pokémon. This attack does 20 damage to that Pokémon. Don't apply Weakness and Resistance."
@@ -2612,7 +2612,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case WEAKNESS_GUARD_141:
       return basicTrainer (this) {
         text "As long as this card is attached, this Pokémon has no Weakness."
@@ -2620,7 +2620,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case DARKNESS_ENERGY_142:
       return specialEnergy (this, [[C]]) {
         text "If the Pokémon [D] Energy is attached to damages the Defending Pokémon (after applying Weakness and Resistance), the attack does 10 more damage to the Defending Pokémon. At the end of every turn, put 1 damage counter on the Pokémon [D] Energy is attached to, unless it's Darkness or has Dark in its name. [D] Energy provides [D] Energy. (Doesn't count as a basic Energy card.)"
@@ -2632,7 +2632,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case METAL_ENERGY_143:
       return specialEnergy (this, [[C]]) {
         text "Damage done to the Pokémon [M] Energy is attached to is reduced by 10 (after applying Weakness and Resistance). If the Pokémon [M] Energy is attached to isn't Metal, whenever it damages a Pokémon, reduce that damage by 10 (before applying Weakness and Resistance). [M] Energy provides [M] Energy. (Doesn't count as a basic Energy card.)"
@@ -2644,7 +2644,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case RAINBOW_ENERGY_144:
       return specialEnergy (this, [[C]]) {
         text "Attach Rainbow Energy to 1 of your Pokémon. While in play, Rainbow Energy provides every type of Energy but provides only 1 Energy at a time. (Has no effect other than providing Energy.) When you attach this card from your hand to 1 of your Pokémon, put 1 damage counter on that Pokémon."
@@ -2656,7 +2656,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case BOOST_ENERGY_145:
       return specialEnergy (this, [[C]]) {
         text "Boost Energy can be attached only to an Evolved Pokémon. Discard Boost Energy at the end of the turn it was attached. Boost Energy provides [C] [C] [C] Energy. The Pokémon Boost Energy is attached to can't retreat. If the Pokémon Boost Energy is attached to isn't an Evolved Pokémon, discard Boost Energy."
@@ -2668,7 +2668,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case CRYSTAL_ENERGY_146:
       return specialEnergy (this, [[C]]) {
         text "Crystal Energy provides 1 Energy of all types (colors) of all basic Energy cards attached to the Pokémon Crystal Energy is attached to. If there are no basic Energy cards attached to the Pokémon Crystal Energy is attached to, Crystal Energy provides [C] Energy."
@@ -2680,7 +2680,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case WARP_ENERGY_147:
       return specialEnergy (this, [[C]]) {
         text "Warp Energy provides 1 [C] Energy. When you attach Warp Energy from your hand to your Active Pokémon, switch your Active Pokémon with 1 of your Benched Pokémon."
@@ -2692,7 +2692,7 @@ public enum AquapolisNG implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case KINGDRA_148:
       return evolution (this, from:"Seadra", hp:HP110, type:C, retreatCost:3) {
         weakness L
@@ -2717,7 +2717,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case LUGIA_149:
       return basic (this, hp:HP080, type:C, retreatCost:3) {
         weakness P
@@ -2742,7 +2742,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case NIDOKING_150:
       return evolution (this, from:"Nidorino", hp:HP100, type:C, retreatCost:3) {
         weakness G
@@ -2762,9 +2762,9 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case AMPHAROS_H1:
-      return copy (AMPHAROS_1, this);
+      return copy (AMPHAROS_1, this)
       case ARCANINE_H2:
       return evolution (this, from:"Growlithe", hp:HP090, type:R, retreatCost:3) {
         weakness W
@@ -2781,19 +2781,19 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case ARIADOS_H3:
-        return copy (ARIADOS_3, this);
+        return copy (ARIADOS_3, this)
       case AZUMARILL_H4:
-        return copy (AZUMARILL_4, this);
+        return copy (AZUMARILL_4, this)
       case BELLOSSOM_H5:
-        return copy (BELLOSSOM_5, this);
+        return copy (BELLOSSOM_5, this)
       case BLISSEY_H6:
-        return copy (BLISSEY_6, this);
+        return copy (BLISSEY_6, this)
       case ELECTRODE_H7:
-        return copy (ELECTRODE_8, this);
+        return copy (ELECTRODE_8, this)
       case ENTEI_H8:
-        return copy (ENTEI_10, this);
+        return copy (ENTEI_10, this)
       case ESPEON_H9:
       return evolution (this, from:"Eevee", hp:HP080, type:P, retreatCost:null) {
         weakness P
@@ -2810,7 +2810,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case EXEGGUTOR_H10:
       return evolution (this, from:"Exeggcute", hp:HP080, type:G, retreatCost:1) {
         weakness R
@@ -2830,7 +2830,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case HOUNDOOM_H11:
       return evolution (this, from:"Houndour", hp:HP070, type:D, retreatCost:1) {
         weakness F
@@ -2851,7 +2851,7 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case HYPNO_H12:
       return evolution (this, from:"Drowzee", hp:HP080, type:P, retreatCost:1) {
         weakness P
@@ -2868,35 +2868,35 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case JUMPLUFF_H13:
-      return copy (JUMPLUFF_17, this);
+      return copy (JUMPLUFF_17, this)
       case KINGDRA_H14:
-      return copy (KINGDRA_19, this);
+      return copy (KINGDRA_19, this)
       case LANTURN_H15:
-      return copy (LANTURN_21, this);
+      return copy (LANTURN_21, this)
       case MAGNETON_H16:
-      return copy (MAGNETON_22, this);
+      return copy (MAGNETON_22, this)
       case MUK_H17:
-      return copy (MUK_23, this);
+      return copy (MUK_23, this)
       case NIDOKING_H18:
-      return copy (NIDOKING_24, this);
+      return copy (NIDOKING_24, this)
       case NINETALES_H19:
-      return copy (NINETALES_25, this);
+      return copy (NINETALES_25, this)
       case OCTILLERY_H20:
-      return copy (OCTILLERY_26, this);
+      return copy (OCTILLERY_26, this)
       case SCIZOR_H21:
-      return copy (SCIZOR_32, this);
+      return copy (SCIZOR_32, this)
       case SLOWKING_H22:
-      return copy (SLOWKING_34, this);
+      return copy (SLOWKING_34, this)
       case STEELIX_H23:
-      return copy (STEELIX_35, this);
+      return copy (STEELIX_35, this)
       case SUDOWOODO_H24:
-      return copy (SUDOWOODO_36, this);
+      return copy (SUDOWOODO_36, this)
       case SUICUNE_H25:
-      return copy (SUICUNE_37, this);
+      return copy (SUICUNE_37, this)
       case TENTACRUEL_H26:
-      return copy (TENTACRUEL_38, this);
+      return copy (TENTACRUEL_38, this)
       case TOGETIC_H27:
       return evolution (this, from:"Togepi", hp:HP060, type:C, retreatCost:1) {
         weakness L
@@ -2914,15 +2914,15 @@ public enum AquapolisNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case TYRANITAR_H28:
-      return copy (TYRANITAR_40, this);
+      return copy (TYRANITAR_40, this)
       case UMBREON_H29:
-      return copy (UMBREON_41, this);
+      return copy (UMBREON_41, this)
       case VICTREEBEL_H30:
-      return copy (VICTREEBEL_42, this);
+      return copy (VICTREEBEL_42, this)
       case VILEPLUME_H31:
-      return copy (VILEPLUME_43, this);
+      return copy (VILEPLUME_43, this)
       case ZAPDOS_H32:
       return basic (this, hp:HP080, type:L, retreatCost:2) {
         weakness L
@@ -2948,9 +2948,9 @@ public enum AquapolisNG implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       default:
-      return null;
+      return null
     }
   }
 }

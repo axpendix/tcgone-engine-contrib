@@ -157,53 +157,53 @@ public enum RisingRivals implements LogicCardInfo {
   WASH_ROTOM_RT5 ("Wash Rotom", "RT5", Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]),
   CHARON_S_CHOICE_RT6 ("Charon's Choice", "RT6", Rarity.HOLORARE, [TRAINER, SUPPORTER]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   RisingRivals(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.RISING_RIVALS;
+    return tcgwars.logic.card.Collection.RISING_RIVALS
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -242,7 +242,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BASTIODON_GL_2:
         return basic (this, hp:HP090, type:METAL, retreatCost:3) {
           weakness R
@@ -264,7 +264,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DARKRAI_G_3:
         return basic (this, hp:HP090, type:DARKNESS, retreatCost:2) {
           weakness F
@@ -290,7 +290,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FLOATZEL_GL_4:
         return basic (this, hp:HP080, type:WATER, retreatCost:1) {
           weakness L
@@ -313,7 +313,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FLYGON_5:
         return evolution (this, from:"Vibrava", hp:HP120, type:COLORLESS, retreatCost:0) {
           weakness C, PLUS30
@@ -350,7 +350,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FROSLASS_GL_6:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness M
@@ -379,7 +379,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case JIRACHI_7:
         return basic (this, hp:HP060, type:METAL, retreatCost:0) {
           weakness R, PLUS20
@@ -415,7 +415,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUCARIO_GL_8:
         return basic (this, hp:HP080, type:FIGHTING, retreatCost:1) {
           weakness P
@@ -438,7 +438,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUXRAY_GL_9:
         return basic (this, hp:HP080, type:LIGHTNING, retreatCost:1) {
           weakness F
@@ -464,7 +464,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MISMAGIUS_GL_10:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness D
@@ -492,7 +492,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAMPARDOS_GL_11:
         return basic (this, hp:HP090, type:FIGHTING, retreatCost:1) {
           weakness G
@@ -524,7 +524,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ROSERADE_GL_12:
         return basic (this, hp:HP080, type:GRASS, retreatCost:1) {
           weakness R
@@ -549,7 +549,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHIFTRY_13:
         return evolution (this, from:"Nuzleaf", hp:HP130, type:DARKNESS, retreatCost:1) {
           weakness R, PLUS30
@@ -609,7 +609,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AGGRON_14:
         return evolution (this, from:"Lairon", hp:HP130, type:METAL, retreatCost:3) {
           weakness R, PLUS30
@@ -660,7 +660,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BEEDRILL_15:
         return evolution (this, from:"Kakuna", hp:HP110, type:GRASS, retreatCost:1) {
           weakness R, PLUS30
@@ -690,7 +690,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BRONZONG_E4_16:
         return basic (this, hp:HP090, type:PSYCHIC, retreatCost:3) {
           weakness P
@@ -722,7 +722,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DRAPION_E4_17:
         return basic (this, hp:HP100, type:DARKNESS, retreatCost:3) {
           weakness F
@@ -745,7 +745,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ESPEON_E4_18:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness P
@@ -766,7 +766,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FLAREON_19:
         return evolution (this, from:"Eevee", hp:HP080, type:FIRE, retreatCost:1) {
           weakness W, PLUS20
@@ -800,7 +800,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GALLADE_E4_20:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness P
@@ -827,7 +827,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GASTRODON_EAST_SEA_21:
         return evolution (this, from:"Shellos East Sea", hp:HP090, type:WATER, retreatCost:1) {
           weakness G, PLUS30
@@ -871,7 +871,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GASTRODON_WEST_SEA_22:
         return evolution (this, from:"Shellos West Sea", hp:HP110, type:FIGHTING, retreatCost:3) {
           weakness G, PLUS30
@@ -907,7 +907,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOLEM_E4_23:
         return basic (this, hp:HP110, type:FIGHTING, retreatCost:4) {
           weakness G
@@ -930,7 +930,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HERACROSS_E4_24:
         return basic (this, hp:HP090, type:GRASS, retreatCost:2) {
           weakness R
@@ -953,7 +953,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HIPPOWDON_25:
         return evolution (this, from:"Hippopotas", hp:HP110, type:FIGHTING, retreatCost:4) {
           weakness W, PLUS20
@@ -1001,7 +1001,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case JOLTEON_26:
         return evolution (this, from:"Eevee", hp:HP080, type:LIGHTNING, retreatCost:0) {
           weakness F, PLUS20
@@ -1040,7 +1040,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAMOSWINE_GL_27:
         return basic (this, hp:HP100, type:WATER, retreatCost:4) {
           weakness M
@@ -1079,7 +1079,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MR__MIME_E4_28:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness P
@@ -1114,7 +1114,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDOKING_29:
         return evolution (this, from:"Nidorino", hp:HP130, type:FIGHTING, retreatCost:2) {
           weakness W, PLUS30
@@ -1156,7 +1156,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDOQUEEN_30:
         return evolution (this, from:"Nidorina", hp:HP120, type:PSYCHIC, retreatCost:3) {
           weakness P, PLUS30
@@ -1192,7 +1192,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAICHU_GL_31:
         return basic (this, hp:HP080, type:LIGHTNING, retreatCost:0) {
           weakness F
@@ -1218,7 +1218,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RHYPERIOR_E4_32:
         return basic (this, hp:HP100, type:FIGHTING, retreatCost:3) {
           weakness W
@@ -1243,7 +1243,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SNORLAX_33:
         return basic (this, hp:HP100, type:COLORLESS, retreatCost:4) {
           weakness F, PLUS20
@@ -1272,7 +1272,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VAPOREON_34:
         return evolution (this, from:"Eevee", hp:HP090, type:WATER, retreatCost:2) {
           weakness L, PLUS20
@@ -1311,7 +1311,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VESPIQUEN_E4_35:
         return basic (this, hp:HP080, type:GRASS, retreatCost:1) {
           weakness L
@@ -1339,7 +1339,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WALREIN_36:
         return evolution (this, from:"Sealeo", hp:HP140, type:WATER, retreatCost:4) {
           weakness M, PLUS30
@@ -1365,7 +1365,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case YANMEGA_E4_37:
         return basic (this, hp:HP090, type:GRASS, retreatCost:1) {
           weakness L
@@ -1388,7 +1388,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALAKAZAM_E4_38:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness P
@@ -1413,7 +1413,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTRODE_G_39:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness F
@@ -1442,7 +1442,7 @@ public enum RisingRivals implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case GENGAR_GL_40:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness D
@@ -1472,7 +1472,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GLACEON_41:
         return evolution (this, from:"Eevee", hp:HP080, type:WATER, retreatCost:1) {
           weakness M, PLUS20
@@ -1511,7 +1511,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HIPPOWDON_E4_42:
         return basic (this, hp:HP090, type:FIGHTING, retreatCost:2) {
           weakness W
@@ -1541,7 +1541,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case INFERNAPE_E4_43:
         return basic (this, hp:HP090, type:FIRE, retreatCost:1) {
           weakness W
@@ -1564,7 +1564,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LAIRON_44:
         return evolution (this, from:"Aron", hp:HP080, type:METAL, retreatCost:2) {
           weakness R, PLUS20
@@ -1590,7 +1590,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LEAFEON_45:
         return evolution (this, from:"Eevee", hp:HP090, type:GRASS, retreatCost:2) {
           weakness R, PLUS20
@@ -1633,7 +1633,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MACHAMP_GL_46:
         return basic (this, hp:HP100, type:FIGHTING, retreatCost:3) {
           weakness P
@@ -1663,7 +1663,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAPIDASH_E4_47:
         return basic (this, hp:HP070, type:FIRE, retreatCost:0) {
           weakness W
@@ -1693,7 +1693,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SCIZOR_E4_48:
         return basic (this, hp:HP080, type:GRASS, retreatCost:1) {
           weakness R
@@ -1717,7 +1717,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHARPEDO_49:
         return evolution (this, from:"Carvanha", hp:HP090, type:DARKNESS, retreatCost:0) {
           weakness L, PLUS20
@@ -1754,7 +1754,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STARMIE_50:
         return evolution (this, from:"Staryu", hp:HP080, type:WATER, retreatCost:0) {
           weakness L, PLUS20
@@ -1789,7 +1789,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STEELIX_GL_51:
         return basic (this, hp:HP110, type:METAL, retreatCost:4) {
           weakness R
@@ -1819,7 +1819,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TROPIUS_52:
         return basic (this, hp:HP080, type:GRASS, retreatCost:2) {
           weakness R, PLUS20
@@ -1855,7 +1855,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VIBRAVA_53:
         return evolution (this, from:"Trapinch", hp:HP070, type:COLORLESS, retreatCost:1) {
           weakness C, PLUS20
@@ -1886,7 +1886,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WHISCASH_E4_54:
         return basic (this, hp:HP080, type:FIGHTING, retreatCost:1) {
           weakness G
@@ -1912,7 +1912,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AERODACTYL_GL_55:
         return basic (this, hp:HP080, type:FIGHTING, retreatCost:0) {
           weakness L
@@ -1963,7 +1963,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AMBIPOM_G_56:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness F
@@ -1992,7 +1992,7 @@ public enum RisingRivals implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ARON_57:
         return basic (this, hp:HP050, type:METAL, retreatCost:1) {
           weakness R, PLUS10
@@ -2016,7 +2016,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CARVANHA_58:
         return basic (this, hp:HP040, type:DARKNESS, retreatCost:1) {
           weakness L, PLUS10
@@ -2044,7 +2044,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EEVEE_59:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
@@ -2071,7 +2071,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FLAREON_E4_60:
         return basic (this, hp:HP070, type:FIRE, retreatCost:1) {
           weakness W
@@ -2095,7 +2095,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FORRETRESS_G_61:
         return basic (this, hp:HP080, type:METAL, retreatCost:2) {
           weakness R
@@ -2128,7 +2128,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GLISCOR_E4_62:
         return basic (this, hp:HP080, type:FIGHTING, retreatCost:1) {
           weakness W
@@ -2155,7 +2155,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GROWLITHE_63:
         return basic (this, hp:HP070, type:FIRE, retreatCost:2) {
           weakness W, PLUS20
@@ -2179,7 +2179,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HIPPOPOTAS_64:
         return basic (this, hp:HP070, type:FIGHTING, retreatCost:2) {
           weakness W, PLUS10
@@ -2207,7 +2207,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HOUNDOOM_E4_65:
         return basic (this, hp:HP080, type:DARKNESS, retreatCost:1) {
           weakness F
@@ -2231,7 +2231,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KAKUNA_66:
         return evolution (this, from:"Weedle", hp:HP080, type:GRASS, retreatCost:2) {
           weakness R, PLUS20
@@ -2263,7 +2263,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KECLEON_67:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS20
@@ -2296,7 +2296,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KOFFING_68:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:2) {
           weakness P, PLUS10
@@ -2323,7 +2323,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MUNCHLAX_69:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:2) {
           weakness F, PLUS10
@@ -2353,7 +2353,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MUNCHLAX_70:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:2) {
           weakness F, PLUS20
@@ -2382,7 +2382,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDORAN_FEMALE_71:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -2406,7 +2406,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDORAN_MALE_72:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -2431,7 +2431,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDORINA_73:
         return evolution (this, from:"Nidoran♀", hp:HP080, type:PSYCHIC, retreatCost:2) {
           weakness P, PLUS20
@@ -2457,7 +2457,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDORINO_74:
         return evolution (this, from:"Nidoran♂", hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS20
@@ -2481,7 +2481,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NUZLEAF_75:
         return evolution (this, from:"Seedot", hp:HP080, type:DARKNESS, retreatCost:1) {
           weakness R, PLUS20
@@ -2504,7 +2504,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case QUAGSIRE_GL_76:
         return basic (this, hp:HP090, type:WATER, retreatCost:2) {
           weakness G
@@ -2532,7 +2532,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SEALEO_77:
         return evolution (this, from:"Spheal", hp:HP080, type:WATER, retreatCost:2) {
           weakness M, PLUS20
@@ -2559,7 +2559,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SEEDOT_78:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -2594,7 +2594,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHELLOS_EAST_SEA_79:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness G, PLUS10
@@ -2621,7 +2621,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHELLOS_WEST_SEA_80:
         return basic (this, hp:HP070, type:WATER, retreatCost:2) {
           weakness G, PLUS20
@@ -2645,7 +2645,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SNORLAX_81:
         return basic (this, hp:HP100, type:COLORLESS, retreatCost:4) {
           weakness F, PLUS20
@@ -2695,7 +2695,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SPHEAL_82:
         return basic (this, hp:HP060, type:WATER, retreatCost:2) {
           weakness M, PLUS10
@@ -2716,7 +2716,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STARYU_83:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness L, PLUS10
@@ -2740,7 +2740,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TRAPINCH_84:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness W, PLUS10
@@ -2764,7 +2764,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TURTWIG_GL_85:
         return basic (this, hp:HP090, type:GRASS, retreatCost:3) {
           weakness R
@@ -2792,7 +2792,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WEEDLE_86:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -2819,7 +2819,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WEEZING_87:
         return evolution (this, from:"Koffing", hp:HP080, type:PSYCHIC, retreatCost:2) {
           weakness P, PLUS20
@@ -2853,7 +2853,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AARON_S_COLLECTION_88:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your discard pile for up to 2 in any combination of Pokémon SP and basic Energy cards, show them to your opponent, and put them into your hand."
@@ -2867,9 +2867,9 @@ public enum RisingRivals implements LogicCardInfo {
               it.cardTypes.is(POKEMON_SP) || it.cardTypes.is(BASIC_ENERGY)
             } : "You have no Pokémon SP or basic Energy cards in your discard pile"
           }
-        };
+        }
       case BEBE_S_SEARCH_89:
-        return copy (MysteriousTreasures.BEBE_S_SEARCH_109, this);
+        return copy (MysteriousTreasures.BEBE_S_SEARCH_109, this)
       case BERTHA_S_WARMTH_90:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nRemove 5 damage counters from 1 of your Pokémon SP."
@@ -2879,7 +2879,7 @@ public enum RisingRivals implements LogicCardInfo {
           playRequirement{
             assert my.all.find{it.pokemonSP && it.numberOfDamageCounters} : "You have no damged Pokémon SP"
           }
-        };
+        }
       case FLINT_S_WILLPOWER_91:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nAttach a basic Energy card from your hand to 1 of your Pokémon SP."
@@ -2890,7 +2890,7 @@ public enum RisingRivals implements LogicCardInfo {
             assert my.all.find{it.pokemonSP} : "You have no Pokémon SP in play"
             assert my.hand.filterByType(BASIC_ENERGY) : "You have no basic Energy cards in your hand"
           }
-        };
+        }
       case LUCIAN_S_ASSIGNMENT_92:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nMove as many Energy cards attached to 1 of your Pokémon as you like to another of your Pokémon."
@@ -2906,7 +2906,7 @@ public enum RisingRivals implements LogicCardInfo {
             assert my.all.find{it.cards.energyCount(C)} : "You don't have any energy in play"
             assert my.bench : "You have no Benched Pokémon"
           }
-        };
+        }
       case POKEMON_CONTEST_HALL_93:
         return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nOnce during each player’s turn, if that player’s Bench isn’t full, the player may flip a coin. If heads, that player searches his or her deck for a Basic Pokémon and puts it onto his or her Bench. If the player does, he or she may search his or her deck for a Pokémon Tool card and attach it to that Pokémon. If that player searched his or her deck, the player shuffles his or her deck afterward."
@@ -2933,7 +2933,7 @@ public enum RisingRivals implements LogicCardInfo {
           onRemoveFromPlay{
             actions.each { bg().gm().unregisterAction(it) }
           }
-        };
+        }
       case SUNYSHORE_CITY_GYM_94:
         return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nAny damage done by attacks from [L] Pokémon (both yours and your opponent’s) to the Defending Pokémon isn’t affected by Resistance. Each [L] Pokémon in play (both yours and your opponent’s) has no Weakness."
@@ -2958,7 +2958,7 @@ public enum RisingRivals implements LogicCardInfo {
             eff1.unregister()
             eff2.unregister()
           }
-        };
+        }
       case TECHNICAL_MACHINE_G_95:
         return basicTrainer (this) {
           text "Attach this card to 1 of your Pokémon SP in play. That Pokémon may use this card’s attack instead of its own. When the Pokémon this card is attached to is no longer Pokémon SP, discard this card.\n[C][C][C] Damage Porter Choose 1 of your opponent’s Pokémon. This attack does 10 damage times the number of damage counters on the Pokémon this card is attached to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
@@ -2966,7 +2966,7 @@ public enum RisingRivals implements LogicCardInfo {
           }
           playRequirement{
           }
-        };
+        }
       case SP_RADAR_96:
         return itemCard (this) {
           text "Choose a card from your hand and put it on top of your deck. Search your deck for a Pokémon SP, show it to your opponent, and put it into your hand. Shuffle your deck afterward. (If this is the only card in your hand, you can’t play this card.)"
@@ -2981,9 +2981,9 @@ public enum RisingRivals implements LogicCardInfo {
           playRequirement{
             assert my.hand.getExcludedList(thisCard) : "You have no other cards in your hand"
           }
-        };
+        }
       case UNDERGROUND_EXPEDITION_97:
-        return copy(CelestialStorm.UNDERGROUND_EXPEDITION_150, this);
+        return copy(CelestialStorm.UNDERGROUND_EXPEDITION_150, this)
       case VOLKNER_S_PHILOSOPHY_98:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nYou may discard a card from your hand. Then, draw cards until you have 6 cards in your hand. (If you can’t draw any cards, you can’t play this card.)"
@@ -2995,9 +2995,9 @@ public enum RisingRivals implements LogicCardInfo {
             assert my.hand.getExcludedList(thisCard).size() <= 6
             assert my.deck : "Your deck is empty"
           }
-        };
+        }
       case DARKNESS_ENERGY_99:
-        return copy (MysteriousTreasures.DARKNESS_ENERGY_119, this);
+        return copy (MysteriousTreasures.DARKNESS_ENERGY_119, this)
       case METAL_ENERGY_100:
         return copy (RubySapphire.METAL_ENERGY_94, this)
       case SP_ENERGY_101:
@@ -3013,7 +3013,7 @@ public enum RisingRivals implements LogicCardInfo {
               return [[C] as Set]
             }
           }
-        };
+        }
       case UPPER_ENERGY_102:
         return specialEnergy (this, [[C]]) {
           text "Upper Energy provides [C] Energy. If you have more Prize cards left than your opponent and this card is attached to a Pokémon (excluding Pokémon LV.X), Upper Energy provides [C][C]."
@@ -3027,7 +3027,7 @@ public enum RisingRivals implements LogicCardInfo {
               return [[C] as Set]
             }
           }
-        };
+        }
       case ALAKAZAM_E4_LV_X_103:
         return levelUp (this, from:"Alakazam E4", hp:HP100, type:PSYCHIC, retreatCost:2) {
           weakness P
@@ -3058,7 +3058,7 @@ public enum RisingRivals implements LogicCardInfo {
               noWrDamage 50, defending
             }
           }
-        };
+        }
       case FLOATZEL_GL_LV_X_104:
         return levelUp (this, from:"Floatzel GL", hp:HP100, type:WATER, retreatCost:0) {
           weakness L
@@ -3102,7 +3102,7 @@ public enum RisingRivals implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case FLYGON_LV_X_105:
         return levelUp (this, from:"Flygon", hp:HP140, type:COLORLESS, retreatCost:0) {
           weakness C
@@ -3128,7 +3128,7 @@ public enum RisingRivals implements LogicCardInfo {
               damage 150, opp.all.findAll{it.pokemonLevelUp}.select(text)
             }
           }
-        };
+        }
       case GALLADE_E4_LV_X_106:
         return levelUp (this, from:"Gallade E4", hp:HP100, type:PSYCHIC, retreatCost:1) {
           weakness P
@@ -3151,7 +3151,7 @@ public enum RisingRivals implements LogicCardInfo {
               damage 40 + 10 * defending.numberOfDamageCounters
             }
           }
-        };
+        }
       case HIPPOWDON_LV_X_107:
         return levelUp (this, from:"Hippowdon", hp:HP130, type:FIGHTING, retreatCost:4) {
           weakness W
@@ -3196,7 +3196,7 @@ public enum RisingRivals implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case INFERNAPE_E4_LV_X_108:
         return levelUp (this, from:"Infernape E4", hp:HP110, type:FIRE, retreatCost:0) {
           weakness W
@@ -3219,7 +3219,7 @@ public enum RisingRivals implements LogicCardInfo {
               discardSelfEnergyAfterDamage C, C
             }
           }
-        };
+        }
       case LUXRAY_GL_LV_X_109:
         return levelUp (this, from:"Luxray GL", hp:HP110, type:LIGHTNING, retreatCost:0) {
           weakness F
@@ -3242,7 +3242,7 @@ public enum RisingRivals implements LogicCardInfo {
               noWrDamage 30, my.all.select("Choose Pokémon to do 30 damage to")
             }
           }
-        };
+        }
       case MISMAGIUS_GL_LV_X_110:
         return levelUp (this, from:"Mismagius GL", hp:HP100, type:PSYCHIC, retreatCost:1) {
           weakness D
@@ -3282,7 +3282,7 @@ public enum RisingRivals implements LogicCardInfo {
               directDamage count * 10, defending
             }
           }
-        };
+        }
       case SNORLAX_LV_X_111:
         return levelUp (this, from:"Snorlax", hp:HP130, type:COLORLESS, retreatCost:4) {
           weakness F
@@ -3312,7 +3312,7 @@ public enum RisingRivals implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case PIKACHU_112:
         return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
           weakness F
@@ -3336,7 +3336,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FLYING_PIKACHU_113:
         return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
           resistance F, MINUS30
@@ -3363,7 +3363,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SURFING_PIKACHU_114:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
           weakness F
@@ -3376,7 +3376,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FAN_ROTOM_RT1:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:0) {
           weakness D, PLUS20
@@ -3424,7 +3424,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FROST_ROTOM_RT2:
         return basic (this, hp:HP090, type:LIGHTNING, retreatCost:3) {
           weakness D, PLUS20
@@ -3469,7 +3469,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HEAT_ROTOM_RT3:
         return basic (this, hp:HP080, type:LIGHTNING, retreatCost:1) {
           weakness D, PLUS20
@@ -3518,7 +3518,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MOW_ROTOM_RT4:
         return basic (this, hp:HP090, type:LIGHTNING, retreatCost:2) {
           weakness D, PLUS20
@@ -3570,7 +3570,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WASH_ROTOM_RT5:
         return basic (this, hp:HP090, type:LIGHTNING, retreatCost:2) {
           weakness D, PLUS20
@@ -3625,7 +3625,7 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHARON_S_CHOICE_RT6:
         return basicTrainer (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for any Rotom and switch it with any Rotom you have in play. Any cards attached to Rotom and damage counters on it are now on the new Pokémon. (Remove all Special Conditions and effects from Rotom.) Put Rotom on top of your deck. Shuffle your deck afterward."
@@ -3652,9 +3652,9 @@ public enum RisingRivals implements LogicCardInfo {
             assert my.deck : "Your deck is empty"
             assert my.all.find{it.name.contains("Rotom")} : "You have no Rotoms in play"
           }
-        };
+        }
       default:
-        return null;
+        return null
     }
   }
 

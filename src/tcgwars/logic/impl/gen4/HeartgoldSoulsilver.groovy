@@ -1,28 +1,28 @@
 package tcgwars.logic.impl.gen4
 
-import tcgwars.logic.impl.gen1.BaseSet;
-import tcgwars.logic.impl.gen3.FireRedLeafGreen;
-import tcgwars.logic.impl.gen3.TeamRocketReturns;
-import tcgwars.logic.impl.gen5.BlackWhite;
-import tcgwars.logic.impl.gen6.KalosStarterSet;
-import tcgwars.logic.impl.gen7.CelestialStorm;
-import tcgwars.logic.impl.gen7.UnbrokenBonds;
+import tcgwars.logic.impl.gen1.BaseSet
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
+import tcgwars.logic.impl.gen3.TeamRocketReturns
+import tcgwars.logic.impl.gen5.BlackWhite
+import tcgwars.logic.impl.gen6.KalosStarterSet
+import tcgwars.logic.impl.gen7.CelestialStorm
+import tcgwars.logic.impl.gen7.UnbrokenBonds
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
+import static tcgwars.logic.effect.EffectType.*
 import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.*;
+import tcgwars.logic.*
 import tcgwars.logic.card.*
 import tcgwars.logic.effect.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -154,7 +154,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
   GYARADOS_123 ("Gyarados", "123", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
   ALPH_LITHOGRAPH_ONE ("Alph Lithograph", "ONE", Rarity.HOLORARE, [TRAINER, ITEM]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
   static SimpleDeck growthClash() {
     def d = new SimpleDeck("Growth Clash Theme Deck")
@@ -175,51 +175,51 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
     d
   }
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   HeartgoldSoulsilver(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.HEARTGOLD_SOULSILVER;
+    return tcgwars.logic.card.Collection.HEARTGOLD_SOULSILVER
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -243,7 +243,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AZUMARILL_2:
         return evolution (this, from:"Marill", hp:HP090, type:WATER, retreatCost:2) {
           weakness L
@@ -263,7 +263,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CLEFABLE_3:
         return evolution (this, from:"Clefairy", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness F
@@ -286,7 +286,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GYARADOS_4:
         return evolution (this, from:"Magikarp", hp:HP130, type:WATER, retreatCost:3) {
           weakness L
@@ -307,7 +307,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HITMONTOP_5:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness P
@@ -341,7 +341,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case JUMPLUFF_6:
         return evolution (this, from:"Skiploom", hp:HP090, type:GRASS, retreatCost:0) {
           weakness R
@@ -362,7 +362,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NINETALES_7:
         return evolution (this, from:"Vulpix", hp:HP090, type:FIRE, retreatCost:1) {
           weakness W
@@ -385,7 +385,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NOCTOWL_8:
         return evolution (this, from:"Hoothoot", hp:HP090, type:COLORLESS, retreatCost:1) {
           weakness L
@@ -410,7 +410,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case QUAGSIRE_9:
         return evolution (this, from:"Wooper", hp:HP100, type:WATER, retreatCost:3) {
           weakness G
@@ -431,7 +431,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAICHU_10:
         return evolution (this, from:"Pikachu", hp:HP090, type:LIGHTNING, retreatCost:0) {
           weakness F
@@ -454,7 +454,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHUCKLE_11:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness R
@@ -480,7 +480,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SLOWKING_12:
         return evolution (this, from:"Slowpoke", hp:HP080, type:PSYCHIC, retreatCost:2) {
           weakness P
@@ -519,7 +519,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WOBBUFFET_13:
         return basic (this, hp:HP090, type:PSYCHIC, retreatCost:2) {
           weakness P
@@ -531,7 +531,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AMPHAROS_14:
         return evolution (this, from:"Flaaffy", hp:HP120, type:LIGHTNING, retreatCost:1) {
           weakness F
@@ -560,7 +560,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARIADOS_15:
         return evolution (this, from:"Spinarak", hp:HP080, type:GRASS, retreatCost:1) {
           weakness R
@@ -581,7 +581,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BUTTERFREE_16:
         return evolution (this, from:"Metapod", hp:HP120, type:GRASS, retreatCost:0) {
           weakness L
@@ -602,7 +602,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CLEFFA_17:
         return basic (this, hp:HP030, type:COLORLESS, retreatCost:0) {
           pokeBody "Sweet Sleeping Face", {
@@ -629,7 +629,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EXEGGUTOR_18:
         return evolution (this, from:"Exeggcute", hp:HP090, type:PSYCHIC, retreatCost:2) {
           weakness P
@@ -652,7 +652,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FARFETCH_D_19:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness L
@@ -678,7 +678,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FERALIGATR_20:
         return evolution (this, from:"Croconaw", hp:HP130, type:WATER, retreatCost:2) {
           weakness G
@@ -697,7 +697,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FURRET_21:
         return evolution (this, from:"Sentret", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness F
@@ -721,7 +721,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
               flip {damage 20}
             }
           }
-        };
+        }
       case GRANBULL_22:
         return evolution (this, from:"Snubbull", hp:HP090, type:COLORLESS, retreatCost:3) {
           weakness F
@@ -747,7 +747,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HYPNO_23:
         return evolution (this, from:"Drowzee", hp:HP090, type:PSYCHIC, retreatCost:2) {
           weakness P
@@ -769,7 +769,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LAPRAS_24:
         return basic (this, hp:HP090, type:WATER, retreatCost:2) {
           weakness M
@@ -789,7 +789,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LEDIAN_25:
         return evolution (this, from:"Ledyba", hp:HP080, type:GRASS, retreatCost:0) {
           weakness R
@@ -810,7 +810,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MEGANIUM_26:
         return evolution (this, from:"Bayleef", hp:HP130, type:GRASS, retreatCost:2) {
           weakness R
@@ -832,7 +832,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PERSIAN_27:
         return evolution (this, from:"Meowth", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness F
@@ -856,7 +856,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PICHU_28:
         return basic (this, hp:HP030, type:LIGHTNING, retreatCost:0) {
           pokeBody "Sweet Sleeping Face", {
@@ -892,7 +892,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SANDSLASH_29:
         return evolution (this, from:"Sandshrew", hp:HP080, type:FIGHTING, retreatCost:0) {
           weakness W
@@ -913,7 +913,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SMOOCHUM_30:
         return basic (this, hp:HP030, type:PSYCHIC, retreatCost:0) {
           pokeBody "Sweet Sleeping Face", {
@@ -943,7 +943,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
 
           }
 
-        };
+        }
       case SUNFLORA_31:
         return evolution (this, from:"Sunkern", hp:HP080, type:GRASS, retreatCost:1) {
           weakness R
@@ -967,7 +967,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TYPHLOSION_32:
         return evolution (this, from:"Quilava", hp:HP130, type:FIRE, retreatCost:1) {
           weakness W
@@ -989,7 +989,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TYROGUE_33:
         return basic (this, hp:HP030, type:FIGHTING, retreatCost:0) {
           pokeBody "Sweet Sleeping Face", {
@@ -1014,7 +1014,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WEEZING_34:
         return evolution (this, from:"Koffing", hp:HP090, type:PSYCHIC, retreatCost:2) {
           weakness P
@@ -1034,7 +1034,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BAYLEEF_35:
         return evolution (this, from:"Chikorita", hp:HP090, type:GRASS, retreatCost:2) {
           weakness R
@@ -1054,7 +1054,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BLISSEY_36:
         return evolution (this, from:"Chansey", hp:HP130, type:COLORLESS, retreatCost:3) {
           weakness F
@@ -1077,7 +1077,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CORSOLA_37:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness G
@@ -1098,7 +1098,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CROCONAW_38:
         return evolution (this, from:"Totodile", hp:HP080, type:WATER, retreatCost:2) {
           weakness G
@@ -1118,7 +1118,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DELIBIRD_39:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness M
@@ -1145,7 +1145,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DONPHAN_40:
         return evolution (this, from:"Phanpy", hp:HP100, type:FIGHTING, retreatCost:3) {
           weakness W
@@ -1166,7 +1166,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DUNSPARCE_41:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness F
@@ -1189,7 +1189,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FLAAFFY_42:
         return evolution (this, from:"Mareep", hp:HP080, type:LIGHTNING, retreatCost:1) {
           weakness F
@@ -1210,7 +1210,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HERACROSS_43:
         return basic (this, hp:HP080, type:GRASS, retreatCost:2) {
           weakness R
@@ -1233,7 +1233,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case IGGLYBUFF_44:
         return basic (this, hp:HP030, type:COLORLESS, retreatCost:0) {
           pokeBody "Sweet Sleeping Face", {
@@ -1257,7 +1257,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
               defendingAttacksCostsMore(defending, [C])
             }
           }
-        };
+        }
       case MANTINE_45:
         return basic (this, hp:HP080, type:WATER, retreatCost:1) {
           weakness L
@@ -1282,7 +1282,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case METAPOD_46:
         return evolution (this, from:"Caterpie", hp:HP080, type:GRASS, retreatCost:2) {
           weakness R
@@ -1305,7 +1305,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MILTANK_47:
         return basic (this, hp:HP090, type:COLORLESS, retreatCost:3) {
           weakness F
@@ -1327,7 +1327,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PARASECT_48:
         return evolution (this, from:"Paras", hp:HP090, type:GRASS, retreatCost:2) {
           weakness R
@@ -1347,7 +1347,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case QUILAVA_49:
         return evolution (this, from:"Cyndaquil", hp:HP080, type:FIRE, retreatCost:1) {
           weakness W
@@ -1369,7 +1369,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case QWILFISH_50:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness L
@@ -1382,7 +1382,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SKIPLOOM_51:
         return evolution (this, from:"Hoppip", hp:HP060, type:GRASS, retreatCost:0) {
           weakness R
@@ -1396,7 +1396,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SLOWBRO_52:
         return evolution (this, from:"Slowpoke", hp:HP090, type:WATER, retreatCost:2) {
           weakness L
@@ -1417,7 +1417,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STARMIE_53:
         return evolution (this, from:"Staryu", hp:HP090, type:WATER, retreatCost:0) {
           weakness L
@@ -1445,7 +1445,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case UNOWN_54:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P
@@ -1467,7 +1467,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case UNOWN_55:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P
@@ -1489,7 +1489,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WIGGLYTUFF_56:
         return evolution (this, from:"Jigglypuff", hp:HP090, type:COLORLESS, retreatCost:2) {
           weakness F
@@ -1509,7 +1509,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CATERPIE_57:
         return basic (this, hp:HP030, type:GRASS, retreatCost:1) {
           weakness R
@@ -1521,7 +1521,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHANSEY_58:
         return basic (this, hp:HP090, type:COLORLESS, retreatCost:2) {
           weakness F
@@ -1541,7 +1541,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHIKORITA_59:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness R
@@ -1561,7 +1561,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CLEFAIRY_60:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness F
@@ -1580,7 +1580,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CYNDAQUIL_61:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
           weakness W
@@ -1599,7 +1599,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DROWZEE_62:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:2) {
           weakness P
@@ -1623,7 +1623,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EXEGGCUTE_63:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P
@@ -1635,7 +1635,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GIRAFARIG_64:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
           weakness P
@@ -1658,7 +1658,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GROWLITHE_65:
         return basic (this, hp:HP070, type:FIRE, retreatCost:2) {
           weakness W
@@ -1677,7 +1677,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HOOTHOOT_66:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness L
@@ -1697,7 +1697,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HOPPIP_67:
         return basic (this, hp:HP030, type:GRASS, retreatCost:1) {
           weakness R
@@ -1711,7 +1711,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case JIGGLYPUFF_68:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness F
@@ -1724,7 +1724,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case JYNX_69:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness P
@@ -1746,7 +1746,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KOFFING_70:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P
@@ -1766,7 +1766,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LEDYBA_71:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R
@@ -1786,7 +1786,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGIKARP_72:
         return basic (this, hp:HP030, type:WATER, retreatCost:1) {
           weakness L
@@ -1798,7 +1798,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAREEP_73:
         return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
           weakness F
@@ -1825,7 +1825,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MARILL_74:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness L
@@ -1845,7 +1845,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MEOWTH_75:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness F
@@ -1865,7 +1865,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PARAS_76:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R
@@ -1885,7 +1885,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PHANPY_77:
         return basic (this, hp:HP070, type:FIGHTING, retreatCost:2) {
           weakness W
@@ -1898,7 +1898,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIKACHU_78:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F
@@ -1919,7 +1919,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SANDSHREW_79:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness W
@@ -1939,7 +1939,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SENTRET_80:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness F
@@ -1960,7 +1960,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SLOWPOKE_81:
         return basic (this, hp:HP060, type:WATER, retreatCost:2) {
           weakness L
@@ -1972,7 +1972,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SNUBBULL_82:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:2) {
           weakness F
@@ -1994,7 +1994,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SPINARAK_83:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R
@@ -2013,7 +2013,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STARYU_84:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness L
@@ -2025,7 +2025,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SUNKERN_85:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness R
@@ -2048,7 +2048,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TOTODILE_86:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness G
@@ -2067,7 +2067,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VULPIX_87:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
           weakness W
@@ -2089,7 +2089,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WOOPER_88:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness G
@@ -2109,7 +2109,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BILL_89:
         return supporter (this) {
           text "Draw 2 cards."
@@ -2119,9 +2119,9 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
           playRequirement{
             assert my.deck : "No cards in deck"
           }
-        };
+        }
       case COPYCAT_90:
-        return copy(TeamRocketReturns.COPYCAT_83, this);
+        return copy(TeamRocketReturns.COPYCAT_83, this)
       case ENERGY_SWITCH_91:
         return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this)
       case FISHERMAN_92:
@@ -2143,7 +2143,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
           playRequirement{
             assert my.active.specialConditions : "No special conditions on your active"
           }
-        };
+        }
       case MOOMOO_MILK_94:
         return itemCard (this) {
           text "Choose 1 of your Pokémon. Flip 2 coins. For each heads, remove 3 damage counters from that Pokémon."
@@ -2154,7 +2154,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
           playRequirement{
             assert my.all.find{it.numberOfDamageCounters} : "Your Pokémon have no damage"
           }
-        };
+        }
       case POKE_BALL_95:
         return copy (BlackWhite.POKE_BALL_97, this)
       case POKEGEAR_3_0_96:
@@ -2169,7 +2169,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
           playRequirement{
             assert my.deck : "No cards in deck"
           }
-        };
+        }
       case POKEMON_COMMUNICATION_98:
         return copy (BlackWhite.POKEMON_COMMUNICATION_99, this)
       case POKEMON_REVERSAL_99:
@@ -2184,7 +2184,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
           playRequirement{
             assert my.deck : "No cards in deck"
           }
-        };
+        }
       case PROFESSOR_OAK_S_NEW_THEORY_101:
         return supporter (this) {
           text "Shuffle your hand into your deck. Then, draw 6 cards."
@@ -2196,7 +2196,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
           playRequirement{
             assert my.deck.notEmpty || (my.hand.getExcludedList(thisCard).size() != 0)
           }
-        };
+        }
       case SWITCH_102:
         return copy (FireRedLeafGreen.SWITCH_102, this)
       case DOUBLE_COLORLESS_ENERGY_103:
@@ -2227,7 +2227,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BLISSEY_106:
         return evolution (this, from:"Chansey", hp:HP130, type:COLORLESS, retreatCost:2) {
           weakness F
@@ -2255,7 +2255,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DONPHAN_107:
         return evolution (this, from:"Phanpy", hp:HP120, type:FIGHTING, retreatCost:4) {
           weakness W
@@ -2289,7 +2289,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FERALIGATR_108:
         return evolution (this, from:"Croconaw", hp:HP140, type:WATER, retreatCost:3) {
           weakness G
@@ -2309,7 +2309,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MEGANIUM_109:
         return evolution (this, from:"Bayleef", hp:HP150, type:GRASS, retreatCost:2) {
           weakness R
@@ -2337,7 +2337,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TYPHLOSION_110:
         return evolution (this, from:"Quilava", hp:HP140, type:FIRE, retreatCost:2) {
           weakness W
@@ -2367,7 +2367,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HO_OH_LEGEND_111:
         return basic (this, hp:HP140, type:FIRE, retreatCost:2) {
           weakness W
@@ -2392,7 +2392,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HO_OH_LEGEND_112:
         return copy(HO_OH_LEGEND_111, this)
       case LUGIA_LEGEND_113:
@@ -2423,25 +2423,25 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LUGIA_LEGEND_114:
         return copy(LUGIA_LEGEND_113, this)
       case GRASS_ENERGY_115:
-        return basicEnergy (this, GRASS);
+        return basicEnergy (this, GRASS)
       case FIRE_ENERGY_116:
-        return basicEnergy (this, FIRE);
+        return basicEnergy (this, FIRE)
       case WATER_ENERGY_117:
-        return basicEnergy (this, WATER);
+        return basicEnergy (this, WATER)
       case LIGHTNING_ENERGY_118:
-        return basicEnergy (this, LIGHTNING);
+        return basicEnergy (this, LIGHTNING)
       case PSYCHIC_ENERGY_119:
-        return basicEnergy (this, PSYCHIC);
+        return basicEnergy (this, PSYCHIC)
       case FIGHTING_ENERGY_120:
-        return basicEnergy (this, FIGHTING);
+        return basicEnergy (this, FIGHTING)
       case DARKNESS_ENERGY_121:
-        return basicEnergy (this, DARKNESS);
+        return basicEnergy (this, DARKNESS)
       case METAL_ENERGY_122:
-        return basicEnergy (this, METAL);
+        return basicEnergy (this, METAL)
       case GYARADOS_123:
         return evolution (this, from:"Magikarp", hp:HP130, type:WATER, retreatCost:3) {
           weakness L
@@ -2462,7 +2462,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALPH_LITHOGRAPH_ONE:
         return itemCard (this) {
           text "LOOK AT YOUR OPPONENTS HAND!"
@@ -2472,9 +2472,9 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
           playRequirement{
             assert opp.hand : "Opponent has no cards in hand."
           }
-        };
+        }
       default:
-        return null;
+        return null
     }
   }
 

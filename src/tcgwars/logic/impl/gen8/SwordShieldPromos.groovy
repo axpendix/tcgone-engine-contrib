@@ -1,10 +1,10 @@
 package tcgwars.logic.impl.gen8
 
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.EffectType.*
 import static tcgwars.logic.effect.EffectPriority.*
@@ -12,7 +12,7 @@ import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
 import tcgwars.logic.card.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author thezipcompany@gmail.com
@@ -136,53 +136,53 @@ public enum SwordShieldPromos implements LogicCardInfo {
   EEVEE_SWSH118 ("Eevee", "SWSH118", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
   SNORLAX_SWSH119 ("Snorlax", "SWSH119", Rarity.PROMO, [POKEMON, BASIC, SINGLE_STRIKE, _COLORLESS_]),
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   SwordShieldPromos(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.SWORD_SHIELD_PROMOS;
+    return tcgwars.logic.card.Collection.SWORD_SHIELD_PROMOS
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -198,7 +198,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SCORBUNNY_SWSH02:
       return basic (this, hp:HP060, type:R, retreatCost:1) {
         weakness W
@@ -210,7 +210,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
             flip { applyAfterDamage BURNED }
           }
         }
-      };
+      }
       case SOBBLE_SWSH03:
       return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness L
@@ -222,7 +222,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
             flip { applyAfterDamage PARALYZED }
           }
         }
-      };
+      }
       case MEOWTH_V_SWSH04:
       return basic (this, hp:HP180, type:C, retreatCost:2) {
         weakness F
@@ -241,7 +241,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
             damage 130
           }
         }
-      };
+      }
       case MEOWTH_VMAX_SWSH05:
       return evolution (this, from:"Meowth V", hp:HP300, type:C, retreatCost:2) {
         weakness F
@@ -253,15 +253,15 @@ public enum SwordShieldPromos implements LogicCardInfo {
             draw 3
           }
         }
-      };
+      }
       case RILLABOOM_SWSH06:
-      return copy (SwordShield.RILLABOOM_14, this);
+      return copy (SwordShield.RILLABOOM_14, this)
       case FROSMOTH_SWSH07:
-      return copy (SwordShield.FROSMOTH_64, this);
+      return copy (SwordShield.FROSMOTH_64, this)
       case GALARIAN_PERRSERKER_SWSH08:
-      return copy (SwordShield.GALARIAN_PERRSERKER_128, this);
+      return copy (SwordShield.GALARIAN_PERRSERKER_128, this)
       case CINCCINO_SWSH09:
-     return copy (SwordShield.CINCCINO_147, this);
+     return copy (SwordShield.CINCCINO_147, this)
       case GOSSIFLEUR_SWSH10:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -272,7 +272,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
             apply ASLEEP
           }
         }
-      };
+      }
       case WOOLOO_SWSH11:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness F
@@ -289,7 +289,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MORPEKO_SWSH12:
       return basic (this, hp:HP080, type:L, retreatCost:1) {
         weakness F
@@ -301,7 +301,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
             flip { applyAfterDamage PARALYZED }
           }
         }
-      };
+      }
       case GALARIAN_PONYTA_SWSH13:
       return basic (this, hp:HP070, type:P, retreatCost:1) {
         weakness D
@@ -320,13 +320,13 @@ public enum SwordShieldPromos implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case RILLABOOM_V_SWSH14:
-      return copy (RebelClash.RILLABOOM_V_17, this);
+      return copy (RebelClash.RILLABOOM_V_17, this)
       case CINDERACE_V_SWSH15:
-      return copy (RebelClash.CINDERACE_V_35, this);
+      return copy (RebelClash.CINDERACE_V_35, this)
       case INTELEON_V_SWSH16:
-      return copy (RebelClash.INTELEON_V_49, this);
+      return copy (RebelClash.INTELEON_V_49, this)
       case TOXTRICITY_V_SWSH17:
       return basic (this, hp:HP210, type:L, retreatCost:2) {
         weakness F
@@ -348,11 +348,11 @@ public enum SwordShieldPromos implements LogicCardInfo {
             applyAfterDamage POISONED
           }
         }
-      };
+      }
       case ZACIAN_V_SWSH18:
-      return copy (SwordShield.ZACIAN_V_138, this);
+      return copy (SwordShield.ZACIAN_V_138, this)
       case ZAMAZENTA_V_SWSH19:
-      return copy (SwordShield.ZAMAZENTA_V_139, this);
+      return copy (SwordShield.ZAMAZENTA_V_139, this)
       case PIKACHU_SWSH20:
       return basic (this, hp:HP070, type:L, retreatCost:1) {
         weakness F
@@ -370,7 +370,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case POLTEAGEIST_V_SWSH21:
       return basic (this, hp:HP170, type:P, retreatCost:1) {
         weakness D
@@ -393,19 +393,19 @@ public enum SwordShieldPromos implements LogicCardInfo {
             applyAfterDamage CONFUSED
           }
         }
-      };
+      }
       case FLAPPLE_SWSH22:
-      return copy (RebelClash.FLAPPLE_22, this);
+      return copy (RebelClash.FLAPPLE_22, this)
       case LUXRAY_SWSH23:
-      return copy (RebelClash.LUXRAY_62, this);
+      return copy (RebelClash.LUXRAY_62, this)
       case COALOSSAL_SWSH24:
-      return copy (RebelClash.COALOSSAL_107, this);
+      return copy (RebelClash.COALOSSAL_107, this)
       case GARBODOR_SWSH25:
-      return copy (RebelClash.GARBODOR_118, this);
+      return copy (RebelClash.GARBODOR_118, this)
       case MANTINE_SWSH26:
-      return copy (SwordShield.MANTINE_52, this);
+      return copy (SwordShield.MANTINE_52, this)
       case NOCTOWL_SWSH27:
-      return copy (SwordShield.NOCTOWL_144, this);
+      return copy (SwordShield.NOCTOWL_144, this)
       case DURALUDON_SWSH28:
       return basic (this, hp:HP130, type:M, retreatCost:2) {
         weakness R
@@ -425,7 +425,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
             damage 40, self
           }
         }
-      };
+      }
       case RAYQUAZA_SWSH29:
       return basic (this, hp:HP130, type:C, retreatCost:2) {
         weakness L
@@ -446,9 +446,9 @@ public enum SwordShieldPromos implements LogicCardInfo {
             discardSelfEnergyAfterDamage C
           }
         }
-      };
+      }
       case COPPERAJAH_V_SWSH30:
-      return copy (RebelClash.COPPERAJAH_V_136, this);
+      return copy (RebelClash.COPPERAJAH_V_136, this)
       case MORPEKO_SWSH31:
       return basic (this, hp:HP080, type:L, retreatCost:1) {
         weakness F
@@ -467,9 +467,9 @@ public enum SwordShieldPromos implements LogicCardInfo {
             flip { applyAfterDamage PARALYZED }
           }
         }
-      };
+      }
       case SNORLAX_SWSH32:
-      return copy (SwordShield.SNORLAX_140, this);
+      return copy (SwordShield.SNORLAX_140, this)
       case ZACIAN_SWSH33:
       return basic (this, hp:HP130, type:M, retreatCost:2) {
         weakness R
@@ -492,7 +492,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ZAMAZENTA_SWSH34:
       return basic (this, hp:HP130, type:M, retreatCost:2) {
         weakness R
@@ -517,15 +517,15 @@ public enum SwordShieldPromos implements LogicCardInfo {
             damage 130
           }
         }
-      };
+      }
       case DECIDUEYE_SWSH35:
-      return copy (DarknessAblaze.DECIDUEYE_13, this);
+      return copy (DarknessAblaze.DECIDUEYE_13, this)
       case ARCTOZOLT_SWSH36:
-      return copy (DarknessAblaze.ARCTOZOLT_66, this);
+      return copy (DarknessAblaze.ARCTOZOLT_66, this)
       case HYDREIGON_SWSH37:
-      return copy (DarknessAblaze.HYDREIGON_110, this);
+      return copy (DarknessAblaze.HYDREIGON_110, this)
       case KANGASKHAN_SWSH38:
-      return copy (DarknessAblaze.KANGASKHAN_133, this);
+      return copy (DarknessAblaze.KANGASKHAN_133, this)
       case PIKACHU_SWSH39:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness F
@@ -545,9 +545,9 @@ public enum SwordShieldPromos implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case HATENNA_SWSH40:
-      return copy (RebelClash.HATENNA_83, this);
+      return copy (RebelClash.HATENNA_83, this)
       case FLAREON_SWSH41:
       return evolution (this, from:"Eevee", hp:HP110, type:R, retreatCost:2) {
         weakness W
@@ -571,7 +571,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case EEVEE_SWSH42:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness F
@@ -593,7 +593,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
             flip { damage 30 }
           }
         }
-      };
+      }
       case GALARIAN_SIRFETCH_D_V_SWSH43:
       return basic (this, hp:HP210, type:F, retreatCost:2) {
         weakness P
@@ -628,29 +628,29 @@ public enum SwordShieldPromos implements LogicCardInfo {
             cantAttackNextTurn self
           }
         }
-      };
+      }
       case ETERNATUS_V_SWSH44:
-      return copy (DarknessAblaze.ETERNATUS_V_116, this);
+      return copy (DarknessAblaze.ETERNATUS_V_116, this)
       case ETERNATUS_VMAX_SWSH45:
-      return copy (DarknessAblaze.ETERNATUS_VMAX_117, this);
+      return copy (DarknessAblaze.ETERNATUS_VMAX_117, this)
       case ELDEGOSS_SWSH46:
-      return copy (SwordShield.ELDEGOSS_21, this);
+      return copy (SwordShield.ELDEGOSS_21, this)
       case DREDNAW_SWSH47:
-      return copy (SwordShield.DREDNAW_61, this);
+      return copy (SwordShield.DREDNAW_61, this)
       case CENTISKORCH_SWSH48:
-      return copy (SwordShield.CENTISKORCH_39, this);
+      return copy (SwordShield.CENTISKORCH_39, this)
       case DUBWOOL_V_SWSH49:
-      return copy (RebelClash.DUBWOOL_V_153, this);
+      return copy (RebelClash.DUBWOOL_V_153, this)
       case CHARIZARD_V_SWSH50:
-      return copy (DarknessAblaze.CHARIZARD_V_19, this);
+      return copy (DarknessAblaze.CHARIZARD_V_19, this)
       case LAPRAS_SWSH51:
-      return copy (SwordShield.LAPRAS_48, this);
+      return copy (SwordShield.LAPRAS_48, this)
       case GENGAR_SWSH52:
-      return copy (SwordShield.GENGAR_85, this);
+      return copy (SwordShield.GENGAR_85, this)
       case MACHAMP_SWSH53:
-      return copy (ChampionsPath.MACHAMP_26, this);
+      return copy (ChampionsPath.MACHAMP_26, this)
       case COALOSSAL_SWSH54:
-      return copy (RebelClash.COALOSSAL_107, this);
+      return copy (RebelClash.COALOSSAL_107, this)
       case HATTERENE_V_SWSH55:
       return basic (this, hp:HP200, type:P, retreatCost:2) {
         weakness D
@@ -708,7 +708,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
         }
       }
       case ETERNATUS_V_SWSH64:
-      return copy (DarknessAblaze.ETERNATUS_V_116, this);
+      return copy (DarknessAblaze.ETERNATUS_V_116, this)
       case EEVEE_V_SWSH65:
       return basic (this, hp:HP190, type:C, retreatCost:1) {
         weakness F
@@ -1170,7 +1170,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
         }
       }
       default:
-      return null;
+      return null
     }
   }
 }

@@ -1,48 +1,48 @@
 package tcgwars.logic.impl.gen3
 
-import tcgwars.logic.effect.gm.ActivateSimpleTrainer;
-import tcgwars.logic.impl.gen2.Expedition;
-import tcgwars.logic.impl.gen2.Aquapolis;
-import tcgwars.logic.impl.gen3.FireRedLeafGreen;
-import tcgwars.logic.impl.gen3.Deoxys;
-import tcgwars.logic.impl.gen3.Dragon;
-import tcgwars.logic.impl.gen4.HeartgoldSoulsilver;
-import tcgwars.logic.impl.gen5.BlackWhite;
-import tcgwars.logic.impl.gen5.PlasmaStorm;
-import tcgwars.logic.impl.gen6.KalosStarterSet;
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer
+import tcgwars.logic.impl.gen2.Expedition
+import tcgwars.logic.impl.gen2.Aquapolis
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
+import tcgwars.logic.impl.gen3.Deoxys
+import tcgwars.logic.impl.gen3.Dragon
+import tcgwars.logic.impl.gen4.HeartgoldSoulsilver
+import tcgwars.logic.impl.gen5.BlackWhite
+import tcgwars.logic.impl.gen5.PlasmaStorm
+import tcgwars.logic.impl.gen6.KalosStarterSet
 
 import tcgwars.logic.effect.gm.PlayTrainer
 import tcgwars.logic.effect.gm.Attack
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author luongthomasdev@gmail.com
@@ -196,53 +196,53 @@ public enum UnseenForces implements LogicCardInfo {
   UNOWN_145 ("Unown", "em", Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]);
 
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   UnseenForces(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.UNSEEN_FORCES;
+    return tcgwars.logic.card.Collection.UNSEEN_FORCES
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -258,9 +258,9 @@ public enum UnseenForces implements LogicCardInfo {
             checkNoSPC()
             while(true){
               def pl = my.bench.findAll{ it.cards.filterByType(BASIC_ENERGY) }
-              if(!pl) break;
+              if(!pl) break
               def src = pl.select("source for energy (cancel to stop)", false)
-              if(!src) break;
+              if(!src) break
               def card = src.cards.select("Card to move", cardTypeFilter(BASIC_ENERGY)).first()
               energySwitch(src, my.active, card)
             }
@@ -280,7 +280,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ARIADOS_2:
       return evolution (this, from:"Spinarak", hp:HP070, type:G, retreatCost:1) {
         weakness P
@@ -306,7 +306,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case BELLOSSOM_3:
       return evolution (this, from:"Gloom", hp:HP090, type:G, retreatCost:1) {
         weakness R
@@ -338,7 +338,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case FERALIGATR_4:
       return evolution (this, from:"Croconaw", hp:HP120, type:W, retreatCost:2) {
         weakness L
@@ -379,7 +379,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case FLAREON_5:
       return evolution (this, from:"Eevee", hp:HP070, type:R, retreatCost:1) {
         weakness W
@@ -410,7 +410,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case FORRETRESS_6:
       return evolution (this, from:"Pineco", hp:HP070, type:M, retreatCost:1) {
         weakness R
@@ -452,7 +452,7 @@ public enum UnseenForces implements LogicCardInfo {
             directDamage 70, self
           }
         }
-      };
+      }
       case HOUNDOOM_7:
       return evolution (this, from:"Houndour", hp:HP070, type:R, retreatCost:1) {
         weakness W
@@ -487,7 +487,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case JOLTEON_8:
       return evolution (this, from:"Eevee", hp:HP070, type:L, retreatCost:0) {
         weakness F
@@ -523,7 +523,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MEGANIUM_9:
       return evolution (this, from:"Bayleef", hp:HP100, type:G, retreatCost:3) {
         weakness R
@@ -560,7 +560,7 @@ public enum UnseenForces implements LogicCardInfo {
               }
           }
         }
-      };
+      }
       case OCTILLERY_10:
       return evolution (this, from:"Remoraid", hp:HP080, type:W, retreatCost:1) {
         weakness L
@@ -590,7 +590,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case POLIWRATH_11:
       return evolution (this, from:"Poliwhirl", hp:HP120, type:F, retreatCost:2) {
         weakness P
@@ -625,7 +625,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case PORYGON2_12:
       return evolution (this, from:"Porygon", hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -663,7 +663,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SLOWBRO_13:
       return evolution (this, from:"Slowpoke", hp:HP080, type:W, retreatCost:2) {
         weakness G
@@ -690,7 +690,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case SLOWKING_14:
       return evolution (this, from:"Slowpoke", hp:HP070, type:P, retreatCost:1) {
         weakness G
@@ -713,7 +713,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 20 + extraDamage
           }
         }
-      };
+      }
       case SUDOWOODO_15:
       return basic (this, hp:HP060, type:F, retreatCost:1) {
         weakness W
@@ -739,7 +739,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 50 - 10*self.numberOfDamageCounters
           }
         }
-      };
+      }
       case SUNFLORA_16:
       return evolution (this, from:"Sunkern", hp:HP070, type:G, retreatCost:1) {
         weakness R
@@ -762,7 +762,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case TYPHLOSION_17:
       return evolution (this, from:"Quilava", hp:HP110, type:R, retreatCost:1) {
         weakness W
@@ -793,7 +793,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 50+10*self.numberOfDamageCounters
           }
         }
-      };
+      }
       case URSARING_18:
       return evolution (this, from:"Teddiursa", hp:HP080, type:C, retreatCost:2) {
         weakness F
@@ -837,7 +837,7 @@ public enum UnseenForces implements LogicCardInfo {
             flip { damage 20 }
           }
         }
-      };
+      }
       case VAPOREON_19:
       return evolution (this, from:"Eevee", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -868,7 +868,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case CHANSEY_20:
       return basic (this, hp:HP090, type:C, retreatCost:2) {
         weakness F
@@ -891,7 +891,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case CLEFFA_21:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -913,7 +913,7 @@ public enum UnseenForces implements LogicCardInfo {
             draw 6
           }
         }
-      };
+      }
       case ELECTABUZZ_22:
       return basic (this, hp:HP070, type:L, retreatCost:1) {
         weakness F
@@ -954,7 +954,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ELEKID_23:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -977,7 +977,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case HITMONCHAN_24:
       return basic (this, hp:HP070, type:F, retreatCost:1) {
         weakness P
@@ -1007,7 +1007,7 @@ public enum UnseenForces implements LogicCardInfo {
             swiftDamage 50, defending
           }
         }
-      };
+      }
       case HITMONLEE_25:
       return basic (this, hp:HP060, type:F, retreatCost:1) {
         weakness P
@@ -1043,7 +1043,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case HITMONTOP_26:
       return basic (this, hp:HP070, type:F, retreatCost:1) {
         weakness P
@@ -1071,7 +1071,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case HO_OH_27:
       return basic (this, hp:HP080, type:R, retreatCost:2) {
         weakness W
@@ -1092,7 +1092,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case JYNX_28:
       return basic (this, hp:HP070, type:W, retreatCost:1) {
         weakness M
@@ -1127,7 +1127,7 @@ public enum UnseenForces implements LogicCardInfo {
             putDamageCountersOnOpponentsPokemon(4)
           }
         }
-      };
+      }
       case LUGIA_29:
       return basic (this, hp:HP080, type:P, retreatCost:2) {
         weakness P
@@ -1139,7 +1139,7 @@ public enum UnseenForces implements LogicCardInfo {
             flip 2, { damage 20 }
           }
         }
-      };
+      }
       case MURKROW_30:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness L
@@ -1164,7 +1164,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SMOOCHUM_31:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness M
@@ -1184,7 +1184,7 @@ public enum UnseenForces implements LogicCardInfo {
             directDamage 10, opp.all.select("Select a Pokémon to put a damage counter on")
           }
         }
-      };
+      }
       case STANTLER_32:
       return basic (this, hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -1211,7 +1211,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case TYROGUE_33:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness P
@@ -1234,7 +1234,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case AIPOM_34:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1261,7 +1261,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 10, opp.all.select()
           }
         }
-      };
+      }
       case BAYLEEF_35:
       return evolution (this, from:"Chikorita", hp:HP070, type:G, retreatCost:1) {
         weakness R
@@ -1281,7 +1281,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case CLEFABLE_36:
       return evolution (this, from:"Clefairy", hp:HP080, type:C, retreatCost:1) {
         weakness F
@@ -1301,7 +1301,7 @@ public enum UnseenForces implements LogicCardInfo {
             increasedBaseDamageNextTurn("Extra Comet Punch", hp(30))
           }
         }
-      };
+      }
       case CORSOLA_37:
       return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness G
@@ -1330,7 +1330,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case CROCONAW_38:
       return evolution (this, from:"Totodile", hp:HP080, type:W, retreatCost:2) {
         weakness L
@@ -1349,7 +1349,7 @@ public enum UnseenForces implements LogicCardInfo {
             dontApplyResistance()
           }
         }
-      };
+      }
       case GRANBULL_39:
       return evolution (this, from:"Snubbull", hp:HP070, type:C, retreatCost:2) {
         weakness F
@@ -1381,7 +1381,7 @@ public enum UnseenForces implements LogicCardInfo {
             flip 2, { damage 50 }
           }
         }
-      };
+      }
       case LANTURN_40:
       return evolution (this, from:"Chinchou", hp:HP080, type:L, retreatCost:1) {
         weakness F
@@ -1405,7 +1405,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 10, self
           }
         }
-      };
+      }
       case MAGCARGO_41:
       return evolution (this, from:"Slugma", hp:HP080, type:R, retreatCost:2) {
         weakness W
@@ -1433,7 +1433,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MILTANK_42:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness F
@@ -1475,7 +1475,7 @@ public enum UnseenForces implements LogicCardInfo {
             flip { applyAfterDamage PARALYZED }
           }
         }
-      };
+      }
       case NOCTOWL_43:
       return evolution (this, from:"Hoothoot", hp:HP070, type:C, retreatCost:1) {
         weakness L
@@ -1495,7 +1495,7 @@ public enum UnseenForces implements LogicCardInfo {
             afterDamage { astonish() }
           }
         }
-      };
+      }
       case QUAGSIRE_44:
       return evolution (this, from:"Wooper", hp:HP080, type:F, retreatCost:2) {
         weakness G
@@ -1527,7 +1527,7 @@ public enum UnseenForces implements LogicCardInfo {
             dontApplyResistance()
           }
         }
-      };
+      }
       case QUILAVA_45:
       return evolution (this, from:"Cyndaquil", hp:HP070, type:R, retreatCost:1) {
         weakness W
@@ -1546,7 +1546,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case SCYTHER_46:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -1573,7 +1573,7 @@ public enum UnseenForces implements LogicCardInfo {
             flip { preventAllEffectsNextTurn() }
           }
         }
-      };
+      }
       case SHUCKLE_47:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -1598,7 +1598,7 @@ public enum UnseenForces implements LogicCardInfo {
             extraPoison 1
           }
         }
-      };
+      }
       case SMEARGLE_48:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1631,7 +1631,7 @@ public enum UnseenForces implements LogicCardInfo {
             flip { applyAfterDamage CONFUSED }
           }
         }
-      };
+      }
       case XATU_49:
       return evolution (this, from:"Natu", hp:HP080, type:P, retreatCost:1) {
         weakness P
@@ -1650,7 +1650,7 @@ public enum UnseenForces implements LogicCardInfo {
             flip { applyAfterDamage PARALYZED }
           }
         }
-      };
+      }
       case YANMA_50:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -1671,7 +1671,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case CHIKORITA_51:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -1690,7 +1690,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case CHINCHOU_52:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1708,7 +1708,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case CLEFAIRY_53:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1727,7 +1727,7 @@ public enum UnseenForces implements LogicCardInfo {
             applyAfterDamage ASLEEP
           }
         }
-      };
+      }
       case CYNDAQUIL_54:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1748,7 +1748,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case EEVEE_55:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
@@ -1781,7 +1781,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case FLAAFFY_56:
       return evolution (this, from:"Mareep", hp:HP080, type:L, retreatCost:1) {
         weakness F
@@ -1804,7 +1804,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 10, self
           }
         }
-      };
+      }
       case GLIGAR_57:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness L
@@ -1824,7 +1824,7 @@ public enum UnseenForces implements LogicCardInfo {
             applyAfterDamage POISONED
           }
         }
-      };
+      }
       case GLOOM_58:
       return evolution (this, from:"Oddish", hp:HP070, type:G, retreatCost:1) {
         weakness P
@@ -1836,7 +1836,7 @@ public enum UnseenForces implements LogicCardInfo {
             apply POISONED
           }
         }
-      };
+      }
       case HOOTHOOT_59:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness L
@@ -1855,7 +1855,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case HOUNDOUR_60:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1866,7 +1866,7 @@ public enum UnseenForces implements LogicCardInfo {
             apply POISONED
           }
         }
-      };
+      }
       case LARVITAR_61:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
@@ -1884,7 +1884,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MAREEP_62:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1896,7 +1896,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case NATU_63:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -1907,7 +1907,7 @@ public enum UnseenForces implements LogicCardInfo {
             noWrDamage 10, opp.all.select("Do 10 damage to which pokémon?")
           }
         }
-      };
+      }
       case ODDISH_64:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness P
@@ -1919,7 +1919,7 @@ public enum UnseenForces implements LogicCardInfo {
             flip { applyAfterDamage PARALYZED }
           }
         }
-      };
+      }
       case ONIX_65:
       return basic (this, hp:HP080, type:F, retreatCost:3) {
         weakness W
@@ -1940,7 +1940,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case PINECO_66:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -1951,7 +1951,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case POLIWAG_67:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -1969,7 +1969,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case POLIWHIRL_68:
       return evolution (this, from:"Poliwag", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -1981,7 +1981,7 @@ public enum UnseenForces implements LogicCardInfo {
             extraEnergyDamage(2, hp(10), C, thisMove)
           }
         }
-      };
+      }
       case PORYGON_69:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1992,7 +1992,7 @@ public enum UnseenForces implements LogicCardInfo {
             flip 3, {damage 10}
           }
         }
-      };
+      }
       case PUPITAR_70:
       return evolution (this, from:"Larvitar", hp:HP070, type:F, retreatCost:0) {
         weakness G
@@ -2010,7 +2010,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case REMORAID_71:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -2026,7 +2026,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SLOWPOKE_72:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -2050,7 +2050,7 @@ public enum UnseenForces implements LogicCardInfo {
             flip { damage 10 }
           }
         }
-      };
+      }
       case SLUGMA_73:
       return basic (this, hp:HP040, type:R, retreatCost:1) {
         weakness W
@@ -2068,7 +2068,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SNUBBULL_74:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -2080,7 +2080,7 @@ public enum UnseenForces implements LogicCardInfo {
             flip { applyAfterDamage PARALYZED }
           }
         }
-      };
+      }
       case SPINARAK_75:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness P
@@ -2101,7 +2101,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SUNKERN_76:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -2124,7 +2124,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TEDDIURSA_77:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
@@ -2142,7 +2142,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case TOTODILE_78:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -2153,7 +2153,7 @@ public enum UnseenForces implements LogicCardInfo {
             noWrDamage 10, opp.all.select("Deal 10 damage to which Pokémon?")
           }
         }
-      };
+      }
       case WOOPER_79:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
@@ -2171,7 +2171,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case CURSE_POWDER_80:
       return pokemonTool (this) {
         text "Attach Curse Powder to 1 of your Evolved Pokémon (excluding Pokémon-ex) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Curse Powder is attached to is a Basic Pokémon or Pokémon-ex, discard Curse Powder." +
@@ -2198,11 +2198,11 @@ public enum UnseenForces implements LogicCardInfo {
         allowAttach {to->
           to.evolution && !to.EX
         }
-      };
+      }
       case ENERGY_RECYCLE_SYSTEM_81:
-      return copy(Dragon.ENERGY_RECYCLE_SYSTEM_84, this);
+      return copy(Dragon.ENERGY_RECYCLE_SYSTEM_84, this)
       case ENERGY_REMOVAL_2_82:
-      return copy(Expedition.ENERGY_REMOVAL_2_140, this);
+      return copy(Expedition.ENERGY_REMOVAL_2_140, this)
       case ENERGY_ROOT_83:
       return pokemonTool (this) {
         text "Attach Energy Root to 1 of your Pokémon (excluding Pokémon-ex and Pokémon that has Dark or an owner in its name) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Energy Root is attached to is Pokémon-ex or has Dark or an owner in its name, discard Energy Root.\nAs long as Energy Root is attached to a Pokémon, that Pokémon gets +20 HP and can't use any Poké-Powers or Poké-Bodies."
@@ -2242,7 +2242,7 @@ public enum UnseenForces implements LogicCardInfo {
         allowAttach {to->
           !to.topPokemonCard.name.contains("Dark ") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && !to.EX
         }
-      };
+      }
       case ENERGY_SWITCH_84:
         return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this)
       case FLUFFY_BERRY_85:
@@ -2272,7 +2272,7 @@ public enum UnseenForces implements LogicCardInfo {
         allowAttach {to->
           !to.topPokemonCard.name.contains("Dark ") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && !to.EX
         }
-      };
+      }
       case MARY_S_REQUEST_86:
       return supporter (this) {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
@@ -2284,7 +2284,7 @@ public enum UnseenForces implements LogicCardInfo {
         playRequirement{
           assert my.deck : "Deck is empty"
         }
-      };
+      }
       case POKE_BALL_87:
       return itemCard (this) {
         text "Flip a coin. If heads, search your deck for a Basic Pokémon or Evolution card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
@@ -2297,7 +2297,7 @@ public enum UnseenForces implements LogicCardInfo {
         playRequirement{
           assert my.deck: "Deck is empty"
         }
-      };
+      }
       case POKEMON_REVERSAL_88:
       return copy (FireRedLeafGreen.POKEMON_REVERSAL_97, this)
       case PROFESSOR_ELM_S_TRAINING_METHOD_89:
@@ -2326,7 +2326,7 @@ public enum UnseenForces implements LogicCardInfo {
         allowAttach {to->
           to.evolution && !to.EX
         }
-      };
+      }
       case SITRUS_BERRY_91:
       return pokemonTool (this) {
         text "Attach Sitrus Berry to 1 of your Pokémon (excluding Pokémon-ex and Pokémon that has Dark or an owner in its name) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Sitrus Berry is attached to is Pokémon-ex or has Dark or an owner in its name, discard Sitrus Berry." +
@@ -2357,7 +2357,7 @@ public enum UnseenForces implements LogicCardInfo {
         allowAttach {to->
           !to.topPokemonCard.name.contains("Dark ") && to.topPokemonCard.cardTypes.isNot(OWNERS_POKEMON) && !to.EX
         }
-      };
+      }
       case SOLID_RAGE_92:
       return pokemonTool (this) {
         text "Attach Solid Rage to 1 of your Evolved Pokémon (excluding Pokémon-ex) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Solid Rage is attached to is a Basic Pokémon or Pokémon-ex, discard Solid Rage." +
@@ -2384,19 +2384,19 @@ public enum UnseenForces implements LogicCardInfo {
         allowAttach {to->
           to.evolution && !to.EX
         }
-      };
+      }
       case WARP_POINT_93:
       return copy(PlasmaStorm.ESCAPE_ROPE_120, this)
       case ENERGY_SEARCH_94:
-      return copy(BlackWhite.ENERGY_SEARCH_93, this);
+      return copy(BlackWhite.ENERGY_SEARCH_93, this)
       case POTION_95:
       return copy (FireRedLeafGreen.POTION_101, this)
       case DARKNESS_ENERGY_96:
-      return copy (Emerald.DARKNESS_ENERGY_86, this);
+      return copy (Emerald.DARKNESS_ENERGY_86, this)
       case METAL_ENERGY_97:
-      return copy (RubySapphire.METAL_ENERGY_94, this);
+      return copy (RubySapphire.METAL_ENERGY_94, this)
       case BOOST_ENERGY_98:
-      return copy (Deoxys.BOOST_ENERGY_93, this);
+      return copy (Deoxys.BOOST_ENERGY_93, this)
       case CYCLONE_ENERGY_99:
       return specialEnergy (this, [[C]]) {
         text "Cyclone Energy provides [C] Energy. When you attach this card from your hand to your Active Pokémon, switch 1 of the Defending Pokémon with 1 of your opponent's Benched Pokémon. Your opponent chooses the Benched Pokémon to switch."
@@ -2409,7 +2409,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case WARP_ENERGY_100:
       return copy (Aquapolis.WARP_ENERGY_147, this)
       case BLISSEY_EX_101:
@@ -2454,7 +2454,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case ESPEON_EX_102:
       return evolution (this, from:"Eevee", hp:HP110, type:P, retreatCost:0) {
         weakness P
@@ -2505,7 +2505,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 30 * addDmg
           }
         }
-      };
+      }
       case FERALIGATR_EX_103:
       return evolution (this, from:"Croconaw", hp:HP150, type:W, retreatCost:3) {
         weakness L
@@ -2543,7 +2543,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 70+10*defending.numberOfDamageCounters
           }
         }
-      };
+      }
       case HO_OH_EX_104:
       return basic (this, hp:HP110, type:R, retreatCost:2) {
         weakness W
@@ -2573,7 +2573,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case LUGIA_EX_105:
       return basic (this, hp:HP100, type:C, retreatCost:1) {
         weakness P
@@ -2698,7 +2698,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MEGANIUM_EX_106:
       return evolution (this, from:"Bayleef", hp:HP150, type:G, retreatCost:2) {
         weakness G
@@ -2733,7 +2733,7 @@ public enum UnseenForces implements LogicCardInfo {
             apply POISONED
           }
         }
-      };
+      }
       case POLITOED_EX_107:
       return evolution (this, from:"Poliwhirl", hp:HP150, type:W, retreatCost:3) {
         weakness G
@@ -2769,7 +2769,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SCIZOR_EX_108:
       return evolution (this, from:["Scyther", "Scyther ex"], hp:HP120, type:M, retreatCost:1) {
         weakness R
@@ -2805,7 +2805,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case STEELIX_EX_109:
       return evolution (this, from:"Onix", hp:HP150, type:M, retreatCost:5) {
         weakness R
@@ -2839,7 +2839,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 100, opp.all.select("Deal 100 damage to which Pokémon?")
           }
         }
-      };
+      }
       case TYPHLOSION_EX_110:
       return evolution (this, from:"Quilava", hp:HP150, type:R, retreatCost:1) {
         weakness W
@@ -2869,7 +2869,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case TYRANITAR_EX_111:
       return evolution (this, from:"Pupitar", hp:HP160, type:D, retreatCost:2) {
         weakness G
@@ -2918,7 +2918,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case UMBREON_EX_112:
       return evolution (this, from:"Eevee", hp:HP110, type:D, retreatCost:1) {
         weakness F
@@ -2971,7 +2971,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case ENTEI_STAR_113:
       return basic (this, hp:HP080, type:R, retreatCost:1) {
         weakness W
@@ -2996,7 +2996,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case RAIKOU_STAR_114:
       return basic (this, hp:HP080, type:L, retreatCost:1) {
         weakness F
@@ -3021,7 +3021,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SUICUNE_STAR_115:
       return basic (this, hp:HP080, type:W, retreatCost:1) {
         weakness L
@@ -3047,7 +3047,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ROCKET_S_PERSIAN_EX_116:
       return evolution (this, from:"Rocket's Meowth", hp:HP100, type:D, retreatCost:1) {
         weakness F
@@ -3075,7 +3075,7 @@ public enum UnseenForces implements LogicCardInfo {
             extraPoison 1
           }
         }
-      };
+      }
       case CELEBI_EX_117:
       return basic (this, hp:HP070, type:G, retreatCost:1) {
         weakness R
@@ -3118,7 +3118,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case UNOWN_118:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3152,7 +3152,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case UNOWN_119:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3173,7 +3173,7 @@ public enum UnseenForces implements LogicCardInfo {
             shuffleDeck()
           }
         }
-      };
+      }
       case UNOWN_120:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3190,7 +3190,7 @@ public enum UnseenForces implements LogicCardInfo {
             directDamage 10*opp.hand.size(), opp.active
           }
         }
-      };
+      }
       case UNOWN_121:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3211,7 +3211,7 @@ public enum UnseenForces implements LogicCardInfo {
             bg.em().run(new ActivateSimpleTrainer(card))
           }
         }
-      };
+      }
       case UNOWN_122:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3234,7 +3234,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case UNOWN_123:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3262,7 +3262,7 @@ public enum UnseenForces implements LogicCardInfo {
               sw2 benched
           }
         }
-      };
+      }
       case UNOWN_124:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3289,7 +3289,7 @@ public enum UnseenForces implements LogicCardInfo {
             ]
           }
         }
-      };
+      }
       case UNOWN_125:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3306,7 +3306,7 @@ public enum UnseenForces implements LogicCardInfo {
             directDamage 10*my.all.findAll { it.numberOfDamageCounters }.size(), defending
           }
         }
-      };
+      }
       case UNOWN_126:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3334,7 +3334,7 @@ public enum UnseenForces implements LogicCardInfo {
             shuffleDeck()
           }
         }
-      };
+      }
       case UNOWN_127:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3358,7 +3358,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case UNOWN_128:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3381,7 +3381,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case UNOWN_129:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3403,7 +3403,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case UNOWN_130:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3422,7 +3422,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case UNOWN_131:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3444,7 +3444,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case UNOWN_132:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3461,7 +3461,7 @@ public enum UnseenForces implements LogicCardInfo {
             heal(50, self)
           }
         }
-      };
+      }
       case UNOWN_133:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3482,7 +3482,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case UNOWN_134:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3501,7 +3501,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case UNOWN_135:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3529,7 +3529,7 @@ public enum UnseenForces implements LogicCardInfo {
             shuffleDeck()
           }
         }
-      };
+      }
       case UNOWN_136:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3549,7 +3549,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case UNOWN_137:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3575,7 +3575,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case UNOWN_138:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3592,7 +3592,7 @@ public enum UnseenForces implements LogicCardInfo {
             noWrDamage 20, opp.all.select("Deal 20 damage to which Pokémon?")
           }
         }
-      };
+      }
       case UNOWN_139:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3610,7 +3610,7 @@ public enum UnseenForces implements LogicCardInfo {
             amnesia delegate
           }
         }
-      };
+      }
       case UNOWN_140:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3629,7 +3629,7 @@ public enum UnseenForces implements LogicCardInfo {
             damage 10*addDmg
           }
         }
-      };
+      }
       case UNOWN_141:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3652,7 +3652,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case UNOWN_142:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3669,7 +3669,7 @@ public enum UnseenForces implements LogicCardInfo {
             flipUntilTails { damage 20 }
           }
         }
-      };
+      }
       case UNOWN_143:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3687,7 +3687,7 @@ public enum UnseenForces implements LogicCardInfo {
             apply ASLEEP
           }
         }
-      };
+      }
       case UNOWN_144:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3707,7 +3707,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case UNOWN_145:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -3728,9 +3728,9 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       default:
-      return null;
+      return null
     }
   }
 }

@@ -1,11 +1,11 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
 
-import tcgwars.logic.impl.gen3.FireRedLeafGreen;
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import static tcgwars.logic.effect.EffectType.*
@@ -13,13 +13,13 @@ import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
+import tcgwars.logic.*
+import tcgwars.logic.card.*
 import tcgwars.logic.card.energy.*
-import tcgwars.logic.effect.*;
+import tcgwars.logic.effect.*
 import tcgwars.logic.effect.ability.*
 import tcgwars.logic.effect.basic.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -134,53 +134,53 @@ public enum Emerald implements LogicCardInfo {
   FIGHTING_ENERGY_106 ("Fighting Energy", "106", Rarity.RARE, [BASIC_ENERGY, ENERGY]),
   FARFETCH_D_107 ("Farfetch'd", "107", Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   Emerald(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.EMERALD;
+    return tcgwars.logic.card.Collection.EMERALD
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -219,7 +219,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DEOXYS_2:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -237,7 +237,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EXPLOUD_3:
         return evolution (this, from:"Loudred", hp:HP120, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -274,7 +274,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GARDEVOIR_4:
         return evolution (this, from:"Kirlia", hp:HP100, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -305,7 +305,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GROUDON_5:
         return basic (this, hp:HP080, type:FIGHTING, retreatCost:1) {
           weakness WATER
@@ -325,7 +325,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KYOGRE_6:
         return basic (this, hp:HP080, type:WATER, retreatCost:2) {
           weakness LIGHTNING
@@ -345,7 +345,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MANECTRIC_7:
         return evolution (this, from:"Electrike", hp:HP080, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -366,7 +366,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MILOTIC_8:
         return evolution (this, from:"Feebas", hp:HP090, type:WATER, retreatCost:2) {
           weakness LIGHTNING
@@ -386,7 +386,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAYQUAZA_9:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:2) {
           weakness COLORLESS
@@ -417,7 +417,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SCEPTILE_10:
         return evolution (this, from:"Grovyle", hp:HP100, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -455,7 +455,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SWAMPERT_11:
         return evolution (this, from:"Marshtomp", hp:HP110, type:WATER, retreatCost:2) {
           weakness GRASS
@@ -488,7 +488,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHIMECHO_12:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -508,7 +508,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GLALIE_13:
         return evolution (this, from:"Snorunt", hp:HP080, type:WATER, retreatCost:1) {
           weakness METAL
@@ -528,7 +528,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GROUDON_14:
         return basic (this, hp:HP080, type:FIGHTING, retreatCost:2) {
           weakness WATER
@@ -555,7 +555,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KYOGRE_15:
         return basic (this, hp:HP080, type:WATER, retreatCost:2) {
           weakness LIGHTNING
@@ -578,7 +578,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MANECTRIC_16:
         return evolution (this, from:"Electrike", hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -599,7 +599,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NOSEPASS_17:
         return basic (this, hp:HP070, type:FIGHTING, retreatCost:1) {
           weakness WATER
@@ -618,7 +618,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RELICANTH_18:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -638,7 +638,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RHYDON_19:
         return evolution (this, from:"Rhyhorn", hp:HP090, type:FIGHTING, retreatCost:2) {
           weakness WATER
@@ -658,7 +658,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SEVIPER_20:
         return basic (this, hp:HP080, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -678,7 +678,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ZANGOOSE_21:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -699,7 +699,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BRELOOM_22:
         return evolution (this, from:"Shroomish", hp:HP080, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -719,7 +719,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CAMERUPT_23:
         return evolution (this, from:"Numel", hp:HP080, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -742,7 +742,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CLAYDOL_24:
         return evolution (this, from:"Baltoy", hp:HP080, type:FIGHTING, retreatCost:2) {
           weakness GRASS
@@ -763,7 +763,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case COMBUSKEN_25:
         return evolution (this, from:"Torchic", hp:HP070, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -786,7 +786,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DODRIO_26:
         return evolution (this, from:"Doduo", hp:HP070, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -807,7 +807,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTRODE_27:
         return evolution (this, from:"Voltorb", hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -827,7 +827,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GROVYLE_28:
         return evolution (this, from:"Treecko", hp:HP070, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -848,7 +848,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GRUMPIG_29:
         return evolution (this, from:"Spoink", hp:HP080, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -869,7 +869,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GRUMPIG_30:
         return evolution (this, from:"Spoink", hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -888,7 +888,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HARIYAMA_31:
         return evolution (this, from:"Makuhita", hp:HP080, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -909,7 +909,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ILLUMISE_32:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -928,7 +928,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KIRLIA_33:
         return evolution (this, from:"Ralts", hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -947,7 +947,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LINOONE_34:
         return evolution (this, from:"Zigzagoon", hp:HP070, type:COLORLESS, retreatCost:0) {
           weakness FIGHTING
@@ -967,7 +967,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LOUDRED_35:
         return evolution (this, from:"Whismur", hp:HP080, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -988,7 +988,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MARSHTOMP_36:
         return evolution (this, from:"Mudkip", hp:HP070, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -1008,7 +1008,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MINUN_37:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1031,7 +1031,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NINETALES_38:
         return evolution (this, from:"Vulpix", hp:HP080, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -1052,7 +1052,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PLUSLE_39:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1073,7 +1073,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SWALOT_40:
         return evolution (this, from:"Gulpin", hp:HP080, type:GRASS, retreatCost:2) {
           weakness PSYCHIC
@@ -1094,7 +1094,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SWELLOW_41:
         return evolution (this, from:"Taillow", hp:HP070, type:COLORLESS, retreatCost:0) {
           weakness LIGHTNING
@@ -1114,7 +1114,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VOLBEAT_42:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1134,7 +1134,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BALTOY_43:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -1153,7 +1153,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CACNEA_44:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1165,7 +1165,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DODUO_45:
         return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -1178,7 +1178,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DUSKULL_46:
         return basic (this, hp:HP040, type:PSYCHIC, retreatCost:1) {
           weakness DARKNESS
@@ -1191,7 +1191,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTRIKE_47:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1204,7 +1204,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTRIKE_48:
         return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1224,7 +1224,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FEEBAS_49:
         return basic (this, hp:HP030, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1249,7 +1249,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FEEBAS_50:
         return basic (this, hp:HP030, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1261,7 +1261,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GULPIN_51:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
@@ -1280,7 +1280,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LARVITAR_52:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -1292,7 +1292,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUVDISC_53:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -1310,7 +1310,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAKUHITA_54:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -1323,7 +1323,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MEDITITE_55:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -1343,7 +1343,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MUDKIP_56:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -1356,7 +1356,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NUMEL_57:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -1375,7 +1375,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NUMEL_58:
         return basic (this, hp:HP050, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -1394,7 +1394,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PICHU_59:
         return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1415,7 +1415,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIKACHU_60:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1435,7 +1435,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RALTS_61:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1448,7 +1448,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RHYHORN_62:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness WATER
@@ -1467,7 +1467,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHROOMISH_63:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1487,7 +1487,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SNORUNT_64:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness METAL
@@ -1499,7 +1499,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SPOINK_65:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1512,7 +1512,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SPOINK_66:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1524,7 +1524,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SWABLU_67:
         return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -1550,7 +1550,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TAILLOW_68:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -1563,7 +1563,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TORCHIC_69:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -1575,7 +1575,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TREECKO_70:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1588,7 +1588,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VOLTORB_71:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1607,7 +1607,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VULPIX_72:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -1627,7 +1627,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WHISMUR_73:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -1646,7 +1646,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ZIGZAGOON_74:
         return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -1666,7 +1666,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BATTLE_FRONTIER_75:
         return stadium (this) {
           text "Each player’s [C] Evolved Pokémon, [D] Evolved Pokémon and [M] Evolved Pokémon can’t use any Poké-Powers or Poké-Bodies.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
@@ -1683,11 +1683,11 @@ public enum Emerald implements LogicCardInfo {
             eff.unregister()
             new CheckAbilities().run(bg)
           }
-        };
+        }
       case DOUBLE_FULL_HEAL_76:
-        return copy (Sandstorm.DOUBLE_FULL_HEAL_86, this);
+        return copy (Sandstorm.DOUBLE_FULL_HEAL_86, this)
       case LANETTE_S_NET_SEARCH_77:
-        return copy (Sandstorm.LANETTE_S_NET_SEARCH_87, this);
+        return copy (Sandstorm.LANETTE_S_NET_SEARCH_87, this)
       case LUM_BERRY_78:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nAt any time between turns, if the Pokémon this card is attached to is affected by any Special Conditions, remove all of them. Then, discard Lum Berry."
@@ -1711,7 +1711,7 @@ public enum Emerald implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case MR__STONE_S_PROJECT_79:
         return supporter (this) {
           text "Search your deck for up to 2 basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward. Or, search your discard pile for up to 2 basic Energy cards, show them to your opponent, and put them into your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -1733,7 +1733,7 @@ public enum Emerald implements LogicCardInfo {
           playRequirement{
             assert my.deck || my.discard.filterByType(BASIC_ENERGY) : "You have no cards left in deck, and no basic Energy cards in your discard pile"
           }
-        };
+        }
       case ORAN_BERRY_80:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nAt any time between turns, if the Pokémon this card is attached to has at least 2 damage counters on it, remove 2 damage counters from it. Then, discard Oran Berry."
@@ -1752,9 +1752,9 @@ public enum Emerald implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case POKENAV_81:
-        return copy (RubySapphire.POKENAV_88, this);
+        return copy (RubySapphire.POKENAV_88, this)
       case PROFESSOR_BIRCH_82:
         return supporter (this) {
           text "Draw cards from your deck until you have 6 cards in your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -1766,9 +1766,9 @@ public enum Emerald implements LogicCardInfo {
           onPlay {
             draw ( 6 - my.hand.getExcludedList(thisCard).size() )
           }
-        };
+        }
       case RARE_CANDY_83:
-        return copy (Sandstorm.RARE_CANDY_88, this);
+        return copy (Sandstorm.RARE_CANDY_88, this)
       case SCOTT_84:
         return supporter (this) {
           text "Search you deck for up to 3 cards in any combination of Supporter cards and Stadium cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -1779,7 +1779,7 @@ public enum Emerald implements LogicCardInfo {
           playRequirement{
             assert my.deck
           }
-        };
+        }
       case WALLY_S_TRAINING_85:
         return supporter (this) {
           text "Search your deck for a card that evolves from your Active Pokémon (choose 1 if there are 2) and put it on your Active Pokémon. (This counts as evolving that Pokémon.) Shuffle your deck afterward."
@@ -1798,7 +1798,7 @@ public enum Emerald implements LogicCardInfo {
             assert my.deck : "Your deck is empty."
             //TODO: Check for the existance of any card the Active can evolve into.
           }
-        };
+        }
       case DARKNESS_ENERGY_86:
         return specialEnergy (this, [[D]]) {
           text: "If the Pokémon Darkness Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). Ignore this effect unless the Attacking Pokémon is Darkness or has Dark in its name. Darkness Energy provides Darkness Energy. (Doesn't count as a basic Energy card.)"
@@ -1866,11 +1866,11 @@ public enum Emerald implements LogicCardInfo {
             else return [[] as Set]
           }
 
-        };
+        }
       case METAL_ENERGY_88:
-        return copy (RubySapphire.METAL_ENERGY_94, this);
+        return copy (RubySapphire.METAL_ENERGY_94, this)
       case MULTI_ENERGY_89:
-        return copy (FireRedLeafGreen.MULTI_ENERGY_103, this);
+        return copy (FireRedLeafGreen.MULTI_ENERGY_103, this)
       case ALTARIA_EX_90:
         return evolution (this, from:"Swablu", hp:HP100, type:COLORLESS, retreatCost:1) {
           pokeBody "Mist", {
@@ -1901,7 +1901,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CACTURNE_EX_91:
         return evolution (this, from:"Cacnea", hp:HP110, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1933,7 +1933,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CAMERUPT_EX_92:
         return evolution (this, from:"Numel", hp:HP120, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -1972,7 +1972,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DEOXYS_EX_93:
         return basic (this, hp:HP110, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1990,7 +1990,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DUSCLOPS_EX_94:
         return evolution (this, from:"Duskull", hp:HP100, type:PSYCHIC, retreatCost:2) {
           weakness DARKNESS
@@ -2014,7 +2014,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MEDICHAM_EX_95:
         return evolution (this, from:"Meditite", hp:HP110, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -2049,7 +2049,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MILOTIC_EX_96:
         return evolution (this, from:"Feebas", hp:HP130, type:WATER, retreatCost:2) {
           weakness LIGHTNING
@@ -2087,7 +2087,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAICHU_EX_97:
         return evolution (this, from:"Pikachu", hp:HP100, type:LIGHTNING, retreatCost:0) {
           weakness FIGHTING
@@ -2114,7 +2114,7 @@ public enum Emerald implements LogicCardInfo {
               def tar = opp.all.select("Select the targeted Pokémon")
               def hasPokePower = false
               for (Ability ability : tar.getAbilities().keySet()) {
-                if (ability instanceof PokePower) hasPokePower = true;
+                if (ability instanceof PokePower) hasPokePower = true
               }
               if(hasPokePower) damage 20,tar
 
@@ -2129,7 +2129,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case REGICE_EX_98:
         return basic (this, hp:HP100, type:WATER, retreatCost:3) {
           weakness METAL
@@ -2154,7 +2154,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case REGIROCK_EX_99:
         return basic (this, hp:HP110, type:FIGHTING, retreatCost:3) {
           weakness WATER
@@ -2180,7 +2180,7 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case REGISTEEL_EX_100:
         return basic (this, hp:HP090, type:METAL, retreatCost:2) {
           weakness FIRE
@@ -2202,19 +2202,19 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GRASS_ENERGY_101:
-        return basicEnergy (this, GRASS);
+        return basicEnergy (this, GRASS)
       case FIRE_ENERGY_102:
-        return basicEnergy (this, FIRE);
+        return basicEnergy (this, FIRE)
       case WATER_ENERGY_103:
-        return basicEnergy (this, WATER);
+        return basicEnergy (this, WATER)
       case LIGHTNING_ENERGY_104:
-        return basicEnergy (this, LIGHTNING);
+        return basicEnergy (this, LIGHTNING)
       case PSYCHIC_ENERGY_105:
-        return basicEnergy (this, PSYCHIC);
+        return basicEnergy (this, PSYCHIC)
       case FIGHTING_ENERGY_106:
-        return basicEnergy (this, FIGHTING);
+        return basicEnergy (this, FIGHTING)
       case FARFETCH_D_107:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -2235,9 +2235,9 @@ public enum Emerald implements LogicCardInfo {
             }
           }
 
-        };
+        }
       default:
-        return null;
+        return null
     }
   }
 

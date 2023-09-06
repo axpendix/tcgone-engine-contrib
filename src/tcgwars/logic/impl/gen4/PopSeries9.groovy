@@ -1,20 +1,20 @@
 package tcgwars.logic.impl.gen4
 
-import tcgwars.logic.effect.EffectPriority;
+import tcgwars.logic.effect.EffectPriority
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
 import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.effect.EffectType.APPLY_ATTACK_DAMAGES
-import static tcgwars.logic.effect.EffectType.GET_POKEMON_TYPE;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.effect.EffectType.GET_POKEMON_TYPE
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 
 import tcgwars.logic.card.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -39,53 +39,53 @@ public enum PopSeries9 implements LogicCardInfo {
   PIPLUP_16 ("Piplup", "16", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
   TURTWIG_17 ("Turtwig", "17", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   PopSeries9(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.POP_SERIES_9;
+    return tcgwars.logic.card.Collection.POP_SERIES_9
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -115,7 +115,7 @@ public enum PopSeries9 implements LogicCardInfo {
               discardSelfEnergyAfterDamage(C, C)
             }
           }
-        };
+        }
       case MANAPHY_2:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness L, PLUS20
@@ -146,7 +146,7 @@ public enum PopSeries9 implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case RAICHU_3:
         return evolution (this, from:"Pikachu", hp:HP090, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS20
@@ -170,7 +170,7 @@ public enum PopSeries9 implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case REGIGIGAS_4:
         return basic (this, hp:HP100, type:COLORLESS, retreatCost:4) {
           weakness F
@@ -192,7 +192,7 @@ public enum PopSeries9 implements LogicCardInfo {
               flip 2, { damage 20 }
             }
           }
-        };
+        }
       case ROTOM_5:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness D, PLUS20
@@ -227,7 +227,7 @@ public enum PopSeries9 implements LogicCardInfo {
               damage 30 + (10 * filteredHand.size())
             }
           }
-        };
+        }
       case BUIZEL_6:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness L, PLUS10
@@ -250,7 +250,7 @@ public enum PopSeries9 implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CROAGUNK_7:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:2) {
           weakness P, PLUS10
@@ -278,7 +278,7 @@ public enum PopSeries9 implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case GABITE_8:
         return evolution (this, from:"Gible", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness C, PLUS20
@@ -299,7 +299,7 @@ public enum PopSeries9 implements LogicCardInfo {
               damage 60
             }
           }
-        };
+        }
       case LOPUNNY_9:
         return evolution (this, from:"Buneary", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS20
@@ -326,7 +326,7 @@ public enum PopSeries9 implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case PACHIRISU_10:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS20
@@ -353,7 +353,7 @@ public enum PopSeries9 implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case PICHU_11:
         return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -380,7 +380,7 @@ public enum PopSeries9 implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case BUNEARY_12:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
@@ -400,7 +400,7 @@ public enum PopSeries9 implements LogicCardInfo {
               flip { preventAllDamageNextTurn() }
             }
           }
-        };
+        }
       case CHIMCHAR_13:
         return basic (this, hp:HP040, type:FIRE, retreatCost:1) {
           weakness W, PLUS10
@@ -425,9 +425,9 @@ public enum PopSeries9 implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case GIBLE_14:
-        return copy (MysteriousTreasures.GIBLE_85, this);
+        return copy (MysteriousTreasures.GIBLE_85, this)
       case PIKACHU_15:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -451,7 +451,7 @@ public enum PopSeries9 implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case PIPLUP_16:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness L, PLUS10
@@ -480,7 +480,7 @@ public enum PopSeries9 implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case TURTWIG_17:
         return basic (this, hp:HP060, type:GRASS, retreatCost:2) {
           weakness R, PLUS10
@@ -507,9 +507,9 @@ public enum PopSeries9 implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       default:
-        return null;
+        return null
     }
   }
 }

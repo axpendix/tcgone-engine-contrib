@@ -1,38 +1,38 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
 
-import tcgwars.logic.impl.gen3.Deoxys;
-import tcgwars.logic.impl.gen3.FireRedLeafGreen;
-import tcgwars.logic.impl.gen3.RubySapphire;
+import tcgwars.logic.impl.gen3.Deoxys
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
+import tcgwars.logic.impl.gen3.RubySapphire
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -154,53 +154,53 @@ public enum DeltaSpecies implements LogicCardInfo {
   METAGROSS_STAR_113 ("Metagross Star", "113", Rarity.HOLORARE, [POKEMON_STAR, POKEMON, BASIC, _METAL_]),
   AZUMARILL_114 ("Azumarill", "114", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   DeltaSpecies(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.DELTA_SPECIES;
+    return tcgwars.logic.card.Collection.DELTA_SPECIES
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -234,7 +234,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case CROBAT_DELTA_2:
       return evolution (this, from:"Golbat", hp:HP090, type:[G, M], retreatCost:0) {
         weakness P
@@ -267,7 +267,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case DRAGONITE_DELTA_3:
       return evolution (this, from:"Dragonair", hp:HP100, type:[L, M], retreatCost:2) {
         weakness C
@@ -300,7 +300,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case ESPEON_DELTA_4:
       return evolution (this, from:"Eevee", hp:HP070, type:[P, M], retreatCost:1) {
         weakness P
@@ -327,7 +327,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             flip { apply PARALYZED }
           }
         }
-      };
+      }
       case FLAREON_DELTA_5:
       return evolution (this, from:"Eevee", hp:HP070, type:[R, M], retreatCost:1) {
         weakness W
@@ -362,7 +362,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case GARDEVOIR_DELTA_6:
       return evolution (this, from:"Kirlia", hp:HP100, type:[P, M], retreatCost:2) {
         weakness P
@@ -397,7 +397,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 10+20*opp.bench.size()
           }
         }
-      };
+      }
       case JOLTEON_DELTA_7:
       return evolution (this, from:"Eevee", hp:HP070, type:[L, M], retreatCost:1) {
         weakness F
@@ -434,7 +434,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case LATIAS_DELTA_8:
       return basic (this, hp:HP070, type:[L, M], retreatCost:1) {
         weakness C
@@ -474,7 +474,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case LATIOS_DELTA_9:
       return basic (this, hp:HP080, type:[L, M], retreatCost:2) {
         weakness C
@@ -513,7 +513,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MAROWAK_DELTA_10:
       return evolution (this, from:"Cubone", hp:HP080, type:[F, M], retreatCost:1) {
         weakness G
@@ -538,7 +538,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case METAGROSS_DELTA_11:
       return evolution (this, from:"Metang", hp:HP100, type:[L, M], retreatCost:3) {
         weakness R
@@ -569,11 +569,11 @@ public enum DeltaSpecies implements LogicCardInfo {
               def pl = my.all.findAll{
                 it.cards.filterByType(ENERGY).any{enCard -> !toBeDiscarded.contains(enCard)}
               }
-              if(!pl) break;
+              if(!pl) break
 
               def info = "Energy cards already marked for discard: ${toBeDiscarded.size()}\nCurrent base damage: 30 + ${20 * toBeDiscarded.size()}\nDiscard an Energy card from which Pokémon? (cancel to stop)"
               def src = pl.select(info, false)
-              if(!src) break;
+              if(!src) break
 
               def selection = src.cards.filterByType(ENERGY).findAll{!toBeDiscarded.contains(it)}.select("Card to discard")
               toBeDiscarded.addAll(selection)
@@ -582,7 +582,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             afterDamage { toBeDiscarded.discard() }
           }
         }
-      };
+      }
       case MEWTWO_DELTA_12:
       return basic (this, hp:HP070, type:[R, M], retreatCost:1) {
         weakness P
@@ -592,9 +592,9 @@ public enum DeltaSpecies implements LogicCardInfo {
             if (it == PLAY_FROM_HAND && my.all.any{it.cards.filterByType(BASIC_ENERGY)} && confirm("Use Delta Switch?")) {
               while (1) {
                 def pl = (my.all.findAll {it.cards.filterByType(BASIC_ENERGY)})
-                if(!pl) break;
+                if(!pl) break
                 def src = pl.select("Source for energy (cancel to stop)", false)
-                if(!src) break;
+                if(!src) break
                 def card=src.cards.select("Card to move",cardTypeFilter(BASIC_ENERGY)).first()
                 def target = my.all.findAll{ it != src && it != self }.select("Move Energy to?")
                 energySwitch(src, target, card)
@@ -609,7 +609,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 10 * (self.cards.energyCount(C) + defending.cards.energyCount(C))
           }
         }
-      };
+      }
       case RAYQUAZA_DELTA_13:
       return basic (this, hp:HP090, type:[L, M], retreatCost:3) {
         weakness C
@@ -642,7 +642,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SALAMENCE_DELTA_14:
       return evolution (this, from:"Shelgon", hp:HP110, type:[R, M], retreatCost:1) {
         weakness C
@@ -668,7 +668,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case STARMIE_DELTA_15:
       return evolution (this, from:"Staryu", hp:HP060, type:[W, M], retreatCost:0) {
         weakness L
@@ -702,7 +702,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case TYRANITAR_DELTA_16:
       return evolution (this, from:"Pupitar", hp:HP120, type:[R, M], retreatCost:2) {
         weakness G
@@ -738,7 +738,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case UMBREON_DELTA_17:
       return evolution (this, from:"Eevee", hp:HP070, type:[D, M], retreatCost:1) {
         weakness F
@@ -762,7 +762,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             swiftDamage(30, opp.all.select())
           }
         }
-      };
+      }
       case VAPOREON_DELTA_18:
       return evolution (this, from:"Eevee", hp:HP070, type:[W, M], retreatCost:1) {
         weakness L
@@ -796,7 +796,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case AZUMARILL_DELTA_19:
       return evolution (this, from:"Marill", hp:HP080, type:[W, M], retreatCost:2) {
         weakness L
@@ -815,7 +815,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case AZURILL_20:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -849,7 +849,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             shuffleDeck()
           }
         }
-      };
+      }
       case HOLON_S_ELECTRODE_21:
       return evolution (this, from:"Holon's Voltorb", hp:HP070, type:L, retreatCost:0) {
         weakness F
@@ -862,7 +862,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             applyAfterDamage CONFUSED
           }
         }
-      };
+      }
       case HOLON_S_MAGNETON_22:
       return evolution (this, from:"Holon's Magnemite", hp:HP070, type:M, retreatCost:1) {
         weakness R
@@ -878,7 +878,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case HYPNO_23:
       return evolution (this, from:"Drowzee", hp:HP070, type:P, retreatCost:1) {
         weakness P
@@ -918,7 +918,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case MIGHTYENA_DELTA_24:
       return evolution (this, from:"Poochyena", hp:HP070, type:[D, M], retreatCost:1) {
         weakness F
@@ -940,7 +940,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 10*my.all.findAll { it.types.contains(D) || it.types.contains(M) }.size()
           }
         }
-      };
+      }
       case PORYGON2_25:
       return evolution (this, from:"Porygon", hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -966,7 +966,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case RAIN_CASTFORM_26:
       return basic (this, hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -983,7 +983,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 30+10*self.cards.findAll {it.name.contains("Holon Energy")}.size()
           }
         }
-      };
+      }
       case SANDSLASH_DELTA_27:
       return evolution (this, from:"Sandshrew", hp:HP080, type:[F, M], retreatCost:1) {
         weakness G
@@ -1020,7 +1020,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case SLOWKING_28:
       return evolution (this, from:"Slowpoke", hp:HP080, type:W, retreatCost:1) {
         weakness L
@@ -1053,7 +1053,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             if (self.cards.filterByEnergyType(P)) { discardDefendingSpecialEnergy(delegate) }
           }
         }
-      };
+      }
       case SNOW_CLOUD_CASTFORM_29:
       return basic (this, hp:HP070, type:W, retreatCost:2) {
         weakness M
@@ -1076,7 +1076,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case STARMIE_DELTA_30:
       return evolution (this, from:"Staryu", hp:HP070, type:[W, M], retreatCost:1) {
         weakness L
@@ -1094,7 +1094,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             swiftDamage(50, defending)
           }
         }
-      };
+      }
       case SUNNY_CASTFORM_31:
       return basic (this, hp:HP070, type:R, retreatCost:2) {
         weakness W
@@ -1119,7 +1119,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SWELLOW_32:
       return evolution (this, from:"Taillow", hp:HP070, type:C, retreatCost:0) {
         weakness L
@@ -1142,7 +1142,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case WEEZING_33:
       return evolution (this, from:"Koffing", hp:HP070, type:G, retreatCost:2) {
         weakness P
@@ -1156,7 +1156,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 
                 self.owner.opposite.pbg.all.each {
                   for (Ability ability : it.getAbilities().keySet()) {
-                    if (ability instanceof PokeBody) hasPokeBody = true;
+                    if (ability instanceof PokeBody) hasPokeBody = true
                   }
                   if (once) {
                     bc "Body Odor Activates"
@@ -1187,7 +1187,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case CASTFORM_34:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness F
@@ -1208,7 +1208,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case DITTO_35:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness F
@@ -1229,7 +1229,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case DITTO_36:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -1247,7 +1247,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             extraPoison 1
           }
         }
-      };
+      }
       case DITTO_37:
       return basic (this, hp:HP060, type:R, retreatCost:1) {
         weakness W
@@ -1264,7 +1264,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 10+10*self.numberOfDamageCounters
           }
         }
-      };
+      }
       case DITTO_38:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -1289,7 +1289,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             bef.unregisterItself(bg().em())
           }
         }
-      };
+      }
       case DITTO_39:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness F
@@ -1307,7 +1307,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             discardAllSelfEnergy(null)
           }
         }
-      };
+      }
       case DITTO_40:
       return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness L
@@ -1325,7 +1325,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             switchYourActive(may: true)
           }
         }
-      };
+      }
       case DRAGONAIR_DELTA_41:
       return evolution (this, from:"Dratini", hp:HP070, type:L, retreatCost:1) {
         weakness C
@@ -1345,7 +1345,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case DRAGONAIR_DELTA_42:
       return evolution (this, from:"Dratini", hp:HP070, type:L, retreatCost:2) {
         weakness C
@@ -1365,7 +1365,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case GOLBAT_43:
       return evolution (this, from:"Zubat", hp:HP070, type:G, retreatCost:1) {
         weakness P
@@ -1387,7 +1387,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case HARIYAMA_44:
       return evolution (this, from:"Makuhita", hp:HP080, type:F, retreatCost:1) {
         weakness P
@@ -1430,7 +1430,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             noResistanceOrAnyEffectDamage(50, defending)
           }
         }
-      };
+      }
       case ILLUMISE_45:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -1468,7 +1468,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             if (defending.evolution) { applyAfterDamage CONFUSED }
           }
         }
-      };
+      }
       case KAKUNA_46:
       return evolution (this, from:"Weedle", hp:HP060, type:G, retreatCost:2) {
         weakness R
@@ -1490,7 +1490,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case KIRLIA_47:
       return evolution (this, from:"Ralts", hp:HP070, type:P, retreatCost:1) {
         weakness P
@@ -1508,7 +1508,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 20+10*opp.active.cards.energyCount()
           }
         }
-      };
+      }
       case MAGNETON_48:
       return evolution (this, from:"Magnemite", hp:HP080, type:L, retreatCost:1) {
         weakness F
@@ -1528,7 +1528,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case METANG_DELTA_49:
       return evolution (this, from:"Beldum", hp:HP080, type:L, retreatCost:2) {
         weakness R
@@ -1548,7 +1548,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case PERSIAN_50:
       return evolution (this, from:"Meowth", hp:HP080, type:C, retreatCost:1) {
         weakness F
@@ -1569,7 +1569,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 30, opp.all.select()
           }
         }
-      };
+      }
       case PUPITAR_DELTA_51:
       return evolution (this, from:"Larvitar", hp:HP070, type:R, retreatCost:0) {
         weakness G
@@ -1588,7 +1588,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 10, self
           }
         }
-      };
+      }
       case RAPIDASH_52:
       return evolution (this, from:"Ponyta", hp:HP070, type:R, retreatCost:0) {
         weakness W
@@ -1607,7 +1607,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             flip { damage 10 }
           }
         }
-      };
+      }
       case SHELGON_DELTA_53:
       return evolution (this, from:"Bagon", hp:HP080, type:R, retreatCost:2) {
         weakness C
@@ -1628,7 +1628,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case SHELGON_DELTA_54:
       return evolution (this, from:"Bagon", hp:HP070, type:R, retreatCost:2) {
         weakness C
@@ -1654,7 +1654,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SKARMORY_55:
       return basic (this, hp:HP070, type:M, retreatCost:1) {
         weakness R
@@ -1689,7 +1689,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             reduceDamageNextTurn(hp(20), thisMove)
           }
         }
-      };
+      }
       case VOLBEAT_56:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -1721,7 +1721,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             swiftDamage(30, defending)
           }
         }
-      };
+      }
       case BAGON_DELTA_57:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness C
@@ -1734,7 +1734,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case BAGON_DELTA_58:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness C
@@ -1748,7 +1748,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             discardSelfEnergy R
           }
         }
-      };
+      }
       case BELDUM_DELTA_59:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness R
@@ -1769,7 +1769,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 10, self
           }
         }
-      };
+      }
       case CUBONE_60:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
@@ -1787,7 +1787,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 10+10*self.numberOfDamageCounters
           }
         }
-      };
+      }
       case DITTO_61:
       return basic (this, hp:HP060, type:R, retreatCost:1) {
         weakness W
@@ -1805,7 +1805,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             flip 1, {}, { discardSelfEnergy R }
           }
         }
-      };
+      }
       case DITTO_62:
       return basic (this, hp:HP060, type:F, retreatCost:1) {
         weakness W
@@ -1822,7 +1822,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 20, opp.all.select()
           }
         }
-      };
+      }
       case DITTO_63:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness F
@@ -1840,7 +1840,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             flip { apply PARALYZED }
           }
         }
-      };
+      }
       case DITTO_64:
       return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness L
@@ -1858,7 +1858,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             heal 30, self
           }
         }
-      };
+      }
       case DRATINI_DELTA_65:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness C
@@ -1879,7 +1879,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             flip 1, {}, { damage 10, self }
           }
         }
-      };
+      }
       case DRATINI_DELTA_66:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness C
@@ -1893,7 +1893,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             flip { apply PARALYZED }
           }
         }
-      };
+      }
       case DROWZEE_67:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -1911,7 +1911,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case EEVEE_DELTA_68:
       return basic (this, hp:HP050, type:M, retreatCost:1) {
         weakness F
@@ -1925,7 +1925,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case EEVEE_69:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1941,7 +1941,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case HOLON_S_MAGNEMITE_70:
       return basic (this, hp:HP040, type:M, retreatCost:1) {
         weakness R
@@ -1954,7 +1954,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 10, opp.all.select()
           }
         }
-      };
+      }
       case HOLON_S_VOLTORB_71:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness F
@@ -1967,7 +1967,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             flip { apply PARALYZED }
           }
         }
-      };
+      }
       case KOFFING_72:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness P
@@ -1985,7 +1985,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case LARVITAR_DELTA_73:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness G
@@ -2004,7 +2004,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             flip { damage 10 }
           }
         }
-      };
+      }
       case MAGNEMITE_74:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -2023,7 +2023,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case MAKUHITA_75:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness P
@@ -2035,7 +2035,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             sandAttack(thisMove)
           }
         }
-      };
+      }
       case MARILL_76:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -2054,7 +2054,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             flip { damage 20 }
           }
         }
-      };
+      }
       case MEOWTH_77:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -2075,7 +2075,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case PONYTA_78:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -2086,7 +2086,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case POOCHYENA_79:
       return basic (this, hp:HP050, type:D, retreatCost:1) {
         weakness F
@@ -2106,7 +2106,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             flip { damage 20 }
           }
         }
-      };
+      }
       case PORYGON_80:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -2117,7 +2117,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case RALTS_81:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -2136,7 +2136,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             flip { damage 20 }
           }
         }
-      };
+      }
       case SANDSHREW_82:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
@@ -2154,7 +2154,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SLOWPOKE_83:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -2172,7 +2172,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case STARYU_84:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -2190,7 +2190,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case STARYU_85:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -2209,7 +2209,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             heal 40, self
           }
         }
-      };
+      }
       case TAILLOW_86:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness L
@@ -2221,7 +2221,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 10, opp.all.select()
           }
         }
-      };
+      }
       case WEEDLE_87:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -2233,7 +2233,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             flip { apply PARALYZED }
           }
         }
-      };
+      }
       case ZUBAT_88:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness P
@@ -2245,7 +2245,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             flip { apply POISONED }
           }
         }
-      };
+      }
       case DUAL_BALL_89:
       return basicTrainer (this) {
         text "Flip 2 coins. For each heads, search your deck for a Basic Pokémon, show it to your opponent, and put it into your hand. If you do, shuffle your deck afterward."
@@ -2263,9 +2263,9 @@ public enum DeltaSpecies implements LogicCardInfo {
         playRequirement{
           assert my.deck.notEmpty
         }
-      };
+      }
       case GREAT_BALL_90:
-      return copy(FireRedLeafGreen.GREAT_BALL_92, this);
+      return copy(FireRedLeafGreen.GREAT_BALL_92, this)
       case HOLON_FARMER_91:
       return supporter (this) {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
@@ -2288,7 +2288,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           assert my.hand.getExcludedList(thisCard) : "One other card in hand is required to play this card."
           assert my.discard.filterByType(BASIC_ENERGY) || my.discard.filterByType(POKEMON) : "No Basic Energy cards or Pokémon in discard pile."
         }
-      };
+      }
       case HOLON_LASS_92:
       return supporter (this) {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
@@ -2310,7 +2310,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           assert my.hand.getExcludedList(thisCard) : "One other card in hand is required to play this card."
           assert my.deck : "Deck is empty"
         }
-      };
+      }
       case HOLON_MENTOR_93:
       return supporter (this) {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
@@ -2329,7 +2329,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           assert my.hand.getExcludedList(thisCard) : "One other card in hand is required to play this card."
           assert my.deck : "Deck is empty"
         }
-      };
+      }
       case HOLON_RESEARCH_TOWER_94:
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
@@ -2347,7 +2347,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-      };
+      }
       case HOLON_RESEARCHER_95:
       return supporter (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
@@ -2369,7 +2369,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           assert my.hand.getExcludedList(thisCard) : "One other card in hand is required to play this card."
           assert my.deck : "Deck is empty."
         }
-      };
+      }
       case HOLON_RUINS_96:
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
@@ -2391,7 +2391,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         onRemoveFromPlay{
           actions.each { bg().gm().unregisterAction(it) }
         }
-      };
+      }
       case HOLON_SCIENTIST_97:
       return supporter (this) {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
@@ -2406,7 +2406,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           assert my.hand.getExcludedList(thisCard) : "One other card in hand is required to play this card."
           assert (my.hand.size()-2 < opp.hand.size()) : "You must be able to draw at least one card after you have paid the discard cost"
         }
-      };
+      }
       case HOLON_TRANSCEIVER_98:
       return itemCard (this) {
         text "Search your deck for a Supporter card that has Holon in its name, show it to your opponent, and put it into your hand. Shuffle your deck afterward. Or, search your discard pile for a Supporter card that has Holon in its name, show it to your opponent, and put it into your hand."
@@ -2442,17 +2442,17 @@ public enum DeltaSpecies implements LogicCardInfo {
             it.cardTypes.is(SUPPORTER) && it.name.contains("Holon")
           } || my.deck.notEmpty : "Deck is empty and your discard pile does not have any Holon Supporters"
         }
-      };
+      }
       case MASTER_BALL_99:
-        return copy(Deoxys.MASTER_BALL_88, this);
+        return copy(Deoxys.MASTER_BALL_88, this)
       case SUPER_SCOOP_UP_100:
-        return copy(FireRedLeafGreen.SUPER_SCOOP_UP_99, this);
+        return copy(FireRedLeafGreen.SUPER_SCOOP_UP_99, this)
       case POTION_101:
-        return copy(FireRedLeafGreen.POTION_101, this);
+        return copy(FireRedLeafGreen.POTION_101, this)
       case SWITCH_102:
-        return copy(FireRedLeafGreen.SWITCH_102, this);
+        return copy(FireRedLeafGreen.SWITCH_102, this)
       case DARKNESS_ENERGY_103:
-        return copy (Emerald.DARKNESS_ENERGY_86, this);
+        return copy (Emerald.DARKNESS_ENERGY_86, this)
       case HOLON_ENERGY_FF_104:
       return specialEnergy (this, [[C]]) {
         text "Holon Energy FF provides [C] Energy. If the Pokémon that Holon Energy FF is attached to also has a basic [R] Energy card attached to it, that Pokémon has no Weakness. If the Pokémon that Holon Energy FF is attached to also has a basic [F] Energy card attached to it, damage done by that Pokémon's attack isn't affected by Resistance. Ignore these effects if Holon Energy FF is attached to Pokémon-ex."
@@ -2480,7 +2480,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           eff.unregister()
           eff2.unregister()
         }
-      };
+      }
       case HOLON_ENERGY_GL_105:
       return specialEnergy (this, [[C]]) {
         text "Holon Energy GL provides [C] Energy. If the Pokémon that Holon Energy GL is attached to also has a basic [G] Energy card attached to it, that Pokémon can't be affected by any Special Conditions. If the Pokémon that Holon Energy GL is attached to also has a basic [L] Energy card attached to it, damage done by your opponent's Pokémon-ex is reduced by 10. Ignore these effects if Holon Energy GL is attached to Pokémon-ex."
@@ -2534,7 +2534,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             clearSpecialCondition(self)
           }
         }
-      };
+      }
       case HOLON_ENERGY_WP_106:
       return specialEnergy (this, [[C]]) {
         text "Holon Energy WP provides [C] Energy. If the Pokémon that Holon Energy WP is attached to also has a basic [W] Energy card attached to it, prevent all effects, excluding damage, done to that Pokémon by your opponent's Pokémon. If the Pokémon that Holon Energy WP is attached to also has a basic [P] Energy card attached to it, that Pokémon's Retreat Cost is 0. Ignore these effects if Holon Energy WP is attached to Pokémon-ex."
@@ -2561,9 +2561,9 @@ public enum DeltaSpecies implements LogicCardInfo {
           eff.unregister()
           eff2.unregister()
         }
-      };
+      }
       case METAL_ENERGY_107:
-      return copy (RubySapphire.METAL_ENERGY_94, this);
+      return copy (RubySapphire.METAL_ENERGY_94, this)
       case FLAREON_EX_108:
       return evolution (this, from:"Eevee", hp:HP110, type:R, retreatCost:1) {
         weakness W
@@ -2593,7 +2593,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 10, self
           }
         }
-      };
+      }
       case JOLTEON_EX_109:
       return evolution (this, from:"Eevee", hp:HP100, type:L, retreatCost:0) {
         weakness F
@@ -2624,7 +2624,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             discardSelfEnergy L
           }
         }
-      };
+      }
       case VAPOREON_EX_110:
       return evolution (this, from:"Eevee", hp:HP120, type:W, retreatCost:1) {
         weakness L
@@ -2653,7 +2653,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case GROUDON_STAR_111:
       return basic (this, hp:HP090, type:F, retreatCost:3) {
         weakness W
@@ -2680,7 +2680,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             discardSelfEnergy F
           }
         }
-      };
+      }
       case KYOGRE_STAR_112:
       return basic (this, hp:HP090, type:W, retreatCost:3) {
         weakness L
@@ -2707,7 +2707,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             flip { cantAttackNextTurn defending }
           }
         }
-      };
+      }
       case METAGROSS_STAR_113:
       return basic (this, hp:HP090, type:M, retreatCost:3) {
         weakness R
@@ -2735,7 +2735,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             flip { discardDefendingEnergy() }
           }
         }
-      };
+      }
       case AZUMARILL_114:
       return evolution (this, from:"Marill", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -2762,9 +2762,9 @@ public enum DeltaSpecies implements LogicCardInfo {
             flip { apply PARALYZED }
           }
         }
-      };
+      }
       default:
-      return null;
+      return null
     }
   }
 }

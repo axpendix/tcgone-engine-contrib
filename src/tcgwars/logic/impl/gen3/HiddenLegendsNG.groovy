@@ -1,34 +1,34 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -138,53 +138,53 @@ public enum HiddenLegendsNG implements LogicCardInfo {
   WIGGLYTUFF_EX_101 ("Wigglytuff ex", "101", Rarity.ULTRARARE, [POKEMON, EVOLUTION, EX, STAGE1, _COLORLESS_]),
   GROUDON_102 ("Groudon", "102", Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   HiddenLegendsNG(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.HIDDEN_LEGENDS;
+    return tcgwars.logic.card.Collection.HIDDEN_LEGENDS
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -210,7 +210,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case CLAYDOL_2:
       return evolution (this, from:"Baltoy", hp:HP080, type:P, retreatCost:1) {
         weakness P
@@ -227,7 +227,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case CROBAT_3:
       return evolution (this, from:"Golbat", hp:HP090, type:G, retreatCost:null) {
         weakness P
@@ -247,7 +247,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case DARK_CELEBI_4:
       return basic (this, hp:HP070, type:[G, D], retreatCost:1) {
         weakness R
@@ -267,7 +267,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case ELECTRODE_5:
       return evolution (this, from:"Voltorb", hp:HP070, type:L, retreatCost:1) {
         weakness F
@@ -287,7 +287,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case EXPLOUD_6:
       return evolution (this, from:"Loudred", hp:HP120, type:C, retreatCost:2) {
         weakness F
@@ -323,7 +323,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case HERACROSS_7:
       return basic (this, hp:HP070, type:G, retreatCost:1) {
         weakness R
@@ -343,7 +343,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case JIRACHI_8:
       return basic (this, hp:HP070, type:[P, M], retreatCost:1) {
         weakness R
@@ -363,7 +363,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case MACHAMP_9:
       return evolution (this, from:"Machoke", hp:HP120, type:F, retreatCost:2) {
         weakness P
@@ -388,7 +388,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case MEDICHAM_10:
       return evolution (this, from:"Meditite", hp:HP080, type:F, retreatCost:1) {
         weakness P
@@ -408,7 +408,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case METAGROSS_11:
       return evolution (this, from:"Metang", hp:HP100, type:[P, M], retreatCost:2) {
         weakness R
@@ -426,7 +426,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case MILOTIC_12:
       return evolution (this, from:"Feebas", hp:HP100, type:W, retreatCost:2) {
         weakness L
@@ -451,7 +451,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 80
           }
         }
-      };
+      }
       case PINSIR_13:
       return basic (this, hp:HP070, type:G, retreatCost:1) {
         weakness R
@@ -468,7 +468,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SHIFTRY_14:
       return evolution (this, from:"Nuzleaf", hp:HP110, type:D, retreatCost:2) {
         weakness F
@@ -489,7 +489,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case WALREIN_15:
       return evolution (this, from:"Sealeo", hp:HP120, type:W, retreatCost:3) {
         weakness M
@@ -506,7 +506,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case BELLOSSOM_16:
       return evolution (this, from:"Gloom", hp:HP100, type:G, retreatCost:2) {
         weakness R
@@ -532,7 +532,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case CHIMECHO_17:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -552,7 +552,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case GOREBYSS_18:
       return evolution (this, from:"Clamperl", hp:HP070, type:W, retreatCost:null) {
         weakness L
@@ -572,7 +572,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case HUNTAIL_19:
       return evolution (this, from:"Clamperl", hp:HP080, type:W, retreatCost:1) {
         weakness L
@@ -592,7 +592,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case MASQUERAIN_20:
       return evolution (this, from:"Surskit", hp:HP070, type:G, retreatCost:null) {
         weakness L
@@ -613,7 +613,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case METANG_21:
       return evolution (this, from:"Beldum", hp:HP080, type:M, retreatCost:2) {
         weakness R
@@ -634,7 +634,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case NINETALES_22:
       return evolution (this, from:"Vulpix", hp:HP070, type:F, retreatCost:1) {
         weakness W
@@ -659,7 +659,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case RAIN_CASTFORM_23:
       return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness L
@@ -685,7 +685,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case RELICANTH_24:
       return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness L
@@ -702,7 +702,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SNOW_CLOUD_CASTFORM_25:
       return basic (this, hp:HP070, type:W, retreatCost:2) {
         weakness M
@@ -728,7 +728,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case SUNNY_CASTFORM_26:
       return basic (this, hp:HP070, type:R, retreatCost:2) {
         weakness W
@@ -754,7 +754,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case TROPIUS_27:
       return basic (this, hp:HP080, type:G, retreatCost:1) {
         weakness R
@@ -774,7 +774,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case BELDUM_28:
       return basic (this, hp:HP050, type:M, retreatCost:2) {
         weakness F
@@ -792,7 +792,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case BELDUM_29:
       return basic (this, hp:HP050, type:M, retreatCost:2) {
         weakness F
@@ -810,7 +810,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case CASTFORM_30:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness F
@@ -836,7 +836,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case CLAYDOL_31:
       return evolution (this, from:"Baltoy", hp:HP080, type:F, retreatCost:1) {
         weakness W
@@ -856,7 +856,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case CORSOLA_32:
       return basic (this, hp:HP070, type:W, retreatCost:1) {
         weakness G
@@ -876,7 +876,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case DODRIO_33:
       return evolution (this, from:"Doduo", hp:HP080, type:C, retreatCost:null) {
         weakness L
@@ -902,7 +902,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case GLALIE_34:
       return evolution (this, from:"Snorunt", hp:HP080, type:W, retreatCost:1) {
         weakness M
@@ -919,7 +919,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case GLOOM_35:
       return evolution (this, from:"Oddish", hp:HP070, type:G, retreatCost:1) {
         weakness F
@@ -939,7 +939,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case GOLBAT_36:
       return evolution (this, from:"Zubat", hp:HP070, type:G, retreatCost:1) {
         weakness P
@@ -959,7 +959,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case IGGLYBUFF_37:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -976,7 +976,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case LANTURN_38:
       return evolution (this, from:"Chinchou", hp:HP080, type:L, retreatCost:2) {
         weakness F
@@ -993,7 +993,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case LOUDRED_39:
       return evolution (this, from:"Whismur", hp:HP080, type:C, retreatCost:2) {
         weakness F
@@ -1013,7 +1013,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case LUVDISC_40:
       return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness L
@@ -1033,7 +1033,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case MACHOKE_41:
       return evolution (this, from:"Machop", hp:HP080, type:F, retreatCost:1) {
         weakness P
@@ -1050,7 +1050,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case MEDICHAM_42:
       return evolution (this, from:"Meditite", hp:HP080, type:F, retreatCost:1) {
         weakness P
@@ -1070,7 +1070,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case METANG_43:
       return evolution (this, from:"Beldum", hp:HP080, type:P, retreatCost:2) {
         weakness P
@@ -1090,7 +1090,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case METANG_44:
       return evolution (this, from:"Beldum", hp:HP070, type:M, retreatCost:2) {
         weakness F
@@ -1108,7 +1108,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case NUZLEAF_45:
       return evolution (this, from:"Seedot", hp:HP070, type:D, retreatCost:1) {
         weakness F
@@ -1129,7 +1129,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case RHYDON_46:
       return evolution (this, from:"Rhyhorn", hp:HP090, type:F, retreatCost:2) {
         weakness W
@@ -1154,7 +1154,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case SEALEO_47:
       return evolution (this, from:"Spheal", hp:HP070, type:W, retreatCost:1) {
         weakness M
@@ -1174,7 +1174,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case SPINDA_48:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness F
@@ -1194,7 +1194,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case STARMIE_49:
       return evolution (this, from:"Staryu", hp:HP080, type:P, retreatCost:1) {
         weakness P
@@ -1214,7 +1214,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case SWALOT_50:
       return evolution (this, from:"Gulpin", hp:HP080, type:G, retreatCost:2) {
         weakness P
@@ -1234,7 +1234,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case TENTACRUEL_51:
       return evolution (this, from:"Tentacool", hp:HP070, type:W, retreatCost:null) {
         weakness L
@@ -1254,7 +1254,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case BALTOY_52:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -1266,7 +1266,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case BALTOY_53:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness W
@@ -1286,7 +1286,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case BELDUM_54:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -1306,7 +1306,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case CHIKORITA_55:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness F
@@ -1319,7 +1319,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case CHINCHOU_56:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1339,7 +1339,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case CHINCHOU_57:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1359,7 +1359,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case CLAMPERL_58:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness L
@@ -1376,7 +1376,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case CYNDAQUIL_59:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1396,7 +1396,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case DODUO_60:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness L
@@ -1409,7 +1409,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case FEEBAS_61:
       return basic (this, hp:HP030, type:W, retreatCost:1) {
         weakness L
@@ -1426,7 +1426,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
           energyCost W
           ascension delegate
         }
-      };
+      }
       case GULPIN_62:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness P
@@ -1446,7 +1446,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case JIGGLYPUFF_63:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1466,7 +1466,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case MACHOP_64:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness P
@@ -1486,7 +1486,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case MEDITITE_65:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -1506,7 +1506,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case MEDITITE_66:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness P
@@ -1526,7 +1526,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MINUN_67:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1547,7 +1547,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case ODDISH_68:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -1567,7 +1567,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case PLUSLE_69:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1588,7 +1588,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case RHYHORN_70:
       return basic (this, hp:HP060, type:F, retreatCost:1) {
         weakness W
@@ -1608,7 +1608,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case SEEDOT_71:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -1628,7 +1628,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SHUPPET_72:
       return basic (this, hp:HP040, type:P, retreatCost:1) {
         weakness D
@@ -1641,7 +1641,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SNORUNT_73:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness M
@@ -1661,7 +1661,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SPHEAL_74:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness M
@@ -1673,7 +1673,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case STARYU_75:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -1690,7 +1690,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SURSKIT_76:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -1702,7 +1702,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case TENTACOOL_77:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -1719,7 +1719,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case TOGEPI_78:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1731,7 +1731,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case TOTODILE_79:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -1751,7 +1751,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case VOLTORB_80:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness F
@@ -1771,7 +1771,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case VULPIX_81:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1790,7 +1790,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
           // TODO: Handle the coin flip mentioned in the errata
           ascension delegate
         }
-      };
+      }
       case WHISMUR_82:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1802,7 +1802,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case ZUBAT_83:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness P
@@ -1822,7 +1822,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case ANCIENT_TECHNICAL_MACHINE_ICE__84:
       return pokemonTool (this) {
         text "Attach this card to 1 of your Evolved Pokémon (excluding Pokémon-ex and Pokémon that has an owner in its name) in play. That Pokémon may use this card's attack instead of its own. At the end of your turn, discard Ancient Technical Machine (Ice)."
@@ -1832,7 +1832,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case ANCIENT_TECHNICAL_MACHINE_ROCK__85:
       return pokemonTool (this) {
         text "Attach this card to 1 of your Evolved Pokémon (excluding Pokémon-ex and Pokémon that has an owner in its name) in play. That Pokémon may use this card's attack instead of its own. At the end of your turn, discard Ancient Technical Machine (Rock)."
@@ -1842,7 +1842,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case ANCIENT_TECHNICAL_MACHINE_STEEL__86:
       return pokemonTool (this) {
         text "Attach this card to 1 of your Evolved Pokémon (excluding Pokémon-ex and Pokémon that has an owner in its name) in play. That Pokémon may use this card's attack instead of its own. At the end of your turn, discard Ancient Technical Machine (Steel)."
@@ -1852,7 +1852,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case ANCIENT_TOMB_87:
       return stadium (this) {
         text "Don't apply Weakness for all Pokémon in play (excluding Pokémon-ex and Pokémon that has an owner in its name)." +
@@ -1868,7 +1868,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         onRemoveFromPlay{
           eff.unregister()
         }
-      };
+      }
       case DESERT_RUINS_88:
       return stadium (this) {
         text "At any time between turns, each player puts 1 damage counter on his or her Pokémon-ex with maximum HP of at least 100." +
@@ -1893,7 +1893,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         onRemoveFromPlay{
           eff.unregister()
         }
-      };
+      }
       case ISLAND_CAVE_89:
       return stadium (this) {
         text "Whenever any player attaches an Energy card from his or her hand to [W] Pokémon, [F] Pokémon, or [M] Pokémon, remove any Special Conditions from that Pokémon." +
@@ -1913,7 +1913,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         onRemoveFromPlay{
           eff.unregister()
         }
-      };
+      }
       case LIFE_HERB_90:
         return copy(FireRedLeafGreen.LIFE_HERB_93, this)
       case MAGNETIC_STORM_91:
@@ -1933,7 +1933,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         onRemoveFromPlay{
           eff.unregister()
         }
-      };
+      }
       case STEVEN_S_ADVICE_92:
         return copy(PowerKeepers.STEVEN_S_ADVICE_83, this)
       case GROUDON_EX_93:
@@ -1960,7 +1960,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case KYOGRE_EX_94:
       return basic (this, hp:HP100, type:W, retreatCost:3) {
         weakness G
@@ -1985,7 +1985,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case METAGROSS_EX_95:
       return evolution (this, from:"Metang", hp:HP150, type:M, retreatCost:4) {
         weakness F
@@ -2007,7 +2007,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case NINETALES_EX_96:
       return evolution (this, from:"Vulpix", hp:HP090, type:R, retreatCost:1) {
         weakness W
@@ -2027,7 +2027,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 100
           }
         }
-      };
+      }
       case REGICE_EX_97:
       return basic (this, hp:HP090, type:W, retreatCost:2) {
         weakness M
@@ -2044,7 +2044,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case REGIROCK_EX_98:
       return basic (this, hp:HP100, type:F, retreatCost:3) {
         weakness W
@@ -2061,7 +2061,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case REGISTEEL_EX_99:
       return basic (this, hp:HP090, type:M, retreatCost:2) {
         weakness R
@@ -2079,7 +2079,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case VILEPLUME_EX_100:
       return evolution (this, from:"Gloom", hp:HP140, type:G, retreatCost:2) {
         weakness P
@@ -2096,7 +2096,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case WIGGLYTUFF_EX_101:
       return evolution (this, from:"Jigglypuff", hp:HP100, type:C, retreatCost:1) {
         weakness F
@@ -2116,7 +2116,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case GROUDON_102:
       return basic (this, hp:HP080, type:F, retreatCost:3) {
         weakness G
@@ -2136,9 +2136,9 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
         default:
-      return null;
+      return null
     }
   }
 }

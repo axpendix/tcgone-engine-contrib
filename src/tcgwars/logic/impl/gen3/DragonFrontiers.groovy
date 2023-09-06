@@ -1,45 +1,45 @@
 package tcgwars.logic.impl.gen3
 
-import tcgwars.logic.effect.gm.ActivateSimpleTrainer;
-import tcgwars.logic.effect.gm.PlayTrainer;
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer
+import tcgwars.logic.effect.gm.PlayTrainer
 
-import tcgwars.logic.impl.gen3.Deoxys;
-import tcgwars.logic.impl.gen3.DeltaSpecies;
-import tcgwars.logic.impl.gen3.HolonPhantoms;
-import tcgwars.logic.impl.gen3.FireRedLeafGreen;
-import tcgwars.logic.impl.gen3.TeamRocketReturns;
-import tcgwars.logic.impl.gen4.HeartgoldSoulsilver;
-import tcgwars.logic.impl.gen7.CelestialStorm;
+import tcgwars.logic.impl.gen3.Deoxys
+import tcgwars.logic.impl.gen3.DeltaSpecies
+import tcgwars.logic.impl.gen3.HolonPhantoms
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
+import tcgwars.logic.impl.gen3.TeamRocketReturns
+import tcgwars.logic.impl.gen4.HeartgoldSoulsilver
+import tcgwars.logic.impl.gen7.CelestialStorm
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -148,53 +148,53 @@ public enum DragonFrontiers implements LogicCardInfo {
   CHARIZARD_STAR_DELTA_100 ("Charizard Star", "100", Rarity.HOLORARE, [POKEMON_STAR, POKEMON, BASIC, DELTA, _DARKNESS_]),
   MEW_STAR_DELTA_101 ("Mew Star", "101", Rarity.HOLORARE, [POKEMON_STAR, POKEMON, BASIC, DELTA, _WATER_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   DragonFrontiers(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.DRAGON_FRONTIERS;
+    return tcgwars.logic.card.Collection.DRAGON_FRONTIERS
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -217,7 +217,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 20 + 10*my.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }.size()
           }
         }
-      };
+      }
       case FERALIGATR_DELTA_2:
       return evolution (this, from:"Croconaw", hp:HP120, type:L, retreatCost:2) {
         weakness L
@@ -256,7 +256,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case HERACROSS_DELTA_3:
       return basic (this, hp:HP070, type:R, retreatCost:1) {
         weakness R
@@ -291,7 +291,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MEGANIUM_DELTA_4:
       return evolution (this, from:"Bayleef", hp:HP110, type:F, retreatCost:2) {
         weakness R
@@ -324,7 +324,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case MILOTIC_DELTA_5:
       return evolution (this, from:"Feebas", hp:HP090, type:R, retreatCost:2) {
         weakness L
@@ -356,7 +356,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case NIDOKING_DELTA_6:
       return evolution (this, from:"Nidorino", hp:HP120, type:D, retreatCost:3) {
         weakness P
@@ -379,7 +379,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case NIDOQUEEN_DELTA_7:
       return evolution (this, from:"Nidorina", hp:HP100, type:M, retreatCost:2) {
         weakness P
@@ -405,7 +405,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 30 + bonusDamage
           }
         }
-      };
+      }
       case NINETALES_DELTA_8:
       return evolution (this, from:"Vulpix", hp:HP070, type:P, retreatCost:0) {
         weakness W
@@ -434,7 +434,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             attachEnergyFrom(my.discard, my.all.select())
           }
         }
-      };
+      }
       case PINSIR_DELTA_9:
       return basic (this, hp:HP060, type:F, retreatCost:1) {
         weakness R
@@ -471,7 +471,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case SNORLAX_DELTA_10:
       return basic (this, hp:HP080, type:G, retreatCost:3) {
         weakness F
@@ -497,7 +497,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case TOGETIC_DELTA_11:
       return evolution (this, from:"Togepi", hp:HP060, type:W, retreatCost:0) {
         weakness L
@@ -530,7 +530,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case TYPHLOSION_DELTA_12:
       return evolution (this, from:"Quilava", hp:HP100, type:P, retreatCost:1) {
         weakness W
@@ -567,7 +567,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ARBOK_DELTA_13:
       return evolution (this, from:"Ekans", hp:HP080, type:R, retreatCost:1) {
         weakness P
@@ -589,7 +589,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case CLOYSTER_DELTA_14:
       return evolution (this, from:"Shellder", hp:HP070, type:F, retreatCost:1) {
         weakness L
@@ -621,7 +621,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 10+10*self.cards.energyCount(C)
           }
         }
-      };
+      }
       case DEWGONG_DELTA_15:
       return evolution (this, from:"Seel", hp:HP080, type:C, retreatCost:2) {
         weakness L
@@ -658,7 +658,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case GLIGAR_DELTA_16:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness W
@@ -686,7 +686,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case JYNX_DELTA_17:
       return basic (this, hp:HP060, type:R, retreatCost:1) {
         weakness P
@@ -705,7 +705,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case LEDIAN_DELTA_18:
       return evolution (this, from:"Ledyba", hp:HP070, type:M, retreatCost:0) {
         weakness R
@@ -729,7 +729,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case LICKITUNG_DELTA_19:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness F
@@ -752,7 +752,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MANTINE_DELTA_20:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness L
@@ -775,7 +775,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             heal 10, self
           }
         }
-      };
+      }
       case QUAGSIRE_DELTA_21:
       return evolution (this, from:"Wooper", hp:HP080, type:G, retreatCost:1) {
         weakness G
@@ -797,7 +797,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             if (self.cards.hasType(POKEMON_TOOL)) damage 20
           }
         }
-      };
+      }
       case SEADRA_DELTA_22:
       return evolution (this, from:"Horsea", hp:HP070, type:F, retreatCost:1) {
         weakness L
@@ -816,7 +816,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case TROPIUS_DELTA_23:
       return basic (this, hp:HP070, type:M, retreatCost:1) {
         weakness R
@@ -860,7 +860,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 10*self.cards.energyCount(C)
           }
         }
-      };
+      }
       case VIBRAVA_DELTA_24:
       return evolution (this, from:"Trapinch", hp:HP070, type:P, retreatCost:1) {
         weakness C
@@ -882,7 +882,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             flip { damage 20 }
           }
         }
-      };
+      }
       case XATU_DELTA_25:
       return evolution (this, from:"Natu", hp:HP070, type:D, retreatCost:1) {
         weakness P
@@ -909,7 +909,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             flip { applyAfterDamage CONFUSED }
           }
         }
-      };
+      }
       case BAYLEEF_DELTA_26:
       return evolution (this, from:"Chikorita", hp:HP070, type:F, retreatCost:1) {
         weakness R
@@ -922,7 +922,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             applyAfterDamage POISONED
           }
         }
-      };
+      }
       case CROCONAW_DELTA_27:
       return evolution (this, from:"Totodile", hp:HP070, type:L, retreatCost:1) {
         weakness L
@@ -943,7 +943,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case DRAGONAIR_DELTA_28:
       return evolution (this, from:"Dratini", hp:HP070, type:G, retreatCost:2) {
         move "Wrap", {
@@ -960,7 +960,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case ELECTABUZZ_DELTA_29:
       return basic (this, hp:HP060, type:F, retreatCost:1) {
         weakness F
@@ -983,7 +983,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             swiftDamage(30, defending)
           }
         }
-      };
+      }
       case FLAAFFY_DELTA_30:
       return evolution (this, from:"Mareep", hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -995,7 +995,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             flip { applyAfterDamage PARALYZED }
           }
         }
-      };
+      }
       case HORSEA_DELTA_31:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness L
@@ -1014,7 +1014,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             switchYourActive()
           }
         }
-      };
+      }
       case KIRLIA_32:
       return evolution (this, from:"Ralts", hp:HP070, type:P, retreatCost:1) {
         weakness P
@@ -1037,7 +1037,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case KIRLIA_DELTA_33:
       return evolution (this, from:"Ralts", hp:HP070, type:R, retreatCost:1) {
         weakness P
@@ -1056,7 +1056,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case NIDORINA_DELTA_34:
       return evolution (this, from:"Nidoran♀", hp:HP070, type:M, retreatCost:1) {
         weakness P
@@ -1075,7 +1075,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case NIDORINO_DELTA_35:
       return evolution (this, from:"Nidoran♂", hp:HP070, type:D, retreatCost:1) {
         weakness P
@@ -1093,7 +1093,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case QUILAVA_DELTA_36:
       return evolution (this, from:"Cyndaquil", hp:HP070, type:P, retreatCost:1) {
         weakness W
@@ -1112,7 +1112,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             flip { damage 20 }
           }
         }
-      };
+      }
       case SEADRA_DELTA_37:
       return evolution (this, from:"Horsea", hp:HP070, type:F, retreatCost:1) {
         weakness L
@@ -1133,7 +1133,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SHELGON_DELTA_38:
       return evolution (this, from:"Bagon", hp:HP070, type:W, retreatCost:2) {
         move "Headbutt", {
@@ -1151,7 +1151,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 10, self
           }
         }
-      };
+      }
       case SMEARGLE_DELTA_39:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness F
@@ -1173,7 +1173,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SWELLOW_DELTA_40:
       return evolution (this, from:"Taillow", hp:HP070, type:R, retreatCost:0) {
         weakness L
@@ -1195,7 +1195,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             flip { preventAllEffectsNextTurn() }
           }
         }
-      };
+      }
       case TOGEPI_DELTA_41:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness F
@@ -1206,7 +1206,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             reduceDamageFromDefendingNextTurn(hp(20),thisMove,defending)
           }
         }
-      };
+      }
       case VIBRAVA_DELTA_42:
       return evolution (this, from:"Trapinch", hp:HP070, type:P, retreatCost:1) {
         move "Bite", {
@@ -1226,7 +1226,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case BAGON_DELTA_43:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         move "Granite Head", {
@@ -1237,7 +1237,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             reduceDamageNextTurn(hp(10), thisMove)
           }
         }
-      };
+      }
       case CHIKORITA_DELTA_44:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness R
@@ -1256,7 +1256,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case CYNDAQUIL_DELTA_45:
       return basic (this, hp:HP040, type:P, retreatCost:1) {
         weakness W
@@ -1267,7 +1267,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             swiftDamage(30, defending)
           }
         }
-      };
+      }
       case DRATINI_DELTA_46:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         move "Ram", {
@@ -1277,7 +1277,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case EKANS_DELTA_47:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness P
@@ -1295,7 +1295,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case ELEKID_DELTA_48:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness F
@@ -1315,7 +1315,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 10, opp.all.select()
           }
         }
-      };
+      }
       case FEEBAS_DELTA_49:
       return basic (this, hp:HP030, type:R, retreatCost:1) {
         weakness L
@@ -1329,7 +1329,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 10*self.numberOfDamageCounters
           }
         }
-      };
+      }
       case HORSEA_DELTA_50:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness L
@@ -1341,7 +1341,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             applyAfterDamage ASLEEP
           }
         }
-      };
+      }
       case LARVITAR_51:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness W
@@ -1359,7 +1359,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case LARVITAR_DELTA_52:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness G
@@ -1377,7 +1377,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case LEDYBA_DELTA_53:
       return basic (this, hp:HP040, type:M, retreatCost:1) {
         weakness R
@@ -1395,7 +1395,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             flip { apply CONFUSED }
           }
         }
-      };
+      }
       case MAREEP_DELTA_54:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
@@ -1406,7 +1406,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case NATU_DELTA_55:
       return basic (this, hp:HP040, type:D, retreatCost:1) {
         weakness P
@@ -1417,7 +1417,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case NIDORAN_FEMALE_DELTA_56:
       return basic (this, hp:HP040, type:M, retreatCost:1) {
         weakness P
@@ -1435,7 +1435,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case NIDORAN_MALE_DELTA_57:
       return basic (this, hp:HP040, type:D, retreatCost:1) {
         weakness P
@@ -1453,7 +1453,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             flip { apply POISONED }
           }
         }
-      };
+      }
       case PUPITAR_58:
       return evolution (this, from:"Larvitar", hp:HP070, type:F, retreatCost:1) {
         weakness W
@@ -1464,7 +1464,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case PUPITAR_DELTA_59:
       return evolution (this, from:"Larvitar", hp:HP070, type:L, retreatCost:1) {
         weakness G
@@ -1478,7 +1478,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case RALTS_60:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -1499,7 +1499,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 10*defending.cards.energyCount()
           }
         }
-      };
+      }
       case RALTS_DELTA_61:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness P
@@ -1517,7 +1517,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SEEL_DELTA_62:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness L
@@ -1535,7 +1535,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SHELLDER_DELTA_63:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness L
@@ -1547,7 +1547,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             flip { applyAfterDamage PARALYZED }
           }
         }
-      };
+      }
       case SMOOCHUM_DELTA_64:
       return basic (this, hp:HP040, type:R, retreatCost:1) {
         weakness P
@@ -1572,7 +1572,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             shuffleDeck()
           }
         }
-      };
+      }
       case SWABLU_DELTA_65:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness L
@@ -1587,7 +1587,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case TAILLOW_DELTA_66:
       return basic (this, hp:HP040, type:R, retreatCost:1) {
         weakness L
@@ -1600,7 +1600,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             flip { damage 10 }
           }
         }
-      };
+      }
       case TOTODILE_DELTA_67:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness L
@@ -1618,7 +1618,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 10 + 10 * self.numberOfDamageCounters
           }
         }
-      };
+      }
       case TRAPINCH_DELTA_68:
       return basic (this, hp:HP040, type:P, retreatCost:1) {
         weakness G
@@ -1636,7 +1636,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TRAPINCH_DELTA_69:
       return basic (this, hp:HP040, type:P, retreatCost:1) {
         weakness G
@@ -1647,7 +1647,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             swiftDamage (10, opp.all.select())
           }
         }
-      };
+      }
       case VULPIX_DELTA_70:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness W
@@ -1665,7 +1665,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case WOOPER_DELTA_71:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness G
@@ -1683,7 +1683,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case BUFFER_PIECE_72:
       return pokemonTool (this) {
         text "Attach Buffer Piece to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card." +
@@ -1707,9 +1707,9 @@ public enum DragonFrontiers implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-      };
+      }
       case COPYCAT_73:
-      return copy(TeamRocketReturns.COPYCAT_83, this);
+      return copy(TeamRocketReturns.COPYCAT_83, this)
       case HOLON_LEGACY_74:
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
@@ -1736,9 +1736,9 @@ public enum DragonFrontiers implements LogicCardInfo {
           eff2.unregister()
           new CheckAbilities().run(bg)
         }
-      };
+      }
       case HOLON_MENTOR_75:
-      return copy(DeltaSpecies.HOLON_MENTOR_93, this);
+      return copy(DeltaSpecies.HOLON_MENTOR_93, this)
       case ISLAND_HERMIT_76:
       return supporter (this) {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
@@ -1758,7 +1758,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case MR_STONE_S_PROJECT_77:
       return supporter (this) {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
@@ -1781,7 +1781,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         playRequirement{
           assert ( my.deck.notEmpty || my.discard.hasType(BASIC_ENERGY)) : "You have no cards in deck, and there are no Basic Energy cards in your discard pile"
         }
-      };
+      }
       case OLD_ROD_78:
       return itemCard (this) {
         text "Flip 2 coins. If both are heads, search your discard pile for a Basic Pokémon or Evolution card, show it to your opponent, and put it into your hand. If both are tails, search your discard pile for a Trainer card, show it to your opponent, and put it into your hand."
@@ -1811,7 +1811,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         playRequirement{
           assert my.discard.hasType(POKEMON) || my.discard.hasType(TRAINER) : "You don't have any Pokémon or Trainer cards in your discard pile"
         }
-      };
+      }
       case PROFESSOR_ELM_S_TRAINING_METHOD_79:
       return copy(HeartgoldSoulsilver.PROFESSOR_ELM_S_TRAINING_METHOD_100, this)
       case PROFESSOR_OAK_S_RESEARCH_80:
@@ -1826,25 +1826,25 @@ public enum DragonFrontiers implements LogicCardInfo {
         playRequirement{
           assert my.deck.notEmpty || (my.hand.getExcludedList(thisCard).size() != 0)
         }
-      };
+      }
       case STRENGTH_CHARM_81:
-      return copy(Deoxys.STRENGTH_CHARM_92, this);
+      return copy(Deoxys.STRENGTH_CHARM_92, this)
       case TV_REPORTER_82:
-      return copy(CelestialStorm.TV_REPORTER_149, this);
+      return copy(CelestialStorm.TV_REPORTER_149, this)
       case SWITCH_83:
-      return copy(FireRedLeafGreen.SWITCH_102, this);
+      return copy(FireRedLeafGreen.SWITCH_102, this)
       case HOLON_ENERGY_FF_84:
-      return copy(DeltaSpecies.HOLON_ENERGY_FF_104, this);
+      return copy(DeltaSpecies.HOLON_ENERGY_FF_104, this)
       case HOLON_ENERGY_GL_85:
-      return copy(DeltaSpecies.HOLON_ENERGY_GL_105, this);
+      return copy(DeltaSpecies.HOLON_ENERGY_GL_105, this)
       case HOLON_ENERGY_WP_86:
-      return copy(DeltaSpecies.HOLON_ENERGY_WP_106, this);
+      return copy(DeltaSpecies.HOLON_ENERGY_WP_106, this)
       case BOOST_ENERGY_87:
-      return copy(Deoxys.BOOST_ENERGY_93, this);
+      return copy(Deoxys.BOOST_ENERGY_93, this)
       case DELTA_RAINBOW_ENERGY_88:
-      return copy(HolonPhantoms.DELTA_RAINBOW_ENERGY_98, this);
+      return copy(HolonPhantoms.DELTA_RAINBOW_ENERGY_98, this)
       case SCRAMBLE_ENERGY_89:
-      return copy(Deoxys.SCRAMBLE_ENERGY_95, this);
+      return copy(Deoxys.SCRAMBLE_ENERGY_95, this)
       case ALTARIA_EX_DELTA_90:
       return evolution (this, from:"Swablu", hp:HP100, type:W, retreatCost:1) {
         weakness C
@@ -1872,7 +1872,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case DRAGONITE_EX_DELTA_91:
       return evolution (this, from:"Dragonair", hp:HP150, type:G, retreatCost:2) {
         move "Deafen", {
@@ -1906,7 +1906,7 @@ public enum DragonFrontiers implements LogicCardInfo {
                   if (excessDamageCounters && opp.bench) {
                     for (i in 1..excessDamageCounters){
                       def tar = opp.bench.select("Move a damage counter from $defending to some of your opponent's benched Pokémon? There are still ${excessDamageCounters - i + 1} available counters to move (Cancel to stop)", false)
-                      if(!tar) break;
+                      if(!tar) break
                       directDamage 10, tar
                     }
                   }
@@ -1918,7 +1918,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case FLYGON_EX_DELTA_92:
       return evolution (this, from:"Vibrava", hp:HP150, type:P, retreatCost:2) {
         pokeBody "Sand Damage", {
@@ -1950,7 +1950,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case GARDEVOIR_EX_DELTA_93:
       return evolution (this, from:"Kirlia", hp:HP150, type:R, retreatCost:2) {
         weakness P
@@ -2033,7 +2033,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case KINGDRA_EX_DELTA_94:
       return evolution (this, from:"Seadra", hp:HP140, type:F, retreatCost:1) {
         weakness L
@@ -2084,7 +2084,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case LATIAS_EX_DELTA_95:
       return basic (this, hp:HP100, type:R, retreatCost:2) {
         weakness P
@@ -2117,7 +2117,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case LATIOS_EX_DELTA_96:
       return basic (this, hp:HP100, type:W, retreatCost:2) {
         weakness P
@@ -2145,7 +2145,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case RAYQUAZA_EX_DELTA_97:
       return basic (this, hp:HP110, type:L, retreatCost:2) {
         pokeBody "Rage Aura", {
@@ -2188,7 +2188,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case SALAMENCE_EX_DELTA_98:
       return evolution (this, from:"Shelgon", hp:HP160, type:W, retreatCost:2) {
         weakness C
@@ -2234,7 +2234,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case TYRANITAR_EX_DELTA_99:
       return evolution (this, from:"Pupitar", hp:HP150, type:L, retreatCost:3) {
         weakness G
@@ -2321,7 +2321,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case CHARIZARD_STAR_DELTA_100:
       return basic (this, hp:HP090, type:D, retreatCost:3) {
         weakness W
@@ -2353,7 +2353,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MEW_STAR_DELTA_101:
       return basic (this, hp:HP070, type:W, retreatCost:1) {
         weakness P
@@ -2394,9 +2394,9 @@ public enum DragonFrontiers implements LogicCardInfo {
             if (!flag) bc "$thisMove failed! None of the opponent's Pokémon were ${type} type."
           }
         }
-      };
+      }
       default:
-      return null;
+      return null
     }
   }
 

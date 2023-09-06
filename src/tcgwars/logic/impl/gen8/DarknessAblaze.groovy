@@ -3,24 +3,24 @@ package tcgwars.logic.impl.gen8
 import tcgwars.logic.effect.advanced.PutOnBench
 import tcgwars.logic.effect.gm.PlayTrainer
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.*;
+import tcgwars.logic.*
 import tcgwars.logic.card.*
-import tcgwars.logic.effect.*;
+import tcgwars.logic.effect.*
 import tcgwars.logic.effect.ability.*
 import tcgwars.logic.effect.basic.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -232,53 +232,53 @@ public enum DarknessAblaze implements LogicCardInfo {
   TURBO_PATCH_200 ("Turbo Patch", "200", Rarity.SECRET, [TRAINER, ITEM]),
   CAPTURE_ENERGY_201 ("Capture Energy", "201", Rarity.SECRET, [ENERGY, SPECIAL_ENERGY]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   DarknessAblaze(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.DARKNESS_ABLAZE;
+    return tcgwars.logic.card.Collection.DARKNESS_ABLAZE
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -304,7 +304,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 130
           }
         }
-      };
+      }
       case BUTTERFREE_VMAX_2:
       return evolution (this, from:"Butterfree V", hp:HP300, type:G, retreatCost:0) {
         weakness R
@@ -318,7 +318,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             apply CONFUSED
           }
         }
-      };
+      }
       case PARAS_3:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -330,7 +330,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case PARASECT_4:
       return evolution (this, from:"Paras", hp:HP120, type:G, retreatCost:2) {
         weakness R
@@ -351,7 +351,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 110
           }
         }
-      };
+      }
       case CARNIVINE_5:
       return basic (this, hp:HP090, type:G, retreatCost:1) {
         weakness R
@@ -376,7 +376,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             removeDamageCounterEqualToDamageDone()
           }
         }
-      };
+      }
       case PANSAGE_6:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -396,7 +396,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SIMISAGE_7:
       return evolution (this, from:"Pansage", hp:HP100, type:G, retreatCost:1) {
         weakness R
@@ -417,7 +417,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             cantAttackNextTurn self
           }
         }
-      };
+      }
       case KARRABLAST_8:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -429,7 +429,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             flipUntilTails {damage 20}
           }
         }
-      };
+      }
       case SHELMET_9:
       return basic (this, hp:HP070, type:G, retreatCost:3) {
         weakness R
@@ -441,7 +441,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case ACCELGOR_10:
       return evolution (this, from:"Shelmet", hp:HP090, type:G, retreatCost:0) {
         weakness R
@@ -453,7 +453,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case ROWLET_11:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -478,7 +478,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 60, opp.bench.select("Select a Pokémon to deal 60 damage to.")
           }
         }
-      };
+      }
       case DARTRIX_12:
       return evolution (this, from:"Rowlet", hp:HP080, type:G, retreatCost:1) {
         weakness R
@@ -490,7 +490,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case DECIDUEYE_13:
       return evolution (this, from:"Dartrix", hp:HP140, type:G, retreatCost:2) {
         weakness R
@@ -527,7 +527,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case BOUNSWEET_14:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -549,7 +549,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case STEENEE_15:
       return evolution (this, from:"Bounsweet", hp:HP080, type:G, retreatCost:1) {
         weakness R
@@ -571,7 +571,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case TSAREENA_16:
       return evolution (this, from:"Steenee", hp:HP150, type:G, retreatCost:2) {
         weakness R
@@ -601,7 +601,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case WIMPOD_17:
       return basic (this, hp:HP070, type:G, retreatCost:3) {
         weakness R
@@ -614,7 +614,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             switchYourActive()
           }
         }
-      };
+      }
       case GOLISOPOD_18:
       return evolution (this, from:"Wimpod", hp:HP130, type:G, retreatCost:2) {
         weakness R
@@ -636,7 +636,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             switchYourActive()
           }
         }
-      };
+      }
       case CHARIZARD_V_19:
       return basic (this, hp:HP220, type:R, retreatCost:3) {
         weakness W
@@ -657,7 +657,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             discardSelfEnergyAfterDamage C, C
           }
         }
-      };
+      }
       case CHARIZARD_VMAX_20:
       return evolution (this, from:"Charizard V", hp:HP330, type:R, retreatCost:3) {
         weakness W
@@ -678,7 +678,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             discardSelfEnergyAfterDamage C, C
           }
         }
-      };
+      }
       case HOUNDOOM_V_21:
       return basic (this, hp:HP210, type:R, retreatCost:1) {
         weakness W
@@ -701,7 +701,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             if (cond) damage 100
           }
         }
-      };
+      }
       case TORCHIC_22:
       return basic (this, hp:HP060, type:R, retreatCost:1) {
         weakness W
@@ -718,7 +718,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case COMBUSKEN_23:
       return evolution (this, from:"Torchic", hp:HP090, type:R, retreatCost:1) {
         weakness W
@@ -739,7 +739,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             apply BURNED
           }
         }
-      };
+      }
       case BLAZIKEN_24:
       return evolution (this, from:"Combusken", hp:HP170, type:R, retreatCost:2) {
         weakness W
@@ -760,7 +760,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case HEATRAN_25:
       return basic (this, hp:HP130, type:R, retreatCost:4) {
         weakness W
@@ -781,7 +781,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 80 + 10 * self.numberOfDamageCounters
           }
         }
-      };
+      }
       case PANSEAR_26:
       return basic (this, hp:HP060, type:R, retreatCost:1) {
         weakness W
@@ -801,7 +801,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SIMISEAR_27:
       return evolution (this, from:"Pansear", hp:HP100, type:R, retreatCost:1) {
         weakness W
@@ -822,7 +822,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             cantAttackNextTurn self
           }
         }
-      };
+      }
       case GALARIAN_DARMANITAN_28:
       return evolution (this, from:"Galarian Darumaka", hp:HP140, type:R, retreatCost:3) {
         weakness W
@@ -849,7 +849,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case LARVESTA_29:
       return basic (this, hp:HP070, type:R, retreatCost:2) {
         weakness W
@@ -861,7 +861,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             apply BURNED
           }
         }
-      };
+      }
       case VOLCARONA_30:
       return evolution (this, from:"Larvesta", hp:HP120, type:R, retreatCost:1) {
         weakness W
@@ -883,7 +883,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 110
           }
         }
-      };
+      }
       case FLETCHINDER_31:
       return evolution (this, from:"Fletchling", hp:HP070, type:R, retreatCost:1) {
         weakness L
@@ -897,7 +897,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             apply BURNED
           }
         }
-      };
+      }
       case TALONFLAME_32:
       return evolution (this, from:"Fletchinder", hp:HP140, type:R, retreatCost:1) {
         weakness L
@@ -918,7 +918,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             cantRetreat defending
           }
         }
-      };
+      }
       case CENTISKORCH_V_33:
       return basic (this, hp:HP210, type:R, retreatCost:3) {
         weakness W
@@ -942,7 +942,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 180
           }
         }
-      };
+      }
       case CENTISKORCH_VMAX_34:
       return evolution (this, from:"Centiskorch V", hp:HP320, type:R, retreatCost:3) {
         weakness W
@@ -960,7 +960,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case GALARIAN_MR_MIME_35:
       return basic (this, hp:HP080, type:W, retreatCost:1) {
         weakness M
@@ -980,7 +980,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case GALARIAN_MR_RIME_36:
       return evolution (this, from:"Galarian Mr. Mime", hp:HP120, type:W, retreatCost:2) {
         weakness M
@@ -1006,7 +1006,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20 * my.discard.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} }.size()
           }
         }
-      };
+      }
       case SUICUNE_37:
       return basic (this, hp:HP120, type:W, retreatCost:1) {
         weakness L
@@ -1025,7 +1025,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             moveSelfEnergyAfterDamage my.hand, W, W
           }
         }
-      };
+      }
       case FEEBAS_38:
       return basic (this, hp:HP030, type:W, retreatCost:1) {
         weakness L
@@ -1039,7 +1039,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             heal 20, self
           }
         }
-      };
+      }
       case MILOTIC_39:
       return evolution (this, from:"Feebas", hp:HP120, type:W, retreatCost:2) {
         weakness L
@@ -1062,7 +1062,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 80
           }
         }
-      };
+      }
       case RELICANTH_40:
       return basic (this, hp:HP090, type:W, retreatCost:1) {
         weakness L
@@ -1089,7 +1089,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case PANPOUR_41:
       return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness L
@@ -1109,7 +1109,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SIMIPOUR_42:
       return evolution (this, from:"Panpour", hp:HP100, type:W, retreatCost:1) {
         weakness L
@@ -1130,7 +1130,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             cantAttackNextTurn self
           }
         }
-      };
+      }
       case GALARIAN_DARUMAKA_43:
       return basic (this, hp:HP070, type:W, retreatCost:1) {
         weakness M
@@ -1150,9 +1150,9 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case GALARIAN_DARMANITAN_44:
-      return copy(RebelClash.GALARIAN_DARMANITAN_48, this);
+      return copy(RebelClash.GALARIAN_DARMANITAN_48, this)
       case VANILLITE_45:
       return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness M
@@ -1165,7 +1165,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             flip {apply PARALYZED}
           }
         }
-      };
+      }
       case VANILLISH_46:
       return evolution (this, from:"Vanillite", hp:HP080, type:W, retreatCost:2) {
         weakness M
@@ -1178,7 +1178,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             flip {apply PARALYZED}
           }
         }
-      };
+      }
       case VANILLUXE_47:
       return evolution (this, from:"Vanillish", hp:HP150, type:W, retreatCost:2) {
         weakness M
@@ -1199,7 +1199,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 90
           }
         }
-      };
+      }
       case CUBCHOO_48:
       return basic (this, hp:HP070, type:W, retreatCost:2) {
         weakness M
@@ -1219,7 +1219,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case BEARTIC_49:
       return evolution (this, from:"Cubchoo", hp:HP140, type:W, retreatCost:3) {
         weakness M
@@ -1240,7 +1240,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 50, self
           }
         }
-      };
+      }
       case WISHIWASHI_50:
       return basic (this, hp:HP030, type:W, retreatCost:1) {
         weakness L
@@ -1264,7 +1264,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MAREANIE_51:
       return basic (this, hp:HP070, type:W, retreatCost:2) {
         weakness L
@@ -1287,7 +1287,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             apply POISONED
           }
         }
-      };
+      }
       case TOXAPEX_52:
       return evolution (this, from:"Mareanie", hp:HP130, type:W, retreatCost:3) {
         weakness L
@@ -1314,7 +1314,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             apply POISONED
           }
         }
-      };
+      }
       case DRACOVISH_53:
       return evolution (this, from:"Rare Fossil", hp:HP150, type:W, retreatCost:3) {
         weakness L
@@ -1342,7 +1342,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 120
           }
         }
-      };
+      }
       case ARCTOVISH_54:
       return evolution (this, from:"Rare Fossil", hp:HP150, type:W, retreatCost:2) {
         weakness L
@@ -1364,7 +1364,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             apply ASLEEP
           }
         }
-      };
+      }
       case MAREEP_55:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness F
@@ -1376,7 +1376,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case FLAAFFY_56:
       return evolution (this, from:"Mareep", hp:HP090, type:L, retreatCost:1) {
         weakness F
@@ -1388,7 +1388,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case AMPHAROS_57:
       return evolution (this, from:"Flaaffy", hp:HP150, type:L, retreatCost:2) {
         weakness F
@@ -1409,7 +1409,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 130
           }
         }
-      };
+      }
       case ELECTRIKE_58:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness F
@@ -1424,7 +1424,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MANECTRIC_59:
       return evolution (this, from:"Electrike", hp:HP110, type:L, retreatCost:1) {
         weakness F
@@ -1448,7 +1448,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case VIKAVOLT_V_60:
       return basic (this, hp:HP210, type:L, retreatCost:3) {
         weakness F
@@ -1480,7 +1480,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             discardSelfEnergyAfterDamage C, C
           }
         }
-      };
+      }
       case TAPU_KOKO_61:
       return basic (this, hp:HP110, type:L, retreatCost:0) {
         weakness F
@@ -1502,7 +1502,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 110
           }
         }
-      };
+      }
       case TOXEL_62:
       return basic (this, hp:HP070, type:L, retreatCost:2) {
         weakness F
@@ -1522,7 +1522,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TOXTRICITY_63:
       return evolution (this, from:"Toxel", hp:HP120, type:L, retreatCost:2) {
         weakness F
@@ -1545,7 +1545,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 30, self
           }
         }
-      };
+      }
       case PINCURCHIN_64:
       return basic (this, hp:HP080, type:L, retreatCost:2) {
         weakness F
@@ -1564,7 +1564,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             flip { applyAfterDamage PARALYZED }
           }
         }
-      };
+      }
       case DRACOZOLT_65:
       return evolution (this, from:"Rare Fossil", hp:HP160, type:L, retreatCost:4) {
         weakness F
@@ -1586,7 +1586,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             cantAttackNextTurn self
           }
         }
-      };
+      }
       case ARCTOZOLT_66:
       return evolution (this, from:"Rare Fossil", hp:HP130, type:L, retreatCost:2) {
         weakness F
@@ -1609,7 +1609,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case JIGGLYPUFF_67:
       return basic (this, hp:HP070, type:P, retreatCost:1) {
         weakness M
@@ -1629,7 +1629,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case WIGGLYTUFF_68:
       return evolution (this, from:"Jigglypuff", hp:HP120, type:P, retreatCost:2) {
         weakness M
@@ -1654,7 +1654,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MEW_V_69:
       return basic (this, hp:HP180, type:P, retreatCost:0) {
         weakness D
@@ -1667,7 +1667,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 30 * ( self.cards.energyCount(C) + defending.cards.energyCount(C) )
           }
         }
-      };
+      }
       case SNUBBULL_70:
       return basic (this, hp:HP080, type:P, retreatCost:2) {
         weakness M
@@ -1679,7 +1679,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case GRANBULL_71:
       return evolution (this, from:"Snubbull", hp:HP130, type:P, retreatCost:2) {
         weakness M
@@ -1700,7 +1700,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 130
           }
         }
-      };
+      }
       case LUNATONE_72:
       return basic (this, hp:HP090, type:P, retreatCost:1) {
         weakness D
@@ -1718,7 +1718,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20*(1+ defending.cards.energyCount(C))
           }
         }
-      };
+      }
       case GOTHITA_73:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness D
@@ -1746,7 +1746,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case GOTHORITA_74:
       return evolution (this, from:"Gothita", hp:HP080, type:P, retreatCost:2) {
         weakness D
@@ -1774,7 +1774,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case GOTHITELLE_75:
       return evolution (this, from:"Gothorita", hp:HP140, type:P, retreatCost:2) {
         weakness D
@@ -1804,7 +1804,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case GOLETT_76:
       return basic (this, hp:HP090, type:P, retreatCost:3) {
         weakness D
@@ -1825,7 +1825,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case GOLURK_77:
       return evolution (this, from:"Golett", hp:HP150, type:P, retreatCost:4) {
         weakness D
@@ -1846,7 +1846,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 180
           }
         }
-      };
+      }
       case DEDENNE_78:
       return basic (this, hp:HP070, type:P, retreatCost:1) {
         weakness M
@@ -1858,7 +1858,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20 * my.discard.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} }.size()
           }
         }
-      };
+      }
       case MORELULL_79:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness M
@@ -1878,7 +1878,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SHIINOTIC_80:
       return evolution (this, from:"Morelull", hp:HP110, type:P, retreatCost:2) {
         weakness M
@@ -1904,7 +1904,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MIMIKYU_81:
       return basic (this, hp:HP070, type:P, retreatCost:1) {
         weakness D
@@ -1928,7 +1928,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SINISTEA_82:
       return basic (this, hp:HP030, type:P, retreatCost:1) {
         weakness D
@@ -1941,7 +1941,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             directDamage 20, defending
           }
         }
-      };
+      }
       case POLTEAGEIST_83:
       return evolution (this, from:"Sinistea", hp:HP060, type:P, retreatCost:1) {
         weakness D
@@ -1965,7 +1965,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20 * my.discard.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} }.size()
           }
         }
-      };
+      }
       case DIGLETT_84:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
@@ -1977,7 +1977,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case DUGTRIO_85:
       return evolution (this, from:"Diglett", hp:HP090, type:F, retreatCost:1) {
         weakness G
@@ -2000,7 +2000,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case LARVITAR_86:
       return basic (this, hp:HP070, type:F, retreatCost:1) {
         weakness G
@@ -2020,7 +2020,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case PUPITAR_87:
       return evolution (this, from:"Larvitar", hp:HP080, type:F, retreatCost:3) {
         weakness G
@@ -2049,7 +2049,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case TYRANITAR_88:
       return evolution (this, from:"Pupitar", hp:HP180, type:F, retreatCost:4) {
         weakness G
@@ -2079,7 +2079,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case TRAPINCH_89:
       return basic (this, hp:HP060, type:F, retreatCost:1) {
         weakness G
@@ -2094,7 +2094,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case VIBRAVA_90:
       return evolution (this, from:"Trapinch", hp:HP080, type:F, retreatCost:1) {
         weakness G
@@ -2109,7 +2109,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case FLYGON_91:
       return evolution (this, from:"Vibrava", hp:HP150, type:F, retreatCost:1) {
         weakness G
@@ -2138,7 +2138,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SOLROCK_92:
       return basic (this, hp:HP090, type:F, retreatCost:1) {
         weakness G
@@ -2158,7 +2158,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case HIPPOPOTAS_93:
       return basic (this, hp:HP100, type:F, retreatCost:4) {
         weakness G
@@ -2181,7 +2181,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case HIPPOWDON_94:
       return evolution (this, from:"Hippopotas", hp:HP150, type:F, retreatCost:4) {
         weakness G
@@ -2203,7 +2203,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 150
           }
         }
-      };
+      }
       case RHYPERIOR_V_95:
       return basic (this, hp:HP230, type:F, retreatCost:4) {
         weakness G
@@ -2225,7 +2225,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             cantUseAttack(thisMove, self)
           }
         }
-      };
+      }
       case DIGGERSBY_96:
       return evolution (this, from:"Bunnelby", hp:HP130, type:F, retreatCost:3) {
         weakness G
@@ -2245,7 +2245,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 140
           }
         }
-      };
+      }
       case PASSIMIAN_97:
       return basic (this, hp:HP110, type:F, retreatCost:1) {
         weakness P
@@ -2263,9 +2263,9 @@ public enum DarknessAblaze implements LogicCardInfo {
             dontApplyResistance()
           }
         }
-      };
+      }
       case GALARIAN_SIRFETCH_D_98:
-      return copy(RebelClash.GALARIAN_SIRFETCH_D_95, this);
+      return copy(RebelClash.GALARIAN_SIRFETCH_D_95, this)
       case GALARIAN_SLOWBRO_V_99:
       return basic (this, hp:HP210, type:D, retreatCost:3) {
         weakness F
@@ -2287,7 +2287,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             cantRetreat(defending)
           }
         }
-      };
+      }
       case GRIMER_100:
       return basic (this, hp:HP080, type:D, retreatCost:3) {
         weakness F
@@ -2311,7 +2311,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case MUK_101:
       return evolution (this, from:"Grimer", hp:HP140, type:D, retreatCost:4) {
         weakness F
@@ -2332,7 +2332,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 120
           }
         }
-      };
+      }
       case SPINARAK_102:
       return basic (this, hp:HP060, type:D, retreatCost:1) {
         weakness F
@@ -2352,7 +2352,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case ARIADOS_103:
       return evolution (this, from:"Spinarak", hp:HP110, type:D, retreatCost:2) {
         weakness F
@@ -2381,7 +2381,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case CROBAT_V_104:
       return basic (this, hp:HP180, type:D, retreatCost:1) {
         weakness F
@@ -2407,7 +2407,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case DARKRAI_105:
       return basic (this, hp:HP120, type:D, retreatCost:2) {
         weakness G
@@ -2434,7 +2434,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 60 + 20*self.cards.energyCount(D)
           }
         }
-      };
+      }
       case PURRLOIN_106:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness G
@@ -2459,7 +2459,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case LIEPARD_107:
       return evolution (this, from:"Purrloin", hp:HP100, type:D, retreatCost:1) {
         weakness G
@@ -2485,7 +2485,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 90
           }
         }
-      };
+      }
       case DEINO_108:
       return basic (this, hp:HP060, type:D, retreatCost:1) {
         weakness G
@@ -2497,7 +2497,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case ZWEILOUS_109:
       return evolution (this, from:"Deino", hp:HP100, type:D, retreatCost:2) {
         weakness G
@@ -2517,7 +2517,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case HYDREIGON_110:
       return evolution (this, from:"Zweilous", hp:HP160, type:D, retreatCost:3) {
         weakness G
@@ -2539,7 +2539,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 130
           }
         }
-      };
+      }
       case HOOPA_111:
       return basic (this, hp:HP120, type:D, retreatCost:2) {
         weakness G
@@ -2553,7 +2553,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case NICKIT_112:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness G
@@ -2567,7 +2567,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case THIEVUL_113:
       return evolution (this, from:"Nickit", hp:HP100, type:D, retreatCost:1) {
         weakness G
@@ -2592,7 +2592,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case GRIMMSNARL_V_114:
       return basic (this, hp:HP220, type:D, retreatCost:2) {
         weakness G
@@ -2613,7 +2613,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             moveSelfEnergyAfterDamage my.hand, D, D
           }
         }
-      };
+      }
       case GRIMMSNARL_VMAX_115:
       return evolution (this, from:"Grimmsnarl V", hp:HP330, type:D, retreatCost:3) {
         weakness G
@@ -2626,7 +2626,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             extraEnergyDamage(2,hp(50),D,thisMove)
           }
         }
-      };
+      }
       case ETERNATUS_V_116:
       return basic (this, hp:HP220, type:D, retreatCost:2) {
         weakness F
@@ -2659,7 +2659,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ETERNATUS_VMAX_117:
       return evolution (this, from:"Eternatus V", hp:HP340, type:D, retreatCost:3) {
         weakness F
@@ -2786,7 +2786,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 30 * my.all.findAll{it.types.contains(D)}.size()
           }
         }
-      };
+      }
       case SCIZOR_V_118:
       return basic (this, hp:HP210, type:M, retreatCost:2) {
         weakness R
@@ -2816,7 +2816,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 140
           }
         }
-      };
+      }
       case SCIZOR_VMAX_119:
       return evolution (this, from:"Scizor V", hp:HP320, type:M, retreatCost:2) {
         weakness R
@@ -2838,7 +2838,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 190
           }
         }
-      };
+      }
       case SKARMORY_120:
       return basic (this, hp:HP120, type:M, retreatCost:1) {
         weakness L
@@ -2860,7 +2860,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 80
           }
         }
-      };
+      }
       case ARON_121:
       return basic (this, hp:HP070, type:M, retreatCost:2) {
         weakness R
@@ -2881,7 +2881,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case LAIRON_122:
       return evolution (this, from:"Aron", hp:HP100, type:M, retreatCost:3) {
         weakness R
@@ -2903,7 +2903,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case AGGRON_123:
       return evolution (this, from:"Lairon", hp:HP160, type:M, retreatCost:3) {
         weakness R
@@ -2934,7 +2934,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 160
           }
         }
-      };
+      }
       case ESCAVALIER_124:
       return evolution (this, from:"Karrablast", hp:HP120, type:M, retreatCost:2) {
         weakness R
@@ -2956,7 +2956,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case KLINK_125:
       return basic (this, hp:HP060, type:M, retreatCost:2) {
         weakness R
@@ -2970,7 +2970,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             shuffleDeck()
           }
         }
-      };
+      }
       case KLANG_126:
       return evolution (this, from:"Klink", hp:HP090, type:M, retreatCost:3) {
         weakness R
@@ -2992,7 +2992,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case KLINKLANG_127:
       return evolution (this, from:"Klang", hp:HP150, type:M, retreatCost:3) {
         weakness R
@@ -3018,7 +3018,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case GALARIAN_STUNFISK_V_128:
       return basic (this, hp:HP200, type:M, retreatCost:4) {
         weakness R
@@ -3041,7 +3041,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MELTAN_129:
       return basic (this, hp:HP070, type:M, retreatCost:1) {
         weakness R
@@ -3062,7 +3062,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MELMETAL_130:
       return evolution (this, from:"Meltan", hp:HP150, type:M, retreatCost:4) {
         weakness R
@@ -3085,7 +3085,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 130
           }
         }
-      };
+      }
       case CUFANT_131:
       return basic (this, hp:HP100, type:M, retreatCost:3) {
         weakness R
@@ -3098,7 +3098,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case COPPERAJAH_132:
       return evolution (this, from:"Cufant", hp:HP190, type:M, retreatCost:4) {
         weakness R
@@ -3125,7 +3125,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             if (my.bench.find{ it.numberOfDamageCounters }) damage 120
           }
         }
-      };
+      }
       case KANGASKHAN_133:
       return basic (this, hp:HP130, type:C, retreatCost:2) {
         weakness F
@@ -3144,7 +3144,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 100
           }
         }
-      };
+      }
       case TAUROS_134:
       return basic (this, hp:HP110, type:C, retreatCost:2) {
         weakness F
@@ -3156,7 +3156,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case SENTRET_135:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness F
@@ -3165,7 +3165,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C
           callForFamily basic:true, 1, delegate
         }
-      };
+      }
       case FURRET_136:
       return evolution (this, from:"Sentret", hp:HP110, type:C, retreatCost:1) {
         weakness F
@@ -3187,7 +3187,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             flip { damage 90 }
           }
         }
-      };
+      }
       case DUNSPARCE_137:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness F
@@ -3210,7 +3210,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TEDDIURSA_138:
       return basic (this, hp:HP070, type:C, retreatCost:2) {
         weakness F
@@ -3230,7 +3230,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case URSARING_139:
       return evolution (this, from:"Teddiursa", hp:HP140, type:C, retreatCost:3) {
         weakness F
@@ -3253,7 +3253,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 120
           }
         }
-      };
+      }
       case LUGIA_140:
       return basic (this, hp:HP130, type:C, retreatCost:2) {
         weakness L
@@ -3277,7 +3277,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SKITTY_141:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness F
@@ -3302,7 +3302,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case DELCATTY_142:
       return evolution (this, from:"Skitty", hp:HP100, type:C, retreatCost:1) {
         weakness F
@@ -3325,7 +3325,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 90
           }
         }
-      };
+      }
       case SALAMENCE_V_143:
       return basic (this, hp:HP220, type:C, retreatCost:2) {
         weakness L
@@ -3346,7 +3346,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 160
           }
         }
-      };
+      }
       case SALAMENCE_VMAX_144:
       return evolution (this, from:"Salamence V", hp:HP320, type:C, retreatCost:2) {
         weakness L
@@ -3368,7 +3368,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             cantUseAttack(thisMove, self)
           }
         }
-      };
+      }
       case STARLY_145:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness L
@@ -3395,7 +3395,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             shuffleDeck()
           }
         }
-      };
+      }
       case STARAVIA_146:
       return evolution (this, from:"Starly", hp:HP080, type:C, retreatCost:1) {
         weakness L
@@ -3417,7 +3417,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case STARAPTOR_147:
       return evolution (this, from:"Staravia", hp:HP150, type:C, retreatCost:0) {
         weakness L
@@ -3432,13 +3432,13 @@ public enum DarknessAblaze implements LogicCardInfo {
               if (my.bench && confirm("Do you want to move any amount of Energy from your Pokémon to your other Pokémon in any way you like?"))
               while (true) {
                 def pl = (my.all.findAll {it.cards.filterByType(ENERGY)})
-                if (!pl) break;
+                if (!pl) break
                 def src = pl.select("Source for energy (cancel to stop)", false)
-                if (!src) break;
+                if (!src) break
                 def card=src.cards.filterByType(ENERGY).select("Energy to move").first()
 
                 def tar=my.all.findAll{it != src}.select("Target for energy (cancel to stop)", false)
-                if (!tar) break;
+                if (!tar) break
                 energySwitch(src, tar, card)
               }
             }
@@ -3453,7 +3453,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 30, self
           }
         }
-      };
+      }
       case DUCKLETT_148:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness L
@@ -3466,7 +3466,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SWANNA_149:
       return evolution (this, from:"Ducklett", hp:HP110, type:C, retreatCost:0) {
         weakness L
@@ -3494,7 +3494,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case BUNNELBY_150:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
@@ -3506,7 +3506,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20 * my.discard.findAll{ it.cardTypes.is(POKEMON) && it.moves.any{it.name=="Mad Party"} }.size()
           }
         }
-      };
+      }
       case FLETCHLING_151:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness L
@@ -3519,7 +3519,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SKWOVET_152:
       return basic (this, hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -3531,7 +3531,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             flip { damage 40 }
           }
         }
-      };
+      }
       case GREEDENT_153:
       return evolution (this, from:"Skwovet", hp:HP120, type:C, retreatCost:1) {
         weakness F
@@ -3557,7 +3557,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ROOKIDEE_154:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness L
@@ -3573,7 +3573,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case CORVISQUIRE_155:
       return evolution (this, from:"Rookidee", hp:HP080, type:C, retreatCost:1) {
         weakness L
@@ -3594,7 +3594,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             flip 3, { damage 40 }
           }
         }
-      };
+      }
       case CORVIKNIGHT_156:
       return evolution (this, from:"Corvisquire", hp:HP160, type:C, retreatCost:2) {
         weakness L
@@ -3619,7 +3619,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 120
           }
         }
-      };
+      }
       case BIG_PARASOL_157:
       return pokemonTool (this) {
         text "As long as the Pokémon this card is attached to is in the Active Spot, prevent all effects of attacks from your opponent’s Pokémon done to all of your Pokémon. (Existing effects are not removed. Damage is not an effect.)"
@@ -3642,7 +3642,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-      };
+      }
       case BILLOWING_SMOKE_158:
       return pokemonTool (this) {
         text "If the Pokémon this card is attached to is Knocked Out by damage from an attack from your opponent’s Pokémon, that player discards any Prize cards they would take for that Knock Out instead of putting those cards into their hand."
@@ -3706,7 +3706,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         onRemoveFromPlay {
           eff1.unregister()
         }
-      };
+      }
       case BIRD_KEEPER_159:
       return supporter (this) {
         text "Switch your Active Pokémon with 1 of your Benched Pokémon. If you do, draw 3 cards."
@@ -3733,7 +3733,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case CAPE_OF_TOUGHNESS_160:
       return pokemonTool (this) {
         text "The Basic Pokémon this card is attached to gets +50 HP, except Pokémon-GX."
@@ -3748,7 +3748,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-      };
+      }
       case FAMILIAR_BELL_161:
       return itemCard (this) {
         text "Search your deck for a Pokémon with the same name as a Pokémon in your discard pile, reveal it, and put it into your hand. Then, shuffle your deck."
@@ -3764,7 +3764,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           assert my.deck : "You have no cards in your deck"
           assert my.discard.filterByType(POKEMON) : "You have no Pokémon in your discard pile"
         }
-      };
+      }
       case GLIMWOOD_TANGLE_162:
       return stadium (this) {
         text "Once during each player’s turn, after that player flips any coins for an attack, they may ignore all results of those coin flips and begin flipping those coins again."
@@ -3796,7 +3796,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         onRemoveFromPlay{
           eff.unregister()
         }
-      };
+      }
       case KABU_163:
       return supporter (this) {
         text "Shuffle your hand into your deck. Then, draw 4 cards. If your Active Pokémon if your only Pokémon in play, draw 8 cards instead."
@@ -3807,7 +3807,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         playRequirement{
           assert my.hand || my.deck : "No cards in hand or in deck"
         }
-      };
+      }
       case OLD_PC_164:
       return itemCard (this) {
         text "Flip 2 coins. If both are heads, put a card from your discard pile into your hand."
@@ -3821,7 +3821,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         playRequirement{
           assert my.discard : "You have no cards in your discard pile"
         }
-      };
+      }
       case PIERS_165:
       return supporter (this) {
         text "Search your deck for an Energy card and a [D] Pokémon, reveal them, and put them into your hand. Then, shuffle your deck."
@@ -3840,7 +3840,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           playRequirement{
             assert my.deck.notEmpty : "Deck is empty"
           }
-      };
+      }
       case POKEMON_BREEDER_S_NURTURING_166:
       return supporter (this) {
         text "Choose up to 2 of your Pokémon in play. For each of those Pokémon, search your deck for a card that evolves from that Pokémon and put it onto that Pokémon to evolve it. Then, shuffle your deck. You can’t use this card during your first turn or on a Pokémon that was put into play this turn."
@@ -3885,7 +3885,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           assert my.all.any{bg().gm().hasEvolution(it.name)} : "No Pokémon with evolutions in play"
           assert my.all.any{it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount && bg().gm().hasEvolution(it.name)} : "Cannot use this on Pokémon put into play this turn"
         }
-      };
+      }
       case RARE_FOSSIL_167:
       return itemCard (this) {
         text "Play this card as if it were a 70-HP Basic [C] Pokémon. At any time during your turn, you may discard this card from play. This card can’t be affected by any Special Conditions, and it can’t retreat."
@@ -3942,7 +3942,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         playRequirement{
           assert bench.notFull
         }
-      };
+      }
       case ROSE_168:
       return supporter (this) {
         text "Attach up to 2 basic Energy cards from your discard pile to 1 of your Pokémon VMAX. If you attached any Energy cards in this way, discard your hand."
@@ -3954,7 +3954,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           assertMyAll(hasVariants: VMAX)
           assert my.discard.filterByType(BASIC_ENERGY) : "No Basic Energy in your discard pile"
         }
-      };
+      }
       case ROSE_TOWER_169:
       return stadium (this) {
         text "Once during each player’s turn, that player may draw cards until they have 3 cards in their hand."
@@ -3973,7 +3973,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         onRemoveFromPlay{
           actions.each { bg().gm().unregisterAction(it) }
         }
-      };
+      }
       case SPIKEMUTH_170:
       return stadium (this) {
         text "Whenever a player’s Active Pokémon moves to the Bench during their turn, put 2 damage counters on that Pokémon."
@@ -3996,7 +3996,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         onRemoveFromPlay{
           eff.unregister()
         }
-      };
+      }
       case STRUGGLE_GLOVES_171:
       return pokemonTool (this) {
         text "If the Pokémon this card is attached to has Weakness to your opponent’s Active Pokémon’s type, its attacks do 30 more damage to your opponent’s Active Pokémon (before applying Weakness and Resistance)."
@@ -4023,7 +4023,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         onRemoveFromPlay {
           increasedDmgEff.unregister()
         }
-      };
+      }
       case TURBO_PATCH_172:
       return itemCard (this) {
         text "Flip a coin. If heads, attach a basic Energy card from your discard pile to 1 of your Basic Pokémon that isn’t a Pokémon-GX."
@@ -4036,7 +4036,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           assert my.all.findAll{it.basic && !(it.pokemonGX)} : "You have no Basic Pokémon that aren't Pokémon-GX"
           assert my.discard.filterByType(BASIC_ENERGY) : "There are no basic Energy cards in your discard pile"
         }
-      };
+      }
       case YELL_HORN_173:
       return itemCard (this) {
         text "Both Active Pokémon are now Confused."
@@ -4047,7 +4047,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         playRequirement{
           assert !(opp.active.isSPC(CONFUSED) && my.active.isSPC(CONFUSED)) : "Both Active Pokémon are already confused"
         }
-      };
+      }
       case HEAT_FIRE_ENERGY_174:
       return specialEnergy (this, [[]]) {
         text "As long as this card is attached to a Pokémon, it provides [R] Energy. The [R] Pokémon this card is attached to gets +20 HP."
@@ -4076,7 +4076,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           if (eff1 != null) eff1.unregister()
           eff2.unregister()
         }
-      };
+      }
       case HIDING_DARKNESS_ENERGY_175:
       return specialEnergy (this, [[]]) {
         text "As long as this card is attached to a Pokémon, it provides [D] Energy. The [D] Pokémon this card is attached to has no Retreat Cost."
@@ -4095,7 +4095,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-      };
+      }
       case POWERFUL_COLORLESS_ENERGY_176:
       return specialEnergy (this, [[]]) {
         text "As long as this card is attached to a Pokémon, it provides [C] Energy. The attacks of the [C] Pokémon this card is attached to do 20 more damage to your opponent’s Active Pokémon (before applying Weakness and Resistance)."
@@ -4121,59 +4121,59 @@ public enum DarknessAblaze implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-      };
+      }
       case BUTTERFREE_V_177:
-      return copy (BUTTERFREE_V_1, this);
+      return copy (BUTTERFREE_V_1, this)
       case HOUNDOOM_V_178:
-      return copy (HOUNDOOM_V_21, this);
+      return copy (HOUNDOOM_V_21, this)
       case CENTISKORCH_V_179:
-      return copy (CENTISKORCH_V_33, this);
+      return copy (CENTISKORCH_V_33, this)
       case VIKAVOLT_V_180:
-      return copy (VIKAVOLT_V_60, this);
+      return copy (VIKAVOLT_V_60, this)
       case RHYPERIOR_V_181:
-      return copy (RHYPERIOR_V_95, this);
+      return copy (RHYPERIOR_V_95, this)
       case CROBAT_V_182:
-      return copy (CROBAT_V_104, this);
+      return copy (CROBAT_V_104, this)
       case SCIZOR_V_183:
-      return copy (SCIZOR_V_118, this);
+      return copy (SCIZOR_V_118, this)
       case GALARIAN_STUNFISK_V_184:
-      return copy (GALARIAN_STUNFISK_V_128, this);
+      return copy (GALARIAN_STUNFISK_V_128, this)
       case SALAMENCE_V_185:
-      return copy (SALAMENCE_V_143, this);
+      return copy (SALAMENCE_V_143, this)
       case KABU_186:
-      return copy (KABU_163, this);
+      return copy (KABU_163, this)
       case PIERS_187:
-      return copy (PIERS_165, this);
+      return copy (PIERS_165, this)
       case POKEMON_BREEDER_S_NURTURING_188:
-      return copy (POKEMON_BREEDER_S_NURTURING_166, this);
+      return copy (POKEMON_BREEDER_S_NURTURING_166, this)
       case ROSE_189:
-      return copy (ROSE_168, this);
+      return copy (ROSE_168, this)
       case BUTTERFREE_VMAX_190:
-      return copy (BUTTERFREE_VMAX_2, this);
+      return copy (BUTTERFREE_VMAX_2, this)
       case CENTISKORCH_VMAX_191:
-      return copy (CENTISKORCH_VMAX_34, this);
+      return copy (CENTISKORCH_VMAX_34, this)
       case ETERNATUS_VMAX_192:
-      return copy (ETERNATUS_VMAX_117, this);
+      return copy (ETERNATUS_VMAX_117, this)
       case SCIZOR_VMAX_193:
-      return copy (SCIZOR_VMAX_119, this);
+      return copy (SCIZOR_VMAX_119, this)
       case SALAMENCE_VMAX_194:
-      return copy (SALAMENCE_VMAX_144, this);
+      return copy (SALAMENCE_VMAX_144, this)
       case POKEMON_BREEDER_S_NURTURING_195:
-      return copy (POKEMON_BREEDER_S_NURTURING_166, this);
+      return copy (POKEMON_BREEDER_S_NURTURING_166, this)
       case ROSE_196:
-      return copy (ROSE_168, this);
+      return copy (ROSE_168, this)
       case RILLABOOM_197:
-      return copy (SwordShield.RILLABOOM_14, this);
+      return copy (SwordShield.RILLABOOM_14, this)
       case COALOSSAL_198:
-      return copy (RebelClash.COALOSSAL_107, this);
+      return copy (RebelClash.COALOSSAL_107, this)
       case BIG_PARASOL_199:
-      return copy (BIG_PARASOL_157, this);
+      return copy (BIG_PARASOL_157, this)
       case TURBO_PATCH_200:
-      return copy (TURBO_PATCH_172, this);
+      return copy (TURBO_PATCH_172, this)
       case CAPTURE_ENERGY_201:
-      return copy (RebelClash.CAPTURE_ENERGY_171, this);
+      return copy (RebelClash.CAPTURE_ENERGY_171, this)
         default:
-      return null;
+      return null
     }
   }
 }

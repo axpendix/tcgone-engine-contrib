@@ -1,36 +1,36 @@
 package tcgwars.logic.impl.gen8
 
-import tcgwars.logic.impl.gen5.BoundariesCrossed;
+import tcgwars.logic.impl.gen5.BoundariesCrossed
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -233,53 +233,53 @@ public enum ShiningFates implements LogicCardInfo {
   ETERNATUS_V_SV121 ("Eternatus V", "SV121", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _DARKNESS_]),
   ETERNATUS_VMAX_SV122 ("Eternatus VMAX", "SV122", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _DARKNESS_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   ShiningFates(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.SHINING_FATES;
+    return tcgwars.logic.card.Collection.SHINING_FATES
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -304,7 +304,7 @@ public enum ShiningFates implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case YANMEGA_2:
       return evolution (this, from:"Yanma", hp:HP120, type:G, retreatCost:0) {
         weakness R
@@ -325,7 +325,7 @@ public enum ShiningFates implements LogicCardInfo {
             damage 30, self
           }
         }
-      };
+      }
       case CELEBI_3:
       return basic (this, hp:HP070, type:G, retreatCost:1) {
         weakness R
@@ -348,7 +348,7 @@ public enum ShiningFates implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case CACNEA_4:
       return basic (this, hp:HP070, type:G, retreatCost:2) {
         weakness R
@@ -360,7 +360,7 @@ public enum ShiningFates implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case TROPIUS_5:
       return basic (this, hp:HP110, type:G, retreatCost:1) {
         weakness R
@@ -385,15 +385,15 @@ public enum ShiningFates implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case ROWLET_6:
-        return copy (DarknessAblaze.ROWLET_11, this);
+        return copy (DarknessAblaze.ROWLET_11, this)
       case DARTRIX_7:
-        return copy (DarknessAblaze.DARTRIX_12, this);
+        return copy (DarknessAblaze.DARTRIX_12, this)
       case DECIDUEYE_8:
-        return copy (DarknessAblaze.DECIDUEYE_13, this);
+        return copy (DarknessAblaze.DECIDUEYE_13, this)
       case DHELMISE_V_9:
-        return copy (SwordShield.DHELMISE_V_9, this);
+        return copy (SwordShield.DHELMISE_V_9, this)
       case DHELMISE_VMAX_10:
       return evolution (this, from:"Dhelmise V", hp:HP330, type:G, retreatCost:3) {
         weakness R
@@ -414,13 +414,13 @@ public enum ShiningFates implements LogicCardInfo {
             cantUseAttack thisMove, self
           }
         }
-      };
+      }
       case GROOKEY_11:
-        return copy (SwordShield.GROOKEY_10, this);
+        return copy (SwordShield.GROOKEY_10, this)
       case THWACKEY_12:
-        return copy (ShinyStarV.THWACKEY_1, this);
+        return copy (ShinyStarV.THWACKEY_1, this)
       case RILLABOOM_13:
-        return copy (SwordShield.RILLABOOM_14, this);
+        return copy (SwordShield.RILLABOOM_14, this)
       case GOSSIFLEUR_14:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -432,7 +432,7 @@ public enum ShiningFates implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case ELDEGOSS_15:
       return evolution (this, from:"Gossifleur", hp:HP090, type:G, retreatCost:1) {
         weakness R
@@ -454,7 +454,7 @@ public enum ShiningFates implements LogicCardInfo {
             flip { damage 50 }
           }
         }
-      };
+      }
       case ZARUDE_16:
       return basic (this, hp:HP120, type:G, retreatCost:2) {
         weakness R
@@ -475,13 +475,13 @@ public enum ShiningFates implements LogicCardInfo {
             damage 110
           }
         }
-      };
+      }
       case RESHIRAM_17:
-        return copy (ShinyStarV.RESHIRAM_2, this);
+        return copy (ShinyStarV.RESHIRAM_2, this)
       case CINDERACE_V_18:
-        return copy (SwordShieldPromos.CINDERACE_V_SWSH15, this);
+        return copy (SwordShieldPromos.CINDERACE_V_SWSH15, this)
       case CINDERACE_VMAX_19:
-        return copy (RebelClash.CINDERACE_VMAX_36, this);
+        return copy (RebelClash.CINDERACE_VMAX_36, this)
       case HORSEA_20:
       return basic (this, hp:HP040, type:W, retreatCost:0) {
         weakness L
@@ -493,9 +493,9 @@ public enum ShiningFates implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case KYOGRE_21:
-        return copy (ShinyStarV.KYOGRE_3, this);
+        return copy (ShinyStarV.KYOGRE_3, this)
       case BUIZEL_22:
       return basic (this, hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -507,7 +507,7 @@ public enum ShiningFates implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case FLOATZEL_23:
       return evolution (this, from:"Buizel", hp:HP110, type:W, retreatCost:1) {
         weakness L
@@ -519,7 +519,7 @@ public enum ShiningFates implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case MANAPHY_24:
       return basic (this, hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -542,7 +542,7 @@ public enum ShiningFates implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case VOLCANION_25:
       return basic (this, hp:HP130, type:W, retreatCost:3) {
         weakness L
@@ -562,7 +562,7 @@ public enum ShiningFates implements LogicCardInfo {
             flip 2, { damage 120 }
           }
         }
-      };
+      }
       case CHEWTLE_26:
       return basic (this, hp:HP080, type:W, retreatCost:2) {
         weakness L
@@ -582,7 +582,7 @@ public enum ShiningFates implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case DREDNAW_27:
       return evolution (this, from:"Chewtle", hp:HP140, type:W, retreatCost:3) {
         weakness L
@@ -607,7 +607,7 @@ public enum ShiningFates implements LogicCardInfo {
             damage 130
           }
         }
-      };
+      }
       case CRAMORANT_28:
       return basic (this, hp:HP090, type:W, retreatCost:1) {
         weakness L
@@ -621,45 +621,45 @@ public enum ShiningFates implements LogicCardInfo {
             damage 50, opp.bench.select(text)
           }
         }
-      };
+      }
       case SNOM_29:
-        return copy (ShinyStarV.SNOM_4, this);
+        return copy (ShinyStarV.SNOM_4, this)
       case FROSMOTH_30:
-        return copy (SwordShield.FROSMOTH_64, this);
+        return copy (SwordShield.FROSMOTH_64, this)
       case SHINX_31:
-        return copy (RebelClash.SHINX_60, this);
+        return copy (RebelClash.SHINX_60, this)
       case LUXIO_32:
-        return copy (RebelClash.LUXIO_61, this);
+        return copy (RebelClash.LUXIO_61, this)
       case LUXRAY_33:
-        return copy (RebelClash.LUXRAY_62, this);
+        return copy (RebelClash.LUXRAY_62, this)
       case ROTOM_34:
-        return copy (ShinyStarV.ROTOM_5, this);
+        return copy (ShinyStarV.ROTOM_5, this)
       case MORPEKO_35:
-        return copy (SwordShieldPromos.MORPEKO_SWSH31, this);
+        return copy (SwordShieldPromos.MORPEKO_SWSH31, this)
       case MORPEKO_36:
-        return copy (MORPEKO_35, this);
+        return copy (MORPEKO_35, this)
       case MORPEKO_V_37:
-        return copy (SwordShield.MORPEKO_V_79, this);
+        return copy (SwordShield.MORPEKO_V_79, this)
       case MORPEKO_VMAX_38:
-        return copy (SwordShield.MORPEKO_VMAX_80, this);
+        return copy (SwordShield.MORPEKO_VMAX_80, this)
       case INDEEDEE_V_39:
-        return copy (SwordShield.INDEEDEE_V_91, this);
+        return copy (SwordShield.INDEEDEE_V_91, this)
       case TRAPINCH_40:
-        return copy (DarknessAblaze.TRAPINCH_89, this);
+        return copy (DarknessAblaze.TRAPINCH_89, this)
       case KOFFING_41:
-        return copy (ShinyStarV.KOFFING_6, this);
+        return copy (ShinyStarV.KOFFING_6, this)
       case GALARIAN_WEEZING_42:
-        return copy (RebelClash.GALARIAN_WEEZING_113, this);
+        return copy (RebelClash.GALARIAN_WEEZING_113, this)
       case SPINARAK_43:
-        return copy (DarknessAblaze.SPINARAK_102, this);
+        return copy (DarknessAblaze.SPINARAK_102, this)
       case CROBAT_V_44:
-        return copy (DarknessAblaze.CROBAT_V_104, this);
+        return copy (DarknessAblaze.CROBAT_V_104, this)
       case CROBAT_VMAX_45:
-        return copy (ShinyStarV.CROBAT_VMAX_7, this);
+        return copy (ShinyStarV.CROBAT_VMAX_7, this)
       case YVELTAL_46:
-        return copy (ShinyStarV.YVELTAL_8, this);
+        return copy (ShinyStarV.YVELTAL_8, this)
       case NICKIT_47:
-        return copy (SwordShield.NICKIT_125, this);
+        return copy (SwordShield.NICKIT_125, this)
       case THIEVUL_48:
       return evolution (this, from:"Nickit", hp:HP100, type:D, retreatCost:1) {
         weakness G
@@ -687,15 +687,15 @@ public enum ShiningFates implements LogicCardInfo {
             cantRetreat(defending)
           }
         }
-      };
+      }
       case CUFANT_49:
-        return copy (DarknessAblaze.CUFANT_131, this);
+        return copy (DarknessAblaze.CUFANT_131, this)
       case DITTO_V_50:
-        return copy (ShinyStarV.DITTO_V_9, this);
+        return copy (ShinyStarV.DITTO_V_9, this)
       case DITTO_VMAX_51:
-        return copy (ShinyStarV.DITTO_VMAX_10, this);
+        return copy (ShinyStarV.DITTO_VMAX_10, this)
       case EEVEE_52:
-        return copy (SwordShieldPromos.EEVEE_SWSH42, this);
+        return copy (SwordShieldPromos.EEVEE_SWSH42, this)
       case GREEDENT_V_53:
       return basic (this, hp:HP200, type:C, retreatCost:2) {
         weakness F
@@ -716,9 +716,9 @@ public enum ShiningFates implements LogicCardInfo {
             flip { damage 180 }
           }
         }
-      };
+      }
       case CRAMORANT_V_54:
-        return copy (SwordShield.CRAMORANT_V_155, this);
+        return copy (SwordShield.CRAMORANT_V_155, this)
       case CRAMORANT_VMAX_55:
       return evolution (this, from:"Cramorant V", hp:HP320, type:C, retreatCost:2) {
         weakness L
@@ -731,7 +731,7 @@ public enum ShiningFates implements LogicCardInfo {
             flip self.cards.energyCount(C), { damage 80 }
           }
         }
-      };
+      }
       case INDEEDEE_56:
       return basic (this, hp:HP100, type:C, retreatCost:1) {
         weakness F
@@ -758,11 +758,11 @@ public enum ShiningFates implements LogicCardInfo {
             damage 20 + 20 * defending.cards.energyCount(C)
           }
         }
-      };
+      }
       case BALL_GUY_57:
-        return copy (ShinyStarV.BALL_GUY_14, this);
+        return copy (ShinyStarV.BALL_GUY_14, this)
       case BOSS_S_ORDERS_58:
-        return copy (RebelClash.BOSS_S_ORDERS_154, this);
+        return copy (RebelClash.BOSS_S_ORDERS_154, this)
       case GYM_TRAINER_59:
       return supporter (this) {
         text "Draw 2 cards. If any of your Pokémon were Knocked Out during your opponent's last turn, draw 2 more cards."
@@ -784,281 +784,281 @@ public enum ShiningFates implements LogicCardInfo {
         playRequirement{
           assert my.deck : "Deck is empty"
         }
-      };
+      }
       case PROFESSOR_S_RESEARCH_60:
-        return copy (SwordShield.PROFESSOR_S_RESEARCH_178, this);
+        return copy (SwordShield.PROFESSOR_S_RESEARCH_178, this)
       case RUSTED_SHIELD_61:
-        return copy (ShinyStarV.RUSTED_SHIELD_13, this);
+        return copy (ShinyStarV.RUSTED_SHIELD_13, this)
       case RUSTED_SWORD_62:
-        return copy (ShinyStarV.RUSTED_SWORD_12, this);
+        return copy (ShinyStarV.RUSTED_SWORD_12, this)
       case TEAM_YELL_TOWEL_63:
-        return copy (ShinyStarV.TEAM_YELL_S_CHEERING_TOWEL_11, this);
+        return copy (ShinyStarV.TEAM_YELL_S_CHEERING_TOWEL_11, this)
       case ALCREMIE_V_64:
-        return copy (ChampionsPath.ALCREMIE_V_22, this);
+        return copy (ChampionsPath.ALCREMIE_V_22, this)
       case BALL_GUY_65:
-        return copy (BALL_GUY_57, this);
+        return copy (BALL_GUY_57, this)
       case BIRD_KEEPER_66:
-        return copy (DarknessAblaze.BIRD_KEEPER_159, this);
+        return copy (DarknessAblaze.BIRD_KEEPER_159, this)
       case CARA_LISS_67:
-        return copy (VividVoltage.CARA_LISS_149, this);
+        return copy (VividVoltage.CARA_LISS_149, this)
       case GYM_TRAINER_68:
-        return copy (GYM_TRAINER_59, this);
+        return copy (GYM_TRAINER_59, this)
       case PIERS_69:
-        return copy (DarknessAblaze.PIERS_165, this);
+        return copy (DarknessAblaze.PIERS_165, this)
       case POKE_KID_70:
-        return copy (SwordShield.POKE_KID_173, this);
+        return copy (SwordShield.POKE_KID_173, this)
       case ROSE_71:
-        return copy (DarknessAblaze.ROSE_168, this);
+        return copy (DarknessAblaze.ROSE_168, this)
       case SKYLA_72:
-        return copy (BoundariesCrossed.SKYLA_134, this);
+        return copy (BoundariesCrossed.SKYLA_134, this)
       case ALCREMIE_VMAX_73:
-        return copy (ChampionsPath.ALCREMIE_VMAX_23, this);
+        return copy (ChampionsPath.ALCREMIE_VMAX_23, this)
       case ROWLET_SV1:
-        return copy (ROWLET_6, this);
+        return copy (ROWLET_6, this)
       case DARTRIX_SV2:
-        return copy (DARTRIX_7, this);
+        return copy (DARTRIX_7, this)
       case DECIDUEYE_SV3:
-        return copy (DECIDUEYE_8, this);
+        return copy (DECIDUEYE_8, this)
       case GROOKEY_SV4:
-        return copy (GROOKEY_11, this);
+        return copy (GROOKEY_11, this)
       case THWACKEY_SV5:
-        return copy (THWACKEY_12, this);
+        return copy (THWACKEY_12, this)
       case RILLABOOM_SV6:
-        return copy (RILLABOOM_13, this);
+        return copy (RILLABOOM_13, this)
       case BLIPBUG_SV7:
-        return copy (SwordShield.BLIPBUG_16, this);
+        return copy (SwordShield.BLIPBUG_16, this)
       case DOTTLER_SV8:
-        return copy (SwordShield.DOTTLER_18, this);
+        return copy (SwordShield.DOTTLER_18, this)
       case ORBEETLE_SV9:
-        return copy (SwordShield.ORBEETLE_19, this);
+        return copy (SwordShield.ORBEETLE_19, this)
       case GOSSIFLEUR_SV10:
-        return copy (SwordShield.GOSSIFLEUR_20, this);
+        return copy (SwordShield.GOSSIFLEUR_20, this)
       case ELDEGOSS_SV11:
-        return copy (SwordShield.ELDEGOSS_21, this);
+        return copy (SwordShield.ELDEGOSS_21, this)
       case APPLIN_SV12:
-        return copy (RebelClash.APPLIN_21, this);
+        return copy (RebelClash.APPLIN_21, this)
       case FLAPPLE_SV13:
-        return copy (RebelClash.FLAPPLE_22, this);
+        return copy (RebelClash.FLAPPLE_22, this)
       case APPLETUN_SV14:
-        return copy (RebelClash.APPLETUN_23, this);
+        return copy (RebelClash.APPLETUN_23, this)
       case SCORBUNNY_SV15:
-        return copy (SwordShield.SCORBUNNY_30, this);
+        return copy (SwordShield.SCORBUNNY_30, this)
       case RABOOT_SV16:
-        return copy (SwordShield.RABOOT_32, this);
+        return copy (SwordShield.RABOOT_32, this)
       case CINDERACE_SV17:
-        return copy (SwordShield.CINDERACE_34, this);
+        return copy (SwordShield.CINDERACE_34, this)
       case SIZZLIPEDE_SV18:
-        return copy (SwordShield.SIZZLIPEDE_37, this);
+        return copy (SwordShield.SIZZLIPEDE_37, this)
       case CENTISKORCH_SV19:
-        return copy (SwordShield.CENTISKORCH_39, this);
+        return copy (SwordShield.CENTISKORCH_39, this)
       case GALARIAN_MR_MIME_SV20:
-        return copy (DarknessAblaze.GALARIAN_MR_MIME_35, this);
+        return copy (DarknessAblaze.GALARIAN_MR_MIME_35, this)
       case GALARIAN_MR_RIME_SV21:
-        return copy (DarknessAblaze.GALARIAN_MR_RIME_36, this);
+        return copy (DarknessAblaze.GALARIAN_MR_RIME_36, this)
       case SUICUNE_SV22:
-        return copy (DarknessAblaze.SUICUNE_37, this);
+        return copy (DarknessAblaze.SUICUNE_37, this)
       case GALARIAN_DARUMAKA_SV23:
-        return copy (RebelClash.GALARIAN_DARUMAKA_47, this);
+        return copy (RebelClash.GALARIAN_DARUMAKA_47, this)
       case GALARIAN_DARMANITAN_SV24:
-        return copy (RebelClash.GALARIAN_DARMANITAN_48, this);
+        return copy (RebelClash.GALARIAN_DARMANITAN_48, this)
       case SOBBLE_SV25:
-        return copy (SwordShield.SOBBLE_54, this);
+        return copy (SwordShield.SOBBLE_54, this)
       case DRIZZILE_SV26:
-        return copy (SwordShield.DRIZZILE_56, this);
+        return copy (SwordShield.DRIZZILE_56, this)
       case INTELEON_SV27:
-        return copy (SwordShield.INTELEON_58, this);
+        return copy (SwordShield.INTELEON_58, this)
       case CHEWTLE_SV28:
-        return copy (SwordShield.CHEWTLE_60, this);
+        return copy (SwordShield.CHEWTLE_60, this)
       case DREDNAW_SV29:
-        return copy (SwordShield.DREDNAW_61, this);
+        return copy (SwordShield.DREDNAW_61, this)
       case CRAMORANT_SV30:
-        return copy (RebelClash.CRAMORANT_51, this);
+        return copy (RebelClash.CRAMORANT_51, this)
       case ARROKUDA_SV31:
-        return copy (RebelClash.ARROKUDA_52, this);
+        return copy (RebelClash.ARROKUDA_52, this)
       case BARRASKEWDA_SV32:
-        return copy (RebelClash.BARRASKEWDA_53, this);
+        return copy (RebelClash.BARRASKEWDA_53, this)
       case SNOM_SV33:
-        return copy (SNOM_29, this);
+        return copy (SNOM_29, this)
       case FROSMOTH_SV34:
-        return copy (FROSMOTH_30, this);
+        return copy (FROSMOTH_30, this)
       case EISCUE_SV35:
-        return copy (RebelClash.EISCUE_54, this);
+        return copy (RebelClash.EISCUE_54, this)
       case DRACOVISH_SV36:
-        return copy (DarknessAblaze.DRACOVISH_53, this);
+        return copy (DarknessAblaze.DRACOVISH_53, this)
       case ARCTOVISH_SV37:
-        return copy (DarknessAblaze.ARCTOVISH_54, this);
+        return copy (DarknessAblaze.ARCTOVISH_54, this)
       case ROTOM_SV38:
-        return copy (ROTOM_34, this);
+        return copy (ROTOM_34, this)
       case YAMPER_SV39:
-        return copy (SwordShield.YAMPER_73, this);
+        return copy (SwordShield.YAMPER_73, this)
       case BOLTUND_SV40:
-        return copy (SwordShield.BOLTUND_75, this);
+        return copy (SwordShield.BOLTUND_75, this)
       case TOXEL_SV41:
-        return copy (DarknessAblaze.TOXEL_62, this);
+        return copy (DarknessAblaze.TOXEL_62, this)
       case TOXTRICITY_SV42:
-        return copy (DarknessAblaze.TOXTRICITY_63, this);
+        return copy (DarknessAblaze.TOXTRICITY_63, this)
       case PINCURCHIN_SV43:
-        return copy (SwordShield.PINCURCHIN_77, this);
+        return copy (SwordShield.PINCURCHIN_77, this)
       case MORPEKO_SV44:
-        return copy (RebelClash.MORPEKO_73, this);
+        return copy (RebelClash.MORPEKO_73, this)
       case DRACOZOLT_SV45:
-        return copy (DarknessAblaze.DRACOZOLT_65, this);
+        return copy (DarknessAblaze.DRACOZOLT_65, this)
       case ARCTOZOLT_SV46:
-        return copy (DarknessAblaze.ARCTOZOLT_66, this);
+        return copy (DarknessAblaze.ARCTOZOLT_66, this)
       case GALARIAN_PONYTA_SV47:
-        return copy (SwordShield.GALARIAN_PONYTA_81, this);
+        return copy (SwordShield.GALARIAN_PONYTA_81, this)
       case GALARIAN_RAPIDASH_SV48:
-        return copy (SwordShield.GALARIAN_RAPIDASH_82, this);
+        return copy (SwordShield.GALARIAN_RAPIDASH_82, this)
       case GALARIAN_CORSOLA_SV49:
-        return copy (RebelClash.GALARIAN_CORSOLA_78, this);
+        return copy (RebelClash.GALARIAN_CORSOLA_78, this)
       case GALARIAN_CURSOLA_SV50:
-        return copy (RebelClash.GALARIAN_CURSOLA_79, this);
+        return copy (RebelClash.GALARIAN_CURSOLA_79, this)
       case DEDENNE_SV51:
-        return copy (DarknessAblaze.DEDENNE_78, this);
+        return copy (DarknessAblaze.DEDENNE_78, this)
       case SINISTEA_SV52:
-        return copy (DarknessAblaze.SINISTEA_82, this);
+        return copy (DarknessAblaze.SINISTEA_82, this)
       case POLTEAGEIST_SV53:
-        return copy (DarknessAblaze.POLTEAGEIST_83, this);
+        return copy (DarknessAblaze.POLTEAGEIST_83, this)
       case HATENNA_SV54:
-        return copy (RebelClash.HATENNA_83, this);
+        return copy (RebelClash.HATENNA_83, this)
       case HATTREM_SV55:
-        return copy (RebelClash.HATTREM_84, this);
+        return copy (RebelClash.HATTREM_84, this)
       case HATTERENE_SV56:
-        return copy (RebelClash.HATTERENE_85, this);
+        return copy (RebelClash.HATTERENE_85, this)
       case MILCERY_SV57:
-        return copy (RebelClash.MILCERY_86, this);
+        return copy (RebelClash.MILCERY_86, this)
       case ALCREMIE_SV58:
-        return copy (RebelClash.ALCREMIE_87, this);
+        return copy (RebelClash.ALCREMIE_87, this)
       case INDEEDEE_SV59:
-        return copy (RebelClash.INDEEDEE_88, this);
+        return copy (RebelClash.INDEEDEE_88, this)
       case DREEPY_SV60:
-        return copy (RebelClash.DREEPY_89, this);
+        return copy (RebelClash.DREEPY_89, this)
       case DRAKLOAK_SV61:
-        return copy (RebelClash.DRAKLOAK_90, this);
+        return copy (RebelClash.DRAKLOAK_90, this)
       case DRAGAPULT_SV62:
-        return copy (RebelClash.DRAGAPULT_91, this);
+        return copy (RebelClash.DRAGAPULT_91, this)
       case GALARIAN_FARFETCH_D_SV63:
-        return copy (RebelClash.GALARIAN_FARFETCH_D_94, this);
+        return copy (RebelClash.GALARIAN_FARFETCH_D_94, this)
       case GALARIAN_SIRFETCH_D_SV64:
-        return copy (RebelClash.GALARIAN_SIRFETCH_D_95, this);
+        return copy (RebelClash.GALARIAN_SIRFETCH_D_95, this)
       case GALARIAN_YAMASK_SV65:
-        return copy (RebelClash.GALARIAN_YAMASK_101, this);
+        return copy (RebelClash.GALARIAN_YAMASK_101, this)
       case GALARIAN_RUNERIGUS_SV66:
-        return copy (RebelClash.GALARIAN_RUNERIGUS_102, this);
+        return copy (RebelClash.GALARIAN_RUNERIGUS_102, this)
       case ROLYCOLY_SV67:
-        return copy (RebelClash.ROLYCOLY_105, this);
+        return copy (RebelClash.ROLYCOLY_105, this)
       case CARKOL_SV68:
-        return copy (RebelClash.CARKOAL_106, this);
+        return copy (RebelClash.CARKOAL_106, this)
       case COALOSSAL_SV69:
-        return copy (RebelClash.COALOSSAL_107, this);
+        return copy (RebelClash.COALOSSAL_107, this)
       case SILICOBRA_SV70:
-        return copy (SwordShield.SILICOBRA_107, this);
+        return copy (SwordShield.SILICOBRA_107, this)
       case SANDACONDA_SV71:
-        return copy (SwordShield.SANDACONDA_109, this);
+        return copy (SwordShield.SANDACONDA_109, this)
       case CLOBBOPUS_SV72:
-        return copy (SwordShield.CLOBBOPUS_111, this);
+        return copy (SwordShield.CLOBBOPUS_111, this)
       case GRAPPLOCT_SV73:
-        return copy (SwordShield.GRAPPLOCT_113, this);
+        return copy (SwordShield.GRAPPLOCT_113, this)
       case FALINKS_SV74:
-        return copy (RebelClash.FALINKS_109, this);
+        return copy (RebelClash.FALINKS_109, this)
       case STONJOURNER_SV75:
-        return copy (RebelClash.STONJOURNER_111, this);
+        return copy (RebelClash.STONJOURNER_111, this)
       case KOFFING_SV76:
-        return copy (KOFFING_41, this);
+        return copy (KOFFING_41, this)
       case GALARIAN_WEEZING_SV77:
-        return copy (GALARIAN_WEEZING_42, this);
+        return copy (GALARIAN_WEEZING_42, this)
       case GALARIAN_ZIGZAGOON_SV78:
-        return copy (SwordShield.GALARIAN_ZIGZAGOON_117, this);
+        return copy (SwordShield.GALARIAN_ZIGZAGOON_117, this)
       case GALARIAN_LINOONE_SV79:
-        return copy (SwordShield.GALARIAN_LINOONE_118, this);
+        return copy (SwordShield.GALARIAN_LINOONE_118, this)
       case GALARIAN_OBSTAGOON_SV80:
-        return copy (SwordShield.GALARIAN_OBSTAGOON_119, this);
+        return copy (SwordShield.GALARIAN_OBSTAGOON_119, this)
       case NICKIT_SV81:
-        return copy (NICKIT_47, this);
+        return copy (NICKIT_47, this)
       case THIEVUL_SV82:
-        return copy (SwordShield.THIEVUL_126, this);
+        return copy (SwordShield.THIEVUL_126, this)
       case IMPIDIMP_SV83:
-        return copy (RebelClash.IMPIDIMP_123, this);
+        return copy (RebelClash.IMPIDIMP_123, this)
       case MORGREM_SV84:
-        return copy (RebelClash.MORGREM_124, this);
+        return copy (RebelClash.MORGREM_124, this)
       case GRIMMSNARL_SV85:
-        return copy (RebelClash.GRIMMSNARL_125, this);
+        return copy (RebelClash.GRIMMSNARL_125, this)
       case GALARIAN_MEOWTH_SV86:
-        return copy (RebelClash.GALARIAN_MEOWTH_126, this);
+        return copy (RebelClash.GALARIAN_MEOWTH_126, this)
       case GALARIAN_PERRSERKER_SV87:
-        return copy (SwordShield.GALARIAN_PERRSERKER_128, this);
+        return copy (SwordShield.GALARIAN_PERRSERKER_128, this)
       case GALARIAN_STUNFISK_SV88:
-        return copy (SwordShield.GALARIAN_STUNFISK_132, this);
+        return copy (SwordShield.GALARIAN_STUNFISK_132, this)
       case CORVIKNIGHT_SV89:
-        return copy (SwordShield.CORVIKNIGHT_135, this);
+        return copy (SwordShield.CORVIKNIGHT_135, this)
       case CUFANT_SV90:
-        return copy (CUFANT_49, this);
+        return copy (CUFANT_49, this)
       case COPPERAJAH_SV91:
-        return copy (DarknessAblaze.COPPERAJAH_132, this);
+        return copy (DarknessAblaze.COPPERAJAH_132, this)
       case DURALUDON_SV92:
-        return copy (RebelClash.DURALUDON_138, this);
+        return copy (RebelClash.DURALUDON_138, this)
       case MINCCINO_SV93:
-        return copy (SwordShield.MINCCINO_145, this);
+        return copy (SwordShield.MINCCINO_145, this)
       case CINCCINO_SV94:
-        return copy (SwordShield.CINCCINO_147, this);
+        return copy (SwordShield.CINCCINO_147, this)
       case DUCKLETT_SV95:
-        return copy (DarknessAblaze.DUCKLETT_148, this);
+        return copy (DarknessAblaze.DUCKLETT_148, this)
       case SWANNA_SV96:
-        return copy (DarknessAblaze.SWANNA_149, this);
+        return copy (DarknessAblaze.SWANNA_149, this)
       case BUNNELBY_SV97:
-        return copy (DarknessAblaze.BUNNELBY_150, this);
+        return copy (DarknessAblaze.BUNNELBY_150, this)
       case ORANGURU_SV98:
-        return copy (SwordShield.ORANGURU_148, this);
+        return copy (SwordShield.ORANGURU_148, this)
       case SKWOVET_SV99:
-        return copy (RebelClash.SKWOVET_151, this);
+        return copy (RebelClash.SKWOVET_151, this)
       case GREEDENT_SV100:
-        return copy (RebelClash.GREEDENT_152, this);
+        return copy (RebelClash.GREEDENT_152, this)
       case ROOKIDEE_SV101:
-        return copy (SwordShield.ROOKIDEE_150, this);
+        return copy (SwordShield.ROOKIDEE_150, this)
       case CORVISQUIRE_SV102:
-        return copy (SwordShield.CORVISQUIRE_151, this);
+        return copy (SwordShield.CORVISQUIRE_151, this)
       case WOOLOO_SV103:
-        return copy (SwordShield.WOOLOO_152, this);
+        return copy (SwordShield.WOOLOO_152, this)
       case DUBWOOL_SV104:
-        return copy (SwordShield.DUBWOOL_154, this);
+        return copy (SwordShield.DUBWOOL_154, this)
       case RILLABOOM_V_SV105:
-        return copy (SwordShieldPromos.RILLABOOM_V_SWSH14, this);
+        return copy (SwordShieldPromos.RILLABOOM_V_SWSH14, this)
       case RILLABOOM_VMAX_SV106:
-        return copy (RebelClash.RILLABOOM_VMAX_18, this);
+        return copy (RebelClash.RILLABOOM_VMAX_18, this)
       case CHARIZARD_VMAX_SV107:
-        return copy (DarknessAblaze.CHARIZARD_VMAX_20, this);
+        return copy (DarknessAblaze.CHARIZARD_VMAX_20, this)
       case CENTISKORCH_V_SV108:
-        return copy (DarknessAblaze.CENTISKORCH_V_33, this);
+        return copy (DarknessAblaze.CENTISKORCH_V_33, this)
       case CENTISKORCH_VMAX_SV109:
-        return copy (DarknessAblaze.CENTISKORCH_VMAX_34, this);
+        return copy (DarknessAblaze.CENTISKORCH_VMAX_34, this)
       case LAPRAS_V_SV110:
-        return copy (SwordShield.LAPRAS_V_49, this);
+        return copy (SwordShield.LAPRAS_V_49, this)
       case LAPRAS_VMAX_SV111:
-        return copy (SwordShield.LAPRAS_VMAX_50, this);
+        return copy (SwordShield.LAPRAS_VMAX_50, this)
       case TOXTRICITY_V_SV112:
-        return copy (RebelClash.TOXTRICITY_V_70, this);
+        return copy (RebelClash.TOXTRICITY_V_70, this)
       case TOXTRICITY_VMAX_SV113:
-        return copy (RebelClash.TOXTRICITY_VMAX_71, this);
+        return copy (RebelClash.TOXTRICITY_VMAX_71, this)
       case INDEEDEE_V_SV114:
-        return copy (INDEEDEE_V_39, this);
+        return copy (INDEEDEE_V_39, this)
       case FALINKS_V_SV115:
-        return copy (RebelClash.FALINKS_V_110, this);
+        return copy (RebelClash.FALINKS_V_110, this)
       case GRIMMSNARL_V_SV116:
-        return copy (DarknessAblaze.GRIMMSNARL_V_114, this);
+        return copy (DarknessAblaze.GRIMMSNARL_V_114, this)
       case GRIMMSNARL_VMAX_SV117:
-        return copy (DarknessAblaze.GRIMMSNARL_VMAX_115, this);
+        return copy (DarknessAblaze.GRIMMSNARL_VMAX_115, this)
       case DITTO_V_SV118:
-        return copy (DITTO_V_50, this);
+        return copy (DITTO_V_50, this)
       case DITTO_VMAX_SV119:
-        return copy (DITTO_VMAX_51, this);
+        return copy (DITTO_VMAX_51, this)
       case DUBWOOL_V_SV120:
-        return copy (RebelClash.DUBWOOL_V_153, this);
+        return copy (RebelClash.DUBWOOL_V_153, this)
       case ETERNATUS_V_SV121:
-        return copy (DarknessAblaze.ETERNATUS_V_116, this);
+        return copy (DarknessAblaze.ETERNATUS_V_116, this)
       case ETERNATUS_VMAX_SV122:
-        return copy (DarknessAblaze.ETERNATUS_VMAX_117, this);
+        return copy (DarknessAblaze.ETERNATUS_VMAX_117, this)
       default:
-      return null;
+      return null
     }
   }
 }

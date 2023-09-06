@@ -1,12 +1,12 @@
 package tcgwars.logic.impl.gen7
 
 
-import tcgwars.logic.impl.gen5.BlackWhitePromos;
+import tcgwars.logic.impl.gen5.BlackWhitePromos
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import static tcgwars.logic.effect.EffectType.*
@@ -15,12 +15,12 @@ import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.*;
+import tcgwars.logic.*
 import tcgwars.logic.card.*
-import tcgwars.logic.effect.*;
+import tcgwars.logic.effect.*
 import tcgwars.logic.card.pokemon.*
 import tcgwars.logic.effect.basic.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -273,53 +273,53 @@ public enum SunMoonPromos implements LogicCardInfo {
   AIPOM_SM244 ("Aipom", "SM244", Rarity.PROMO, [POKEMON, BASIC, _COLORLESS_]),
   SABRINA_BRYCEN_SM246 ("Sabrina & Brycen", "SM246", Rarity.PROMO, [TRAINER, SUPPORTER, TAG_TEAM]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   SunMoonPromos(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.SUN_MOON_PROMOS;
+    return tcgwars.logic.card.Collection.SUN_MOON_PROMOS
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -335,7 +335,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               flip 3,{damage 10}
             }
           }
-        };
+        }
       case LITTEN_SM02:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -346,7 +346,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case POPPLIO_SM03:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -357,7 +357,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               apply ASLEEP
             }
           }
-        };
+        }
       case PIKACHU_SM04:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -376,7 +376,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case SNORLAX_GX_SM05:
         return basic (this, hp:HP190, type:COLORLESS, retreatCost:4) {
           weakness FIGHTING
@@ -418,7 +418,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               afterDamage{apply ASLEEP,self}
             }
           }
-        };
+        }
       case ROCKRUFF_SM06:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -436,7 +436,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case PIKIPEK_SM07:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -449,7 +449,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 20,self
             }
           }
-        };
+        }
       case LITTEN_SM08:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -467,7 +467,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case TOGEDEMARU_SM09:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -486,7 +486,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 30*discardAllSelfEnergy(L).size()
             }
           }
-        };
+        }
       case SHIINOTIC_SM10:
         return evolution (this, from:"Morelull", hp:HP100, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -508,7 +508,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               applyAfterDamage ASLEEP
             }
           }
-        };
+        }
       case BRUXISH_SM11:
         return basic (this, hp:HP110, type:WATER, retreatCost:2) {
           weakness GRASS
@@ -527,7 +527,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               shredDamage 90
             }
           }
-        };
+        }
       case PASSIMIAN_SM12:
         return basic (this, hp:HP110, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -548,7 +548,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 10+30*my.bench.findAll{it.name=='Passimian'}.size()
             }
           }
-        };
+        }
       case ORANGURU_SM13:
         return basic (this, hp:HP120, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -569,9 +569,9 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 60+20*defending.cards.energyCount(C)
             }
           }
-        };
+        }
       case LYCANROC_GX_SM14:
-        return copy (BurningShadows.LYCANROC_GX_136, this);
+        return copy (BurningShadows.LYCANROC_GX_136, this)
       case ZYGARDE_SM15:
         return basic (this, hp:HP130, type:FIGHTING, retreatCost:3) {
           weakness GRASS
@@ -589,7 +589,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 130
             }
           }
-        };
+        }
       case SOLGALEO_GX_SM16:
         return copy (SunMoon.SOLGALEO_GX_89, this)
       case LUNALA_GX_SM17:
@@ -633,7 +633,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 80
             }
           }
-        };
+        }
       case TSAREENA_SM26:
         return copy (SunMoon.TSAREENA_20, this)
       case TURTONATOR_SM27:
@@ -656,7 +656,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 70
             }
           }
-        };
+        }
       case VIKAVOLT_SM28:
         return copy (SunMoon.VIKAVOLT_52, this)
       case MIMIKYU_SM29:
@@ -675,7 +675,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               astonish()
             }
           }
-        };
+        }
       case TAPU_KOKO_SM30:
         return basic (this, hp:HP110, type:LIGHTNING, retreatCost:0) {
           weakness FIGHTING
@@ -694,13 +694,13 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 100
             }
           }
-        };
+        }
       case TAPU_KOKO_SM31:
-        return copy (TAPU_KOKO_SM30, this);
+        return copy (TAPU_KOKO_SM30, this)
       case TAPU_BULU_GX_SM32:
-        return copy (BurningShadows.TAPU_BULU_GX_130, this);
+        return copy (BurningShadows.TAPU_BULU_GX_130, this)
       case TAPU_KOKO_GX_SM33:
-        return copy (GuardiansRising.TAPU_KOKO_GX_47, this);
+        return copy (GuardiansRising.TAPU_KOKO_GX_47, this)
       case BEWEAR_GX_SM34:
         return evolution (this, from:"Stufful", hp:HP210, type:COLORLESS, retreatCost:3) {
           weakness FIGHTING
@@ -733,7 +733,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ESPEON_GX_SM35:
         return copy (SunMoon.ESPEON_GX_61, this)
       case UMBREON_GX_SM36:
@@ -761,7 +761,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case KOMALA_SM41:
         return copy (GuardiansRising.KOMALA_114, this)
       case COSMOG_SM42:
@@ -784,7 +784,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               flipThenApplySC PARALYZED
             }
           }
-        };
+        }
       case TOGEDEMARU_SM44:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -803,7 +803,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case TAPU_LELE_SM45:
         return basic (this, hp:HP110, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -830,13 +830,13 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
               while(1){
                 def pl=(opp.all.findAll {it.numberOfDamageCounters})
-                if(!pl) break;
+                if(!pl) break
                 def src =pl.select("Source for damage counter (cancel to stop)", false)
-                if(!src) break;
+                if(!src) break
                 def tar = opp.all
                 tar.remove(src)
                 tar = tar.select("Target for damage counter (cancel to stop)", false)
-                if(!tar) break;
+                if(!tar) break
 
                 src.damage-=hp(10)
                 directDamage 10, tar
@@ -845,7 +845,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               checkFaint()
             }
           }
-        };
+        }
       case SEVIPER_SM46:
         return basic (this, hp:HP100, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -865,7 +865,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               applyAfterDamage POISONED
             }
           }
-        };
+        }
       case CRABOMINABLE_SM47:
         return evolution (this, from:"Crabrawler", hp:HP140, type:FIGHTING, retreatCost:4) {
           weakness PSYCHIC
@@ -885,7 +885,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               flip 2, {damage 40}
             }
           }
-        };
+        }
       case ZYGARDE_SM48:
         return basic (this, hp:HP150, type:DRAGON, retreatCost:4) {
           weakness FAIRY
@@ -906,7 +906,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case BEWEAR_SM49:
         return evolution (this, from:"Stufful", hp:HP120, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -930,7 +930,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case TAPU_KOKO_GX_SM50:
         return copy (GuardiansRising.TAPU_KOKO_GX_47, this)
       case ALOLAN_MEOWTH_SM51:
@@ -956,7 +956,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case GOLISOPOD_SM52:
         return 	evolution (this, from:"Wimpod", hp:HP130, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -981,7 +981,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               if(defending.pokemonGX || defending.pokemonEX) damage 70
             }
           }
-        };
+        }
       case DHELMISE_SM53:
         return basic (this, hp:HP120, type:PSYCHIC, retreatCost:2) {
           weakness DARKNESS
@@ -1001,9 +1001,9 @@ public enum SunMoonPromos implements LogicCardInfo {
             text "70 damage. The Defending Pokémon can't retreat during your opponent's next turn."
             energyCost P,C,C
           }
-        };
+        }
       case LUCARIO_SM54:
-        return copy(BurningShadows.LUCARIO_71, this);
+        return copy(BurningShadows.LUCARIO_71, this)
       case DECIDUEYE_SM55:
         return 	evolution (this, from:"Dartrix", hp:HP140, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1015,7 +1015,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             text "120 damage. This Pokémon does 20 damage to itself."
             energyCost G,C,C
           }
-        };
+        }
       case TSAREENA_GX_SM56:
         return evolution (this, from:"Steenee", hp:HP230, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -1055,15 +1055,15 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case HO_OH_GX_SM57:
-        return copy (BurningShadows.HO_OH_GX_21, this);
+        return copy (BurningShadows.HO_OH_GX_21, this)
       case NECROZMA_GX_SM58:
-        return copy (BurningShadows.NECROZMA_GX_63, this);
+        return copy (BurningShadows.NECROZMA_GX_63, this)
       case MARSHADOW_GX_SM59:
-        return copy (BurningShadows.MARSHADOW_GX_80, this);
+        return copy (BurningShadows.MARSHADOW_GX_80, this)
       case CHARIZARD_GX_SM60:
-        return copy (BurningShadows.CHARIZARD_GX_20, this);
+        return copy (BurningShadows.CHARIZARD_GX_20, this)
       case TAPU_BULU_SM61:
         return basic (this, hp:HP130, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -1083,11 +1083,11 @@ public enum SunMoonPromos implements LogicCardInfo {
               if(isGxPerformed()) damage 60
             }
           }
-        };
+        }
       case GOLISOPOD_GX_SM62:
-        return copy (BurningShadows.GOLISOPOD_GX_17, this);
+        return copy (BurningShadows.GOLISOPOD_GX_17, this)
       case SALAZZLE_GX_SM63:
-        return copy (BurningShadows.SALAZZLE_GX_25, this);
+        return copy (BurningShadows.SALAZZLE_GX_25, this)
       case SILVALLY_SM64:
         return 	evolution (this, from:"Type: Null", hp:HP130, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -1109,7 +1109,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               flip {damage 30}
             }
           }
-        };
+        }
       case ALOLAN_RAICHU_SM65:
         return 	evolution (this, from:"Pikachu", hp:HP110, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1129,15 +1129,15 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 70
             }
           }
-        };
+        }
       case PHEROMOSA_GX_SM66:
-        return copy (UltraPrism.PHEROMOSA_GX_140, this);
+        return copy (UltraPrism.PHEROMOSA_GX_140, this)
       case CELESTEELA_GX_SM67:
-        return copy (UltraPrism.CELESTEELA_GX_144, this);
+        return copy (UltraPrism.CELESTEELA_GX_144, this)
       case XURKITREE_GX_SM68:
-        return copy (UltraPrism.XURKITREE_GX_142, this);
+        return copy (UltraPrism.XURKITREE_GX_142, this)
       case BUZZWOLE_GX_SM69:
-        return copy (CrimsonInvasion.BUZZWOLE_GX_57, this);
+        return copy (CrimsonInvasion.BUZZWOLE_GX_57, this)
       case SHINING_HO_OH_SM70:
         return basic (this, hp:HP130, type:FIRE, retreatCost:2) {
           weakness LIGHTNING
@@ -1168,17 +1168,17 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case KOMMO_O_GX_SM71:
         return copy (GuardiansRising.KOMMO_O_GX_100, this)
       case ALOLAN_RAICHU_SM72:
-        return copy (CrimsonInvasion.ALOLAN_RAICHU_31, this);
+        return copy (CrimsonInvasion.ALOLAN_RAICHU_31, this)
       case SALAZZLE_SM73:
-        return copy (CrimsonInvasion.SALAZZLE_47, this);
+        return copy (CrimsonInvasion.SALAZZLE_47, this)
       case REGIROCK_SM74:
-        return copy (CrimsonInvasion.REGIROCK_53, this);
+        return copy (CrimsonInvasion.REGIROCK_53, this)
       case REGISTEEL_SM75:
-        return copy (CrimsonInvasion.REGISTEEL_68, this);
+        return copy (CrimsonInvasion.REGISTEEL_68, this)
       case PIKACHU_SM76:
         return copy (PIKACHU_SM04, this)
       case MEWTWO_SM77:
@@ -1204,7 +1204,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 100
             }
           }
-        };
+        }
       case CHAMPIONS_FESTIVAL_SM78:
         return copy(BlackWhitePromos.CHAMPIONS_FESTIVAL_BW95, this)
       case SHINING_CELEBI_SM79:
@@ -1229,7 +1229,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case HO_OH_GX_SM80:
         return copy (BurningShadows.HO_OH_GX_21, this)
       case PIKACHU_SM81:
@@ -1256,9 +1256,9 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ZORUA_SM83:
-        return copy (ShiningLegends.ZORUA_52, this);
+        return copy (ShiningLegends.ZORUA_52, this)
       case ZOROARK_GX_SM84:
         return copy (ShiningLegends.ZOROARK_GX_53, this)
       case MARSHADOW_SM85:
@@ -1282,7 +1282,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               if(opp.bench) damage 10, opp.bench.select()
             }
           }
-        };
+        }
       case LATIAS_SM87:
         return basic (this, hp:HP100, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1304,7 +1304,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LATIOS_SM88:
         return basic (this, hp:HP110, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -1323,7 +1323,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 70
             }
           }
-        };
+        }
       case ZOROARK_SM89:
         return 	evolution (this, from:"Zorua", hp:HP120, type:DARKNESS, retreatCost:2) {
           weakness FIGHTING
@@ -1348,11 +1348,11 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case RAICHU_GX_SM90:
         return copy (ShiningLegends.RAICHU_GX_29, this)
       case SILVALLY_GX_SM91:
-        return copy (CrimsonInvasion.SILVALLY_GX_90, this);
+        return copy (CrimsonInvasion.SILVALLY_GX_90, this)
       case TAPU_FINI_SM92:
         return basic (this, hp:HP120, type:WATER, retreatCost:2) {
           weakness GRASS
@@ -1381,7 +1381,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               if(keyStore('Shining_Current',self,null)==bg.turnCount) damage 60
             }
           }
-        };
+        }
       case MARSHADOW_SM93:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness DARKNESS
@@ -1412,25 +1412,25 @@ public enum SunMoonPromos implements LogicCardInfo {
               flip 1,{damage 40},{bc "Surprise Attack failed"}
             }
           }
-        };
+        }
       case WASH_ROTOM_SM94:
-        return copy (UltraPrism.WASH_ROTOM_40, this);
+        return copy (UltraPrism.WASH_ROTOM_40, this)
       case LUCARIO_SM95:
-        return copy (UltraPrism.LUCARIO_67, this);
+        return copy (UltraPrism.LUCARIO_67, this)
       case HEATRAN_SM96:
-        return copy (UltraPrism.HEATRAN_88, this);
+        return copy (UltraPrism.HEATRAN_88, this)
       case GUMSHOOS_SM97:
-        return copy (UltraPrism.GUMSHOOS_113, this);
+        return copy (UltraPrism.GUMSHOOS_113, this)
       case PIKACHU_SM98:
-        return copy (BurningShadows.PIKACHU_40, this);
+        return copy (BurningShadows.PIKACHU_40, this)
       case MIMIKYU_SM99:
-        return copy (GuardiansRising.MIMIKYU_58, this);
+        return copy (GuardiansRising.MIMIKYU_58, this)
       case LUCARIO_GX_SM100:
-        return copy (ForbiddenLight.LUCARIO_GX_122, this);
+        return copy (ForbiddenLight.LUCARIO_GX_122, this)
       case DAWN_WINGS_NECROZMA_GX_SM101:
-        return copy (UltraPrism.DAWN_WINGS_NECROZMA_GX_63, this);
+        return copy (UltraPrism.DAWN_WINGS_NECROZMA_GX_63, this)
       case DUSK_MANE_NECROZMA_GX_SM102:
-        return copy (UltraPrism.DUSK_MANE_NECROZMA_GX_90, this);
+        return copy (UltraPrism.DUSK_MANE_NECROZMA_GX_90, this)
       case LUNALA_GX_SM103:
         return 	evolution (this, from:"Cosmoem", hp:HP230, type:PSYCHIC, retreatCost:0) {
           weakness DARKNESS
@@ -1463,7 +1463,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 250
             }
           }
-        };
+        }
       case SOLGALEO_GX_SM104:
         return 	evolution (this, from:"Cosmoem", hp:HP250, type:METAL, retreatCost:2) {
           weakness FIRE
@@ -1502,7 +1502,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               my.all.each {heal it.damage.value, it}
             }
           }
-        };
+        }
       case LYCANROC_SM105:
         return 	evolution (this, from:"Rockruff", hp:HP120, type:FIGHTING, retreatCost:2) {
           weakness GRASS
@@ -1521,7 +1521,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               flip {damage 30}
             }
           }
-        };
+        }
       case DAWN_WINGS_NECROZMA_SM106:
         return basic (this, hp:HP130, type:PSYCHIC, retreatCost:2) {
           weakness DARKNESS
@@ -1544,7 +1544,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DUSK_MANE_NECROZMA_SM107:
         return basic (this, hp:HP130, type:METAL, retreatCost:2) {
           weakness FIRE
@@ -1568,7 +1568,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               if (opp.prizeCardSet.size() == 1) damage 100
             }
           }
-        };
+        }
       case ASH_S_PIKACHU_SM108:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1593,7 +1593,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ASH_S_PIKACHU_SM109:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1613,7 +1613,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               flip 1,{},{damage 20, self}
             }
           }
-        };
+        }
       case ASH_S_PIKACHU_SM110:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1633,7 +1633,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               flip 1,{},{damage 20, self}
             }
           }
-        };
+        }
       case ASH_S_PIKACHU_SM111:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1654,7 +1654,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 10, self
             }
           }
-        };
+        }
       case ASH_S_PIKACHU_SM112:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1674,7 +1674,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case ASH_S_PIKACHU_SM113:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1693,7 +1693,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case ASH_S_PIKACHU_SM114:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1715,15 +1715,15 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case PHEROMOSA_SM115:
-        return copy (ForbiddenLight.PHEROMOSA_11, this);
+        return copy (ForbiddenLight.PHEROMOSA_11, this)
       case XURKITREE_SM116:
-        return copy (ForbiddenLight.XURKITREE_39, this);
+        return copy (ForbiddenLight.XURKITREE_39, this)
       case MALAMAR_SM117:
-        return copy (ForbiddenLight.MALAMAR_51, this);
+        return copy (ForbiddenLight.MALAMAR_51, this)
       case LYCANROC_SM118:
-        return copy (ForbiddenLight.LYCANROC_76, this);
+        return copy (ForbiddenLight.LYCANROC_76, this)
       case EXEGGCUTE_SM119:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1735,7 +1735,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               flipThenApplySC PARALYZED
             }
           }
-        };
+        }
       case ROCKRUFF_SM120:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -1746,7 +1746,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case RAIKOU_GX_SM121:
         return basic (this, hp:HP170, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1781,7 +1781,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ZYGARDE_GX_SM122:
         return basic (this, hp:HP180, type:FIGHTING, retreatCost:2) {
           weakness GRASS
@@ -1816,15 +1816,15 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DAWN_WINGS_NECROZMA_SM123:
-        return copy (DAWN_WINGS_NECROZMA_SM106, this);
+        return copy (DAWN_WINGS_NECROZMA_SM106, this)
       case DUSK_MANE_NECROZMA_SM124:
-        return copy (DUSK_MANE_NECROZMA_SM107, this);
+        return copy (DUSK_MANE_NECROZMA_SM107, this)
       case NAGANADEL_GX_SM125:
-        return copy (ForbiddenLight.NAGANADEL_GX_56, this);
+        return copy (ForbiddenLight.NAGANADEL_GX_56, this)
       case ULTRA_NECROZMA_GX_SM126:
-        return copy (ForbiddenLight.ULTRA_NECROZMA_GX_95, this);
+        return copy (ForbiddenLight.ULTRA_NECROZMA_GX_95, this)
       case ALOLAN_SANDSLASH_SM127:
         return 	evolution (this, from:"Alolan Sandshrew", hp:HP120, type:METAL, retreatCost:2) {
           weakness FIRE
@@ -1844,7 +1844,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               flip{damage 40}
             }
           }
-        };
+        }
       case ALOLAN_NINETALES_SM128:
         return 	evolution (this, from:"Vulpix", hp:HP110, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -1864,15 +1864,15 @@ public enum SunMoonPromos implements LogicCardInfo {
               heal 30, self
             }
           }
-        };
+        }
       case KYOGRE_SM129:
-        return copy (CelestialStorm.KYOGRE_46, this);
+        return copy (CelestialStorm.KYOGRE_46, this)
       case MANECTRIC_SM130:
-        return copy (CelestialStorm.MANECTRIC_52, this);
+        return copy (CelestialStorm.MANECTRIC_52, this)
       case CELESTEELA_SM131:
-        return copy (CelestialStorm.CELESTEELA_100, this);
+        return copy (CelestialStorm.CELESTEELA_100, this)
       case DELCATTY_SM132:
-        return copy (CelestialStorm.DELCATTY_121, this);
+        return copy (CelestialStorm.DELCATTY_121, this)
       case THUNDURUS_GX_SM133:
         return basic (this, hp:HP180, type:LIGHTNING, retreatCost:2) {
           weakness FIGHTING
@@ -1906,7 +1906,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               flip 4,{damage 100}
             }
           }
-        };
+        }
       case TORNADUS_GX_SM134:
         return basic (this, hp:HP180, type:COLORLESS, retreatCost:2) {
           weakness LIGHTNING
@@ -1940,7 +1940,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LATIAS_SM135:
         return basic (this, hp:HP110, type:DRAGON, retreatCost:1) {
           weakness FAIRY
@@ -1962,7 +1962,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LATIOS_SM136:
         return basic (this, hp:HP120, type:DRAGON, retreatCost:2) {
           weakness FAIRY
@@ -1988,9 +1988,9 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case RESHIRAM_GX_SM137:
-        return copy(DragonMajesty.RESHIRAM_GX_11, this);
+        return copy(DragonMajesty.RESHIRAM_GX_11, this)
       case ZEKROM_GX_SM138:
         return basic (this, hp:HP180, type:LIGHTNING, retreatCost:3) {
           weakness FIGHTING
@@ -2023,15 +2023,15 @@ public enum SunMoonPromos implements LogicCardInfo {
               shredDamage 200
             }
           }
-        };
+        }
       case SALAMENCE_GX_SM139:
-        return copy(DragonMajesty.SALAMENCE_GX_44, this);
+        return copy(DragonMajesty.SALAMENCE_GX_44, this)
       case SALAMENCE_SM140:
-        return copy(CelestialStorm.SALAMENCE_106, this);
+        return copy(CelestialStorm.SALAMENCE_106, this)
       case WHITE_KYUREM_GX_SM141:
-        return copy(DragonMajesty.WHITE_KYUREM_GX_48, this);
+        return copy(DragonMajesty.WHITE_KYUREM_GX_48, this)
       case KYUREM_SM142:
-        return copy(DragonMajesty.KYUREM_47, this);
+        return copy(DragonMajesty.KYUREM_47, this)
       case MOLTRES_SM143:
         return basic (this, hp:HP120, type:FIRE, retreatCost:1) {
           weakness LIGHTNING
@@ -2050,7 +2050,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               flip 1,{damage 150},{bc "Sky Attack failed"}
             }
           }
-        };
+        }
       case ARTICUNO_SM144:
         return basic (this, hp:HP120, type:WATER, retreatCost:1) {
           weakness LIGHTNING
@@ -2072,7 +2072,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ZAPDOS_SM146:
         return basic (this, hp:HP120, type:LIGHTNING, retreatCost:1) {
           weakness LIGHTNING
@@ -2092,21 +2092,21 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 120
             }
           }
-        };
+        }
       case LEAFEON_GX_SM145:
-        return copy (UltraPrism.LEAFEON_GX_13, this);
+        return copy (UltraPrism.LEAFEON_GX_13, this)
       case GLACEON_GX_SM147:
-        return copy (UltraPrism.GLACEON_GX_39, this);
+        return copy (UltraPrism.GLACEON_GX_39, this)
       case CHAMPIONS_FESTIVAL_SM148:
-        return copy (CHAMPIONS_FESTIVAL_SM78, this);
+        return copy (CHAMPIONS_FESTIVAL_SM78, this)
       case SUICUNE_SM149:
-        return copy (LostThunder.SUICUNE_59, this);
+        return copy (LostThunder.SUICUNE_59, this)
       case RAIKOU_SM150:
-        return copy (LostThunder.RAIKOU_79, this);
+        return copy (LostThunder.RAIKOU_79, this)
       case GIRATINA_SM151:
-        return copy (LostThunder.GIRATINA_97, this);
+        return copy (LostThunder.GIRATINA_97, this)
       case TAPU_LELE_SM152:
-        return copy (LostThunder.TAPU_LELE_150, this);
+        return copy (LostThunder.TAPU_LELE_150, this)
       case ROWLET_SM153:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -2118,7 +2118,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               flip{damage 20}
             }
           }
-        };
+        }
       case SALANDIT_SM154:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -2139,11 +2139,11 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case KINGDRA_GX_SM155:
-        return copy(DragonMajesty.KINGDRA_GX_18, this);
+        return copy(DragonMajesty.KINGDRA_GX_18, this)
       case DRAGONITE_GX_SM156:
-        return copy(DragonMajesty.DRAGONITE_GX_37, this);
+        return copy(DragonMajesty.DRAGONITE_GX_37, this)
       case PIKACHU_SM157:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -2166,15 +2166,15 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case CHARIZARD_SM158:
-        return copy(TeamUp.CHARIZARD_14, this);
+        return copy(TeamUp.CHARIZARD_14, this)
       case ZAPDOS_SM159:
-        return copy(TeamUp.ZAPDOS_40, this);
+        return copy(TeamUp.ZAPDOS_40, this)
       case NIDOQUEEN_SM160:
-        return copy(TeamUp.NIDOQUEEN_56, this);
+        return copy(TeamUp.NIDOQUEEN_56, this)
       case JIRACHI_SM161:
-        return copy(TeamUp.JIRACHI_99, this);
+        return copy(TeamUp.JIRACHI_99, this)
       case PIKACHU_SM162:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -2194,7 +2194,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 10, self
             }
           }
-        };
+        }
       case MIMIKYU_SM163:
         return basic (this, hp:HP070, type:FAIRY, retreatCost:1) {
           move "Mimic" , {
@@ -2217,7 +2217,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               flip {damage 20}
             }
           }
-        };
+        }
       case DEOXYS_SM164:
         return basic (this, hp:HP110, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -2237,7 +2237,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               afterDamage{decreasedBaseDamageNextTurn(self,"Psycho Boost",hp(50))}
             }
           }
-        };
+        }
       case ULTRA_NECROZMA_SM165:
         return basic (this, hp:HP130, type:DRAGON, retreatCost:3) {
           weakness FAIRY
@@ -2254,17 +2254,17 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MAGIKARP_WAILORD_GX_SM166:
-        return copy(TeamUp.MAGIKARP_WAILORD_GX_160, this);
+        return copy(TeamUp.MAGIKARP_WAILORD_GX_160, this)
       case CELEBI_VENUSAUR_GX_SM167:
-        return copy(TeamUp.CELEBI_VENUSAUR_GX_1, this);
+        return copy(TeamUp.CELEBI_VENUSAUR_GX_1, this)
       case PIKACHU_ZEKROM_GX_SM168:
-        return copy(TeamUp.PIKACHU_ZEKROM_GX_33, this);
+        return copy(TeamUp.PIKACHU_ZEKROM_GX_33, this)
       case EEVEE_SNORLAX_GX_SM169:
-        return copy(TeamUp.EEVEE_SNORLAX_GX_120, this);
+        return copy(TeamUp.EEVEE_SNORLAX_GX_120, this)
       case DETECTIVE_PIKACHU_SM170:
-        return copy(DetectivePikachu.DETECTIVE_PIKACHU_10, this);
+        return copy(DetectivePikachu.DETECTIVE_PIKACHU_10, this)
       case FLAREON_GX_SM171:
         return 	evolution (this, from:"Eevee", hp:HP210, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -2304,7 +2304,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 20*my.discard.filterByType(ENERGY).filterByEnergyType(R).size()
             }
           }
-        };
+        }
       case VAPOREON_GX_SM172:
         return 	evolution (this, from:"Eevee", hp:HP210, type:WATER, retreatCost:2) {
           weakness GRASS
@@ -2339,7 +2339,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case JOLTEON_GX_SM173:
         return 	evolution (this, from:"Eevee", hp:HP200, type:LIGHTNING, retreatCost:0) {
           weakness FIGHTING
@@ -2373,7 +2373,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               preventAllEffectsNextTurn()
             }
           }
-        };
+        }
       case EEVEE_GX_SM174:
         return basic (this, hp:HP160, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -2409,11 +2409,11 @@ public enum SunMoonPromos implements LogicCardInfo {
               my.discard.select(max:3,"select the card you want to put in your hand.").moveTo(my.hand)
             }
           }
-        };
+        }
       case EEVEE_GX_SM175:
-        return copy(EEVEE_GX_SM174, this);
+        return copy(EEVEE_GX_SM174, this)
       case EEVEE_GX_SM176:
-        return copy(EEVEE_GX_SM174, this);
+        return copy(EEVEE_GX_SM174, this)
       case MELTAN_SM177:
         return basic (this, hp:HP060, type:METAL, retreatCost:1) {
           weakness FIRE
@@ -2430,7 +2430,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case MELMETAL_SM178:
         return evolution (this,from : "Meltan", hp:HP220, type:METAL, retreatCost:4) {
           weakness FIRE
@@ -2470,7 +2470,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case VOLCANION_SM179:
         return copy(UnbrokenBonds.VOLCANION_25, this)
       case STAKATAKA_SM180:
@@ -2491,7 +2491,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 20, self
             }
           }
-        };
+        }
       case EEVEE_SM184:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -2515,7 +2515,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case TYPHLOSION_SM185:
         return evolution (this,from : "Quilava", hp:HP150, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -2541,7 +2541,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case FLAREON_SM186:
         return evolution (this,from : "Eevee", hp:HP110, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -2562,7 +2562,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ALOLAN_MAROWAK_GX_SM187:
         return evolution (this, from:"Cubone", hp:HP200, type:R, retreatCost:2) {
           weakness W
@@ -2610,7 +2610,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case KANGASKHAN_GX_SM188:
         return basic (this, hp:HP180, type:C, retreatCost:3) {
           weakness FIGHTING
@@ -2642,9 +2642,9 @@ public enum SunMoonPromos implements LogicCardInfo {
               draw 5
             }
           }
-        };
+        }
       case BLASTOISE_GX_SM189:
-        return copy(UnbrokenBonds.BLASTOISE_GX_35, this);
+        return copy(UnbrokenBonds.BLASTOISE_GX_35, this)
       case DETECTIVE_PIKACHU_SM190:
         return basic (this, hp:HP090, type:LIGHTNING, retreatCost:2) {
           weakness FIGHTING
@@ -2663,13 +2663,13 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case MEWTWO_MEW_GX_SM191:
-        return copy(UnifiedMinds.MEWTWO_MEW_GX_71, this);
+        return copy(UnifiedMinds.MEWTWO_MEW_GX_71, this)
       case LUCARIO_MELMETAL_GX_SM192:
-        return copy(UnbrokenBonds.LUCARIO_MELMETAL_GX_120, this);
+        return copy(UnbrokenBonds.LUCARIO_MELMETAL_GX_120, this)
       case GARCHOMP_GIRATINA_GX_SM193:
-        return copy(UnifiedMinds.GARCHOMP_GIRATINA_GX_146, this);
+        return copy(UnifiedMinds.GARCHOMP_GIRATINA_GX_146, this)
       case DETECTIVE_PIKACHU_SM194:
         return basic (this, hp:HP090, type:L, retreatCost:2) {
         weakness F
@@ -2686,7 +2686,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             shuffleDeck()
             }
           }
-        };
+        }
       case CHARIZARD_GX_SM195:
         return evolution (this, from:"Charmeleon", hp:HP250, type:R, retreatCost:4) {
           weakness W
@@ -2731,7 +2731,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MEWTWO_GX_SM196:
         return basic (this, hp:HP190, type:P, retreatCost:2) {
         weakness P
@@ -2762,7 +2762,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             preventAllEffectsNextTurn()
             }
           }
-        };
+        }
       case GRENINJA_GX_SM197:
         return evolution (this, from:"Frogadier", hp:HP230, type:W, retreatCost:1) {
         weakness G
@@ -2801,7 +2801,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             scoopUpPokemon(pcs, delegate)
             }
           }
-        };
+        }
       case BULBASAUR_SM198:
         return basic (this, hp:HP070, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -2819,7 +2819,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case PSYDUCK_SM199:
         return basic (this, hp:HP070, type:GRASS, retreatCost:2) {
           weakness GRASS
@@ -2830,7 +2830,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case SNUBBULL_SM200:
         return basic (this, hp:HP060, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -2849,17 +2849,17 @@ public enum SunMoonPromos implements LogicCardInfo {
               flipThenApplySC PARALYZED
             }
           }
-        };
+        }
       case RESHIRAM_CHARIZARD_GX_SM201:
-        return copy(UnbrokenBonds.RESHIRAM_CHARIZARD_GX_20, this);
+        return copy(UnbrokenBonds.RESHIRAM_CHARIZARD_GX_20, this)
       case AMOONGUSS_SM202:
-        return copy(UnifiedMinds.AMOONGUSS_14, this);
+        return copy(UnifiedMinds.AMOONGUSS_14, this)
       case TAPU_FINI_SM203:
-        return copy(UnifiedMinds.TAPU_FINI_53, this);
+        return copy(UnifiedMinds.TAPU_FINI_53, this)
       case NECROZMA_SM204:
-        return copy(UnifiedMinds.NECROZMA_101, this);
+        return copy(UnifiedMinds.NECROZMA_101, this)
       case TERRAKION_SM205:
-        return copy(UnifiedMinds.TERRAKION_122, this);
+        return copy(UnifiedMinds.TERRAKION_122, this)
       case PIKACHU_SM206:
         return basic (this, hp:HP060, type:L, retreatCost:1) {
           weakness F
@@ -2874,7 +2874,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SUDOWOODO_SM207:
         return basic (this, hp:HP110, type:F, retreatCost:2) {
           weakness W
@@ -2894,23 +2894,23 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case VIKAVOLT_SM208:
-        return copy(UnbrokenBonds.VIKAVOLT_59, this);
+        return copy(UnbrokenBonds.VIKAVOLT_59, this)
       case STAKATAKA_SM209:
-        return copy(UnbrokenBonds.STAKATAKA_106, this);
+        return copy(UnbrokenBonds.STAKATAKA_106, this)
       case MOLTRES_ZAPDOS_ARTICUNO_GX_SM210:
-        return copy(HiddenFates.MOLTRES_ZAPDOS_ARTICUNO_GX_44, this);
+        return copy(HiddenFates.MOLTRES_ZAPDOS_ARTICUNO_GX_44, this)
       case CHARIZARD_GX_SM211:
-        return copy(HiddenFates.CHARIZARD_GX_9, this);
+        return copy(HiddenFates.CHARIZARD_GX_9, this)
       case GYARADOS_GX_SM212:
-        return copy(HiddenFates.GYARADOS_GX_16, this);
+        return copy(HiddenFates.GYARADOS_GX_16, this)
       case RAICHU_GX_SM213:
-        return copy(HiddenFates.RAICHU_GX_20, this);
+        return copy(HiddenFates.RAICHU_GX_20, this)
       case MEWTWO_SM214:
-        return copy(UnbrokenBonds.MEWTWO_75, this);
+        return copy(UnbrokenBonds.MEWTWO_75, this)
       case MEW_SM215:
-        return copy(UnbrokenBonds.MEW_76, this);
+        return copy(UnbrokenBonds.MEW_76, this)
       case PORYGON_Z_GX_SM216:
         return evolution (this, from:"Porygon2", hp:HP240, type:C, retreatCost:2) {
           weakness F
@@ -2947,7 +2947,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               shuffleDeck()
             }
           }
-        };
+        }
       case TREVENANT_DUSKNOIR_GX_SM217:
         return basic (this, hp:HP270, type:P, retreatCost:3) {
           weakness D
@@ -2996,15 +2996,15 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case BUZZWOLE_SM218:
-        return copy(CosmicEclipse.BUZZWOLE_21, this);
+        return copy(CosmicEclipse.BUZZWOLE_21, this)
       case ENTEI_SM219:
-        return copy(CosmicEclipse.ENTEI_28, this);
+        return copy(CosmicEclipse.ENTEI_28, this)
       case PHIONE_SM220:
-        return copy(CosmicEclipse.PHIONE_57, this);
+        return copy(CosmicEclipse.PHIONE_57, this)
       case BLACEPHALON_SM221:
-        return copy(CosmicEclipse.BLACEPHALON_104, this);
+        return copy(CosmicEclipse.BLACEPHALON_104, this)
       case MISMAGIUS_SM222:
       return evolution (this, from:"Misdreavus", hp:HP110, type:P, retreatCost:1) {
         weakness D
@@ -3024,9 +3024,9 @@ public enum SunMoonPromos implements LogicCardInfo {
             astonish()
           }
         }
-      };
+      }
       case TERRAKION_SM223:
-        return copy(UnifiedMinds.TERRAKION_122, this);
+        return copy(UnifiedMinds.TERRAKION_122, this)
       case CELEBI_SM224:
       return basic (this, hp:HP070, type:P, retreatCost:1) {
         weakness P
@@ -3065,11 +3065,11 @@ public enum SunMoonPromos implements LogicCardInfo {
             flip { apply PARALYZED }
           }
         }
-      };
+      }
       case VICTINI_SM225:
-        return copy(UnifiedMinds.VICTINI_26, this);
+        return copy(UnifiedMinds.VICTINI_26, this)
       case CHARIZARD_SM226:
-        return copy(TeamUp.CHARIZARD_14, this);
+        return copy(TeamUp.CHARIZARD_14, this)
       case PIKACHU_SM227:
         return basic (this, hp:HP060, type:L, retreatCost:1) {
           weakness F
@@ -3090,7 +3090,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               discardAllSelfEnergy(null)
               }
             }
-          };
+          }
       case ARMORED_MEWTWO_SM228:
         return basic (this, hp:HP120, type:P, retreatCost:3) {
           weakness P
@@ -3102,11 +3102,11 @@ public enum SunMoonPromos implements LogicCardInfo {
               cantAttackNextTurn(self)
             }
           }
-        };
+        }
       case VENUSAUR_SNIVY_GX_SM229:
-        return copy(CosmicEclipse.VENUSAUR_SNIVY_GX_1, this);
+        return copy(CosmicEclipse.VENUSAUR_SNIVY_GX_1, this)
       case CHARIZARD_BRAIXEN_GX_SM230:
-        return copy(CosmicEclipse.CHARIZARD_BRAIXEN_GX_22, this);
+        return copy(CosmicEclipse.CHARIZARD_BRAIXEN_GX_22, this)
       case CHAMPIONS_FESTIVAL_SM231:
         return copy(BlackWhitePromos.CHAMPIONS_FESTIVAL_BW95, this)
       case PIKACHU_GX_SM232:
@@ -3141,9 +3141,9 @@ public enum SunMoonPromos implements LogicCardInfo {
               apply PARALYZED
             }
           }
-        };
+        }
       case EEVEE_GX_SM233:
-        return copy(EEVEE_GX_SM174, this);
+        return copy(EEVEE_GX_SM174, this)
       case PIKACHU_SM234:
         return basic (this, hp:HP060, type:L, retreatCost:1) {
           weakness F
@@ -3166,7 +3166,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case EEVEE_SM235:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
           weakness F
@@ -3177,7 +3177,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               flipUntilTails { damage 30 }
             }
           }
-        };
+        }
       case ALOLAN_SANDSLASH_GX_SM236:
         return evolution (this, from:"Alolan Sandshrew", hp:HP200, type:W, retreatCost:2) {
         weakness M
@@ -3208,7 +3208,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             }
           }
         }
-        };
+        }
       case LEAFEON_SM237:
         return evolution (this, from:"Eevee", hp:HP110, type:G, retreatCost:2) {
           weakness R
@@ -3234,7 +3234,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               flip { damage 40 }
             }
           }
-        };
+        }
       case GLACEON_SM238:
         return evolution (this, from:"Eevee", hp:HP110, type:W, retreatCost:2) {
           weakness M
@@ -3257,7 +3257,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CARRACOSTA_GX_SM239:
         return evolution (this, from:"Tirtouga", hp:HP250, type:F, retreatCost:4) {
           weakness G
@@ -3302,13 +3302,13 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ESPEON_DEOXYS_GX_SM240:
-        return copy(UnifiedMinds.ESPEON_DEOXYS_GX_72, this);
+        return copy(UnifiedMinds.ESPEON_DEOXYS_GX_72, this)
       case UMBREON_DARKRAI_GX_SM241:
-        return copy(UnifiedMinds.UMBREON_DARKRAI_GX_125, this);
+        return copy(UnifiedMinds.UMBREON_DARKRAI_GX_125, this)
       case EEVEE_GX_SM242:
-        return copy(EEVEE_GX_SM174, this);
+        return copy(EEVEE_GX_SM174, this)
       case REGIGIGAS_SM243:
         return basic (this, hp:HP150, type:C, retreatCost:4) {
           weakness F
@@ -3329,7 +3329,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case AIPOM_SM244:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
           weakness F
@@ -3350,7 +3350,7 @@ public enum SunMoonPromos implements LogicCardInfo {
               flip { damage 30 }
             }
           }
-        };
+        }
       case SABRINA_BRYCEN_SM246:
         return supporter(this) {
           text "Search your deck for up to 2 basic Energy cards, reveal them, and put them into your hand. Then, shuffle your deck." +
@@ -3388,7 +3388,7 @@ public enum SunMoonPromos implements LogicCardInfo {
           }
         }
       default:
-        return null;
+        return null
     }
   }
 }

@@ -1,23 +1,23 @@
 package tcgwars.logic.impl.gen4
 
-import tcgwars.logic.impl.gen3.RubySapphire;
-import tcgwars.logic.impl.gen3.TeamRocketReturns;
-import tcgwars.logic.impl.gen3.DeltaSpecies;
+import tcgwars.logic.impl.gen3.RubySapphire
+import tcgwars.logic.impl.gen3.TeamRocketReturns
+import tcgwars.logic.impl.gen3.DeltaSpecies
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
-import static tcgwars.logic.groovy.TcgStatics.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
+import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.card.Resistance.ResistanceType.*;
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
-import static tcgwars.logic.effect.special.SpecialConditionType.*;
+import static tcgwars.logic.card.Resistance.ResistanceType.*
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
+import static tcgwars.logic.effect.special.SpecialConditionType.*
 
-import tcgwars.logic.card.*;
-import tcgwars.logic.util.*;
-import tcgwars.logic.WinCondition;
+import tcgwars.logic.card.*
+import tcgwars.logic.util.*
+import tcgwars.logic.WinCondition
 
 /**
  * @author axpendix@hotmail.com
@@ -132,60 +132,60 @@ public enum CallOfLegends implements LogicCardInfo {
   RAYQUAZA_SL10 ("Rayquaza", "SL10", Rarity.HOLORARE, [BASIC, POKEMON, _COLORLESS_]),
   SUICUNE_SL11 ("Suicune", "SL11", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   CallOfLegends(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.CALL_OF_LEGENDS;
+    return tcgwars.logic.card.Collection.CALL_OF_LEGENDS
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
   public Card getImplementation() {
     switch (this) {
       case CLEFABLE_1:
-        return copy(HeartgoldSoulsilver.CLEFABLE_3, this);
+        return copy(HeartgoldSoulsilver.CLEFABLE_3, this)
       case DEOXYS_2:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness P
@@ -199,7 +199,7 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DIALGA_3:
         return basic (this, hp:HP100, type:METAL, retreatCost:3) {
           weakness R
@@ -215,11 +215,11 @@ public enum CallOfLegends implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ESPEON_4:
-        return copy(Undaunted.ESPEON_2, this);
+        return copy(Undaunted.ESPEON_2, this)
       case FORRETRESS_5:
-        return copy(Undaunted.FORRETRESS_3, this);
+        return copy(Undaunted.FORRETRESS_3, this)
       case GROUDON_6:
         return basic (this, hp:HP100, type:FIGHTING, retreatCost:4) {
           weakness G
@@ -238,11 +238,11 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GYARADOS_7:
-        return copy(HeartgoldSoulsilver.GYARADOS_4, this);
+        return copy(HeartgoldSoulsilver.GYARADOS_4, this)
       case HITMONTOP_8:
-        return copy(HeartgoldSoulsilver.HITMONTOP_5, this);
+        return copy(HeartgoldSoulsilver.HITMONTOP_5, this)
       case HO_OH_9:
         return basic (this, hp:HP100, type:FIRE, retreatCost:3) {
           weakness W
@@ -267,11 +267,11 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HOUNDOOM_10:
-        return copy(Undaunted.HOUNDOOM_5, this);
+        return copy(Undaunted.HOUNDOOM_5, this)
       case JIRACHI_11:
-        return copy(Unleashed.JIRACHI_1, this);
+        return copy(Unleashed.JIRACHI_1, this)
       case KYOGRE_12:
         return basic (this, hp:HP100, type:WATER, retreatCost:4) {
           weakness L
@@ -291,9 +291,9 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LEAFEON_13:
-        return copy(Undaunted.LEAFEON_17, this);
+        return copy(Undaunted.LEAFEON_17, this)
       case LUCARIO_14:
         return evolution (this, from:"Riolu", hp:HP090, type:FIGHTING, retreatCost:1) {
           weakness P
@@ -313,7 +313,7 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUGIA_15:
         return basic (this, hp:HP100, type:WATER, retreatCost:3) {
           weakness L
@@ -333,11 +333,11 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGMORTAR_16:
-        return copy(Unleashed.MAGMORTAR_2, this);
+        return copy(Unleashed.MAGMORTAR_2, this)
       case NINETALES_17:
-        return copy(HeartgoldSoulsilver.NINETALES_7, this);
+        return copy(HeartgoldSoulsilver.NINETALES_7, this)
       case PACHIRISU_18:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F
@@ -362,7 +362,7 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PALKIA_19:
         return basic (this, hp:HP100, type:WATER, retreatCost:3) {
           weakness L
@@ -378,7 +378,7 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAYQUAZA_20:
         return basic (this, hp:HP100, type:COLORLESS, retreatCost:2) {
           weakness C
@@ -392,23 +392,23 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SMEARGLE_21:
-        return copy(Undaunted.SMEARGLE_8, this);
+        return copy(Undaunted.SMEARGLE_8, this)
       case UMBREON_22:
-        return copy(Undaunted.UMBREON_10, this);
+        return copy(Undaunted.UMBREON_10, this)
       case AMPHAROS_23:
-        return copy(HeartgoldSoulsilver.AMPHAROS_14, this);
+        return copy(HeartgoldSoulsilver.AMPHAROS_14, this)
       case CLEFFA_24:
-        return copy(HeartgoldSoulsilver.CLEFFA_17, this);
+        return copy(HeartgoldSoulsilver.CLEFFA_17, this)
       case FERALIGATR_25:
-        return copy(HeartgoldSoulsilver.FERALIGATR_20, this);
+        return copy(HeartgoldSoulsilver.FERALIGATR_20, this)
       case GRANBULL_26:
-        return copy(HeartgoldSoulsilver.GRANBULL_22, this);
+        return copy(HeartgoldSoulsilver.GRANBULL_22, this)
       case MEGANIUM_27:
-        return copy(HeartgoldSoulsilver.MEGANIUM_26, this);
+        return copy(HeartgoldSoulsilver.MEGANIUM_26, this)
       case MISMAGIUS_28:
-        return copy(Undaunted.MISMAGIUS_19, this);
+        return copy(Undaunted.MISMAGIUS_19, this)
       case MR__MIME_29:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness P
@@ -432,13 +432,13 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIDGEOT_30:
-        return copy(Triumphant.PIDGEOT_29, this);
+        return copy(Triumphant.PIDGEOT_29, this)
       case SKARMORY_31:
-        return copy(Undaunted.SKARMORY_21, this);
+        return copy(Undaunted.SKARMORY_21, this)
       case SLOWKING_32:
-        return copy(HeartgoldSoulsilver.SLOWKING_12, this);
+        return copy(HeartgoldSoulsilver.SLOWKING_12, this)
       case SNORLAX_33:
         return basic (this, hp:HP100, type:COLORLESS, retreatCost:4) {
           weakness F
@@ -461,7 +461,7 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TANGROWTH_34:
         return evolution (this, from:"Tangela", hp:HP110, type:GRASS, retreatCost:4) {
           weakness R
@@ -493,15 +493,15 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TYPHLOSION_35:
-        return copy(HeartgoldSoulsilver.TYPHLOSION_32, this);
+        return copy(HeartgoldSoulsilver.TYPHLOSION_32, this)
       case TYROGUE_36:
-        return copy(HeartgoldSoulsilver.TYROGUE_33, this);
+        return copy(HeartgoldSoulsilver.TYROGUE_33, this)
       case URSARING_37:
-        return copy(Unleashed.URSARING_27, this);
+        return copy(Unleashed.URSARING_27, this)
       case WEEZING_38:
-        return copy(HeartgoldSoulsilver.WEEZING_34, this);
+        return copy(HeartgoldSoulsilver.WEEZING_34, this)
       case ZANGOOSE_39:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:2) {
           weakness F
@@ -523,21 +523,21 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BAYLEEF_40:
-        return copy(HeartgoldSoulsilver.BAYLEEF_35, this);
+        return copy(HeartgoldSoulsilver.BAYLEEF_35, this)
       case CROCONAW_41:
-        return copy(HeartgoldSoulsilver.CROCONAW_38, this);
+        return copy(HeartgoldSoulsilver.CROCONAW_38, this)
       case DONPHAN_42:
-        return copy(HeartgoldSoulsilver.DONPHAN_40, this);
+        return copy(HeartgoldSoulsilver.DONPHAN_40, this)
       case FLAAFFY_43:
-        return copy(HeartgoldSoulsilver.FLAAFFY_42, this);
+        return copy(HeartgoldSoulsilver.FLAAFFY_42, this)
       case FLAREON_44:
-        return copy(Undaunted.FLAREON_26, this);
+        return copy(Undaunted.FLAREON_26, this)
       case JOLTEON_45:
-        return copy(Undaunted.JOLTEON_28, this);
+        return copy(Undaunted.JOLTEON_28, this)
       case MAGBY_46:
-        return copy(Triumphant.MAGBY_41, this);
+        return copy(Triumphant.MAGBY_41, this)
       case MIME_JR__47:
         return basic (this, hp:HP030, type:PSYCHIC, retreatCost:0) {
           pokeBody "Sweet Sleeping Face", {
@@ -564,11 +564,11 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIDGEOTTO_48:
-        return copy(Triumphant.PIDGEOTTO_47, this);
+        return copy(Triumphant.PIDGEOTTO_47, this)
       case QUILAVA_49:
-        return copy(HeartgoldSoulsilver.QUILAVA_49, this);
+        return copy(HeartgoldSoulsilver.QUILAVA_49, this)
       case RIOLU_50:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness P
@@ -581,7 +581,7 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SEVIPER_51:
         return basic (this, hp:HP090, type:PSYCHIC, retreatCost:2) {
           weakness P
@@ -606,9 +606,9 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VAPOREON_52:
-        return copy(Undaunted.VAPOREON_41, this);
+        return copy(Undaunted.VAPOREON_41, this)
       case CHIKORITA_53:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R
@@ -632,9 +632,9 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CLEFAIRY_54:
-        return copy(HeartgoldSoulsilver.CLEFAIRY_60, this);
+        return copy(HeartgoldSoulsilver.CLEFAIRY_60, this)
       case CYNDAQUIL_55:
         return basic (this, hp:HP040, type:FIRE, retreatCost:1) {
           weakness W
@@ -647,21 +647,21 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EEVEE_56:
-        return copy(Undaunted.EEVEE_47, this);
+        return copy(Undaunted.EEVEE_47, this)
       case HITMONCHAN_57:
-        return copy(Undaunted.HITMONCHAN_51, this);
+        return copy(Undaunted.HITMONCHAN_51, this)
       case HITMONLEE_58:
-        return copy(Undaunted.HITMONLEE_52, this);
+        return copy(Undaunted.HITMONLEE_52, this)
       case HOUNDOUR_59:
-        return copy(Undaunted.HOUNDOUR_54, this);
+        return copy(Undaunted.HOUNDOUR_54, this)
       case KOFFING_60:
-        return copy(HeartgoldSoulsilver.KOFFING_70, this);
+        return copy(HeartgoldSoulsilver.KOFFING_70, this)
       case MAGIKARP_61:
-        return copy(HeartgoldSoulsilver.MAGIKARP_72, this);
+        return copy(HeartgoldSoulsilver.MAGIKARP_72, this)
       case MAGMAR_62:
-        return copy(Unleashed.MAGMAR_52, this);
+        return copy(Unleashed.MAGMAR_52, this)
       case MAREEP_63:
         return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
           weakness F
@@ -674,11 +674,11 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAWILE_64:
-        return copy(Undaunted.MAWILE_56, this);
+        return copy(Undaunted.MAWILE_56, this)
       case MISDREAVUS_65:
-        return copy(Undaunted.MISDREAVUS_57, this);
+        return copy(Undaunted.MISDREAVUS_57, this)
       case PHANPY_66:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:2) {
           weakness W
@@ -705,11 +705,11 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIDGEY_67:
-        return copy(Triumphant.PIDGEY_71, this);
+        return copy(Triumphant.PIDGEY_71, this)
       case PINECO_68:
-        return copy(Undaunted.PINECO_63, this);
+        return copy(Undaunted.PINECO_63, this)
       case RELICANTH_69:
         return basic (this, hp:HP080, type:WATER, retreatCost:2) {
           weakness G
@@ -735,11 +735,11 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SLOWPOKE_70:
-        return copy(HeartgoldSoulsilver.SLOWPOKE_81, this);
+        return copy(HeartgoldSoulsilver.SLOWPOKE_81, this)
       case SNUBBULL_71:
-        return copy(HeartgoldSoulsilver.SNUBBULL_82, this);
+        return copy(HeartgoldSoulsilver.SNUBBULL_82, this)
       case TANGELA_72:
         return basic (this, hp:HP070, type:GRASS, retreatCost:2) {
           weakness R
@@ -764,7 +764,7 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TEDDIURSA_73:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness F
@@ -787,7 +787,7 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TOTODILE_74:
         return basic (this, hp:HP060, type:WATER, retreatCost:2) {
           weakness L
@@ -802,15 +802,15 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VULPIX_75:
-        return copy(HeartgoldSoulsilver.VULPIX_87, this);
+        return copy(HeartgoldSoulsilver.VULPIX_87, this)
       case CHEERLEADER_S_CHEER_76:
-      return copy(Unleashed.CHEERLEADER_S_CHEER_71, this);
+      return copy(Unleashed.CHEERLEADER_S_CHEER_71, this)
       case COPYCAT_77:
-        return copy(TeamRocketReturns.COPYCAT_83, this);
+        return copy(TeamRocketReturns.COPYCAT_83, this)
       case DUAL_BALL_78:
-        return copy(DeltaSpecies.DUAL_BALL_89, this);
+        return copy(DeltaSpecies.DUAL_BALL_89, this)
       case INTERVIEWER_S_QUESTIONS_79:
         return copy(Unleashed.INTERVIEWER_S_QUESTIONS_77, this)
       case LOST_REMOVER_80:
@@ -823,7 +823,7 @@ public enum CallOfLegends implements LogicCardInfo {
           playRequirement{
             assert opp.all.find{it.cards.filterByType(SPECIAL_ENERGY)} : "Your opponent's Pokemon have no special energy attached"
           }
-        };
+        }
       case LOST_WORLD_81:
         return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nOnce during each player’s turn, if this player’s opponent has 6 or more Pokémon in the Lost Zone, the player may choose to win the game."
@@ -835,17 +835,17 @@ public enum CallOfLegends implements LogicCardInfo {
               assert opp.lostZone.filterByType(POKEMON).size() >= 6 : "Your opponent has fewer than 6 Pokémon in the Lost Zone"
               bc "Used Lost World."
               lastTurn = bg().turnCount
-              bg.getGameManager().endGame(bg.currentTurn, WinCondition.OTHER);
+              bg.getGameManager().endGame(bg.currentTurn, WinCondition.OTHER)
             }
           }
           onRemoveFromPlay{
             actions.each { bg().gm().unregisterAction(it) }
           }
-        };
+        }
       case PROFESSOR_ELM_S_TRAINING_METHOD_82:
-        return copy(HeartgoldSoulsilver.PROFESSOR_ELM_S_TRAINING_METHOD_100, this);
+        return copy(HeartgoldSoulsilver.PROFESSOR_ELM_S_TRAINING_METHOD_100, this)
       case PROFESSOR_OAK_S_NEW_THEORY_83:
-        return copy(HeartgoldSoulsilver.PROFESSOR_OAK_S_NEW_THEORY_101, this);
+        return copy(HeartgoldSoulsilver.PROFESSOR_OAK_S_NEW_THEORY_101, this)
       case RESEARCH_RECORD_84:
         return basicTrainer (this) {
           text "Look at the top 4 cards of your deck and put as many of them as you like back on top of your deck in any order. Then, put the remaining cards on the bottom of your deck in any order."
@@ -865,33 +865,33 @@ public enum CallOfLegends implements LogicCardInfo {
           playRequirement{
             assert my.deck
           }
-        };
+        }
       case SAGE_S_TRAINING_85:
-        return copy(Undaunted.SAGE_S_TRAINING_77, this);
+        return copy(Undaunted.SAGE_S_TRAINING_77, this)
       case DARKNESS_ENERGY_86:
-        return copy (MysteriousTreasures.DARKNESS_ENERGY_119, this);
+        return copy (MysteriousTreasures.DARKNESS_ENERGY_119, this)
       case METAL_ENERGY_87:
-        return copy (RubySapphire.METAL_ENERGY_94, this);
+        return copy (RubySapphire.METAL_ENERGY_94, this)
       case GRASS_ENERGY_88:
-        return basicEnergy (this, GRASS);
+        return basicEnergy (this, GRASS)
       case FIRE_ENERGY_89:
-        return basicEnergy (this, FIRE);
+        return basicEnergy (this, FIRE)
       case WATER_ENERGY_90:
-        return basicEnergy (this, WATER);
+        return basicEnergy (this, WATER)
       case LIGHTNING_ENERGY_91:
-        return basicEnergy (this, LIGHTNING);
+        return basicEnergy (this, LIGHTNING)
       case PSYCHIC_ENERGY_92:
-        return basicEnergy (this, PSYCHIC);
+        return basicEnergy (this, PSYCHIC)
       case FIGHTING_ENERGY_93:
-        return basicEnergy (this, FIGHTING);
+        return basicEnergy (this, FIGHTING)
       case DARKNESS_ENERGY_94:
-        return basicEnergy (this, DARKNESS);
+        return basicEnergy (this, DARKNESS)
       case METAL_ENERGY_95:
-        return basicEnergy (this, METAL);
+        return basicEnergy (this, METAL)
       case DEOXYS_SL1:
-        return copy (DEOXYS_2, this);
+        return copy (DEOXYS_2, this)
       case DIALGA_SL2:
-        return copy (DIALGA_3, this);
+        return copy (DIALGA_3, this)
       case ENTEI_SL3:
         return basic (this, hp:HP090, type:FIRE, retreatCost:2) {
           weakness W
@@ -914,17 +914,17 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GROUDON_SL4:
-        return copy (GROUDON_6, this);
+        return copy (GROUDON_6, this)
       case HO_OH_SL5:
-        return copy (HO_OH_9, this);
+        return copy (HO_OH_9, this)
       case KYOGRE_SL6:
-        return copy (KYOGRE_12, this);
+        return copy (KYOGRE_12, this)
       case LUGIA_SL7:
-        return copy (LUGIA_15, this);
+        return copy (LUGIA_15, this)
       case PALKIA_SL8:
-        return copy (PALKIA_19, this);
+        return copy (PALKIA_19, this)
       case RAIKOU_SL9:
         return basic (this, hp:HP090, type:LIGHTNING, retreatCost:2) {
           weakness F
@@ -946,9 +946,9 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAYQUAZA_SL10:
-        return copy (RAYQUAZA_20, this);
+        return copy (RAYQUAZA_20, this)
       case SUICUNE_SL11:
         return basic (this, hp:HP090, type:WATER, retreatCost:2) {
           weakness L
@@ -970,9 +970,9 @@ public enum CallOfLegends implements LogicCardInfo {
             }
           }
 
-        };
+        }
       default:
-        return null;
+        return null
     }
   }
 

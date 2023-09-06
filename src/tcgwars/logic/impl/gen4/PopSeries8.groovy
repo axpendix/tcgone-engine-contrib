@@ -2,11 +2,11 @@ package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.impl.gen3.Sandstorm
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
 import static tcgwars.logic.card.CardType.*
-import static tcgwars.logic.effect.Source.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.effect.Source.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
@@ -14,7 +14,7 @@ import static tcgwars.logic.effect.EffectType.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 
 import tcgwars.logic.card.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -39,53 +39,53 @@ public enum PopSeries8 implements LogicCardInfo {
   RIOLU_16 ("Riolu", "16", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
   TURTWIG_17 ("Turtwig", "17", Rarity.COMMON, [BASIC, POKEMON, _GRASS_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   PopSeries8(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.POP_SERIES_8;
+    return tcgwars.logic.card.Collection.POP_SERIES_8
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -117,7 +117,7 @@ public enum PopSeries8 implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LUCARIO_2:
         return evolution (this, from:"Riolu", hp:HP090, type:FIGHTING, retreatCost:1) {
           weakness P, PLUS20
@@ -136,7 +136,7 @@ public enum PopSeries8 implements LogicCardInfo {
               noResistanceOrAnyEffectDamage(60, defending)
             }
           }
-        };
+        }
       case LUXRAY_3:
         return evolution (this, from:"Luxio", hp:HP120, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS30
@@ -162,7 +162,7 @@ public enum PopSeries8 implements LogicCardInfo {
               flip 1, {}, { damage 40, self }
             }
           }
-        };
+        }
       case PROBOPASS_4:
         return evolution (this, from:"Nosepass", hp:HP090, type:METAL, retreatCost:3) {
           weakness R, PLUS30
@@ -189,7 +189,7 @@ public enum PopSeries8 implements LogicCardInfo {
               flip 3, { damage 20 }
             }
           }
-        };
+        }
       case YANMEGA_5:
         return evolution (this, from:"Yanma", hp:HP090, type:GRASS, retreatCost:0) {
           weakness L, PLUS20
@@ -209,27 +209,27 @@ public enum PopSeries8 implements LogicCardInfo {
               flip 1, {}, { discardSelfEnergyAfterDamage() }
             }
           }
-        };
+        }
       case CHERRIM_6:
-        return copy (DiamondPearl.CHERRIM_45, this);
+        return copy (DiamondPearl.CHERRIM_45, this)
       case CARNIVINE_7:
-        return copy (DiamondPearl.CARNIVINE_21, this);
+        return copy (DiamondPearl.CARNIVINE_21, this)
       case LUXIO_8:
-        return copy (DiamondPearl.LUXIO_52, this);
+        return copy (DiamondPearl.LUXIO_52, this)
       case NIGHT_MAINTENANCE_9:
-        return copy (MysteriousTreasures.NIGHT_MAINTENANCE_113, this);
+        return copy (MysteriousTreasures.NIGHT_MAINTENANCE_113, this)
       case RARE_CANDY_10:
-        return copy (Sandstorm.RARE_CANDY_88, this);
+        return copy (Sandstorm.RARE_CANDY_88, this)
       case ROSEANNE_S_RESEARCH_11:
-        return copy (SecretWonders.ROSEANNE_S_RESEARCH_125, this);
+        return copy (SecretWonders.ROSEANNE_S_RESEARCH_125, this)
       case CHIMCHAR_12:
-        return copy (DiamondPearl.CHIMCHAR_76, this);
+        return copy (DiamondPearl.CHIMCHAR_76, this)
       case CROAGUNK_13:
-        return copy (MysteriousTreasures.CROAGUNK_78, this);
+        return copy (MysteriousTreasures.CROAGUNK_78, this)
       case HAPPINY_14:
-        return copy (MysteriousTreasures.HAPPINY_52, this);
+        return copy (MysteriousTreasures.HAPPINY_52, this)
       case PIPLUP_15:
-        return copy (DiamondPearl.PIPLUP_93, this);
+        return copy (DiamondPearl.PIPLUP_93, this)
       case RIOLU_16:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness P, PLUS10
@@ -255,11 +255,11 @@ public enum PopSeries8 implements LogicCardInfo {
               flip { damage 10 }
             }
           }
-        };
+        }
       case TURTWIG_17:
-        return copy (DiamondPearl.TURTWIG_103, this);
+        return copy (DiamondPearl.TURTWIG_103, this)
       default:
-        return null;
+        return null
     }
   }
 }

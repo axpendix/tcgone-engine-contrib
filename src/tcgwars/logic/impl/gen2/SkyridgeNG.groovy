@@ -1,34 +1,34 @@
-package tcgwars.logic.impl.gen2;
+package tcgwars.logic.impl.gen2
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author lithogenn@gmail.com
@@ -218,53 +218,53 @@ public enum SkyridgeNG implements LogicCardInfo {
   VAPOREON_H31 ("Vaporeon", "H31", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
   XATU_H32 ("Xatu", "H32", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   SkyridgeNG(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.SKYRIDGE;
+    return tcgwars.logic.card.Collection.SKYRIDGE
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -286,7 +286,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case ALAKAZAM_2:
       return evolution (this, from:"Kadabra", hp:HP100, type:P, retreatCost:2) {
         weakness P
@@ -303,7 +303,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case ARCANINE_3:
       return evolution (this, from:"Growlithe", hp:HP080, type:R, retreatCost:2) {
         weakness W
@@ -328,7 +328,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case ARTICUNO_4:
       return basic (this, hp:HP080, type:W, retreatCost:2) {
         weakness M
@@ -354,7 +354,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case BEEDRILL_5:
       return evolution (this, from:"Kakuna", hp:HP080, type:G, retreatCost:null) {
         weakness R
@@ -371,7 +371,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case CROBAT_6:
       return evolution (this, from:"Golbat", hp:HP090, type:G, retreatCost:null) {
         weakness P
@@ -388,7 +388,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case DEWGONG_7:
       return evolution (this, from:"Seel", hp:HP080, type:W, retreatCost:2) {
         weakness M
@@ -408,7 +408,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case FLAREON_8:
       return evolution (this, from:"Eevee", hp:HP070, type:R, retreatCost:1) {
         weakness W
@@ -433,7 +433,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case FORRETRESS_9:
       return evolution (this, from:"Pineco", hp:HP070, type:M, retreatCost:2) {
         weakness R
@@ -454,7 +454,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case GENGAR_10:
       return evolution (this, from:"Haunter", hp:HP100, type:P, retreatCost:2) {
         weakness null
@@ -472,7 +472,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case GYARADOS_11:
       return evolution (this, from:"Magikarp", hp:HP090, type:W, retreatCost:2) {
         weakness L
@@ -489,7 +489,7 @@ public enum SkyridgeNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case HOUNDOOM_12:
       return evolution (this, from:"Houndour", hp:HP070, type:D, retreatCost:1) {
         weakness F
@@ -510,7 +510,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case JOLTEON_13:
       return evolution (this, from:"Eevee", hp:HP070, type:L, retreatCost:null) {
         weakness F
@@ -535,7 +535,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case KABUTOPS_14:
       return evolution (this, from:"Kabuto", hp:HP090, type:F, retreatCost:2) {
         weakness G
@@ -552,7 +552,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case LEDIAN_15:
       return evolution (this, from:"Ledyba", hp:HP070, type:G, retreatCost:null) {
         weakness R
@@ -572,7 +572,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case MACHAMP_16:
       return evolution (this, from:"Machoke", hp:HP120, type:F, retreatCost:2) {
         weakness P
@@ -597,7 +597,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case MAGCARGO_17:
       return evolution (this, from:"Slugma", hp:HP080, type:R, retreatCost:3) {
         weakness W
@@ -617,7 +617,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case MAGCARGO_18:
       return evolution (this, from:"Slugma", hp:HP080, type:F, retreatCost:3) {
         weakness W
@@ -634,7 +634,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case MAGNETON_19:
       return evolution (this, from:"Magnemite", hp:HP080, type:L, retreatCost:1) {
         weakness F
@@ -651,7 +651,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case MAGNETON_20:
       return evolution (this, from:"Magnemite", hp:HP070, type:M, retreatCost:2) {
         weakness R
@@ -672,7 +672,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case MOLTRES_21:
       return basic (this, hp:HP080, type:R, retreatCost:2) {
         weakness W
@@ -698,7 +698,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case NIDOQUEEN_22:
       return evolution (this, from:"Nidorina", hp:HP110, type:G, retreatCost:3) {
         weakness P
@@ -715,7 +715,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case OMASTAR_23:
       return evolution (this, from:"Omanyte", hp:HP090, type:W, retreatCost:2) {
         weakness L
@@ -732,7 +732,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case PILOSWINE_24:
       return evolution (this, from:"Swinub", hp:HP090, type:W, retreatCost:3) {
         weakness M
@@ -752,7 +752,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case POLITOED_25:
       return evolution (this, from:"Poliwhirl", hp:HP110, type:W, retreatCost:2) {
         weakness L
@@ -780,7 +780,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case POLIWRATH_26:
       return evolution (this, from:"Poliwhirl", hp:HP110, type:F, retreatCost:2) {
         weakness P
@@ -797,7 +797,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case RAICHU_27:
       return evolution (this, from:"Pikachu", hp:HP080, type:L, retreatCost:1) {
         weakness F
@@ -817,7 +817,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case RAIKOU_28:
       return basic (this, hp:HP070, type:L, retreatCost:1) {
         weakness R
@@ -834,7 +834,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case RHYDON_29:
       return evolution (this, from:"Rhyhorn", hp:HP090, type:F, retreatCost:2) {
         weakness G
@@ -855,7 +855,7 @@ public enum SkyridgeNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case STARMIE_30:
       return evolution (this, from:"Staryu", hp:HP080, type:P, retreatCost:1) {
         weakness P
@@ -875,7 +875,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case STEELIX_31:
       return evolution (this, from:"Onix", hp:HP100, type:M, retreatCost:4) {
         weakness R
@@ -901,7 +901,7 @@ public enum SkyridgeNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case UMBREON_32:
       return evolution (this, from:"Eevee", hp:HP070, type:D, retreatCost:1) {
         weakness F
@@ -919,7 +919,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case VAPOREON_33:
       return evolution (this, from:"Eevee", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -944,7 +944,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case WIGGLYTUFF_34:
       return evolution (this, from:"Jigglypuff", hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -961,7 +961,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case XATU_35:
       return evolution (this, from:"Natu", hp:HP080, type:P, retreatCost:1) {
         weakness P
@@ -978,7 +978,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case ELECTRODE_36:
       return evolution (this, from:"Voltorb", hp:HP070, type:L, retreatCost:1) {
         weakness F
@@ -998,7 +998,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 100
           }
         }
-      };
+      }
       case KABUTO_37:
       return evolution (this, from:"null", hp:HP050, type:F, retreatCost:1) {
         weakness G
@@ -1015,7 +1015,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case MACHOKE_38:
       return evolution (this, from:"Machop", hp:HP080, type:F, retreatCost:1) {
         weakness P
@@ -1035,7 +1035,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case MISDREAVUS_39:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness null
@@ -1056,7 +1056,7 @@ public enum SkyridgeNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case NOCTOWL_40:
       return evolution (this, from:"Hoothoot", hp:HP070, type:C, retreatCost:null) {
         weakness L
@@ -1074,7 +1074,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case OMANYTE_41:
       return evolution (this, from:"null", hp:HP060, type:W, retreatCost:null) {
         weakness L
@@ -1095,7 +1095,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case PERSIAN_42:
       return evolution (this, from:"Meowth", hp:HP070, type:C, retreatCost:null) {
         weakness F
@@ -1115,7 +1115,7 @@ public enum SkyridgeNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case PILOSWINE_43:
       return evolution (this, from:"Swinub", hp:HP080, type:F, retreatCost:3) {
         weakness G
@@ -1136,7 +1136,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case STARMIE_44:
       return evolution (this, from:"Staryu", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -1156,7 +1156,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case WOBBUFFET_45:
       return basic (this, hp:HP070, type:P, retreatCost:2) {
         weakness P
@@ -1173,7 +1173,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case ABRA_46:
       return basic (this, hp:HP040, type:P, retreatCost:1) {
         weakness P
@@ -1190,7 +1190,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case BURIED_FOSSIL_47:
       return basic (this, hp:HP030, type:C, retreatCost:1) {
         pokePower "Reconstruction", {
@@ -1199,7 +1199,7 @@ public enum SkyridgeNG implements LogicCardInfo {
           }
         }
 
-      };
+      }
       case CLEFFA_48:
       return basic (this, hp:HP030, type:C, retreatCost:1) {
         move "Energy Recycle", {
@@ -1210,7 +1210,7 @@ public enum SkyridgeNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case DELIBIRD_49:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness M
@@ -1230,7 +1230,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case DIGLETT_50:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness G
@@ -1243,7 +1243,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case DITTO_51:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1264,7 +1264,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             metronome keepEnergyRequirement: true, defending, delegate
           }
         }
-      };
+      }
       case DUGTRIO_52:
       return evolution (this, from:"Diglett", hp:HP070, type:F, retreatCost:1) {
         weakness G
@@ -1285,7 +1285,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case DUNSPARCE_53:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
@@ -1302,7 +1302,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case EEVEE_54:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1322,7 +1322,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case FARFETCH_D_55:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness L
@@ -1343,7 +1343,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case FORRETRESS_56:
       return evolution (this, from:"Pineco", hp:HP070, type:G, retreatCost:2) {
         weakness R
@@ -1368,7 +1368,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case GASTLY_57:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness null
@@ -1381,7 +1381,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case GIRAFARIG_58:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness P
@@ -1401,7 +1401,7 @@ public enum SkyridgeNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case GLIGAR_59:
       return basic (this, hp:HP060, type:F, retreatCost:1) {
         weakness G
@@ -1421,7 +1421,7 @@ public enum SkyridgeNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case GOLBAT_60:
       return evolution (this, from:"Zubat", hp:HP070, type:G, retreatCost:1) {
         weakness P
@@ -1441,7 +1441,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case GRANBULL_61:
       return evolution (this, from:"Snubbull", hp:HP080, type:C, retreatCost:1) {
         weakness F
@@ -1461,7 +1461,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case GROWLITHE_62:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1481,7 +1481,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case HAUNTER_63:
       return evolution (this, from:"Gastly", hp:HP070, type:P, retreatCost:1) {
         weakness null
@@ -1502,7 +1502,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case HERACROSS_64:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness R
@@ -1522,7 +1522,7 @@ public enum SkyridgeNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case HOOTHOOT_65:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness L
@@ -1543,7 +1543,7 @@ public enum SkyridgeNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case HOUNDOUR_66:
       return basic (this, hp:HP050, type:R, retreatCost:1) {
         weakness W
@@ -1563,7 +1563,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case IGGLYBUFF_67:
       return basic (this, hp:HP030, type:C, retreatCost:1) {
         move "Energy Heal", {
@@ -1574,7 +1574,7 @@ public enum SkyridgeNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case JIGGLYPUFF_68:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -1594,7 +1594,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case KADABRA_69:
       return evolution (this, from:"Abra", hp:HP070, type:P, retreatCost:1) {
         weakness P
@@ -1614,7 +1614,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case KAKUNA_70:
       return evolution (this, from:"Weedle", hp:HP070, type:G, retreatCost:2) {
         weakness R
@@ -1631,7 +1631,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case LAPRAS_71:
       return basic (this, hp:HP060, type:W, retreatCost:2) {
         weakness M
@@ -1651,7 +1651,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case LEDYBA_72:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness L
@@ -1672,7 +1672,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case LEDYBA_73:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -1692,7 +1692,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MACHOP_74:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness P
@@ -1712,7 +1712,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case MAGIKARP_75:
       return basic (this, hp:HP030, type:W, retreatCost:1) {
         weakness L
@@ -1732,7 +1732,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case MAGNEMITE_76:
       return basic (this, hp:HP040, type:L, retreatCost:1) {
         weakness F
@@ -1752,7 +1752,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case MANTINE_77:
       return basic (this, hp:HP060, type:W, retreatCost:2) {
         weakness L
@@ -1773,7 +1773,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case MEOWTH_78:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
@@ -1785,7 +1785,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case MURKROW_79:
       return basic (this, hp:HP050, type:D, retreatCost:1) {
         weakness F
@@ -1806,7 +1806,7 @@ public enum SkyridgeNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case NATU_80:
       return basic (this, hp:HP050, type:P, retreatCost:1) {
         weakness P
@@ -1826,7 +1826,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case NIDORAN_FEMALE_81:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness P
@@ -1846,7 +1846,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case NIDORAN_FEMALE_82:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness P
@@ -1858,7 +1858,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case NIDORINA_83:
       return evolution (this, from:"Nidoran♀", hp:HP080, type:G, retreatCost:2) {
         weakness P
@@ -1878,7 +1878,7 @@ public enum SkyridgeNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case PIKACHU_84:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -1890,7 +1890,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case PINECO_85:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -1902,7 +1902,7 @@ public enum SkyridgeNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case PINECO_86:
       return basic (this, hp:HP050, type:G, retreatCost:null) {
         weakness R
@@ -1914,7 +1914,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case POLIWAG_87:
       return basic (this, hp:HP040, type:W, retreatCost:null) {
         weakness L
@@ -1934,7 +1934,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case POLIWHIRL_88:
       return evolution (this, from:"Poliwag", hp:HP070, type:W, retreatCost:1) {
         weakness L
@@ -1954,7 +1954,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case RATICATE_89:
       return evolution (this, from:"Rattata", hp:HP070, type:C, retreatCost:1) {
         weakness F
@@ -1974,7 +1974,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case RATTATA_90:
       return basic (this, hp:HP030, type:C, retreatCost:1) {
         weakness F
@@ -1994,7 +1994,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case RHYHORN_91:
       return basic (this, hp:HP060, type:F, retreatCost:2) {
         weakness G
@@ -2015,7 +2015,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SANDSHREW_92:
       return basic (this, hp:HP040, type:F, retreatCost:1) {
         weakness G
@@ -2036,7 +2036,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SANDSLASH_93:
       return evolution (this, from:"Sandshrew", hp:HP070, type:F, retreatCost:1) {
         weakness G
@@ -2057,7 +2057,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SEEL_94:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -2069,7 +2069,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SEEL_95:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -2089,7 +2089,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SHUCKLE_96:
       return basic (this, hp:HP030, type:G, retreatCost:2) {
         weakness R
@@ -2106,7 +2106,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case SKARMORY_97:
       return basic (this, hp:HP060, type:M, retreatCost:2) {
         weakness R
@@ -2127,7 +2127,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SLUGMA_98:
       return basic (this, hp:HP050, type:R, retreatCost:2) {
         weakness W
@@ -2147,7 +2147,7 @@ public enum SkyridgeNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case SLUGMA_99:
       return basic (this, hp:HP050, type:R, retreatCost:2) {
         weakness W
@@ -2159,7 +2159,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SNORLAX_100:
       return basic (this, hp:HP080, type:C, retreatCost:3) {
         weakness F
@@ -2176,7 +2176,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SNUBBULL_101:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness F
@@ -2196,7 +2196,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case STANTLER_102:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness F
@@ -2216,7 +2216,7 @@ public enum SkyridgeNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case STARYU_103:
       return basic (this, hp:HP040, type:W, retreatCost:1) {
         weakness L
@@ -2236,7 +2236,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case STARYU_104:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness L
@@ -2256,7 +2256,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SUNFLORA_105:
       return evolution (this, from:"Sunkern", hp:HP070, type:G, retreatCost:1) {
         weakness R
@@ -2277,7 +2277,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case SUNKERN_106:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -2298,7 +2298,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case SWINUB_107:
       return basic (this, hp:HP050, type:W, retreatCost:1) {
         weakness M
@@ -2318,7 +2318,7 @@ public enum SkyridgeNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case SWINUB_108:
       return basic (this, hp:HP050, type:F, retreatCost:1) {
         weakness G
@@ -2339,7 +2339,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case TEDDIURSA_109:
       return basic (this, hp:HP040, type:C, retreatCost:1) {
         weakness F
@@ -2359,7 +2359,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case URSARING_110:
       return evolution (this, from:"Teddiursa", hp:HP080, type:C, retreatCost:2) {
         weakness F
@@ -2379,7 +2379,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case VENOMOTH_111:
       return evolution (this, from:"Venonat", hp:HP070, type:G, retreatCost:null) {
         weakness R
@@ -2399,7 +2399,7 @@ public enum SkyridgeNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case VENONAT_112:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -2419,7 +2419,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case VOLTORB_113:
       return basic (this, hp:HP050, type:L, retreatCost:1) {
         weakness F
@@ -2439,7 +2439,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case WEEDLE_114:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness R
@@ -2451,7 +2451,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case WEEDLE_115:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness R
@@ -2471,7 +2471,7 @@ public enum SkyridgeNG implements LogicCardInfo {
 
           }
         }
-      };
+      }
       case YANMA_116:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness L
@@ -2492,7 +2492,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case ZUBAT_117:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness L
@@ -2513,7 +2513,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case ZUBAT_118:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness P
@@ -2533,7 +2533,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case ANCIENT_RUINS_119:
       return stadium (this) {
         text "Once during each player's turn (before he or she attacks), if he or she has not played a Supporter card, that player may reveal his or her hand to his or her opponent. If that player reveals his or her hand and there is no Supporter card there, that player draws a card."
@@ -2541,7 +2541,7 @@ public enum SkyridgeNG implements LogicCardInfo {
         }
         onRemoveFromPlay{
         }
-      };
+      }
       case RELIC_HUNTER_120:
       return supporter (this) {
         text "Search your deck for up to 2 Supporter and/or Stadium cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
@@ -2549,7 +2549,7 @@ public enum SkyridgeNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case APRICORN_MAKER_121:
       return supporter (this) {
         text "Search your deck for up to 2 Trainer cards with Ball in their names, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
@@ -2557,7 +2557,7 @@ public enum SkyridgeNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case CRYSTAL_SHARD_122:
       return pokemonTool (this) {
         text "As long as this card is attached to a Pokémon, that Pokémon's type (color) is [C]. If that Pokémon attacks, discard this card at the end of the turn."
@@ -2567,7 +2567,7 @@ public enum SkyridgeNG implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case DESERT_SHAMAN_123:
       return supporter (this) {
         text "Shuffle your hand into your deck and draw up to 4 cards. You opponent does the same."
@@ -2575,7 +2575,7 @@ public enum SkyridgeNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case FAST_BALL_124:
       return basicTrainer (this) {
         text "Reveal cards from your deck until you reveal an Evolution card. Show that card to your opponent and put it into your hand. Shuffle the other revealed cards into your deck. (If you don't reveal an Evolution card, shuffle all the revealed cards back into your deck.)"
@@ -2583,7 +2583,7 @@ public enum SkyridgeNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case FISHERMAN_125:
       return supporter (this) {
         text "Choose 4 basic Energy cards from your discard pile (if there are fewer basic Energy cards than 4, take all of them), show them to your opponent, and put them into your hand."
@@ -2591,7 +2591,7 @@ public enum SkyridgeNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case FRIEND_BALL_126:
       return basicTrainer (this) {
         text "Choose 1 of your opponent's Pokémon. Search your deck for a Baby Pokémon, Basic Pokémon, of Evolution card of the same type (color), show it to your opponent, and put it into your hand. Shuffle your deck afterward."
@@ -2599,7 +2599,7 @@ public enum SkyridgeNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case HYPER_POTION_127:
       return basicTrainer (this) {
         text "Choose 1 of your Pokémon. Discard 1 or 2 basic Energy cards attached to that Pokémon. If you discarded 1 Energy card, remove up to 3 damage counters from that Pokémon. If you discarded 2 Energy cards, remove up to 5 damage counters from that Pokémon."
@@ -2607,7 +2607,7 @@ public enum SkyridgeNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case LURE_BALL_128:
       return basicTrainer (this) {
         text "Flip 3 coins. For each heads, choose an Evolution card from your discard pile, show it to your opponent, and put it into your hand."
@@ -2615,7 +2615,7 @@ public enum SkyridgeNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case MIRACLE_SPHERE_ALPHA_129:
       return basicTrainer (this) {
         text "If the Pokémon using this attack has and Energy cards attached to it, the Defending Pokémon is now Confused. If the Pokémon using this attack has and basic Energy cards attached to it, this attack does 30 damage plus 10 more damage and removes 3 damage counters from the Pokémon that Miracle Sphere alpha is attached to."
@@ -2623,7 +2623,7 @@ public enum SkyridgeNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case MIRACLE_SPHERE_BETA_130:
       return basicTrainer (this) {
         text "If the Pokémon using this attack has and basic Energy cards attached to it, this attack does 30 damage plus 10 more damage and the Defending Pokémon is now Burned. If the Pokémon using this attack has and basic Energy cards attached to it, choose an Energy card attached to the Defending Pokémon, if any, and your opponent shuffles that card into his or her deck."
@@ -2631,7 +2631,7 @@ public enum SkyridgeNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case MIRACLE_SPHERE_GAMMA_131:
       return basicTrainer (this) {
         text "If the Pokémon using this attack has and basic Energy cards attached to it, the Defending Pokémon is now Asleep and Poisoned. If the Pokémon using this attack has and basic Energy cards attached to it, this attack does 30 damage plus 10 more damage and lets you put 1 damage counter on each of your opponent's Benched Pokémon."
@@ -2639,7 +2639,7 @@ public enum SkyridgeNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case MIRAGE_STADIUM_132:
       return stadium (this) {
         text "Whenever a player tries to Retreat a Pokémon during his or her turn, that player flips a coin. If heads, that player retreats that Pokémon (and discards Energy normally). If tails, that Pokémon can't Retreat this turn (the player doesn't discard any Energy)."
@@ -2647,7 +2647,7 @@ public enum SkyridgeNG implements LogicCardInfo {
         }
         onRemoveFromPlay{
         }
-      };
+      }
       case MYSTERY_PLATE_ALPHA_133:
       return basicTrainer (this) {
         text "If your opponent has 5 or more Prizes, search your deck for a Trainer card, show it to your opponent, and put it into your hand. If your opponent has only 1 Prize, the Defending Pokémon is now Burned, Paralyzed, and Poisoned."
@@ -2655,7 +2655,7 @@ public enum SkyridgeNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case MYSTERY_PLATE_BETA_134:
       return basicTrainer (this) {
         text "If your opponent has 5 or more Prizes, draw 3 cards. If your opponent has only 1 Prize, choose 2 Energy cards attached to the Defending Pokémon (1 if it has only 1). Your opponent shuffles those cards into his or her deck."
@@ -2663,7 +2663,7 @@ public enum SkyridgeNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case MYSTERY_PLATE_GAMMA_135:
       return basicTrainer (this) {
         text "If your opponent has 5 or more Prizes, shuffle your hand into your deck and then draw 6 cards. If your opponent has exactly 2 Prizes, choose 1 of your opponent's Evolved Pokémon. Your opponent puts the top card on that Evolved Pokémon on the bottom of his or her deck. (This counts as devolving that Pokémon.)"
@@ -2671,7 +2671,7 @@ public enum SkyridgeNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case MYSTERY_PLATE_DELTA_136:
       return basicTrainer (this) {
         text "If your opponent has 5 or more Prizes, search your deck for up to 3 basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward. If your opponent has exactly 2 Prizes, remove all damage counters from 1 of your Pokémon."
@@ -2679,7 +2679,7 @@ public enum SkyridgeNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case MYSTERY_ZONE_137:
       return stadium (this) {
         text "Once during each player's turn (before he or she attacks), if that player has an Evolution card in his or her hand, he or she may search his or her deck for a basic Energy card, show it to his or her opponent, and put it into his or her hand. Then that player chooses an Evolution card from his or her hand, shows it to his or her opponent, and puts it into his or her deck. That player shuffles his or her deck afterward."
@@ -2687,7 +2687,7 @@ public enum SkyridgeNG implements LogicCardInfo {
         }
         onRemoveFromPlay{
         }
-      };
+      }
       case ORACLE_138:
       return supporter (this) {
         text "Choose 2 cards from your deck and shuffle the rest of your deck. Put the chosen cards in top of your deck in any order."
@@ -2695,7 +2695,7 @@ public enum SkyridgeNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case STAR_PIECE_139:
       return pokemonTool (this) {
         text "At any time between turns, if the Pokémon this card is attached to is Benched and has 2 or more damage counters in it, search your deck for an Evolution card that Pokémon evolves into and put it on top of that Pokémon. (This counts as evolving that Pokémon.) Shuffle your deck afterward. Then, discard Star Piece."
@@ -2705,7 +2705,7 @@ public enum SkyridgeNG implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case UNDERGROUND_EXPEDITION_140:
       return supporter (this) {
         text "Look at the bottom 4 cards if your deck. Put 2 of those cards into your hand, and then return the remaining cards to the bottom of your deck in any order."
@@ -2713,7 +2713,7 @@ public enum SkyridgeNG implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case UNDERGROUND_LAKE_141:
       return stadium (this) {
         text "Once during each player's turn, that player may put an Omanyte or Kabuto card from his or her discard pile onto his or her Bench. (Cards put on the Bench in this way are considered Basic Pokémon.)"
@@ -2721,7 +2721,7 @@ public enum SkyridgeNG implements LogicCardInfo {
         }
         onRemoveFromPlay{
         }
-      };
+      }
       case BOUNCE_ENERGY_142:
       return specialEnergy (this, [[C]]) {
         text "This card provides [C] [C] Energy. You can attach this card to your Pokémon that has basic Energy cards attached to it. When you play this card from your hand and attach it to 1 of your Pokémon, return a basic Energy card attached to that Pokémon to your hand."
@@ -2733,7 +2733,7 @@ public enum SkyridgeNG implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case CYCLONE_ENERGY_143:
       return specialEnergy (this, [[C]]) {
         text "This card provides [C] Energy. When you play this card from your hand and attach it to your Active Pokémon, your opponent switches his or her Active Pokémon with 1 of his or her Benched Pokémon."
@@ -2745,7 +2745,7 @@ public enum SkyridgeNG implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case RETRO_ENERGY_144:
       return specialEnergy (this, [[C]]) {
         text "This card provides [C] Energy. When you play this card from your hand and attach it to 1 of your Evolved Pokémon, you may remove up to 2 damage counters from that Pokémon and discard the top card from it. (This counts as devolving it.)"
@@ -2757,7 +2757,7 @@ public enum SkyridgeNG implements LogicCardInfo {
         }
         allowAttach {to->
         }
-      };
+      }
       case CELEBI_145:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness R
@@ -2782,7 +2782,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case CHARIZARD_146:
       return evolution (this, from:"Charmeleon", hp:HP110, type:C, retreatCost:4) {
         weakness W
@@ -2807,7 +2807,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case CROBAT_147:
       return evolution (this, from:"Golbat", hp:HP080, type:C, retreatCost:null) {
         weakness P
@@ -2832,7 +2832,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case GOLEM_148:
       return evolution (this, from:"Graveler", hp:HP100, type:C, retreatCost:4) {
         weakness W
@@ -2857,7 +2857,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case HO_OH_149:
       return basic (this, hp:HP080, type:C, retreatCost:3) {
         weakness W
@@ -2882,7 +2882,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case KABUTOPS_150:
       return evolution (this, from:"Kabuto", hp:HP090, type:C, retreatCost:3) {
         weakness G
@@ -2907,43 +2907,43 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case ALAKAZAM_H1:
-      return copy (ALAKAZAM_2, this);
+      return copy (ALAKAZAM_2, this)
       case ARCANINE_H2:
-      return copy (ARCANINE_3, this);
+      return copy (ARCANINE_3, this)
       case ARTICUNO_H3:
-      return copy (ARTICUNO_4, this);
+      return copy (ARTICUNO_4, this)
       case BEEDRILL_H4:
-      return copy (BEEDRILL_5, this);
+      return copy (BEEDRILL_5, this)
       case CROBAT_H5:
-      return copy (CROBAT_6, this);
+      return copy (CROBAT_6, this)
       case DEWGONG_H6:
-      return copy (DEWGONG_7, this);
+      return copy (DEWGONG_7, this)
       case FLAREON_H7:
-      return copy (FLAREON_8, this);
+      return copy (FLAREON_8, this)
       case FORRETRESS_H8:
-      return copy (FORRETRESS_9, this);
+      return copy (FORRETRESS_9, this)
       case GENGAR_H9:
-      return copy (GENGAR_10, this);
+      return copy (GENGAR_10, this)
       case GYARADOS_H10:
-      return copy (GYARADOS_11, this);
+      return copy (GYARADOS_11, this)
       case HOUNDOOM_H11:
-      return copy (HOUNDOOM_12, this);
+      return copy (HOUNDOOM_12, this)
       case JOLTEON_H12:
-      return copy (JOLTEON_13, this);
+      return copy (JOLTEON_13, this)
       case KABUTOPS_H13:
-      return copy (KABUTOPS_14, this);
+      return copy (KABUTOPS_14, this)
       case LEDIAN_H14:
-      return copy (LEDIAN_15, this);
+      return copy (LEDIAN_15, this)
       case MACHAMP_H15:
-      return copy (MACHAMP_16, this);
+      return copy (MACHAMP_16, this)
       case MAGCARGO_H16:
-      return copy (MAGCARGO_17, this);
+      return copy (MAGCARGO_17, this)
       case MAGCARGO_H17:
-      return copy (MAGCARGO_18, this);
+      return copy (MAGCARGO_18, this)
       case MAGNETON_H18:
-      return copy (MAGNETON_19, this);
+      return copy (MAGNETON_19, this)
       case MAGNETON_H19:
       return evolution (this, from:"Magnemite", hp:HP080, type:L, retreatCost:1) {
         weakness F
@@ -2964,13 +2964,13 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case MOLTRES_H20:
-      return copy (MOLTRES_21, this);
+      return copy (MOLTRES_21, this)
       case NIDOQUEEN_H21:
-      return copy (NIDOQUEEN_22, this);
+      return copy (NIDOQUEEN_22, this)
       case PILOSWINE_H22:
-      return copy (PILOSWINE_24, this);
+      return copy (PILOSWINE_24, this)
       case POLITOED_H23:
       return evolution (this, from:"Poliwhirl", hp:HP110, type:W, retreatCost:2) {
         weakness L
@@ -2998,9 +2998,9 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case POLIWRATH_H24:
-      return copy (POLIWRATH_26, this);
+      return copy (POLIWRATH_26, this)
       case RAICHU_H25:
       return evolution (this, from:"Pikachu", hp:HP080, type:L, retreatCost:1) {
         weakness F
@@ -3020,7 +3020,7 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case RAIKOU_H26:
       return basic (this, hp:HP070, type:L, retreatCost:1) {
         weakness R
@@ -3037,21 +3037,21 @@ public enum SkyridgeNG implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case RHYDON_H27:
-      return copy (RHYDON_29, this);
+      return copy (RHYDON_29, this)
       case STARMIE_H28:
-      return copy (STARMIE_30, this);
+      return copy (STARMIE_30, this)
       case STEELIX_H29:
-      return copy (STEELIX_31, this);
+      return copy (STEELIX_31, this)
       case UMBREON_H30:
-      return copy (UMBREON_32, this);
+      return copy (UMBREON_32, this)
       case VAPOREON_H31:
-      return copy (VAPOREON_33, this);
+      return copy (VAPOREON_33, this)
       case XATU_H32:
-      return copy (XATU_35, this);
+      return copy (XATU_35, this)
       default:
-      return null;
+      return null
     }
   }
 }

@@ -2,37 +2,37 @@ package tcgwars.logic.impl.gen8
 
 import tcgwars.logic.effect.gm.AttachEnergy
 import tcgwars.logic.groovy.TcgStatics
-import tcgwars.logic.impl.gen5.PlasmaBlast;
+import tcgwars.logic.impl.gen5.PlasmaBlast
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author Lithogenn@gmail.com
@@ -273,53 +273,53 @@ public enum ChillingReign implements LogicCardInfo {
   PSYCHIC_ENERGY_232 ("Psychic Energy", "232", Rarity.UNCOMMON, [ENERGY, BASIC_ENERGY]),
   FIGHTING_ENERGY_233 ("Fighting Energy", "233", Rarity.UNCOMMON, [ENERGY, BASIC_ENERGY]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   ChillingReign(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.CHILLING_REIGN;
+    return tcgwars.logic.card.Collection.CHILLING_REIGN
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -336,7 +336,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case KAKUNA_2:
         return evolution (this, from:"Weedle", hp:HP080, type:G, retreatCost:3) {
           weakness FIRE
@@ -348,7 +348,7 @@ public enum ChillingReign implements LogicCardInfo {
               reduceDamageNextTurn(hp(40), thisMove)
             }
           }
-        };
+        }
       case BEEDRILL_3:
         return evolution (this, from:"Kakuna", hp:HP130, type:G, retreatCost:1) {
           weakness FIRE
@@ -373,7 +373,7 @@ public enum ChillingReign implements LogicCardInfo {
               discardSelfEnergyAfterDamage C
             }
           }
-        };
+        }
       case LEDYBA_4:
         return basic (this, hp:HP060, type:G, retreatCost:1) {
           weakness FIRE
@@ -393,7 +393,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case LEDIAN_5:
         return evolution (this, from:"Ledyba", hp:HP090, type:G, retreatCost:1) {
           weakness FIRE
@@ -415,7 +415,7 @@ public enum ChillingReign implements LogicCardInfo {
               discardSelfEnergyAfterDamage C
             }
           }
-        };
+        }
       case HERACROSS_6:
         return basic (this, hp:HP120, type:G, retreatCost:2) {
           weakness FIRE
@@ -436,7 +436,7 @@ public enum ChillingReign implements LogicCardInfo {
               flip 2, {}, {}, [2:{ damage 160 }]
             }
           }
-        };
+        }
       case CELEBI_V_7:
         return basic (this, hp:HP190, type:G, retreatCost:1) {
           weakness FIRE
@@ -464,7 +464,7 @@ public enum ChillingReign implements LogicCardInfo {
               switchYourActive()
             }
           }
-        };
+        }
       case CELEBI_VMAX_8:
         return evolution (this, from:"Celebi V", hp:HP310, type:G, retreatCost:1) {
           weakness FIRE
@@ -492,7 +492,7 @@ public enum ChillingReign implements LogicCardInfo {
               shuffleDeck()
             }
           }
-        };
+        }
       case SNOVER_9:
         return basic (this, hp:HP080, type:G, retreatCost:2) {
           weakness FIRE
@@ -504,7 +504,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 60
             }
           }
-        };
+        }
       case ABOMASNOW_10:
         return evolution (this, from:"Snover", hp:HP140, type:G, retreatCost:3) {
           weakness FIRE
@@ -540,7 +540,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 90
             }
           }
-        };
+        }
       case DEERLING_11:
         return basic (this, hp:HP060, type:G, retreatCost:1) {
           weakness FIRE
@@ -560,7 +560,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case SAWSBUCK_12:
         return evolution (this, from:"Deerling", hp:HP110, type:G, retreatCost:1) {
           weakness FIRE
@@ -583,7 +583,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case BOUNSWEET_13:
         return basic (this, hp:HP060, type:G, retreatCost:1) {
           weakness FIRE
@@ -595,7 +595,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case STEENEE_14:
         return evolution (this, from:"Bounsweet", hp:HP080, type:G, retreatCost:1) {
           weakness FIRE
@@ -616,7 +616,7 @@ public enum ChillingReign implements LogicCardInfo {
               flip { damage 30 }
             }
           }
-        };
+        }
       case TSAREENA_15:
         return evolution (this, from:"Steenee", hp:HP140, type:G, retreatCost:2) {
           weakness FIRE
@@ -637,7 +637,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 120
             }
           }
-        };
+        }
       case GROOKEY_16:
         return basic (this, hp:HP060, type:G, retreatCost:1) {
           weakness FIRE
@@ -649,7 +649,7 @@ public enum ChillingReign implements LogicCardInfo {
               flip 2, { damage 30 }
             }
           }
-        };
+        }
       case THWACKEY_17:
         return evolution (this, from:"Grookey", hp:HP100, type:G, retreatCost:2) {
           weakness FIRE
@@ -664,7 +664,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case RILLABOOM_18:
         return evolution (this, from:"Thwackey", hp:HP180, type:G, retreatCost:3) {
           weakness FIRE
@@ -690,7 +690,7 @@ public enum ChillingReign implements LogicCardInfo {
               additionalDamageByDiscardingCardTypeFromPokemon 30, ENERGY
             }
           }
-        };
+        }
       case ZARUDE_19:
         return basic (this, hp:HP130, type:G, retreatCost:2) {
           weakness FIRE
@@ -717,7 +717,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 60 + 20 * self.cards.energyCount(G)
             }
           }
-        };
+        }
       case BLAZIKEN_V_20:
         return basic (this, hp:HP210, type:R, retreatCost:2) {
           weakness WATER
@@ -738,7 +738,7 @@ public enum ChillingReign implements LogicCardInfo {
               discardSelfEnergyAfterDamage(C, C)
             }
           }
-        };
+        }
       case BLAZIKEN_VMAX_21:
         return evolution (this, from:"Blaziken V", hp:HP320, type:R, retreatCost:2) {
           weakness WATER
@@ -772,7 +772,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CASTFORM_SUNNY_FORM_22:
         return basic (this, hp:HP070, type:R, retreatCost:0) {
           weakness WATER
@@ -805,7 +805,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LARVESTA_23:
         return basic (this, hp:HP080, type:R, retreatCost:3) {
           weakness WATER
@@ -821,7 +821,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case VOLCARONA_24:
         return evolution (this, from:"Larvesta", hp:HP130, type:R, retreatCost:2) {
           weakness WATER
@@ -842,7 +842,7 @@ public enum ChillingReign implements LogicCardInfo {
               discardSelfEnergyAfterDamage(C, C)
             }
           }
-        };
+        }
       case VOLCANION_V_25:
         return basic (this, hp:HP220, type:R, retreatCost:3) {
           weakness WATER
@@ -865,7 +865,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SCORBUNNY_26:
         return basic (this, hp:HP060, type:R, retreatCost:1) {
           weakness WATER
@@ -877,7 +877,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case RABOOT_27:
         return evolution (this, from:"Scorbunny", hp:HP090, type:R, retreatCost:1) {
           weakness WATER
@@ -890,7 +890,7 @@ public enum ChillingReign implements LogicCardInfo {
               cantAttackNextTurn self
             }
           }
-        };
+        }
       case CINDERACE_28:
         return evolution (this, from:"Raboot", hp:HP170, type:R, retreatCost:1) {
           weakness WATER
@@ -919,7 +919,7 @@ public enum ChillingReign implements LogicCardInfo {
               cantAttackNextTurn self
             }
           }
-        };
+        }
       case LAPRAS_29:
         return basic (this, hp:HP110, type:W, retreatCost:1) {
           weakness METAL
@@ -945,7 +945,7 @@ public enum ChillingReign implements LogicCardInfo {
               applyAfterDamage(ASLEEP)
             }
           }
-        };
+        }
       case SNEASEL_30:
         return basic (this, hp:HP070, type:W, retreatCost:1) {
           weakness METAL
@@ -957,7 +957,7 @@ public enum ChillingReign implements LogicCardInfo {
               flip { discardDefendingEnergy() }
             }
           }
-        };
+        }
       case WEAVILE_31:
         return evolution (this, from:"Sneasel", hp:HP110, type:W, retreatCost:1) {
           weakness METAL
@@ -999,7 +999,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DELIBIRD_32:
         return basic (this, hp:HP090, type:W, retreatCost:1) {
           weakness METAL
@@ -1023,7 +1023,7 @@ public enum ChillingReign implements LogicCardInfo {
               shuffleDeck()
             }
           }
-        };
+        }
       case CASTFORM_RAINY_FORM_33:
         return basic (this, hp:HP070, type:W, retreatCost:0) {
           weakness LIGHTNING
@@ -1051,7 +1051,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CASTFORM_SNOWY_FORM_34:
         return basic (this, hp:HP070, type:W, retreatCost:0) {
           weakness METAL
@@ -1078,7 +1078,7 @@ public enum ChillingReign implements LogicCardInfo {
               cantUseAttack(thisMove, self)
             }
           }
-        };
+        }
       case SNORUNT_35:
         return basic (this, hp:HP060, type:W, retreatCost:1) {
           weakness METAL
@@ -1090,7 +1090,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case FROSLASS_36:
         return evolution (this, from:"Snorunt", hp:HP090, type:W, retreatCost:1) {
           weakness METAL
@@ -1112,7 +1112,7 @@ public enum ChillingReign implements LogicCardInfo {
               cantAttackNextTurn self
             }
           }
-        };
+        }
       case SPHEAL_37:
         return basic (this, hp:HP070, type:W, retreatCost:2) {
           weakness METAL
@@ -1124,7 +1124,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case SEALEO_38:
         return evolution (this, from:"Spheal", hp:HP110, type:W, retreatCost:4) {
           weakness METAL
@@ -1144,7 +1144,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 70
             }
           }
-        };
+        }
       case WALREIN_39:
         return evolution (this, from:"Sealeo", hp:HP170, type:W, retreatCost:4) {
           weakness METAL
@@ -1166,7 +1166,7 @@ public enum ChillingReign implements LogicCardInfo {
               applyAfterDamage(PARALYZED)
             }
           }
-        };
+        }
       case TAPU_FINI_40:
         return basic (this, hp:HP120, type:W, retreatCost:1) {
           weakness LIGHTNING
@@ -1190,7 +1190,7 @@ public enum ChillingReign implements LogicCardInfo {
               moveSelfEnergyAfterDamage(my.hand)
             }
           }
-        };
+        }
       case SOBBLE_41:
         return basic (this, hp:HP060, type:W, retreatCost:1) {
           weakness LIGHTNING
@@ -1221,7 +1221,7 @@ public enum ChillingReign implements LogicCardInfo {
               flip 2, { damage 20 }
             }
           }
-        };
+        }
       case DRIZZILE_42:
         return evolution (this, from:"Sobble", hp:HP090, type:W, retreatCost:1) {
           weakness LIGHTNING
@@ -1234,7 +1234,7 @@ public enum ChillingReign implements LogicCardInfo {
               switchYourActive()
             }
           }
-        };
+        }
       case INTELEON_43:
         return evolution (this, from:"Drizzile", hp:HP150, type:W, retreatCost:1) {
           weakness LIGHTNING
@@ -1257,7 +1257,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 70
             }
           }
-        };
+        }
       case RAPID_STRIKE_URSHIFU_44:
         return evolution (this, from:"Kubfu", hp:HP140, type:W, retreatCost:2) {
           weakness LIGHTNING
@@ -1277,7 +1277,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 30 * my.all.count { it.rapidStrike }
             }
           }
-        };
+        }
       case ICE_RIDER_CALYREX_V_45:
         return basic (this, hp:HP210, type:W, retreatCost:2) {
           weakness METAL
@@ -1298,7 +1298,7 @@ public enum ChillingReign implements LogicCardInfo {
               discardSelfEnergyAfterDamage(C, C)
             }
           }
-        };
+        }
       case ICE_RIDER_CALYREX_VMAX_46:
         return evolution (this, from:"Ice Rider Calyrex V", hp:HP320, type:W, retreatCost:2) {
           weakness METAL
@@ -1322,7 +1322,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MAREEP_47:
         return basic (this, hp:HP070, type:L, retreatCost:2) {
           weakness FIGHTING
@@ -1342,7 +1342,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case FLAAFFY_48:
         return evolution (this, from:"Mareep", hp:HP100, type:L, retreatCost:2) {
           weakness FIGHTING
@@ -1354,7 +1354,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case AMPHAROS_49:
         return evolution (this, from:"Flaaffy", hp:HP160, type:L, retreatCost:2) {
           weakness FIGHTING
@@ -1383,7 +1383,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case BLITZLE_50:
         return basic (this, hp:HP060, type:L, retreatCost:1) {
           weakness FIGHTING
@@ -1395,7 +1395,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 10, opp.all.select("Deal damage to?")
             }
           }
-        };
+        }
       case ZEBSTRIKA_51:
         return evolution (this, from:"Blitzle", hp:HP120, type:L, retreatCost:1) {
           weakness FIGHTING
@@ -1430,7 +1430,7 @@ public enum ChillingReign implements LogicCardInfo {
               flipUntilTails { damage 90 }
             }
           }
-        };
+        }
       case THUNDURUS_52:
         return basic (this, hp:HP120, type:L, retreatCost:1) {
           weakness FIGHTING
@@ -1454,7 +1454,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 30, self
             }
           }
-        };
+        }
       case ZERAORA_V_53:
         return basic (this, hp:HP210, type:L, retreatCost:2) {
           weakness FIGHTING
@@ -1482,7 +1482,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case GALARIAN_SLOWPOKE_54:
         return basic (this, hp:HP070, type:P, retreatCost:2) {
           weakness DARKNESS
@@ -1503,7 +1503,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case GASTLY_55:
         return basic (this, hp:HP050, type:P, retreatCost:1) {
           weakness DARKNESS
@@ -1517,7 +1517,7 @@ public enum ChillingReign implements LogicCardInfo {
               flipThenApplySC(ASLEEP)
             }
           }
-        };
+        }
       case HAUNTER_56:
         return evolution (this, from:"Gastly", hp:HP080, type:P, retreatCost:1) {
           weakness DARKNESS
@@ -1530,7 +1530,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case GENGAR_57:
         return evolution (this, from:"Haunter", hp:HP130, type:P, retreatCost:1) {
           weakness DARKNESS
@@ -1555,7 +1555,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 10 + 40 * defending.numberOfDamageCounters
             }
           }
-        };
+        }
       case GALARIAN_ARTICUNO_V_58:
         return basic (this, hp:HP210, type:P, retreatCost:2) {
           weakness DARKNESS
@@ -1581,7 +1581,7 @@ public enum ChillingReign implements LogicCardInfo {
               applyAfterDamage(CONFUSED)
             }
           }
-        };
+        }
       case RALTS_59:
         return basic (this, hp:HP060, type:P, retreatCost:1) {
           weakness METAL
@@ -1593,7 +1593,7 @@ public enum ChillingReign implements LogicCardInfo {
               apply(CONFUSED)
             }
           }
-        };
+        }
       case KIRLIA_60:
         return evolution (this, from:"Ralts", hp:HP080, type:P, retreatCost:1) {
           weakness METAL
@@ -1616,7 +1616,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case GARDEVOIR_61:
         return evolution (this, from:"Kirlia", hp:HP140, type:P, retreatCost:2) {
           weakness METAL
@@ -1648,7 +1648,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 60 + 30 * self.cards.energyCount(P)
             }
           }
-        };
+        }
       case SHUPPET_62:
         return basic (this, hp:HP050, type:P, retreatCost:1) {
           weakness DARKNESS
@@ -1661,7 +1661,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case BANETTE_63:
         return evolution (this, from:"Shuppet", hp:HP080, type:P, retreatCost:1) {
           weakness DARKNESS
@@ -1687,7 +1687,7 @@ public enum ChillingReign implements LogicCardInfo {
               applyAfterDamage(CONFUSED)
             }
           }
-        };
+        }
       case CRESSELIA_64:
         return basic (this, hp:HP120, type:P, retreatCost:1) {
           weakness DARKNESS
@@ -1723,7 +1723,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case GOLETT_65:
         return basic (this, hp:HP090, type:P, retreatCost:3) {
           weakness DARKNESS
@@ -1744,7 +1744,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case GOLURK_66:
         return evolution (this, from:"Golett", hp:HP150, type:P, retreatCost:4) {
           weakness DARKNESS
@@ -1769,7 +1769,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 30, self
             }
           }
-        };
+        }
       case SWIRLIX_67:
         return basic (this, hp:HP060, type:P, retreatCost:1) {
           weakness METAL
@@ -1782,7 +1782,7 @@ public enum ChillingReign implements LogicCardInfo {
               heal 10, self
             }
           }
-        };
+        }
       case SLURPUFF_68:
         return evolution (this, from:"Swirlix", hp:HP110, type:P, retreatCost:2) {
           weakness METAL
@@ -1810,7 +1810,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 80
             }
           }
-        };
+        }
       case INKAY_69:
         return basic (this, hp:HP050, type:P, retreatCost:1) {
           weakness DARKNESS
@@ -1823,7 +1823,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case MALAMAR_70:
         return evolution (this, from:"Inkay", hp:HP120, type:P, retreatCost:3) {
           weakness DARKNESS
@@ -1846,7 +1846,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case HATENNA_71:
         return basic (this, hp:HP060, type:P, retreatCost:1) {
           weakness DARKNESS
@@ -1859,7 +1859,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case HATTREM_72:
         return evolution (this, from:"Hatenna", hp:HP080, type:P, retreatCost:1) {
           weakness DARKNESS
@@ -1872,7 +1872,7 @@ public enum ChillingReign implements LogicCardInfo {
               heal 30, self
             }
           }
-        };
+        }
       case HATTERENE_73:
         return evolution (this, from:"Hattrem", hp:HP130, type:P, retreatCost:1) {
           weakness DARKNESS
@@ -1900,7 +1900,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 30 + 50 * defending.cards.energyCount(C)
             }
           }
-        };
+        }
       case SHADOW_RIDER_CALYREX_V_74:
         return basic (this, hp:HP210, type:P, retreatCost:2) {
           weakness DARKNESS
@@ -1939,7 +1939,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SHADOW_RIDER_CALYREX_VMAX_75:
         return evolution (this, from:"Shadow Rider Calyrex V", hp:HP320, type:P, retreatCost:2) {
           weakness DARKNESS
@@ -1963,7 +1963,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 10 + 30 * my.all.sum { it.cards.energyCount(P) }
             }
           }
-        };
+        }
       case DIGLETT_76:
         return basic (this, hp:HP050, type:F, retreatCost:1) {
           weakness GRASS
@@ -1978,7 +1978,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DUGTRIO_77:
         return evolution (this, from:"Diglett", hp:HP090, type:F, retreatCost:1) {
           weakness GRASS
@@ -1997,7 +1997,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case GALARIAN_FARFETCH_D_78:
         return basic (this, hp:HP080, type:F, retreatCost:1) {
           weakness PSYCHIC
@@ -2010,7 +2010,7 @@ public enum ChillingReign implements LogicCardInfo {
               dontApplyResistance()
             }
           }
-        };
+        }
       case GALARIAN_SIRFETCH_D_79:
         return evolution (this, from:"Galarian Farfetch'd", hp:HP130, type:F, retreatCost:2) {
           weakness PSYCHIC
@@ -2034,7 +2034,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case GALARIAN_ZAPDOS_V_80:
         return basic (this, hp:HP200, type:F, retreatCost:1) {
           weakness PSYCHIC
@@ -2071,7 +2071,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 170
             }
           }
-        };
+        }
       case GALLADE_81:
         return evolution (this, from:"Kirlia", hp:HP170, type:F, retreatCost:2) {
           weakness PSYCHIC
@@ -2094,7 +2094,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 60 * opp.all.count { it.pokemonV }
             }
           }
-        };
+        }
       case GALARIAN_YAMASK_82:
         return basic (this, hp:HP060, type:F, retreatCost:2) {
           weakness GRASS
@@ -2107,7 +2107,7 @@ public enum ChillingReign implements LogicCardInfo {
               flip { damage 30 }
             }
           }
-        };
+        }
       case GALARIAN_RUNERIGUS_83:
         return evolution (this, from:"Galarian Yamask", hp:HP120, type:F, retreatCost:2) {
           weakness GRASS
@@ -2141,7 +2141,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 60 + 20 * defending.cards.energyCount(C)
             }
           }
-        };
+        }
       case CRABRAWLER_84:
         return basic (this, hp:HP080, type:F, retreatCost:3) {
           weakness PSYCHIC
@@ -2161,7 +2161,7 @@ public enum ChillingReign implements LogicCardInfo {
               flip 2, { damage 40 }
             }
           }
-        };
+        }
       case CRABOMINABLE_85:
         return evolution (this, from:"Crabrawler", hp:HP150, type:F, retreatCost:4) {
           weakness PSYCHIC
@@ -2180,7 +2180,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 130
             }
           }
-        };
+        }
       case ROCKRUFF_86:
         return basic (this, hp:HP070, type:F, retreatCost:1) {
           weakness GRASS
@@ -2195,7 +2195,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LYCANROC_87:
         return evolution (this, from:"Rockruff", hp:HP120, type:F, retreatCost:2) {
           weakness GRASS
@@ -2207,7 +2207,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 80 + 10 * my.discard.count { it.cardTypes.is(POKEMON) && it.cardTypes.is(SINGLE_STRIKE) }
             }
           }
-        };
+        }
       case PASSIMIAN_88:
         return basic (this, hp:HP110, type:F, retreatCost:1) {
           weakness PSYCHIC
@@ -2235,7 +2235,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 20, opp.all.select("Deal damage to?")
             }
           }
-        };
+        }
       case SANDACONDA_V_89:
         return basic (this, hp:HP220, type:F, retreatCost:2) {
           weakness GRASS
@@ -2260,7 +2260,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 140
             }
           }
-        };
+        }
       case SANDACONDA_VMAX_90:
         return evolution (this, from:"Sandaconda V", hp:HP320, type:F, retreatCost:3) {
           weakness GRASS
@@ -2285,19 +2285,19 @@ public enum ChillingReign implements LogicCardInfo {
                 if (my.bench && confirm("Do you want to move any amount of Energy from your Pokémon to your other Pokémon in any way you like?"))
                   while (true) {
                     def pl = (my.all.findAll { it.cards.filterByType(ENERGY) })
-                    if (!pl) break;
+                    if (!pl) break
                     def src = pl.select("Source for energy (cancel to stop)", false)
-                    if (!src) break;
+                    if (!src) break
                     def card = src.cards.filterByType(ENERGY).select("Energy to move").first()
 
                     def tar = my.all.findAll{it != src}.select("Target for energy (cancel to stop)", false)
-                    if (!tar) break;
+                    if (!tar) break
                     energySwitch(src, tar, card)
                   }
               }
             }
           }
-        };
+        }
       case CLOBBOPUS_91:
         return basic (this, hp:HP070, type:F, retreatCost:2) {
           weakness PSYCHIC
@@ -2309,7 +2309,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case GRAPPLOCT_92:
         return evolution (this, from:"Clobbopus", hp:HP140, type:F, retreatCost:3) {
           weakness PSYCHIC
@@ -2332,7 +2332,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case KUBFU_93:
         return basic (this, hp:HP070, type:F, retreatCost:1) {
           weakness PSYCHIC
@@ -2353,7 +2353,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 60
             }
           }
-        };
+        }
       case KOFFING_94:
         return basic (this, hp:HP070, type:D, retreatCost:1) {
           weakness FIGHTING
@@ -2366,7 +2366,7 @@ public enum ChillingReign implements LogicCardInfo {
               applyAfterDamage(POISONED)
             }
           }
-        };
+        }
       case WEEZING_95:
         return evolution (this, from:"Koffing", hp:HP130, type:D, retreatCost:2) {
           weakness FIGHTING
@@ -2388,7 +2388,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 20 + 20 * count
             }
           }
-        };
+        }
       case GALARIAN_WEEZING_96:
         return evolution (this, from:"Koffing", hp:HP130, type:D, retreatCost:2) {
           weakness FIGHTING
@@ -2411,7 +2411,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case GALARIAN_MOLTRES_V_97:
         return basic (this, hp:HP220, type:D, retreatCost:2) {
           weakness GRASS
@@ -2436,7 +2436,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 30, self
             }
           }
-        };
+        }
       case GALARIAN_SLOWKING_98:
         return evolution (this, from:"Galarian Slowpoke", hp:HP120, type:D, retreatCost:3) {
           weakness FIGHTING
@@ -2462,7 +2462,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 90
             }
           }
-        };
+        }
       case GALARIAN_SLOWKING_V_99:
         return basic (this, hp:HP220, type:D, retreatCost:3) {
           weakness FIGHTING
@@ -2500,7 +2500,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case GALARIAN_SLOWKING_VMAX_100:
         return evolution (this, from:"Galarian Slowking V", hp:HP320, type:D, retreatCost:3) {
           weakness FIGHTING
@@ -2514,7 +2514,7 @@ public enum ChillingReign implements LogicCardInfo {
               extraPoison(11)
             }
           }
-        };
+        }
       case QWILFISH_101:
         return basic (this, hp:HP090, type:D, retreatCost:1) {
           weakness FIGHTING
@@ -2544,7 +2544,7 @@ public enum ChillingReign implements LogicCardInfo {
               applyAfterDamage(POISONED)
             }
           }
-        };
+        }
       case SEVIPER_102:
         return basic (this, hp:HP110, type:D, retreatCost:2) {
           weakness FIGHTING
@@ -2576,7 +2576,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SPIRITOMB_103:
         return basic (this, hp:HP070, type:D, retreatCost:1) {
           weakness GRASS
@@ -2604,7 +2604,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case LIEPARD_V_104:
         return basic (this, hp:HP190, type:D, retreatCost:1) {
           weakness GRASS
@@ -2631,7 +2631,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case VENIPEDE_105:
         return basic (this, hp:HP070, type:D, retreatCost:2) {
           weakness FIGHTING
@@ -2644,7 +2644,7 @@ public enum ChillingReign implements LogicCardInfo {
               applyAfterDamage(POISONED)
             }
           }
-        };
+        }
       case WHIRLIPEDE_106:
         return evolution (this, from:"Venipede", hp:HP090, type:D, retreatCost:3) {
           weakness FIGHTING
@@ -2665,7 +2665,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case SCOLIPEDE_107:
         return evolution (this, from:"Whirlipede", hp:HP160, type:D, retreatCost:3) {
           weakness FIGHTING
@@ -2689,7 +2689,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SINGLE_STRIKE_URSHIFU_108:
         return evolution (this, from:"Kubfu", hp:HP140, type:D, retreatCost:2) {
           weakness GRASS
@@ -2717,7 +2717,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ARON_109:
         return basic (this, hp:HP070, type:M, retreatCost:2) {
           weakness FIRE
@@ -2738,7 +2738,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case LAIRON_110:
         return evolution (this, from:"Aron", hp:HP100, type:M, retreatCost:3) {
           weakness FIRE
@@ -2759,7 +2759,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 90
             }
           }
-        };
+        }
       case AGGRON_111:
         return evolution (this, from:"Lairon", hp:HP180, type:M, retreatCost:4) {
           weakness FIRE
@@ -2784,7 +2784,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case METAGROSS_V_112:
         return basic (this, hp:HP220, type:M, retreatCost:3) {
           weakness FIRE
@@ -2809,7 +2809,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case METAGROSS_VMAX_113:
         return evolution (this, from:"Metagross V", hp:HP330, type:M, retreatCost:3) {
           weakness FIRE
@@ -2833,7 +2833,7 @@ public enum ChillingReign implements LogicCardInfo {
               increasedBaseDamageNextTurn thisMove.name, hp(150)
             }
           }
-        };
+        }
       case COBALION_114:
         return basic (this, hp:HP120, type:M, retreatCost:2) {
           weakness FIRE
@@ -2855,7 +2855,7 @@ public enum ChillingReign implements LogicCardInfo {
               cantAttackNextTurn self
             }
           }
-        };
+        }
       case TAUROS_115:
         return basic (this, hp:HP130, type:C, retreatCost:2) {
           weakness FIGHTING
@@ -2877,7 +2877,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 30, self
             }
           }
-        };
+        }
       case PORYGON_116:
         return basic (this, hp:HP060, type:C, retreatCost:2) {
           weakness FIGHTING
@@ -2889,7 +2889,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case PORYGON2_117:
         return evolution (this, from:"Porygon", hp:HP090, type:C, retreatCost:2) {
           weakness FIGHTING
@@ -2901,7 +2901,7 @@ public enum ChillingReign implements LogicCardInfo {
               flip 3, { damage 30 }
             }
           }
-        };
+        }
       case PORYGON_Z_118:
         return evolution (this, from:"Porygon2", hp:HP140, type:C, retreatCost:2) {
           weakness FIGHTING
@@ -2924,7 +2924,7 @@ public enum ChillingReign implements LogicCardInfo {
               discardSelfEnergyAfterDamage(C, C)
             }
           }
-        };
+        }
       case BLISSEY_V_119:
         return basic (this, hp:HP250, type:C, retreatCost:4) {
           weakness FIGHTING
@@ -2954,7 +2954,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ZANGOOSE_120:
         return basic (this, hp:HP110, type:C, retreatCost:2) {
           weakness FIGHTING
@@ -2990,7 +2990,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CASTFORM_121:
         return basic (this, hp:HP070, type:C, retreatCost:0) {
           weakness FIGHTING
@@ -3017,7 +3017,7 @@ public enum ChillingReign implements LogicCardInfo {
               draw 6 - my.hand.size()
             }
           }
-        };
+        }
       case KECLEON_122:
         return basic (this, hp:HP090, type:C, retreatCost:2) {
           weakness FIGHTING
@@ -3041,7 +3041,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 90
             }
           }
-        };
+        }
       case SHAYMIN_123:
         return basic (this, hp:HP070, type:C, retreatCost:1) {
           weakness LIGHTNING
@@ -3066,7 +3066,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case TORNADUS_V_124:
         return basic (this, hp:HP210, type:C, retreatCost:2) {
           weakness LIGHTNING
@@ -3091,7 +3091,7 @@ public enum ChillingReign implements LogicCardInfo {
               discardSelfEnergyAfterDamage()
             }
           }
-        };
+        }
       case TORNADUS_VMAX_125:
         return evolution (this, from:"Tornadus V", hp:HP320, type:C, retreatCost:2) {
           weakness LIGHTNING
@@ -3118,7 +3118,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case FURFROU_126:
         return basic (this, hp:HP090, type:C, retreatCost:1) {
           weakness FIGHTING
@@ -3142,7 +3142,7 @@ public enum ChillingReign implements LogicCardInfo {
               reduceDamageNextTurn(hp(20), thisMove)
             }
           }
-        };
+        }
       case SKWOVET_127:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
           weakness FIGHTING
@@ -3164,7 +3164,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case GREEDENT_128:
         return evolution (this, from:"Skwovet", hp:HP120, type:C, retreatCost:1) {
           weakness FIGHTING
@@ -3182,7 +3182,7 @@ public enum ChillingReign implements LogicCardInfo {
               damage 90
             }
           }
-        };
+        }
       case AGATHA_129:
         return supporter (this) {
           text "Move up to 3 damage counters from your Active Pokémon to your opponent's Active Pokémon. You may play only 1 Supporter card during your turn."
@@ -3196,7 +3196,7 @@ public enum ChillingReign implements LogicCardInfo {
           playRequirement {
             assert my.active.numberOfDamageCounters : "Active Pokémon does not have damage counters"
           }
-        };
+        }
       case AVERY_130:
         return supporter (this) {
           text "Draw 3 cards. If you drew any cards in this way, your opponent discards Pokémon from their Bench until they have 3. You may play only 1 Supporter card during your turn."
@@ -3219,7 +3219,7 @@ public enum ChillingReign implements LogicCardInfo {
           playRequirement {
             assert (my.deck || opp.bench.size() > 3) : "No cards in deck or opponent's bench is not more than 3"
           }
-        };
+        }
       case BRAWLY_131:
         return supporter (this) {
           text "Search your deck for up to 3 Rapid Strike Basic Pokémon and put them on your Bench. Then, shuffle your deck. You may play only 1 Supporter card during your turn."
@@ -3236,7 +3236,7 @@ public enum ChillingReign implements LogicCardInfo {
             assert my.deck : "No cards in deck"
             assert my.bench.notFull : "No space on bench"
           }
-        };
+        }
       case CAITLIN_132:
         return supporter (this) {
           text "Put any number of cards from your hand on the bottom of your deck in any order. Then, draw that many cards."
@@ -3250,7 +3250,7 @@ public enum ChillingReign implements LogicCardInfo {
           playRequirement {
             assert hand.getExcludedList(thisCard).size() >= 1 : "Not enough cards in hand to use"
           }
-        };
+        }
       case CRUSHING_GLOVES_133:
         return pokemonTool (this) {
           text "The Pokémon this card is attached to does 30 more damage to your opponent's Active [M] Pokémon."
@@ -3271,7 +3271,7 @@ public enum ChillingReign implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case DOCTOR_134:
         return supporter (this) {
           text "Draw 2 cards. If your opponent's Active Pokémon is a Pokémon VMAX, draw 2 more cards. You may play only 1 Supporter card during your turn."
@@ -3284,7 +3284,7 @@ public enum ChillingReign implements LogicCardInfo {
           playRequirement {
             assert my.deck : "Deck is empty"
           }
-        };
+        }
       case DYNA_TREE_HILL_135:
         return stadium (this) {
           text "Pokémon in play (both yours and your opponent's) can't be healed. Note Pokémon uses the word recover when referring to Special Conditions, so although Pokémon in play can't have their HP healed, they can still recover from Special Conditions."
@@ -3300,7 +3300,7 @@ public enum ChillingReign implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case ECHOING_HORN_136:
         return itemCard (this) {
           text "Put a Basic Pokémon from your opponent's discard pile onto their Bench. You may play any number of Item cards during your turn."
@@ -3311,7 +3311,7 @@ public enum ChillingReign implements LogicCardInfo {
           playRequirement {
             assert opp.bench.notFull && opp.discard.filterByType(BASIC) : "Opponent's discard Pile has no Basic Pokémon or their bench is full"
           }
-        };
+        }
       case EXPEDITION_UNIFORM_137:
         return itemCard (this) {
           text "Look at the bottom 3 cards from your deck and place them on top of your deck in any order. You may play any number of Item cards during your turn."
@@ -3330,7 +3330,7 @@ public enum ChillingReign implements LogicCardInfo {
           playRequirement {
             assert my.deck : "Deck is empty"
           }
-        };
+        }
       case FIRE_RESISTANT_GLOVES_138:
         return pokemonTool (this) {
           text "When the Pokémon this card is attached to attacks, damage done to your opponent's Active [R] Pokémon is increased by 30. You may play any number of Item cards during your turn."
@@ -3352,7 +3352,7 @@ public enum ChillingReign implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case FLANNERY_139:
         return supporter (this) {
           text "Choose a Special Energy card attached to 1 of your opponent's Pokémon, and any Stadium card in play, and discard them. You may play only 1 Supporter card during your turn."
@@ -3372,7 +3372,7 @@ public enum ChillingReign implements LogicCardInfo {
           playRequirement {
             assert bg.stadiumInfoStruct || opp.all.any { it.cards.filterByType(SPECIAL_ENERGY) } : "No Stadium in play or Special Energy attached"
           }
-        };
+        }
       case FOG_CRYSTAL_140:
         return itemCard (this) {
           text "Search your deck for either a Basic [P] Pokémon or [P] Energy, reveal it, and put it into your hand. Then, shuffle your deck. You may play as many Item cards as you like during your turn."
@@ -3385,7 +3385,7 @@ public enum ChillingReign implements LogicCardInfo {
           playRequirement {
             assert my.deck : "Deck is empty"
           }
-        };
+        }
       case GALARIAN_CHESTPLATE_141:
         return pokemonTool (this) {
           text "If the Pokémon this card is attached to has 'Galarian' in its name, it takes 30 less damage from attacks from your opponent’s Pokémon (after applying Weakness and Resistance)."
@@ -3405,7 +3405,7 @@ public enum ChillingReign implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case HONEY_142:
         return supporter (this) {
           text "Draw a card for each of your opponent’s Benched Pokémon V."
@@ -3416,7 +3416,7 @@ public enum ChillingReign implements LogicCardInfo {
           playRequirement {
             assert opp.bench.any { it.pokemonV } : "No Pokémon V on your opponent's bench"
           }
-        };
+        }
       case JUSTIFIED_GLOVES_143:
         return pokemonTool (this) {
           text "When the Pokémon this card is attached to attacks, damage done to your opponent's Active [D] Pokémon is increased by 30. You may play any number of Item cards during your turn."
@@ -3438,7 +3438,7 @@ public enum ChillingReign implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case KAREN_S_CONVICTION_144:
         return supporter (this) {
           text "During this turn, your Single Strike Pokémon's attacks do 20 more damage to your opponent's Active Pokémon for each Prize Card your opponent has already taken. You may play only 1 Supporter card during your turn."
@@ -3456,7 +3456,7 @@ public enum ChillingReign implements LogicCardInfo {
               unregisterAfter 1
             }
           }
-        };
+        }
       case KLARA_145:
         return supporter (this) {
           text "Choose up to 2 Pokémon and up to 2 Basic Energy from your discard pile, show them to your opponent, and put them into your hand. You may play only 1 Supporter card during your turn."
@@ -3472,7 +3472,7 @@ public enum ChillingReign implements LogicCardInfo {
           playRequirement {
             assert my.discard.filterByType(BASIC_ENERGY) || my.discard.filterByType(POKEMON) : "No Basic Energies or Pokémon in discard"
           }
-        };
+        }
       case MELONY_146:
         return supporter (this) {
           text "Attach a [W] Energy from your discard pile to 1 of your Pokémon V. Then, draw 3 cards. You may play only 1 Supporter card during your turn."
@@ -3486,7 +3486,7 @@ public enum ChillingReign implements LogicCardInfo {
             assert my.all.any { it.pokemonV } : "No Pokémon V available"
             assert my.discard.filterByType(ENERGY).filterByEnergyType(W) : "No [W] energies in discard"
           }
-        };
+        }
       case OLD_CEMETERY_147:
         return stadium (this) {
           text "Whenever a player attaches an Energy from their hand to 1 of their Pokémon (excluding [P] Pokémon), put 2 damage counters on that Pokémon. This Stadium stays in play when you play it. Discard it if another Stadium comes into play. If a Stadium with the same name is in play, you can't play this card."
@@ -3505,7 +3505,7 @@ public enum ChillingReign implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case PATH_TO_THE_PEAK_148:
         return stadium (this) {
           text "Each player's Pokémon in play with a Rule Box has no Abilities. This Stadium stays in play when you play it. Discard it if another Stadium comes into play. If a Stadium with the same name is in play, you can't play this card."
@@ -3530,7 +3530,7 @@ public enum ChillingReign implements LogicCardInfo {
             effect2.unregister()
             new CheckAbilities().run(bg)
           }
-        };
+        }
       case PEONIA_149:
         return supporter (this) {
           text "Choose up to 3 of your Prize cards and put them into your hand. Then, place the same number of cards from your hand face-down as Prize cards. You may play only 1 Supporter card during your turn."
@@ -3543,7 +3543,7 @@ public enum ChillingReign implements LogicCardInfo {
             def cards = my.hand.getExcludedList(thisCard).select(count: prizes.size(), "Choose cards to put back as prize cards")
             cards.moveTo(hidden:true, my.prizeCardSet)
           }
-        };
+        }
       case PEONY_150:
         return supporter (this) {
           text "Discard your hand and search your deck for up to 2 Trainer cards, reveal them, and put them into your hand. Then, shuffle your deck. You may play only 1 Supporter card during your turn."
@@ -3559,7 +3559,7 @@ public enum ChillingReign implements LogicCardInfo {
           playRequirement {
             assert my.deck : "Deck is empty"
           }
-        };
+        }
       case RAPID_STRIKE_SCROLL_OF_THE_SKIES_151:
         return pokemonTool (this) {
           text "The Rapid Strike Pokémon this card is attached to can use the attack on this card. (You still need the necessary Energy to use this attack.)" +
@@ -3602,7 +3602,7 @@ public enum ChillingReign implements LogicCardInfo {
               card.moveTo(opponent.hand)
             }
           }
-        };
+        }
       case SIEBOLD_153:
         return supporter (this) {
           text "Choose up to 2 of your Rapid Strike Pokémon in play and heal 60 damage from each of them. You may play only 1 Supporter card during your turn."
@@ -3617,7 +3617,7 @@ public enum ChillingReign implements LogicCardInfo {
           playRequirement {
             assert my.all.find { it.rapidStrike } : "Couldn't find any Rapid Strike Pokémon with damage counters"
           }
-        };
+        }
       case SINGLE_STRIKE_SCROLL_OF_PIERCING_154:
         return pokemonTool (this) {
           text "The Single Strike Pokémon this card is attached to can use the attack on this card. (You still need the necessary Energy to use this attack.) " +
@@ -3651,7 +3651,7 @@ public enum ChillingReign implements LogicCardInfo {
           onRemoveFromPlay {
             newMove.unregister()
           }
-        };
+        }
       case WEEDING_GLOVES_155:
         return pokemonTool (this) {
           text "When the Pokémon this card is attached to attacks, damage done to your opponent's Active [G] Pokémon is increased by 30. You may play any number of Item cards during your turn."
@@ -3673,7 +3673,7 @@ public enum ChillingReign implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case WELCOMING_LANTERN_156:
         return itemCard (this) {
           text "Choose a Single Strike Supporter card from your discard pile and put it into your hand. You may play any number of Item cards during your turn."
@@ -3683,7 +3683,7 @@ public enum ChillingReign implements LogicCardInfo {
           playRequirement {
             assert my.discard.any { it.cardTypes.is(SINGLE_STRIKE) && it.cardTypes.is(SUPPORTER) } : "No Single Strike Supporter cards in discard"
           }
-        };
+        }
       case IMPACT_ENERGY_157:
         return specialEnergy (this, [[C]]) {
           text "This card can only be attached to a Single Strike Pokémon. If this card is attached to anything other than a Single Strike Pokémon, discard this card. As long as this card is attached to a Pokémon, this card provides every type of Energy but provides only 1 Energy at a time. If this Pokémon is Poisoned, it is no longer Poisoned and cannot be Poisoned."
@@ -3721,7 +3721,7 @@ public enum ChillingReign implements LogicCardInfo {
           allowAttach { to ->
             to.topPokemonCard.cardTypes.is(SINGLE_STRIKE)
           }
-        };
+        }
       case LUCKY_ENERGY_158:
         return specialEnergy (this, [[C]]) {
           text "This card provides 1 [C] Energy while attached to a Pokémon. If the Pokémon this card is attached to is your Active Pokémon and is damaged by an opponent's attack, draw 1 card."
@@ -3741,7 +3741,7 @@ public enum ChillingReign implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case SPIRAL_ENERGY_159:
         return specialEnergy (this, [[]]) {
           text "This card can only be attached to a Rapid Strike Pokémon. If this card is attached to anything other than a Rapid Strike Pokémon, discard this card. As long as this card is attached to a Pokémon, this card provides every type of Energy but provides only 1 Energy at a time. If this Pokémon is Paralyzed, it is no longer Paralyzed and cannot be Paralyzed."
@@ -3779,21 +3779,21 @@ public enum ChillingReign implements LogicCardInfo {
           allowAttach { to ->
             to.topPokemonCard.cardTypes.is(RAPID_STRIKE)
           }
-        };
+        }
       case CELEBI_V_160:
-        return copy (CELEBI_V_7, this);
+        return copy (CELEBI_V_7, this)
       case BLAZIKEN_V_161:
-        return copy (BLAZIKEN_V_20, this);
+        return copy (BLAZIKEN_V_20, this)
       case VOLCANION_V_162:
-        return copy (VOLCANION_V_25, this);
+        return copy (VOLCANION_V_25, this)
       case ICE_RIDER_CALYREX_V_163:
-        return copy (ICE_RIDER_CALYREX_V_45, this);
+        return copy (ICE_RIDER_CALYREX_V_45, this)
       case ICE_RIDER_CALYREX_V_164:
-        return copy (ICE_RIDER_CALYREX_V_45, this);
+        return copy (ICE_RIDER_CALYREX_V_45, this)
       case ZERAORA_V_165:
-        return copy (ZERAORA_V_53, this);
+        return copy (ZERAORA_V_53, this)
       case ZERAORA_V_166:
-        return copy (ZERAORA_V_53, this);
+        return copy (ZERAORA_V_53, this)
       case GALARIAN_RAPIDASH_V_167:
         return basic (this, hp:HP210, type:P, retreatCost:1) {
           weakness DARKNESS
@@ -3822,141 +3822,141 @@ public enum ChillingReign implements LogicCardInfo {
               directDamage dmg, target
             }
           }
-        };
+        }
       case GALARIAN_RAPIDASH_V_168:
-        return copy (GALARIAN_RAPIDASH_V_167, this);
+        return copy (GALARIAN_RAPIDASH_V_167, this)
       case GALARIAN_ARTICUNO_V_169:
-        return copy (GALARIAN_ARTICUNO_V_58, this);
+        return copy (GALARIAN_ARTICUNO_V_58, this)
       case GALARIAN_ARTICUNO_V_170:
-        return copy (GALARIAN_ARTICUNO_V_58, this);
+        return copy (GALARIAN_ARTICUNO_V_58, this)
       case SHADOW_RIDER_CALYREX_V_171:
-        return copy (SHADOW_RIDER_CALYREX_V_74, this);
+        return copy (SHADOW_RIDER_CALYREX_V_74, this)
       case SHADOW_RIDER_CALYREX_V_172:
-        return copy (SHADOW_RIDER_CALYREX_V_74, this);
+        return copy (SHADOW_RIDER_CALYREX_V_74, this)
       case GALARIAN_ZAPDOS_V_173:
-        return copy (GALARIAN_ZAPDOS_V_80, this);
+        return copy (GALARIAN_ZAPDOS_V_80, this)
       case GALARIAN_ZAPDOS_V_174:
-        return copy (GALARIAN_ZAPDOS_V_80, this);
+        return copy (GALARIAN_ZAPDOS_V_80, this)
       case SANDACONDA_V_175:
-        return copy (SANDACONDA_V_89, this);
+        return copy (SANDACONDA_V_89, this)
       case GALARIAN_MOLTRES_V_176:
-        return copy (GALARIAN_MOLTRES_V_97, this);
+        return copy (GALARIAN_MOLTRES_V_97, this)
       case GALARIAN_MOLTRES_V_177:
-        return copy (GALARIAN_MOLTRES_V_97, this);
+        return copy (GALARIAN_MOLTRES_V_97, this)
       case GALARIAN_SLOWKING_V_178:
-        return copy (GALARIAN_SLOWKING_V_99, this);
+        return copy (GALARIAN_SLOWKING_V_99, this)
       case GALARIAN_SLOWKING_V_179:
-        return copy (GALARIAN_SLOWKING_V_99, this);
+        return copy (GALARIAN_SLOWKING_V_99, this)
       case LIEPARD_V_180:
-        return copy (LIEPARD_V_104, this);
+        return copy (LIEPARD_V_104, this)
       case METAGROSS_V_181:
-        return copy (METAGROSS_V_112, this);
+        return copy (METAGROSS_V_112, this)
       case BLISSEY_V_182:
-        return copy (BLISSEY_V_119, this);
+        return copy (BLISSEY_V_119, this)
       case BLISSEY_V_183:
-        return copy (BLISSEY_V_119, this);
+        return copy (BLISSEY_V_119, this)
       case TORNADUS_V_184:
-        return copy (TORNADUS_V_124, this);
+        return copy (TORNADUS_V_124, this)
       case TORNADUS_V_185:
-        return copy (TORNADUS_V_124, this);
+        return copy (TORNADUS_V_124, this)
       case AGATHA_186:
-        return copy (AGATHA_129, this);
+        return copy (AGATHA_129, this)
       case AVERY_187:
-        return copy (AVERY_130, this);
+        return copy (AVERY_130, this)
       case BRAWLY_188:
-        return copy (BRAWLY_131, this);
+        return copy (BRAWLY_131, this)
       case CAITLIN_189:
-        return copy (CAITLIN_132, this);
+        return copy (CAITLIN_132, this)
       case DOCTOR_190:
-        return copy (DOCTOR_134, this);
+        return copy (DOCTOR_134, this)
       case FLANNERY_191:
-        return copy (FLANNERY_139, this);
+        return copy (FLANNERY_139, this)
       case HONEY_192:
-        return copy (HONEY_142, this);
+        return copy (HONEY_142, this)
       case KAREN_S_CONVICTION_193:
-        return copy (KAREN_S_CONVICTION_144, this);
+        return copy (KAREN_S_CONVICTION_144, this)
       case KLARA_194:
-        return copy (KLARA_145, this);
+        return copy (KLARA_145, this)
       case MELONY_195:
-        return copy (MELONY_146, this);
+        return copy (MELONY_146, this)
       case PEONIA_196:
-        return copy (PEONIA_149, this);
+        return copy (PEONIA_149, this)
       case PEONY_197:
-        return copy (PEONY_150, this);
+        return copy (PEONY_150, this)
       case SIEBOLD_198:
-        return copy (SIEBOLD_153, this);
+        return copy (SIEBOLD_153, this)
       case CELEBI_VMAX_199:
-        return copy (CELEBI_VMAX_8, this);
+        return copy (CELEBI_VMAX_8, this)
       case BLAZIKEN_VMAX_200:
-        return copy (BLAZIKEN_VMAX_21, this);
+        return copy (BLAZIKEN_VMAX_21, this)
       case BLAZIKEN_VMAX_201:
-        return copy (BLAZIKEN_VMAX_21, this);
+        return copy (BLAZIKEN_VMAX_21, this)
       case ICE_RIDER_CALYREX_VMAX_202:
-        return copy (ICE_RIDER_CALYREX_VMAX_46, this);
+        return copy (ICE_RIDER_CALYREX_VMAX_46, this)
       case ICE_RIDER_CALYREX_VMAX_203:
-        return copy (ICE_RIDER_CALYREX_VMAX_46, this);
+        return copy (ICE_RIDER_CALYREX_VMAX_46, this)
       case SHADOW_RIDER_CALYREX_VMAX_204:
-        return copy (SHADOW_RIDER_CALYREX_VMAX_75, this);
+        return copy (SHADOW_RIDER_CALYREX_VMAX_75, this)
       case SHADOW_RIDER_CALYREX_VMAX_205:
-        return copy (SHADOW_RIDER_CALYREX_VMAX_75, this);
+        return copy (SHADOW_RIDER_CALYREX_VMAX_75, this)
       case SANDACONDA_VMAX_206:
-        return copy (SANDACONDA_VMAX_90, this);
+        return copy (SANDACONDA_VMAX_90, this)
       case GALARIAN_SLOWKING_VMAX_207:
-        return copy (GALARIAN_SLOWKING_VMAX_100, this);
+        return copy (GALARIAN_SLOWKING_VMAX_100, this)
       case METAGROSS_VMAX_208:
-        return copy (METAGROSS_VMAX_113, this);
+        return copy (METAGROSS_VMAX_113, this)
       case TORNADUS_VMAX_209:
-        return copy (TORNADUS_VMAX_125, this);
+        return copy (TORNADUS_VMAX_125, this)
       case AGATHA_210:
-        return copy (AGATHA_129, this);
+        return copy (AGATHA_129, this)
       case AVERY_211:
-        return copy (AVERY_130, this);
+        return copy (AVERY_130, this)
       case BRAWLY_212:
-        return copy (BRAWLY_131, this);
+        return copy (BRAWLY_131, this)
       case CAITLIN_213:
-        return copy (CAITLIN_132, this);
+        return copy (CAITLIN_132, this)
       case DOCTOR_214:
-        return copy (DOCTOR_134, this);
+        return copy (DOCTOR_134, this)
       case FLANNERY_215:
-        return copy (FLANNERY_139, this);
+        return copy (FLANNERY_139, this)
       case KAREN_S_CONVICTION_216:
-        return copy (KAREN_S_CONVICTION_144, this);
+        return copy (KAREN_S_CONVICTION_144, this)
       case KLARA_217:
-        return copy (KLARA_145, this);
+        return copy (KLARA_145, this)
       case MELONY_218:
-        return copy (MELONY_146, this);
+        return copy (MELONY_146, this)
       case PEONIA_219:
-        return copy (PEONIA_149, this);
+        return copy (PEONIA_149, this)
       case PEONY_220:
-        return copy (PEONY_150, this);
+        return copy (PEONY_150, this)
       case SIEBOLD_221:
-        return copy (SIEBOLD_153, this);
+        return copy (SIEBOLD_153, this)
       case ELECTRODE_222:
-        return copy (VividVoltage.ELECTRODE_46, this);
+        return copy (VividVoltage.ELECTRODE_46, this)
       case BRONZONG_223:
-        return copy (BattleStyles.BRONZONG_102, this);
+        return copy (BattleStyles.BRONZONG_102, this)
       case SNORLAX_224:
-        return copy (AmazingVoltTackle.SNORLAX_84, this);
+        return copy (AmazingVoltTackle.SNORLAX_84, this)
       case ECHOING_HORN_225:
-        return copy (ECHOING_HORN_136, this);
+        return copy (ECHOING_HORN_136, this)
       case FAN_OF_WAVES_226:
-        return copy (BattleStyles.FAN_OF_WAVES_127, this);
+        return copy (BattleStyles.FAN_OF_WAVES_127, this)
       case FOG_CRYSTAL_227:
-        return copy (FOG_CRYSTAL_140, this);
+        return copy (FOG_CRYSTAL_140, this)
       case RUGGED_HELMET_228:
-        return copy (RUGGED_HELMET_152, this);
+        return copy (RUGGED_HELMET_152, this)
       case URN_OF_VITALITY_229:
-        return copy (BattleStyles.URN_OF_VITALITY_139, this);
+        return copy (BattleStyles.URN_OF_VITALITY_139, this)
       case WELCOMING_LANTERN_230:
-        return copy (WELCOMING_LANTERN_156, this);
+        return copy (WELCOMING_LANTERN_156, this)
       case WATER_ENERGY_231:
-        return basicEnergy (this, WATER);
+        return basicEnergy (this, WATER)
       case PSYCHIC_ENERGY_232:
-        return basicEnergy (this, PSYCHIC);
+        return basicEnergy (this, PSYCHIC)
       case FIGHTING_ENERGY_233:
-        return basicEnergy (this, FIGHTING);
+        return basicEnergy (this, FIGHTING)
       default:
-        return null;
+        return null
     }
   }
 }

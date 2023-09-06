@@ -1,41 +1,41 @@
 package tcgwars.logic.impl.gen4
 
-import tcgwars.logic.effect.gm.ActivateSimpleTrainer;
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer
 import tcgwars.logic.impl.gen2.Expedition
-import tcgwars.logic.impl.gen3.DragonFrontiers;
-import tcgwars.logic.impl.gen8.SwordShield;
+import tcgwars.logic.impl.gen3.DragonFrontiers
+import tcgwars.logic.impl.gen8.SwordShield
 
-import tcgwars.logic.effect.gm.PlayTrainer;
+import tcgwars.logic.effect.gm.PlayTrainer
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
 
-import java.util.*;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -155,53 +155,53 @@ public enum Arceus implements LogicCardInfo {
   ARCEUS_AR8 ("Arceus", "AR8", Rarity.HOLORARE, [BASIC, POKEMON, _FIGHTING_]),
   ARCEUS_AR9 ("Arceus", "AR9", Rarity.HOLORARE, [BASIC, POKEMON, _METAL_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   Arceus(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.ARCEUS;
+    return tcgwars.logic.card.Collection.ARCEUS
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -239,7 +239,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FROSLASS_2:
         return evolution (this, from:"Snorunt", hp:HP080, type:WATER, retreatCost:1) {
           weakness M, PLUS20
@@ -264,7 +264,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HEATRAN_3:
         return basic (this, hp:HP100, type:FIRE, retreatCost:3) {
           weakness W
@@ -291,7 +291,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KABUTOPS_4:
         return evolution (this, from:"Kabuto", hp:HP130, type:FIGHTING, retreatCost:2) {
           weakness G, PLUS30
@@ -322,7 +322,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUXRAY_5:
         return evolution (this, from:"Luxio", hp:HP120, type:LIGHTNING, retreatCost:0) {
           weakness F, PLUS30
@@ -349,7 +349,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MOTHIM_6:
         return evolution (this, from:["Burmy","Burmy Plant Cloak","Burmy Sandy Cloak","Burmy Trash Cloak"], hp:HP090, type:GRASS, retreatCost:0) {
           weakness R, PLUS20
@@ -376,7 +376,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PROBOPASS_7:
         return evolution (this, from:"Nosepass", hp:HP100, type:METAL, retreatCost:3) {
           weakness R, PLUS20
@@ -415,7 +415,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SALAMENCE_8:
         return evolution (this, from:"Shelgon", hp:HP140, type:COLORLESS, retreatCost:2) {
           weakness C, PLUS30
@@ -453,7 +453,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SWALOT_9:
         return evolution (this, from:"Gulpin", hp:HP100, type:PSYCHIC, retreatCost:3) {
           weakness P, PLUS20
@@ -479,7 +479,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TANGROWTH_10:
         return evolution (this, from:"Tangela", hp:HP110, type:GRASS, retreatCost:3) {
           weakness R, PLUS30
@@ -503,7 +503,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TOXICROAK_11:
         return evolution (this, from:"Croagunk", hp:HP090, type:FIGHTING, retreatCost:1) {
           weakness P, PLUS20
@@ -529,7 +529,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ZAPDOS_G_12:
         return basic (this, hp:HP090, type:LIGHTNING, retreatCost:2) {
           weakness L
@@ -558,7 +558,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AERODACTYL_13:
         return evolution (this, from:"Old Amber", hp:HP080, type:FIGHTING, retreatCost:1) {
           weakness L, PLUS20
@@ -585,7 +585,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BRONZONG_14:
         return evolution (this, from:"Bronzor", hp:HP090, type:METAL, retreatCost:3) {
           weakness R, PLUS20
@@ -622,7 +622,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHERRIM_15:
         return evolution (this, from:"Cherubi", hp:HP080, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
@@ -653,7 +653,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GENGAR_16:
         return evolution (this, from:"Haunter", hp:HP110, type:PSYCHIC, retreatCost:0) {
           weakness D, PLUS30
@@ -686,7 +686,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GENGAR_17:
         return evolution (this, from:"Haunter", hp:HP120, type:PSYCHIC, retreatCost:0) {
           weakness D, PLUS30
@@ -707,7 +707,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GLALIE_18:
         return evolution (this, from:"Snorunt", hp:HP090, type:WATER, retreatCost:1) {
           weakness M, PLUS20
@@ -738,7 +738,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOLEM_19:
         return evolution (this, from:"Graveler", hp:HP140, type:FIGHTING, retreatCost:4) {
           weakness G, PLUS30
@@ -774,7 +774,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HARIYAMA_20:
         return evolution (this, from:"Makuhita", hp:HP110, type:FIGHTING, retreatCost:4) {
           weakness P, PLUS30
@@ -797,7 +797,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LOPUNNY_21:
         return evolution (this, from:"Buneary", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS20
@@ -825,7 +825,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MANECTRIC_22:
         return evolution (this, from:"Electrike", hp:HP090, type:LIGHTNING, retreatCost:0) {
           weakness F, PLUS20
@@ -845,7 +845,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case OMASTAR_23:
         return evolution (this, from:"Omanyte", hp:HP120, type:WATER, retreatCost:1) {
           weakness G, PLUS30
@@ -869,7 +869,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PELIPPER_24:
         return evolution (this, from:"Wingull", hp:HP090, type:WATER, retreatCost:2) {
           weakness L, PLUS20
@@ -893,7 +893,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PICHU_25:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -923,7 +923,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PORYGON_Z_G_26:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness F
@@ -948,7 +948,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAICHU_27:
         return evolution (this, from:"Pikachu", hp:HP090, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS20
@@ -974,7 +974,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAPIDASH_28:
         return evolution (this, from:"Ponyta", hp:HP080, type:FIRE, retreatCost:0) {
           weakness W, PLUS20
@@ -1021,7 +1021,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RATICATE_29:
         return evolution (this, from:"Rattata", hp:HP070, type:COLORLESS, retreatCost:0) {
           weakness F, PLUS20
@@ -1050,7 +1050,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SCEPTILE_30:
         return evolution (this, from:"Grovyle", hp:HP120, type:GRASS, retreatCost:2) {
           weakness R, PLUS30
@@ -1084,7 +1084,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SCEPTILE_31:
         return evolution (this, from:"Grovyle", hp:HP130, type:GRASS, retreatCost:1) {
           weakness R, PLUS30
@@ -1111,7 +1111,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SPIRITOMB_32:
         return basic (this, hp:HP060, type:DARKNESS, retreatCost:1) {
           resistance C, MINUS20
@@ -1146,7 +1146,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BRONZONG_33:
         return evolution (this, from:"Bronzor", hp:HP090, type:METAL, retreatCost:3) {
           weakness R, PLUS20
@@ -1171,7 +1171,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BRONZOR_34:
         return basic (this, hp:HP050, type:METAL, retreatCost:2) {
           weakness R, PLUS10
@@ -1194,7 +1194,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHARMELEON_35:
         return evolution (this, from:"Charmander", hp:HP080, type:FIRE, retreatCost:1) {
           weakness W, PLUS20
@@ -1215,7 +1215,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GASTLY_36:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness D, PLUS10
@@ -1241,7 +1241,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GRAVELER_37:
         return evolution (this, from:"Geodude", hp:HP090, type:FIGHTING, retreatCost:3) {
           weakness G, PLUS20
@@ -1262,7 +1262,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GROVYLE_38:
         return evolution (this, from:"Treecko", hp:HP080, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
@@ -1284,7 +1284,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GROVYLE_39:
         return evolution (this, from:"Treecko", hp:HP080, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
@@ -1307,7 +1307,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GULPIN_40:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:2) {
           weakness P, PLUS10
@@ -1339,7 +1339,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HAUNTER_41:
         return evolution (this, from:"Gastly", hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness D, PLUS20
@@ -1359,7 +1359,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HAUNTER_42:
         return evolution (this, from:"Gastly", hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness D, PLUS20
@@ -1380,7 +1380,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUXIO_43:
         return evolution (this, from:"Shinx", hp:HP080, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS20
@@ -1408,7 +1408,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MANECTRIC_44:
         return evolution (this, from:"Electrike", hp:HP090, type:LIGHTNING, retreatCost:0) {
           weakness F, PLUS20
@@ -1428,7 +1428,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PELIPPER_45:
         return evolution (this, from:"Wingull", hp:HP090, type:WATER, retreatCost:2) {
           weakness L, PLUS20
@@ -1448,7 +1448,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PONYTA_46:
         return basic (this, hp:HP040, type:FIRE, retreatCost:1) {
           weakness W, PLUS10
@@ -1465,7 +1465,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAPIDASH_47:
         return evolution (this, from:"Ponyta", hp:HP090, type:FIRE, retreatCost:0) {
           weakness W, PLUS20
@@ -1485,7 +1485,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHELGON_48:
         return evolution (this, from:"Bagon", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness C, PLUS20
@@ -1509,7 +1509,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WORMADAM_PLANT_CLOAK_49:
         return evolution (this, from:"Burmy Plant Cloak", hp:HP080, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
@@ -1536,7 +1536,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WORMADAM_SANDY_CLOAK_50:
         return evolution (this, from:"Burmy Sandy Cloak", hp:HP090, type:FIGHTING, retreatCost:1) {
           weakness R, PLUS20
@@ -1559,7 +1559,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WORMADAM_TRASH_CLOAK_51:
         return evolution (this, from:"Burmy Trash Cloak", hp:HP090, type:METAL, retreatCost:1) {
           weakness R, PLUS20
@@ -1585,7 +1585,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BAGON_52:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness C, PLUS10
@@ -1607,7 +1607,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BEEDRILL_G_53:
         return basic (this, hp:HP080, type:GRASS, retreatCost:1) {
           weakness R
@@ -1631,7 +1631,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BRONZOR_54:
         return basic (this, hp:HP060, type:METAL, retreatCost:2) {
           weakness R, PLUS10
@@ -1654,7 +1654,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BUNEARY_55:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
@@ -1669,7 +1669,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BURMY_PLANT_CLOAK_56:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -1692,7 +1692,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BURMY_SANDY_CLOAK_57:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -1715,7 +1715,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BURMY_TRASH_CLOAK_58:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -1738,7 +1738,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHARMANDER_59:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
           weakness W, PLUS10
@@ -1761,7 +1761,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHERUBI_60:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -1781,7 +1781,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CROAGUNK_61:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness P, PLUS10
@@ -1800,7 +1800,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTRIKE_62:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -1823,7 +1823,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTRIKE_63:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -1836,7 +1836,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GASTLY_64:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness D, PLUS10
@@ -1856,7 +1856,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GEODUDE_65:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:2) {
           weakness G, PLUS10
@@ -1871,7 +1871,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GULPIN_66:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -1893,7 +1893,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KABUTO_67:
         return evolution (this, from:"Dome Fossil", hp:HP080, type:FIGHTING, retreatCost:1) {
           weakness G, PLUS20
@@ -1916,7 +1916,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAKUHITA_68:
         return basic (this, hp:HP070, type:FIGHTING, retreatCost:2) {
           weakness P, PLUS10
@@ -1935,7 +1935,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NOSEPASS_69:
         return basic (this, hp:HP070, type:FIGHTING, retreatCost:1) {
           weakness W, PLUS10
@@ -1969,7 +1969,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case OMANYTE_70:
         return evolution (this, from:"Helix Fossil", hp:HP080, type:WATER, retreatCost:1) {
           weakness G, PLUS20
@@ -1994,7 +1994,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIKACHU_71:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -2017,7 +2017,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PONYTA_72:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
           weakness W, PLUS10
@@ -2039,7 +2039,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RATTATA_73:
         return basic (this, hp:HP030, type:COLORLESS, retreatCost:0) {
           weakness F, PLUS10
@@ -2053,7 +2053,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHINX_74:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -2076,7 +2076,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SNORUNT_75:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness M, PLUS10
@@ -2099,7 +2099,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TANGELA_76:
         return basic (this, hp:HP070, type:GRASS, retreatCost:2) {
           weakness R, PLUS10
@@ -2121,7 +2121,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TANGELA_77:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -2147,7 +2147,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TREECKO_78:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -2163,7 +2163,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TREECKO_79:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -2183,7 +2183,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WINGULL_80:
         return basic (this, hp:HP040, type:WATER, retreatCost:1) {
           weakness L, PLUS10
@@ -2204,7 +2204,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WINGULL_81:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness L, PLUS10
@@ -2217,7 +2217,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BEGINNING_DOOR_82:
         return basicTrainer (this) {
           text "Search your deck for Arceus, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
@@ -2228,7 +2228,7 @@ public enum Arceus implements LogicCardInfo {
           playRequirement{
             assert my.deck : "Your deck is emtpy"
           }
-        };
+        }
       case BENCH_SHIELD_83:
         return pokemonTool (this) {
           text "Attach Bench Shield to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nAs long as the Pokémon this card is attached to is on your Bench, prevent all damage done to that Pokémon by attacks (both yours and your opponent’s)."
@@ -2248,9 +2248,9 @@ public enum Arceus implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case BUFFER_PIECE_84:
-        return copy (DragonFrontiers.BUFFER_PIECE_72, this);
+        return copy (DragonFrontiers.BUFFER_PIECE_72, this)
       case DEPARTMENT_STORE_GIRL_85:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for up to 3 Pokémon Tool cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
@@ -2261,9 +2261,9 @@ public enum Arceus implements LogicCardInfo {
           playRequirement{
             assert my.deck : "Your deck is empty"
           }
-        };
+        }
       case ENERGY_RESTORE_86:
-        return copy (Expedition.ENERGY_RESTORE_141, this);
+        return copy (Expedition.ENERGY_RESTORE_141, this)
       case EXPERT_BELT_87:
         return pokemonTool (this) {
           text "Attach Expert Belt to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nThe Pokémon this card is attached to gets +20 HP and that Pokémon’s attacks do 20 more damage to your opponent’s Active Pokémon (before applying Weakness and Resistance). When the Pokémon this card is attached to is Knocked Out, your opponent takes 1 more Prize card."
@@ -2292,13 +2292,13 @@ public enum Arceus implements LogicCardInfo {
             eff2.unregister()
             effPrize.unregister()
           }
-        };
+        }
       case LUCKY_EGG_88:
-        return copy(SwordShield.LUCKY_EGG_167, this);
+        return copy(SwordShield.LUCKY_EGG_167, this)
       case OLD_AMBER_89:
-        return copy(MajesticDawn.OLD_AMBER_84, this);
+        return copy(MajesticDawn.OLD_AMBER_84, this)
       case PROFESSOR_OAK_S_VISIT_90:
-        return copy(SecretWonders.PROFESSOR_OAK_S_VISIT_122, this);
+        return copy(SecretWonders.PROFESSOR_OAK_S_VISIT_122, this)
       case ULTIMATE_ZONE_91:
         return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nDuring each player’s turn, the player may move an Energy card attached to 1 of his or her Benched Pokémon to his or her Active Arceus as often as he or she likes."
@@ -2317,11 +2317,11 @@ public enum Arceus implements LogicCardInfo {
           onRemoveFromPlay{
             actions.each { bg().gm().unregisterAction(it) }
           }
-        };
+        }
       case DOME_FOSSIL_92:
-        return copy(MajesticDawn.DOME_FOSSIL_89, this);
+        return copy(MajesticDawn.DOME_FOSSIL_89, this)
       case HELIX_FOSSIL_93:
-        return copy(MajesticDawn.HELIX_FOSSIL_91, this);
+        return copy(MajesticDawn.HELIX_FOSSIL_91, this)
       case ARCEUS_LV_X_94:
         return levelUp (this, from:"Arceus", hp:HP120, type:COLORLESS, retreatCost:1) {
           pokeBody "Multitype", {
@@ -2336,7 +2336,7 @@ public enum Arceus implements LogicCardInfo {
             metronomeA delegate, { self.owner.pbg.bench.findAll { it.name == "Arceus" } }
           }
           // text "You may have as many of this card in your deck as you like."
-        };
+        }
       case ARCEUS_LV_X_95:
         return levelUp (this, from:"Arceus", hp:HP120, type:COLORLESS, retreatCost:1) {
           pokeBody "Multitype", {
@@ -2357,7 +2357,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
           // text "You may have as many of this card in your deck as you like."
-        };
+        }
       case ARCEUS_LV_X_96:
         return levelUp (this, from:"Arceus", hp:HP120, type:COLORLESS, retreatCost:1) {
           pokeBody "Multitype", {
@@ -2375,7 +2375,7 @@ public enum Arceus implements LogicCardInfo {
               discardSelfEnergyAfterDamage L, P
             }
           }
-        };
+        }
       case GENGAR_LV_X_97:
         return levelUp (this, from:"Gengar", hp:HP140, type:PSYCHIC, retreatCost:0) {
           weakness D
@@ -2409,7 +2409,7 @@ public enum Arceus implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SALAMENCE_LV_X_98:
         return levelUp (this, from:"Salamence", hp:HP160, type:COLORLESS, retreatCost:2) {
           weakness C
@@ -2450,7 +2450,7 @@ public enum Arceus implements LogicCardInfo {
               discardSelfEnergyAfterDamage()
             }
           }
-        };
+        }
       case TANGROWTH_LV_X_99:
         return levelUp (this, from:"Tangrowth", hp:HP130, type:GRASS, retreatCost:3) {
           weakness R
@@ -2481,7 +2481,7 @@ public enum Arceus implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case BAGON_SH10:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness C, PLUS10
@@ -2501,7 +2501,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PONYTA_SH11:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
           weakness W, PLUS10
@@ -2524,7 +2524,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHINX_SH12:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -2548,7 +2548,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARCEUS_AR1:
         return basic (this, hp:HP070, type:DARKNESS, retreatCost:1) {
           weakness F
@@ -2564,7 +2564,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARCEUS_AR2:
         return basic (this, hp:HP090, type:GRASS, retreatCost:2) {
           weakness R
@@ -2582,7 +2582,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARCEUS_AR3:
         return basic (this, hp:HP080, type:FIRE, retreatCost:1) {
           weakness W
@@ -2597,7 +2597,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARCEUS_AR4:
         return basic (this, hp:HP090, type:WATER, retreatCost:2) {
           weakness L
@@ -2609,7 +2609,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARCEUS_AR5:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness F
@@ -2650,7 +2650,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARCEUS_AR6:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness F
@@ -2666,7 +2666,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARCEUS_AR7:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness P
@@ -2679,7 +2679,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARCEUS_AR8:
         return basic (this, hp:HP080, type:FIGHTING, retreatCost:2) {
           weakness W
@@ -2697,7 +2697,7 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARCEUS_AR9:
         return basic (this, hp:HP090, type:METAL, retreatCost:2) {
           weakness R
@@ -2711,9 +2711,9 @@ public enum Arceus implements LogicCardInfo {
             }
           }
 
-        };
+        }
       default:
-        return null;
+        return null
     }
   }
 

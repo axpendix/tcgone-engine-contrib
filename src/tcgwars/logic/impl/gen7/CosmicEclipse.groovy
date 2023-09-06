@@ -5,25 +5,25 @@ import tcgwars.logic.effect.gm.ActivateSimpleTrainer
 import tcgwars.logic.effect.gm.PlayCard
 import tcgwars.logic.effect.gm.PlayStadium
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.*;
+import tcgwars.logic.*
 import tcgwars.logic.card.*
-import tcgwars.logic.effect.*;
+import tcgwars.logic.effect.*
 import tcgwars.logic.effect.ability.*
 import tcgwars.logic.effect.basic.*
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -303,53 +303,53 @@ public enum CosmicEclipse implements LogicCardInfo {
   TAG_CALL_270 ("Tag Call", "270", Rarity.SECRET, [TRAINER, ITEM]),
   DRAW_ENERGY_271 ("Draw Energy", "271", Rarity.SECRET, [ENERGY, SPECIAL_ENERGY]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   CosmicEclipse(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.COSMIC_ECLIPSE;
+    return tcgwars.logic.card.Collection.COSMIC_ECLIPSE
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -394,7 +394,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ODDISH_2:
         return basic (this, hp:HP060, type:G, retreatCost:1) {
           weakness R
@@ -408,7 +408,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               heal 30, my.all.findAll{it.numberOfDamageCounters}.select("Select a Pokémon to heal.")
             }
           }
-        };
+        }
       case GLOOM_3:
         return evolution (this, from:"Oddish", hp:HP080, type:G, retreatCost:2) {
           weakness R
@@ -420,7 +420,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               apply ASLEEP
             }
           }
-        };
+        }
       case VILEPLUME_GX_4:
         return evolution (this, from:"Gloom", hp:HP240, type:G, retreatCost:2) {
           weakness R
@@ -455,7 +455,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               apply POISONED
             }
           }
-        };
+        }
       case TANGELA_5:
         return basic (this, hp:HP070, type:G, retreatCost:2) {
           weakness R
@@ -467,7 +467,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               extraPoison 1
             }
           }
-        };
+        }
       case TANGROWTH_6:
         return evolution (this, from:"Tangela", hp:HP140, type:G, retreatCost:3) {
           weakness R
@@ -486,7 +486,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               flip 2, { damage 80 }
             }
           }
-        };
+        }
       case SUNKERN_7:
         return basic (this, hp:HP050, type:G, retreatCost:1) {
           weakness R
@@ -498,7 +498,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               heal 10, self
             }
           }
-        };
+        }
       case SUNFLORA_8:
         return evolution (this, from:"Sunkern", hp:HP090, type:G, retreatCost:1) {
           weakness R
@@ -536,7 +536,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 80
             }
           }
-        };
+        }
       case HERACROSS_9:
         return basic (this, hp:HP130, type:G, retreatCost:3) {
           weakness R
@@ -555,7 +555,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               if(opp.all.find{it.tagTeam}) damage 70
             }
           }
-        };
+        }
       case LILEEP_10:
         return evolution (this, from:"Unidentified Fossil", hp:HP090, type:G, retreatCost:2) {
           weakness R
@@ -573,7 +573,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 60
             }
           }
-        };
+        }
       case CRADILY_11:
         return evolution (this, from:"Lileep", hp:HP150, type:G, retreatCost:3) {
           weakness R
@@ -596,7 +596,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               apply POISONED
             }
           }
-        };
+        }
       case TROPIUS_12:
         return basic (this, hp:HP120, type:G, retreatCost:2) {
           weakness R
@@ -619,7 +619,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               heal 30, self
             }
           }
-        };
+        }
       case KRICKETOT_13:
         return basic (this, hp:HP060, type:G, retreatCost:1) {
           weakness R
@@ -637,7 +637,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case KRICKETUNE_14:
         return evolution (this, from:"Kricketot", hp:HP100, type:G, retreatCost:2) {
           weakness R
@@ -655,7 +655,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DEERLING_15:
         return basic (this, hp:HP060, type:G, retreatCost:1) {
           weakness R
@@ -666,7 +666,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case SAWSBUCK_16:
         return evolution (this, from:"Deerling", hp:HP100, type:G, retreatCost:2) {
           weakness R
@@ -692,7 +692,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ROWLET_17:
         return basic (this, hp:HP050, type:G, retreatCost:1) {
           weakness R
@@ -710,7 +710,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case ROWLET_18:
         return basic (this, hp:HP060, type:G, retreatCost:1) {
           weakness R
@@ -721,7 +721,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 10, opp.all.select("Deal 10 damage to which Pokémon?")
             }
           }
-        };
+        }
       case DARTRIX_19:
         return evolution (this, from:"Rowlet", hp:HP080, type:G, retreatCost:1) {
           weakness R
@@ -740,7 +740,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               whirlwind()
             }
           }
-        };
+        }
       case DECIDUEYE_20:
         return evolution (this, from:"Dartrix", hp:HP140, type:G, retreatCost:1) {
           weakness R
@@ -763,7 +763,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case BUZZWOLE_21:
         return basic (this, hp:HP130, type:G, retreatCost:2) {
           weakness R
@@ -789,7 +789,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               heal 30, self
             }
           }
-        };
+        }
       case CHARIZARD_BRAIXEN_GX_22:
         return basic (this, hp:HP270, type:R, retreatCost:3) {
           weakness W
@@ -825,7 +825,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               attachEnergyFrom(basic:true, my.discard, my.all)
             }
           }
-        };
+        }
       case PONYTA_23:
         return basic (this, hp:HP070, type:R, retreatCost:1) {
           weakness W
@@ -847,7 +847,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case RAPIDASH_24:
         return evolution (this, from:"Ponyta", hp:HP100, type:R, retreatCost:0) {
           weakness W
@@ -866,7 +866,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 60
             }
           }
-        };
+        }
       case FLAREON_25:
         return evolution (this, from:"Eevee", hp:HP110, type:R, retreatCost:2) {
           weakness W
@@ -894,7 +894,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               discardSelfEnergy C
             }
           }
-        };
+        }
       case SLUGMA_26:
         return basic (this, hp:HP080, type:R, retreatCost:3) {
           weakness W
@@ -905,7 +905,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               apply BURNED
             }
           }
-        };
+        }
       case MAGCARGO_27:
         return evolution (this, from:"Slugma", hp:HP120, type:R, retreatCost:3) {
           weakness W
@@ -927,7 +927,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               discardSelfEnergy C
             }
           }
-        };
+        }
       case ENTEI_28:
         return basic (this, hp:HP130, type:R, retreatCost:2) {
           weakness W
@@ -946,7 +946,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 100
             }
           }
-        };
+        }
       case TORKOAL_29:
         return basic (this, hp:HP110, type:R, retreatCost:2) {
           weakness W
@@ -971,7 +971,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case VICTINI_30:
         return basic (this, hp:HP070, type:R, retreatCost:1) {
           weakness W
@@ -992,7 +992,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case TEPIG_31:
         return basic (this, hp:HP080, type:R, retreatCost:2) {
           weakness W
@@ -1010,7 +1010,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 40
             }
           }
-        };
+        }
       case PIGNITE_32:
         return evolution (this, from:"Tepig", hp:HP110, type:R, retreatCost:4) {
           weakness W
@@ -1028,7 +1028,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 60
             }
           }
-        };
+        }
       case EMBOAR_33:
         return evolution (this, from:"Pignite", hp:HP170, type:R, retreatCost:4) {
           weakness W
@@ -1056,7 +1056,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 160
             }
           }
-        };
+        }
       case LARVESTA_34:
         return basic (this, hp:HP080, type:R, retreatCost:3) {
           weakness W
@@ -1074,7 +1074,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case VOLCARONA_GX_35:
         return evolution (this, from:"Larvesta", hp:HP210, type:R, retreatCost:3) {
           weakness W
@@ -1111,7 +1111,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LITLEO_36:
         return basic (this, hp:HP070, type:R, retreatCost:2) {
           weakness W
@@ -1129,7 +1129,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case PYROAR_37:
         return evolution (this, from:"Litleo", hp:HP130, type:R, retreatCost:2) {
           weakness W
@@ -1151,7 +1151,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 140
             }
           }
-        };
+        }
       case BLASTOISE_PIPLUP_GX_38:
         return basic (this, hp:HP270, type:W, retreatCost:3) {
           weakness G
@@ -1185,7 +1185,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ALOLAN_VULPIX_39:
         return basic (this, hp:HP060, type:W, retreatCost:1) {
           weakness M
@@ -1208,7 +1208,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case PSYDUCK_40:
         return basic (this, hp:HP060, type:W, retreatCost:1) {
           weakness G
@@ -1228,7 +1228,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               apply CONFUSED, self
             }
           }
-        };
+        }
       case GOLDUCK_41:
         return evolution (this, from:"Psyduck", hp:HP110, type:W, retreatCost:1) {
           weakness G
@@ -1249,7 +1249,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case VAPOREON_42:
         return evolution (this, from:"Eevee", hp:HP110, type:W, retreatCost:2) {
           weakness G
@@ -1294,7 +1294,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SNEASEL_43:
         return basic (this, hp:HP070, type:W, retreatCost:1) {
           weakness M
@@ -1306,7 +1306,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               flip { preventAllEffectsNextTurn() }
             }
           }
-        };
+        }
       case WEAVILE_44:
         return evolution (this, from:"Sneasel", hp:HP090, type:W, retreatCost:0) {
           weakness M
@@ -1328,7 +1328,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 110
             }
           }
-        };
+        }
       case WAILMER_45:
         return basic (this, hp:HP120, type:W, retreatCost:3) {
           weakness G
@@ -1339,7 +1339,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case WAILORD_46:
         return evolution (this, from:"Wailmer", hp:HP200, type:W, retreatCost:4) {
           weakness G
@@ -1357,7 +1357,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 140
             }
           }
-        };
+        }
       case SNORUNT_47:
         return basic (this, hp:HP060, type:W, retreatCost:2) {
           weakness M
@@ -1368,7 +1368,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               flipUntilTails { damage 20 }
             }
           }
-        };
+        }
       case GLALIE_48:
         return evolution (this, from:"Snorunt", hp:HP120, type:W, retreatCost:3) {
           weakness M
@@ -1391,7 +1391,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               cantUseAttack(thisMove, self)
             }
           }
-        };
+        }
       case SPHEAL_49:
         return basic (this, hp:HP060, type:W, retreatCost:2) {
           weakness M
@@ -1409,7 +1409,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case SPHEAL_50:
         return basic (this, hp:HP070, type:W, retreatCost:2) {
           weakness M
@@ -1421,7 +1421,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               flip { apply PARALYZED }
             }
           }
-        };
+        }
       case SEALEO_51:
         return evolution (this, from:"Spheal", hp:HP100, type:W, retreatCost:3) {
           weakness M
@@ -1439,7 +1439,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 90
             }
           }
-        };
+        }
       case WALREIN_52:
         return evolution (this, from:"Sealeo", hp:HP160, type:W, retreatCost:4) {
           weakness M
@@ -1471,7 +1471,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               opp.all.each { damage 10, it }
             }
           }
-        };
+        }
       case KYOGRE_53:
         return basic (this, hp:HP130, type:W, retreatCost:3) {
           weakness G
@@ -1497,7 +1497,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               discardSelfEnergy C
             }
           }
-        };
+        }
       case PIPLUP_54:
         return basic (this, hp:HP060, type:W, retreatCost:1) {
           weakness L
@@ -1511,7 +1511,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case PRINPLUP_55:
         return evolution (this, from:"Piplup", hp:HP080, type:W, retreatCost:2) {
           weakness L
@@ -1530,7 +1530,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               if (opp.bench) damage 100, opp.bench.select()
             }
           }
-        };
+        }
       case EMPOLEON_56:
         return evolution (this, from:"Prinplup", hp:HP160, type:W, retreatCost:2) {
           weakness L
@@ -1564,7 +1564,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               discardAllSelfEnergy()
             }
           }
-        };
+        }
       case PHIONE_57:
         return basic (this, hp:HP070, type:W, retreatCost:1) {
           weakness G
@@ -1589,7 +1589,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case TYMPOLE_58:
         return basic (this, hp:HP060, type:W, retreatCost:1) {
           weakness G
@@ -1600,7 +1600,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               flip 3, { damage 10 }
             }
           }
-        };
+        }
       case DUCKLETT_59:
         return basic (this, hp:HP060, type:W, retreatCost:1) {
           weakness L
@@ -1613,7 +1613,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               flip { damage 30 }
             }
           }
-        };
+        }
       case SWANNA_60:
         return evolution (this, from:"Ducklett", hp:HP110, type:W, retreatCost:1) {
           weakness L
@@ -1636,7 +1636,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               discardSelfEnergy(C)
             }
           }
-        };
+        }
       case BLACK_KYUREM_61:
         return basic (this, hp:HP130, type:W, retreatCost:3) {
           weakness M
@@ -1658,7 +1658,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case WISHIWASHI_62:
         return basic (this, hp:HP180, type:W, retreatCost:3) {
           weakness L
@@ -1683,7 +1683,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 130
             }
           }
-        };
+        }
       case WISHIWASHI_GX_63:
         return basic (this, hp:HP130, type:W, retreatCost:1) {
           weakness L
@@ -1719,7 +1719,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               shuffleDeck()
             }
           }
-        };
+        }
       case DEWPIDER_64:
         return basic (this, hp:HP060, type:W, retreatCost:1) {
           weakness G
@@ -1737,7 +1737,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 40
             }
           }
-        };
+        }
       case ARAQUANID_65:
         return evolution (this, from:"Dewpider", hp:HP100, type:W, retreatCost:2) {
           weakness G
@@ -1768,7 +1768,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case PIKACHU_66:
         return basic (this, hp:HP070, type:L, retreatCost:1) {
           weakness F
@@ -1788,7 +1788,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 10, self
             }
           }
-        };
+        }
       case RAICHU_67:
         return evolution (this, from:"Pikachu", hp:HP120, type:L, retreatCost:2) {
           weakness F
@@ -1807,7 +1807,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               my.all.each{ damage 20*it.cards.energyCount(L) }
             }
           }
-        };
+        }
       case MAGNEMITE_68:
         return basic (this, hp:HP060, type:L, retreatCost:1) {
           weakness F
@@ -1820,7 +1820,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               sandAttack(thisMove)
             }
           }
-        };
+        }
       case MAGNETON_69:
         return evolution (this, from:"Magnemite", hp:HP080, type:L, retreatCost:2) {
           weakness F
@@ -1843,7 +1843,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case JOLTEON_70:
         return evolution (this, from:"Eevee", hp:HP100, type:L, retreatCost:1) {
           weakness F
@@ -1899,7 +1899,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 70
             }
           }
-        };
+        }
       case CHINCHOU_71:
         return basic (this, hp:HP060, type:L, retreatCost:1) {
           weakness F
@@ -1921,7 +1921,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case LANTURN_72:
         return evolution (this, from:"Chinchou", hp:HP110, type:L, retreatCost:2) {
           weakness F
@@ -1944,7 +1944,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case TOGEDEMARU_73:
         return basic (this, hp:HP080, type:L, retreatCost:1) {
           weakness F
@@ -1961,7 +1961,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 20, opp.all.select("Deal 20 damage to which Pokémon?")
             }
           }
-        };
+        }
       case TOGEDEMARU_74:
         return basic (this, hp:HP070, type:L, retreatCost:1) {
           weakness F
@@ -1974,7 +1974,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               flip { apply PARALYZED}
             }
           }
-        };
+        }
       case SOLGALEO_LUNALA_GX_75:
         return basic (this, hp:HP270, type:P, retreatCost:2) {
           weakness P
@@ -2020,7 +2020,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case KOFFING_76:
         return basic (this, hp:HP060, type:P, retreatCost:1) {
           weakness P
@@ -2036,7 +2036,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               apply POISONED
             }
           }
-        };
+        }
       case WEEZING_77:
         return evolution (this, from:"Koffing", hp:HP100, type:P, retreatCost:2) {
           weakness P
@@ -2055,7 +2055,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case NATU_78:
         return basic (this, hp:HP060, type:P, retreatCost:1) {
           weakness L
@@ -2065,7 +2065,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost P
             foresight(4, delegate)
           }
-        };
+        }
       case XATU_79:
         return evolution (this, from:"Natu", hp:HP080, type:P, retreatCost:2) {
           weakness L
@@ -2086,7 +2086,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case RALTS_80:
         return basic (this, hp:HP060, type:P, retreatCost:1) {
           weakness P
@@ -2107,7 +2107,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case KIRLIA_81:
         return evolution (this, from:"Ralts", hp:HP080, type:P, retreatCost:1) {
           weakness P
@@ -2125,7 +2125,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case GALLADE_82:
         return evolution (this, from:"Kirlia", hp:HP160, type:P, retreatCost:2) {
           weakness P
@@ -2143,7 +2143,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               afterDamage { moveEnergy(self, my.bench) }
             }
           }
-        };
+        }
       case DUSKULL_83:
         return basic (this, hp:HP040, type:P, retreatCost:1) {
           weakness D
@@ -2174,7 +2174,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               directDamage 20, opp.all.select("Select a Pokémon to put 2 damage counters on.")
             }
           }
-        };
+        }
       case DUSCLOPS_84:
         return evolution (this, from:"Duskull", hp:HP090, type:P, retreatCost:3) {
           weakness D
@@ -2187,7 +2187,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               amnesia delegate
             }
           }
-        };
+        }
       case DUSKNOIR_85:
         return evolution (this, from:"Dusclops", hp:HP160, type:P, retreatCost:3) {
           weakness D
@@ -2213,7 +2213,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               increasedBaseDamageNextTurn("Psych Up", hp(60))
             }
           }
-        };
+        }
       case ROTOM_86:
         return basic (this, hp:HP070, type:P, retreatCost:1) {
           weakness D
@@ -2241,7 +2241,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               attachEnergyFrom(basic:true, my.discard, my.bench.select())
             }
           }
-        };
+        }
       case WOOBAT_87:
         return basic (this, hp:HP060, type:P, retreatCost:1) {
           weakness L
@@ -2260,7 +2260,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               flip { damage 30 }
             }
           }
-        };
+        }
       case SWOOBAT_88:
         return evolution (this, from:"Woobat", hp:HP090, type:P, retreatCost:1) {
           weakness L
@@ -2279,7 +2279,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 90, opp.all.oppSelect("Opponent used $thisMove. Select a Pokémon to have 90 damage dealt to it.")
             }
           }
-        };
+        }
       case GOLETT_89:
         return basic (this, hp:HP090, type:P, retreatCost:3) {
           weakness D
@@ -2295,7 +2295,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case GOLURK_90:
         return evolution (this, from:"Golett", hp:HP140, type:P, retreatCost:4) {
           weakness D
@@ -2317,7 +2317,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SKRELP_91:
         return basic (this, hp:HP060, type:P, retreatCost:2) {
           weakness P
@@ -2328,7 +2328,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               apply POISONED
             }
           }
-        };
+        }
       case DRAGALGE_92:
         return evolution (this, from:"Skrelp", hp:HP120, type:P, retreatCost:1) {
           weakness P
@@ -2349,7 +2349,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 40
             }
           }
-        };
+        }
       case PHANTUMP_93:
         return basic (this, hp:HP060, type:P, retreatCost:1) {
           weakness D
@@ -2368,7 +2368,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case TREVENANT_94:
         return evolution (this, from:"Phantump", hp:HP120, type:P, retreatCost:2) {
           weakness D
@@ -2390,7 +2390,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               directDamage 40, my.all.select()
             }
           }
-        };
+        }
       case ORICORIO_GX_95:
         return basic (this, hp:HP170, type:P, retreatCost:1) {
           weakness D
@@ -2434,7 +2434,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               switchYourActive()
             }
           }
-        };
+        }
       case MIMIKYU_96:
         return basic (this, hp:HP070, type:P, retreatCost:1) {
           move "Impersonation", {
@@ -2460,7 +2460,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MIMIKYU_97:
         return basic (this, hp:HP070, type:P, retreatCost:1) {
           bwAbility "Shadow Box", {
@@ -2495,7 +2495,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               flip { apply CONFUSED }
             }
           }
-        };
+        }
       case DHELMISE_98:
         return basic (this, hp:HP130, type:P, retreatCost:3) {
           weakness D
@@ -2518,7 +2518,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 100
             }
           }
-        };
+        }
       case COSMOG_99:
         return basic (this, hp:HP050, type:P, retreatCost:1) {
           weakness P
@@ -2527,7 +2527,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             energyCost P
             ascension delegate
           }
-        };
+        }
       case COSMOG_100:
         return basic (this, hp:HP060, type:P, retreatCost:1) {
           weakness P
@@ -2550,7 +2550,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               flip { damage 10 }
             }
           }
-        };
+        }
       case COSMOEM_101:
         return evolution (this, from:"Cosmog", hp:HP090, type:P, retreatCost:3) {
           weakness P
@@ -2561,7 +2561,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               reduceDamageNextTurn(hp(40),thisMove)
             }
           }
-        };
+        }
       case LUNALA_102:
         return evolution (this, from:"Cosmoem", hp:HP160, type:P, retreatCost:2) {
           weakness D
@@ -2587,7 +2587,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 130
             }
           }
-        };
+        }
       case MARSHADOW_103:
         return basic (this, hp:HP060, type:P, retreatCost:1) {
           weakness D
@@ -2609,7 +2609,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case BLACEPHALON_104:
         return basic (this, hp:HP110, type:P, retreatCost:2) {
           weakness D
@@ -2623,7 +2623,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               putDamageCountersOnOpponentsPokemon(maxCountersToPlace)
             }
           }
-        };
+        }
       case ONIX_105:
         return basic (this, hp:HP110, type:F, retreatCost:4) {
           weakness G
@@ -2644,7 +2644,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               flip { damage 100 }
             }
           }
-        };
+        }
       case NOSEPASS_106:
         return basic (this, hp:HP080, type:F, retreatCost:3) {
           weakness G
@@ -2666,7 +2666,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               cantUseAttack(thisMove, self)
             }
           }
-        };
+        }
       case TRAPINCH_107:
         return basic (this, hp:HP050, type:F, retreatCost:1) {
           weakness G
@@ -2688,7 +2688,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case TRAPINCH_108:
         return basic (this, hp:HP060, type:F, retreatCost:1) {
           weakness G
@@ -2702,7 +2702,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case VIBRAVA_109:
         return evolution (this, from:"Trapinch", hp:HP080, type:F, retreatCost:1) {
           weakness G
@@ -2733,7 +2733,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 40
             }
           }
-        };
+        }
       case FLYGON_GX_110:
         return evolution (this, from:"Vibrava", hp:HP240, type:F, retreatCost:2) {
           weakness G
@@ -2772,7 +2772,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               shredDamage 220
             }
           }
-        };
+        }
       case ANORITH_111:
         return evolution (this, from:"Unidentified Fossil", hp:HP090, type:F, retreatCost:1) {
           weakness G
@@ -2790,7 +2790,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 80
             }
           }
-        };
+        }
       case ARMALDO_112:
         return evolution (this, from:"Anorith", hp:HP150, type:F, retreatCost:2) {
           weakness G
@@ -2810,7 +2810,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 100
             }
           }
-        };
+        }
       case GROUDON_113:
         return basic (this, hp:HP130, type:F, retreatCost:3) {
           weakness G
@@ -2832,7 +2832,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               cantUseAttack(thisMove, self)
             }
           }
-        };
+        }
       case DRILBUR_114:
         return basic (this, hp:HP070, type:F, retreatCost:2) {
           weakness G
@@ -2854,7 +2854,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case EXCADRILL_115:
         return evolution (this, from:"Drilbur", hp:HP140, type:F, retreatCost:4) {
           weakness G
@@ -2874,7 +2874,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               if (my.deck) my.deck.subList(0, 4).discard()
             }
           }
-        };
+        }
       case PALPITOAD_116:
         return evolution (this, from:"Tympole", hp:HP090, type:F, retreatCost:2) {
           weakness G
@@ -2890,7 +2890,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SEISMITOAD_117:
         return evolution (this, from:"Palpitoad", hp:HP160, type:F, retreatCost:3) {
           weakness G
@@ -2914,7 +2914,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 80 + 30*count
             }
           }
-        };
+        }
       case THROH_118:
         return basic (this, hp:HP120, type:F, retreatCost:2) {
           weakness P
@@ -2928,7 +2928,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case PANCHAM_119:
         return basic (this, hp:HP070, type:F, retreatCost:2) {
           weakness P
@@ -2939,7 +2939,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case PANGORO_120:
         return evolution (this, from:"Pancham", hp:HP130, type:F, retreatCost:2) {
           weakness P
@@ -2957,7 +2957,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 90
             }
           }
-        };
+        }
       case CRABRAWLER_121:
         return basic (this, hp:HP080, type:F, retreatCost:2) {
           weakness P
@@ -2975,7 +2975,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case CRABOMINABLE_122:
         return evolution (this, from:"Crabrawler", hp:HP140, type:F, retreatCost:4) {
           weakness P
@@ -3000,7 +3000,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               if (self.cards.energyCount(W)) damage 80
             }
           }
-        };
+        }
       case ROCKRUFF_123:
         return basic (this, hp:HP060, type:F, retreatCost:1) {
           weakness G
@@ -3021,7 +3021,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 40
             }
           }
-        };
+        }
       case LYCANROC_124:
         return evolution (this, from:"Rockruff", hp:HP120, type:F, retreatCost:2) {
           weakness G
@@ -3051,7 +3051,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               if (defending.cards.filterByType(SPECIAL_ENERGY)) damage 70
             }
           }
-        };
+        }
       case PASSIMIAN_125:
         return basic (this, hp:HP110, type:F, retreatCost:1) {
           weakness P
@@ -3070,7 +3070,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 70
             }
           }
-        };
+        }
       case SANDYGAST_126:
         return basic (this, hp:HP080, type:F, retreatCost:2) {
           weakness G
@@ -3089,7 +3089,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case PALOSSAND_127:
         return evolution (this, from:"Sandygast", hp:HP140, type:F, retreatCost:4) {
           weakness G
@@ -3109,7 +3109,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               my.bench.each { damage 20, it }
             }
           }
-        };
+        }
       case ALOLAN_MEOWTH_128:
         return basic (this, hp:HP070, type:D, retreatCost:1) {
           weakness F
@@ -3128,7 +3128,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case ALOLAN_PERSIAN_GX_129:
         return evolution (this, from:"Alolan Meowth", hp:HP200, type:D, retreatCost:2) {
           weakness F
@@ -3170,7 +3170,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               swiftDamage(120, opp.all.select())
             }
           }
-        };
+        }
       case ALOLAN_GRIMER_130:
         return basic (this, hp:HP080, type:D, retreatCost:2) {
           weakness F
@@ -3190,7 +3190,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               flip { apply PARALYZED }
             }
           }
-        };
+        }
       case ALOLAN_MUK_131:
         return evolution (this, from:"Alolan Grimer", hp:HP140, type:D, retreatCost:4) {
           weakness F
@@ -3212,7 +3212,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 110
             }
           }
-        };
+        }
       case CARVANHA_132:
         return basic (this, hp:HP050, type:D, retreatCost:1) {
           weakness F
@@ -3225,7 +3225,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               flip { preventAllEffectsNextTurn() }
             }
           }
-        };
+        }
       case ABSOL_133:
         return basic (this, hp:HP100, type:D, retreatCost:1) {
           weakness F
@@ -3254,7 +3254,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               hand.select("Discard a card from your hand.").discard()
             }
           }
-        };
+        }
       case PAWNIARD_134:
         return basic (this, hp:HP060, type:D, retreatCost:1) {
           weakness F
@@ -3281,7 +3281,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case BISHARP_135:
         return evolution (this, from:"Pawniard", hp:HP120, type:D, retreatCost:1) {
           weakness F
@@ -3302,7 +3302,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               cantUseAttack(thisMove, self)
             }
           }
-        };
+        }
       case GUZZLORD_136:
         return basic (this, hp:HP150, type:D, retreatCost:4) {
           weakness F
@@ -3343,7 +3343,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 120
             }
           }
-        };
+        }
       case ALOLAN_SANDSHREW_137:
         return basic (this, hp:HP060, type:M, retreatCost:1) {
           weakness R
@@ -3364,7 +3364,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case ALOLAN_SANDSLASH_138:
         return evolution (this, from:"Alolan Sandshrew", hp:HP120, type:M, retreatCost:1) {
           weakness R
@@ -3384,7 +3384,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               if (self.cards.filterByType(POKEMON_TOOL)) damage 60
             }
           }
-        };
+        }
       case STEELIX_139:
         return evolution (this, from:"Onix", hp:HP170, type:M, retreatCost:4) {
           weakness R
@@ -3410,7 +3410,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               flipUntilTails { damage 100 }
             }
           }
-        };
+        }
       case MAWILE_140:
         return basic (this, hp:HP070, type:M, retreatCost:1) {
           weakness R
@@ -3434,7 +3434,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               cantRetreat defending
             }
           }
-        };
+        }
       case PROBOPASS_141:
         return evolution (this, from:"Nosepass", hp:HP130, type:M, retreatCost:3) {
           weakness R
@@ -3455,7 +3455,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               flip 3, { damage 40 }
             }
           }
-        };
+        }
       case SOLGALEO_142:
         return evolution (this, from:"Cosmoem", hp:HP170, type:M, retreatCost:3) {
           weakness R
@@ -3484,7 +3484,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               discardSelfEnergy(C, C)
             }
           }
-        };
+        }
       case TOGEPI_CLEFFA_IGGLYBUFF_GX_143A:
       case TOGEPI_CLEFFA_IGGLYBUFF_GX_143:
         return basic (this, hp:HP240, type:Y, retreatCost:2) {
@@ -3528,7 +3528,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CLEFAIRY_144:
         return basic (this, hp:HP050, type:Y, retreatCost:1) {
           weakness M
@@ -3567,7 +3567,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ALOLAN_NINETALES_145:
         return evolution (this, from:"Alolan Vulpix", hp:HP110, type:Y, retreatCost:1) {
           weakness M
@@ -3578,7 +3578,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 10*my.discard.filterByType(POKEMON_TOOL).size()
             }
           }
-        };
+        }
       case AZURILL_146:
         return basic (this, hp:HP060, type:Y, retreatCost:0) {
           bwAbility "Growing Up", {
@@ -3594,7 +3594,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               bg.gm().betweenTurns()
             }
           }
-        };
+        }
       case COTTONEE_147:
         return basic (this, hp:HP040, type:Y, retreatCost:1) {
           weakness M
@@ -3606,7 +3606,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 20*my.lostZone.findAll{ it.cardTypes.is(POKEMON) && !it.cardTypes.is(PRISM_STAR) }.size()
             }
           }
-        };
+        }
       case WHIMSICOTT_148:
         return evolution (this, from:"Cottonee", hp:HP070, type:Y, retreatCost:0) {
           weakness M
@@ -3633,7 +3633,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 20*my.lostZone.findAll{ it.cardTypes.is(POKEMON) && !it.cardTypes.is(PRISM_STAR) }.size()
             }
           }
-        };
+        }
       case FLABEBE_149:
         return basic (this, hp:HP030, type:Y, retreatCost:1) {
           weakness M
@@ -3649,7 +3649,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               shuffleDeck()
             }
           }
-        };
+        }
       case FLABEBE_150:
         return basic (this, hp:HP040, type:Y, retreatCost:1) {
           weakness M
@@ -3661,7 +3661,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               opp.all.each { damage 10, it }
             }
           }
-        };
+        }
       case FLOETTE_151:
         return evolution (this, from:"Flabébé", hp:HP070, type:Y, retreatCost:1) {
           weakness M
@@ -3683,7 +3683,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case FLORGES_152:
         return evolution (this, from:"Floette", hp:HP130, type:Y, retreatCost:2) {
           weakness M
@@ -3706,7 +3706,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               apply CONFUSED, self
             }
           }
-        };
+        }
       case SWIRLIX_153:
         return basic (this, hp:HP060, type:Y, retreatCost:1) {
           weakness M
@@ -3719,7 +3719,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               reduceDamageNextTurn(hp(10),thisMove)
             }
           }
-        };
+        }
       case SLURPUFF_154:
         return evolution (this, from:"Swirlix", hp:HP110, type:Y, retreatCost:2) {
           weakness M
@@ -3741,7 +3741,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 110
             }
           }
-        };
+        }
       case SYLVEON_155:
         return evolution (this, from:"Eevee", hp:HP110, type:Y, retreatCost:2) {
           weakness M
@@ -3798,7 +3798,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ARCEUS_DIALGA_PALKIA_GX_156:
         return basic (this, hp:HP280, type:N, retreatCost:3) {
           weakness Y
@@ -3852,7 +3852,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case RESHIRAM_ZEKROM_GX_157:
         return basic (this, hp:HP270, type:N, retreatCost:3) {
           weakness Y
@@ -3894,7 +3894,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case NAGANADEL_GUZZLORD_GX_158:
         return basic (this, hp:HP280, type:N, retreatCost:3) {
           weakness Y
@@ -3932,7 +3932,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DRAMPA_159:
         return basic (this, hp:HP120, type:N, retreatCost:1) {
           weakness Y
@@ -3958,7 +3958,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case JANGMO_O_160:
         return basic (this, hp:HP060, type:N, retreatCost:1) {
           weakness Y
@@ -3969,7 +3969,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 20+10*self.numberOfDamageCounters
             }
           }
-        };
+        }
       case JANGMO_O_161:
         return basic (this, hp:HP070, type:N, retreatCost:2) {
           weakness Y
@@ -3987,7 +3987,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case HAKAMO_O_162:
         return evolution (this, from:"Jangmo-o", hp:HP080, type:N, retreatCost:2) {
           weakness Y
@@ -4009,7 +4009,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case KOMMO_O_163:
         return evolution (this, from:"Hakamo-o", hp:HP160, type:N, retreatCost:2) {
           weakness Y
@@ -4034,7 +4034,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ULTRA_NECROZMA_164:
         return basic (this, hp:HP110, type:N, retreatCost:2) {
           weakness Y
@@ -4057,7 +4057,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               discardDefendingEnergy()
             }
           }
-        };
+        }
       case MEGA_LOPUNNY_JIGGLYPUFF_GX_165:
         return basic (this, hp:HP240, type:C, retreatCost:1) {
           weakness F
@@ -4083,7 +4083,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case EEVEE_166:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
           weakness F
@@ -4104,7 +4104,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case EEVEE_167:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
           weakness F
@@ -4129,7 +4129,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case IGGLYBUFF_168:
         return basic (this, hp:HP060, type:C, retreatCost:0) {
           bwAbility "Sleepy Voice", {
@@ -4143,7 +4143,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               bg.gm().betweenTurns()
             }
           }
-        };
+        }
       case AIPOM_169:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
           weakness F
@@ -4163,7 +4163,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case AMBIPOM_170:
         return evolution (this, from:"Aipom", hp:HP100, type:C, retreatCost:1) {
           weakness F
@@ -4187,7 +4187,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 60 * my.hand.select(max:2).discard().size()
             }
           }
-        };
+        }
       case TEDDIURSA_171:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
           weakness F
@@ -4205,7 +4205,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case URSARING_172:
         return evolution (this, from:"Teddiursa", hp:HP140, type:C, retreatCost:3) {
           weakness F
@@ -4224,7 +4224,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               cantAttackNextTurn defending
             }
           }
-        };
+        }
       case ZANGOOSE_173:
         return basic (this, hp:HP100, type:C, retreatCost:1) {
           weakness F
@@ -4242,7 +4242,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 20+10*defending.numberOfDamageCounters
             }
           }
-        };
+        }
       case LILLIPUP_174:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
           weakness F
@@ -4260,7 +4260,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 40
             }
           }
-        };
+        }
       case HERDIER_175:
         return evolution (this, from:"Lillipup", hp:HP100, type:C, retreatCost:2) {
           weakness F
@@ -4278,7 +4278,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 60
             }
           }
-        };
+        }
       case STOUTLAND_176:
         return evolution (this, from:"Herdier", hp:HP150, type:C, retreatCost:3) {
           weakness F
@@ -4310,7 +4310,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               if (opp.bench) damage 30, opp.bench.select()
             }
           }
-        };
+        }
       case RUFFLET_177:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
           weakness L
@@ -4322,7 +4322,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               flip 3, {damage 10}
             }
           }
-        };
+        }
       case BRAVIARY_178:
         return evolution (this, from:"Rufflet", hp:HP130, type:C, retreatCost:1) {
           weakness L
@@ -4343,7 +4343,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               discardSelfEnergy(C, C)
             }
           }
-        };
+        }
       case HELIOPTILE_179:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
           weakness F
@@ -4361,7 +4361,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case HELIOLISK_180:
         return evolution (this, from:"Helioptile", hp:HP100, type:C, retreatCost:1) {
           weakness F
@@ -4382,7 +4382,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               damage 80
             }
           }
-        };
+        }
       case STUFFUL_181:
         return basic (this, hp:HP080, type:C, retreatCost:2) {
           weakness F
@@ -4394,7 +4394,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               flipUntilTails { damage 30 }
             }
           }
-        };
+        }
       case BEWEAR_182:
         return evolution (this, from:"Stufful", hp:HP120, type:C, retreatCost:2) {
           weakness F
@@ -4413,7 +4413,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               flip { damage 120 }
             }
           }
-        };
+        }
       case TYPE_NULL_183:
         return basic (this, hp:HP110, type:C, retreatCost:2) {
           weakness F
@@ -4425,7 +4425,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               discardSelfEnergy C
             }
           }
-        };
+        }
       case SILVALLY_GX_184:
         return evolution (this, from:"Type: Null", hp:HP210, type:C, retreatCost:2) {
           weakness F
@@ -4461,7 +4461,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case BEASTITE_185:
         return pokemonTool (this) {
           text "The attacks of the Ultra Beast this card is attached to do 10 more damage to your opponent’s Active Pokémon for each Prize card you have taken (before applying Weakness and Resistance)."
@@ -4482,7 +4482,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case BELLELBA_BRYCEN_MAN_186:
         return supporter (this) {
           text "Discard 3 cards from the top of each player’s deck." +
@@ -4512,7 +4512,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           playRequirement {
             assert (my.deck || opp.deck) || (my.bench.size() > 3 || opp.bench.size() > 3) : "You can only play this card if either player has cards left in their deck, or more than 3 Pokémon in their bench"
           }
-        };
+        }
       case CHAOTIC_SWELL_187:
         return stadium (this) {
           text "Whenever either player plays a Stadium card from their hand, discard that Stadium card after discarding this one. (The new Stadium card has no effect.)"
@@ -4535,7 +4535,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               eff.unregister()
             }
           }
-        };
+        }
       case CLAY_188:
         return supporter (this) {
           text "Discard the top 7 cards of your deck. If any of those cards are Item cards, put them into your hand."
@@ -4546,7 +4546,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           playRequirement{
             assert my.deck : "Your deck is empty."
           }
-        };
+        }
       case CYNTHIA_CAITLIN_189:
         return supporter (this) {
           text "Put a Supporter card from your discard pile into your hand. You can't choose Cynthia & Caitlin or a card you discarded with the effect of this card." +
@@ -4575,7 +4575,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             def hand = my.hand.getExcludedList(thisCard).size() >= 1
             assert (hand || my.discard.filterByType(SUPPORTER)) : "Not enough cards in hand and no Supporter cards in discard."
           }
-        };
+        }
       case DRAGONIUM_Z_DRAGON_CLAW_190:
         return pokemonTool (this) {
           text "If the Pokémon this card is attached to has the Dragon Claw attack, it can use the GX attack on this card. (You still need the necessary Energy to use this attack.)" +
@@ -4605,7 +4605,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case ERIKA_191:
         return supporter (this) {
           text "Each player may draw up to 3 cards. You draw first."
@@ -4616,7 +4616,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           playRequirement{
             assert my.deck || opp.deck : "Both players' decks are empty."
           }
-        };
+        }
       case GREAT_CATCHER_192:
         return itemCard (this) {
           text "You can play this card only if you discard 2 other cards from your hand." +
@@ -4636,7 +4636,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             assertOppBench(hasVariants: [POKEMON_GX, POKEMON_EX])
             assert my.hand.getExcludedList(thisCard).size() >= 2 : "Not enough cards in your hand."
           }
-        };
+        }
       case GUZMA_HALA_193:
         return supporter (this) {
           text "Search your deck for a Stadium card, reveal it, and put it into your hand. Then, shuffle your deck." +
@@ -4663,7 +4663,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           playRequirement{
             assert my.deck : "Your deck is empty."
           }
-        };
+        }
       case ISLAND_CHALLENGE_AMULET_194:
         return pokemonTool (this) {
           text "The Pokémon-GX or Pokémon-EX this card is attached to gets -100 HP, and when it is Knocked Out by damage from an opponent’s attack, that player takes 1 fewer Prize card."
@@ -4687,7 +4687,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             eff.unregister()
             effPrize.unregister()
           }
-        };
+        }
       case LANA_S_FISHING_ROD_195:
         return itemCard (this) {
           text "Shuffle a Pokémon and a Pokémon Tool card from your discard pilef into your deck."
@@ -4699,7 +4699,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           playRequirement {
             assert my.discard.filterByType(POKEMON_TOOL, POKEMON) : "No Pokémon or Pokémon Tool cards in your discard."
           }
-        };
+        }
       case LILLIE_S_FULL_FORCE_196:
         return supporter (this) {
           text "Draw 4 cards." +
@@ -4720,7 +4720,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             }
           }
           playRequirement {}
-        };
+        }
       case LILLIE_S_POKE_DOLL_197:
         return itemCard (this) {
           text "Play this card as if it were a 30-HP [C] Basic Pokémon. At any time during your turn (before your attack), if this Pokémon is your Active Pokémon, you may discard all cards from it and put it on the bottom of your deck." +
@@ -4780,7 +4780,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           playRequirement{
             assert bench.notFull
           }
-        };
+        }
       case MALLOW_LANA_198:
         return supporter (this) {
           text "Switch your Active Pokémon with 1 of your Benched Pokémon." +
@@ -4802,7 +4802,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           playRequirement {
             assertMyBench()
           }
-        };
+        }
       case MISTY_LORELEI_199:
         return supporter (this) {
           text "Search your deck for up to 3 [W] Energy cards, reveal them, and put them into your hand. Then, shuffle your deck." +
@@ -4839,7 +4839,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           playRequirement{
             assert ( my.deck || ( my.hand.getExcludedList(thisCard).size() >= 5 && isGxPerformed() ) ) : "You can't do either of this card's effects"
           }
-        };
+        }
       case N_S_RESOLVE_200:
         return supporter (this) {
           text "Discard the top 6 cards of your deck. If any of those cards are basic Energy cards, attach them to 1 of your Benched [N] Pokémon."
@@ -4858,7 +4858,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             assert my.deck : "Your deck is empty."
             assertMyBench(hasType: N)
           }
-        };
+        }
       case PROFESSOR_OAK_S_SETUP_201:
         return supporter (this) {
           text "Search your deck for up to 3 Basic Pokémon of different types and put them onto your Bench. Then, shuffle your deck."
@@ -4882,7 +4882,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             assert my.deck : "Deck is empty"
             assert my.bench.notFull : "Bench is full"
           }
-        };
+        }
       case RED_BLUE_202:
         return supporter (this) {
           text "Search your deck for a Pokémon-GX that evolves from 1 of your Pokémon and put it onto that Pokémon to evolve it. Then, shuffle your deck. (You can't use this card during your first turn or on a Pokémon that was put into play this turn.)" +
@@ -4921,7 +4921,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               { it.turnCount < bg.turnCount && it.lastEvolved < bg.turnCount && bg().gm().hasGxEvolution(it.name) }
             )
           }
-        };
+        }
       case ROLLER_SKATER_203:
         return supporter (this) {
           text "Discard a card from your hand. If you do, draw 2 cards. If you discarded an Energy card in this way, draw 2 more cards."
@@ -4937,7 +4937,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           playRequirement{
             assert my.hand.getExcludedList(thisCard)
           }
-        };
+        }
       case ROSA_204:
         return supporter (this) {
           text "You can play this card only if 1 of your Pokémon was Knocked Out during your opponent's last turn." +
@@ -4961,7 +4961,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             assert bg.turnCount
             assert keyStore("Rosa_KO", thisCard, null) == bg.turnCount - 1: "No Pokémon was Knocked Out during your opponent’s last turn"
           }
-        };
+        }
       case ROXIE_205:
         return supporter (this) {
           text "Discard up to 2 Pokémon that aren't Pokémon-GX or Pokémon-EX from your hand. Draw 3 cards for each card you discarded in this way."
@@ -4986,7 +4986,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           playRequirement{
             assert list() : "You do not have any non-GX/EX Pokémon in your hand."
           }
-        };
+        }
       case TAG_CALL_206:
         return itemCard (this) {
           text "Search your deck for up to 2 TAG TEAM cards, reveal them, and put them into your hand. Then, shuffle your deck."
@@ -4997,9 +4997,9 @@ public enum CosmicEclipse implements LogicCardInfo {
           playRequirement{
             assert my.deck : "Your deck is empty."
           }
-        };
+        }
       case UNIDENTIFIED_FOSSIL_207:
-        return copy (UnifiedMinds.UNIDENTIFIED_FOSSIL_210, this);
+        return copy (UnifiedMinds.UNIDENTIFIED_FOSSIL_210, this)
       case WILL_208:
         return supporter (this) {
           text "The next time you flip any number of coins for the effect of an attack, Ability, or Trainer card this turn, choose heads or tails for the first coin flip."
@@ -5021,7 +5021,7 @@ public enum CosmicEclipse implements LogicCardInfo {
           }
           playRequirement{
           }
-        };
+        }
       case DRAW_ENERGY_209:
         return specialEnergy (this, [[C]]) {
           text "This card provides [C] Energy." +
@@ -5031,133 +5031,133 @@ public enum CosmicEclipse implements LogicCardInfo {
               draw 1
             }
           }
-        };
+        }
       case VENUSAUR_SNIVY_GX_210:
-        return copy (VENUSAUR_SNIVY_GX_1, this);
+        return copy (VENUSAUR_SNIVY_GX_1, this)
       case VILEPLUME_GX_211:
-        return copy (VILEPLUME_GX_4, this);
+        return copy (VILEPLUME_GX_4, this)
       case CHARIZARD_BRAIXEN_GX_212:
-        return copy (CHARIZARD_BRAIXEN_GX_22, this);
+        return copy (CHARIZARD_BRAIXEN_GX_22, this)
       case VOLCARONA_GX_213:
-        return copy (VOLCARONA_GX_35, this);
+        return copy (VOLCARONA_GX_35, this)
       case BLASTOISE_PIPLUP_GX_214:
-        return copy (BLASTOISE_PIPLUP_GX_38, this);
+        return copy (BLASTOISE_PIPLUP_GX_38, this)
       case BLASTOISE_PIPLUP_GX_215:
-        return copy (BLASTOISE_PIPLUP_GX_38, this);
+        return copy (BLASTOISE_PIPLUP_GX_38, this)
       case SOLGALEO_LUNALA_GX_216:
-        return copy (SOLGALEO_LUNALA_GX_75, this);
+        return copy (SOLGALEO_LUNALA_GX_75, this)
       case ORICORIO_GX_217:
-        return copy (ORICORIO_GX_95, this);
+        return copy (ORICORIO_GX_95, this)
       case FLYGON_GX_218:
-        return copy (FLYGON_GX_110, this);
+        return copy (FLYGON_GX_110, this)
       case ALOLAN_PERSIAN_GX_219:
-        return copy (ALOLAN_PERSIAN_GX_129, this);
+        return copy (ALOLAN_PERSIAN_GX_129, this)
       case ARCEUS_DIALGA_PALKIA_GX_220:
-        return copy (ARCEUS_DIALGA_PALKIA_GX_156, this);
+        return copy (ARCEUS_DIALGA_PALKIA_GX_156, this)
       case ARCEUS_DIALGA_PALKIA_GX_221:
-        return copy (ARCEUS_DIALGA_PALKIA_GX_156, this);
+        return copy (ARCEUS_DIALGA_PALKIA_GX_156, this)
       case RESHIRAM_ZEKROM_GX_222:
-        return copy (RESHIRAM_ZEKROM_GX_157, this);
+        return copy (RESHIRAM_ZEKROM_GX_157, this)
       case NAGANADEL_GUZZLORD_GX_223:
-        return copy (NAGANADEL_GUZZLORD_GX_158, this);
+        return copy (NAGANADEL_GUZZLORD_GX_158, this)
       case NAGANADEL_GUZZLORD_GX_224:
-        return copy (NAGANADEL_GUZZLORD_GX_158, this);
+        return copy (NAGANADEL_GUZZLORD_GX_158, this)
       case MEGA_LOPUNNY_JIGGLYPUFF_GX_225:
-        return copy (MEGA_LOPUNNY_JIGGLYPUFF_GX_165, this);
+        return copy (MEGA_LOPUNNY_JIGGLYPUFF_GX_165, this)
       case MEGA_LOPUNNY_JIGGLYPUFF_GX_226:
-        return copy (MEGA_LOPUNNY_JIGGLYPUFF_GX_165, this);
+        return copy (MEGA_LOPUNNY_JIGGLYPUFF_GX_165, this)
       case SILVALLY_GX_227:
-        return copy (SILVALLY_GX_184, this);
+        return copy (SILVALLY_GX_184, this)
       case CYNTHIA_CAITLIN_228:
-        return copy (CYNTHIA_CAITLIN_189, this);
+        return copy (CYNTHIA_CAITLIN_189, this)
       case GUZMA_HALA_229:
-        return copy (GUZMA_HALA_193, this);
+        return copy (GUZMA_HALA_193, this)
       case LILLIE_S_FULL_FORCE_230:
-        return copy (LILLIE_S_FULL_FORCE_196, this);
+        return copy (LILLIE_S_FULL_FORCE_196, this)
       case MALLOW_LANA_231:
-        return copy (MALLOW_LANA_198, this);
+        return copy (MALLOW_LANA_198, this)
       case N_S_RESOLVE_232:
-        return copy (N_S_RESOLVE_200, this);
+        return copy (N_S_RESOLVE_200, this)
       case PROFESSOR_OAK_S_SETUP_233:
-        return copy (PROFESSOR_OAK_S_SETUP_201, this);
+        return copy (PROFESSOR_OAK_S_SETUP_201, this)
       case RED_BLUE_234:
-        return copy (RED_BLUE_202, this);
+        return copy (RED_BLUE_202, this)
       case ROLLER_SKATER_235:
-        return copy (ROLLER_SKATER_203, this);
+        return copy (ROLLER_SKATER_203, this)
       case ROSA_236:
-        return copy (ROSA_204, this);
+        return copy (ROSA_204, this)
       case TORKOAL_237:
-        return copy (TORKOAL_29, this);
+        return copy (TORKOAL_29, this)
       case WEAVILE_238:
-        return copy (WEAVILE_44, this);
+        return copy (WEAVILE_44, this)
       case PIPLUP_239:
-        return copy (PIPLUP_54, this);
+        return copy (PIPLUP_54, this)
       case WISHIWASHI_240:
-        return copy (WISHIWASHI_62, this);
+        return copy (WISHIWASHI_62, this)
       case PIKACHU_241:
-        return copy (PIKACHU_66, this);
+        return copy (PIKACHU_66, this)
       case MAGNEMITE_242:
-        return copy (MAGNEMITE_68, this);
+        return copy (MAGNEMITE_68, this)
       case KOFFING_243:
-        return copy (KOFFING_76, this);
+        return copy (KOFFING_76, this)
       case GALLADE_244:
-        return copy (GALLADE_82, this);
+        return copy (GALLADE_82, this)
       case MIMIKYU_245:
-        return copy (MIMIKYU_96, this);
+        return copy (MIMIKYU_96, this)
       case EXCADRILL_246:
-        return copy (EXCADRILL_115, this);
+        return copy (EXCADRILL_115, this)
       case STEELIX_247:
-        return copy (STEELIX_139, this);
+        return copy (STEELIX_139, this)
       case STOUTLAND_248:
-        return copy (STOUTLAND_176, this);
+        return copy (STOUTLAND_176, this)
       case VENUSAUR_SNIVY_GX_249:
-        return copy (VENUSAUR_SNIVY_GX_1, this);
+        return copy (VENUSAUR_SNIVY_GX_1, this)
       case VILEPLUME_GX_250:
-        return copy (VILEPLUME_GX_211, this);
+        return copy (VILEPLUME_GX_211, this)
       case CHARIZARD_BRAIXEN_GX_251:
-        return copy (CHARIZARD_BRAIXEN_GX_22, this);
+        return copy (CHARIZARD_BRAIXEN_GX_22, this)
       case VOLCARONA_GX_252:
-        return copy (VOLCARONA_GX_35, this);
+        return copy (VOLCARONA_GX_35, this)
       case BLASTOISE_PIPLUP_GX_253:
-        return copy (BLASTOISE_PIPLUP_GX_38, this);
+        return copy (BLASTOISE_PIPLUP_GX_38, this)
       case SOLGALEO_LUNALA_GX_254:
-        return copy (SOLGALEO_LUNALA_GX_75, this);
+        return copy (SOLGALEO_LUNALA_GX_75, this)
       case ORICORIO_GX_255:
-        return copy (ORICORIO_GX_95, this);
+        return copy (ORICORIO_GX_95, this)
       case FLYGON_GX_256:
-        return copy (FLYGON_GX_110, this);
+        return copy (FLYGON_GX_110, this)
       case ALOLAN_PERSIAN_GX_257:
-        return copy (ALOLAN_PERSIAN_GX_129, this);
+        return copy (ALOLAN_PERSIAN_GX_129, this)
       case ARCEUS_DIALGA_PALKIA_GX_258:
-        return copy (ARCEUS_DIALGA_PALKIA_GX_156, this);
+        return copy (ARCEUS_DIALGA_PALKIA_GX_156, this)
       case RESHIRAM_ZEKROM_GX_259:
-        return copy (RESHIRAM_ZEKROM_GX_157, this);
+        return copy (RESHIRAM_ZEKROM_GX_157, this)
       case NAGANADEL_GUZZLORD_GX_260:
-        return copy (NAGANADEL_GUZZLORD_GX_158, this);
+        return copy (NAGANADEL_GUZZLORD_GX_158, this)
       case MEGA_LOPUNNY_JIGGLYPUFF_GX_261:
-        return copy (MEGA_LOPUNNY_JIGGLYPUFF_GX_165, this);
+        return copy (MEGA_LOPUNNY_JIGGLYPUFF_GX_165, this)
       case SILVALLY_GX_262:
-        return copy (SILVALLY_GX_184, this);
+        return copy (SILVALLY_GX_184, this)
       case GIANT_HEARTH_263:
-        return copy (UnifiedMinds.GIANT_HEARTH_197, this);
+        return copy (UnifiedMinds.GIANT_HEARTH_197, this)
       case GREAT_CATCHER_264:
-        return copy (GREAT_CATCHER_192, this);
+        return copy (GREAT_CATCHER_192, this)
       case ISLAND_CHALLENGE_AMULET_265:
-        return copy (ISLAND_CHALLENGE_AMULET_194, this);
+        return copy (ISLAND_CHALLENGE_AMULET_194, this)
       case LANA_S_FISHING_ROD_266:
-        return copy (LANA_S_FISHING_ROD_195, this);
+        return copy (LANA_S_FISHING_ROD_195, this)
       case LILLIE_S_POKE_DOLL_267:
-        return copy (LILLIE_S_POKE_DOLL_197, this);
+        return copy (LILLIE_S_POKE_DOLL_197, this)
       case MARTIAL_ARTS_DOJO_268:
-        return copy (UnbrokenBonds.MARTIAL_ARTS_DOJO_179, this);
+        return copy (UnbrokenBonds.MARTIAL_ARTS_DOJO_179, this)
       case POWER_PLANT_269:
-        return copy (UnbrokenBonds.POWER_PLANT_183, this);
+        return copy (UnbrokenBonds.POWER_PLANT_183, this)
       case TAG_CALL_270:
-        return copy (TAG_CALL_206, this);
+        return copy (TAG_CALL_206, this)
       case DRAW_ENERGY_271:
-        return copy (DRAW_ENERGY_209, this);
+        return copy (DRAW_ENERGY_209, this)
       default:
-        return null;
+        return null
     }
   }
 }

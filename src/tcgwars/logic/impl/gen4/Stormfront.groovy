@@ -3,17 +3,17 @@ package tcgwars.logic.impl.gen4
 import tcgwars.logic.impl.gen2.Aquapolis
 import tcgwars.logic.impl.gen3.UnseenForces
 import tcgwars.logic.impl.gen3.FireRedLeafGreen
-import tcgwars.logic.impl.gen4.GreatEncounters;
-import tcgwars.logic.impl.gen5.BlackWhite;
+import tcgwars.logic.impl.gen4.GreatEncounters
+import tcgwars.logic.impl.gen5.BlackWhite
 
 import tcgwars.logic.effect.gm.PlayTrainer
 import tcgwars.logic.effect.gm.PlayStadium
 import tcgwars.logic.effect.special.SpecialConditionType
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import static tcgwars.logic.effect.EffectType.*
@@ -23,22 +23,22 @@ import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
 
-import java.util.*;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 import tcgwars.logic.effect.ability.Ability.ActivationReason
 import tcgwars.logic.effect.gm.*
@@ -165,53 +165,53 @@ public enum Stormfront implements LogicCardInfo {
   DUSKULL_SH2 ("Duskull", "SH2", Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_]),
   VOLTORB_SH3 ("Voltorb", "SH3", Rarity.HOLORARE, [BASIC, POKEMON, _LIGHTNING_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   Stormfront(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.STORMFRONT;
+    return tcgwars.logic.card.Collection.STORMFRONT
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -272,7 +272,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EMPOLEON_2:
         return evolution (this, from:"Prinplup", hp:HP130, type:METAL, retreatCost:2) {
           weakness L, PLUS30
@@ -313,7 +313,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case INFERNAPE_3:
         return evolution (this, from:"Monferno", hp:HP120, type:FIGHTING, retreatCost:0) {
           weakness P, PLUS30
@@ -368,7 +368,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUMINEON_4:
         return evolution (this, from:"Finneon", hp:HP080, type:WATER, retreatCost:0) {
           weakness L, PLUS20
@@ -408,7 +408,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGNEZONE_5:
         return evolution (this, from:"Magneton", hp:HP120, type:METAL, retreatCost:2) {
           weakness R, PLUS30
@@ -440,7 +440,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGNEZONE_6:
         return evolution (this, from:"Magneton", hp:HP120, type:LIGHTNING, retreatCost:3) {
           weakness F, PLUS30
@@ -471,7 +471,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MISMAGIUS_7:
         return evolution (this, from:"Misdreavus", hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness D, PLUS20
@@ -539,7 +539,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAICHU_8:
         return evolution (this, from:"Pikachu", hp:HP090, type:LIGHTNING, retreatCost:0) {
           weakness F, PLUS20
@@ -581,7 +581,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case REGIGIGAS_9:
         return basic (this, hp:HP100, type:COLORLESS, retreatCost:4) {
           weakness F
@@ -618,7 +618,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SCEPTILE_10:
         return evolution (this, from:"Grovyle", hp:HP110, type:GRASS, retreatCost:1) {
           weakness R, PLUS30
@@ -656,7 +656,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TORTERRA_11:
         return evolution (this, from:"Grotle", hp:HP140, type:FIGHTING, retreatCost:4) {
           weakness W, PLUS30
@@ -700,7 +700,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ABOMASNOW_12:
         return evolution (this, from:"Snover", hp:HP100, type:WATER, retreatCost:3) {
           weakness R, PLUS30
@@ -740,7 +740,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BRONZONG_13:
         return evolution (this, from:"Bronzor", hp:HP090, type:PSYCHIC, retreatCost:3) {
           weakness P, PLUS20
@@ -781,7 +781,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHERRIM_14:
         return evolution (this, from:"Cherubi", hp:HP080, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
@@ -819,7 +819,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DRAPION_15:
         return evolution (this, from:"Skorupi", hp:HP110, type:DARKNESS, retreatCost:3) {
           weakness P, PLUS20
@@ -862,7 +862,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DRIFBLIM_16:
         return evolution (this, from:"Drifloon", hp:HP090, type:PSYCHIC, retreatCost:0) {
           weakness D, PLUS20
@@ -909,7 +909,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DUSKNOIR_17:
         return evolution (this, from:"Dusclops", hp:HP120, type:PSYCHIC, retreatCost:2) {
           weakness D, PLUS30
@@ -940,7 +940,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GENGAR_18:
         return evolution (this, from:"Haunter", hp:HP110, type:PSYCHIC, retreatCost:0) {
           weakness D, PLUS30
@@ -979,7 +979,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GYARADOS_19:
         return evolution (this, from:"Magikarp", hp:HP130, type:WATER, retreatCost:3) {
           weakness L, PLUS30
@@ -1025,7 +1025,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MACHAMP_20:
         return evolution (this, from:"Machoke", hp:HP130, type:FIGHTING, retreatCost:2) {
           weakness P, PLUS30
@@ -1060,7 +1060,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAMOSWINE_21:
         return evolution (this, from:"Piloswine", hp:HP140, type:FIGHTING, retreatCost:5) {
           weakness G, PLUS30
@@ -1096,7 +1096,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAPIDASH_22:
         return evolution (this, from:"Ponyta", hp:HP080, type:FIRE, retreatCost:0) {
           weakness W, PLUS20
@@ -1123,7 +1123,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ROSERADE_23:
         return evolution (this, from:"Roselia", hp:HP090, type:PSYCHIC, retreatCost:1) {
           weakness R, PLUS20
@@ -1162,7 +1162,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SALAMENCE_24:
         return evolution (this, from:"Shelgon", hp:HP140, type:COLORLESS, retreatCost:3) {
           weakness C, PLUS30
@@ -1197,7 +1197,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SCIZOR_25:
         return evolution (this, from:"Scyther", hp:HP100, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
@@ -1239,7 +1239,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SKUNTANK_26:
         return evolution (this, from:"Stunky", hp:HP100, type:DARKNESS, retreatCost:2) {
           weakness F, PLUS20
@@ -1286,7 +1286,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STARAPTOR_27:
         return evolution (this, from:"Staravia", hp:HP120, type:COLORLESS, retreatCost:0) {
           weakness L, PLUS30
@@ -1339,7 +1339,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STEELIX_28:
         return evolution (this, from:"Onix", hp:HP130, type:METAL, retreatCost:4) {
           weakness R, PLUS30
@@ -1364,7 +1364,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TANGROWTH_29:
         return evolution (this, from:"Tangela", hp:HP110, type:GRASS, retreatCost:3) {
           weakness R, PLUS30
@@ -1403,7 +1403,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TYRANITAR_30:
         return evolution (this, from:"Pupitar", hp:HP140, type:DARKNESS, retreatCost:4) {
           weakness F, PLUS30
@@ -1438,7 +1438,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VESPIQUEN_31:
         return evolution (this, from:"Combee", hp:HP100, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
@@ -1479,7 +1479,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BIBAREL_32:
         return evolution (this, from:"Bidoof", hp:HP100, type:WATER, retreatCost:3) {
           weakness F, PLUS30
@@ -1510,7 +1510,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BUDEW_33:
         return basic (this, hp:HP040, type:PSYCHIC, retreatCost:1) {
           weakness R, PLUS10
@@ -1563,7 +1563,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DUSCLOPS_34:
         return evolution (this, from:"Duskull", hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness D, PLUS20
@@ -1592,7 +1592,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DUSCLOPS_35:
         return evolution (this, from:"Duskull", hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness D, PLUS20
@@ -1622,7 +1622,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTRODE_36:
         return evolution (this, from:"Voltorb", hp:HP090, type:LIGHTNING, retreatCost:0) {
           weakness F, PLUS20
@@ -1666,7 +1666,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTRODE_37:
         return evolution (this, from:"Voltorb", hp:HP080, type:LIGHTNING, retreatCost:0) {
           weakness F, PLUS20
@@ -1692,7 +1692,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FARFETCH_D_38:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
           weakness L, PLUS20
@@ -1715,7 +1715,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GROVYLE_39:
         return evolution (this, from:"Treecko", hp:HP080, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
@@ -1738,7 +1738,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HAUNTER_40:
         return evolution (this, from:"Gastly", hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness D, PLUS20
@@ -1762,7 +1762,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MACHOKE_41:
         return evolution (this, from:"Machop", hp:HP080, type:FIGHTING, retreatCost:2) {
           weakness P, PLUS20
@@ -1784,7 +1784,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGNETON_42:
         return evolution (this, from:"Magnemite", hp:HP080, type:METAL, retreatCost:1) {
           weakness R, PLUS20
@@ -1809,7 +1809,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGNETON_43:
         return evolution (this, from:"Magnemite", hp:HP080, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS20
@@ -1836,7 +1836,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MILTANK_44:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS20
@@ -1876,7 +1876,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PICHU_45:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -1905,7 +1905,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PILOSWINE_46:
         return evolution (this, from:"Swinub", hp:HP090, type:FIGHTING, retreatCost:2) {
           weakness G, PLUS20
@@ -1931,7 +1931,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PUPITAR_47:
         return evolution (this, from:"Larvitar", hp:HP080, type:FIGHTING, retreatCost:1) {
           weakness G, PLUS20
@@ -1961,7 +1961,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SABLEYE_48:
         return basic (this, hp:HP060, type:DARKNESS, retreatCost:1) {
           resistance C, MINUS20
@@ -1995,7 +1995,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SCYTHER_49:
         return basic (this, hp:HP060, type:GRASS, retreatCost:0) {
           weakness R, PLUS10
@@ -2017,7 +2017,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHELGON_50:
         return evolution (this, from:"Bagon", hp:HP090, type:COLORLESS, retreatCost:2) {
           weakness C, PLUS20
@@ -2041,7 +2041,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SKARMORY_51:
         return basic (this, hp:HP080, type:METAL, retreatCost:1) {
           weakness L, PLUS20
@@ -2066,7 +2066,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STARAVIA_52:
         return evolution (this, from:"Starly", hp:HP070, type:COLORLESS, retreatCost:0) {
           weakness L, PLUS20
@@ -2089,7 +2089,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BAGON_53:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness C, PLUS10
@@ -2112,7 +2112,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BIDOOF_54:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:2) {
           weakness F, PLUS10
@@ -2135,7 +2135,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BRONZOR_55:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:2) {
           weakness P, PLUS10
@@ -2161,7 +2161,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHERUBI_56:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -2186,7 +2186,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case COMBEE_57:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -2208,7 +2208,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DRIFLOON_58:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness D, PLUS10
@@ -2230,7 +2230,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DUSKULL_59:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness D, PLUS10
@@ -2253,7 +2253,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DUSKULL_60:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness D, PLUS10
@@ -2275,7 +2275,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FINNEON_61:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness L, PLUS10
@@ -2300,7 +2300,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GASTLY_62:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness D, PLUS10
@@ -2329,7 +2329,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LARVITAR_63:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness G, PLUS10
@@ -2354,7 +2354,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MACHOP_64:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness P, PLUS10
@@ -2374,7 +2374,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGIKARP_65:
         return basic (this, hp:HP030, type:WATER, retreatCost:1) {
           weakness L, PLUS10
@@ -2398,7 +2398,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGNEMITE_66:
         return basic (this, hp:HP050, type:METAL, retreatCost:1) {
           weakness R, PLUS10
@@ -2422,7 +2422,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGNEMITE_67:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -2442,7 +2442,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MISDREAVUS_68:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness D, PLUS10
@@ -2466,7 +2466,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ONIX_69:
         return basic (this, hp:HP090, type:FIGHTING, retreatCost:3) {
           weakness G, PLUS20
@@ -2500,7 +2500,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIKACHU_70:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:2) {
           weakness F, PLUS10
@@ -2523,7 +2523,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PONYTA_71:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
           weakness W, PLUS10
@@ -2545,7 +2545,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ROSELIA_72:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness R, PLUS10
@@ -2572,7 +2572,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SKORUPI_73:
         return basic (this, hp:HP060, type:GRASS, retreatCost:2) {
           weakness P, PLUS10
@@ -2597,7 +2597,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SNOVER_74:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness R, PLUS10
@@ -2619,7 +2619,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STARLY_75:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness L, PLUS10
@@ -2641,7 +2641,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case STUNKY_76:
         return basic (this, hp:HP060, type:DARKNESS, retreatCost:1) {
           weakness F, PLUS10
@@ -2664,7 +2664,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SWINUB_77:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness G, PLUS10
@@ -2691,7 +2691,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TANGELA_78:
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -2725,7 +2725,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TREECKO_79:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -2749,7 +2749,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VOLTORB_80:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -2771,7 +2771,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VOLTORB_81:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -2798,7 +2798,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CONDUCTIVE_QUARRY_82:
         return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nOnce during each player’s turn, the player may flip a coin. If heads, that player searches his or her discard pile for a [L] or [M] Energy card, shows it to the opponent, and puts it into his or her hand."
@@ -2818,7 +2818,7 @@ public enum Stormfront implements LogicCardInfo {
           onRemoveFromPlay{
             actions.each { bg().gm().unregisterAction(it) }
           }
-        };
+        }
       case ENERGY_LINK_83:
         return pokemonTool (this) {
           text "Attach Energy Link to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nAs long as Energy Link is attached to a Pokémon, you may move an Energy card attached to that Pokémon to another of your Pokémon that has Energy Link attached to it. You may use this effect as often as you like during your turn."
@@ -2844,11 +2844,11 @@ public enum Stormfront implements LogicCardInfo {
               actions.each { bg().gm().unregisterAction(it) }
             }
           }
-        };
+        }
       case ENERGY_SWITCH_84:
         return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this)
       case GREAT_BALL_85:
-        return copy(FireRedLeafGreen.GREAT_BALL_92, this);
+        return copy(FireRedLeafGreen.GREAT_BALL_92, this)
       case LUXURY_BALL_86:
         return basicTrainer (this) {
           text "Search your deck for a Pokémon (excluding Pokémon LV.X), show it to your opponent, and put it into your hand. Shuffle your deck afterward. If any Luxury Ball is in your discard pile, you can’t play this card."
@@ -2860,7 +2860,7 @@ public enum Stormfront implements LogicCardInfo {
             assert my.deck : "Your deck is empty"
             assert !my.discard.find{it.name == "Luxury Ball"}
           }
-        };
+        }
       case MARLEY_S_REQUEST_87:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your discard pile for 2 different Trainer, Supporter, or Stadium cards, show them to your opponent, and your opponent chooses 1 of them. Put that card into your hand, and discard the other card. (If all Trainer, Supporter, and Stadium cards in your discard pile have the same name, choose 1 of them. Show that card to your opponent and put it into your hand.)"
@@ -2891,7 +2891,7 @@ public enum Stormfront implements LogicCardInfo {
           playRequirement{
             assert my.discard.filterByType(ITEM,SUPPORTER,STADIUM) : "You have no Trainer, Supporter, or Stadium cards in your discard pile"
           }
-        };
+        }
       case POKE_BLOWER_PLUS_88:
         return basicTrainer (this) {
           text "You may play 2 Poké Blower + at the same time. If you play 1 Poké Blower +, flip a coin. If heads, put 1 damage counter on 1 of your opponent’s Pokémon. If you play 2 Poké Blower +, choose 1 of your opponent’s Benched Pokémon and switch it with 1 of your opponent’s Active Pokémon."
@@ -2907,7 +2907,7 @@ public enum Stormfront implements LogicCardInfo {
           }
           playRequirement{
           }
-        };
+        }
       case POKE_DRAWER_PLUS_89:
         return basicTrainer (this) {
           text "You may play 2 Poké Drawer + at the same time. If you play 1 Poké Drawer +, draw a card. If you play 2 Poké Drawer +, search your deck for up to 2 cards, and put them into your hand. Shuffle your deck afterward."
@@ -2923,7 +2923,7 @@ public enum Stormfront implements LogicCardInfo {
           playRequirement{
             assert my.deck : "Your deck is empty"
           }
-        };
+        }
       case POKE_HEALER_PLUS_90:
         return basicTrainer (this) {
           text "You may play 2 Poké Healer + at the same time. If you play 1 Poké Healer +, remove 1 damage counter and a Special Condition from 1 of your Active Pokémon. If you play 2 Poké Healer +, remove 8 damage counters and all Special Conditions from 1 of your Active Pokémon."
@@ -2943,13 +2943,13 @@ public enum Stormfront implements LogicCardInfo {
           playRequirement{
             assert my.active.numberOfDamageCounters || my.active.specialConditions : "$my.active is healthy"
           }
-        };
+        }
       case PREMIER_BALL_91:
-        return copy (GreatEncounters.PREMIER_BALL_101, this);
+        return copy (GreatEncounters.PREMIER_BALL_101, this)
       case POTION_92:
-        return copy (FireRedLeafGreen.POTION_101, this);
+        return copy (FireRedLeafGreen.POTION_101, this)
       case SWITCH_93:
-        return copy(FireRedLeafGreen.SWITCH_102, this);
+        return copy(FireRedLeafGreen.SWITCH_102, this)
       case CYCLONE_ENERGY_94:
         return copy (UnseenForces.CYCLONE_ENERGY_99, this)
       case WARP_ENERGY_95:
@@ -3013,7 +3013,7 @@ public enum Stormfront implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case HEATRAN_LV_X_97:
         return levelUp (this, from:"Heatran", hp:HP120, type:FIRE, retreatCost:4) {
           weakness W
@@ -3083,7 +3083,7 @@ public enum Stormfront implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MACHAMP_LV_X_98:
         return levelUp (this, from:"Machamp", hp:HP150, type:FIGHTING, retreatCost:3) {
           weakness P, PLUS40
@@ -3131,7 +3131,7 @@ public enum Stormfront implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case RAICHU_LV_X_99:
         return levelUp (this, from:"Raichu", hp:HP110, type:LIGHTNING, retreatCost:0) {
           weakness F
@@ -3186,7 +3186,7 @@ public enum Stormfront implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case REGIGIGAS_LV_X_100:
         return levelUp (this, from:"Regigigas", hp:HP150, type:COLORLESS, retreatCost:4) {
           weakness F
@@ -3219,7 +3219,7 @@ public enum Stormfront implements LogicCardInfo {
               cantUseAttack thisMove, self
             }
           }
-        };
+        }
       case CHARMANDER_101:
         return basic (this, hp:HP050, type:FIRE, retreatCost:1) {
           weakness W
@@ -3239,7 +3239,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHARMELEON_102:
         return evolution (this, from:"Charmander", hp:HP080, type:FIRE, retreatCost:1) {
           weakness W
@@ -3259,7 +3259,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHARIZARD_103:
         return evolution (this, from:"Charmeleon", hp:HP120, type:FIRE, retreatCost:3) {
           weakness W
@@ -3285,7 +3285,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DRIFLOON_SH1:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:0) {
           weakness D, PLUS10
@@ -3314,7 +3314,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DUSKULL_SH2:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness D, PLUS10
@@ -3362,7 +3362,7 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VOLTORB_SH3:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -3398,9 +3398,9 @@ public enum Stormfront implements LogicCardInfo {
             }
           }
 
-        };
+        }
       default:
-        return null;
+        return null
     }
   }
 

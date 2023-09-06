@@ -7,26 +7,26 @@ import tcgwars.logic.impl.gen5.NextDestinies
 import tcgwars.logic.impl.gen6.KalosStarterSet
 import tcgwars.logic.impl.gen6.Xy
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
+import tcgwars.logic.*
+import tcgwars.logic.card.*
 import tcgwars.logic.card.energy.*
-import tcgwars.logic.effect.*;
+import tcgwars.logic.effect.*
 import tcgwars.logic.effect.ability.*
 import tcgwars.logic.effect.basic.*
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -252,7 +252,7 @@ public enum SunMoon implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -2714,9 +2714,9 @@ public enum SunMoon implements LogicCardInfo {
       case ENERGY_SWITCH_117:
         return copy(BlackWhite.ENERGY_SWITCH_94, this)
       case EXP__SHARE_118:
-        return copy(NextDestinies.EXP__SHARE_87, this);
+        return copy(NextDestinies.EXP__SHARE_87, this)
       case GREAT_BALL_119:
-        return copy(EmergingPowers.GREAT_BALL_93, this);
+        return copy(EmergingPowers.GREAT_BALL_93, this)
       case HAU_120:
         return supporter (this) {
           text "Draw 3 cards.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -2858,7 +2858,7 @@ public enum SunMoon implements LogicCardInfo {
       case DOUBLE_COLORLESS_ENERGY_136:
         return copy(Xy.DOUBLE_COLORLESS_ENERGY_130, this)
       case RAINBOW_ENERGY_137:
-        return copy(CelestialStorm.RAINBOW_ENERGY_151,this);
+        return copy(CelestialStorm.RAINBOW_ENERGY_151,this)
       case LURANTIS_GX_138:
         return copy (LURANTIS_GX_15, this)
       case LAPRAS_GX_139:

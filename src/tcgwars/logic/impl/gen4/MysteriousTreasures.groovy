@@ -1,38 +1,38 @@
 package tcgwars.logic.impl.gen4
 
-import tcgwars.logic.effect.gm.Attack;
-import tcgwars.logic.impl.gen3.RubySapphire;
-import tcgwars.logic.impl.gen3.FireRedLeafGreen;
+import tcgwars.logic.effect.gm.Attack
+import tcgwars.logic.impl.gen3.RubySapphire
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
 
-import java.util.*;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
+import java.util.*
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
 import tcgwars.logic.effect.special.*
-import tcgwars.logic.exception.NotEnoughEnergyException;
+import tcgwars.logic.exception.NotEnoughEnergyException
 import tcgwars.logic.util.*
 
 /**
@@ -165,53 +165,53 @@ public enum MysteriousTreasures implements LogicCardInfo {
   MAGMORTAR_LV_X_123 ("Magmortar Lv.X", "123", Rarity.HOLORARE, [LVL_X, POKEMON, _FIRE_]),
   TIME_SPACE_DISTORTION_124 ("Time-Space Distortion", "124", Rarity.HOLORARE, [TRAINER, ITEM]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   MysteriousTreasures(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.MYSTERIOUS_TREASURES;
+    return tcgwars.logic.card.Collection.MYSTERIOUS_TREASURES
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -253,7 +253,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ALAKAZAM_2:
         return evolution (this, from:"Kadabra", hp:HP100, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS30
@@ -306,7 +306,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AMBIPOM_3:
         return evolution (this, from:"Aipom", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS20
@@ -337,7 +337,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AZELF_4:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS20
@@ -399,7 +399,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BLISSEY_5:
         return evolution (this, from:"Chansey", hp:HP130, type:COLORLESS, retreatCost:3) {
           weakness F, PLUS30
@@ -433,7 +433,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BRONZONG_6:
         return evolution (this, from:"Bronzor", hp:HP090, type:METAL, retreatCost:3) {
           weakness R, PLUS30
@@ -463,7 +463,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CELEBI_7:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
@@ -489,19 +489,19 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 if (my.bench && confirm("Do you want to move any amount of basic [G] Energy cards from your Pokémon to your other Pokémon in any way you like?"))
                 while (true) {
                   def pl = (my.all.findAll { it.cards.filterByBasicEnergyType(G) })
-                  if (!pl) break;
+                  if (!pl) break
                   def src = pl.select("Source for energy (cancel to stop)", false)
-                  if (!src) break;
+                  if (!src) break
                   def card = src.cards.filterByBasicEnergyType(G).select("Energy to move").first()
 
                   def tar = my.all.findAll { it != src }.select("Target for energy (cancel to stop)", false)
-                  if (!tar) break;
+                  if (!tar) break
                   energySwitch(src, tar, card)
                 }
               }
             }
           }
-        };
+        }
       case FERALIGATR_8:
         return evolution (this, from:"Croconaw", hp:HP130, type:WATER, retreatCost:2) {
           weakness L, PLUS30
@@ -536,7 +536,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GARCHOMP_9:
         return evolution (this, from:"Gabite", hp:HP130, type:COLORLESS, retreatCost:0) {
           weakness C, PLUS30
@@ -565,7 +565,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HONCHKROW_10:
         return evolution (this, from:"Murkrow", hp:HP090, type:DARKNESS, retreatCost:1) {
           weakness L, PLUS20
@@ -596,7 +596,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUMINEON_11:
         return evolution (this, from:"Finneon", hp:HP080, type:WATER, retreatCost:1) {
           weakness L, PLUS20
@@ -621,7 +621,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGMORTAR_12:
         return evolution (this, from:"Magmar", hp:HP100, type:FIRE, retreatCost:3) {
           weakness W, PLUS30
@@ -653,7 +653,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MEGANIUM_13:
         return evolution (this, from:"Bayleef", hp:HP130, type:GRASS, retreatCost:2) {
           weakness R, PLUS30
@@ -679,7 +679,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MESPRIT_14:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS20
@@ -706,7 +706,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAICHU_15:
         return evolution (this, from:"Pikachu", hp:HP090, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS20
@@ -737,7 +737,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TYPHLOSION_16:
         return evolution (this, from:"Quilava", hp:HP110, type:FIRE, retreatCost:2) {
           weakness W, PLUS30
@@ -769,7 +769,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TYRANITAR_17:
         return evolution (this, from:"Pupitar", hp:HP140, type:DARKNESS, retreatCost:4) {
           weakness F, PLUS30
@@ -805,7 +805,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case UXIE_18:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS20
@@ -834,7 +834,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ABOMASNOW_19:
         return evolution (this, from:"Snover", hp:HP100, type:GRASS, retreatCost:3) {
           weakness R, PLUS30
@@ -855,7 +855,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARIADOS_20:
         return evolution (this, from:"Spinarak", hp:HP080, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
@@ -879,7 +879,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BASTIODON_21:
         return evolution (this, from:"Shieldon", hp:HP130, type:METAL, retreatCost:3) {
           weakness R, PLUS40
@@ -922,7 +922,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHIMECHO_22:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS20
@@ -947,7 +947,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CROBAT_23:
         return evolution (this, from:"Golbat", hp:HP100, type:PSYCHIC, retreatCost:0) {
           weakness P, PLUS30
@@ -977,7 +977,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EXEGGUTOR_24:
         return evolution (this, from:"Exeggcute", hp:HP090, type:GRASS, retreatCost:2) {
           weakness R, PLUS20
@@ -1008,7 +1008,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GLALIE_25:
         return evolution (this, from:"Snorunt", hp:HP090, type:WATER, retreatCost:2) {
           weakness M, PLUS20
@@ -1050,7 +1050,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GYARADOS_26:
         return evolution (this, from:"Magikarp", hp:HP120, type:WATER, retreatCost:3) {
           weakness L, PLUS30
@@ -1099,7 +1099,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KRICKETUNE_27:
         return evolution (this, from:"Kricketot", hp:HP080, type:GRASS, retreatCost:2) {
           weakness R, PLUS20
@@ -1121,7 +1121,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MANECTRIC_28:
         return evolution (this, from:"Electrike", hp:HP080, type:LIGHTNING, retreatCost:0) {
           weakness F, PLUS20
@@ -1148,7 +1148,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MANTINE_29:
         return basic (this, hp:HP080, type:WATER, retreatCost:1) {
           weakness L, PLUS20
@@ -1171,7 +1171,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MR_MIME_30:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS20
@@ -1210,7 +1210,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDOQUEEN_31:
         return evolution (this, from:"Nidorina", hp:HP120, type:PSYCHIC, retreatCost:2) {
           weakness P, PLUS30
@@ -1242,7 +1242,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NINETALES_32:
         return evolution (this, from:"Vulpix", hp:HP080, type:FIRE, retreatCost:1) {
           weakness W, PLUS20
@@ -1283,7 +1283,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case RAMPARDOS_33:
         return evolution (this, from:"Cranidos", hp:HP120, type:FIGHTING, retreatCost:1) {
           weakness G, PLUS30
@@ -1306,7 +1306,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SLAKING_34:
         return evolution (this, from:"Vigoroth", hp:HP140, type:COLORLESS, retreatCost:4) {
           weakness F, PLUS30
@@ -1357,7 +1357,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SUDOWOODO_35:
         return basic (this, hp:HP080, type:FIGHTING, retreatCost:1) {
           weakness W
@@ -1388,7 +1388,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TOXICROAK_36:
         return evolution (this, from:"Croagunk", hp:HP090, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS20
@@ -1413,7 +1413,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case UNOWN_I_37:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -1491,7 +1491,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case URSARING_38:
         return evolution (this, from:"Teddiursa", hp:HP100, type:COLORLESS, retreatCost:2) {
           weakness F, PLUS20
@@ -1528,7 +1528,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WALREIN_39:
         return evolution (this, from:"Sealeo", hp:HP130, type:WATER, retreatCost:3) {
           weakness M, PLUS30
@@ -1565,7 +1565,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case WHISCASH_40:
         return evolution (this, from:"Barboach", hp:HP090, type:WATER, retreatCost:3) {
           weakness G, PLUS30
@@ -1592,7 +1592,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BAYLEEF_41:
         return evolution (this, from:"Chikorita", hp:HP080, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
@@ -1617,7 +1617,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHINGLING_42:
         return basic (this, hp:HP040, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -1642,7 +1642,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CRANIDOS_43:
         return evolution (this, from:"Skull Fossil", hp:HP070, type:FIGHTING, retreatCost:1) {
           weakness G, PLUS20
@@ -1664,7 +1664,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CROCONAW_44:
         return evolution (this, from:"Totodile", hp:HP080, type:WATER, retreatCost:2) {
           weakness L, PLUS20
@@ -1690,7 +1690,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DEWGONG_45:
         return evolution (this, from:"Seel", hp:HP090, type:WATER, retreatCost:2) {
           weakness M, PLUS20
@@ -1716,7 +1716,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               afterDamage { apply ASLEEP, self }
             }
           }
-        };
+        }
       case DODRIO_46:
         return evolution (this, from:"Doduo", hp:HP080, type:COLORLESS, retreatCost:0) {
           weakness L, PLUS20
@@ -1741,7 +1741,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DUNSPARCE_47:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
@@ -1763,7 +1763,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GABITE_48:
         return evolution (this, from:"Gible", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness C, PLUS20
@@ -1791,7 +1791,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GIRAFARIG_49:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
           weakness P, PLUS20
@@ -1818,7 +1818,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GOLBAT_50:
         return evolution (this, from:"Zubat", hp:HP070, type:PSYCHIC, retreatCost:0) {
           weakness P, PLUS20
@@ -1835,7 +1835,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GRAVELER_51:
         return evolution (this, from:"Geodude", hp:HP090, type:FIGHTING, retreatCost:3) {
           weakness G, PLUS20
@@ -1864,7 +1864,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case HAPPINY_52:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
@@ -1888,7 +1888,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LAIRON_53:
         return evolution (this, from:"Aron", hp:HP080, type:METAL, retreatCost:3) {
           weakness R, PLUS20
@@ -1917,7 +1917,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGMAR_54:
         return basic (this, hp:HP070, type:FIRE, retreatCost:2) {
           weakness W, PLUS20
@@ -1941,7 +1941,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MASQUERAIN_55:
         return evolution (this, from:"Surskit", hp:HP070, type:GRASS, retreatCost:0) {
           weakness R, PLUS20
@@ -1967,7 +1967,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDORINA_56:
         return evolution (this, from:"Nidoran♀", hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS20
@@ -1990,7 +1990,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case OCTILLERY_57:
         return evolution (this, from:"Remoraid", hp:HP080, type:WATER, retreatCost:1) {
           weakness L, PLUS20
@@ -2017,7 +2017,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PARASECT_58:
         return evolution (this, from:"Paras", hp:HP090, type:GRASS, retreatCost:2) {
           weakness R, PLUS20
@@ -2044,7 +2044,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PUPITAR_59:
         return evolution (this, from:"Larvitar", hp:HP070, type:FIGHTING, retreatCost:0) {
           weakness G, PLUS20
@@ -2070,7 +2070,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case QUILAVA_60:
         return evolution (this, from:"Cyndaquil", hp:HP080, type:FIRE, retreatCost:1) {
           weakness W, PLUS20
@@ -2084,7 +2084,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SANDSLASH_61:
         return evolution (this, from:"Sandshrew", hp:HP090, type:FIGHTING, retreatCost:1) {
           weakness W, PLUS20
@@ -2110,7 +2110,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SEALEO_62:
         return evolution (this, from:"Spheal", hp:HP080, type:WATER, retreatCost:2) {
           weakness M, PLUS20
@@ -2123,7 +2123,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHIELDON_63:
         return evolution (this, from:"Armor Fossil", hp:HP080, type:METAL, retreatCost:2) {
           weakness R, PLUS20
@@ -2147,7 +2147,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TROPIUS_64:
         return basic (this, hp:HP080, type:GRASS, retreatCost:1) {
           weakness R, PLUS20
@@ -2172,7 +2172,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case UNOWN_E_65:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -2228,7 +2228,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case UNOWN_M_66:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -2252,7 +2252,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case UNOWN_T_67:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -2289,7 +2289,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VIGOROTH_68:
         return evolution (this, from:"Slakoth", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS20
@@ -2324,7 +2324,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ABRA_69:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -2352,7 +2352,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case AIPOM_70:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
@@ -2375,7 +2375,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARON_71:
         return basic (this, hp:HP050, type:METAL, retreatCost:2) {
           weakness R, PLUS10
@@ -2390,7 +2390,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BARBOACH_72:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness G, PLUS10
@@ -2404,7 +2404,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BIDOOF_73:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:2) {
           weakness F, PLUS10
@@ -2432,7 +2432,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BRONZOR_74:
         return basic (this, hp:HP050, type:METAL, retreatCost:1) {
           weakness R, PLUS10
@@ -2447,7 +2447,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BUIZEL_75:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness L, PLUS10
@@ -2473,7 +2473,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHANSEY_76:
         return basic (this, hp:HP100, type:COLORLESS, retreatCost:2) {
           weakness F, PLUS20
@@ -2493,7 +2493,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHIKORITA_77:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -2516,7 +2516,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CROAGUNK_78:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -2540,7 +2540,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CYNDAQUIL_79:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
           weakness W, PLUS10
@@ -2561,7 +2561,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DODUO_80:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness L, PLUS10
@@ -2584,7 +2584,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ELECTRIKE_81:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -2612,7 +2612,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case EXEGGCUTE_82:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -2629,7 +2629,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case FINNEON_83:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness L, PLUS10
@@ -2650,7 +2650,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GEODUDE_84:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:2) {
           weakness G, PLUS10
@@ -2670,7 +2670,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GIBLE_85:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness C, PLUS10
@@ -2684,7 +2684,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case KRICKETOT_86:
         return basic (this, hp:HP060, type:GRASS, retreatCost:2) {
           weakness R, PLUS10
@@ -2702,7 +2702,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LARVITAR_87:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness G, PLUS10
@@ -2729,7 +2729,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGBY_88:
         return basic (this, hp:HP040, type:FIRE, retreatCost:1) {
           weakness W, PLUS10
@@ -2751,7 +2751,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGIKARP_89:
         return basic (this, hp:HP030, type:WATER, retreatCost:1) {
           weakness L, PLUS10
@@ -2775,7 +2775,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MURKROW_90:
         return basic (this, hp:HP060, type:DARKNESS, retreatCost:1) {
           weakness L, PLUS10
@@ -2795,7 +2795,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case NIDORAN_FEMALE_91:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -2816,7 +2816,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PARAS_92:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -2838,7 +2838,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PICHU_93:
         return basic (this, hp:HP040, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -2861,7 +2861,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PIKACHU_94:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -2887,7 +2887,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case REMORAID_95:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness L, PLUS10
@@ -2909,7 +2909,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SANDSHREW_96:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness W, PLUS10
@@ -2931,7 +2931,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SEEL_97:
         return basic (this, hp:HP060, type:WATER, retreatCost:2) {
           weakness M, PLUS10
@@ -2945,7 +2945,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SHINX_98:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
@@ -2973,7 +2973,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SLAKOTH_99:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
@@ -2987,7 +2987,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SNORUNT_100:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness M, PLUS10
@@ -3008,7 +3008,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SNOVER_101:
         return basic (this, hp:HP060, type:GRASS, retreatCost:2) {
           weakness R, PLUS10
@@ -3031,7 +3031,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SPHEAL_102:
         return basic (this, hp:HP050, type:WATER, retreatCost:2) {
           weakness M, PLUS10
@@ -3052,7 +3052,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SPINARAK_103:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -3073,7 +3073,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SURSKIT_104:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R, PLUS10
@@ -3089,7 +3089,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TEDDIURSA_105:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS10
@@ -3113,7 +3113,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case TOTODILE_106:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness L, PLUS10
@@ -3135,7 +3135,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case VULPIX_107:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
           weakness W, PLUS10
@@ -3150,7 +3150,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ZUBAT_108:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS10
@@ -3172,7 +3172,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case BEBE_S_SEARCH_109:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nChoose a card from your hand and put it on top of your deck. Search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward. (If this is the only card in your hand, you can’t play this card.)"
@@ -3184,7 +3184,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           playRequirement{
             assert my.hand.getExcludedList(thisCard) : "You don't have other cards in your hand"
           }
-        };
+        }
       case DUSK_BALL_110:
         return itemCard (this) {
           text "Look at the 7 cards from the bottom of your deck. Choose 1 Pokémon you find there, show it to your opponent, and put it into your hand. Put the remaining cards back on top of your deck. Shuffle your deck afterward."
@@ -3196,7 +3196,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           playRequirement{
             assert my.deck : "There is no card remaining in your deck."
           }
-        };
+        }
       case FOSSIL_EXCAVATOR_111:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck or discard pile for a Trainer card that has Fossil in its name or a Stage 1 or Stage 2 Evolution card that evolves from a Fossil. Show it to your opponent and put it into your hand. If you searched your deck, shuffle your deck afterward."
@@ -3223,7 +3223,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           playRequirement {
             assert ( my.deck.notEmpty || my.discard.any{isValidFossilCard(it)}) : "You have no cards in deck, and there are no cards in your discard pile that satisfy this supporter's requirements"
           }
-        };
+        }
       case LAKE_BOUNDARY_112:
         return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nApply Weakness for each Pokémon (both yours and your opponent’s) as ×2 instead."
@@ -3240,7 +3240,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           onRemoveFromPlay{
             eff.unregister()
           }
-        };
+        }
       case NIGHT_MAINTENANCE_113:
         return itemCard (this) {
           text "Search your discard pile for up to 3 in any combination of Pokémon and basic Energy cards. Show them to your opponent and shuffle them into your deck."
@@ -3255,13 +3255,13 @@ public enum MysteriousTreasures implements LogicCardInfo {
           playRequirement{
             assert my.discard.findAll{it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.is(POKEMON)} : "There are no basic Pokémon or basic Energy cards in your discard pile"
           }
-        };
+        }
       case QUICK_BALL_114:
         return itemCard (this) {
           text "Reveal cards from your deck until you reveal a Pokémon. Show that Pokémon to your opponent and put it into your hand. Shuffle the other revealed cards back into your deck. (If you don’t reveal a Pokémon, shuffle all the revealed cards back into your deck.)"
           onPlay {
               //TODO: Modularize
-              def revealCard = new CardList();
+              def revealCard = new CardList()
               def ind = 0
               def curCard
               while(ind < my.deck.size()){
@@ -3281,7 +3281,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           playRequirement{
             assert my.deck
           }
-        };
+        }
       case TEAM_GALACTIC_S_WAGER_115:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nEach player shuffles his or her hand into his or her deck, and you and your opponent play a game of \"Rock-Paper-Scissors.\" The player who wins draws up to 6 cards. The player who loses draws up to 3 cards. (You draw your cards first.)"
@@ -3301,7 +3301,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           }
           playRequirement{
           }
-        };
+        }
       case ARMOR_FOSSIL_116:
         return itemCard (this) {
           text "Play Armor Fossil as if it were a [C] Basic Pokémon. (Armor Fossil counts as a Trainer card as well, but if Armor Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Armor Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Armor Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\n" +
@@ -3375,7 +3375,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           playRequirement{
             assert bench.notFull
           }
-        };
+        }
       case SKULL_FOSSIL_117:
         return itemCard (this) {
           text "Play Skull Fossil as if it were a [C] Basic Pokémon. (Skull Fossil counts as a Trainer card as well, but if Skull Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Skull Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Skull Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\n" +
@@ -3444,9 +3444,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
           playRequirement{
             assert bench.notFull
           }
-        };
+        }
       case MULTI_ENERGY_118:
-        return copy(FireRedLeafGreen.MULTI_ENERGY_103, this);
+        return copy(FireRedLeafGreen.MULTI_ENERGY_103, this)
       case DARKNESS_ENERGY_119:
         //This version of "Darkness Energy (Special Energy)" doesn't work on "Dark ____" cards, only on [D] Type Pokémon.
         return specialEnergy (this, [[D]]) {
@@ -3474,7 +3474,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           }
         }
       case METAL_ENERGY_120:
-        return copy (RubySapphire.METAL_ENERGY_94, this);
+        return copy (RubySapphire.METAL_ENERGY_94, this)
       case ELECTIVIRE_LV_X_121:
         return levelUp (this, from:"Electivire", hp:HP120, type:LIGHTNING, retreatCost:3) {
           weakness F
@@ -3513,7 +3513,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUCARIO_LV_X_122:
         return levelUp (this, from:"Lucario", hp:HP110, type:FIGHTING, retreatCost:1) {
           weakness P
@@ -3574,7 +3574,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGMORTAR_LV_X_123:
         return levelUp (this, from:"Magmortar", hp:HP130, type:FIRE, retreatCost:3) {
           weakness W
@@ -3624,7 +3624,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case TIME_SPACE_DISTORTION_124:
         return itemCard (this) {
           text "Flip 3 coins. For each heads, search your discard pile for a Pokémon, show it to your opponent, and put it into your hand."
@@ -3638,9 +3638,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
           playRequirement{
             assert my.discard.filterByType(POKEMON)
           }
-        };
+        }
       default:
-        return null;
+        return null
     }
   }
 

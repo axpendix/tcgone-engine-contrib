@@ -119,53 +119,53 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
   CRYSTAL_CAVE_89 ("Crystal Cave", "89", Rarity.UNCOMMON, [TRAINER, STADIUM]),
   METAL_ENERGY_90 ("Metal Energy", "90", Rarity.COMMON, [ENERGY, BASIC_ENERGY]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   SkyscrapingPerfection(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.SKYSCRAPING_PERFECTION;
+    return tcgwars.logic.card.Collection.SKYSCRAPING_PERFECTION
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -191,7 +191,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 20 + 20 * all.findAll { it.benched }.size()
           }
         }
-      };
+      }
       case LOTAD_2:
       return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness L
@@ -207,7 +207,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case LOMBRE_3:
       return evolution (this, from:"Lotad", hp:HP090, type:W, retreatCost:1) {
         weakness L
@@ -218,7 +218,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case LUDICOLO_4:
       return evolution (this, from:"Lombre", hp:HP140, type:W, retreatCost:2) {
         weakness L
@@ -250,7 +250,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 120
           }
         }
-      };
+      }
       case PANPOUR_5:
       return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness L
@@ -262,7 +262,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             opp.hand.showToMe bg, "Your opponent's hand."
           }
         }
-      };
+      }
       case SIMIPOUR_6:
       return evolution (this, from:"Panpour", hp:HP100, type:W, retreatCost:1) {
         weakness L
@@ -285,7 +285,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 60 * opp.hand.count { it.cardTypes.is SUPPORTER }.intValue()
           }
         }
-      };
+      }
       case CLAUNCHER_7:
       return basic (this, hp:HP070, type:W, retreatCost:2) {
         weakness L
@@ -303,7 +303,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case CLAWITZER_8:
       return evolution (this, from:"Clauncher", hp:HP110, type:W, retreatCost:2) {
         weakness L
@@ -321,7 +321,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 110
           }
         }
-      };
+      }
       case EISCUE_9:
       return basic (this, hp:HP120, type:W, retreatCost:2) {
         weakness M
@@ -340,7 +340,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             preventAllDamageFromCustomPokemonNextTurn thisMove, self, { it.basic }
           }
         }
-      };
+      }
       case JIGGLYPUFF_10:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness M
@@ -362,7 +362,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 20 * my.bench.findAll { it.getTopPokemonCard().moves.any { it.name == "Everyone Rollout" } }.size()
           }
         }
-      };
+      }
       case WIGGLYTUFF_11:
       return evolution (this, from:"Jigglypuff", hp:HP120, type:P, retreatCost:2) {
         weakness M
@@ -384,7 +384,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 90
           }
         }
-      };
+      }
       case GALARIAN_ARTICUNO_12:
       return basic (this, hp:HP120, type:P, retreatCost:2) {
         weakness D
@@ -408,7 +408,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case WOBBUFFET_13:
       return basic (this, hp:HP120, type:P, retreatCost:2) {
         weakness D
@@ -432,7 +432,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case SIGILYPH_14:
       return basic (this, hp:HP100, type:P, retreatCost:1) {
         weakness L
@@ -453,7 +453,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             moveEnergy self, my.bench
           }
         }
-      };
+      }
       case GOLURK_V_15:
       return basic (this, hp:HP220, type:P, retreatCost:3) {
         weakness D
@@ -477,7 +477,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case PUMPKABOO_16:
       return basic (this, hp:HP060, type:P, retreatCost:2) {
         weakness D
@@ -498,7 +498,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case GOURGEIST_17:
       return evolution (this, from:"Pumpkaboo", hp:HP120, type:P, retreatCost:2) {
         weakness D
@@ -519,7 +519,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             shuffleDeck()
           }
         }
-      };
+      }
       case HITMONCHAN_18:
       return basic (this, hp:HP110, type:F, retreatCost:1) {
         weakness P
@@ -538,7 +538,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             noResistanceDamage 40, defending
           }
         }
-      };
+      }
       case GALARIAN_ZAPDOS_19:
       return basic (this, hp:HP110, type:F, retreatCost:0) {
         weakness P
@@ -564,7 +564,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case GLIGAR_20:
       return basic (this, hp:HP070, type:F, retreatCost:1) {
         weakness G
@@ -582,7 +582,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case GLISCOR_21:
       return evolution (this, from:"Gligar", hp:HP110, type:F, retreatCost:1) {
         weakness G
@@ -602,7 +602,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             applyAfterDamage POISONED
           }
         }
-      };
+      }
       case MAKUHITA_22:
       return basic (this, hp:HP090, type:F, retreatCost:3) {
         weakness P
@@ -620,7 +620,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case HARIYAMA_23:
       return evolution (this, from:"Makuhita", hp:HP140, type:F, retreatCost:4) {
         weakness P
@@ -645,7 +645,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 100
           }
         }
-      };
+      }
       case LYCANROC_V_24:
       return basic (this, hp:HP200, type:F, retreatCost:1) {
         weakness G
@@ -664,7 +664,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             cantAttackNextTurn self
           }
         }
-      };
+      }
       case LYCANROC_VMAX_25:
       return evolution (this, from:"Lycanroc V", hp:HP320, type:F, retreatCost:1) {
         weakness G
@@ -687,7 +687,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             if (opp.bench) damage 30, opp.bench.select("This attack also does 30 damage to 1 of your opponent's Benched Pokémon.")
           }
         }
-      };
+      }
       case GALARIAN_MOLTRES_26:
       return basic (this, hp:HP120, type:D, retreatCost:2) {
         weakness G
@@ -708,7 +708,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 50 * opp.prizeCardSet.takenCount
           }
         }
-      };
+      }
       case ABSOL_27:
       return basic (this, hp:HP100, type:D, retreatCost:1) {
         weakness G
@@ -730,7 +730,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 80
           }
         }
-      };
+      }
       case CROAGUNK_28:
       return basic (this, hp:HP060, type:D, retreatCost:1) {
         weakness F
@@ -741,7 +741,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case TOXICROAK_29:
       return evolution (this, from:"Croagunk", hp:HP110, type:D, retreatCost:1) {
         weakness F
@@ -760,7 +760,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 90
           }
         }
-      };
+      }
       case GARBODOR_V_30:
       return basic (this, hp:HP210, type:D, retreatCost:3) {
         weakness F
@@ -780,7 +780,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 130
           }
         }
-      };
+      }
       case GARBODOR_VMAX_31:
       return evolution (this, from:"Garbodor V", hp:HP330, type:D, retreatCost:3) {
         weakness F
@@ -806,7 +806,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             cantRetreat defending
           }
         }
-      };
+      }
       case NICKIT_32:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness G
@@ -817,7 +817,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case THIEVUL_33:
       return evolution (this, from:"Nickit", hp:HP100, type:D, retreatCost:1) {
         weakness G
@@ -851,7 +851,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case GALARIAN_MEOWTH_34:
       return basic (this, hp:HP070, type:M, retreatCost:1) {
         weakness R
@@ -870,7 +870,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case GALARIAN_PERRSERKER_35:
       return evolution (this, from:"Galarian Meowth", hp:HP120, type:M, retreatCost:1) {
         weakness R
@@ -893,7 +893,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 80
           }
         }
-      };
+      }
       case SKARMORY_36:
       return basic (this, hp:HP120, type:M, retreatCost:1) {
         weakness R
@@ -913,7 +913,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 110
           }
         }
-      };
+      }
       case KLEFKI_37:
       return basic (this, hp:HP070, type:M, retreatCost:1) {
         weakness R
@@ -926,7 +926,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             draw 2
           }
         }
-      };
+      }
       case CUFANT_38:
       return basic (this, hp:HP100, type:M, retreatCost:3) {
         weakness R
@@ -946,7 +946,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 20, self
           }
         }
-      };
+      }
       case COPPERAJAH_39:
       return evolution (this, from:"Cufant", hp:HP190, type:M, retreatCost:4) {
         weakness R
@@ -966,7 +966,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 30, self
           }
         }
-      };
+      }
       case ALTARIA_40:
       return evolution (this, from:"Swablu", hp:HP090, type:N, retreatCost:0) {
         bwAbility "Luring Melody", {
@@ -986,7 +986,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case DIALGA_41:
       return basic (this, hp:HP130, type:N, retreatCost:2) {
         move "Chrono Wind", {
@@ -1006,7 +1006,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 210
           }
         }
-      };
+      }
       case DEINO_42:
       return basic (this, hp:HP060, type:N, retreatCost:1) {
         move "Call for Family", {
@@ -1021,7 +1021,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case ZWEILOUS_43:
       return evolution (this, from:"Deino", hp:HP100, type:N, retreatCost:2) {
         move "Bite", {
@@ -1038,7 +1038,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 100
           }
         }
-      };
+      }
       case HYDREIGON_44:
       return evolution (this, from:"Zweilous", hp:HP170, type:N, retreatCost:3) {
         move "Dragon Counter", {
@@ -1056,7 +1056,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 210
           }
         }
-      };
+      }
       case KYUREM_45:
       return basic (this, hp:HP120, type:N, retreatCost:2) {
         move "Extreme Freeze", {
@@ -1078,7 +1078,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 60 * count
           }
         }
-      };
+      }
       case NOIVERN_V_46:
       return basic (this, hp:HP200, type:N, retreatCost:0) {
         move "Boomburst", {
@@ -1096,7 +1096,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             if (my.hand.size() == opp.hand.size()) damage 120
           }
         }
-      };
+      }
       case DRAMPA_47:
       return basic (this, hp:HP120, type:N, retreatCost:2) {
         move "Corkscrew Punch", {
@@ -1114,7 +1114,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             if (bench.any { it.numberOfDamageCounters }) damage 90
           }
         }
-      };
+      }
       case DURALUDON_V_48:
       return basic (this, hp:HP220, type:N, retreatCost:2) {
         move "Metal Claw", {
@@ -1132,7 +1132,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             reduceDamageFromDefendingNextTurn hp(30), thisMove, defending
           }
         }
-      };
+      }
       case DURALUDON_VMAX_49:
       return evolution (this, from:"Duraludon V", hp:HP330, type:N, retreatCost:3) {
         bwAbility "Skyscraper", {
@@ -1155,7 +1155,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             shredDamage 220
           }
         }
-      };
+      }
       case SLAKOTH_50:
       return basic (this, hp:HP070, type:C, retreatCost:2) {
         weakness F
@@ -1169,7 +1169,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case VIGOROTH_51:
       return evolution (this, from:"Slakoth", hp:HP090, type:C, retreatCost:1) {
         weakness F
@@ -1190,7 +1190,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case SLAKING_52:
       return evolution (this, from:"Vigoroth", hp:HP180, type:C, retreatCost:4) {
         weakness F
@@ -1213,7 +1213,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 30 * opp.bench.size()
           }
         }
-      };
+      }
       case SWABLU_53:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness L
@@ -1227,7 +1227,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case WOOLOO_54:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness F
@@ -1250,7 +1250,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 20 * my.bench.findAll { it.getTopPokemonCard().moves.any { it.name == "Everyone Rollout" } }.size()
           }
         }
-      };
+      }
       case DUBWOOL_55:
       return evolution (this, from:"Wooloo", hp:HP130, type:C, retreatCost:2) {
         weakness F
@@ -1269,11 +1269,11 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case ESCAPE_ROPE_56:
-        return copy(PlasmaStorm.ESCAPE_ROPE_120, this);
+        return copy(PlasmaStorm.ESCAPE_ROPE_120, this)
       case EVOLUTION_INCENSE_57:
-      return copy(SwordShield.EVOLUTION_INCENSE_163, this);
+      return copy(SwordShield.EVOLUTION_INCENSE_163, this)
       case SWITCHEROO_CUP_58:
       return itemCard (this) {
         text "Switch a card from your hand with the top card of your deck."
@@ -1285,7 +1285,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
           assert hand.getExcludedList(thisCard) : "You have no other cards in your hand"
           assert deck : "Your deck is empty"
         }
-      };
+      }
       case RESCUE_TROLLEY_59:
       return itemCard (this) {
         text "Put up to 2 Pokémon with 90 HP or less from your discard pile into your hand."
@@ -1296,7 +1296,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         playRequirement{
           assert my.discard.any { it.cardTypes.is(POKEMON) && it.asPokemonCard().hp <= 90 } : "No Pokémon with 90 HP or less in your discard pile"
         }
-      };
+      }
       case DIGGING_GLOVES_60:
       return pokemonTool (this) {
         text "The attacks of the Pokémon this card is attached to do 30 more damage to your opponent's Active [F] Pokémon (before applying Weakness and Resistance)."
@@ -1316,7 +1316,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-      };
+      }
       case SINGLE_STRIKE_SCROLL_OF_THE_DRAGON_FANG_61:
       return pokemonTool (this) {
         text "The Single Strike Pokémon this card is attached to can use the attack on this card. (You still need the necessary Energy to use this attack.)"
@@ -1352,7 +1352,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         onRemoveFromPlay {
           newMove.unregister()
         }
-      };
+      }
       case FULL_FACE_GUARD_62:
       return pokemonTool (this) {
         text "If the Pokémon this card is attached to has no Abilities" +
@@ -1375,7 +1375,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-      };
+      }
       case RAIHAN_63:
       return supporter (this) {
         text "You can play this card only if 1 of your Pokémon was Knocked Out during your opponent's last turn. Attach a basic Energy card from your discard pile to 1 of your Pokémon. If you do" +
@@ -1398,7 +1398,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
           assert keyStore("Rosa_KO", thisCard, null) == bg.turnCount - 1: "No Pokémon was Knocked Out during your opponent’s last turn"
           assert my.discard.any { it.cardTypes.is(BASIC_ENERGY) } : "No basic Energy cards in your discard pile"
         }
-      };
+      }
       case SCHOOLGIRL_64:
       return supporter (this) {
         text "Draw 2 cards. If your opponent has exactly 2" +
@@ -1409,9 +1409,9 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         }
         playRequirement{
         }
-      };
+      }
       case COPYCAT_65:
-        return copy(TeamRocketReturns.COPYCAT_83, this);
+        return copy(TeamRocketReturns.COPYCAT_83, this)
       case CRYSTAL_CAVE_66:
       return stadium (this) {
         text "Once during each player's turn" +
@@ -1433,57 +1433,57 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         onRemoveFromPlay{
           actions.each { bg.gm().unregisterAction(it) }
         }
-      };
+      }
       case TWIN_ENERGY_67:
         return copy (RebelClash.TWIN_ENERGY_174, this)
       case SUICUNE_V_68:
-      return copy (SUICUNE_V_1, this);
+      return copy (SUICUNE_V_1, this)
       case GOLURK_V_69:
-      return copy (GOLURK_V_15, this);
+      return copy (GOLURK_V_15, this)
       case GOLURK_V_70:
-      return copy (GOLURK_V_15, this);
+      return copy (GOLURK_V_15, this)
       case LYCANROC_V_71:
-      return copy (LYCANROC_V_24, this);
+      return copy (LYCANROC_V_24, this)
       case GARBODOR_V_72:
-      return copy (GARBODOR_V_30, this);
+      return copy (GARBODOR_V_30, this)
       case NOIVERN_V_73:
-      return copy (NOIVERN_V_46, this);
+      return copy (NOIVERN_V_46, this)
       case NOIVERN_V_74:
-      return copy (NOIVERN_V_46, this);
+      return copy (NOIVERN_V_46, this)
       case DURALUDON_V_75:
-      return copy (DURALUDON_V_48, this);
+      return copy (DURALUDON_V_48, this)
       case DURALUDON_V_76:
-      return copy (DURALUDON_V_48, this);
+      return copy (DURALUDON_V_48, this)
       case RAIHAN_77:
-      return copy (RAIHAN_63, this);
+      return copy (RAIHAN_63, this)
       case SCHOOLGIRL_78:
-      return copy (SCHOOLGIRL_64, this);
+      return copy (SCHOOLGIRL_64, this)
       case COPYCAT_79:
-      return copy (COPYCAT_65, this);
+      return copy (COPYCAT_65, this)
       case LYCANROC_VMAX_80:
-      return copy (LYCANROC_VMAX_25, this);
+      return copy (LYCANROC_VMAX_25, this)
       case GARBODOR_VMAX_81:
-      return copy (GARBODOR_VMAX_31, this);
+      return copy (GARBODOR_VMAX_31, this)
       case DURALUDON_VMAX_82:
-      return copy (DURALUDON_VMAX_49, this);
+      return copy (DURALUDON_VMAX_49, this)
       case DURALUDON_VMAX_83:
-      return copy (DURALUDON_VMAX_49, this);
+      return copy (DURALUDON_VMAX_49, this)
       case RAIHAN_84:
-      return copy (RAIHAN_63, this);
+      return copy (RAIHAN_63, this)
       case SCHOOLGIRL_85:
-      return copy (SCHOOLGIRL_64, this);
+      return copy (SCHOOLGIRL_64, this)
       case COPYCAT_86:
-      return copy (COPYCAT_65, this);
+      return copy (COPYCAT_65, this)
       case CRESSELIA_87:
-      return copy (ChillingReign.CRESSELIA_64, this);
+      return copy (ChillingReign.CRESSELIA_64, this)
       case FULL_FACE_GUARD_88:
-      return copy (FULL_FACE_GUARD_62, this);
+      return copy (FULL_FACE_GUARD_62, this)
       case CRYSTAL_CAVE_89:
-      return copy (CRYSTAL_CAVE_66, this);
+      return copy (CRYSTAL_CAVE_66, this)
       case METAL_ENERGY_90:
-      return basicEnergy (this, M);
+      return basicEnergy (this, M)
       default:
-      return null;
+      return null
     }
   }
 }

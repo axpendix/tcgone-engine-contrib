@@ -3,37 +3,37 @@ package tcgwars.logic.impl.gen8
 import tcgwars.logic.impl.gen5.NextDestinies
 import tcgwars.logic.impl.gen5.PlasmaStorm
 import tcgwars.logic.impl.gen6.AncientOrigins
-import tcgwars.logic.impl.gen7.GuardiansRising;
+import tcgwars.logic.impl.gen7.GuardiansRising
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import java.util.*
+import org.apache.commons.lang.WordUtils
+import tcgwars.entity.*
+import tcgwars.logic.*
+import tcgwars.logic.card.*
+import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.pokemon.*
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.*
+import tcgwars.logic.effect.ability.*
+import tcgwars.logic.effect.advanced.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.blocking.*
+import tcgwars.logic.effect.event.*
+import tcgwars.logic.effect.getter.*
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author
@@ -224,53 +224,53 @@ public enum BattleStyles implements LogicCardInfo {
   RAPID_STRIKE_ENERGY_182 ("Rapid Strike Energy", "182", Rarity.SECRET, [ENERGY, SPECIAL_ENERGY, RAPID_STRIKE]),
   SINGLE_STRIKE_ENERGY_183 ("Single Strike Energy", "183", Rarity.SECRET, [ENERGY, SPECIAL_ENERGY, SINGLE_STRIKE]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   BattleStyles(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.BATTLE_STYLES;
+    return tcgwars.logic.card.Collection.BATTLE_STYLES
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -287,7 +287,7 @@ public enum BattleStyles implements LogicCardInfo {
             if (defending.isSPC(POISONED)) damage 40
           }
         }
-      };
+      }
       case WEEPINBELL_2:
       return evolution (this, from:"Bellsprout", hp:HP080, type:G, retreatCost:2) {
         weakness FIRE
@@ -308,7 +308,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case VICTREEBEL_3:
       return evolution (this, from:"Weepinbell", hp:HP150, type:G, retreatCost:3) {
         weakness FIRE
@@ -330,7 +330,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 120
           }
         }
-      };
+      }
       case CACNEA_4:
       return basic (this, hp:HP070, type:G, retreatCost:2) {
         weakness FIRE
@@ -348,7 +348,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case CACTURNE_5:
       return evolution (this, from:"Cacnea", hp:HP120, type:G, retreatCost:2) {
         weakness FIRE
@@ -370,7 +370,7 @@ public enum BattleStyles implements LogicCardInfo {
             if (self.cards.energyCount(D)) damage 70
           }
         }
-      };
+      }
       case KRICKETUNE_V_6:
       return basic (this, hp:HP180, type:G, retreatCost:1) {
         weakness FIRE
@@ -399,7 +399,7 @@ public enum BattleStyles implements LogicCardInfo {
             flip { damage 80 }
           }
         }
-      };
+      }
       case CHERUBI_7:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness FIRE
@@ -410,7 +410,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case CHERRIM_8:
       return evolution (this, from:"Cherubi", hp:HP080, type:G, retreatCost:2) {
         weakness FIRE
@@ -433,7 +433,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case CARNIVINE_9:
       return basic (this, hp:HP110, type:G, retreatCost:2) {
         weakness FIRE
@@ -452,7 +452,7 @@ public enum BattleStyles implements LogicCardInfo {
             flip 3, { damage 60 }
           }
         }
-      };
+      }
       case DURANT_10:
       return basic (this, hp:HP090, type:G, retreatCost:1) {
         weakness FIRE
@@ -475,7 +475,7 @@ public enum BattleStyles implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SCATTERBUG_11:
       return basic (this, hp:HP040, type:G, retreatCost:1) {
         weakness FIRE
@@ -488,7 +488,7 @@ public enum BattleStyles implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case SPEWPA_12:
       return evolution (this, from:"Scatterbug", hp:HP080, type:G, retreatCost:3) {
         weakness FIRE
@@ -506,7 +506,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case VIVILLON_13:
       return evolution (this, from:"Spewpa", hp:HP120, type:G, retreatCost:1) {
         weakness FIRE
@@ -528,7 +528,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 90
           }
         }
-      };
+      }
       case FOMANTIS_14:
       return basic (this, hp:HP060, type:G, retreatCost:1) {
         weakness FIRE
@@ -539,7 +539,7 @@ public enum BattleStyles implements LogicCardInfo {
             flipUntilTails { damage 20 }
           }
         }
-      };
+      }
       case LURANTIS_15:
       return evolution (this, from:"Fomantis", hp:HP120, type:G, retreatCost:2) {
         weakness FIRE
@@ -558,7 +558,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case TAPU_BULU_16:
       return basic (this, hp:HP130, type:G, retreatCost:2) {
         weakness FIRE
@@ -583,7 +583,7 @@ public enum BattleStyles implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case BLIPBUG_17:
       return basic (this, hp:HP050, type:G, retreatCost:1) {
         weakness FIRE
@@ -594,7 +594,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case FLAPPLE_V_18:
       return basic (this, hp:HP190, type:G, retreatCost:1) {
         weakness FIRE
@@ -615,7 +615,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 120
           }
         }
-      };
+      }
       case FLAPPLE_VMAX_19:
       return evolution (this, from:"Flapple V", hp:HP320, type:G, retreatCost:3) {
         weakness FIRE
@@ -626,7 +626,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 250 - (10*self.numberOfDamageCounters)
           }
         }
-      };
+      }
       case ENTEI_20:
       return basic (this, hp:HP130, type:R, retreatCost:2) {
         weakness WATER
@@ -648,7 +648,7 @@ public enum BattleStyles implements LogicCardInfo {
             applyAfterDamage BURNED
           }
         }
-      };
+      }
       case VICTINI_V_21:
       return basic (this, hp:HP190, type:R, retreatCost:1) {
         weakness WATER
@@ -672,7 +672,7 @@ public enum BattleStyles implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case VICTINI_VMAX_22:
       return evolution (this, from:"Victini V", hp:HP310, type:R, retreatCost:2) {
         weakness WATER
@@ -696,7 +696,7 @@ public enum BattleStyles implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case TEPIG_23:
       return basic (this, hp:HP080, type:R, retreatCost:2) {
         weakness WATER
@@ -714,7 +714,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case PIGNITE_24:
       return evolution (this, from:"Tepig", hp:HP100, type:R, retreatCost:3) {
         weakness WATER
@@ -732,7 +732,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 90
           }
         }
-      };
+      }
       case EMBOAR_25:
       return evolution (this, from:"Pignite", hp:HP180, type:R, retreatCost:4) {
         weakness WATER
@@ -759,7 +759,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 130
           }
         }
-      };
+      }
       case HEATMOR_26:
       return basic (this, hp:HP120, type:R, retreatCost:2) {
         weakness WATER
@@ -781,7 +781,7 @@ public enum BattleStyles implements LogicCardInfo {
             if (list) discardDefendingEnergyAfterDamage (*list)
           }
         }
-      };
+      }
       case SALANDIT_27:
       return basic (this, hp:HP070, type:R, retreatCost:1) {
         weakness WATER
@@ -798,7 +798,7 @@ public enum BattleStyles implements LogicCardInfo {
             shuffleDeck()
           }
         }
-      };
+      }
       case SALAZZLE_28:
       return evolution (this, from:"Salandit", hp:HP090, type:R, retreatCost:1) {
         weakness WATER
@@ -816,7 +816,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 90 * defending.specialConditions.size()
           }
         }
-      };
+      }
       case SIZZLIPEDE_29:
       return basic (this, hp:HP070, type:R, retreatCost:1) {
         weakness WATER
@@ -828,7 +828,7 @@ public enum BattleStyles implements LogicCardInfo {
             applyAfterDamage(BURNED)
           }
         }
-      };
+      }
       case CENTISKORCH_30:
       return evolution (this, from:"Sizzlipede", hp:HP130, type:R, retreatCost:2) {
         weakness WATER
@@ -857,7 +857,7 @@ public enum BattleStyles implements LogicCardInfo {
             applyAfterDamage(BURNED)
           }
         }
-      };
+      }
       case HORSEA_31:
       return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness LIGHTNING
@@ -869,7 +869,7 @@ public enum BattleStyles implements LogicCardInfo {
             sandAttack thisMove
           }
         }
-      };
+      }
       case SEADRA_32:
       return evolution (this, from:"Horsea", hp:HP090, type:W, retreatCost:1) {
         weakness LIGHTNING
@@ -880,7 +880,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case KINGDRA_33:
       return evolution (this, from:"Seadra", hp:HP150, type:W, retreatCost:1) {
         weakness LIGHTNING
@@ -906,7 +906,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 40 * self.cards.energyCount(W)
           }
         }
-      };
+      }
       case GALARIAN_MR_MIME_34:
       return basic (this, hp:HP080, type:W, retreatCost:1) {
         weakness METAL
@@ -929,7 +929,7 @@ public enum BattleStyles implements LogicCardInfo {
             shuffleDeck()
           }
         }
-      };
+      }
       case GALARIAN_MR_RIME_35:
       return evolution (this, from:"Galarian Mr. Mime", hp:HP110, type:W, retreatCost:2) {
         weakness METAL
@@ -960,7 +960,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 80
           }
         }
-      };
+      }
       case REMORAID_36:
       return basic (this, hp:HP060, type:W, retreatCost:1) {
         weakness LIGHTNING
@@ -978,7 +978,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case OCTILLERY_37:
       return evolution (this, from:"Remoraid", hp:HP110, type:W, retreatCost:2) {
         weakness LIGHTNING
@@ -1001,7 +1001,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case CORPHISH_38:
       return basic (this, hp:HP070, type:W, retreatCost:2) {
         weakness LIGHTNING
@@ -1013,7 +1013,7 @@ public enum BattleStyles implements LogicCardInfo {
             flipThenApplySC PARALYZED
           }
         }
-      };
+      }
       case CRAWDAUNT_39:
       return evolution (this, from:"Corphish", hp:HP130, type:W, retreatCost:3) {
         weakness LIGHTNING
@@ -1034,7 +1034,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 140
           }
         }
-      };
+      }
       case EMPOLEON_V_40:
       return basic (this, hp:HP210, type:W, retreatCost:2) {
         weakness LIGHTNING
@@ -1073,7 +1073,7 @@ public enum BattleStyles implements LogicCardInfo {
             afterDamage { moveEnergy(self, my.bench) }
           }
         }
-      };
+      }
       case FRILLISH_41:
       return basic (this, hp:HP080, type:W, retreatCost:2) {
         weakness LIGHTNING
@@ -1092,7 +1092,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case JELLICENT_42:
       return evolution (this, from:"Frillish", hp:HP120, type:W, retreatCost:3) {
         weakness LIGHTNING
@@ -1103,7 +1103,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 10 * my.discard.filterByType(ENERGY).filterByEnergyType(W).size()
           }
         }
-      };
+      }
       case BRUXISH_43:
       return basic (this, hp:HP110, type:W, retreatCost:1) {
         weakness LIGHTNING
@@ -1121,7 +1121,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 110
           }
         }
-      };
+      }
       case ELECTABUZZ_44:
       return basic (this, hp:HP080, type:L, retreatCost:2) {
         weakness FIGHTING
@@ -1133,7 +1133,7 @@ public enum BattleStyles implements LogicCardInfo {
             cantUseAttack(thisMove, self)
           }
         }
-      };
+      }
       case ELECTIVIRE_45:
       return evolution (this, from:"Electabuzz", hp:HP140, type:L, retreatCost:3) {
         weakness FIGHTING
@@ -1153,7 +1153,7 @@ public enum BattleStyles implements LogicCardInfo {
             cantUseAttack(thisMove, self)
           }
         }
-      };
+      }
       case SHINX_46:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness FIGHTING
@@ -1164,7 +1164,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case LUXIO_47:
       return evolution (this, from:"Shinx", hp:HP080, type:L, retreatCost:1) {
         weakness FIGHTING
@@ -1182,7 +1182,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case LUXRAY_48:
       return evolution (this, from:"Luxio", hp:HP150, type:L, retreatCost:1) {
         weakness FIGHTING
@@ -1202,7 +1202,7 @@ public enum BattleStyles implements LogicCardInfo {
             if (defending.numberOfDamageCounters) damage 100
           }
         }
-      };
+      }
       case PACHIRISU_49:
       return basic (this, hp:HP070, type:L, retreatCost:1) {
         weakness FIGHTING
@@ -1224,7 +1224,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case TAPU_KOKO_V_50:
       return basic (this, hp:HP210, type:L, retreatCost:1) {
         weakness FIGHTING
@@ -1246,7 +1246,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 20 + 40 * addDmg
           }
         }
-      };
+      }
       case TAPU_KOKO_VMAX_51:
       return evolution (this, from:"Tapu Koko V", hp:HP320, type:L, retreatCost:1) {
         weakness FIGHTING
@@ -1260,7 +1260,7 @@ public enum BattleStyles implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case YAMPER_52:
       return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness FIGHTING
@@ -1287,7 +1287,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case BOLTUND_53:
       return evolution (this, from:"Yamper", hp:HP130, type:L, retreatCost:1) {
         weakness FIGHTING
@@ -1312,7 +1312,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 130
           }
         }
-      };
+      }
       case GALARIAN_SLOWPOKE_54:
       return basic (this, hp:HP070, type:P, retreatCost:2) {
         weakness DARKNESS
@@ -1327,7 +1327,7 @@ public enum BattleStyles implements LogicCardInfo {
             flip { switchYourOpponentsBenchedWithActive() }
           }
         }
-      };
+      }
       case SPOINK_55:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness DARKNESS
@@ -1346,7 +1346,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case GRUMPIG_56:
       return evolution (this, from:"Spoink", hp:HP130, type:P, retreatCost:3) {
         weakness DARKNESS
@@ -1366,7 +1366,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 120
           }
         }
-      };
+      }
       case BALTOY_57:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness DARKNESS
@@ -1379,7 +1379,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 60, self
           }
         }
-      };
+      }
       case CLAYDOL_58:
       return evolution (this, from:"Baltoy", hp:HP120, type:P, retreatCost:2) {
         weakness DARKNESS
@@ -1405,7 +1405,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 100
           }
         }
-      };
+      }
       case CHIMECHO_59:
       return basic (this, hp:HP070, type:P, retreatCost:1) {
         weakness DARKNESS
@@ -1429,7 +1429,7 @@ public enum BattleStyles implements LogicCardInfo {
             applyAfterDamage(ASLEEP)
           }
         }
-      };
+      }
       case ESPURR_60:
       return basic (this, hp:HP060, type:P, retreatCost:1) {
         weakness DARKNESS
@@ -1442,7 +1442,7 @@ public enum BattleStyles implements LogicCardInfo {
             flip { damage 20 }
           }
         }
-      };
+      }
       case MEOWSTIC_61:
       return evolution (this, from:"Espurr", hp:HP090, type:P, retreatCost:1) {
         weakness DARKNESS
@@ -1467,7 +1467,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case MIMIKYU_V_62:
       return basic (this, hp:HP160, type:P, retreatCost:2) {
         weakness DARKNESS
@@ -1499,7 +1499,7 @@ public enum BattleStyles implements LogicCardInfo {
             directDamage 30 * opp.prizeCardSet.takenCount, defending
           }
         }
-      };
+      }
       case NECROZMA_V_63:
       return basic (this, hp:HP220, type:P, retreatCost:3) {
         weakness DARKNESS
@@ -1520,7 +1520,7 @@ public enum BattleStyles implements LogicCardInfo {
             if (self.cards.filterByType(SPECIAL_ENERGY)) damage 120
           }
         }
-      };
+      }
       case DOTTLER_64:
       return evolution (this, from:"Blipbug", hp:HP070, type:P, retreatCost:2) {
         weakness DARKNESS
@@ -1543,7 +1543,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case ORBEETLE_65:
       return evolution (this, from:"Dottler", hp:HP110, type:P, retreatCost:1) {
         weakness DARKNESS
@@ -1573,7 +1573,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 120
           }
         }
-      };
+      }
       case MANKEY_66:
       return basic (this, hp:HP060, type:F, retreatCost:1) {
         weakness PSYCHIC
@@ -1584,7 +1584,7 @@ public enum BattleStyles implements LogicCardInfo {
             flip { damage 50 }
           }
         }
-      };
+      }
       case PRIMEAPE_67:
       return evolution (this, from:"Mankey", hp:HP120, type:F, retreatCost:2) {
         weakness PSYCHIC
@@ -1608,7 +1608,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 50 * count
           }
         }
-      };
+      }
       case ONIX_68:
       return basic (this, hp:HP110, type:F, retreatCost:4) {
         weakness GRASS
@@ -1627,7 +1627,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 60, self
           }
         }
-      };
+      }
       case CUBONE_69:
       return basic (this, hp:HP070, type:F, retreatCost:1) {
         weakness GRASS
@@ -1645,7 +1645,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case MAROWAK_70:
       return evolution (this, from:"Cubone", hp:HP110, type:F, retreatCost:2) {
         weakness GRASS
@@ -1669,7 +1669,7 @@ public enum BattleStyles implements LogicCardInfo {
             flip 2, { damage 90 }
           }
         }
-      };
+      }
       case GLIGAR_71:
       return basic (this, hp:HP070, type:F, retreatCost:1) {
         weakness GRASS
@@ -1680,7 +1680,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case GLISCOR_72:
       return evolution (this, from:"Gligar", hp:HP120, type:F, retreatCost:1) {
         weakness GRASS
@@ -1699,7 +1699,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 90
           }
         }
-      };
+      }
       case TIMBURR_73:
       return basic (this, hp:HP080, type:F, retreatCost:2) {
         weakness PSYCHIC
@@ -1710,7 +1710,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case GURDURR_74:
       return evolution (this, from:"Timburr", hp:HP100, type:F, retreatCost:3) {
         weakness PSYCHIC
@@ -1728,7 +1728,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case CONKELDURR_75:
       return evolution (this, from:"Gurdurr", hp:HP160, type:F, retreatCost:3) {
         weakness PSYCHIC
@@ -1747,7 +1747,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 150
           }
         }
-      };
+      }
       case MIENFOO_76:
       return basic (this, hp:HP060, type:F, retreatCost:1) {
         weakness PSYCHIC
@@ -1758,7 +1758,7 @@ public enum BattleStyles implements LogicCardInfo {
             flip 2, { damage 30 }
           }
         }
-      };
+      }
       case MIENSHAO_77:
       return evolution (this, from:"Mienfoo", hp:HP090, type:F, retreatCost:1) {
         weakness PSYCHIC
@@ -1783,7 +1783,7 @@ public enum BattleStyles implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ROLYCOLY_78:
       return basic (this, hp:HP070, type:F, retreatCost:2) {
         weakness GRASS
@@ -1795,7 +1795,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 10, self
           }
         }
-      };
+      }
       case CARKOL_79:
       return evolution (this, from:"Rolycoly", hp:HP100, type:F, retreatCost:3) {
         weakness GRASS
@@ -1814,7 +1814,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 10, self
           }
         }
-      };
+      }
       case COALOSSAL_80:
       return evolution (this, from:"Carkol", hp:HP180, type:F, retreatCost:4) {
         weakness GRASS
@@ -1833,7 +1833,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 50, self
           }
         }
-      };
+      }
       case SILICOBRA_81:
       return basic (this, hp:HP080, type:F, retreatCost:2) {
         weakness GRASS
@@ -1851,7 +1851,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 60
           }
         }
-      };
+      }
       case SANDACONDA_82:
       return evolution (this, from:"Silicobra", hp:HP130, type:F, retreatCost:3) {
         weakness GRASS
@@ -1878,7 +1878,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 120
           }
         }
-      };
+      }
       case FALINKS_83:
       return basic (this, hp:HP110, type:F, retreatCost:2) {
         weakness PSYCHIC
@@ -1891,7 +1891,7 @@ public enum BattleStyles implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case STONJOURNER_84:
       return basic (this, hp:HP130, type:F, retreatCost:3) {
         weakness GRASS
@@ -1913,7 +1913,7 @@ public enum BattleStyles implements LogicCardInfo {
             cantUseAttack(thisMove, self)
           }
         }
-      };
+      }
       case SINGLE_STRIKE_URSHIFU_V_85:
       return basic (this, hp:HP220, type:F, retreatCost:2) {
         weakness PSYCHIC
@@ -1936,7 +1936,7 @@ public enum BattleStyles implements LogicCardInfo {
             cantUseAttack(thisMove, self)
           }
         }
-      };
+      }
       case SINGLE_STRIKE_URSHIFU_VMAX_86:
       return evolution (this, from:"Single Strike Urshifu V", hp:HP330, type:F, retreatCost:3) {
         weakness PSYCHIC
@@ -1957,7 +1957,7 @@ public enum BattleStyles implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case RAPID_STRIKE_URSHIFU_V_87:
       return basic (this, hp:HP220, type:F, retreatCost:2) {
         weakness PSYCHIC
@@ -1976,7 +1976,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 150
           }
         }
-      };
+      }
       case RAPID_STRIKE_URSHIFU_VMAX_88:
       return evolution (this, from:"Rapid Strike Urshifu V", hp:HP330, type:F, retreatCost:2) {
         weakness PSYCHIC
@@ -2000,7 +2000,7 @@ public enum BattleStyles implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case ZUBAT_89:
       return basic (this, hp:HP050, type:D, retreatCost:1) {
         weakness FIGHTING
@@ -2018,7 +2018,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case GOLBAT_90:
       return evolution (this, from:"Zubat", hp:HP080, type:D, retreatCost:1) {
         weakness FIGHTING
@@ -2039,7 +2039,7 @@ public enum BattleStyles implements LogicCardInfo {
             discardSelfEnergyAfterDamage(C)
           }
         }
-      };
+      }
       case CROBAT_91:
       return evolution (this, from:"Golbat", hp:HP130, type:D, retreatCost:0) {
         weakness FIGHTING
@@ -2059,7 +2059,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 100
           }
         }
-      };
+      }
       case GALARIAN_SLOWBRO_92:
       return evolution (this, from:"GalarianSlowpoke", hp:HP130, type:D, retreatCost:3) {
         weakness FIGHTING
@@ -2079,7 +2079,7 @@ public enum BattleStyles implements LogicCardInfo {
             if (self.specialConditions) damage 120
           }
         }
-      };
+      }
       case MURKROW_93:
       return basic (this, hp:HP070, type:D, retreatCost:1) {
         weakness LIGHTNING
@@ -2101,7 +2101,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case HONCHKROW_94:
       return evolution (this, from:"Murkrow", hp:HP130, type:D, retreatCost:2) {
         weakness LIGHTNING
@@ -2128,7 +2128,7 @@ public enum BattleStyles implements LogicCardInfo {
             if (defending.cards.filterByType(SPECIAL_ENERGY)) damage 80
           }
         }
-      };
+      }
       case HOUNDOUR_95:
       return basic (this, hp:HP060, type:D, retreatCost:1) {
         weakness GRASS
@@ -2139,7 +2139,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case HOUNDOOM_96:
       return evolution (this, from:"Houndour", hp:HP130, type:D, retreatCost:2) {
         weakness GRASS
@@ -2168,7 +2168,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 50
           }
         }
-      };
+      }
       case TYRANITAR_V_97:
       return basic (this, hp:HP230, type:D, retreatCost:3) {
         weakness GRASS
@@ -2192,7 +2192,7 @@ public enum BattleStyles implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case MORPEKO_98:
       return basic (this, hp:HP080, type:D, retreatCost:1) {
         weakness GRASS
@@ -2216,7 +2216,7 @@ public enum BattleStyles implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case STEELIX_99:
       return evolution (this, from:"Onix", hp:HP190, type:M, retreatCost:4) {
         weakness FIRE
@@ -2235,7 +2235,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 200
           }
         }
-      };
+      }
       case MAWILE_100:
       return basic (this, hp:HP090, type:M, retreatCost:1) {
         weakness FIRE
@@ -2255,7 +2255,7 @@ public enum BattleStyles implements LogicCardInfo {
             swiftDamage(100, defending)
           }
         }
-      };
+      }
       case BRONZOR_101:
       return basic (this, hp:HP060, type:M, retreatCost:1) {
         weakness FIRE
@@ -2267,7 +2267,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 30
           }
         }
-      };
+      }
       case BRONZONG_102:
       return evolution (this, from:"Bronzor", hp:HP110, type:M, retreatCost:3) {
         weakness FIRE
@@ -2295,7 +2295,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case PAWNIARD_103:
       return basic (this, hp:HP060, type:M, retreatCost:1) {
         weakness FIRE
@@ -2314,7 +2314,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 10
           }
         }
-      };
+      }
       case BISHARP_104:
       return evolution (this, from:"Pawniard", hp:HP110, type:M, retreatCost:1) {
         weakness FIRE
@@ -2334,7 +2334,7 @@ public enum BattleStyles implements LogicCardInfo {
             if (defending.types.contains(M)) damage 90
           }
         }
-      };
+      }
       case HONEDGE_105:
       return basic (this, hp:HP060, type:M, retreatCost:2) {
         weakness FIRE
@@ -2347,7 +2347,7 @@ public enum BattleStyles implements LogicCardInfo {
             flip { damage 30 }
           }
         }
-      };
+      }
       case DOUBLADE_106:
       return evolution (this, from:"Honedge", hp:HP080, type:M, retreatCost:2) {
         weakness FIRE
@@ -2360,7 +2360,7 @@ public enum BattleStyles implements LogicCardInfo {
             flip { discardDefendingEnergyAfterDamage() }
           }
         }
-      };
+      }
       case AEGISLASH_107:
       return evolution (this, from:"Doublade", hp:HP150, type:M, retreatCost:3) {
         weakness FIRE
@@ -2391,7 +2391,7 @@ public enum BattleStyles implements LogicCardInfo {
             discardSelfEnergyAfterDamage(M, M)
           }
         }
-      };
+      }
       case AEGISLASH_108:
       return evolution (this, from:"Doublade", hp:HP150, type:M, retreatCost:3) {
         weakness FIRE
@@ -2422,7 +2422,7 @@ public enum BattleStyles implements LogicCardInfo {
             preventAllDamageFromCustomPokemonNextTurn thisMove, self, { it.pokemonVMAX }
           }
         }
-      };
+      }
       case CORVIKNIGHT_V_109:
       return basic (this, hp:HP210, type:M, retreatCost:1) {
         weakness FIRE
@@ -2443,7 +2443,7 @@ public enum BattleStyles implements LogicCardInfo {
             cantUseAttack(thisMove, self)
           }
         }
-      };
+      }
       case CORVIKNIGHT_VMAX_110:
       return evolution (this, from:"Corviknight V", hp:HP320, type:M, retreatCost:0) {
         weakness FIRE
@@ -2467,7 +2467,7 @@ public enum BattleStyles implements LogicCardInfo {
             cantUseAttack(thisMove, self)
           }
         }
-      };
+      }
       case SPEAROW_111:
       return basic (this, hp:HP050, type:C, retreatCost:1) {
         weakness LIGHTNING
@@ -2479,7 +2479,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 20
           }
         }
-      };
+      }
       case FEAROW_112:
       return evolution (this, from:"Spearow", hp:HP090, type:C, retreatCost:0) {
         weakness LIGHTNING
@@ -2491,7 +2491,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 70
           }
         }
-      };
+      }
       case LICKITUNG_113:
       return basic (this, hp:HP110, type:C, retreatCost:4) {
         weakness FIGHTING
@@ -2509,7 +2509,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 80
           }
         }
-      };
+      }
       case LICKILICKY_114:
       return evolution (this, from:"Lickitung", hp:HP140, type:C, retreatCost:4) {
         weakness FIGHTING
@@ -2543,7 +2543,7 @@ public enum BattleStyles implements LogicCardInfo {
             }
           }
         }
-      };
+      }
       case GLAMEOW_115:
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness FIGHTING
@@ -2561,7 +2561,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 40
           }
         }
-      };
+      }
       case PURUGLY_116:
       return evolution (this, from:"Glameow", hp:HP120, type:C, retreatCost:3) {
         weakness FIGHTING
@@ -2583,7 +2583,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 120
           }
         }
-      };
+      }
       case STOUTLAND_V_117:
       return basic (this, hp:HP210, type:C, retreatCost:3) {
         weakness FIGHTING
@@ -2621,7 +2621,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 30, self
           }
         }
-      };
+      }
       case BOUFFALANT_118:
       return basic (this, hp:HP120, type:C, retreatCost:2) {
         weakness FIGHTING
@@ -2646,7 +2646,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 30, self
           }
         }
-      };
+      }
       case DRAMPA_119:
       return basic (this, hp:HP120, type:C, retreatCost:2) {
         weakness FIGHTING
@@ -2663,7 +2663,7 @@ public enum BattleStyles implements LogicCardInfo {
             flipUntilTails { damage 30 }
           }
         }
-      };
+      }
       case INDEEDEE_120:
       return basic (this, hp:HP090, type:C, retreatCost:2) {
         weakness FIGHTING
@@ -2681,7 +2681,7 @@ public enum BattleStyles implements LogicCardInfo {
             damage 10 * my.hand.size()
           }
         }
-      };
+      }
       case BRUNO_121:
       return supporter (this) {
         text "Shuffle your hand into your deck. Then, draw 4 cards. If any of your Pokémon were Knocked Out during your opponent's last turn, draw 7 cards instead."
@@ -2707,7 +2707,7 @@ public enum BattleStyles implements LogicCardInfo {
         playRequirement{
           assert my.hand.getExcludedList(thisCard) || my.deck : "Both Hand and Deck are empty"
         }
-      };
+      }
       case CAMPING_GEAR_122:
       return itemCard (this) {
         text "Search your deck for a card and put it into your hand. Then, shuffle your deck. Your turn ends."
@@ -2719,7 +2719,7 @@ public enum BattleStyles implements LogicCardInfo {
         playRequirement {
           assert my.deck : "Your Deck is empty"
         }
-      };
+      }
       case CHERYL_123:
       return supporter (this) {
         text "Heal all damage from each of your Evolution Pokémon. If you do, discard all Energy from the Pokémon that were healed in this way."
@@ -2738,7 +2738,7 @@ public enum BattleStyles implements LogicCardInfo {
         playRequirement{
           assert my.all.findAll {it.realEvolution && it.numberOfDamageCounters > 0 }
         }
-      };
+      }
       case ENERGY_RECYCLER_124:
         return itemCard (this) {
           text "Shuffle up to 5 basic Energy cards from your discard pile into your deck. You may play any number of Item cards during your turn."
@@ -2749,7 +2749,7 @@ public enum BattleStyles implements LogicCardInfo {
           playRequirement{
             assert my.discard.filterByType(BASIC_ENERGY)
           }
-        };
+        }
       case ESCAPE_ROPE_125:
         return copy(PlasmaStorm.ESCAPE_ROPE_120, this)
       case EXP_SHARE_126:
@@ -2765,7 +2765,7 @@ public enum BattleStyles implements LogicCardInfo {
         playRequirement{
           assert opp.all.find { it.cards.filterByType(SPECIAL_ENERGY) } : "Your opponent has no Special Energy cards attached"
         }
-      };
+      }
       case KORRINA_S_FOCUS_128:
       return supporter (this) {
         text "Draw cards until you have 6 cards in your hand."
@@ -2776,7 +2776,7 @@ public enum BattleStyles implements LogicCardInfo {
           assert my.hand.getExcludedList(thisCard).size() < 6 : "You have 6 or more cards in your hand"
           assert my.deck : "Your deck is empty"
         }
-      };
+      }
       case LEVEL_BALL_129:
         return copy(AncientOrigins.LEVEL_BALL_76, this)
       case PHOEBE_130:
@@ -2800,7 +2800,7 @@ public enum BattleStyles implements LogicCardInfo {
             unregisterAfter 1
           }
         }
-      };
+      }
       case RAPID_STRIKE_SCROLL_OF_SWIRLS_131:
       return pokemonTool (this) {
         text "The Rapid Strike Pokémon this card is attached to can use the attack on this card. (You still need the necessary Energy to use this attack.)" +
@@ -2834,7 +2834,7 @@ public enum BattleStyles implements LogicCardInfo {
         onRemoveFromPlay {
           newMove.unregister()
         }
-      };
+      }
       case RAPID_STRIKE_STYLE_MUSTARD_132:
       return supporter (this) {
         text "You can play this card only when it is the last card in your hand." +
@@ -2851,7 +2851,7 @@ public enum BattleStyles implements LogicCardInfo {
           assert discardPile.findAll {it.cardTypes.is(POKEMON) && it.cardTypes.is(RAPID_STRIKE)} : "No Rapid Strike Pokémon in discard pile"
           assert bench.notFull : "Bench is full"
         }
-      };
+      }
       case SINGLE_STRIKE_SCROLL_OF_SCORN_133:
       return pokemonTool (this) {
         text "The Single Strike Pokémon this card is attached to can use the attack on this card. (You still need the necessary Energy to use this attack.)" +
@@ -2886,7 +2886,7 @@ public enum BattleStyles implements LogicCardInfo {
         onRemoveFromPlay {
           newMove.unregister()
         }
-      };
+      }
       case SINGLE_STRIKE_STYLE_MUSTARD_134:
       return supporter (this) {
         text "You can play this card only when it is the last card in your hand." +
@@ -2904,7 +2904,7 @@ public enum BattleStyles implements LogicCardInfo {
           assert hand.size() == 1 : "You can play this card only when it is the last card in your hand"
           assert bench.notFull : "Bench is full"
         }
-      };
+      }
       case SORDWARD_SHIELBERT_135:
       return supporter (this) {
         text "Choose a Trainer card from your discard pile. Then, ask your opponent if you may put it into your hand. If yes, put that card into your hand. If no, draw 3 cards."
@@ -2922,7 +2922,7 @@ public enum BattleStyles implements LogicCardInfo {
         playRequirement {
           assert my.discard.hasType(TRAINER) : "There are no Trainer cards in your discard pile."
         }
-      };
+      }
       case TOOL_JAMMER_136:
       return pokemonTool (this) {
         text "As long as the Pokémon this card is attached to is in the Active Spot, Pokémon Tools attached to your opponent's Active Pokémon have no effect, except for Tool Jammer."
@@ -3006,7 +3006,7 @@ public enum BattleStyles implements LogicCardInfo {
           deactivateEffect()
           eff.unregister()
         }
-      };
+      }
       case TOWER_OF_DARKNESS_137:
       return stadium (this) {
         text "Once during each player's turn, that player may draw 2 cards. In order to use this effect, that player must discard a Single Strike card from their hand."
@@ -3026,7 +3026,7 @@ public enum BattleStyles implements LogicCardInfo {
         onRemoveFromPlay {
           actions.each { bg().gm().unregisterAction(it) }
         }
-      };
+      }
       case TOWER_OF_WATERS_138:
       return stadium (this) {
         text "The Retreat Cost of each Rapid Strike Pokémon in play (both yours and your opponent's) is [C][C] less."
@@ -3041,7 +3041,7 @@ public enum BattleStyles implements LogicCardInfo {
         onRemoveFromPlay {
           eff.unregister()
         }
-      };
+      }
       case URN_OF_VITALITY_139:
       return itemCard (this) {
         text "Shuffle up to 2 Single Strike Energy cards from your discard pile into your deck."
@@ -3053,7 +3053,7 @@ public enum BattleStyles implements LogicCardInfo {
 
           assert my.discard.any { it.name == "Single Strike Energy" } : "No Single Strike Energy"
         }
-      };
+      }
       case RAPID_STRIKE_ENERGY_140:
       return specialEnergy (this, [[C]]) {
         text "This card can only be attached to a Rapid Strike Pokémon. If this card is attached to anything other than a Rapid Strike Pokémon, discard this card." +
@@ -3082,7 +3082,7 @@ public enum BattleStyles implements LogicCardInfo {
         getEnergyTypesOverride {
           self != null ? [[W, F] as Set, [W, F] as Set] : [[] as Set]
         }
-      };
+      }
       case SINGLE_STRIKE_ENERGY_141:
       return specialEnergy (this, [[C]]) {
         text "This card can only be attached to a Single Strike Pokémon. If this card is attached to anything other than a Single Strike Pokémon, discard this card." +
@@ -3121,93 +3121,93 @@ public enum BattleStyles implements LogicCardInfo {
         getEnergyTypesOverride {
           self != null ? [[F, D] as Set] : [[] as Set]
         }
-      };
+      }
       case KRICKETUNE_V_142:
-      return copy (KRICKETUNE_V_6, this);
+      return copy (KRICKETUNE_V_6, this)
       case FLAPPLE_V_143:
-      return copy (FLAPPLE_V_18, this);
+      return copy (FLAPPLE_V_18, this)
       case VICTINI_V_144:
-      return copy (VICTINI_V_21, this);
+      return copy (VICTINI_V_21, this)
       case EMPOLEON_V_145:
-      return copy (EMPOLEON_V_40, this);
+      return copy (EMPOLEON_V_40, this)
       case EMPOLEON_V_146:
-      return copy (EMPOLEON_V_40, this);
+      return copy (EMPOLEON_V_40, this)
       case TAPU_KOKO_V_147:
-      return copy (TAPU_KOKO_V_50, this);
+      return copy (TAPU_KOKO_V_50, this)
       case MIMIKYU_V_148:
-      return copy (MIMIKYU_V_62, this);
+      return copy (MIMIKYU_V_62, this)
       case NECROZMA_V_149:
-      return copy (NECROZMA_V_63, this);
+      return copy (NECROZMA_V_63, this)
       case SINGLE_STRIKE_URSHIFU_V_150:
-      return copy (SINGLE_STRIKE_URSHIFU_V_85, this);
+      return copy (SINGLE_STRIKE_URSHIFU_V_85, this)
       case SINGLE_STRIKE_URSHIFU_V_151:
-      return copy (SINGLE_STRIKE_URSHIFU_V_85, this);
+      return copy (SINGLE_STRIKE_URSHIFU_V_85, this)
       case RAPID_STRIKE_URSHIFU_V_152:
-      return copy (RAPID_STRIKE_URSHIFU_V_87, this);
+      return copy (RAPID_STRIKE_URSHIFU_V_87, this)
       case RAPID_STRIKE_URSHIFU_V_153:
-      return copy (RAPID_STRIKE_URSHIFU_V_87, this);
+      return copy (RAPID_STRIKE_URSHIFU_V_87, this)
       case TYRANITAR_V_154:
-      return copy (TYRANITAR_V_97, this);
+      return copy (TYRANITAR_V_97, this)
       case TYRANITAR_V_155:
-      return copy (TYRANITAR_V_97, this);
+      return copy (TYRANITAR_V_97, this)
       case CORVIKNIGHT_V_156:
-      return copy (CORVIKNIGHT_V_109, this);
+      return copy (CORVIKNIGHT_V_109, this)
       case STOUTLAND_V_157:
-      return copy (STOUTLAND_V_117, this);
+      return copy (STOUTLAND_V_117, this)
       case BRUNO_158:
-      return copy (BRUNO_121, this);
+      return copy (BRUNO_121, this)
       case CHERYL_159:
-      return copy (CHERYL_123, this);
+      return copy (CHERYL_123, this)
       case KORRINA_S_FOCUS_160:
-      return copy (KORRINA_S_FOCUS_128, this);
+      return copy (KORRINA_S_FOCUS_128, this)
       case PHOEBE_161:
-      return copy (PHOEBE_130, this);
+      return copy (PHOEBE_130, this)
       case RAPID_STRIKE_STYLE_MUSTARD_162:
-      return copy (RAPID_STRIKE_STYLE_MUSTARD_132, this);
+      return copy (RAPID_STRIKE_STYLE_MUSTARD_132, this)
       case SINGLE_STRIKE_STYLE_MUSTARD_163:
-      return copy (SINGLE_STRIKE_STYLE_MUSTARD_134, this);
+      return copy (SINGLE_STRIKE_STYLE_MUSTARD_134, this)
       case FLAPPLE_VMAX_164:
-      return copy (FLAPPLE_VMAX_19, this);
+      return copy (FLAPPLE_VMAX_19, this)
       case VICTINI_VMAX_165:
-      return copy (VICTINI_VMAX_22, this);
+      return copy (VICTINI_VMAX_22, this)
       case TAPU_KOKO_VMAX_166:
-      return copy (TAPU_KOKO_VMAX_51, this);
+      return copy (TAPU_KOKO_VMAX_51, this)
       case SINGLE_STRIKE_URSHIFU_VMAX_167:
-      return copy (SINGLE_STRIKE_URSHIFU_VMAX_86, this);
+      return copy (SINGLE_STRIKE_URSHIFU_VMAX_86, this)
       case SINGLE_STRIKE_URSHIFU_VMAX_168:
-      return copy (SINGLE_STRIKE_URSHIFU_VMAX_86, this);
+      return copy (SINGLE_STRIKE_URSHIFU_VMAX_86, this)
       case RAPID_STRIKE_URSHIFU_VMAX_169:
-      return copy (RAPID_STRIKE_URSHIFU_VMAX_88, this);
+      return copy (RAPID_STRIKE_URSHIFU_VMAX_88, this)
       case RAPID_STRIKE_URSHIFU_VMAX_170:
-      return copy (RAPID_STRIKE_URSHIFU_VMAX_88, this);
+      return copy (RAPID_STRIKE_URSHIFU_VMAX_88, this)
       case CORVIKNIGHT_VMAX_171:
-      return copy (CORVIKNIGHT_VMAX_110, this);
+      return copy (CORVIKNIGHT_VMAX_110, this)
       case BRUNO_172:
-      return copy (BRUNO_121, this);
+      return copy (BRUNO_121, this)
       case CHERYL_173:
-      return copy (CHERYL_123, this);
+      return copy (CHERYL_123, this)
       case KORRINA_S_FOCUS_174:
-      return copy (KORRINA_S_FOCUS_128, this);
+      return copy (KORRINA_S_FOCUS_128, this)
       case PHOEBE_175:
-      return copy (PHOEBE_130, this);
+      return copy (PHOEBE_130, this)
       case RAPID_STRIKE_STYLE_MUSTARD_176:
-      return copy (RAPID_STRIKE_STYLE_MUSTARD_132, this);
+      return copy (RAPID_STRIKE_STYLE_MUSTARD_132, this)
       case SINGLE_STRIKE_STYLE_MUSTARD_177:
-      return copy (SINGLE_STRIKE_STYLE_MUSTARD_134, this);
+      return copy (SINGLE_STRIKE_STYLE_MUSTARD_134, this)
       case OCTILLERY_178:
-      return copy (OCTILLERY_37, this);
+      return copy (OCTILLERY_37, this)
       case HOUNDOOM_179:
-      return copy (HOUNDOOM_96, this);
+      return copy (HOUNDOOM_96, this)
       case EXP_SHARE_180:
-      return copy (EXP_SHARE_126, this);
+      return copy (EXP_SHARE_126, this)
       case LEVEL_BALL_181:
-      return copy (LEVEL_BALL_129, this);
+      return copy (LEVEL_BALL_129, this)
       case RAPID_STRIKE_ENERGY_182:
-      return copy (RAPID_STRIKE_ENERGY_140, this);
+      return copy (RAPID_STRIKE_ENERGY_140, this)
       case SINGLE_STRIKE_ENERGY_183:
-      return copy (SINGLE_STRIKE_ENERGY_141, this);
+      return copy (SINGLE_STRIKE_ENERGY_141, this)
         default:
-      return null;
+      return null
     }
   }
 }

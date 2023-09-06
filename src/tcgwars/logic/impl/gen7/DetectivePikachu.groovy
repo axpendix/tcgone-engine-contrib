@@ -1,20 +1,20 @@
-package tcgwars.logic.impl.gen7;
+package tcgwars.logic.impl.gen7
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
 import tcgwars.logic.card.*
 import tcgwars.logic.effect.basic.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -40,53 +40,53 @@ public enum DetectivePikachu implements LogicCardInfo {
   DITTO_17 ("Ditto", "17", Rarity.ULTRARARE, [POKEMON, BASIC, _COLORLESS_]),
   SLAKING_18 ("Slaking", "18", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   DetectivePikachu(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.DETECTIVE_PIKACHU;
+    return tcgwars.logic.card.Collection.DETECTIVE_PIKACHU
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -107,7 +107,7 @@ public enum DetectivePikachu implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LUDICOLO_2:
         return evolution (this, from:"Lombre", hp:HP140, type:G, retreatCost:3) {
           weakness R
@@ -130,7 +130,7 @@ public enum DetectivePikachu implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MORELULL_3:
         return basic (this, hp:HP050, type:G, retreatCost:1) {
           weakness R
@@ -143,7 +143,7 @@ public enum DetectivePikachu implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHARMANDER_4:
         return basic (this, hp:HP060, type:R, retreatCost:1) {
           weakness W
@@ -156,7 +156,7 @@ public enum DetectivePikachu implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case CHARIZARD_5:
         return evolution (this, from:"Charmeleon", hp:HP180, type:R, retreatCost:3) {
           weakness W
@@ -176,7 +176,7 @@ public enum DetectivePikachu implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case ARCANINE_6:
         return evolution (this, from:"Growlithe", hp:HP120, type:R, retreatCost:3) {
           weakness W
@@ -201,7 +201,7 @@ public enum DetectivePikachu implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case PSYDUCK_7:
         return basic (this, hp:HP080, type:W, retreatCost:3) {
           weakness G
@@ -214,7 +214,7 @@ public enum DetectivePikachu implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MAGIKARP_8:
         return basic (this, hp:HP030, type:W, retreatCost:1) {
           weakness L
@@ -229,7 +229,7 @@ public enum DetectivePikachu implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case GRENINJA_9:
         return evolution (this, from:"Frogadier", hp:HP140, type:W, retreatCost:1) {
           weakness G
@@ -254,7 +254,7 @@ public enum DetectivePikachu implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DETECTIVE_PIKACHU_10:
         return basic (this, hp:HP090, type:L, retreatCost:2) {
           weakness F
@@ -277,7 +277,7 @@ public enum DetectivePikachu implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MR_MIME_11:
         return basic (this, hp:HP080, type:P, retreatCost:1) {
           weakness P
@@ -301,7 +301,7 @@ public enum DetectivePikachu implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MEWTWO_12:
         return basic (this, hp:HP130, type:P, retreatCost:2) {
           weakness P
@@ -322,7 +322,7 @@ public enum DetectivePikachu implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case MACHAMP_13:
         return evolution (this, from:"Machoke", hp:HP160, type:F, retreatCost:2) {
           weakness P
@@ -346,7 +346,7 @@ public enum DetectivePikachu implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case JIGGLYPUFF_14:
         return basic (this, hp:HP060, type:Y, retreatCost:1) {
           weakness M
@@ -359,7 +359,7 @@ public enum DetectivePikachu implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SNUBBULL_15:
         return basic (this, hp:HP070, type:Y, retreatCost:2) {
           weakness M
@@ -373,7 +373,7 @@ public enum DetectivePikachu implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case LICKITUNG_16:
         return basic (this, hp:HP100, type:C, retreatCost:3) {
           weakness F
@@ -385,7 +385,7 @@ public enum DetectivePikachu implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case DITTO_17:
         return basic (this, hp:HP060, type:C, retreatCost:1) {
           weakness F
@@ -405,7 +405,7 @@ public enum DetectivePikachu implements LogicCardInfo {
             }
           }
 
-        };
+        }
       case SLAKING_18:
         return evolution (this, from:"Vigoroth", hp:HP180, type:C, retreatCost:4) {
           weakness F
@@ -418,9 +418,9 @@ public enum DetectivePikachu implements LogicCardInfo {
             }
           }
 
-        };
+        }
       default:
-        return null;
+        return null
     }
   }
 

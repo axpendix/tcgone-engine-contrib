@@ -5,25 +5,25 @@ import tcgwars.logic.effect.gm.PlayCard
 import tcgwars.logic.effect.gm.PlayTrainer
 import tcgwars.logic.groovy.TcgStatics
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.*;
+import tcgwars.logic.*
 import tcgwars.logic.card.*
-import tcgwars.logic.effect.*;
+import tcgwars.logic.effect.*
 import tcgwars.logic.effect.ability.*
 import tcgwars.logic.effect.basic.*
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -267,53 +267,53 @@ public enum LostThunder implements LogicCardInfo {
   LOST_BLENDER_233("Lost Blender", "233", Rarity.SECRET, [TRAINER,ITEM]),
   NET_BALL_234("Net Ball", "234", Rarity.SECRET, [TRAINER,ITEM]),
   SPELL_TAG_235("Spell Tag", "235", Rarity.SECRET, [TRAINER,ITEM,POKEMON_TOOL]);
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   LostThunder(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.LOST_THUNDER;
+    return tcgwars.logic.card.Collection.LOST_THUNDER
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
@@ -337,7 +337,7 @@ public enum LostThunder implements LogicCardInfo {
               flipThenApplySC PARALYZED
             }
           }
-        };
+        }
       case TANGROWTH_2:
         return 	evolution (this, from:"Tangela", hp:HP140, type:GRASS, retreatCost:3) {
           weakness FIRE
@@ -356,7 +356,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 110
             }
           }
-        };
+        }
       case SCYTHER_3:
         return basic (this, hp:HP080, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -368,7 +368,7 @@ public enum LostThunder implements LogicCardInfo {
               flip 3,{},{},[1:{damage 20},2:{damage 50},3:{damage 70}]
             }
           }
-        };
+        }
       case PINSIR_4:
         return basic (this, hp:HP110, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -387,7 +387,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 70
             }
           }
-        };
+        }
       case CHIKORITA_5:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -409,7 +409,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case CHIKORITA_6:
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -421,7 +421,7 @@ public enum LostThunder implements LogicCardInfo {
               heal 10, self
             }
           }
-        };
+        }
       case BAYLEEF_7:
         return 	evolution (this, from:"Chikorita", hp:HP100, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -440,7 +440,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 50
             }
           }
-        };
+        }
       case MEGANIUM_8:
         return 	evolution (this, from:"Bayleef", hp:HP150, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -468,7 +468,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 110
             }
           }
-        };
+        }
       case SPINARAK_9:
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -489,7 +489,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case ARIADOS_10:
         return 	evolution (this, from:"Spinarak", hp:HP110, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -523,7 +523,7 @@ public enum LostThunder implements LogicCardInfo {
               applyAfterDamage POISONED
             }
           }
-        };
+        }
       case HOPPIP_11:
         return basic (this, hp:HP030, type:GRASS, retreatCost:1) {
           weakness LIGHTNING
@@ -533,7 +533,7 @@ public enum LostThunder implements LogicCardInfo {
             energyCost C
             callForFamily(name:"Hoppip",1,delegate)
           }
-        };
+        }
       case HOPPIP_12:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness LIGHTNING
@@ -545,7 +545,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case SKIPLOOM_13:
         return 	evolution (this, from:"Hoppip", hp:HP060, type:GRASS, retreatCost:0) {
           weakness LIGHTNING
@@ -575,7 +575,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case JUMPLUFF_14:
         return 	evolution (this, from:"Skiploom", hp:HP070, type:GRASS, retreatCost:0) {
           weakness LIGHTNING
@@ -587,7 +587,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 20*my.lostZone.findAll{it.cardTypes.is(POKEMON) && !it.cardTypes.is(PRISM_STAR)}.size()
             }
           }
-        };
+        }
       case PINECO_15:
         return basic (this, hp:HP060, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -598,7 +598,7 @@ public enum LostThunder implements LogicCardInfo {
               flipUntilTails{damage 20}
             }
           }
-        };
+        }
       case SHUCKLE_16:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -622,7 +622,7 @@ public enum LostThunder implements LogicCardInfo {
               attachEnergyFrom(basic:true,my.discard, my.all)
             }
           }
-        };
+        }
       case SHUCKLE_GX_17:
         return basic (this, hp:HP170, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -661,7 +661,7 @@ public enum LostThunder implements LogicCardInfo {
               applyAfterDamage PARALYZED
             }
           }
-        };
+        }
       case HERACROSS_18:
         return basic (this, hp:HP120, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -680,7 +680,7 @@ public enum LostThunder implements LogicCardInfo {
               if(my.bench.find{it.stage2}) damage 90
             }
           }
-        };
+        }
       case CELEBI_PRISM_STAR_19:
         return basic (this, hp:HP090, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -693,9 +693,9 @@ public enum LostThunder implements LogicCardInfo {
             onAttack{
               while(1){
                 def list = my.bench.findAll {it.evolution}
-                if(!list) break;
+                if(!list) break
                 def pcs = list.select("Devolve (or cancel)", false)
-                if(!pcs) break;
+                if(!pcs) break
                 devolve(pcs, my.hand)
               }
             }
@@ -708,7 +708,7 @@ public enum LostThunder implements LogicCardInfo {
               heal 20, self
             }
           }
-        };
+        }
       case TREECKO_20:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -723,7 +723,7 @@ public enum LostThunder implements LogicCardInfo {
               shuffleDeck()
             }
           }
-        };
+        }
       case GROVYLE_21:
         return 	evolution (this, from:"Treecko", hp:HP080, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -744,7 +744,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 40
             }
           }
-        };
+        }
       case SCEPTILE_GX_22:
         return 	evolution (this, from:"Grovyle", hp:HP230, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -785,7 +785,7 @@ public enum LostThunder implements LogicCardInfo {
 
             }
           }
-        };
+        }
       case WURMPLE_23:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -796,7 +796,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case WURMPLE_24:
         return basic (this, hp:HP060, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -807,7 +807,7 @@ public enum LostThunder implements LogicCardInfo {
               apply POISONED
             }
           }
-        };
+        }
       case SILCOON_25:
         return 	evolution (this, from:"Wurmple", hp:HP080, type:GRASS, retreatCost:3) {
           weakness FIRE
@@ -833,7 +833,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case BEAUTIFLY_26:
         return 	evolution (this, from:"Silcoon", hp:HP130, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -858,7 +858,7 @@ public enum LostThunder implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CASCOON_27:
         return 	evolution (this, from:"Wurmple", hp:HP070, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -884,7 +884,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case DUSTOX_28:
         return 	evolution (this, from:"Cascoon", hp:HP140, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -908,7 +908,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 70
             }
           }
-        };
+        }
       case NINCADA_29:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -919,7 +919,7 @@ public enum LostThunder implements LogicCardInfo {
               flip 3, {damage 10}
             }
           }
-        };
+        }
       case NINJASK_30:
         return 	evolution (this, from:"Nincada", hp:HP080, type:GRASS, retreatCost:0) {
           bwAbility "Molting" , {
@@ -942,7 +942,7 @@ public enum LostThunder implements LogicCardInfo {
               flip {damage 40}
             }
           }
-        };
+        }
       case COMBEE_31:
         return basic (this, hp:HP040, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -951,7 +951,7 @@ public enum LostThunder implements LogicCardInfo {
             energyCost G
             callForFamily(name:"Combee",3,delegate)
           }
-        };
+        }
       case VESPIQUEN_32:
         return 	evolution (this, from:"Combee", hp:HP120, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -965,7 +965,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 120
             }
           }
-        };
+        }
       case SHAYMIN_33:
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -985,7 +985,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case VIRIZION_GX_34:
         return basic (this, hp:HP170, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1022,7 +1022,7 @@ public enum LostThunder implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SKIDDO_35:
         return basic (this, hp:HP070, type:GRASS, retreatCost:1) {
           weakness FIRE
@@ -1040,7 +1040,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case GOGOAT_36:
         return 	evolution (this, from:"Skiddo", hp:HP130, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -1059,7 +1059,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 100
             }
           }
-        };
+        }
       case TAPU_BULU_37:
         return basic (this, hp:HP130, type:GRASS, retreatCost:2) {
           weakness FIRE
@@ -1078,7 +1078,7 @@ public enum LostThunder implements LogicCardInfo {
               flip 1,{},{damage 30,self}
             }
           }
-        };
+        }
       case MOLTRES_38:
         return basic (this, hp:HP120, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -1099,7 +1099,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 90
             }
           }
-        };
+        }
       case CYNDAQUIL_39:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -1111,7 +1111,7 @@ public enum LostThunder implements LogicCardInfo {
               sandAttack(thisMove)
             }
           }
-        };
+        }
       case CYNDAQUIL_40:
         return basic (this, hp:HP070, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -1122,7 +1122,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case QUILAVA_41:
         return 	evolution (this, from:"Cyndaquil", hp:HP090, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -1141,7 +1141,7 @@ public enum LostThunder implements LogicCardInfo {
               applyAfterDamage BURNED
             }
           }
-        };
+        }
       case TYPHLOSION_42:
         return 	evolution (this, from:"Quilava", hp:HP160, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -1178,7 +1178,7 @@ public enum LostThunder implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case SLUGMA_43:
         return basic (this, hp:HP080, type:FIRE, retreatCost:3) {
           weakness WATER
@@ -1199,7 +1199,7 @@ public enum LostThunder implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MAGCARGO_GX_44:
         return 	evolution (this, from:"Slugma", hp:HP210, type:FIRE, retreatCost:3) {
           weakness WATER
@@ -1240,7 +1240,7 @@ public enum LostThunder implements LogicCardInfo {
               opp.deck.subList(0,5).discard()
             }
           }
-        };
+        }
       case HOUNDOUR_45:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -1262,7 +1262,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case HOUNDOOM_46:
         return 	evolution (this, from:"Houndour", hp:HP110, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -1285,7 +1285,7 @@ public enum LostThunder implements LogicCardInfo {
               if(my.hand.size() > opp.hand.size()) damage 80
             }
           }
-        };
+        }
       case ENTEI_47:
         return basic (this, hp:HP130, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -1312,7 +1312,7 @@ public enum LostThunder implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case HEATRAN_48:
         return basic (this, hp:HP140, type:FIRE, retreatCost:4) {
           weakness WATER
@@ -1334,7 +1334,7 @@ public enum LostThunder implements LogicCardInfo {
               my.deck.subList(0,5).discard()
             }
           }
-        };
+        }
       case VICTINI_49:
         return basic (this, hp:HP070, type:FIRE, retreatCost:1) {
           weakness WATER
@@ -1347,7 +1347,7 @@ public enum LostThunder implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LITLEO_50:
         return basic (this, hp:HP060, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -1367,7 +1367,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 10, self
             }
           }
-        };
+        }
       case PYROAR_51:
         return 	evolution (this, from:"Litleo", hp:HP130, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -1386,7 +1386,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 90
             }
           }
-        };
+        }
       case BLACEPHALON_GX_52:
         return basic (this, hp:HP180, type:FIRE, retreatCost:2) {
           weakness WATER
@@ -1432,7 +1432,7 @@ public enum LostThunder implements LogicCardInfo {
               TakePrize.checkPrizes(bg)
             }
           }
-        };
+        }
       case ALOLAN_VULPIX_53:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness METAL
@@ -1451,7 +1451,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case SLOWPOKE_54:
         return basic (this, hp:HP070, type:WATER, retreatCost:2) {
           weakness GRASS
@@ -1462,7 +1462,7 @@ public enum LostThunder implements LogicCardInfo {
               apply ASLEEP
             }
           }
-        };
+        }
       case SLOWKING_55:
         return 	evolution (this, from:"Slowpoke", hp:HP120, type:WATER, retreatCost:2) {
           weakness GRASS
@@ -1483,7 +1483,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 20*defending.cards.energyCount(C)
             }
           }
-        };
+        }
       case LAPRAS_56:
         return basic (this, hp:HP120, type:WATER, retreatCost:2) {
           weakness METAL
@@ -1505,7 +1505,7 @@ public enum LostThunder implements LogicCardInfo {
               flipThenApplySC PARALYZED
             }
           }
-        };
+        }
       case DELIBIRD_57:
         return basic (this, hp:HP090, type:WATER, retreatCost:1) {
           weakness METAL
@@ -1533,7 +1533,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case MANTINE_58:
         return basic (this, hp:HP120, type:WATER, retreatCost:3) {
           weakness LIGHTNING
@@ -1553,7 +1553,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 100
             }
           }
-        };
+        }
       case SUICUNE_59:
         return basic (this, hp:HP110, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -1575,7 +1575,7 @@ public enum LostThunder implements LogicCardInfo {
               heal 30, self
             }
           }
-        };
+        }
       case SUICUNE_GX_60:
         return basic (this, hp:HP180, type:WATER, retreatCost:2) {
           weakness GRASS
@@ -1610,7 +1610,7 @@ public enum LostThunder implements LogicCardInfo {
               switchYourActive()
             }
           }
-        };
+        }
       case CUBCHOO_61:
         return basic (this, hp:HP070, type:WATER, retreatCost:2) {
           weakness METAL
@@ -1631,7 +1631,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case BEARTIC_62:
         return 	evolution (this, from:"Cubchoo", hp:HP140, type:WATER, retreatCost:3) {
           weakness METAL
@@ -1651,7 +1651,7 @@ public enum LostThunder implements LogicCardInfo {
               cantAttackNextTurn self
             }
           }
-        };
+        }
       case WHITE_KYUREM_63:
         return basic (this, hp:HP130, type:WATER, retreatCost:3) {
           weakness METAL
@@ -1675,7 +1675,7 @@ public enum LostThunder implements LogicCardInfo {
               if(self.cards.energyCount(R)) damage 80
             }
           }
-        };
+        }
       case POPPLIO_64:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -1687,7 +1687,7 @@ public enum LostThunder implements LogicCardInfo {
               flipThenApplySC CONFUSED
             }
           }
-        };
+        }
       case POPPLIO_65:
         return basic (this, hp:HP070, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -1699,7 +1699,7 @@ public enum LostThunder implements LogicCardInfo {
               heal 10, self
             }
           }
-        };
+        }
       case BRIONNE_66:
         return 	evolution (this, from:"Popplio", hp:HP090, type:WATER, retreatCost:2) {
           weakness GRASS
@@ -1720,7 +1720,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case PRIMARINA_67:
         return 	evolution (this, from:"Brionne", hp:HP150, type:WATER, retreatCost:2) {
           weakness GRASS
@@ -1754,7 +1754,7 @@ public enum LostThunder implements LogicCardInfo {
               applyAfterDamage ASLEEP
             }
           }
-        };
+        }
       case MAREANIE_68:
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -1765,7 +1765,7 @@ public enum LostThunder implements LogicCardInfo {
               flip 2,{damage 30}
             }
           }
-        };
+        }
       case TOXAPEX_69:
         return 	evolution (this, from:"Mareanie", hp:HP120, type:WATER, retreatCost:3) {
           weakness GRASS
@@ -1783,7 +1783,7 @@ public enum LostThunder implements LogicCardInfo {
               if(defending.isSPC(POISONED)) damage 50*defending.numberOfDamageCounters
             }
           }
-        };
+        }
       case BRUXISH_70:
         return basic (this, hp:HP090, type:WATER, retreatCost:1) {
           weakness GRASS
@@ -1805,7 +1805,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 60, opp.bench.findAll{it.numberOfDamageCounters}.select()
             }
           }
-        };
+        }
       case ELECTABUZZ_71:
         return basic (this, hp:HP080, type:LIGHTNING, retreatCost:2) {
           weakness FIGHTING
@@ -1818,7 +1818,7 @@ public enum LostThunder implements LogicCardInfo {
               flipThenApplySC PARALYZED
             }
           }
-        };
+        }
       case ELECTIVIRE_72:
         return 	evolution (this, from:"Electabuzz", hp:HP140, type:LIGHTNING, retreatCost:4) {
           weakness FIGHTING
@@ -1841,7 +1841,7 @@ public enum LostThunder implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CHINCHOU_73:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1860,7 +1860,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case LANTURN_74:
         return 	evolution (this, from:"Chinchou", hp:HP110, type:LIGHTNING, retreatCost:2) {
           weakness FIGHTING
@@ -1883,7 +1883,7 @@ public enum LostThunder implements LogicCardInfo {
               apply CONFUSED
             }
           }
-        };
+        }
       case MAREEP_75:
         return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1904,7 +1904,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case MAREEP_76:
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1917,7 +1917,7 @@ public enum LostThunder implements LogicCardInfo {
               flipThenApplySC PARALYZED
             }
           }
-        };
+        }
       case FLAAFFY_77:
         return 	evolution (this, from:"Mareep", hp:HP080, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1930,7 +1930,7 @@ public enum LostThunder implements LogicCardInfo {
               applyAfterDamage CONFUSED
             }
           }
-        };
+        }
       case AMPHAROS_78:
         return 	evolution (this, from:"Flaaffy", hp:HP150, type:LIGHTNING, retreatCost:2) {
           weakness FIGHTING
@@ -1952,7 +1952,7 @@ public enum LostThunder implements LogicCardInfo {
               multiDamage(opp.all,2,50)
             }
           }
-        };
+        }
       case RAIKOU_79:
         return basic (this, hp:HP120, type:LIGHTNING, retreatCost:2) {
           weakness FIGHTING
@@ -1965,7 +1965,7 @@ public enum LostThunder implements LogicCardInfo {
               if(my.lostZone.filterByBasicEnergyType(L)) damage 90
             }
           }
-        };
+        }
       case PACHIRISU_80:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -1987,7 +1987,7 @@ public enum LostThunder implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case BLITZLE_81:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -2006,7 +2006,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case ZEBSTRIKA_82:
         return 	evolution (this, from:"Blitzle", hp:HP110, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -2027,7 +2027,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 60
             }
           }
-        };
+        }
       case STUNFISK_83:
         return basic (this, hp:HP110, type:LIGHTNING, retreatCost:3) {
           weakness FIGHTING
@@ -2049,7 +2049,7 @@ public enum LostThunder implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DEDENNE_84:
         return basic (this, hp:HP070, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -2072,7 +2072,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 10*my.all.findAll{it.topPokemonCard.moves.findAll{it.name=="Nuzzle"}}.size(), opp.bench.select()
             }
           }
-        };
+        }
       case TAPU_KOKO_85:
         return basic (this, hp:HP120, type:LIGHTNING, retreatCost:1) {
           weakness FIGHTING
@@ -2093,7 +2093,7 @@ public enum LostThunder implements LogicCardInfo {
               cantUseAttack thisMove,self
             }
           }
-        };
+        }
       case ZERAORA_GX_86:
         return basic (this, hp:HP190, type:LIGHTNING, retreatCost:2) {
           weakness FIGHTING
@@ -2130,7 +2130,7 @@ public enum LostThunder implements LogicCardInfo {
 
             }
           }
-        };
+        }
       case NATU_87:
         return basic (this, hp:HP040, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -2141,7 +2141,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 20*my.lostZone.findAll{it.cardTypes.is(POKEMON) && !it.cardTypes.is(PRISM_STAR)}.size()
             }
           }
-        };
+        }
       case XATU_88:
         return 	evolution (this, from:"Natu", hp:HP100, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -2161,7 +2161,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 80
             }
           }
-        };
+        }
       case ESPEON_89:
         return 	evolution (this, from:"Eevee", hp:HP090, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -2185,7 +2185,7 @@ public enum LostThunder implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case UNOWN_90:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -2200,7 +2200,7 @@ public enum LostThunder implements LogicCardInfo {
               assert count >= 66 : "You need ${66 - count} more damage counters on your Benched Pokémon."
               assert self.active : "Counters OK but $self must be active"
               powerUsed()
-              bg.getGameManager().endGame(self.owner, WinCondition.OTHER);
+              bg.getGameManager().endGame(self.owner, WinCondition.OTHER)
             }
           }
           move "Hidden Power" , {
@@ -2210,7 +2210,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case UNOWN_91:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -2221,7 +2221,7 @@ public enum LostThunder implements LogicCardInfo {
               assert my.hand.size() >= 35 : "You need ${35 - my.hand.size()} more cards in your hand."
               assert self.active : "Cards OK but $self must be active"
               powerUsed()
-              bg.getGameManager().endGame(self.owner, WinCondition.OTHER);
+              bg.getGameManager().endGame(self.owner, WinCondition.OTHER)
             }
           }
           move "Hidden Power" , {
@@ -2231,7 +2231,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case UNOWN_92:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -2242,7 +2242,7 @@ public enum LostThunder implements LogicCardInfo {
               assert opp.lostZone.filterByType(SUPPORTER).size() >= 12 : "Your opponent needs to have ${12 - opp.lostZone.filterByType(SUPPORTER).size()} more supporters in their Lost Zone."
               assert self.active : "Cards OK but $self must be be active"
               powerUsed()
-              bg.getGameManager().endGame(self.owner, WinCondition.OTHER);
+              bg.getGameManager().endGame(self.owner, WinCondition.OTHER)
             }
           }
           move "Hidden Power" , {
@@ -2252,7 +2252,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case WOBBUFFET_93:
         return basic (this, hp:HP110, type:PSYCHIC, retreatCost:2) {
           weakness PSYCHIC
@@ -2291,7 +2291,7 @@ public enum LostThunder implements LogicCardInfo {
               flip{damage 30}
             }
           }
-        };
+        }
       case GIRAFARIG_94:
         return basic (this, hp:HP090, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -2312,7 +2312,7 @@ public enum LostThunder implements LogicCardInfo {
               noWrDamage 70, defending
             }
           }
-        };
+        }
       case SHEDINJA_95:
         return 	evolution (this, from:"Nincada", hp:HP040, type:PSYCHIC, retreatCost:1) {
           bwAbility "Vessel of Life" , {
@@ -2358,7 +2358,7 @@ public enum LostThunder implements LogicCardInfo {
               directDamage 30, defending
             }
           }
-        };
+        }
       case SABLEYE_96:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
           move "Quick Hunt" , {
@@ -2376,7 +2376,7 @@ public enum LostThunder implements LogicCardInfo {
               putDamageCountersOnOpponentsPokemon(3)
             }
           }
-        };
+        }
       case GIRATINA_97:
         return basic (this, hp:HP130, type:PSYCHIC, retreatCost:3) {
           weakness DARKNESS
@@ -2412,7 +2412,7 @@ public enum LostThunder implements LogicCardInfo {
               directDamage 40, my.all.select()
             }
           }
-        };
+        }
       case SIGILYPH_GX_98:
         return basic (this, hp:HP170, type:PSYCHIC, retreatCost:2) {
           weakness LIGHTNING
@@ -2460,7 +2460,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 60*defending.cards.energyCount(C)
             }
           }
-        };
+        }
       case YAMASK_99:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness DARKNESS
@@ -2472,7 +2472,7 @@ public enum LostThunder implements LogicCardInfo {
               directDamage 10, defending
             }
           }
-        };
+        }
       case COFAGRIGUS_100:
         return 	evolution (this, from:"Yamask", hp:HP120, type:PSYCHIC, retreatCost:3) {
           weakness DARKNESS
@@ -2491,7 +2491,7 @@ public enum LostThunder implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case LITWICK_101:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness DARKNESS
@@ -2503,7 +2503,7 @@ public enum LostThunder implements LogicCardInfo {
               directDamage 10, defending
             }
           }
-        };
+        }
       case LAMPENT_102:
         return 	evolution (this, from:"Litwick", hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness DARKNESS
@@ -2515,7 +2515,7 @@ public enum LostThunder implements LogicCardInfo {
               directDamage 30, defending
             }
           }
-        };
+        }
       case CHANDELURE_103:
         return 	evolution (this, from:"Lampent", hp:HP140, type:PSYCHIC, retreatCost:2) {
           weakness DARKNESS
@@ -2536,7 +2536,7 @@ public enum LostThunder implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MELOETTA_104:
         return basic (this, hp:HP080, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -2562,7 +2562,7 @@ public enum LostThunder implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MAREANIE_105:
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -2580,7 +2580,7 @@ public enum LostThunder implements LogicCardInfo {
               flip 4,{damage 10}
             }
           }
-        };
+        }
       case NIHILEGO_106:
         return basic (this, hp:HP110, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -2595,7 +2595,7 @@ public enum LostThunder implements LogicCardInfo {
               def moveList = []
               def labelList = []
               opp.all.each {pcs->
-                moveList.addAll(pcs.topPokemonCard.moves);
+                moveList.addAll(pcs.topPokemonCard.moves)
                 labelList.addAll(pcs.topPokemonCard.moves.collect{pcs.name+"-"+it.name})
               }
               def move=choose(moveList, labelList)
@@ -2612,7 +2612,7 @@ public enum LostThunder implements LogicCardInfo {
               apply POISONED
             }
           }
-        };
+        }
       case POIPOLE_107:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -2630,7 +2630,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case NAGANADEL_108:
         return 	evolution (this, from:"Poipole", hp:HP130, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
@@ -2651,7 +2651,7 @@ public enum LostThunder implements LogicCardInfo {
               if(my.prizeCardSet.size() == 3) damage 80
             }
           }
-        };
+        }
       case ONIX_109:
         return basic (this, hp:HP120, type:FIGHTING, retreatCost:4) {
           weakness GRASS
@@ -2662,7 +2662,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 120
             }
           }
-        };
+        }
       case SUDOWOODO_110:
         return basic (this, hp:HP110, type:FIGHTING, retreatCost:2) {
           weakness WATER
@@ -2686,7 +2686,7 @@ public enum LostThunder implements LogicCardInfo {
               if(turnCount+1==bg.turnCount && lastDamage > hp(0)) damage 80
             }
           }
-        };
+        }
 
       case PHANPY_111:
         return basic (this, hp:HP080, type:FIGHTING, retreatCost:2) {
@@ -2698,7 +2698,7 @@ public enum LostThunder implements LogicCardInfo {
               flip {damage 50}
             }
           }
-        };
+        }
 
       case DONPHAN_112:
         return 	evolution (this, from:"Phanpy", hp:HP130, type:FIGHTING, retreatCost:3) {
@@ -2729,7 +2729,7 @@ public enum LostThunder implements LogicCardInfo {
               increasedBaseDamageNextTurn("Rolling Spin",hp(70))
             }
           }
-        };
+        }
       case HITMONTOP_113:
         return basic (this, hp:HP080, type:FIGHTING, retreatCost:1) {
           weakness PSYCHIC
@@ -2755,7 +2755,7 @@ public enum LostThunder implements LogicCardInfo {
               flip 3,{damage 40}
             }
           }
-        };
+        }
       case LARVITAR_114:
         return basic (this, hp:HP050, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -2779,7 +2779,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case LARVITAR_115:
         return basic (this, hp:HP060, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -2791,7 +2791,7 @@ public enum LostThunder implements LogicCardInfo {
               if(defending.numberOfDamageCounters >= 3) damage 70
             }
           }
-        };
+        }
       case PUPITAR_116:
         return 	evolution (this, from:"Larvitar", hp:HP070, type:FIGHTING, retreatCost:3) {
           weakness GRASS
@@ -2821,7 +2821,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case CARBINK_117:
         return basic (this, hp:HP090, type:FIGHTING, retreatCost:1) {
           weakness GRASS
@@ -2846,7 +2846,7 @@ public enum LostThunder implements LogicCardInfo {
               reduceDamageNextTurn(hp(20),thisMove)
             }
           }
-        };
+        }
       case ALOLAN_MEOWTH_118:
         return basic (this, hp:HP060, type:DARKNESS, retreatCost:1) {
           weakness FIGHTING
@@ -2858,7 +2858,7 @@ public enum LostThunder implements LogicCardInfo {
               if(bg.turnCount == 2) damage 60
             }
           }
-        };
+        }
       case ALOLAN_PERSIAN_119:
         return 	evolution (this, from:"Alolan Meowth", hp:HP090, type:DARKNESS, retreatCost:1) {
           weakness FIGHTING
@@ -2869,7 +2869,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 90-30*defending.cards.energyCount(C)
             }
           }
-        };
+        }
       case UMBREON_120:
         return 	evolution (this, from:"Eevee", hp:HP110, type:DARKNESS, retreatCost:1) {
           weakness FIGHTING
@@ -2889,7 +2889,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 60
             }
           }
-        };
+        }
       case TYRANITAR_GX_121:
         return 	evolution (this, from:"Pupitar", hp:HP250, type:DARKNESS, retreatCost:3) {
           weakness FIGHTING
@@ -2943,7 +2943,7 @@ public enum LostThunder implements LogicCardInfo {
               shredDamage 220
             }
           }
-        };
+        }
       case ALOLAN_DIGLETT_122:
         return basic (this, hp:HP050, type:METAL, retreatCost:1) {
           weakness FIRE
@@ -2952,7 +2952,7 @@ public enum LostThunder implements LogicCardInfo {
             text "Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck."
             callForFamily(basic:true,1,delegate)
           }
-        };
+        }
       case ALOLAN_DUGTRIO_123:
         return 	evolution (this, from:"Alolan Diglett", hp:HP090, type:METAL, retreatCost:1) {
           weakness FIRE
@@ -2963,7 +2963,7 @@ public enum LostThunder implements LogicCardInfo {
               noWrDamage 60, defending
             }
           }
-        };
+        }
       case FORRETRESS_124:
         return 	evolution (this, from:"Pineco", hp:HP110, type:METAL, retreatCost:2) {
           weakness FIRE
@@ -2990,7 +2990,7 @@ public enum LostThunder implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case STEELIX_125:
         return 	evolution (this, from:"Onix", hp:HP180, type:METAL, retreatCost:4) {
           weakness FIRE
@@ -3010,7 +3010,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 50, self
             }
           }
-        };
+        }
       case SCIZOR_126:
         return 	evolution (this, from:"Scyther", hp:HP120, type:METAL, retreatCost:1) {
           weakness FIRE
@@ -3036,7 +3036,7 @@ public enum LostThunder implements LogicCardInfo {
               if(defending.cards.filterByType(SPECIAL_ENERGY)) damage 70
             }
           }
-        };
+        }
       case DIALGA_127:
         return basic (this, hp:HP130, type:METAL, retreatCost:2) {
           weakness FIRE
@@ -3063,7 +3063,7 @@ public enum LostThunder implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case DURANT_128:
         return basic (this, hp:HP080, type:METAL, retreatCost:1) {
           weakness FIRE
@@ -3087,7 +3087,7 @@ public enum LostThunder implements LogicCardInfo {
               opp.deck.subList(0,2).discard()
             }
           }
-        };
+        }
       case COBALION_129:
         return basic (this, hp:HP120, type:METAL, retreatCost:2) {
           weakness FIRE
@@ -3108,7 +3108,7 @@ public enum LostThunder implements LogicCardInfo {
               if(self.cards.filterByType(POKEMON_TOOL)) damage 40
             }
           }
-        };
+        }
       case GENESECT_GX_130:
         return basic (this, hp:HP180, type:METAL, retreatCost:2) {
           weakness FIRE
@@ -3119,7 +3119,7 @@ public enum LostThunder implements LogicCardInfo {
               bg.em().storeObject("OMEGA_DOUBLE_"+self.hashCode(), 1)
             }
             onDeactivate {
-              bg.em().storeObject("OMEGA_DOUBLE_"+self.hashCode(), null);
+              bg.em().storeObject("OMEGA_DOUBLE_"+self.hashCode(), null)
               while(self.cards.filterByType(POKEMON_TOOL).size() > 1){
                 self.cards.filterByType(POKEMON_TOOL).select("Discard", {true}, self.owner).discard()
               }
@@ -3144,7 +3144,7 @@ public enum LostThunder implements LogicCardInfo {
               dontApplyResistance()
             }
           }
-        };
+        }
       case MAGEARNA_131:
         return basic (this, hp:HP090, type:METAL, retreatCost:1) {
           weakness FIRE
@@ -3167,7 +3167,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 30+20*defending.cards.energyCount(C)
             }
           }
-        };
+        }
       case ALOLAN_NINETALES_GX_132:
         return 	evolution (this, from:"Alolan Vulpix", hp:HP200, type:FAIRY, retreatCost:2) {
           weakness METAL
@@ -3205,7 +3205,7 @@ public enum LostThunder implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case JIGGLYPUFF_133:
         return basic (this, hp:HP070, type:FAIRY, retreatCost:2) {
           weakness METAL
@@ -3224,7 +3224,7 @@ public enum LostThunder implements LogicCardInfo {
               apply ASLEEP
             }
           }
-        };
+        }
       case WIGGLYTUFF_134:
         return 	evolution (this, from:"Jigglypuff", hp:HP120, type:FAIRY, retreatCost:2) {
           weakness METAL
@@ -3245,7 +3245,7 @@ public enum LostThunder implements LogicCardInfo {
               if(self.cards.filterByType(POKEMON_TOOL).findAll{it.name.contains("Fairy Charm")}) damage 70
             }
           }
-        };
+        }
       case MARILL_135:
         return basic (this, hp:HP070, type:FAIRY, retreatCost:2) {
           weakness METAL
@@ -3257,7 +3257,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case AZUMARILL_136:
         return 	evolution (this, from:"Marill", hp:HP100, type:FAIRY, retreatCost:2) {
           weakness METAL
@@ -3287,7 +3287,7 @@ public enum LostThunder implements LogicCardInfo {
               flip{damage 30}
             }
           }
-        };
+        }
       case SNUBBULL_137:
         return basic (this, hp:HP070, type:FAIRY, retreatCost:2) {
           weakness METAL
@@ -3302,7 +3302,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 20*my.hand.filterByType(TRAINER).select(max:2,"discard up to 2 Trainer cards for 20 damage").discard().size()
             }
           }
-        };
+        }
       case GRANBULL_138:
         return 	evolution (this, from:"Snubbull", hp:HP130, type:FAIRY, retreatCost:3) {
           weakness METAL
@@ -3322,7 +3322,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 110
             }
           }
-        };
+        }
       case RALTS_139:
         return basic (this, hp:HP050, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -3344,7 +3344,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case KIRLIA_140:
         return 	evolution (this, from:"Ralts", hp:HP080, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -3364,7 +3364,7 @@ public enum LostThunder implements LogicCardInfo {
               applyAfterDamage CONFUSED
             }
           }
-        };
+        }
       case GARDEVOIR_141:
         return 	evolution (this, from:"Kirlia", hp:HP130, type:FAIRY, retreatCost:2) {
           weakness METAL
@@ -3388,7 +3388,7 @@ public enum LostThunder implements LogicCardInfo {
               if(bg.em().retrieveObject("last_supporter_play_turn") == bg.turnCount) damage 90
             }
           }
-        };
+        }
       case DEDENNE_142:
         return basic (this, hp:HP070, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -3403,7 +3403,7 @@ public enum LostThunder implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case CARBINK_143:
         return basic (this, hp:HP090, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -3439,7 +3439,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 60
             }
           }
-        };
+        }
       case XERNEAS_PRISM_STAR_144:
         return basic (this, hp:HP160, type:FAIRY, retreatCost:2) {
           weakness METAL
@@ -3452,9 +3452,9 @@ public enum LostThunder implements LogicCardInfo {
                   bg.em().storeObject("Path_of_Life", bg.turnCount)
                   while(1){
                     def pl=(my.all.findAll {it.cards.filterByType(ENERGY) && it!=self})
-                    if(!pl) break;
+                    if(!pl) break
                     def src=pl.select("Source for energy (cancel to stop moving)", false)
-                    if(!src) break;
+                    if(!src) break
                     def card=src.cards.filterByType(ENERGY).select("Card to move").first()
                     energySwitch(src, self, card)
                   }
@@ -3470,7 +3470,7 @@ public enum LostThunder implements LogicCardInfo {
               cantUseAttack(thisMove, self)
             }
           }
-        };
+        }
       case CUTIEFLY_145:
         return basic (this, hp:HP030, type:FAIRY, retreatCost:0) {
           weakness METAL
@@ -3485,7 +3485,7 @@ public enum LostThunder implements LogicCardInfo {
               heal 30, my.all.findAll{it.numberOfDamageCounters}.select("Heal")
             }
           }
-        };
+        }
       case RIBOMBEE_146:
         return 	evolution (this, from:"Cutiefly", hp:HP060, type:FAIRY, retreatCost:0) {
           weakness METAL
@@ -3518,7 +3518,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case MORELULL_147:
         return basic (this, hp:HP060, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -3530,7 +3530,7 @@ public enum LostThunder implements LogicCardInfo {
               apply CONFUSED
             }
           }
-        };
+        }
       case SHIINOTIC_148:
         return evolution (this, from:"Morelull", hp:HP100, type:FAIRY, retreatCost:2) {
           weakness METAL
@@ -3553,7 +3553,7 @@ public enum LostThunder implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MIMIKYU_GX_149:
         return basic (this, hp:HP170, type:FAIRY, retreatCost:1) {
           move "Perplex" , {
@@ -3585,7 +3585,7 @@ public enum LostThunder implements LogicCardInfo {
               shuffleOppDeck()
             }
           }
-        };
+        }
       case TAPU_LELE_150:
         return basic (this, hp:HP110, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -3608,7 +3608,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 70
             }
           }
-        };
+        }
       case TAPU_FINI_151:
         return basic (this, hp:HP120, type:FAIRY, retreatCost:1) {
           weakness METAL
@@ -3632,7 +3632,7 @@ public enum LostThunder implements LogicCardInfo {
               applyAfterDamage CONFUSED
             }
           }
-        };
+        }
       case CHANSEY_152:
         return basic (this, hp:HP100, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -3652,7 +3652,7 @@ public enum LostThunder implements LogicCardInfo {
               if(defending.numberOfDamageCounters == 0) damage 100
             }
           }
-        };
+        }
       case BLISSEY_153:
         return 	evolution (this, from:"Chansey", hp:HP160, type:COLORLESS, retreatCost:3) {
           weakness FIGHTING
@@ -3673,7 +3673,7 @@ public enum LostThunder implements LogicCardInfo {
               flip self.cards.energyCount(C), {damage 80}
             }
           }
-        };
+        }
       case DITTO_PRISM_STAR_154:
         return basic (this, hp:HP040, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -3691,7 +3691,7 @@ public enum LostThunder implements LogicCardInfo {
               evolve(self, tar.first())
             }
           }
-        };
+        }
       case EEVEE_155:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -3702,7 +3702,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case STANTLER_156:
         return basic (this, hp:HP110, type:COLORLESS, retreatCost:2) {
           weakness FIGHTING
@@ -3721,7 +3721,7 @@ public enum LostThunder implements LogicCardInfo {
               if(self.cards.filterByType(POKEMON_TOOL)) damage 60
             }
           }
-        };
+        }
       case SMEARGLE_157:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
           move "Stunning Likeness" , {
@@ -3751,7 +3751,7 @@ public enum LostThunder implements LogicCardInfo {
               flip 1,{damage 30},{bc "Tail Smash failed"}
             }
           }
-        };
+        }
       case MILTANK_158:
         return basic (this, hp:HP130, type:COLORLESS, retreatCost:3) {
           weakness FIGHTING
@@ -3766,7 +3766,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 60*milkCard.select(max:milkCard.size(),"Choose the cards you want to reveal. (60 damage for each)").showToOpponent("Revealed cards").size()
             }
           }
-        };
+        }
       case LUGIA_GX_159:
         return basic (this, hp:HP190, type:COLORLESS, retreatCost:2) {
           weakness LIGHTNING
@@ -3798,7 +3798,7 @@ public enum LostThunder implements LogicCardInfo {
               removePCS(defending)
             }
           }
-        };
+        }
       case HO_OH_160:
         return basic (this, hp:HP130, type:COLORLESS, retreatCost:2) {
           weakness LIGHTNING
@@ -3814,7 +3814,7 @@ public enum LostThunder implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case KECLEON_161:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -3837,7 +3837,7 @@ public enum LostThunder implements LogicCardInfo {
               if(defending.realEvolution) damage 50
             }
           }
-        };
+        }
       case KECLEON_162:
         return basic (this, hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness FIGHTING
@@ -3859,7 +3859,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 60
             }
           }
-        };
+        }
       case PIKIPEK_163:
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:0) {
           weakness LIGHTNING
@@ -3872,7 +3872,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 10
             }
           }
-        };
+        }
       case PIKIPEK_164:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {
           weakness LIGHTNING
@@ -3894,7 +3894,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 20
             }
           }
-        };
+        }
       case TRUMBEAK_165:
         return 	evolution (this, from:"Pikipek", hp:HP080, type:COLORLESS, retreatCost:0) {
           weakness LIGHTNING
@@ -3931,7 +3931,7 @@ public enum LostThunder implements LogicCardInfo {
               damage 30
             }
           }
-        };
+        }
       case TOUCANNON_166:
         return 	evolution (this, from:"Trumbeak", hp:HP140, type:COLORLESS, retreatCost:2) {
           weakness LIGHTNING
@@ -3953,7 +3953,7 @@ public enum LostThunder implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case ADVENTURE_BAG_167:
         return itemCard (this) {
           text "Search your deck for up to 2 Pokémon Tool cards, reveal them, and put them into your hand. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -3964,7 +3964,7 @@ public enum LostThunder implements LogicCardInfo {
           playRequirement{
             assert my.deck
           }
-        };
+        }
       case AETHER_FOUNDATION_EMPLOYEE_168:
         return supporter(this) {
           text "Put 3 Pokémon that have 'Alolan' in their names from your discard pile into your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -3975,7 +3975,7 @@ public enum LostThunder implements LogicCardInfo {
           playRequirement{
             assert my.discard.findAll{it.name.contains("Alolan")}
           }
-        };
+        }
       case CHOICE_HELMET_169:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nThe Pokémon this card is attached to takes 30 less damage from the attacks of your opponent's Pokémon-GX and Pokémon-EX (after applying Weakness and Resistance).\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -3995,7 +3995,7 @@ public enum LostThunder implements LogicCardInfo {
           onRemoveFromPlay {
             eff1.unregister()
           }
-        };
+        }
       case COUNTER_GAIN_170:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nIf you have more Prize cards remaining than your opponent, the attacks of the Pokémon this card is attached to cost [C] less.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -4016,7 +4016,7 @@ public enum LostThunder implements LogicCardInfo {
           onRemoveFromPlay {
             eff1.unregister()
           }
-        };
+        }
       case CUSTOM_CATCHER_171:
         return itemCard (this) {
           text "You may play 2 Custom Catcher cards at once. If you played 1 card, draw cards from your deck until you have 3 cards in your hand.If you played 2 cards, switch 1 of your opponent's Benched Pokémon with their Active Pokémon. (This effect works one time for 2 cards.)\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -4041,7 +4041,7 @@ public enum LostThunder implements LogicCardInfo {
               assert toDraw > 0 : "You can't play it with no effect"
             }
           }
-        };
+        }
       case ELECTROPOWER_172:
         return itemCard (this) {
           text "During this turn, your [L] Pokémon's attacks do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance).\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -4062,7 +4062,7 @@ public enum LostThunder implements LogicCardInfo {
           }
           playRequirement{
           }
-        };
+        }
       case FABA_173:
         return supporter(this) {
           text "Choose a Pokémon Tool or Special Energy card attached to 1 of your opponent's Pokémon, or any Stadium card in play, and put it in the Lost Zone.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -4090,7 +4090,7 @@ public enum LostThunder implements LogicCardInfo {
           playRequirement{
             assert (bg.stadiumInfoStruct) || opp.all.findAll({it.cards.filterByType(POKEMON_TOOL) || it.cards.filterByType(SPECIAL_ENERGY)})
           }
-        };
+        }
       case FAIRY_CHARM_G_174:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nPrevent all damage done to the [Y] Pokémon this card is attached to by attacks from your opponent's [G] Pokémon-GX and [G] Pokémon-EX.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -4112,7 +4112,7 @@ public enum LostThunder implements LogicCardInfo {
           onRemoveFromPlay {
             eff1.unregister()
           }
-        };
+        }
       case FAIRY_CHARM_P_175:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nPrevent all damage done to the [Y] Pokémon this card is attached to by attacks from your opponent's [P] Pokémon-GX and [P] Pokémon-EX.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -4134,7 +4134,7 @@ public enum LostThunder implements LogicCardInfo {
           onRemoveFromPlay {
             eff1.unregister()
           }
-        };
+        }
       case FAIRY_CHARM_F_176:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nPrevent all damage done to the [Y] Pokémon this card is attached to by attacks from your opponent's [F] Pokémon-GX and [F] Pokémon-EX.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -4156,7 +4156,7 @@ public enum LostThunder implements LogicCardInfo {
           onRemoveFromPlay {
             eff1.unregister()
           }
-        };
+        }
       case FAIRY_CHARM_N_177:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nPrevent all damage done to the [Y] Pokémon this card is attached to by attacks from your opponent's [N] Pokémon-GX and [N] Pokémon-EX.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -4178,7 +4178,7 @@ public enum LostThunder implements LogicCardInfo {
           onRemoveFromPlay {
             eff1.unregister()
           }
-        };
+        }
       case HEAT_FACTORY_PRISM_STAR_178:
         return stadium (this) {
           text "Once during each player's turn, that player may discard a [R] Energy from their hand. If they do, that player draws 3 cards.\nWhenever a player plays an Item or Supporter card from their hand, prevent all effects of that card done to this Stadium card.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card.\nPrism Star Rule: You can't have more than 1 Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
@@ -4197,7 +4197,7 @@ public enum LostThunder implements LogicCardInfo {
           onRemoveFromPlay{
             actions.each { bg().gm().unregisterAction(it) }
           }
-        };
+        }
       case KAHILI_179:
         return supporter(this) {
           text "Draw 2 cards. Then, flip a coin. If heads, if you played this Kahili from your hand, put this card into your hand instead of the discard pile. If you have no cards in your deck, you can't play this card.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -4219,7 +4219,7 @@ public enum LostThunder implements LogicCardInfo {
           playRequirement {
             assert my.deck
           }
-        };
+        }
       case LIFE_FOREST_PRISM_STAR_180:
         return stadium(this) {
           text "Once during each player's turn, that player may heal 60 damage and remove all Special Conditions from 1 of their [G] Pokémon.\nWhenever a player plays an Item or Supporter card from their hand, prevent all effects of that card done to this Stadium card.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card.\nPrism Star Rule: You can't have more than 1 Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
@@ -4240,7 +4240,7 @@ public enum LostThunder implements LogicCardInfo {
           onRemoveFromPlay{
             actions.each { bg().gm().unregisterAction(it) }
           }
-        };
+        }
       case LOST_BLENDER_181:
         return itemCard (this) {
           text "Put 2 cards from your hand in the Lost Zone. If you do, draw a card.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -4251,7 +4251,7 @@ public enum LostThunder implements LogicCardInfo {
           playRequirement{
             assert my.hand.getExcludedList(thisCard).size() >=2 : "There is not enough cards in your hand"
           }
-        };
+        }
       case LUSAMINE_PRISM_STAR_182:
         return supporter(this) {
           text "You can play this card only if your opponent has exactly 3 Prize cards remaining.\nPrevent all damage done to your Ultra Beasts by attacks during your opponent's next turn.\nYou may play only 1 Supporter card during your turn (before your attack).\nPrism Star Rule: You can't have more than 1 Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
@@ -4272,7 +4272,7 @@ public enum LostThunder implements LogicCardInfo {
           playRequirement{
             assert opp.prizeCardSet.size() == 3 : "Your opponent has not 3 Prize cards remaining."
           }
-        };
+        }
       case MINA_183:
         return supporter(this) {
           text "Search your deck for a [Y] Energy card and attach it to 1 of your Pokémon. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -4283,7 +4283,7 @@ public enum LostThunder implements LogicCardInfo {
           playRequirement{
             assert my.deck : "There are no more cards in your deck."
           }
-        };
+        }
       case MIXED_HERBS_184:
         return itemCard (this) {
           text "You may play 2 Mixed Herbs cards at once. " +
@@ -4297,7 +4297,7 @@ public enum LostThunder implements LogicCardInfo {
               heal 90, my.active
               clearSpecialCondition(my.active)
             } else if (my.active.specialConditions.size()) {
-              SpecialConditionType spc = choose(my.active.specialConditions.asList(), "Which special condition you want to remove");
+              SpecialConditionType spc = choose(my.active.specialConditions.asList(), "Which special condition you want to remove")
               clearSpecialCondition(my.active, TRAINER_CARD, [spc])
             } else {
               assert false : "Your Pokemon is fine"
@@ -4310,7 +4310,7 @@ public enum LostThunder implements LogicCardInfo {
               assert my.active.specialConditions : "Your Pokemon is fine"
             }
           }
-        };
+        }
       case MOOMOO_MILK_185:
         return itemCard (this) {
           text "Choose 1 of your Pokémon, and then flip 2 coins. For each heads, heal 30 damage from that Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -4324,7 +4324,7 @@ public enum LostThunder implements LogicCardInfo {
               }
             }
           }
-        };
+        }
       case MORTY_186:
         return supporter(this) {
           text "You can play this card only if 1 of your [P] Pokémon was Knocked Out during your opponent's last turn.\nYour opponent reveals their hand. Choose 2 cards you find there. Your opponent shuffles those cards into their deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -4338,7 +4338,7 @@ public enum LostThunder implements LogicCardInfo {
             assert my.knockoutTypesPerTurn.get(bg.turnCount - 1)?.contains(P) : "The Pokémon Knocked Out was not Psychic"
             assert opp.hand : "Your opponent has no cards in their hand"
           }
-        };
+        }
       case NET_BALL_187:
         return itemCard (this) {
           text "Search your deck for a Basic [G] Pokémon or a [G] Energy card, reveal it, and put it into your hand. Then, shuffle your deck.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -4348,7 +4348,7 @@ public enum LostThunder implements LogicCardInfo {
           playRequirement{
             assert my.deck : "There are no more cards in your deck."
           }
-        };
+        }
       case PROFESSOR_ELM_S_LECTURE_188:
         return supporter(this) {
           text "Search your deck for up to 3 Pokémon with 60 HP or less, reveal them, and put them into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -4358,7 +4358,7 @@ public enum LostThunder implements LogicCardInfo {
           playRequirement{
             assert my.deck : "There are no more cards in your deck."
           }
-        };
+        }
       case SIGHTSEER_189:
         return supporter(this) {
           text "You may discard any number of card from your hand. Then, draw cards until you have 5 cards in your hand. If you can't draw any cards in this way, you can't play this card.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -4374,7 +4374,7 @@ public enum LostThunder implements LogicCardInfo {
               assert confirm ("You MUST discard at least $min cards from your hand to use this card. Are you sure you want to use it?")
             }
           }
-        };
+        }
       case SPELL_TAG_190:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it.\nWhen the [P] Pokémon this card is attached to is Knocked Out by damage from an opponent's attack, put 4 damage counters on your opponent's Pokémon in any way you like.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -4394,7 +4394,7 @@ public enum LostThunder implements LogicCardInfo {
           onRemoveFromPlay {
             eff.unregister()
           }
-        };
+        }
       case THUNDER_MOUNTAIN_PRISM_STAR_191:
         return stadium(this) {
           text "The attacks of [L] Pokémon (both yours and your opponent's) cost [L] less.\nWhenever any player plays an Item or Supporter card from their hand, prevent all effects of that card done to this Stadium card.\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card.\nPrism Star Rule: You can't have more than 1 Prism Star card with the same name in your deck. If a Prism Star card would go to the discard pile, put it in the Lost Zone instead."
@@ -4415,7 +4415,7 @@ public enum LostThunder implements LogicCardInfo {
           onRemoveFromPlay{
             eff2.unregister()
           }
-        };
+        }
       case WAIT_AND_SEE_HAMMER_192:
         return itemCard (this) {
           text "You can use this card only if you go second, and only on your first turn.\nDiscard an Energy from 1 of your opponent's Pokémon.\nYou may play as many Item cards as you like during your turn (before your attack)."
@@ -4427,7 +4427,7 @@ public enum LostThunder implements LogicCardInfo {
             assert bg.turnCount == 2 : "This card is now useless"
             assert opp.all.findAll {it.cards.energyCount(C)} : "There are no energy cards attached to your opponent's Pokémon."
           }
-        };
+        }
       case WHITNEY_193:
         return supporter(this) {
           text "Draw a card. Then, draw 2 cards for each other Whitney in your discard pile.\nYou may play only 1 Supporter card during your turn (before your attack)."
@@ -4440,7 +4440,7 @@ public enum LostThunder implements LogicCardInfo {
           playRequirement{
             assert my.deck : "There is no more card in your deck"
           }
-        };
+        }
       case MEMORY_ENERGY_194:
         return specialEnergy (this, [[C]]) {
           text "This card provides [C] Energy.\n The Pokémon this card is attached to can use any attack from its previous Evolutions (You still need the necessary Energy to use the attack)"
@@ -4458,7 +4458,7 @@ public enum LostThunder implements LogicCardInfo {
             eff.unregister()
           }
 
-        };
+        }
       case SHUCKLE_GX_195:
         return copy(SHUCKLE_GX_17,this)
       case SCEPTILE_GX_196:
@@ -4543,7 +4543,7 @@ public enum LostThunder implements LogicCardInfo {
         return copy(SPELL_TAG_190,this)
 
       default:
-        return null;
+        return null
     }
   }
 

@@ -1,15 +1,15 @@
 package tcgwars.logic.impl.gen4
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
 
 import tcgwars.logic.card.*
-import tcgwars.logic.util.*;
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -34,94 +34,94 @@ public enum PopSeries7 implements LogicCardInfo {
   SENTRET_16 ("Sentret", "16", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]),
   SPINDA_17 ("Spinda", "17", Rarity.COMMON, [BASIC, POKEMON, _COLORLESS_]);
 
-  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
+  static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON
 
-  protected CardTypeSet cardTypes;
-  protected String name;
-  protected Rarity rarity;
-  protected String collectionLineNo;
+  protected CardTypeSet cardTypes
+  protected String name
+  protected Rarity rarity
+  protected String collectionLineNo
 
   PopSeries7(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
-    this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
-    this.name = name;
-    this.rarity = rarity;
-    this.collectionLineNo = collectionLineNo;
+    this.cardTypes = new CardTypeSet(cardTypes as CardType[])
+    this.name = name
+    this.rarity = rarity
+    this.collectionLineNo = collectionLineNo
   }
 
   @Override
   public CardTypeSet getCardTypes() {
-    return cardTypes;
+    return cardTypes
   }
 
   @Override
   public String getName() {
-    return name;
+    return name
   }
 
   @Override
   public Rarity getRarity() {
-    return rarity;
+    return rarity
   }
 
   @Override
   public String getNumber() {
-    return collectionLineNo;
+    return collectionLineNo
   }
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.POP_SERIES_7;
+    return tcgwars.logic.card.Collection.POP_SERIES_7
   }
 
   @Override
   public String toString() {
-    return String.format("%s:%s", this.name(), this.getCollection().name());
+    return String.format("%s:%s", this.name(), this.getCollection().name())
   }
 
   @Override
   public String getEnumName() {
-    return this.name();
+    return this.name()
   }
 
   @Override
   public Card getImplementation() {
     switch (this) {
       case AMPHAROS_1:
-        return copy (SecretWonders.AMPHAROS_1, this);
+        return copy (SecretWonders.AMPHAROS_1, this)
       case GALLADE_2:
-        return copy (SecretWonders.GALLADE_6, this);
+        return copy (SecretWonders.GALLADE_6, this)
       case LATIAS_3:
-        return copy (GreatEncounters.LATIAS_22, this);
+        return copy (GreatEncounters.LATIAS_22, this)
       case LATIOS_4:
-        return copy (GreatEncounters.LATIOS_23, this);
+        return copy (GreatEncounters.LATIOS_23, this)
       case MOTHIM_5:
-        return copy (SecretWonders.MOTHIM_33, this);
+        return copy (SecretWonders.MOTHIM_33, this)
       case DELIBIRD_6:
-        return copy (GreatEncounters.DELIBIRD_36, this);
+        return copy (GreatEncounters.DELIBIRD_36, this)
       case FLAAFFY_7:
-        return copy (SecretWonders.FLAAFFY_50, this);
+        return copy (SecretWonders.FLAAFFY_50, this)
       case KIRLIA_8:
-        return copy (SecretWonders.KIRLIA_53, this);
+        return copy (SecretWonders.KIRLIA_53, this)
       case STANTLER_9:
-        return copy (SecretWonders.STANTLER_113, this);
+        return copy (SecretWonders.STANTLER_113, this)
       case WORMADAM_SANDY_CLOAK_10:
-        return copy (SecretWonders.WORMADAM_SANDY_CLOAK_42, this);
+        return copy (SecretWonders.WORMADAM_SANDY_CLOAK_42, this)
       case BURMY_PLANT_CLOAK_11:
-        return copy (SecretWonders.BURMY_PLANT_CLOAK_78, this);
+        return copy (SecretWonders.BURMY_PLANT_CLOAK_78, this)
       case BURMY_SANDY_CLOAK_12:
-        return copy (SecretWonders.BURMY_SANDY_CLOAK_79, this);
+        return copy (SecretWonders.BURMY_SANDY_CLOAK_79, this)
       case CORSOLA_13:
-        return copy (SecretWonders.CORSOLA_84, this);
+        return copy (SecretWonders.CORSOLA_84, this)
       case MAREEP_14:
-        return copy (SecretWonders.MAREEP_94, this);
+        return copy (SecretWonders.MAREEP_94, this)
       case RALTS_15:
-        return copy (SecretWonders.RALTS_102, this);
+        return copy (SecretWonders.RALTS_102, this)
       case SENTRET_16:
-        return copy (SecretWonders.SENTRET_104, this);
+        return copy (SecretWonders.SENTRET_104, this)
       case SPINDA_17:
-        return copy (SecretWonders.SPINDA_111, this);
+        return copy (SecretWonders.SPINDA_111, this)
       default:
-        return null;
+        return null
     }
   }
 
