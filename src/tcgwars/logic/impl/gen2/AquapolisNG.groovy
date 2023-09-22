@@ -529,17 +529,33 @@ public enum AquapolisNG implements LogicCardInfo {
         move "Fireworks", {
           text "30 damage. Flip a coin. If tails, discard a [R] Energy card attached to Houndoom."
           energyCost R, C
-          attackRequirement {}
           onAttack {
             damage 30
+            flipTails {discardSelfEnergyAfterDamage(R)}
           }
         }
         move "Dark Impact", {
           text "40 damage. The Defending Pokémon can't use any Poké-Powers until the end of your opponent's next turn."
           energyCost D, C, C
-          attackRequirement {}
           onAttack {
             damage 40
+            def pcs = defending
+            runAtBeginningOfYourOpponentsTurn {
+              delayed {
+                def eff
+                register {
+                  eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
+                    if (h.effect.target == pcs && h.effect.ability instanceof PokePower) {
+                      h.object = true
+                    }
+                  }
+                }
+                unregister {
+                  eff.unregister()
+                }
+                unregisterAfter 1
+              }
+            }
           }
         }
       };
