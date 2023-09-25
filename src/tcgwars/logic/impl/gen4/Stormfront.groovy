@@ -1305,7 +1305,7 @@ public enum Stormfront implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if (self.active && it.from.stage2 && it.to.owner == self.owner && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
+                  if (self.active && it.from.stage2 && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
                     bc "$thisAbility -20"
                     it.dmg -= hp(20)
                   }
