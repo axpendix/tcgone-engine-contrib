@@ -2494,14 +2494,10 @@ public enum Platinum implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Chansey from your hand onto Happiny (this counts as evolving Happiny) and remove all damage counters from Happiny."
             actionA {
-              assert my.hand.findAll{it.name.contains("Chansey")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Chansey", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Chansey") }.select()
-              if (tar) {
-                evolve(self, tar.first())
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution("Chansey", self)
             }
           }
           move "Hospitality", {

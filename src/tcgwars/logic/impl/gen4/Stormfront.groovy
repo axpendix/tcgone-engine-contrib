@@ -1542,14 +1542,10 @@ public enum Stormfront implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Roselia from your hand onto Budew (this counts as evolving Budew) and remove all damage counters from Budew."
             actionA {
-              assert my.hand.findAll{it.name.contains("Roselia")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Roselia", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Roselia") }.select()
-              if (tar) {
-                evolve(self, tar.first())
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution("Roselia", self)
             }
           }
           move "Buddy-buddy", {
@@ -1884,14 +1880,10 @@ public enum Stormfront implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Pikachu from your hand onto Pichu (this counts as evolving Pichu) and remove all damage counters from Pichu."
             actionA {
-              assert my.hand.findAll{it.name.contains("Pikachu")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Pikachu", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Pikachu") }.select()
-              if (tar) {
-                evolve(self, tar.first())
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution("Pikachu", self)
             }
           }
           move "Electric Circuit", {

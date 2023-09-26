@@ -3645,17 +3645,10 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn (before your attack), you may put Hitmonlee, Hitmonchan, or Hitmontop from your hand onto Tyrogue (this counts as evolving Tyrogue) and remove all damage counters from Tyrogue."
             actionA {
-              def eligible = my.hand.findAll {
-                it.name.contains("Hitmonlee") || it.name.contains("Hitmonchan") || it.name.contains("Hitmontop")
-              }
-              assert eligible: "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve(["Hitmonlee", "Hitmonchan", "Hitmontop"], self)
               checkLastTurn()
               powerUsed()
-              def tar = eligible.select()
-              if (tar) {
-                evolve(self, tar.first())
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution(["Hitmonlee", "Hitmonchan", "Hitmontop"], self)
             }
           }
           move "Gut Blow", {

@@ -2330,14 +2330,10 @@ public enum RisingRivals implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Snorlax from your hand onto Munchlax (this counts as evolving Munchlax) and remove all damage counters from Munchlax."
             actionA {
-              assert my.hand.findAll{it.name.contains("Snorlax")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Snorlax", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Snorlax") }.select()
-              if (tar) {
-                evolve(self, tar.first())
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution("Snorlax", self)
             }
           }
           move "Rest", {
@@ -2360,14 +2356,10 @@ public enum RisingRivals implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Snorlax from your hand onto Munchlax (this counts as evolving Munchlax) and remove all damage counters from Munchlax."
             actionA {
-              assert my.hand.findAll{it.name.contains("Snorlax")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Snorlax", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Snorlax") }.select()
-              if (tar) {
-                evolve(self, tar.first())
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution("Snorlax", self)
             }
           }
           move "Errand-Running", {
