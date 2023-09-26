@@ -1379,20 +1379,12 @@ public enum Triumphant implements LogicCardInfo {
             text "30 damage. Flip 2 coins. If both of them are tails, this attack does nothing. For each heads, discard an Energy attached to the Defending Pokémon."
             energyCost C, C, C
             onAttack {
-              flip 2, {}, {}, [
-                2: {
-                  damage 30
-                  afterDamage {
-                    discardDefendingEnergy()
-                    discardDefendingEnergy()
-                  }
-                },
-                1: {
-                  damage 30
-                  afterDamage {
-                    discardDefendingEnergy()
-                  }
-                }]
+              def list = []
+              flip 2, { list.add C }
+              if (list) {
+                damage 30
+                discardDefendingEnergyAfterDamage(*list)
+              }
             }
           }
         };
@@ -2273,17 +2265,12 @@ public enum Triumphant implements LogicCardInfo {
           text "Rescue Energy provides 1 [C] Energy. If the Pokémon this card is attached to is Knocked Out by damage from an attack, put that Pokémon back into your hand. (Discard all cards attached to that Pokémon.)"
           def eff
           onPlay {reason->
-            eff = delayed priority:EffectPriority.BEFORE_LAST, {
+            eff = delayed priority:EffectPriority.LAST, {
               before KNOCKOUT, self, {
                 if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite ){
                   def pcs=self
-                  delayed(inline: true){
-                    after KNOCKOUT, pcs, {
-                      bc "Rescue Energy activates"
-                      scoopUpPokemon(pokemonOnly:true, pcs, delegate)
-                      owner.delegate.unregister()
-                    }
-                  }
+                  bc "Rescue Energy activates"
+                  scoopUpPokemon(pokemonOnly:true, pcs, delegate)
                 }
               }
             }
@@ -2358,7 +2345,7 @@ public enum Triumphant implements LogicCardInfo {
             actionA {
               checkNoSPC()
               checkLastTurn()
-              powerUsed()
+              powerUsed {new Knockout(self).run(bg)}
               new Knockout(self).run(bg)
               def top = my.deck.subList(0,7)
               def maximum = top.filterByType(ENERGY).size()
