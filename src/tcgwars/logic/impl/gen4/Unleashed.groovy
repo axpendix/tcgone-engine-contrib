@@ -235,7 +235,7 @@ public enum Unleashed implements LogicCardInfo {
             energyCost R, R, C, C
             onAttack {
               damage 100
-              discardSelfEnergy R, R
+              discardSelfEnergyAfterDamage R, R
             }
           }
 
@@ -323,10 +323,11 @@ public enum Unleashed implements LogicCardInfo {
         return evolution (this, from:"Remoraid", hp:HP080, type:WATER, retreatCost:2) {
           weakness L
           move "Switch Cannon", {
-            text "Switch Octillery with 1 of your Benched Pokémon."
+            text "Choose 1 of your opponent's Pokémon. This attack does 30 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.) Switch Octillery with 1 of your Benched Pokémon."
             energyCost W
             onAttack {
-              switchYourActive()
+              damage 30, opp.all.select("Deal damage to?")
+              afterDamage {switchYourActive()}
             }
           }
           move "Ink Bomb", {
@@ -501,7 +502,7 @@ public enum Unleashed implements LogicCardInfo {
         };
       case CROBAT_14:
         return evolution (this, from:"Golbat", hp:HP110, type:PSYCHIC, retreatCost:0) {
-          weakness P
+          weakness L
           resistance F, MINUS20
           move "Supersonic", {
             text "30 damage. The Defending Pokémon is now Confused."
@@ -634,9 +635,12 @@ public enum Unleashed implements LogicCardInfo {
           move "Heat Acceleration", {
             text "Search your discard pile for up to 3 [R] Energy cards and attach them to 1 of your Pokémon."
             energyCost R
+            attackRequirement {
+              assert my.discard.filterByEnergyType(R)
+            }
             onAttack {
               def tar = my.all.select("Attach energy to?")
-              my.discard.filterByEnergyType(R).select(min:0,max:3).each{
+              my.discard.filterByEnergyType(R).select(min:1,max:3).each{
                 attachEnergy(tar, it)
               }
             }
@@ -752,7 +756,8 @@ public enum Unleashed implements LogicCardInfo {
             text "Once during your turn, when you put Torkoal from you hand onto your Bench, you may flip a coin. If heads, the Defending Pokémon is now Burned."
             onActivate {r->
               if(r==PLAY_FROM_HAND && confirm('Use Hot Snort?')){
-                flip {apply BURNED, defending}
+                powerUsed()
+                flip {apply BURNED, self.owner.opposite.pbg.active}
               }
             }
           }
@@ -782,7 +787,7 @@ public enum Unleashed implements LogicCardInfo {
             energyCost D, D, C, C
             onAttack {
               damage 80
-              discardDefendingEnergy()
+              afterDamage {discardDefendingEnergy()}
             }
           }
         };
@@ -890,7 +895,7 @@ public enum Unleashed implements LogicCardInfo {
           }
           move "Poison Sting", {
             text "The Defending Pokémon is now Poisoned."
-            energyCost C
+            energyCost G
             onAttack {
               apply POISONED
             }
@@ -903,8 +908,12 @@ public enum Unleashed implements LogicCardInfo {
           move "Energy Crane", {
             text "Search your discard pile for up to 2 [P] Energy cards and attach them to your Pokémon in any way you like."
             energyCost P
+            attackRequirement {
+              assert my.discard.filterByEnergyType(P)
+            }
             onAttack {
-              (1..2).each {attachEnergyFrom(may: true, type: P, my.discard, my.all)}
+              attachEnergyFrom(type: P, my.discard, my.all)
+              attachEnergyFrom(may: true, type: P, my.discard, my.all)
             }
           }
           move "Psypunch", {
