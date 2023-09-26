@@ -760,7 +760,7 @@ public enum CallOfLegends implements LogicCardInfo {
             energyCost G, C, C
             onAttack {
               damage 30
-              apply POISONED
+              applyAfterDamage POISONED
             }
           }
 
@@ -859,7 +859,7 @@ public enum CallOfLegends implements LogicCardInfo {
             }
             if(tar) {
               def rearranged = rearrange(tar,"Arrange the bottom of your deck")
-              rearranged.moveTo(my.deck)
+              rearranged.moveTo(hidden: true, my.deck)
             }
           }
           playRequirement{
