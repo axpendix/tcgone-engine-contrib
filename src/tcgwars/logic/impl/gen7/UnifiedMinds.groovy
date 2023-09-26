@@ -4446,7 +4446,7 @@ public enum UnifiedMinds implements LogicCardInfo {
           def eff1
           onPlay {reason->
             eff1=getter GET_MOVE_LIST, self, {h->
-              if(self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size()){
+              if(self && self.owner.pbg.prizeCardSet.size() > self.owner.opposite.pbg.prizeCardSet.size()){
                 def list=[]
                 for(move in h.object){
                   def copy=move.shallowCopy()
