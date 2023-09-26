@@ -1964,7 +1964,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost L
           onAttack {
             damage 10
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
