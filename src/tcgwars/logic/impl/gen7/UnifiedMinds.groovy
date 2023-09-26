@@ -1885,7 +1885,7 @@ public enum UnifiedMinds implements LogicCardInfo {
             text "Once during your turn (before your attack), you may move 1 damage counter from 1 of your Pokémon to another of your Pokémon."
             actionA {
               assertMyBench()
-              assert all.find({ it.numberOfDamageCounters > 0 }) : "None of your Pokémon have damage counters."
+              assert my.all.find({ it.numberOfDamageCounters > 0 }) : "None of your Pokémon have damage counters."
               checkLastTurn()
               powerUsed()
               def source = my.all.findAll { it.numberOfDamageCounters > 0 }.select("Select a source for a damage counter.")
