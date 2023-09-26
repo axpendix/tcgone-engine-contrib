@@ -445,10 +445,25 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
       case TROPICAL_TIDAL_WAVE_27:
       return itemCard (this) {
         text "Flip a coin. If heads, discard all Trainer cards your opponent has in play. If tails, discard all Trainer cards (excluding Supporter cards) you have in play."
-        //TODO
         onPlay {
+          flip 1, {
+            opp.all.each {
+              it.cards.filterByType(TRAINER).discard()
+            }
+            if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player != bg.currentTurn) {
+              discard(bg.stadiumInfoStruct.stadiumCard)
+            }
+          }, {
+            my.all.each {
+              it.cards.filterByType(TRAINER).discard()
+            }
+            if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player == bg.currentTurn) {
+              discard(bg.stadiumInfoStruct.stadiumCard)
+            }
+          }
         }
         playRequirement{
+          assert (all.find {it.cards.filterByType(TRAINER)} || bg.stadiumInfoStruct) : "No Trainer cards in play"
         }
       };
       case CHAMPIONSHIP_ARENA_28:
