@@ -408,7 +408,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost M, C
           onAttack {
             damage 20
-            flip { discardDefendingEnergy() }
+            flip { discardDefendingEnergyAfterDamage() }
           }
         }
         move "Heavy Impact", {
