@@ -106,7 +106,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
   public Card getImplementation() {
     switch (this) {
       case HO_OH_HGSS01:
-        return basic (this, hp:HP080, type:FIRE, retreatCost:3) {
+        return basic (this, hp:HP100, type:FIRE, retreatCost:3) {
           weakness W
           resistance F, MINUS20
           move "Combustion", {
@@ -289,7 +289,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
           pokeBody "Luster Float", {
             text "If you have Latias in play, the Retreat Cost for Latios is 0."
             getterA (GET_RETREAT_COST, BEFORE_LAST, self) { holder->
-              if (my.all.any {it.name == "Latias"}) {
+              if (self.owner.pbg.all.any {it.name == "Latias"}) {
                 holder.object = 0
               }
             }
@@ -433,8 +433,8 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
           pokeBody "Shortcut", {
             text "The Retreat Cost for each Porygon, Porygon2, and Porygon-Z you have in play is [C] less."
             getterA (GET_RETREAT_COST, BEFORE_LAST) { holder->
-              def name = holder.effect.target.name
-              if (["Porygon", "Porygon2", "Porygon-Z"].contains(name)) {
+              if (holder.effect.target.owner == self.owner
+                && ["Porygon", "Porygon2", "Porygon-Z"].contains(holder.effect.target.name)) {
                 holder.object -= 1
               }
             }
