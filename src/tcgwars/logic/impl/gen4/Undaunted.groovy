@@ -1,7 +1,10 @@
 package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.effect.ability.CheckAbilities
+import tcgwars.logic.effect.blocking.PreventEvolve
 import tcgwars.logic.effect.gm.ActivateSimpleTrainer
 import tcgwars.logic.effect.special.SpecialConditionType
+import tcgwars.logic.exception.EffectRequirementException
 import tcgwars.logic.impl.gen3.RubySapphire;
 
 import tcgwars.logic.effect.gm.PlayTrainer
@@ -1911,12 +1914,20 @@ public enum Undaunted implements LogicCardInfo {
               })
               def topLegendCard = legendPair.get(0).getNumber() < legendPair.get(1).getNumber() ? legendPair.get(0) : legendPair.get(1)
               def bottomLegendCard = legendPair.find { it != topLegendCard }
-              def legendPokemon = benchPCS(topLegendCard, PLAY_FROM_HAND)
-              legendPokemon.cards.add(bottomLegendCard)
+              // note for ordering: Legend Box must fully resolve before any come into play abilities of LEGEND pokemon should run
+              def pokemon = new PokemonCardSet(thisCard.player)
+              my.deck.remove(topLegendCard)
               my.deck.remove(bottomLegendCard)
+              pokemon.cards.add(topLegendCard)
+              pokemon.cards.add(bottomLegendCard)
+              my.bench.add(pokemon)
               top.getExcludedList(legendPair).filterByType(ENERGY).each{
-                attachEnergy(legendPokemon, it)
+                attachEnergy(pokemon, it)
               }
+
+              bg.getGameManager().broadcastMessage("Put " + topLegendCard.getName() + " onto bench.")
+              bg.em().activateEffect(new PreventEvolve(pokemon, bg.getTurnCount()))
+              bg.em().activateEffect(new CheckAbilities(PLAY_FROM_HAND, pokemon))
             }
             shuffleDeck()
           }
