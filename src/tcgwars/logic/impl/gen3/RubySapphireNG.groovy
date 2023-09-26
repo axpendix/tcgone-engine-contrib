@@ -888,17 +888,19 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Energy Call", {
           text "10 damage. Attach 1 Energy card from your discard pile to your Active Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
+            afterDamage {
+              attachEnergyFrom(my.discard, my.active)
+            }
           }
         }
         move "Cannonball", {
           text "30+ damage. Does 30 damage plus 10 more damage for each Energy attached to Delcatty but not used to pay for this attack's Energy cost."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
+            extraEnergyDamage(99, hp(10), C, thisMove)
           }
         }
       };
