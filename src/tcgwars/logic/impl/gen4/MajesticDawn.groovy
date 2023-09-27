@@ -2412,7 +2412,7 @@ public enum MajesticDawn implements LogicCardInfo {
               pokeBody "Rock Reaction", {
                 delayedA{
                   after ATTACH_ENERGY, self, {
-                    if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(F) && self.owner.pbg.deck) {
+                    if (e.source != ATTACK && e.source != SRC_ABILITY && ef.fromHand && ef.cardToPlay.containsType(F) && self.owner.pbg.deck) {
                       def sel=my.deck.search("Search your deck for a card that evolved from $self",{it.cardTypes.is(EVOLUTION) && it.predecessor==self.name})
                       if(sel){
                         evolve(self, sel.first())
@@ -2483,7 +2483,7 @@ public enum MajesticDawn implements LogicCardInfo {
               pokeBody "Aqua Reaction", {
                 delayedA{
                   after ATTACH_ENERGY, self, {
-                    if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(W) && self.owner.pbg.deck) {
+                    if (e.source != ATTACK && e.source != SRC_ABILITY && ef.fromHand && ef.cardToPlay.containsType(W) && self.owner.pbg.deck) {
                       def sel=my.deck.search("Search your deck for a card that evolved from $self",{it.cardTypes.is(EVOLUTION) && it.predecessor==self.name})
                       if(sel){
                         evolve(self, sel.first())

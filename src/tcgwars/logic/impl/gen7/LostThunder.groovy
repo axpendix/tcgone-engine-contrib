@@ -3,6 +3,7 @@ package tcgwars.logic.impl.gen7
 import tcgwars.logic.effect.gm.ActivateSimpleTrainer
 import tcgwars.logic.effect.gm.PlayCard
 import tcgwars.logic.effect.gm.PlayTrainer
+import tcgwars.logic.exception.EffectRequirementException
 import tcgwars.logic.groovy.TcgStatics
 
 import static tcgwars.logic.card.HP.*;
@@ -2899,26 +2900,21 @@ public enum LostThunder implements LogicCardInfo {
             delayedA {
               def flag = null
               before KNOCKOUT, {
-                if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner && self.active && ef.pokemonToBeKnockedOut.owner != self.owner ){
+                if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner && self.active && ef.pokemonToBeKnockedOut.owner != self.owner ) {
                   flag = ef.pokemonToBeKnockedOut.cards.copy()
+                  bc "Lost Out activates"
+                } else {
+                  flag = null
+                }
+              }
+              before MOVE_CARD_INNER, {
+                if (flag && flag.contains(ef.card) && ef.toList?.zoneType == CardList.ZoneType.DISCARD) {
+                  bg.em().run(new MoveCard(ef.card, pcs.owner.pbg.lostZone))
+                  throw new EffectRequirementException()
                 }
               }
               after KNOCKOUT, {
-                if(flag){
-                  // FIXME this doesnt work with Robo Substitute, results in duplication
-                  bc "Lost Out activates"
-                  def changedCardsList = bg.em().retrieveObject("impl_changed_cards")
-                  flag.each{ card ->
-                    def toMove = card
-                    def changedCard = changedCardsList.findAll{it[0] == card}
-                    if (changedCard) {
-                      bc "Card was changed: $changedCard"
-                      toMove = (changedCard.first())[1]
-                    }
-                    new CardList(toMove).moveTo(self.owner.opposite.pbg.lostZone)
-                  }
-                  flag = null
-                }
+                flag = null
               }
             }
           }

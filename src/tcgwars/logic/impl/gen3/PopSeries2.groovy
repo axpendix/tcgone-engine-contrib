@@ -316,7 +316,7 @@ public enum PopSeries2 implements LogicCardInfo {
           eff = delayed {
             after ATTACH_ENERGY, {
               PokemonCardSet pcs = ef.targetPokemon
-              if (ef.reason == PLAY_FROM_HAND && pcs.benched && pcs.numberOfDamageCounters && bg.em().retrieveObject("Pokemon_Park" + thisCard.hashCode()) != bg.turnCount) {
+              if (ef.reason == PLAY_FROM_HAND && pcs.benched && pcs.numberOfDamageCounters && bg.em().retrieveObject("Pokemon_Park_" + thisCard.hashCode()) != bg.turnCount) {
                 bc "Pokemon Park triggers"
                 heal 10, pcs
                 bg.em().storeObject("Pokemon_Park_" + thisCard.hashCode(), bg.turnCount)

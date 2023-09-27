@@ -2817,7 +2817,7 @@ public enum RisingRivals implements LogicCardInfo {
           weakness P, PLUS20
           pokeBody "Camouflage Gas", {
             text "If Weezing is Confused and is Knocked Out, your opponent can’t take a Prize card."
-            getterA GET_GIVEN_PRIZES, self, {holder ->
+            getterA GET_GIVEN_PRIZES, LAST, self, {holder ->
               if(self.isSPC(CONFUSED)) {
                 bc "$thisAbility prevents taking any prize card from ${self}"
                 holder.object = 0

@@ -1,7 +1,8 @@
 package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.effect.blocking.CantRetreat
-import tcgwars.logic.impl.gen3.FireRedLeafGreen;
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
+import tcgwars.logic.impl.gen3.Sandstorm;
 import tcgwars.logic.impl.gen5.*;
 import tcgwars.logic.impl.gen7.*;
 import static tcgwars.logic.card.HP.*;
@@ -1756,7 +1757,7 @@ public enum Unleashed implements LogicCardInfo {
       case POKEMON_CIRCULATOR_81:
         return copy (SunMoon.REPEL_130, this);
       case RARE_CANDY_82:
-        return copy(DarkExplorers.RARE_CANDY_100, this)
+        return copy (Sandstorm.RARE_CANDY_88, this)
       case SUPER_SCOOP_UP_83:
         return copy(FireRedLeafGreen.SUPER_SCOOP_UP_99, this);
       case CROBAT_84:

@@ -1,7 +1,8 @@
 package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.effect.EffectPriority
-import tcgwars.logic.effect.basic.Knockout;
+import tcgwars.logic.effect.basic.Knockout
+import tcgwars.logic.exception.EffectRequirementException;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -1616,9 +1617,7 @@ public enum Triumphant implements LogicCardInfo {
               assert opp.bench
             }
             onAttack {
-              targeted (defending) {
-                sw defending, opp.bench.select()
-              }
+              sw2 opp.bench.select("New Defending Pokémon")
             }
           }
           move "Careless Tackle", {
@@ -2271,6 +2270,7 @@ public enum Triumphant implements LogicCardInfo {
                   def pcs=self
                   bc "Rescue Energy activates"
                   scoopUpPokemon(pokemonOnly:true, pcs, delegate)
+                  prevent()
                 }
               }
             }
@@ -2377,23 +2377,19 @@ public enum Triumphant implements LogicCardInfo {
               before KNOCKOUT, {
                 if(self.active && ef.pokemonToBeKnockedOut.owner == self.owner.opposite ){
                   flag = ef.pokemonToBeKnockedOut.cards.filterByType(POKEMON).copy()
+                  bc "Catastrophe activates"
+                } else {
+                  flag = null
+                }
+              }
+              before MOVE_CARD_INNER, {
+                if (flag && flag.contains(ef.card) && ef.toList?.zoneType == CardList.ZoneType.DISCARD) {
+                  bg.em().run(new MoveCard(ef.card, pcs.owner.pbg.lostZone))
+                  throw new EffectRequirementException()
                 }
               }
               after KNOCKOUT, {
-                if(flag){
-                  bc "Catastrophe activates"
-                  def changedCardsList = bg.em().retrieveObject("impl_changed_cards")
-                  flag.each{ card ->
-                    def toMove = card
-                    def changedCard = changedCardsList.findAll{it[0] == card}
-                    if (changedCard) {
-                      bc "Card was changed: $changedCard"
-                      toMove = (changedCard.first())[1]
-                    }
-                    new CardList(toMove).moveTo(self.owner.opposite.pbg.lostZone)
-                  }
-                  flag = null
-                }
+                flag = null
               }
             }
           }
