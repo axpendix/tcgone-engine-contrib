@@ -2827,12 +2827,12 @@ public enum RisingRivals implements LogicCardInfo {
           move "Damage Breakdown", {
             text "Count the number of damage counters on Weezing. Put that many damage counters on the Defending Pokémon and Weezing is now Confused."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert self.numberOfDamageCounters
+            }
             onAttack {
-              directDamage 10 * self.numberOfDamageCounters, defending
-              afterDamage {
-                apply CONFUSED, self
-              }
+              require(directDamage(10 * self.numberOfDamageCounters, defending))
+              apply CONFUSED, self
             }
           }
           move "Smog", {

@@ -1584,12 +1584,12 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "Once during your turn (before your attack), when you attach a [G] or [P] Energy card from your hand to Vileplume (excluding effects of attacks or Poké-Powers), you may use this power. If you attach a [G] Energy card, the Defending Pokémon is now Asleep. If you attach a [P] Energy card, the Defending Pokémon is now Poisoned. This power can't be used if Vileplume is affected by a Special Condition."
             delayedA {
               after ATTACH_ENERGY, {
-                if (e.source != ATTACK && e.source != SRC_ABILITY && ef.fromHand && ef.targetPokemon == self && (ef.cardToPlay.containsType(G) || ef.cardToPlay.containsType(P)) && !self.specialConditions && confirm("Use Energy Reaction?")) {
-                  if (ef.cardToPlay.containsType(G)) {
+                if (e.source != ATTACK && e.source != SRC_ABILITY && ef.fromHand && ef.targetPokemon == self && (ef.card.containsType(G) || ef.card.containsType(P)) && !self.specialConditions && confirm("Use Energy Reaction?")) {
+                  if (ef.card.containsType(G)) {
                     bc "Energy Reaction inflicts Confusion"
                     apply ASLEEP, opp.active, SRC_ABILITY
                   }
-                  if (ef.cardToPlay.containsType(P)) {
+                  if (ef.card.containsType(P)) {
                     bc "Energy Reaction inflicts Poison"
                     apply POISONED, opp.active, SRC_ABILITY
                   }

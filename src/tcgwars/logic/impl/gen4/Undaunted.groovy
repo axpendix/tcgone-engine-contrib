@@ -1908,6 +1908,7 @@ public enum Undaunted implements LogicCardInfo {
             }
             if(!hasMatch) {
               top.showToMe("Top 10 cards of your deck")
+              shuffleDeck()
             } else {
               def legendPair = top.select(count:2 , "Select both halves of a Pokémon LEGEND.", cardTypeFilter(LEGEND), thisCard.player, { CardList list ->
                 list[0].name == list[1].name && list[0].number != list[1].number
@@ -1924,12 +1925,11 @@ public enum Undaunted implements LogicCardInfo {
               top.getExcludedList(legendPair).filterByType(ENERGY).each{
                 attachEnergy(pokemon, it)
               }
-
+              shuffleDeck()
               bg.getGameManager().broadcastMessage("Put " + topLegendCard.getName() + " onto bench.")
               bg.em().activateEffect(new PreventEvolve(pokemon, bg.getTurnCount()))
               bg.em().activateEffect(new CheckAbilities(PLAY_FROM_HAND, pokemon))
             }
-            shuffleDeck()
           }
           playRequirement{
             assert my.deck : "Your deck is empty"

@@ -8,12 +8,7 @@ import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.effect.EffectPriority.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.EffectType.ATTACH_ENERGY
-import static tcgwars.logic.effect.EffectType.DEVOLVE
-import static tcgwars.logic.effect.EffectType.EVOLVE
-import static tcgwars.logic.effect.EffectType.KNOCKOUT
-import static tcgwars.logic.effect.EffectType.KNOCKOUT;
+import static tcgwars.logic.effect.EffectType.*
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
@@ -2265,11 +2260,14 @@ public enum Triumphant implements LogicCardInfo {
           def eff
           onPlay {reason->
             eff = delayed priority:EffectPriority.LAST, {
+              def flag = false
               before KNOCKOUT, self, {
-                if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite ){
-                  def pcs=self
+                flag = (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite
+              }
+              before KNOCKOUT_DISCARD_STEP, self, {
+                if (flag) {
                   bc "Rescue Energy activates"
-                  scoopUpPokemon(pokemonOnly:true, pcs, delegate)
+                  scoopUpPokemon(pokemonOnly:true, self, delegate)
                   prevent()
                 }
               }
@@ -2384,7 +2382,7 @@ public enum Triumphant implements LogicCardInfo {
               }
               before MOVE_CARD_INNER, {
                 if (flag && flag.contains(ef.card) && ef.toList?.zoneType == CardList.ZoneType.DISCARD) {
-                  bg.em().run(new MoveCard(ef.card, pcs.owner.pbg.lostZone))
+                  bg.em().run(new MoveCard(ef.card, ef.card.player.pbg.lostZone))
                   throw new EffectRequirementException()
                 }
               }
