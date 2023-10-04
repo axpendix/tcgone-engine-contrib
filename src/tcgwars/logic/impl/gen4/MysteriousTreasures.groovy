@@ -3353,14 +3353,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
                     }
                   }
                   acl = action(pokemonCard, "Discard Armor Fossil", [TargetPlayer.SELF]) {
-                    delayed {
-                      before TAKE_PRIZE, {
-                        if (ef.pcs==self) {
-                          prevent()
-                        }
-                      }
-                    }
-                    new Knockout(self).run(bg)
+                    self.cards.moveTo(self.owner.pbg.discard)
+                    removePCS(self)
                   }
                 }
                 onDeactivate {
@@ -3422,14 +3416,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
                     }
                   }
                   acl = action(pokemonCard, "Discard Skull Fossil", [TargetPlayer.SELF]) {
-                    delayed {
-                      before TAKE_PRIZE, {
-                        if (ef.pcs==self) {
-                          prevent()
-                        }
-                      }
-                    }
-                    new Knockout(self).run(bg)
+                    self.cards.moveTo(self.owner.pbg.discard)
+                    removePCS(self)
                   }
                 }
                 onDeactivate {

@@ -2315,14 +2315,8 @@ public enum LegendMaker implements LogicCardInfo {
                   }
                 }
                 acl = action(pokemonCard, "Discard Claw Fossil", [TargetPlayer.SELF]) {
-                  delayed {
-                    before TAKE_PRIZE, {
-                      if (ef.pcs==self) {
-                        prevent()
-                      }
-                    }
-                  }
-                  new Knockout(self).run(bg)
+                  self.cards.moveTo(self.owner.pbg.discard)
+                  removePCS(self)
                 }
               }
               onDeactivate {
@@ -2373,7 +2367,8 @@ public enum LegendMaker implements LogicCardInfo {
                   }
                 }
                 acl = action(pokemonCard, "Discard Mysterious Fossil", [TargetPlayer.SELF]){
-                  new Knockout(self).run(bg)
+                  self.cards.moveTo(self.owner.pbg.discard)
+                  removePCS(self)
                 }
               }
               onDeactivate{
@@ -2437,14 +2432,8 @@ public enum LegendMaker implements LogicCardInfo {
                   }
                 }
                 acl = action(pokemonCard, "Discard Root Fossil", [TargetPlayer.SELF]) {
-                  delayed{
-                    before TAKE_PRIZE, {
-                      if(ef.pcs==self){
-                        prevent()
-                      }
-                    }
-                  }
-                  new Knockout(self).run(bg)
+                  self.cards.moveTo(self.owner.pbg.discard)
+                  removePCS(self)
                 }
               }
               onDeactivate {

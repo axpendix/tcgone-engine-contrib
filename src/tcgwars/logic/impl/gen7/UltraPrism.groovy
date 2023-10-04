@@ -3104,15 +3104,9 @@ public enum UltraPrism implements LogicCardInfo {
                       }
                     }
                   }
-                  acl = action(pokemonCard, "Discard unidentified fossil", [TargetPlayer.SELF]){
-                    delayed{
-                      before TAKE_PRIZE, {
-                        if(ef.pcs==self){
-                          prevent()
-                        }
-                      }
-                    }
-                    new Knockout(self).run(bg)
+                  acl = action(pokemonCard, "Discard Unidentified Fossil", [TargetPlayer.SELF]){
+                    self.cards.moveTo(self.owner.pbg.discard)
+                    removePCS(self)
                   }
                 }
                 onDeactivate{

@@ -1329,7 +1329,8 @@ public enum FossilNG implements LogicCardInfo {
                     }
                   }
                   acl = action(pokemonCard, "Discard Mysterious Fossil", [TargetPlayer.SELF]){
-                    new Knockout(self).run(bg)
+                    self.cards.moveTo(self.owner.pbg.discard)
+                    removePCS(self)
                   }
                 }
                 onDeactivate{

@@ -3919,14 +3919,8 @@ public enum DarknessAblaze implements LogicCardInfo {
                   }
                 }
                 acl = action(pokemonCard, "Discard Rare Fossil", [TargetPlayer.SELF]){
-                  delayed{
-                    before TAKE_PRIZE, {
-                      if(ef.pcs==self){
-                        prevent()
-                      }
-                    }
-                  }
-                  new Knockout(self).run(bg)
+                  self.cards.moveTo(self.owner.pbg.discard)
+                  removePCS(self)
                 }
               }
               onDeactivate{
