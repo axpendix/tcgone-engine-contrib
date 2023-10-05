@@ -1524,20 +1524,18 @@ public enum LegendMaker implements LogicCardInfo {
         weakness R
         pokeBody "Reactive Aroma", {
           text "As long as Roselia has any React Energy cards attached to it, remove 1 damage counter from each of your Pokémon (excluding Pokémon-ex) that has any React Energy cards attached to it between turns. You can't use more than 1 Reactive Aroma Poké-Body each turn."
-          delayedA {
-            def lastTurn = 0
+          delayedA (anytime:true) {
+            def lastExecId = null
             before BEGIN_TURN, {
-              if (bg.em().retrieveObject("Reactive_Aroma" + self.owner) != null) {
-                lastTurn = bg.em().retrieveObject("Reactive_Aroma" + self.owner)
-              }
-              if ( lastTurn != bg.turnCount && self.cards.any{it.name == "React Energy"}) {
-                bg.em().storeObject("Reactive_Aroma" + self.owner, bg.turnCount)
-                bc "Reactive Aroma Activates"
+              if (lastExecId != e.executionId && bg.em().retrieveObject("Reactive_Aroma" + self.owner) != ef.oldTurnCount && self.cards.any{it.name == "React Energy"} && self.owner.pbg.all.any{it.numberOfDamageCounters && it.cards.any{it.name == "React Energy"} && !it.EX} ) {
+                bc "$thisAbility activates"
                 self.owner.pbg.all.each {
                   if (it.numberOfDamageCounters && it.cards.any{it.name == "React Energy"} && !it.EX) {
                     heal 10, it
                   }
                 }
+                lastExecId = e.executionId
+                bg.em().storeObject("Reactive_Aroma" + self.owner, ef.oldTurnCount)
               }
             }
           }
