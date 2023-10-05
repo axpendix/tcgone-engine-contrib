@@ -2267,8 +2267,8 @@ public enum Triumphant implements LogicCardInfo {
               before KNOCKOUT_DISCARD_STEP, self, {
                 if (flag) {
                   bc "Rescue Energy activates"
-                  scoopUpPokemon(pokemonOnly:true, self, delegate)
-                  prevent()
+                  self.cards.filterByType(POKEMON).moveTo(self.owner.pbg.hand)
+                  throw new EffectRequirementException()
                 }
               }
             }
