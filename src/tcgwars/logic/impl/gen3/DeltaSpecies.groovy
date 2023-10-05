@@ -1425,7 +1425,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         }
         move "Brick Smash", {
           text "50 damage. This attack's damage isn't affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
-          energyCost R, R, C
+          energyCost F, F, C
           onAttack {
             noResistanceOrAnyEffectDamage(50, defending)
           }
