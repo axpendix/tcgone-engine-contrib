@@ -2268,7 +2268,6 @@ public enum Triumphant implements LogicCardInfo {
                 if (flag) {
                   bc "Rescue Energy activates"
                   self.cards.filterByType(POKEMON).moveTo(self.owner.pbg.hand)
-                  throw new EffectRequirementException()
                 }
               }
             }
