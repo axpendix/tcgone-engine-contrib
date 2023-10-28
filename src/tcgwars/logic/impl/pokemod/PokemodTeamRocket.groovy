@@ -131,7 +131,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
   ROCKETS_ENERGY_WP_88 ("Rocket's Energy WP", "88", Rarity.RARE, [SPECIAL_ENERGY, ENERGY]),
   ROCKET_BALL_89 ("Rocket Ball ", "89", Rarity.UNCOMMON, [TRAINER]),
   POKEMON_RETRIVER_90 ("Pokémon Retriver", "90", Rarity.RARE, [TRAINER]),
-  POW_HAND_EXTENTION_91 ("Pow! Hand Extention", "91", Rarity.RARE, [TRAINER]),
+  POW_HAND_EXTENSION_91 ("Pow! Hand Extension", "91", Rarity.RARE, [TRAINER]),
   SURPRISE_TIME_MACHINE_92 ("Surprise! Time Machine", "92", Rarity.RARE, [TRAINER]),
   SWOOP_TELEPORTER_93 ("Swoop! Teleporter", "93", Rarity.RARE, [TRAINER]),
   ROCKETS_DUNGEON_94 ("Rocket's Dungeon", "94", Rarity.UNCOMMON, [TRAINER, STADIUM]),
