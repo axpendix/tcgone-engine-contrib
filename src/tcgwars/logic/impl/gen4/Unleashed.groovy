@@ -1,6 +1,9 @@
 package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.card.pokemon.EvolutionPokemonCard
+import tcgwars.logic.effect.basic.Evolve
 import tcgwars.logic.effect.blocking.CantRetreat
+import tcgwars.logic.exception.EffectRequirementException
 import tcgwars.logic.impl.gen3.FireRedLeafGreen
 import tcgwars.logic.impl.gen3.Sandstorm;
 import tcgwars.logic.impl.gen5.*;
@@ -1757,7 +1760,27 @@ public enum Unleashed implements LogicCardInfo {
       case POKEMON_CIRCULATOR_81:
         return copy (SunMoon.REPEL_130, this);
       case RARE_CANDY_82:
-        return copy (Sandstorm.RARE_CANDY_88, this)
+        return itemCard (this) {
+          text "Choose 1 of your Basic Pokémon in play. If you have a Stage 2 card in your hand that evolves from that Pokémon, put that card on the Basic Pokémon. (This counts as evolving that Pokémon.) You can't use this card during your first turn or on a Basic Pokémon that was put into play this turn.\nYou may play as many Item cards as you like during your turn (before your attack)."
+          // errata: The wording of Rare Candy is now as follows, “Choose 1 of your Basic Pokémon in play. If you have a Stage 2 card in your hand that evolves from that Pokémon, put that card on the Basic Pokémon. (This counts as evolving that Pokémon.) You can’t use this card during your first turn or on a Basic Pokémon that was put into play this turn.” So now it can’t be used on your first turn, and it can’t be used on a Pokémon played this turn.
+          // Source: TPCi Announcement (2011-04-11), PUI Rules Team (2011-05-05)
+          // errata: Rare Candy can be used on a Basic Pokémon that was just put into play that turn, including a player’s first turn only in the HGSS block format, every other format should follow the errata.
+          onPlay {
+            if (bg.gameFormat == GameFormat.HS_SERIES) {
+              rareCandyGen3Play()
+            } else {
+              rareCandyGen5Play()
+            }
+          }
+          playRequirement{
+            if (bg.gameFormat == GameFormat.HS_SERIES) {
+              rareCandyGen3Requirement()
+            } else {
+              rareCandyGen5Requirement()
+            }
+          }
+        };
+        return copy (DarkExplorers.RARE_CANDY_100, this)
       case SUPER_SCOOP_UP_83:
         return copy(FireRedLeafGreen.SUPER_SCOOP_UP_99, this);
       case CROBAT_84:

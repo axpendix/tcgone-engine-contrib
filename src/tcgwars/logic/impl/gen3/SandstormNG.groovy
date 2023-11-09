@@ -1,5 +1,7 @@
 package tcgwars.logic.impl.gen3
 
+import tcgwars.logic.exception.EffectRequirementException
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -1825,32 +1827,11 @@ public enum SandstormNG implements LogicCardInfo {
       case RARE_CANDY_88:
       return itemCard (this) {
         text "Choose 1 of your Basic Pokémon in play. If you have a Stage 1 or Stage 2 card that evolves from that Pokémon in your hand, put that card on the Basic Pokémon. (This counts as evolving that Pokémon.)"
-        PokemonCardSet pcs = null
-        CardList sel = null
         onPlay {
-//          def eff = delayed {
-//            before PREVENT_EVOLVE, pcs, null, EVOLVE, {prevent()}
-//          }
-//          try {
-//            bg().em().activateInnerEffect(new Evolve(pcs, sel.first()))
-//          } finally {
-//            eff.unregister()
-//          }
-          bg().em().activateInnerEffect(new Evolve(pcs, sel.first()).setDirect(true))
+          rareCandyGen3Play()
         }
-        playRequirement{
-          def targets = my.all.findAll { it.basic }
-          def evolutions = my.hand.filterByType(STAGE1, STAGE2)
-          assert targets : "You have no basic Pokémon."
-          assert evolutions : "You have no Stage 1 or Stage 2 card in hand"
-          pcs = targets.select("Choose the pokemon to be evolved")
-          def possibleEvolutions = evolutions.findAll{ EvolutionPokemonCard evoCard ->
-            ( evoCard.predecessors.contains(pcs.name) ) ||
-            ( bg.gm().getBasicsFromStage2(evoCard.name).contains(pcs.name) )
-          }
-          assert possibleEvolutions : "There is no Stage 1/2 in hand for $pcs to evolve into"
-          sel = possibleEvolutions.select(min: 0)
-          assert sel : "Cancelled"
+        playRequirement {
+          rareCandyGen3Requirement()
         }
       };
       case WALLY_S_TRAINING_89:
