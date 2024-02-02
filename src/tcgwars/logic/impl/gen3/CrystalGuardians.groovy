@@ -2276,12 +2276,12 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
           onAttack {
             def card = filter().select("Discard a Pokémon and use one of that Pokémon’s attacks as this attack.").first()
-            discard card
-            def move = choose(card.asPokemonCard().moves, "Choose attack to perform")
+            def move = choose(card.asPokemonCard().moves, "Choose attack to perform") as Move
             bc "$move was chosen"
             def bef=blockingEffect(BETWEEN_TURNS)
-            attack (move.shallowCopy())
+            attack (move)
             bef.unregisterItself(bg().em())
+            discard card // discard at the end because CHECK_ATTACK_REQUIREMENTS effect is rerun with subattack and since the presence of a pokemon card in hand is a requirement, it makes the subattack fail miserably.
           }
         }
       };
