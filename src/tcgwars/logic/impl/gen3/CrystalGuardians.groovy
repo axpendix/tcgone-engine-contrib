@@ -2154,7 +2154,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         weakness R
         resistance W, MINUS30
         pokeBody "Extra Liquid", {
-          def eff, target
+          def eff
           text "Each player's Pokémon-ex can't use any Poké-Powers and pays [C] more Energy to use its attacks. Each Pokémon can't be affected by more than 1 Extra Liquid Poké-Body."
           getterA (IS_ABILITY_BLOCKED) { Holder h ->
             if (h.effect.target.EX) {
@@ -2165,18 +2165,13 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
           onActivate {
             eff = getter GET_MOVE_LIST, { h ->
-              if (h.effect.target.EX) {
+              if (h.effect.target.EX && !h.context["Extra_Liquid"]) {
                 def list = []
                 for (move in h.object) {
                   def copy = move.shallowCopy()
-                  target = bg.em().retrieveObject("Extra_Liquid_target")
-                  target = target ? target : []
-                  if(!target.contains(h.effect.target)){
-                    copy.energyCost.add(C)
-                    target.add(h.effect.target)
-                    bg.em().storeObject("Extra_Liquid_target", target)
-                  }
+                  copy.energyCost.add(C)
                   list.add(copy)
+                  h.context["Extra_Liquid"] = 1
                 }
                 h.object=list
               }
@@ -2185,8 +2180,6 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
           onDeactivate {
             eff.unregister()
-            target = []
-            bg.em().storeObject("Extra_Liquid_target", target)
             new CheckAbilities().run(bg)
           }
         }
