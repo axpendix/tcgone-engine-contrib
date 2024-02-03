@@ -738,33 +738,18 @@ public enum MajesticDawn implements LogicCardInfo {
           pokeBody "Sunlight Veil", {
             text "Each of your Pokémon that evolves from Eevee gets +20 HP. You can’t use more than 1 Sunlight Veil Poké-Body each turn."
 
-            def eff, source, target
+            def eff
             onActivate {
               eff = getter (GET_FULL_HP,BEFORE_LAST) {h->
                 def pcs = h.effect.target
-                if (pcs.owner == self.owner && pcs.realEvolution && pcs.topNonLevelUpPokemonCard.predecessor == "Eevee"){
-                  target = bg.em().retrieveObject("Sunlight_Veil_target")
-                  target = target?target:[]
-                  source = bg.em().retrieveObject("Sunlight_Veil_source")
-                  source = source?source:[]
-                  if(!target.contains(pcs)){
-                    h.object += hp(20)
-                    target.add(pcs)
-                    bg.em().storeObject("Sunlight_Veil_target", target)
-                    source.add(self)
-                    bg.em().storeObject("Sunlight_Veil_source", source)
-                  } else if(source.get(target.indexOf(pcs)) == self){
-                    h.object += hp(20)
-                  }
+                if (pcs.owner == self.owner && pcs.realEvolution && pcs.topNonLevelUpPokemonCard.predecessor == "Eevee" && !h.context["Sunlight_Veil"]){
+                  h.object += hp(20)
+                  h.context["Sunlight_Veil"] = 1
                 }
               }
             }
             onDeactivate {
               eff.unregister()
-              target = []
-              source = []
-              bg.em().storeObject("Sunlight_Veil_target", target)
-              bg.em().storeObject("Sunlight_Veil_source", source)
             }
           }
           move "Morning Sun", {
