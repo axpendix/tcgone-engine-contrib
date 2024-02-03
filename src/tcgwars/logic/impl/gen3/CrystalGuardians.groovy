@@ -2164,15 +2164,15 @@ public enum CrystalGuardians implements LogicCardInfo {
             }
           }
           onActivate {
-            eff = getter GET_MOVE_LIST, { h ->
+            eff = getter (GET_MOVE_LIST, BEFORE_LAST) { h ->
               if (h.effect.target.EX && !h.context["Extra_Liquid"]) {
                 def list = []
                 for (move in h.object) {
                   def copy = move.shallowCopy()
                   copy.energyCost.add(C)
                   list.add(copy)
-                  h.context["Extra_Liquid"] = 1
                 }
+                h.context["Extra_Liquid"] = 1
                 h.object=list
               }
             }
