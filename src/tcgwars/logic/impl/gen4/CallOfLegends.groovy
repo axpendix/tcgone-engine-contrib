@@ -685,7 +685,7 @@ public enum CallOfLegends implements LogicCardInfo {
           resistance L, MINUS20
           pokeBody "Ultra-Thick Skin", {
             text "As long as Phanpy has Energy attached to it, any damage done to Phanpy by attacks is reduced by 10 ."
-            delayed {
+            delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {if(it.to==self && self.cards.energyCount(C) && it.notZero && it.notNoEffect) {
                   bc "$thisAbility -10"
