@@ -342,42 +342,27 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS20
           pokeBody "Downer Material", {
-            def eff, source, target
+            def eff
             text "If you have Uxie and Mesprit in play, the attack cost of each of your opponent’s Basic Pokémon’s attacks is [C] more. You can’t use more than 1 Downer Material Poké-Body each turn."
             def selfOwner = self.owner
             //Adapted from Sceptile-ex Delta (CG 96)
             onActivate {
               eff = getter GET_MOVE_LIST, { h ->
                 def condition = selfOwner.pbg.all.any { it.name == "Uxie" } && selfOwner.pbg.all.any { it.name == "Mesprit" }
-                if (condition && h.effect.target.owner != selfOwner && h.effect.target.basic) {
+                if (condition && h.effect.target.owner != selfOwner && h.effect.target.basic && !h.context["Downer_Material"]) {
                   def list = []
                   for (move in h.object) {
                     def copy = move.shallowCopy()
-                    target = bg.em().retrieveObject("Downer_Material_target")
-                    target = target ? target : []
-                    source = bg.em().retrieveObject("Downer_Material_source")
-                    source = source ? source : []
-                    if (!target.contains(h.effect.target)) {
-                      copy.energyCost.add(C)
-                      target.add(h.effect.target)
-                      bg.em().storeObject("Downer_Material_target", target)
-                      source.add(self)
-                      bg.em().storeObject("Downer_Material_source", source)
-                    } else if (source.get(target.indexOf(h.effect.target)) == self) {
-                      copy.energyCost.add(C)
-                    }
+                    copy.energyCost.add(C)
                     list.add(copy)
                   }
+                  h.context["Downer_Material"] = 1
                   h.object = list
                 }
               }
             }
             onDeactivate {
               eff.unregister()
-              target = []
-              source = []
-              bg.em().storeObject("Downer_Material_target", target)
-              bg.em().storeObject("Downer_Material_source", source)
             }
           }
           move "Bind Pulse", {
