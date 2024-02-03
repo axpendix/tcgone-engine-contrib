@@ -446,28 +446,14 @@ public enum SupremeVictors implements LogicCardInfo {
             def eff
             onActivate {
               eff = getter (GET_FULL_HP,BEFORE_LAST) {h->
-                def pcs = h.effect.target
-                def target = bg.em().retrieveObject("Gravitation_target")
-                target = target?target:[]
-                def source = bg.em().retrieveObject("Gravitation_source")
-                source = source?source:[]
-                if(!target.contains(pcs)){
+                if (!h.context['Gravitation']) {
                   h.object -= hp(20)
-                  target.add(pcs)
-                  bg.em().storeObject("Gravitation_target", target)
-                  source.add(self)
-                  bg.em().storeObject("Gravitation_source", source)
-                } else if(source.get(target.indexOf(pcs)) == self){
-                  h.object -= hp(20)
+                  h.context['Gravitation'] = 1
                 }
               }
             }
             onDeactivate {
               eff.unregister()
-              def target = []
-              def source = []
-              bg.em().storeObject("Gravitation_target", target)
-              bg.em().storeObject("Gravitation_source", source)
             }
           }
           move "Geo Impact", {

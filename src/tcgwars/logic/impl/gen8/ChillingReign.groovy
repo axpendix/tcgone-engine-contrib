@@ -510,25 +510,12 @@ public enum ChillingReign implements LogicCardInfo {
           weakness FIRE
           bwAbility "Toughness Boost", {
             text "As long as this Pokémon is in play, the maximum HP of your Single Strike Pokémon in play (excluding any Abomasnow) is increased by 50. You can't apply more than 1 Toughness Up Ability at a time."
-            def target = []
-            def source = []
-            bg.em().storeObject("Toughness_Boost_target", target)
-            bg.em().storeObject("Toughness_Boost_source", source)
 
             getterA (GET_FULL_HP) { h->
               def pcs = h.effect.target
-              if (pcs.owner == self.owner && pcs.singleStrike && pcs.topPokemonCard.name != "Abomasnow"){
-                target = bg.em().retrieveObject("Toughness_Boost_target")
-                source = bg.em().retrieveObject("Toughness_Boost_source")
-                if (!target.contains(pcs)) {
-                  h.object += hp(50)
-                  target.add(pcs)
-                  bg.em().storeObject("Toughness_Boost_target", target)
-                  source.add(self)
-                  bg.em().storeObject("Toughness_Boost_source", source)
-                } else if (source.get(target.indexOf(pcs)) == self) {
-                  h.object += hp(50)
-                }
+              if (pcs.owner == self.owner && pcs.singleStrike && pcs.topPokemonCard.name != "Abomasnow" && !h.context['Toughness_Boost']){
+                h.object += hp(50)
+                h.context['Toughness_Boost'] = 1
               }
             }
           }

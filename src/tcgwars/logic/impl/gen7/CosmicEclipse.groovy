@@ -1255,33 +1255,18 @@ public enum CosmicEclipse implements LogicCardInfo {
           weakness G
           bwAbility "Vitality Cheer", {
             text "Your Pokémon-GX in play that evolve from Eevee get +60 HP. You can't apply more than 1 Vitality Cheer Ability at a time."
-            def eff, target, source
+            def eff
             onActivate {
               eff = getter(GET_FULL_HP) { h ->
                 def pcs = h.effect.target
-                if (pcs.owner == self.owner && pcs.pokemonGX && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee") {
-                  target = bg.em().retrieveObject("Vitality_Cheer_target")
-                  target = target ? target : []
-                  source = bg.em().retrieveObject("Vitality_Cheer_source")
-                  source = source ? source : []
-                  if (!target.contains(pcs)) {
-                    h.object += hp(60)
-                    target.add(pcs)
-                    bg.em().storeObject("Vitality_Cheer_target", target)
-                    source.add(self)
-                    bg.em().storeObject("Vitality_Cheer_source", source)
-                  } else if (source.get(target.indexOf(pcs)) == self) {
-                    h.object += hp(60)
-                  }
+                if (pcs.owner == self.owner && pcs.pokemonGX && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee" && !h.context['Vitality_Cheer']) {
+                  h.object += hp(60)
+                  h.context['Vitality_Cheer'] = 1
                 }
               }
             }
             onDeactivate {
               eff.unregister()
-              target = []
-              source = []
-              bg.em().storeObject("Vitality_Cheer_target", target)
-              bg.em().storeObject("Vitality_Cheer_source", source)
             }
           }
           move "Refreshing Rain", {
@@ -1850,46 +1835,26 @@ public enum CosmicEclipse implements LogicCardInfo {
           resistance M, MINUS20
           bwAbility "Speed Cheer", {
             text "The attacks of your Pokémon-GX in play that evolve from Eevee cost [C] less. You can't apply more than 1 Speed Cheer Ability at a time."
-            def eff, target, source
+            def eff
             onActivate {
               eff = getter GET_MOVE_LIST, BEFORE_LAST, { h ->
                 PokemonCardSet pcs = h.effect.target
-                if (pcs.owner == self.owner && pcs.pokemonGX && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee") {
-                  target = bg.em().retrieveObject("Speed_Cheer_target")
-                  target = target ? target : []
-                  source = bg.em().retrieveObject("Speed_Cheer_source")
-                  source = source ? source : []
-
-                  def reduceAttackCost = {
-                    def list = []
-                    for (move in h.object) {
-                      def copy = move.shallowCopy()
-                      if (copy.energyCost.contains(C)) {
-                        copy.energyCost.remove(C)
-                      }
-                      list.add(copy)
+                if (pcs.owner == self.owner && pcs.pokemonGX && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee" && !h.context['Speed_Cheer']) {
+                  def list = []
+                  for (move in h.object) {
+                    def copy = move.shallowCopy()
+                    if (copy.energyCost.contains(C)) {
+                      copy.energyCost.remove(C)
                     }
-                    h.object = list
+                    list.add(copy)
                   }
-
-                  if (!target.contains(pcs)) {
-                    reduceAttackCost.call()
-                    target.add(pcs)
-                    bg.em().storeObject("Speed_Cheer_target", target)
-                    source.add(self)
-                    bg.em().storeObject("Speed_Cheer_source", source)
-                  } else if (source.get(target.indexOf(pcs)) == self) {
-                    reduceAttackCost.call()
-                  }
+                  h.object = list
+                  h.context['Speed_Cheer'] = 1
                 }
               }
             }
             onDeactivate {
               eff.unregister()
-              target = []
-              source = []
-              bg.em().storeObject("Speed_Cheer_target", target)
-              bg.em().storeObject("Speed_Cheer_source", source)
             }
           }
           move "Head Bolt", {
