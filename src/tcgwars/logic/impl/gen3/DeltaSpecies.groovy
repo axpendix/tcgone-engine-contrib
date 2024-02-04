@@ -619,7 +619,9 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "As long as Rayquaza has any Holon Energy cards attached to it, ignore the effect of Rayquaza's Lightning Storm attack."
           delayedA {
             before CHECK_ATTACK_REQUIREMENTS, {
-              bg.em().storeObject("Lightning_Storm", (ef.attacker == self && self.cards.any{ it.name.contains("Holon Energy") } && ef.move.name == "Lightning Storm") )
+              if (ef.attacker == self && self.cards.any{ it.name.contains("Holon Energy") } && ef.move.name == "Lightning Storm") {
+                bg.em().storeObject("Lightning_Storm", bg.turnCount)
+              }
             }
           }
         }
@@ -635,7 +637,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost L, M, C, C
           onAttack {
             damage 70
-            if (bg.em().retrieveObject("Lightning_Storm") != true) {
+            if (bg.em().retrieveObject("Lightning_Storm") != bg.turnCount) {
               directDamage 70, self
             } else {
               bc "Rayquaza Delta has a Holon Energy attached and will not take self damage from Lightning Storm"
