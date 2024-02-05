@@ -440,11 +440,11 @@ public enum GuardiansRising implements LogicCardInfo {
               }
               before COIN_FLIP_BETWEEN_EXECUTION, {
                 def lastTurn=bg.em().retrieveObject(key)
-                if(act && ef.object.player == bg.getCurrentTurn() && bg.currentThreadPlayerType == self.owner && lastTurn!=bg.turnCount) {
-                  if(confirm("Victory Star: Result: "+ef.object.lastResultString +". Do you want to reflip? ")){
+                if(act && ef.coinFlip.player == bg.getCurrentTurn() && bg.currentThreadPlayerType == self.owner && lastTurn!=bg.turnCount) {
+                  if(confirm("Victory Star: Result: "+ef.coinFlip.lastResultString +". Do you want to reflip? ")){
                     bg.em().storeObject(key, bg.turnCount)
                     bc "$self used Victory Star and discarded those flips"
-                    ef.object.run(bg) //flip again
+                    bg.em().run(ef.coinFlip) //flip again
                     prevent()
                   }
                 }

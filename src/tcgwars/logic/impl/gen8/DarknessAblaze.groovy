@@ -3784,10 +3784,10 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
             before COIN_FLIP_BETWEEN_EXECUTION, {
               def lastTurn = bg.em().retrieveObject(key)
-              if (act && ef.object.player == bg.getCurrentTurn() && lastTurn != bg.turnCount && confirm("Glimwood Tangle: Result: $ef.object.lastResultString. Do you want to reflip?")) {
+              if (act && ef.coinFlip.player == bg.getCurrentTurn() && lastTurn != bg.turnCount && confirm("Glimwood Tangle: Result: $ef.coinFlip.lastResultString. Do you want to reflip?")) {
                 bg.em().storeObject(key, bg.turnCount)
                 bc "${bg().getCurrentTurn().pbg.active} used Glimwood Tangle and discarded those flips"
-                ef.object.run(bg) //flip again
+                bg.em().run(ef.coinFlip) //flip again
                 prevent()
               }
             }
