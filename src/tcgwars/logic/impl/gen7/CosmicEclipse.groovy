@@ -876,7 +876,7 @@ public enum CosmicEclipse implements LogicCardInfo {
               after PROCESS_ATTACK_EFFECTS, {
                 if (bg.em().retrieveObject("Power_Cheer") != bg.turnCount){
                   bg.dm().each{
-                    if(it.from.owner == self.owner && it.from.pokemonGX && it.from.realEvolution && it.from.topPokemonCard.predecessor == "Eevee" && it.to.active && it.to.owner != self.owner && it.dmg.value && it.notNoEffect) {
+                    if(it.from.owner == self.owner && it.from.pokemonGX && it.from.evolvesFrom('Eevee') && it.to.active && it.to.owner != self.owner && it.dmg.value && it.notNoEffect) {
                       bc "Power Cheer +30"
                       it.dmg += hp(30)
                     }
@@ -1259,7 +1259,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             onActivate {
               eff = getter(GET_FULL_HP) { h ->
                 def pcs = h.effect.target
-                if (pcs.owner == self.owner && pcs.pokemonGX && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee" && !h.context['Vitality_Cheer']) {
+                if (pcs.owner == self.owner && pcs.pokemonGX && pcs.evolvesFrom('Eevee') && !h.context['Vitality_Cheer']) {
                   h.object += hp(60)
                   h.context['Vitality_Cheer'] = 1
                 }
@@ -1839,7 +1839,7 @@ public enum CosmicEclipse implements LogicCardInfo {
             onActivate {
               eff = getter GET_MOVE_LIST, BEFORE_LAST, { h ->
                 PokemonCardSet pcs = h.effect.target
-                if (pcs.owner == self.owner && pcs.pokemonGX && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee" && !h.context['Speed_Cheer']) {
+                if (pcs.owner == self.owner && pcs.pokemonGX && pcs.evolvesFrom('Eevee') && !h.context['Speed_Cheer']) {
                   def list = []
                   for (move in h.object) {
                     def copy = move.shallowCopy()

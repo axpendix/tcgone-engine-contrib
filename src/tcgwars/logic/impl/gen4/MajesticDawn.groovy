@@ -742,9 +742,10 @@ public enum MajesticDawn implements LogicCardInfo {
             onActivate {
               eff = getter (GET_FULL_HP,BEFORE_LAST) {h->
                 def pcs = h.effect.target
-                if (pcs.owner == self.owner && pcs.realEvolution && pcs.topNonLevelUpPokemonCard.predecessor == "Eevee" && !h.context["Sunlight_Veil"]){
+                if (pcs.owner == self.owner && pcs.evolvesFrom('Eevee') && !h.context["Sunlight_Veil"]){
                   h.object += hp(20)
                   h.context["Sunlight_Veil"] = 1
+                  println "OK - Sunlight_Veil"
                 }
               }
             }
@@ -1090,14 +1091,14 @@ public enum MajesticDawn implements LogicCardInfo {
             text "Each of your Pokémon that evolves from Eevee has no Weakness, and that Pokémon’s Retreat Cost is 0."
             getterA (GET_WEAKNESSES) { h->
               def pcs = h.effect.target
-              if(pcs.owner == self.owner && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee") {
+              if(pcs.owner == self.owner && pcs.evolvesFrom('Eevee')) {
                 def list = h.object as List<Weakness>
                 list.clear()
               }
             }
             getterA GET_RETREAT_COST ,{ h->
               def pcs = h.effect.target
-              if (pcs.owner == self.owner && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee") {
+              if (pcs.owner == self.owner && pcs.evolvesFrom('Eevee')) {
                 h.object = 0
               }
             }

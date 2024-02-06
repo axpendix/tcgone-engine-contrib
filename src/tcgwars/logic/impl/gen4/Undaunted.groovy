@@ -1986,7 +1986,7 @@ public enum Undaunted implements LogicCardInfo {
           pokeBody "Evolution Memories", {
             text "Espeon can use the attacks of all Pokémon you have in play that evolve from Eevee as its own."
             metronomeA delegate, { my.all.findAll {
-              it.realEvolution && it.topPokemonCard.predecessor == "Eevee"
+              it.evolvesFrom('Eevee')
             } }
           }
           move "Solar Ray", {
@@ -2123,7 +2123,7 @@ public enum Undaunted implements LogicCardInfo {
             text "Does 50 damage plus 10 more damage for each of your Pokémon in play that evolves from Eevee."
             energyCost D, C, C
             onAttack {
-              damage 50 + 10 * my.all.findAll{it.realEvolution && it.topPokemonCard.predecessor == "Eevee"}.size()
+              damage 50 + 10 * my.all.findAll{it.evolvesFrom('Eevee')}.size()
             }
           }
 
