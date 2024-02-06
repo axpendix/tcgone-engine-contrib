@@ -2561,10 +2561,10 @@ public enum CosmicEclipse implements LogicCardInfo {
             text "Choose 1 of your opponent's Active Pokémon's non-GX attacks and use it as this attack."
             energyCost P, C, C
             attackRequirement {
-              assert opp.active.topPokemonCard.moves.findAll { !it.name.contains("GX") } : "No moves to use."
+              assert opp.active.baseMoves.findAll { !it.name.contains("GX") } : "No moves to use."
             }
             onAttack {
-              def list = defending.topPokemonCard.moves.findAll { !it.name.contains("GX") }
+              def list = defending.baseMoves.findAll { !it.name.contains("GX") }
               if (list) {
                 def selected = choose(list, "Choose an attack to use.")
                 bc "$selected was chosen."

@@ -512,7 +512,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             def card = opp.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }.select("Source of move")
             if (card) {
               bc "$card was chosen"
-              def moves = card.topPokemonCard.moves
+              def moves = card.baseMoves
               if (moves) {
                 def move = choose(moves, "Choose attack")
                 bc "$move was chosen"
@@ -2361,8 +2361,8 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C
           onAttack {
             def tar = opp.all.select("Choose Pokémon to copy moves from")
-            if (tar.topPokemonCard.moves) {
-              def moveOptions = tar.topPokemonCard.moves
+            def moveOptions = tar.baseMoves
+            if (moveOptions) {
               def move = choose(moveOptions + ["End Turn (Skip)"], "Choose 1 of the Pokémon's attacks.")
               if (move instanceof String) return
               def bef = blockingEffect(BETWEEN_TURNS)

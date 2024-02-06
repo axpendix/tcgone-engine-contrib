@@ -2066,11 +2066,11 @@ public enum LostThunder implements LogicCardInfo {
             text "This attack does 10 damage for each of your Pokémon in play that has the Nuzzle attack to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost L
             attackRequirement {
-              assert my.all.findAll{it.topPokemonCard.moves.findAll{it.name=="Nuzzle"}}
+              assert my.all.findAll{it.baseMoves.findAll{it.name=="Nuzzle"}}
               assert opp.bench
             }
             onAttack {
-              damage 10*my.all.findAll{it.topPokemonCard.moves.findAll{it.name=="Nuzzle"}}.size(), opp.bench.select()
+              damage 10*my.all.findAll{it.baseMoves.findAll{it.name=="Nuzzle"}}.size(), opp.bench.select()
             }
           }
         };
@@ -2552,10 +2552,10 @@ public enum LostThunder implements LogicCardInfo {
             text "Flip a coin for each of your Pokémon that has the Sing attack. This attack does 10 damage for each heads to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost P,C,C
             attackRequirement {
-              assert my.all.findAll{it.topPokemonCard.moves.findAll{it.name=="Sing"}}
+              assert my.all.findAll{it.baseMoves.findAll{it.name=="Sing"}}
             }
             onAttack {
-              def coinFlip = my.all.findAll{it.topPokemonCard.moves.findAll{it.name=="Sing"}}.size()
+              def coinFlip = my.all.findAll{it.baseMoves.findAll{it.name=="Sing"}}.size()
               def totalDmg = 0
               flip coinFlip, {totalDmg += 10}
               opp.all.each{
@@ -2590,14 +2590,15 @@ public enum LostThunder implements LogicCardInfo {
             energyCost P
             attackRequirement {
               assert opp.prizeCardSet.size() == 2 : "Your opponent has not exactly 2 Prize cards remaining."
-              assert opp.all.find {it.topPokemonCard.moves} : "No moves to perform"
+              assert opp.all.find {it.baseMoves} : "No moves to perform"
             }
             onAttack {
               def moveList = []
               def labelList = []
               opp.all.each {pcs->
-                moveList.addAll(pcs.topPokemonCard.moves);
-                labelList.addAll(pcs.topPokemonCard.moves.collect{pcs.name+"-"+it.name})
+                def moves = pcs.baseMoves
+                moveList.addAll(moves);
+                labelList.addAll(moves.collect{pcs.name+"-"+it.name})
               }
               def move=choose(moveList, labelList)
               def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)

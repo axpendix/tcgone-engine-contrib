@@ -1151,8 +1151,9 @@ public enum SecretWonders implements LogicCardInfo {
             onAttack {
               damage 20
               afterDamage {
-                if(!defending.topPokemonCard.moves.isEmpty()){
-                  def move=choose(defending.topPokemonCard.moves, defending.topPokemonCard.moves.collect({it.name}), "Encore") as Move
+                def moves = defending.baseMoves
+                if(moves){
+                  def move=choose(moves, moves.collect({it.name}), "Encore") as Move
                   def pcs = defending
                   bc "$pcs can only use ${move.name} next turn."
                   delayed{
@@ -2230,7 +2231,7 @@ f
             energyCost C
             attackRequirement {
               assert opp.bench : "Your opponent has no Benched Pokémon"
-              assert opp.bench.find{it.topPokemonCard.moves} : "None of your opponent's Benched Pokémon have any moves"
+              assert opp.bench.find{it.baseMoves} : "None of your opponent's Benched Pokémon have any moves"
             }
             onAttack {
               flip { metronome opp.bench, delegate }

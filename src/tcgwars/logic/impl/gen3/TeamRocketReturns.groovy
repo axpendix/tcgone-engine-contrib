@@ -361,7 +361,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             text "Flip a coin. If heads, choose an attack on 1 of your Pokémon in play that has Dark in its name (excluding this one). Dark Link copies that attack except for its Energy cost. (You must still do anything else required for that attack.) (No matter what type that Pokémon is, Dark Hypno’s type is still .) Dark Hypno performs that attack."
             energyCost C
             attackRequirement {
-              assert my.bench.find {it.name.contains("Dark ") && it.topPokemonCard.moves} : "No moves to perform"
+              assert my.bench.find {it.name.contains("Dark ") && it.baseMoves} : "No moves to perform"
             }
             onAttack {
               flip {
@@ -369,8 +369,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
                 def labelList = []
                 my.bench.each {pcs->
                   if(pcs.name.contains("Dark ")){
-                    moveList.addAll(pcs.topPokemonCard.moves);
-                    labelList.addAll(pcs.topPokemonCard.moves.collect{pcs.name+"-"+it.name})
+                    def moves = pcs.baseMoves
+                    moveList.addAll(moves);
+                    labelList.addAll(moves.collect{pcs.name+"-"+it.name})
                   }
                 }
                 def move=choose(moveList, labelList)
@@ -614,8 +615,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
               def moveList = []
               def labelList = []
               opp.bench.each {pcs->
-                moveList.addAll(pcs.topPokemonCard.moves);
-                labelList.addAll(pcs.topPokemonCard.moves.collect{pcs.name+"-"+it.name})
+                def moves = pcs.baseMoves
+                moveList.addAll(moves);
+                labelList.addAll(moves.collect{pcs.name+"-"+it.name})
               }
               def move=choose(moveList, labelList)
               def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
@@ -1553,9 +1555,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
               flip {
                 def moveList = []
                 def labelList = []
-
-                moveList.addAll(defending.topPokemonCard.moves);
-                labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
+                def moves = defending.baseMoves
+                moveList.addAll(moves);
+                labelList.addAll(moves.collect{it.name})
 
                 def move=choose(moveList, labelList, "Which move do you want to use")
                 def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)

@@ -1999,7 +1999,7 @@ public enum Triumphant implements LogicCardInfo {
             text "Flip a coin. If heads, choose 1 of the Defending Pokémon’s attacks. That Pokémon can’t use that attack during your opponent’s next turn."
             energyCost C
             attackRequirement {
-              assert defending.topPokemonCard.moves : "The defending Pokémon has no attacks"
+              assert defending.baseMoves : "The defending Pokémon has no attacks"
             }
             onAttack {
               flip {

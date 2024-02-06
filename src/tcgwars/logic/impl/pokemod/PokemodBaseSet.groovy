@@ -346,9 +346,9 @@ public enum PokemodBaseSet implements LogicCardInfo {
           onAttack {
             def moveList = []
             def labelList = []
-
-            moveList.addAll(defending.topPokemonCard.moves);
-            labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
+            def moves = defending.baseMoves
+            moveList.addAll(moves);
+            labelList.addAll(moves.collect{it.name})
 
             def move=choose(moveList, labelList)
             def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)

@@ -815,11 +815,11 @@ public enum RebelClash implements LogicCardInfo {
           text "Choose 1 of your opponent’s Active Pokémon’s attacks and use it as this attack."
           energyCost R, C, C
           attackRequirement {
-            assert opp.active.topPokemonCard.moves : "No moves to use."
+            assert opp.active.baseMoves : "No moves to use."
           }
           onAttack {
             def list = []
-            defending.topPokemonCard.moves.each{
+            defending.baseMoves.each{
               def copy = it.shallowCopy()
               copy.energyCost = thisMove.energyCost
               list.add(copy)

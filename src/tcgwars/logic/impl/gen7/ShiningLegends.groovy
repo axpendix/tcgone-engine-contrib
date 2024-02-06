@@ -1277,14 +1277,14 @@ public enum ShiningLegends implements LogicCardInfo {
             energyCost D, D
             attackRequirement {
               gxCheck()
-              assert opp.all.find {it.topPokemonCard.moves} : "No moves to perform"
+              assert opp.all.find {it.baseMoves} : "No moves to perform"
             }
             onAttack {
               def moveList = []
               def labelList = []
               opp.all.each {pcs->
-                moveList.addAll(pcs.topPokemonCard.moves);
-                labelList.addAll(pcs.topPokemonCard.moves.collect{pcs.name+"-"+it.name})
+                moveList.addAll(pcs.baseMoves);
+                labelList.addAll(pcs.baseMoves.collect{pcs.name+"-"+it.name})
               }
               def move=choose(moveList, labelList)
               def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)

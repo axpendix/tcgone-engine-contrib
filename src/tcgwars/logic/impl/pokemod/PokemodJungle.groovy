@@ -184,9 +184,9 @@ public enum PokemodJungle implements LogicCardInfo {
             onAttack {
               def moveList = []
               def labelList = []
-
-              moveList.addAll(defending.topPokemonCard.moves);
-              labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
+              def moves = defending.baseMoves
+              moveList.addAll(moves);
+              labelList.addAll(moves.collect{it.name})
 
               def move=choose(moveList, labelList, "Which move do you want to use")
               def bef=blockingEffect(ENERGY_COST_CALCULATOR, DISCARD_SELF_ENERGY, BETWEEN_TURNS)
@@ -1122,9 +1122,9 @@ public enum PokemodJungle implements LogicCardInfo {
             onAttack {
               def moveList = []
               def labelList = []
-
-              moveList.addAll(defending.topPokemonCard.moves);
-              labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
+              def moves = defending.baseMoves
+              moveList.addAll(moves);
+              labelList.addAll(moves.collect{it.name})
 
               def move=choose(moveList, labelList, "Which move do you want to use")
               def bef=blockingEffect(ENERGY_COST_CALCULATOR, DISCARD_SELF_ENERGY, BETWEEN_TURNS)

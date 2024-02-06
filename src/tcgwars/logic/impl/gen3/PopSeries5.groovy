@@ -158,10 +158,10 @@ public enum PopSeries5 implements LogicCardInfo {
           text "Choose 1 of the Defending Pokémon's attacks. Copy copies that attack. This attack does nothing if Mew doesn't have the Energy necessary to use that attack. (You must still do anything else required for that attack.) Mew performs that attack."
           energyCost C
           attackRequirement {
-            assert defending.topPokemonCard.moves : "No moves to perform"
+            assert defending.baseMoves : "No moves to perform"
           }
           onAttack {
-            def moveOptions = defending.topPokemonCard.moves
+            def moveOptions = defending.baseMoves
             def move = choose(moveOptions + ["End Turn (Skip)"], "Choose 1 of the Defending Pokémon's attacks. (Do not select a move if you don't have necessary energy or it will fail) ")
             if (move instanceof String) return
             def bef = blockingEffect(BETWEEN_TURNS)

@@ -1950,7 +1950,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           text "20x damage. This attack does 20 damage for each of your Pokémon that have the Round attack."
           energyCost C, C
           onAttack {
-            damage 20 * my.all.findAll {it.topPokemonCard.moves.find { it.name=="Round" }}.size()
+            damage 20 * my.all.findAll {it.baseMoves.find { it.name=="Round" }}.size()
           }
         }
         move "Hyper Voice", {
@@ -1968,7 +1968,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           text "50x damage. This attack does 50 damage for each of your Pokémon that have the Round attack."
           energyCost C, C
           onAttack {
-            damage 50 * my.all.findAll {it.topPokemonCard.moves.find { it.name=="Round" }}.size()
+            damage 50 * my.all.findAll {it.baseMoves.find { it.name=="Round" }}.size()
           }
         }
         move "Hyper Voice", {

@@ -1288,12 +1288,12 @@ public enum UltraPrism implements LogicCardInfo {
             text "For each of your Benched Pokémon that has the Nuzzle attack, search your deck for a [L] Energy card and attach it to that Pokémon. Then, shuffle your deck."
             energyCost L
             attackRequirement {
-              assert my.bench.findAll{it.topPokemonCard.moves.findAll{it.name=="Nuzzle"}}
+              assert my.bench.findAll{it.baseMoves.findAll{it.name=="Nuzzle"}}
               assert my.deck
             }
             onAttack {
               my.bench.each{pcs->
-                pcs.topPokemonCard.moves.each{
+                pcs.baseMoves.each{
                   if(it.name=="Nuzzle"){
                     attachEnergyFrom(type:L,my.deck,pcs)
                   }

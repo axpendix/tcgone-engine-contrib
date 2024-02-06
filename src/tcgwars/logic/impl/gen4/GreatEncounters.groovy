@@ -2520,7 +2520,7 @@ public enum GreatEncounters implements LogicCardInfo {
             getterA (GET_MOVE_LIST, self) { holder->
               all.each {
                 if (it.name.contains("Unown") && it != self) {
-                  holder.object.addAll(it.topPokemonCard.moves)
+                  holder.object.addAll(it.baseMoves)
                 }
               }
               holder.object.unique()

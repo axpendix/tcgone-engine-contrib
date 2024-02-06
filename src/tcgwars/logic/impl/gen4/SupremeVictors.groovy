@@ -3300,10 +3300,11 @@ public enum SupremeVictors implements LogicCardInfo {
             text "Choose 1 of the Defending Pokémon's attacks. That Pokémon can use only that attack during your opponent's next turn."
             energyCost C
             attackRequirement {
-              assert !defending.topPokemonCard.moves.isEmpty() : "$defending has no attacks"
+              assert defending.baseMoves : "$defending has no attacks"
             }
             onAttack {
-              def move=choose(defending.topPokemonCard.moves, defending.topPokemonCard.moves.collect({it.name}), "Encore") as Move
+              def moves = defending.baseMoves
+              def move=choose(moves, moves.collect({it.name}), "Encore") as Move
               def pcs = defending
               bc "$pcs can only use ${move.name} next turn."
               delayed{
