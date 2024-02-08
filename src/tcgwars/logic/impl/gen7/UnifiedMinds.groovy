@@ -1,4 +1,6 @@
-package tcgwars.logic.impl.gen7;
+package tcgwars.logic.impl.gen7
+
+import tcgwars.logic.card.trainer.TrainerCard;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -1216,51 +1218,15 @@ public enum UnifiedMinds implements LogicCardInfo {
           bwAbility "Ancient Custom", {
             text "Pokémon Tool cards attached to your opponent's Pokémon have no effect"
             def eff
-            onActivate {
-              eff = delayed {
-                def disable={card,pcs->
-                  def dset = bg.em().retrieveObject("Tool Concealment dset") as Set
-                  if(!dset.contains(card) && card.player != self.owner){
-                    card.removeFromPlay(bg, pcs)
-                    dset.add(card)
-                  }
-                }
-                after ATTACH_POKEMON_TOOL, {disable(ef.card,ef.target)}
-              }
-
-              def count = (bg.em().retrieveObject("Tool Concealment count") ?: 0) + 1
-              if (count == 1){
-                def dset = bg.em().retrieveObject("Tool Concealment dset") as Set ?: [] as Set
-                opp.all.each {
-                  def pcs = it
-                  it.cards.filterByType(POKEMON_TOOL).each {
-                    if(!dset.contains(it)){
-                      it.removeFromPlay(bg, pcs)
-                      dset.add(it)
-                    }
-                  }
-                }
-                bg.em().storeObject("Tool Concealment dset", dset)
-              }
-              bg.em().storeObject("Tool Concealment count", count)
-            }
-            onDeactivate {
-              eff.unregister()
-
-              def count = (bg.em().retrieveObject("Tool Concealment count") ?: 0) - 1
-              if(count == 0){
-                def dset = bg.em().retrieveObject("Tool Concealment dset") as Set
-                all.each {
-                  def pcs = it
-                  it.cards.filterByType(POKEMON_TOOL).each {
-                    if(dset.contains(it)){
-                      it.play(bg, pcs)
-                      dset.remove(it)
-                    }
-                  }
+            delayedA {
+              before null, null, TRAINER_CARD, {
+                TrainerCard trainerCard = e.sourceTrainer
+                def pcs = trainerCard.findPCS()
+                if (trainerCard.cardTypes.is(POKEMON_TOOL) && pcs && pcs.owner == self.owner.opposite
+                  && ![PLAY_TRAINER, PLAY_POKEMON_TOOL, PLAY_POKEMON_TOOL_FLARE, ATTACH_POKEMON_TOOL].contains(ef.effectType)) {
+                  prevent()
                 }
               }
-              if(count >= 0) bg.em().storeObject("Tool Concealment count", count)
             }
           }
           move "Aqua Impact", {

@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen7
 
+import tcgwars.logic.card.trainer.TrainerCard
 import tcgwars.logic.effect.gm.ActivateSimpleTrainer;
 import tcgwars.logic.effect.gm.Attack
 import tcgwars.logic.effect.gm.PlayTrainer
@@ -2669,49 +2670,17 @@ public enum ForbiddenLight implements LogicCardInfo {
           def eff
           onPlay {
             eff = delayed {
-              def disable={card,pcs->
-                def dset = bg.em().retrieveObject("Tool Concealment dset") as Set
-                if(!dset.contains(card)){
-                  card.disable(bg, pcs)
-                  dset.add(card)
+              before null, null, TRAINER_CARD, {
+                TrainerCard trainerCard = e.sourceTrainer
+                if (trainerCard.cardTypes.is(POKEMON_TOOL)
+                  && ![PLAY_TRAINER, PLAY_POKEMON_TOOL, PLAY_POKEMON_TOOL_FLARE, ATTACH_POKEMON_TOOL].contains(ef.effectType)) {
+                  prevent()
                 }
               }
-              after ATTACH_POKEMON_TOOL, {disable(ef.card,ef.resolvedTarget)}
             }
-
-            def count = (bg.em().retrieveObject("Tool Concealment count") ?: 0) + 1
-            if (count == 1){
-              def dset = bg.em().retrieveObject("Tool Concealment dset") as Set ?: [] as Set
-              all.each {
-                def pcs = it
-                it.cards.filterByType(POKEMON_TOOL).each {
-                  if(!dset.contains(it)){
-                    it.disable(bg, pcs)
-                    dset.add(it)
-                  }
-                }
-              }
-              bg.em().storeObject("Tool Concealment dset", dset)
-            }
-            bg.em().storeObject("Tool Concealment count", count)
           }
           onRemoveFromPlay{
             eff.unregister()
-
-            def count = (bg.em().retrieveObject("Tool Concealment count") ?: 0) - 1
-            if(count == 0){
-              def dset = bg.em().retrieveObject("Tool Concealment dset") as Set
-              all.each {
-                def pcs = it
-                it.cards.filterByType(POKEMON_TOOL).each {
-                  if(dset.contains(it)){
-                    it.play(bg, pcs)
-                    dset.remove(it)
-                  }
-                }
-              }
-            }
-            if(count >= 0) bg.em().storeObject("Tool Concealment count", count)
           }
         };
       case METAL_FRYING_PAN_112:

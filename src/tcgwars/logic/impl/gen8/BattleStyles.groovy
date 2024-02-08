@@ -2927,83 +2927,17 @@ public enum BattleStyles implements LogicCardInfo {
       return pokemonTool (this) {
         text "As long as the Pokémon this card is attached to is in the Active Spot, Pokémon Tools attached to your opponent's Active Pokémon have no effect, except for Tool Jammer."
         def eff
-        def deactivateEffect
-        def ensureOnlyActiveAffected
         onPlay {reason->
           eff = delayed {
-            def disable = { PokemonToolCard card, pcs ->
-              if (card.name == "Tool Jammer" || card.player == self?.owner)
-                return
-              def dset = bg.em().retrieveObject("$self.owner Tool Jammer dset") as Set
-              if (!dset.contains(card)) {
-                if (self.owner.opposite.pbg.active?.cards?.contains(card)) {
-                  card.disable bg, pcs
-                }
-                dset.add card
+            before null, null, TRAINER_CARD, {
+              TrainerCard trainerCard = e.sourceTrainer
+              if (trainerCard.cardTypes.is(POKEMON_TOOL) && self.active && self.owner.opposite.pbg.active && self.owner.opposite.pbg.active.cards.contains(trainerCard) && trainerCard.name != 'Tool Jammer' && ![PLAY_TRAINER, PLAY_POKEMON_TOOL, PLAY_POKEMON_TOOL_FLARE, ATTACH_POKEMON_TOOL].contains(ef.effectType)) {
+                prevent()
               }
             }
-
-            def activateEffect = {
-              keyStore("Tool Jammer", thisCard, 1)
-              def count = (bg.em().retrieveObject("$self.owner Tool Jammer count") ?: 0) + 1
-              if (count == 1) {
-                def dset = bg.em().retrieveObject("$self.owner Tool Jammer dset") as Set ?: [] as Set
-                self.owner.opposite.pbg.all.each { PokemonCardSet pcs ->
-                  pcs.cards.filterByType(POKEMON_TOOL).each { PokemonToolCard card ->
-                    if (!dset.contains(card)) {
-                      card.disable(bg, pcs)
-                      dset.add(card)
-                    }
-                  }
-                }
-                bg.em().storeObject("$self.owner Tool Jammer dset", dset)
-              }
-              bg.em().storeObject("$self.owner Tool Jammer count", count)
-            }
-
-            deactivateEffect = {
-              keyStore("Tool Jammer", thisCard, 0)
-              def count = (bg.em().retrieveObject("$self.owner Tool Jammer count") ?: 0) - 1
-              if (count == 0) {
-                def dset = bg.em().retrieveObject("$self.owner Tool Jammer dset") as Set
-                dset.each { PokemonToolCard card ->
-                  card.play(bg, card.findPCS())
-                }
-                dset.clear()
-                bg.em().storeObject("$self.owner Tool Jammer dset", dset)
-              }
-              if (count >= 0) bg.em().storeObject("$self.owner Tool Jammer count", count)
-            }
-
-            ensureOnlyActiveAffected = { PokemonCardSet target ->
-              if (target == self.owner.pbg.active) target = self.owner.opposite.pbg.active
-              def dset = bg.em().retrieveObject("$self.owner Tool Jammer dset") as Set
-              dset.each { PokemonToolCard card ->
-                def pcs = card.findPCS()
-                if (target.cards.contains(card)) {
-                  card.disable(bg, pcs)
-                }
-                else card.play(bg, pcs)
-              }
-            }
-
-            def checkEffect = {
-              if (self.active && !keyStore("Tool Jammer", thisCard, null)) {
-                activateEffect()
-              }
-              else if (!self.active && keyStore("Tool Jammer", thisCard, null)) {
-                deactivateEffect()
-              }
-            }
-
-            after ATTACH_POKEMON_TOOL, { disable ef.card, ef.resolvedTarget }
-            after SWITCH_OUT, { checkEffect(); ensureOnlyActiveAffected(ef.resolvedTarget) }
-            after FALL_BACK, { checkEffect() }
-            register { checkEffect() }
           }
         }
         onRemoveFromPlay {
-          deactivateEffect()
           eff.unregister()
         }
       };
