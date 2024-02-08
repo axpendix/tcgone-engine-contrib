@@ -1526,7 +1526,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 flip 2, {}, {doEff = false}
                 if (doEff){
                   targeted (opp.active, Source.POKEPOWER) {
-                    opp.active.cards.reverse().discard()
+                    opp.active.cards.discard()
                     removePCS(opp.active)
                   }
                 }

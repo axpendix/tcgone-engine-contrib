@@ -728,7 +728,7 @@ public enum SunMoonPromos implements LogicCardInfo {
             onAttack {
               gxPerform()
               targeted (defending) {
-                defending.cards.reverse().discard()
+                defending.cards.discard()
                 removePCS(defending)
               }
             }

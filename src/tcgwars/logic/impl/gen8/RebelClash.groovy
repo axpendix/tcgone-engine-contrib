@@ -3372,7 +3372,7 @@ public enum RebelClash implements LogicCardInfo {
           onAttack {
             flip {
               targeted (defending) {
-                defending.cards.reverse().discard()
+                defending.cards.discard()
                 removePCS(defending)
               }
             }
