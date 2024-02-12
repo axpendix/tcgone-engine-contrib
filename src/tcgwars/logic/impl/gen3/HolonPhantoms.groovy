@@ -339,9 +339,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost L
           onAttack {
             damage 20
-            if (my.bench) {
-              sw my.active, my.bench.select()
-            }
+            switchYourActive()
           }
         }
       };
