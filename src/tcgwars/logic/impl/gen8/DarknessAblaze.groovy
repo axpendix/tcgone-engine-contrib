@@ -3891,7 +3891,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         text "Play this card as if it were a 70-HP Basic [C] Pokémon. At any time during your turn, you may discard this card from play. This card can’t be affected by any Special Conditions, and it can’t retreat."
         onPlay {
           Card pokemonCard, trainerCard = thisCard
-          pokemonCard = basic (new CustomCardInfo(this[thisCard.enumName] as CardInfo).setCardTypes(BASIC, POKEMON), hp:HP070, type:COLORLESS, retreatCost:0) {
+          pokemonCard = basic (new CustomCardInfo(this[thisCard.enumName] as CardInfo).setCardTypes(BASIC, POKEMON, TRAINER, FOSSIL), hp:HP070, type:COLORLESS, retreatCost:0) {
             customAbility{
               def eff, acl
               delayedA {

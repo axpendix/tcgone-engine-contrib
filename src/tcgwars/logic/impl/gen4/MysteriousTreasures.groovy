@@ -3293,7 +3293,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             "Whenever Armor Fossil would be damaged by your opponent’s attack, flip a coin until you get tails. For each heads, reduce that damage by 10."
           onPlay {
             Card pokemonCard, trainerCard = thisCard
-            pokemonCard = basic (new CustomCardInfo(ARMOR_FOSSIL_116).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
+            pokemonCard = basic (new CustomCardInfo(ARMOR_FOSSIL_116).setCardTypes(BASIC, POKEMON, TRAINER, FOSSIL), hp:HP050, type:COLORLESS, retreatCost:0) {
               pokeBody "Armor Stone", {
                 delayedA {
                   before APPLY_ATTACK_DAMAGES, {
@@ -3361,7 +3361,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             "During your opponent’s turn, if Skull Fossil would be Knocked Out by damage from an opponent’s attack, flip a coin until you get tails. For each heads, put 1 damage counter on the Attacking Pokémon."
           onPlay {
             Card pokemonCard, trainerCard = thisCard
-            pokemonCard = basic (new CustomCardInfo(SKULL_FOSSIL_117).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
+            pokemonCard = basic (new CustomCardInfo(SKULL_FOSSIL_117).setCardTypes(BASIC, POKEMON, TRAINER, FOSSIL), hp:HP050, type:COLORLESS, retreatCost:0) {
               pokeBody "Skull Stone", {
                 delayedA{
                   before KNOCKOUT, self, {

@@ -3081,7 +3081,7 @@ public enum UltraPrism implements LogicCardInfo {
           text "Play this card as if it were a 60-HP [C] Basic Pokémon. At any time during your turn (before your attack), you may discard this card from play.\nThis card can’t retreat.\nYou may play as many Item cards as you like during your turn (before your attack)."
           onPlay {
             Card pokemonCard, trainerCard = thisCard
-            pokemonCard = basic (new CustomCardInfo(UNIDENTIFIED_FOSSIL_134).setCardTypes(BASIC, POKEMON), hp:HP060, type:COLORLESS, retreatCost:0) {
+            pokemonCard = basic (new CustomCardInfo(UNIDENTIFIED_FOSSIL_134).setCardTypes(BASIC, POKEMON, TRAINER, FOSSIL), hp:HP060, type:COLORLESS, retreatCost:0) {
               customAbility{
                 def eff, acl
                 delayedA {

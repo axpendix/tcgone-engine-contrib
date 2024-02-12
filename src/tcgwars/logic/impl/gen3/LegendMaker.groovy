@@ -2276,7 +2276,7 @@ public enum LegendMaker implements LogicCardInfo {
           "If Claw Fossil is your Active Pokémon and is damaged by an opponent's attack (even if Claw Fossil is Knocked Out), put 1 damage counter on the Attacking Pokémon."
         onPlay {
           Card pokemonCard, trainerCard = thisCard
-          pokemonCard = basic (new CustomCardInfo(CLAW_FOSSIL_78).setCardTypes(BASIC, POKEMON), hp:HP040, type:COLORLESS, retreatCost:0) {
+          pokemonCard = basic (new CustomCardInfo(CLAW_FOSSIL_78).setCardTypes(BASIC, POKEMON, TRAINER, FOSSIL), hp:HP040, type:COLORLESS, retreatCost:0) {
             pokeBody "Jagged Stone", {
               ifActiveAndDamagedByAttackBody(delegate) {
                 directDamage(10, ef.attacker, Source.SRC_ABILITY)
@@ -2335,7 +2335,7 @@ public enum LegendMaker implements LogicCardInfo {
         text "Play Mysterious Fossil as if it were a Basic Pokémon. While in play, Mysterious Fossil counts as a [C] Pokémon (as well as a Trainer card). Mysterious Fossil has no attacks of its own, can't retreat, and can't be affected by any Special Conditions. If Mysterious Fossil is Knocked out, it doesn't count as a Knocked Out Pokémon. (Discard it anyway.) At any time during your turn before your attack, you may discard Mysterious Fossil from play."
         onPlay {
           Card pokemonCard, trainerCard = thisCard
-          pokemonCard = basic (new CustomCardInfo(MYSTERIOUS_FOSSIL_79).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
+          pokemonCard = basic (new CustomCardInfo(MYSTERIOUS_FOSSIL_79).setCardTypes(BASIC, POKEMON, TRAINER, FOSSIL), hp:HP050, type:COLORLESS, retreatCost:0) {
             customAbility{
               def eff, acl
               getterA GET_GIVEN_PRIZES, self, {holder ->
@@ -2388,7 +2388,7 @@ public enum LegendMaker implements LogicCardInfo {
           "At any time between turns, remove 1 damage counter from Root Fossil."
         onPlay {
           Card pokemonCard, trainerCard = thisCard
-          pokemonCard = basic (new CustomCardInfo(ROOT_FOSSIL_80).setCardTypes(BASIC, POKEMON), hp:HP040, type:COLORLESS, retreatCost:0) {
+          pokemonCard = basic (new CustomCardInfo(ROOT_FOSSIL_80).setCardTypes(BASIC, POKEMON, TRAINER, FOSSIL), hp:HP040, type:COLORLESS, retreatCost:0) {
             pokeBody "Spongy Stone", {
               delayedA{
                 before BEGIN_TURN, {
