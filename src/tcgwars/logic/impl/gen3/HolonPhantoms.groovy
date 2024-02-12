@@ -298,25 +298,12 @@ public enum HolonPhantoms implements LogicCardInfo {
           })
         }
         move "Delta Reduction", {
-          text "30 damage. During your opponent's next turn, any damage done to Deoxys by attacks is reduced by 30 (before applying Weakness and Resistance)."
+          text "30 damage. During your opponent's next turn, any damage done by attacks from the Defending Pokémon is reduced by 30 (before applying Weakness and Resistance)."
           energyCost M, C
           onAttack {
+            bc "errata: The English version of Deoxys is mistranslated. The effect is supposed to be on the Defending Pokémon, not Deoxys."
             damage 30
-            afterDamage{
-              delayed{
-                after PROCESS_ATTACK_EFFECTS, {
-                  bg.dm().each{
-                    if(it.from.owner == self.owner.opposite && it.to == self && it.notNoEffect && it.dmg.value) {
-                      bc "Delta Reduction -30 (before W/R)"
-                      it.dmg -= hp(30)
-                    }
-                  }
-                }
-                after FALL_BACK, self, {unregister()}
-                after CHANGE_STAGE, self, {unregister()}
-                unregisterAfter 2
-              }
-            }
+            reduceDamageFromDefendingNextTurn(hp(30),thisMove,defending)
           }
         }
       };
