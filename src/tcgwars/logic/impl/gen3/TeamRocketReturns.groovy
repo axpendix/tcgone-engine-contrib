@@ -936,7 +936,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             energyCost P, C
             onAttack {
               damage 20
-              if(my.bench) sw self, my.bench.select()
+              switchYourActive()
             }
           }
 
