@@ -1023,12 +1023,12 @@ public enum WizardsBlackStarPromosNG implements LogicCardInfo {
           }
         }
         move "Psyshock", {
-          text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
+          text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed (ERRATA)."
           energyCost P
-          attackRequirement {}
           onAttack {
+            // errata: Mew’s Psyshock should leave the Defending Pokémon Paralyzed, not Confused.
             damage 10
-            flip { apply CONFUSED }
+            flipThenApplySC PARALYZED
           }
         }
       };
