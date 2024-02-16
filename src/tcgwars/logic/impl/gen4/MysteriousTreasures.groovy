@@ -3585,16 +3585,10 @@ public enum MysteriousTreasures implements LogicCardInfo {
             text "Discard 2 [R] Energy cards attached to Magmortar. Choose 1 of your opponent’s Pokémon. This attack does 100 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.) During your next turn, Magmortar can’t use Flame Bluster."
             //Errata'd, used to say "2 [R] Energy attached"
             energyCost R, R, R, R
-            attackRequirement {
-              assert self.cards.filterByEnergyType(R).size() >= 2
-            }
             onAttack {
-              def cards = self.cards.filterByEnergyType(R).select(count: 2, "Discard")
-              damage 100, opp.all.select()
+              discardSelfEnergyAfterDamage(R, R)
+              damage 100, opp.all.select("Deal 100 damage to?")
               cantUseAttack(thisMove, self)
-              afterDamage {
-                cards.discard()
-              }
             }
           }
         };
