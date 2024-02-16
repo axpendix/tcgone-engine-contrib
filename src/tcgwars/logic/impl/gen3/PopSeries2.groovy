@@ -104,7 +104,7 @@ public enum PopSeries2 implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -314,17 +314,13 @@ public enum PopSeries2 implements LogicCardInfo {
         def eff
         onPlay {
           eff = delayed {
-            def card = null
-            before ATTACH_ENERGY, {
-              if (my.hand.contains(ef.card) && bg.em().retrieveObject("Pokemon_Park_" + thisCard.hashCode()) != bg.turnCount) {
-                card = ef.card
-              }
-            }
             after ATTACH_ENERGY, {
-              if (ef.card == card && bg.em().storeObject("Pokemon_Park_" + thisCard.hashCode(), bg.turnCount)) {
-                heal 10, ef.resolvedTarget
+              PokemonCardSet pcs = ef.targetPokemon
+              if (ef.reason == PLAY_FROM_HAND && pcs.benched && pcs.numberOfDamageCounters && bg.em().retrieveObject("Pokemon_Park_" + thisCard.hashCode()) != bg.turnCount) {
+                bc "Pokemon Park triggers"
+                heal 10, pcs
+                bg.em().storeObject("Pokemon_Park_" + thisCard.hashCode(), bg.turnCount)
               }
-              card = null
             }
           }
         }

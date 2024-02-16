@@ -46,7 +46,7 @@ public enum ChillingReign implements LogicCardInfo {
   LEDIAN_5 ("Ledian", "5", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   HERACROSS_6 ("Heracross", "6", Rarity.UNCOMMON, [POKEMON, BASIC, SINGLE_STRIKE, _GRASS_]),
   CELEBI_V_7 ("Celebi V", "7", Rarity.UNCOMMON, [POKEMON, POKEMON_V, BASIC, _GRASS_]),
-  CELEBI_VMAX_8 ("Celebi VMAX", "8", Rarity.UNCOMMON, [POKEMON, EVOLUTION, VMAX, _GRASS_]),
+  CELEBI_VMAX_8 ("Celebi VMAX", "8", Rarity.UNCOMMON, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _GRASS_]),
   SNOVER_9 ("Snover", "9", Rarity.UNCOMMON, [POKEMON, BASIC, SINGLE_STRIKE, _GRASS_]),
   ABOMASNOW_10 ("Abomasnow", "10", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, SINGLE_STRIKE, _GRASS_]),
   DEERLING_11 ("Deerling", "11", Rarity.UNCOMMON, [POKEMON, BASIC, _GRASS_]),
@@ -59,7 +59,7 @@ public enum ChillingReign implements LogicCardInfo {
   RILLABOOM_18 ("Rillaboom", "18", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE2, RAPID_STRIKE, _GRASS_]),
   ZARUDE_19 ("Zarude", "19", Rarity.UNCOMMON, [POKEMON, BASIC, _GRASS_]),
   BLAZIKEN_V_20 ("Blaziken V", "20", Rarity.UNCOMMON, [POKEMON, POKEMON_V, BASIC, RAPID_STRIKE, _FIRE_]),
-  BLAZIKEN_VMAX_21 ("Blaziken VMAX", "21", Rarity.UNCOMMON, [POKEMON, EVOLUTION, VMAX, RAPID_STRIKE, _FIRE_]),
+  BLAZIKEN_VMAX_21 ("Blaziken VMAX", "21", Rarity.UNCOMMON, [POKEMON, EVOLUTION, POKEMON_V, VMAX, RAPID_STRIKE, _FIRE_]),
   CASTFORM_SUNNY_FORM_22 ("Castform Sunny Form", "22", Rarity.UNCOMMON, [POKEMON, BASIC, _FIRE_]),
   LARVESTA_23 ("Larvesta", "23", Rarity.UNCOMMON, [POKEMON, BASIC, _FIRE_]),
   VOLCARONA_24 ("Volcarona", "24", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
@@ -84,7 +84,7 @@ public enum ChillingReign implements LogicCardInfo {
   INTELEON_43 ("Inteleon", "43", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE2, RAPID_STRIKE, _WATER_]),
   RAPID_STRIKE_URSHIFU_44 ("Rapid Strike Urshifu", "44", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, RAPID_STRIKE, _WATER_]),
   ICE_RIDER_CALYREX_V_45 ("Ice Rider Calyrex V", "45", Rarity.UNCOMMON, [POKEMON, POKEMON_V, BASIC, _WATER_]),
-  ICE_RIDER_CALYREX_VMAX_46 ("Ice Rider Calyrex VMAX", "46", Rarity.UNCOMMON, [POKEMON, EVOLUTION, VMAX, _WATER_]),
+  ICE_RIDER_CALYREX_VMAX_46 ("Ice Rider Calyrex VMAX", "46", Rarity.UNCOMMON, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _WATER_]),
   MAREEP_47 ("Mareep", "47", Rarity.UNCOMMON, [POKEMON, BASIC, _LIGHTNING_]),
   FLAAFFY_48 ("Flaaffy", "48", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
   AMPHAROS_49 ("Ampharos", "49", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_]),
@@ -113,7 +113,7 @@ public enum ChillingReign implements LogicCardInfo {
   HATTREM_72 ("Hattrem", "72", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
   HATTERENE_73 ("Hatterene", "73", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_]),
   SHADOW_RIDER_CALYREX_V_74 ("Shadow Rider Calyrex V", "74", Rarity.UNCOMMON, [POKEMON, POKEMON_V, BASIC, _PSYCHIC_]),
-  SHADOW_RIDER_CALYREX_VMAX_75 ("Shadow Rider Calyrex VMAX", "75", Rarity.UNCOMMON, [POKEMON, EVOLUTION, VMAX, _PSYCHIC_]),
+  SHADOW_RIDER_CALYREX_VMAX_75 ("Shadow Rider Calyrex VMAX", "75", Rarity.UNCOMMON, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _PSYCHIC_]),
   DIGLETT_76 ("Diglett", "76", Rarity.UNCOMMON, [POKEMON, BASIC, RAPID_STRIKE, _FIGHTING_]),
   DUGTRIO_77 ("Dugtrio", "77", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, RAPID_STRIKE, _FIGHTING_]),
   GALARIAN_FARFETCH_D_78 ("Galarian Farfetch'd", "78", Rarity.UNCOMMON, [POKEMON, BASIC, SINGLE_STRIKE, _FIGHTING_]),
@@ -128,7 +128,7 @@ public enum ChillingReign implements LogicCardInfo {
   LYCANROC_87 ("Lycanroc", "87", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, SINGLE_STRIKE, _FIGHTING_]),
   PASSIMIAN_88 ("Passimian", "88", Rarity.UNCOMMON, [POKEMON, BASIC, RAPID_STRIKE, _FIGHTING_]),
   SANDACONDA_V_89 ("Sandaconda V", "89", Rarity.UNCOMMON, [POKEMON, POKEMON_V, BASIC, _FIGHTING_]),
-  SANDACONDA_VMAX_90 ("Sandaconda VMAX", "90", Rarity.UNCOMMON, [POKEMON, EVOLUTION, VMAX, _FIGHTING_]),
+  SANDACONDA_VMAX_90 ("Sandaconda VMAX", "90", Rarity.UNCOMMON, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _FIGHTING_]),
   CLOBBOPUS_91 ("Clobbopus", "91", Rarity.UNCOMMON, [POKEMON, BASIC, _FIGHTING_]),
   GRAPPLOCT_92 ("Grapploct", "92", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   KUBFU_93 ("Kubfu", "93", Rarity.UNCOMMON, [POKEMON, BASIC, _FIGHTING_]),
@@ -138,7 +138,7 @@ public enum ChillingReign implements LogicCardInfo {
   GALARIAN_MOLTRES_V_97 ("Galarian Moltres V", "97", Rarity.UNCOMMON, [POKEMON, POKEMON_V, BASIC, _DARKNESS_]),
   GALARIAN_SLOWKING_98 ("Galarian Slowking", "98", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
   GALARIAN_SLOWKING_V_99 ("Galarian Slowking V", "99", Rarity.UNCOMMON, [POKEMON, POKEMON_V, BASIC, SINGLE_STRIKE, _DARKNESS_]),
-  GALARIAN_SLOWKING_VMAX_100 ("Galarian Slowking VMAX", "100", Rarity.UNCOMMON, [POKEMON, EVOLUTION, VMAX, SINGLE_STRIKE, _DARKNESS_]),
+  GALARIAN_SLOWKING_VMAX_100 ("Galarian Slowking VMAX", "100", Rarity.UNCOMMON, [POKEMON, EVOLUTION, POKEMON_V, VMAX, SINGLE_STRIKE, _DARKNESS_]),
   QWILFISH_101 ("Qwilfish", "101", Rarity.UNCOMMON, [POKEMON, BASIC, SINGLE_STRIKE, _DARKNESS_]),
   SEVIPER_102 ("Seviper", "102", Rarity.UNCOMMON, [POKEMON, BASIC, SINGLE_STRIKE, _DARKNESS_]),
   SPIRITOMB_103 ("Spiritomb", "103", Rarity.UNCOMMON, [POKEMON, BASIC, _DARKNESS_]),
@@ -151,7 +151,7 @@ public enum ChillingReign implements LogicCardInfo {
   LAIRON_110 ("Lairon", "110", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
   AGGRON_111 ("Aggron", "111", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE2, _METAL_]),
   METAGROSS_V_112 ("Metagross V", "112", Rarity.UNCOMMON, [POKEMON, POKEMON_V, BASIC, RAPID_STRIKE, _METAL_]),
-  METAGROSS_VMAX_113 ("Metagross VMAX", "113", Rarity.UNCOMMON, [POKEMON, EVOLUTION, VMAX, RAPID_STRIKE, _METAL_]),
+  METAGROSS_VMAX_113 ("Metagross VMAX", "113", Rarity.UNCOMMON, [POKEMON, EVOLUTION, POKEMON_V, VMAX, RAPID_STRIKE, _METAL_]),
   COBALION_114 ("Cobalion", "114", Rarity.UNCOMMON, [POKEMON, BASIC, _METAL_]),
   TAUROS_115 ("Tauros", "115", Rarity.UNCOMMON, [POKEMON, BASIC, SINGLE_STRIKE, _COLORLESS_]),
   PORYGON_116 ("Porygon", "116", Rarity.UNCOMMON, [POKEMON, BASIC, _COLORLESS_]),
@@ -163,7 +163,7 @@ public enum ChillingReign implements LogicCardInfo {
   KECLEON_122 ("Kecleon", "122", Rarity.UNCOMMON, [POKEMON, BASIC, RAPID_STRIKE, _COLORLESS_]),
   SHAYMIN_123 ("Shaymin", "123", Rarity.UNCOMMON, [POKEMON, BASIC, _COLORLESS_]),
   TORNADUS_V_124 ("Tornadus V", "124", Rarity.UNCOMMON, [POKEMON, POKEMON_V, BASIC, SINGLE_STRIKE, _COLORLESS_]),
-  TORNADUS_VMAX_125 ("Tornadus VMAX", "125", Rarity.UNCOMMON, [POKEMON, EVOLUTION, VMAX, SINGLE_STRIKE, _COLORLESS_]),
+  TORNADUS_VMAX_125 ("Tornadus VMAX", "125", Rarity.UNCOMMON, [POKEMON, EVOLUTION, POKEMON_V, VMAX, SINGLE_STRIKE, _COLORLESS_]),
   FURFROU_126 ("Furfrou", "126", Rarity.UNCOMMON, [POKEMON, BASIC, _COLORLESS_]),
   SKWOVET_127 ("Skwovet", "127", Rarity.UNCOMMON, [POKEMON, BASIC, _COLORLESS_]),
   GREEDENT_128 ("Greedent", "128", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
@@ -237,17 +237,17 @@ public enum ChillingReign implements LogicCardInfo {
   PEONIA_196 ("Peonia", "196", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   PEONY_197 ("Peony", "197", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   SIEBOLD_198 ("Siebold", "198", Rarity.UNCOMMON, [TRAINER, SUPPORTER, RAPID_STRIKE]),
-  CELEBI_VMAX_199 ("Celebi VMAX", "199", Rarity.UNCOMMON, [POKEMON, EVOLUTION, VMAX, _GRASS_]),
-  BLAZIKEN_VMAX_200 ("Blaziken VMAX", "200", Rarity.UNCOMMON, [POKEMON, EVOLUTION, VMAX, RAPID_STRIKE, _FIRE_]),
-  BLAZIKEN_VMAX_201 ("Blaziken VMAX", "201", Rarity.UNCOMMON, [POKEMON, EVOLUTION, VMAX, RAPID_STRIKE, _FIRE_]),
-  ICE_RIDER_CALYREX_VMAX_202 ("Ice Rider Calyrex VMAX", "202", Rarity.UNCOMMON, [POKEMON, EVOLUTION, VMAX, _WATER_]),
-  ICE_RIDER_CALYREX_VMAX_203 ("Ice Rider Calyrex VMAX", "203", Rarity.UNCOMMON, [POKEMON, EVOLUTION, VMAX, _WATER_]),
-  SHADOW_RIDER_CALYREX_VMAX_204 ("Shadow Rider Calyrex VMAX", "204", Rarity.UNCOMMON, [POKEMON, EVOLUTION, VMAX, _PSYCHIC_]),
-  SHADOW_RIDER_CALYREX_VMAX_205 ("Shadow Rider Calyrex VMAX", "205", Rarity.UNCOMMON, [POKEMON, EVOLUTION, VMAX, _PSYCHIC_]),
-  SANDACONDA_VMAX_206 ("Sandaconda VMAX", "206", Rarity.UNCOMMON, [POKEMON, EVOLUTION, VMAX, _FIGHTING_]),
-  GALARIAN_SLOWKING_VMAX_207 ("Galarian Slowking VMAX", "207", Rarity.UNCOMMON, [POKEMON, EVOLUTION, VMAX, SINGLE_STRIKE, _DARKNESS_]),
-  METAGROSS_VMAX_208 ("Metagross VMAX", "208", Rarity.UNCOMMON, [POKEMON, EVOLUTION, VMAX, RAPID_STRIKE, _METAL_]),
-  TORNADUS_VMAX_209 ("Tornadus VMAX", "209", Rarity.UNCOMMON, [POKEMON, EVOLUTION, VMAX, SINGLE_STRIKE, _COLORLESS_]),
+  CELEBI_VMAX_199 ("Celebi VMAX", "199", Rarity.UNCOMMON, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _GRASS_]),
+  BLAZIKEN_VMAX_200 ("Blaziken VMAX", "200", Rarity.UNCOMMON, [POKEMON, EVOLUTION, POKEMON_V, VMAX, RAPID_STRIKE, _FIRE_]),
+  BLAZIKEN_VMAX_201 ("Blaziken VMAX", "201", Rarity.UNCOMMON, [POKEMON, EVOLUTION, POKEMON_V, VMAX, RAPID_STRIKE, _FIRE_]),
+  ICE_RIDER_CALYREX_VMAX_202 ("Ice Rider Calyrex VMAX", "202", Rarity.UNCOMMON, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _WATER_]),
+  ICE_RIDER_CALYREX_VMAX_203 ("Ice Rider Calyrex VMAX", "203", Rarity.UNCOMMON, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _WATER_]),
+  SHADOW_RIDER_CALYREX_VMAX_204 ("Shadow Rider Calyrex VMAX", "204", Rarity.UNCOMMON, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _PSYCHIC_]),
+  SHADOW_RIDER_CALYREX_VMAX_205 ("Shadow Rider Calyrex VMAX", "205", Rarity.UNCOMMON, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _PSYCHIC_]),
+  SANDACONDA_VMAX_206 ("Sandaconda VMAX", "206", Rarity.UNCOMMON, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _FIGHTING_]),
+  GALARIAN_SLOWKING_VMAX_207 ("Galarian Slowking VMAX", "207", Rarity.UNCOMMON, [POKEMON, EVOLUTION, POKEMON_V, VMAX, SINGLE_STRIKE, _DARKNESS_]),
+  METAGROSS_VMAX_208 ("Metagross VMAX", "208", Rarity.UNCOMMON, [POKEMON, EVOLUTION, POKEMON_V, VMAX, RAPID_STRIKE, _METAL_]),
+  TORNADUS_VMAX_209 ("Tornadus VMAX", "209", Rarity.UNCOMMON, [POKEMON, EVOLUTION, POKEMON_V, VMAX, SINGLE_STRIKE, _COLORLESS_]),
   AGATHA_210 ("Agatha", "210", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   AVERY_211 ("Avery", "211", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   BRAWLY_212 ("Brawly", "212", Rarity.UNCOMMON, [TRAINER, SUPPORTER, RAPID_STRIKE]),
@@ -319,7 +319,7 @@ public enum ChillingReign implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -510,25 +510,12 @@ public enum ChillingReign implements LogicCardInfo {
           weakness FIRE
           bwAbility "Toughness Boost", {
             text "As long as this Pokémon is in play, the maximum HP of your Single Strike Pokémon in play (excluding any Abomasnow) is increased by 50. You can't apply more than 1 Toughness Up Ability at a time."
-            def target = []
-            def source = []
-            bg.em().storeObject("Toughness_Boost_target", target)
-            bg.em().storeObject("Toughness_Boost_source", source)
 
             getterA (GET_FULL_HP) { h->
               def pcs = h.effect.target
-              if (pcs.owner == self.owner && pcs.singleStrike && pcs.topPokemonCard.name != "Abomasnow"){
-                target = bg.em().retrieveObject("Toughness_Boost_target")
-                source = bg.em().retrieveObject("Toughness_Boost_source")
-                if (!target.contains(pcs)) {
-                  h.object += hp(50)
-                  target.add(pcs)
-                  bg.em().storeObject("Toughness_Boost_target", target)
-                  source.add(self)
-                  bg.em().storeObject("Toughness_Boost_source", source)
-                } else if (source.get(target.indexOf(pcs)) == self) {
-                  h.object += hp(50)
-                }
+              if (pcs.owner == self.owner && pcs.singleStrike && pcs.topPokemonCard.name != "Abomasnow" && !h.context['Toughness_Boost']){
+                h.object += hp(50)
+                h.context['Toughness_Boost'] = 1
               }
             }
           }
@@ -900,7 +887,7 @@ public enum ChillingReign implements LogicCardInfo {
               after PROCESS_ATTACK_EFFECTS, {
                 if (ef.attacker == self && opp.prizeCardSet.takenCount) {
                   bg.dm().each {
-                    if (it.to != self.owner && it.to.active && it.notNoEffect && it.dmg.value) {
+                    if (it.to.owner != self.owner && it.to.active && it.notNoEffect && it.dmg.value) {
                       def bonus = opp.prizeCardSet.takenCount * 30
                       bc "$thisAbility +$bonus"
                       it.dmg += hp(bonus)
@@ -979,8 +966,7 @@ public enum ChillingReign implements LogicCardInfo {
                       }
                     }
                   }
-                  after EVOLVE, defending, { unregister() }
-                  after DEVOLVE, defending, { unregister() }
+                  after CHANGE_STAGE, defending, { unregister() }
                   after FALL_BACK, defending, { unregister() }
                   unregisterAfter 3
                 }
@@ -1243,7 +1229,7 @@ public enum ChillingReign implements LogicCardInfo {
             text "Once during your turn, you may place 2 damage counters on 1 of your opponent's Pokémon."
             actionA {
               checkLastTurn()
-              if (confirm("Use Quick Shooter?")) {
+              if (confirm("Use Quick Shooting?")) {
                 powerUsed()
                 def pcs = opp.all.select("Place 2 damage counters on which Pokémon?")
                 directDamage 20, pcs, SRC_ABILITY
@@ -1400,7 +1386,7 @@ public enum ChillingReign implements LogicCardInfo {
       case ZEBSTRIKA_51:
         return evolution (this, from:"Blitzle", hp:HP120, type:L, retreatCost:1) {
           weakness FIGHTING
-          globalAbility { Card thisCard ->
+          initHook { Card thisCard ->
             delayed (priority: LAST) {
               after PROCESS_ATTACK_EFFECTS, {
                 if (ef.attacker.owner == thisCard.player && ef.attacker.rapidStrike) {
@@ -1459,7 +1445,7 @@ public enum ChillingReign implements LogicCardInfo {
       case ZERAORA_V_53:
         return basic (this, hp:HP210, type:L, retreatCost:2) {
           weakness FIGHTING
-          globalAbility { Card thisCard ->
+          initHook { Card thisCard ->
             delayed (priority: LAST) {
               after PROCESS_ATTACK_EFFECTS, {
                 if (ef.attacker.owner == thisCard.player && ef.attacker.rapidStrike) {
@@ -1952,8 +1938,7 @@ public enum ChillingReign implements LogicCardInfo {
               assert my.hand.hasEnergyType(P) : "You have no [P] Energy cards in your hand"
               assertMyBench(hasType: P)
               powerUsed()
-              def pcs = my.bench.findAll { it.types.contains(P) }.select("Attach energy to?")
-              attachEnergyFrom(type:P, my.hand, pcs)
+              attachEnergyFrom(type:P, my.hand, my.bench.findAll { it.types.contains(P) })
               draw 2
             }
           }
@@ -2497,8 +2482,7 @@ public enum ChillingReign implements LogicCardInfo {
                   }
                   unregisterAfter 2
                   after FALL_BACK, pcs, {unregister()}
-                  after EVOLVE, pcs, {unregister()}
-                  after DEVOLVE, pcs, {unregister()}
+                  after CHANGE_STAGE, pcs, {unregister()}
                 }
               }
             }
@@ -2562,7 +2546,7 @@ public enum ChillingReign implements LogicCardInfo {
                 damage 90
               }
             }
-            globalAbility {
+            initHook {
               def flag
               delayed {
                 before PLAY_TRAINER, {
@@ -2596,7 +2580,7 @@ public enum ChillingReign implements LogicCardInfo {
 
               if (totalCountersBefore != opp.all.sum { it.numberOfDamageCounters }) {
                 discardedPokemon.moveTo(opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
               }
             }
           }
@@ -2976,7 +2960,7 @@ public enum ChillingReign implements LogicCardInfo {
                 }
               }
             }
-            globalAbility {
+            initHook {
               def flag
               delayed {
                 before PLAY_TRAINER, {
@@ -3497,7 +3481,7 @@ public enum ChillingReign implements LogicCardInfo {
           onPlay {
             eff = delayed {
               after ATTACH_ENERGY, {
-                def target = e.getTarget(bg)
+                def target = e.getTargetPokemon()
                 if (target && ef.reason==PLAY_FROM_HAND && !target.types.contains(P)) {
                   bc "Old Cemetery activates"
                   directDamage(20, target, TRAINER_CARD)
@@ -3693,7 +3677,7 @@ public enum ChillingReign implements LogicCardInfo {
           def eff
           onPlay { reason->
             if (self.isSPC(POISONED)) {
-              clearSpecialCondition(self, SRC_SPENERGY, [POISONED])
+              clearSpecialCondition(self, [POISONED])
             }
             eff = delayed {
               before APPLY_SPECIAL_CONDITION, self, {
@@ -3751,7 +3735,7 @@ public enum ChillingReign implements LogicCardInfo {
           def eff
           onPlay { reason->
             if (self.isSPC(PARALYZED)) {
-              clearSpecialCondition(self, SRC_SPENERGY, [PARALYZED])
+              clearSpecialCondition(self, [PARALYZED])
             }
             eff = delayed {
               before APPLY_SPECIAL_CONDITION, self, {

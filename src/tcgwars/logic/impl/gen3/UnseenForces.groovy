@@ -1,5 +1,6 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
 
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer;
 import tcgwars.logic.impl.gen2.Expedition;
 import tcgwars.logic.impl.gen2.Aquapolis;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
@@ -151,7 +152,7 @@ public enum UnseenForces implements LogicCardInfo {
   BLISSEY_EX_101 ("Blissey ex", "101", Rarity.ULTRARARE, [POKEMON, EVOLUTION, EX, STAGE1, _COLORLESS_]),
   ESPEON_EX_102 ("Espeon ex", "102", Rarity.ULTRARARE, [POKEMON, EVOLUTION, EX, STAGE1, _PSYCHIC_]),
   FERALIGATR_EX_103 ("Feraligatr ex", "103", Rarity.ULTRARARE, [POKEMON, EVOLUTION, EX, STAGE2, _WATER_]),
-  HO_OH_EX_104 ("Ho-Oh ex", "104", Rarity.ULTRARARE, [POKEMON, BASIC, _FIRE_]),
+  HO_OH_EX_104 ("Ho-Oh ex", "104", Rarity.ULTRARARE, [POKEMON, BASIC, EX, _FIRE_]),
   LUGIA_EX_105 ("Lugia ex", "105", Rarity.ULTRARARE, [POKEMON, BASIC, EX, _COLORLESS_]),
   MEGANIUM_EX_106 ("Meganium ex", "106", Rarity.ULTRARARE, [POKEMON, EVOLUTION, EX, STAGE2, _GRASS_]),
   POLITOED_EX_107 ("Politoed ex", "107", Rarity.ULTRARARE, [POKEMON, EVOLUTION, EX, STAGE2, _WATER_]),
@@ -241,7 +242,7 @@ public enum UnseenForces implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -430,8 +431,7 @@ public enum UnseenForces implements LogicCardInfo {
                   }
                 }
                 after FALL_BACK, pcs, {unregister()}
-                after EVOLVE, pcs, {unregister()}
-                after DEVOLVE, pcs, {unregister()}
+                after CHANGE_STAGE, pcs, {unregister()}
                 unregisterAfter 2
               }
             }
@@ -721,10 +721,10 @@ public enum UnseenForces implements LogicCardInfo {
           text "Choose 1 of the Defending Pokémon's attacks. Copy copies that attack. This attack does nothing if Sudowoodo doesn't have the Energy necessary to use that attack. (You must still do anything else required for that attack.) Sudowoodo performs that attack."
           energyCost C
           attackRequirement {
-            assert defending.topPokemonCard.moves : "No moves to perform"
+            assert defending.baseMoves : "No moves to perform"
           }
           onAttack {
-            def moveOptions = defending.topPokemonCard.moves
+            def moveOptions = defending.baseMoves
             def move = choose(moveOptions + ["End Turn (Skip)"], "Choose 1 of the Defending Pokémon's attacks. (Do not select a move if you don't have necessary energy or it will fail) ")
             if (move instanceof String) return
             def bef = blockingEffect(BETWEEN_TURNS)
@@ -908,8 +908,8 @@ public enum UnseenForces implements LogicCardInfo {
           text "Shuffle your hand into your deck, then draw 6 cards."
           energyCost C
           onAttack {
-            shuffleDeck(hand)
-            hand.clear()
+            hand.moveTo(hidden:true, deck)
+            shuffleDeck()
             draw 6
           }
         }
@@ -1766,7 +1766,7 @@ public enum UnseenForces implements LogicCardInfo {
                     { card -> card.cardTypes.is(EVOLUTION) && typesAllowed.any{enType -> card.types.contains(enType)} && card.predecessor==self.name }, self.owner)
 
                   if (sel) {
-                    evolve(self, sel.first(), OTHER)
+                    evolve(self, sel.first())
                   }
                   shuffleDeck(null, self.owner.toTargetPlayer())
                 }
@@ -2188,14 +2188,7 @@ public enum UnseenForces implements LogicCardInfo {
                 directDamage 30, self.owner.opposite.pbg.active//, Source.POKEMON_TOOL or something similar
               }
             }
-            after EVOLVE, self, {check(self)}
-            after DEVOLVE, self, {check(self)}
-            //TODO: onMove() instead of this
-            after PROCESS_ATTACK_EFFECTS, {
-              if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
-                check(self)
-              }
-            }
+            after CHANGE_STAGE, self, {check(self)}
           }
           check(self)
         }
@@ -2232,14 +2225,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
           eff3 = delayed {
-            after EVOLVE, self, {check(self)}
-            after DEVOLVE, self, {check(self)}
-            //TODO: onMove() instead of this
-            after PROCESS_ATTACK_EFFECTS, {
-              if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
-                check(self)
-              }
-            }
+            after CHANGE_STAGE, self, {check(self)}
           }
           check(self)
           new CheckAbilities().run(bg)
@@ -2258,7 +2244,7 @@ public enum UnseenForces implements LogicCardInfo {
         }
       };
       case ENERGY_SWITCH_84:
-      return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this);
+        return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this)
       case FLUFFY_BERRY_85:
       return pokemonTool (this) {
         text "Attach Fluffy Berry to 1 of your Pokémon (excluding Pokémon-ex and Pokémon that has Dark or an owner in its name) that doesn't already have a Pokémon Tool attached to it. If the Pokémon Fluffy Berry is attached to is Pokémon-ex or has Dark or an owner in its name, discard Fluffy Berry." +
@@ -2272,14 +2258,7 @@ public enum UnseenForces implements LogicCardInfo {
             h.object = 0
           }
           eff2 = delayed {
-            after EVOLVE, self, {check(self)}
-            after DEVOLVE, self, {check(self)}
-            //TODO: onMove() instead of this
-            after PROCESS_ATTACK_EFFECTS, {
-              if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
-                check(self)
-              }
-            }
+            after CHANGE_STAGE, self, {check(self)}
           }
           check(self)
         }
@@ -2336,14 +2315,7 @@ public enum UnseenForces implements LogicCardInfo {
             h.object.clear()
           }
           eff2 = delayed {
-            after EVOLVE, self, {check(self)}
-            after DEVOLVE, self, {check(self)}
-            //TODO: onMove() instead of this
-            after PROCESS_ATTACK_EFFECTS, {
-              if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
-                check(self)
-              }
-            }
+            after CHANGE_STAGE, self, {check(self)}
           }
           check(self)
         }
@@ -2374,14 +2346,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
           eff2 = delayed {
-            after EVOLVE, self, {check(self)}
-            after DEVOLVE, self, {check(self)}
-            //TODO: onMove() instead of this
-            after PROCESS_ATTACK_EFFECTS, {
-              if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
-                check(self)
-              }
-            }
+            after CHANGE_STAGE, self, {check(self)}
           }
           check(self)
         }
@@ -2409,14 +2374,7 @@ public enum UnseenForces implements LogicCardInfo {
                 it.dmg += hp(20)
               }}
             }
-            after EVOLVE, self, {check(self)}
-            after DEVOLVE, self, {check(self)}
-            //TODO: onMove() instead of this
-            after PROCESS_ATTACK_EFFECTS, {
-              if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
-                check(self)
-              }
-            }
+            after CHANGE_STAGE, self, {check(self)}
           }
           check(self)
         }
@@ -2445,8 +2403,8 @@ public enum UnseenForces implements LogicCardInfo {
         onPlay { reason ->
           if (reason == PLAY_FROM_HAND && self.active) {
             if (opp.bench) {
-              targeted null, SRC_SPENERGY, { // Don't force player choose a Pokémon when it will have no effect
-                sw(opp.active, opp.bench.oppSelect("Cyclone Energy was played, which Pokémon to switch with the Active?"), SRC_SPENERGY)
+              targeted opp.active, {
+                sw(opp.active, opp.bench.oppSelect("Cyclone Energy was played, which Pokémon to switch with the Active?"))
               }
             }
           }
@@ -2484,7 +2442,7 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             def count = 0
             while (count < 3 && my.discard.filterByType(ENERGY)) {
-              attachEnergyFrom(basic: false, my.discard, self)
+              attachEnergyFrom(my.discard, self)
               count++
             }
           }
@@ -2508,8 +2466,7 @@ public enum UnseenForces implements LogicCardInfo {
 
               def list = opp.bench.findAll { it.evolution }
               def pcs = list.select("Devolve one of your opponent's evolved Pokémon")
-              def top = pcs.topPokemonCard
-              devolve(pcs, top, opp.hand)
+              devolve(pcs, opp.hand)
             }
           }
         }
@@ -2986,24 +2943,23 @@ public enum UnseenForces implements LogicCardInfo {
             targeted (defending) {
               bc "During ${opp.owner.getPlayerUsername(bg)}'s next turn, the Defending ${defending} can't retreat or use any Poké-Powers. (This effect can be removed by evolving or benching ${defending}.)"
               def pcs = defending
-              delayed {
-                def eff
-                register {
-                  eff = getter (IS_ABILITY_BLOCKED) { Holder h->
-                    if (h.effect.target == defending && h.effect.ability instanceof PokePower) {
-                      h.object = true
+              runAtBeginningOfYourOpponentsTurn {
+                delayed {
+                  def eff
+                  register {
+                    eff = getter (IS_ABILITY_BLOCKED) { Holder h->
+                      if (h.effect.target == pcs && h.effect.ability instanceof PokePower) {
+                        h.object = true
+                      }
                     }
                   }
-                  new CheckAbilities().run(bg)
+                  unregister{
+                    eff.unregister()
+                  }
+                  unregisterAfter 1
+                  after FALL_BACK, pcs, {unregister()}
+                  after CHANGE_STAGE, pcs, {unregister()}
                 }
-                unregister{
-                  eff.unregister()
-                  new CheckAbilities().run(bg)
-                }
-                unregisterAfter 2
-                after FALL_BACK, pcs, {unregister()}
-                after EVOLVE, pcs, {unregister()}
-                after DEVOLVE, pcs, {unregister()}
               }
             }
           }
@@ -3168,27 +3124,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "Choose a card from your hand and put it face down. Your opponent guesses if that card is a Pokémon, Trainer, or Energy card. Reveal the card. If your opponent guessed wrong, draw 2 cards. Put the card back into your hand."
@@ -3220,27 +3158,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "Search your deck for up to 2 Supporter cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
@@ -3259,27 +3179,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "Count the number of cards in your opponent's hand. Put that many damage counters on the Defending Pokémon."
@@ -3294,27 +3196,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "Search your opponent's discard pile for a Supporter card and use the effect of that card as the effect of this attack. (The Supporter card remains in your opponent's discard pile.)"
@@ -3324,9 +3208,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
           onAttack {
             def card = opp.discard.select("Select a Supporter to use", cardTypeFilter(SUPPORTER)).first()
-            bg.deterministicCurrentThreadPlayerType=self.owner
-            bg.em().run(new PlayTrainer(card))
-            bg.clearDeterministicCurrentThreadPlayerType()
+            bg.em().run(new ActivateSimpleTrainer(card))
           }
         }
       };
@@ -3335,27 +3217,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "Flip a coin. If heads, choose 1 of either player's Evolved Pokémon, remove the highest Stage Evolution card from that Pokémon, and put it into that player's hand."
@@ -3365,8 +3229,7 @@ public enum UnseenForces implements LogicCardInfo {
               if (all.findAll { it.evolution }) {
                 def list = all.findAll { it.evolution }
                 def pcs = list.select("Devolve one Evolved Pokémon")
-                def top = pcs.topPokemonCard
-                devolve(pcs, top, pcs.owner.pbg.hand)
+                devolve(pcs, pcs.owner.pbg.hand)
               }
             }
           }
@@ -3377,27 +3240,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "If your opponent's Bench isn't full, look at his or her hand. Choose 1 Basic Pokémon you find there and put it onto your opponent's Bench. Then, switch it with the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
@@ -3423,27 +3268,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "10 damage. Flip 3 coins. If 1 of them is heads, the Defending Pokémon is now Asleep. If 2 of them are heads, the Defending Pokémon is now Confused. If all of them are heads, the Defending Pokémon is now Paralyzed."
@@ -3468,27 +3295,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "Count the number of your Pokémon that have any damage counters on them. Put that many damage counters on the Defending Pokémon."
@@ -3503,41 +3312,23 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "Search your deck for up to 2 Pokémon Tool cards and attach them to any of your Pokémon (excluding Pokémon that already have a Pokémon Tool attached to them). Shuffle your deck afterward."
           energyCost C
           attackRequirement {
-            assert my.all.findAll({canAttachPokemonTool(it)}) : "Your Pokémon already have tools attached to them."
+            assert my.all.findAll{canAttachPokemonTool(it)} : "Your Pokémon already have tools attached to them."
             assert my.deck : "Deck is empty."
           }
           onAttack {
-            def tar = my.all.findAll({!(it.cards.filterByType(POKEMON_TOOL))})
-            if(tar){
-              my.deck.search(max : Math.min(2,tar.size()),"Search for up to 2 Pokémon tool",cardTypeFilter(POKEMON_TOOL)).each{
-                def pcs = my.all.findAll({canAttachPokemonTool(it)}).select()
-                attachPokemonTool(it,pcs)
+            def tar = my.all.findAll{canAttachPokemonTool(it)}
+            my.deck.search(max: Math.min(2,tar.size()),"Search for up to 2 Pokémon tool",cardTypeFilter(POKEMON_TOOL)).each{Card card ->
+              def pcs = my.all.findAll{canAttachPokemonTool(it, card)}.select("Attach $card to?", false)
+              if (pcs) {
+                attachPokemonTool(card, pcs)
               }
             }
             shuffleDeck()
@@ -3549,27 +3340,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "Switch 1 of your opponent's Benched Pokémon with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch. The new Defending Pokémon is now Burned and Confused."
@@ -3591,27 +3364,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "Flip a coin. If heads, switch all damage counters on Unown with those on the Defending Pokémon. (If an effect of this attack is prevented, this attack does nothing.)"
@@ -3632,27 +3387,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "20 damage. You may discard any Stadium card in play."
@@ -3672,27 +3409,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "Flip a coin. If heads, put damage counters on the Defending Pokémon until it is 10 HP away from being Knocked Out."
@@ -3709,27 +3428,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "Search your deck for a card that evolves from 1 of your Pokémon and put it on that Pokémon. (This counts as evolving that Pokémon.) If you do, put 1 damage counter on Unown. Shuffle your deck afterward."
@@ -3738,15 +3439,9 @@ public enum UnseenForces implements LogicCardInfo {
             assert my.deck
           }
           onAttack {
-            def names=my.all.collect{it.name}
-            def sel=deck.search ("Evolves from $names", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)})
-            if(sel){
-              def opts=my.all.findAll({it.name==sel.first().predecessor})
-              def pcs=opts.select("Evolve which one?")
-              evolve(pcs, sel.first(), OTHER)
+            if (searchYourDeckThenEvolveOneOfYourPokemon()) {
               directDamage 10, self
             }
-            shuffleDeck()
           }
         }
       };
@@ -3755,27 +3450,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "Remove 5 damage counters from Unown. (All if there are less than 5.)"
@@ -3790,27 +3467,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "20 damage. Return Unown and all Energy cards attached to it to your hand."
@@ -3829,27 +3488,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "Put 1 damage counter on each of your opponent's Pokémon that already has damage counters on it."
@@ -3866,31 +3507,14 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "Search your deck for up to 3 different types of basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
           energyCost C
+          attackRequirement { assert my.deck : "You have no cards in your deck"}
           onAttack {
             my.deck.select(min:0, max:3, "Select up to 3 different types of basic Energy cards", cardTypeFilter(BASIC_ENERGY), self.owner,
               {
@@ -3901,7 +3525,8 @@ public enum UnseenForces implements LogicCardInfo {
                     }
                   }
                   return true
-              }).moveTo(my.hand)
+              }).showToOpponent("Selected Basic Energy cards").moveTo(my.hand)
+            shuffleDeck()
           }
         }
       };
@@ -3910,27 +3535,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "Flip a coin. If heads, your opponent returns the Defending Pokémon and all cards attached to it to his or her hand. (If your opponent doesn't have any Benched Pokémon or other Active Pokémon, this attack does nothing.)"
@@ -3948,27 +3555,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "If the Defending Pokémon has a Poké-Power or a Poké-Body, choose up to 2 basic Energy cards attached to 1 of your opponent's Pokémon and attach them to the Defending Pokémon."
@@ -3992,27 +3581,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "Choose 1 of your opponent's Pokémon. This attack does 20 damage to that Pokémon. This attack's damage isn't affected by Weakness or Resistance."
@@ -4027,27 +3598,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "10 damage. Choose 1 of the Defending Pokémon's attacks. That Pokémon can't use that attack during your opponent's next turn."
@@ -4063,27 +3616,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "20+ damage. Does 20 damage plus 10 more damage for each Basic Pokémon and each Evolution card in your discard pile. You can't add more than 60 damage in this way."
@@ -4100,27 +3635,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "20 damage. Flip a coin. If heads, search your discard pile for a card, show it to your opponent, and put it on top of your deck."
@@ -4141,27 +3658,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "20x damage. Flip a coin until you get tails. This attack does 20 damage times the number of heads."
@@ -4176,27 +3675,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "10 damage. The Defending Pokémon is now Asleep."
@@ -4212,27 +3693,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "Does 20 damage to each Pokémon that has any Poké-Powers or Poké-Bodies (both yours and your opponent's). Don't apply Weakness or Resistance."
@@ -4250,27 +3713,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokePower "Shuffle", {
           text "Once during your turn (before your attack), you may search your deck for another Unown and switch it with Unown. (Any cards attached to Unown, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Unown on top of your deck. Shuffle your deck afterward. You can't use more than 1 Shuffle Poké-Power each turn."
-          actionA {
-            checkLastTurn()
-            assert bg.em().retrieveObject("Unown_Shuffle") != bg.turnCount : "You can't use more than 1 Shuffle Poké-Power each turn."
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Unown_Shuffle", bg.turnCount)
-            powerUsed()
-
-            def oldUnown = self.topPokemonCard
-            def newUnown = my.deck.search(min:0, max: 1, {
-              it.name == "Unown"
-            })
-
-            if (newUnown) {
-              newUnown.moveTo(self.cards)
-              my.deck.add(oldUnown)
-              self.cards.remove(oldUnown)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Shuffle", {
+            it.name == "Unown"
+          })
         }
         move "Hidden Power", {
           text "Flip a coin. If heads, put 2 damage counters on 1 of your opponent's Pokémon. If tails, put 2 damage counters on 1 of your Pokémon."

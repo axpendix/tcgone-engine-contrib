@@ -1,6 +1,9 @@
 package tcgwars.logic.impl.gen3
 
-import tcgwars.logic.effect.gm.Attack;
+import tcgwars.logic.effect.gm.Attack
+import tcgwars.logic.impl.gen1.Jungle
+import tcgwars.logic.impl.gen5.BlackWhite
+import tcgwars.logic.impl.gen7.CelestialStorm
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -193,7 +196,7 @@ public enum RubySapphireNG implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -348,7 +351,7 @@ public enum RubySapphireNG implements LogicCardInfo {
           text "Prevent all effects of attacks, except damage, done to Dustox by the Attacking Pokémon."
           delayedA {
             before null, null, ATTACK, {
-              if (ef instanceof TargetedEffect && ef.effectType != DAMAGE && (ef as TargetedEffect).getResolvedTarget(bg, e) == self) {
+              if (ef instanceof TargetedEffect && ef.effectType != DAMAGE && e.getTargetPokemon() == self) {
                 bc "$thisAbility prevents all effects done to $self."
                 prevent()
               }
@@ -885,17 +888,19 @@ public enum RubySapphireNG implements LogicCardInfo {
         move "Energy Call", {
           text "10 damage. Attach 1 Energy card from your discard pile to your Active Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
+            afterDamage {
+              attachEnergyFrom(my.discard, my.active)
+            }
           }
         }
         move "Cannonball", {
           text "30+ damage. Does 30 damage plus 10 more damage for each Energy attached to Delcatty but not used to pay for this attack's Energy cost."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
+            extraEnergyDamage(99, hp(10), C, thisMove)
           }
         }
       };
@@ -1800,6 +1805,7 @@ public enum RubySapphireNG implements LogicCardInfo {
           }
         }
       };
+      //TODO: Reimplement
       case ENERGY_REMOVAL_2_80:
       return itemCard (this) {
         text "Flip a coin. If heads, choose 1 Energy card attached to 1 of your opponent's Pokémon and discard it."
@@ -1808,6 +1814,7 @@ public enum RubySapphireNG implements LogicCardInfo {
         playRequirement{
         }
       };
+      //TODO: Reimplement
       case ENERGY_RESTORE_81:
       return itemCard (this) {
         text "Flip 3 coins. For each heads, put a basic Energy card from your discard pile into your hand. If you don't have that many basic Energy cards in your discard pile, put all of them into your hand."
@@ -1817,137 +1824,95 @@ public enum RubySapphireNG implements LogicCardInfo {
         }
       };
       case ENERGY_SWITCH_82:
-      return itemCard (this) {
-        text "Move a basic Energy card attached to 1 of your Pokémon to another of your Pokémon."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this)
       case LADY_OUTING_83:
       return supporter (this) {
         text "Search your deck for up to 3 different types of basic Energy cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward." +
           "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card."
         onPlay {
+          my.deck.select2(
+            min: 0, max: 3,
+            text: "Select up to 3 different types of basic Energy cards",
+            filter: cardTypeFilter(BASIC_ENERGY),
+            passFilter: { CardList cardList ->
+              for (Card card : cardList) {
+                for (Card card2 : cardList) {
+                  if (card != card2 && ((BasicEnergyCard)card).getBasicType() == ((BasicEnergyCard)card2).getBasicType()) {
+                    return false
+                  }
+                }
+              }
+              return true
+            })
+            .showToOpponent("Selected Basic Energy cards")
+            .moveTo(my.hand)
+          shuffleDeck()
         }
         playRequirement{
+          assert my.deck
         }
       };
       case LUM_BERRY_84:
-      return pokemonTool (this) {
-        text "At any time between turns, if the Pokémon this card is attached to is affected by any Special Conditions, remove all of them. Then discard Lum Berry." +
-          "Attach Lum Berry to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card."
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        allowAttach {to->
-        }
-      };
+        return copy(Emerald.LUM_BERRY_78, this)
       case ORAN_BERRY_85:
-      return pokemonTool (this) {
-        text "At any time between turns, if the Pokémon this card is attached to has at least 2 damage counters on it, remove 2 damage counters from it. Then, discard Oran Berry." +
-          "Attach Oran Berry to 1 of your Pokémon that doesn't already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card."
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        allowAttach {to->
-        }
-      };
+        return copy(Emerald.ORAN_BERRY_80, this)
       case POKE_BALL_86:
-      return itemCard (this) {
-        text "Flip a coin. If heads, search your deck for a Basic Pokémon or Evolution card, show it to your opponent and put it into your hand. Shuffle your deck afterward."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(Jungle.POKE_BALL, this)
       case POKEMON_REVERSAL_87:
-      return itemCard (this) {
-        text "Flip a coin. If heads, your opponent switches 1 of his or her Active Pokémon with 1 of his or her Benched Pokémon."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(FireRedLeafGreen.POKEMON_REVERSAL_97, this)
       case POKENAV_88:
       return itemCard (this) {
         text "Look at the top 3 cards of your deck, and choose a Basic Pokémon, Evolution card, or Energy card. Show it to your opponent and put it into your hand. Put the 2 other cards back on top of your deck in any order."
-        onPlay {
-        }
         playRequirement{
+          assert my.deck.notEmpty : "You have no remaining cards in your deck"
+        }
+        onPlay {
+          CardList topThree = my.deck.subList(0, 3)
+          CardList sel = topThree.select2(min:0, text:"Top 3 cards of your deck. You may choose to reveal a Basic Pokémon, Evolution card or Energy Card and put it into your hand.\nRemaining cards will be put on top of your deck in order of your choice.", filter:{it.cardTypes.isIn(BASIC, EVOLUTION, ENERGY)})
+                  .showToOpponent("Your opponent used PokéNav. They're putting this card in their hand.")
+                  .moveTo(my.hand)
+          def rearrangeSize = Math.min(sel ? 2 : 3, deck.size())
+          if (rearrangeSize > 1) {
+            def list = rearrange(deck.subList(0,rearrangeSize), "Rearrange top $rearrangeSize cards in your deck")
+            deck.setSubList(0, list)
+            bc "${thisCard.player} rearranged the top $rearrangeSize cards of their deck."
+          }
         }
       };
       case PROFESSOR_BIRCH_89:
-      return supporter (this) {
-        text "Draw cards from your deck until you have 6 cards in your hand." +
-          "You can play only 1 Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(Emerald.PROFESSOR_BIRCH_82, this)
       case ENERGY_SEARCH_90:
-      return itemCard (this) {
-        text "Search your deck for a basic Energy card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(BlackWhite.ENERGY_SEARCH_93, this)
       case POTION_91:
-      return itemCard (this) {
-        text "Remove 2 damage counters from 1 of your Pokémon (remove 1 damage counter if that Pokémon has only 1)."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(FireRedLeafGreen.POTION_101, this)
       case SWITCH_92:
-      return itemCard (this) {
-        text "Switch 1 of your Active Pokémon with 1 of your Benched Pokémon."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(FireRedLeafGreen.SWITCH_102, this)
       case DARKNESS_ENERGY_93:
-      return specialEnergy (this, [[C]]) {
-        text "If the Pokémon [D] Energy is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance). Ignore this effect unless the Attacking Pokémon is Darkness or has Dark in its name. [D] Energy provides [D] Energy. (Doesn't count as a basic Energy card.)"
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+        return copy(Emerald.DARKNESS_ENERGY_86, this)
       case METAL_ENERGY_94:
-      return specialEnergy (this, [[C]]) {
-        text "Damage done by attacks to the Pokémon that [M] Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon that [M] Energy is attached to isn't Metal. [M] Energy provides Metal. (Doesn't count as a basic Energy card)"
-        onPlay {reason->
+      return specialEnergy (this, [[M]]) {
+          text: "Damage done by attacks to the Pokémon that [M] Energy is attached to is reduced by 10 (after applying Weakness and Resistance). Ignore this effect if the Pokémon that [M] Energy is attached to isn't Metal. [M] Energy provides Metal. (Doesn't count as a basic Energy card)"
+          def eff
+          onPlay {reason->
+            eff = delayed {
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each { DamageEntry entry ->
+                  if(entry.to == self && entry.dmg.value && entry.notNoEffect && self.types.contains(M)){
+                    targeted self, {
+                      entry.dmg -= hp(10)
+                      bc "Metal Energy -10 damage"
+                    }
+                  }
+                }
+              }
+            }
+          }
+          onRemoveFromPlay {
+            eff.unregister()
+          }
         }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
       case RAINBOW_ENERGY_95:
-      return specialEnergy (this, [[C]]) {
-        text "Attach Rainbow Energy to 1 of your Pokémon. While in play, Rainbow Energy provides every type of Energy but provides only 1 Energy at a time. (Doesn't count as a basic Energy card when not in play.) When you attach this card from your hand to 1 of your Pokémon, put 1 damage counter on that Pokémon."
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+        return copy(CelestialStorm.RAINBOW_ENERGY_151,this)
       case CHANSEY_EX_96:
       return basic (this, hp:HP120, type:C, retreatCost:3) {
         weakness F

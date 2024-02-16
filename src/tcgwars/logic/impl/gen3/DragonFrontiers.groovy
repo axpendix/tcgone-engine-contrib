@@ -1,5 +1,6 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
 
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer;
 import tcgwars.logic.effect.gm.PlayTrainer;
 
 import tcgwars.logic.impl.gen3.Deoxys;
@@ -76,7 +77,7 @@ public enum DragonFrontiers implements LogicCardInfo {
   ELECTABUZZ_DELTA_29 ("Electabuzz", "29", Rarity.UNCOMMON, [POKEMON, BASIC, DELTA, _FIGHTING_]),
   FLAAFFY_DELTA_30 ("Flaaffy", "30", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, DELTA, _COLORLESS_]),
   HORSEA_DELTA_31 ("Horsea", "31", Rarity.UNCOMMON, [POKEMON, BASIC, DELTA, _FIGHTING_]),
-  KIRLIA_32 ("Kirlia", "32", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, DELTA, _PSYCHIC_]),
+  KIRLIA_32 ("Kirlia", "32", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
   KIRLIA_DELTA_33 ("Kirlia", "33", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, DELTA, _FIRE_]),
   NIDORINA_DELTA_34 ("Nidorina", "34", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, DELTA, _METAL_]),
   NIDORINO_DELTA_35 ("Nidorino", "35", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, DELTA, _DARKNESS_]),
@@ -95,16 +96,16 @@ public enum DragonFrontiers implements LogicCardInfo {
   ELEKID_DELTA_48 ("Elekid", "48", Rarity.COMMON, [POKEMON, BASIC, DELTA, _FIGHTING_]),
   FEEBAS_DELTA_49 ("Feebas", "49", Rarity.COMMON, [POKEMON, BASIC, DELTA, _FIRE_]),
   HORSEA_DELTA_50 ("Horsea", "50", Rarity.COMMON, [POKEMON, BASIC, DELTA, _FIGHTING_]),
-  LARVITAR_51 ("Larvitar", "51", Rarity.COMMON, [POKEMON, BASIC, DELTA, _FIGHTING_]),
+  LARVITAR_51 ("Larvitar", "51", Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
   LARVITAR_DELTA_52 ("Larvitar", "52", Rarity.COMMON, [POKEMON, BASIC, DELTA, _LIGHTNING_]),
   LEDYBA_DELTA_53 ("Ledyba", "53", Rarity.COMMON, [POKEMON, BASIC, DELTA, _METAL_]),
   MAREEP_DELTA_54 ("Mareep", "54", Rarity.COMMON, [POKEMON, BASIC, DELTA, _COLORLESS_]),
   NATU_DELTA_55 ("Natu", "55", Rarity.COMMON, [POKEMON, BASIC, DELTA, DELTA, _DARKNESS_]),
   NIDORAN_FEMALE_DELTA_56 ("Nidoran♀", "56", Rarity.COMMON, [POKEMON, BASIC, DELTA, _METAL_]),
   NIDORAN_MALE_DELTA_57 ("Nidoran♂", "57", Rarity.COMMON, [POKEMON, BASIC, DELTA, _DARKNESS_]),
-  PUPITAR_58 ("Pupitar", "58", Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, DELTA, _FIGHTING_]),
+  PUPITAR_58 ("Pupitar", "58", Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   PUPITAR_DELTA_59 ("Pupitar", "59", Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, DELTA, _LIGHTNING_]),
-  RALTS_60 ("Ralts", "60", Rarity.COMMON, [POKEMON, BASIC, DELTA, _PSYCHIC_]),
+  RALTS_60 ("Ralts", "60", Rarity.COMMON, [POKEMON, BASIC, _PSYCHIC_]),
   RALTS_DELTA_61 ("Ralts", "61", Rarity.COMMON, [POKEMON, BASIC, DELTA, _FIRE_]),
   SEEL_DELTA_62 ("Seel", "62", Rarity.COMMON, [POKEMON, BASIC, DELTA, _COLORLESS_]),
   SHELLDER_DELTA_63 ("Shellder", "63", Rarity.COMMON, [POKEMON, BASIC, DELTA, _FIGHTING_]),
@@ -193,7 +194,7 @@ public enum DragonFrontiers implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -226,7 +227,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               if (ef.attacker.owner == self.owner && ef.attacker.topPokemonCard.cardTypes.is(DELTA)) {
                 bg.dm().each {
-                  if (it.to.active && it.to != self.owner && it.notNoEffect && it.dmg.value) {
+                  if (it.to.active && it.to.owner != self.owner && it.notNoEffect && it.dmg.value) {
                     bc "Battle Aura +10"
                     it.dmg += hp(10)
                   }
@@ -340,22 +341,8 @@ public enum DragonFrontiers implements LogicCardInfo {
             if (randomOppHand.hasType(SUPPORTER)) {
               def sel = randomOppHand.select(min: 0, "Opponent's hand. You may select a Supporter and use it as the effect of this power.", cardTypeFilter(SUPPORTER))
               if (sel){
-                delayed {
-                  def eff
-                  register {
-                    eff = getter (GET_MAX_SUPPORTER_PER_TURN) {h->
-                      h.object = h.object + 1
-                    }
-                  }
-                  unregister {
-                    eff.unregister()
-                  }
-                  unregisterAfter 1
-                }
                 def card = sel.first()
-                bg.deterministicCurrentThreadPlayerType=bg.currentTurn
-                bg.em().run(new PlayTrainer(card).setDontDiscard(true))
-                bg.clearDeterministicCurrentThreadPlayerType()
+                bg.em().run(new ActivateSimpleTrainer(card))
               }
             } else {
               randomOppHand.showToMe("Opponent's hand. No supporter in there.")
@@ -426,17 +413,16 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Once during your turn (before your attack), you may remove 4 damage counters from Ninetales and discard Ninetales from Vulpix. If you do, search your deck for Ninetales or Ninetales ex and put it onto Vulpix (this counts as evolving Vulpix). Shuffle your deck afterward."
           actionA {
             checkLastTurn()
-            assert self.cards.any {it.name == "Vulpix"} : "You must be able to leave a Vulpix in play"
+            assert self.evolution && self.cards.any {it.name == "Vulpix"} : "You must be able to leave a Vulpix in play"
             powerUsed()
             heal 40, self
-
-            def top=self.topPokemonCard
-            devolve(self, top, my.discard)
-
-            if (my.deck) {
-              def tar = my.deck.search("Evolves from Vulpix", {it.cardTypes.is(EVOLUTION) && (it.name == "Ninetales" || it.name == "Ninetales ex")})
-              if (tar) evolve(self, tar.first(), OTHER)
-              shuffleDeck()
+            devolve(self, my.discard)
+            if (my.all.contains(self)) { // still alive
+              if (my.deck) {
+                def tar = my.deck.search("Evolves from Vulpix", {it.cardTypes.is(EVOLUTION) && (it.name == "Ninetales" || it.name == "Ninetales ex")})
+                if (tar) evolve(self, tar.first())
+                shuffleDeck()
+              }
             }
           }
         }
@@ -526,7 +512,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             def card = opp.all.findAll { it.topPokemonCard.cardTypes.is(DELTA) }.select("Source of move")
             if (card) {
               bc "$card was chosen"
-              def moves = card.topPokemonCard.moves
+              def moves = card.baseMoves
               if (moves) {
                 def move = choose(moves, "Choose attack")
                 bc "$move was chosen"
@@ -560,10 +546,14 @@ public enum DragonFrontiers implements LogicCardInfo {
             def target = all
             target.remove(source)
             target = target.select("Target for damage counter")
-            source.damage-=hp(10)
-            directDamage 10, target, SRC_ABILITY
-            bc "Moved 1 damage counter from $source to $target"
-            checkFaint()
+            targeted (source) {
+              targeted (target) {
+                source.damage -= hp(10)
+                directDamage 10, target
+                bc "Moved 1 damage counter from $source to $target"
+                checkFaint()
+              }
+            }
           }
         }
         move "Burning Ball", {
@@ -608,16 +598,16 @@ public enum DragonFrontiers implements LogicCardInfo {
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
-                if (it.to.owner==self.owner && it.to.benched && it.dmg.value && it.to.topPokemonCard.cardTypes.is(DELTA)) {
+                if (it.from.owner!=self.owner && it.to.owner==self.owner && it.to.benched && it.dmg.value && it.to.topPokemonCard.cardTypes.is(DELTA)) {
                   bc "Solid Shell prevents damage"
                   it.dmg=hp(0)
                 }
               }
             }
-            before null, null, Source.ATTACK, {
-              def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-              if (bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs && pcs.owner == self.owner && pcs.benched && pcs.topPokemonCard.cardTypes.is(DELTA)) {
-                bc "Solid Shell prevents effect"
+            before null, null, ATTACK, {
+              def pcs = e.getTargetPokemon()
+              if (e.sourceAttack?.attacker?.owner == self.owner.opposite && ef.effectType != DAMAGE && pcs && pcs.owner == self.owner && pcs.benched && pcs.topPokemonCard.cardTypes.is(DELTA)) {
+                bc "Solid Shell prevents effect (${ef.effectType})"
                 prevent()
               }
             }
@@ -1708,8 +1698,9 @@ public enum DragonFrontiers implements LogicCardInfo {
                 }
               }
             }
-            unregister {discard thisCard}
-            unregisterAfter 2
+            unregisterAfter 2, {
+              discard thisCard
+            }
           }
         }
         onRemoveFromPlay {
@@ -1964,10 +1955,11 @@ public enum DragonFrontiers implements LogicCardInfo {
         weakness P
         def Imprison = []
         def actions = []
+        def _delegate = delegate
         def imprisonLoader = {
           bg.em().storeObject("Imprison_Loaded",true)
 
-          loadMarkerCheckerAction(delegate, actions)
+          loadMarkerCheckerAction(_delegate, actions)
 
           delayed {
             getter (IS_ABILITY_BLOCKED) { Holder h ->
@@ -1982,41 +1974,20 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
           }
         }
-        globalAbility {Card thisCard ->
+        initHook {Card thisCard ->
           def temp
           delayed {
-            after EVOLVE, {
-              if(bg.em().retrieveObject("Imprison") != null){
-                Imprison = bg.em().retrieveObject("Imprison")
-              }
-              if (Imprison.contains(ef.pokemonToBeEvolved)) {
-                bc "${ef.pokemonToBeEvolved} loses its Imprison marker when evolved!"
-                Imprison.remove(ef.pokemonToBeEvolved)
-                bg.em().storeObject("Imprison",Imprison)
-              }
-            }
-            after DEVOLVE, {
+            after CHANGE_STAGE, {
               if(bg.em().retrieveObject("Imprison") != null){
                 Imprison = bg.em().retrieveObject("Imprison")
               }
               def pcs = ef.resolvedTarget
               if (Imprison.contains(pcs)) {
-                bc "${pcs} loses its Imprison marker when devolved!"
+                bc "${pcs} loses its Imprison marker when stage changes!"
                 Imprison.remove(pcs)
                 bg.em().storeObject("Imprison",Imprison)
               }
             }
-            //TODO: Find correct replacement for "pokemonToBeDevolved", to remove above code and use the one below.
-            /* after DEVOLVE, {
-              if(bg.em().retrieveObject("Imprison") != null){
-                Imprison = bg.em().retrieveObject("Imprison")
-              }
-              if (Imprison.contains(ef.pokemonToBeDevolved)) {
-                bc "${ef.pokemonToBeDevolved} loses its Imprison marker when devolved!"
-                Imprison.remove(ef.pokemonToBeDevolved)
-                bg.em().storeObject("Imprison", Imprison)
-              }
-            } */
           }
         }
         pokePower "Imprison", {
@@ -2108,8 +2079,7 @@ public enum DragonFrontiers implements LogicCardInfo {
               }
               unregisterAfter 2
               after FALL_BACK, self, { unregister() }
-              after EVOLVE, self, { unregister() }
-              after DEVOLVE, self, { unregister() }
+              after CHANGE_STAGE, self, { unregister() }
             }
           }
         }
@@ -2274,41 +2244,20 @@ public enum DragonFrontiers implements LogicCardInfo {
 
           loadMarkerCheckerAction(delegate, actions)
         }
-        globalAbility {Card thisCard ->
+        initHook {Card thisCard ->
           def temp
           delayed {
-            after EVOLVE, {
-              if(bg.em().retrieveObject("Shock_Wave") != null){
-                Shock_Wave = bg.em().retrieveObject("Shock_Wave")
-              }
-              if (Shock_Wave.contains(ef.pokemonToBeEvolved)) {
-                bc "${ef.pokemonToBeEvolved} loses its Shock-wave marker when evolved!"
-                Shock_Wave.remove(ef.pokemonToBeEvolved)
-                bg.em().storeObject("Shock_Wave",Shock_Wave)
-              }
-            }
-            after DEVOLVE, {
+            after CHANGE_STAGE, {
               if(bg.em().retrieveObject("Shock_Wave") != null){
                 Shock_Wave = bg.em().retrieveObject("Shock_Wave")
               }
               def pcs = ef.resolvedTarget
               if (Shock_Wave.contains(pcs)) {
-                bc "${pcs} loses its Shock-wave marker when devolved!"
+                bc "${pcs} loses its Shock-wave marker when changed stage!"
                 Shock_Wave.remove(pcs)
                 bg.em().storeObject("Shock_Wave",Shock_Wave)
               }
             }
-            //TODO: Find correct term, to replace pokemonToBeDevolved
-            /* after DEVOLVE, {
-              if(bg.em().retrieveObject("Shock_Wave") != null){
-                Shock_Wave = bg.em().retrieveObject("Shock_Wave")
-              }
-              if (Shock_Wave.contains(ef.pokemonToBeDevolved)) {
-                bc "${ef.pokemonToBeDevolved} loses its Shock-wave marker when devolved!"
-                Shock_Wave.remove(ef.pokemonToBeDevolved)
-                bg.em().storeObject("Shock_Wave",Shock_Wave)
-              }
-            } */
           }
         }
         move "Electromark", {
@@ -2412,8 +2361,8 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C
           onAttack {
             def tar = opp.all.select("Choose Pokémon to copy moves from")
-            if (tar.topPokemonCard.moves) {
-              def moveOptions = tar.topPokemonCard.moves
+            def moveOptions = tar.baseMoves
+            if (moveOptions) {
               def move = choose(moveOptions + ["End Turn (Skip)"], "Choose 1 of the Pokémon's attacks.")
               if (move instanceof String) return
               def bef = blockingEffect(BETWEEN_TURNS)

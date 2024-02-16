@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen3
 
-import tcgwars.logic.effect.ability.custom.Safeguard;
+import tcgwars.logic.effect.ability.custom.Safeguard
+import tcgwars.logic.exception.EffectRequirementException;
 import tcgwars.logic.impl.gen2.Expedition;
 
 import tcgwars.logic.effect.gm.Attack
@@ -127,7 +128,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
   POKE_BALL_95 ("Poké Ball", "95", Rarity.UNCOMMON, [TRAINER, ITEM]),
   POKEDEX_HANDY909_96 ("PokéDex Handy909", "96", Rarity.UNCOMMON, [TRAINER, ITEM]),
   POKEMON_REVERSAL_97 ("Pokémon Reversal", "97", Rarity.UNCOMMON, [TRAINER, ITEM]),
-  PROF__OAK_S_RESEARCH_98 ("Prof. Oak's Research", "98", Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
+  // Q. Can I have 4 "Professor Oak's Research" (Expedition) plus 4 more "Prof. Oak's Research" (FR/LG) in a deck? Their titles are not exactly the same!
+  // A. Sorry, but "Prof." is merely an abbreviation for the word "Professor". They are to be treated as the same card, so you can only have a total of four (not eight) in your deck. (Sep 9, 2004 PUI Rules Team)
+  PROF__OAK_S_RESEARCH_98 ("Professor Oak's Research", "98", Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
   SUPER_SCOOP_UP_99 ("Super Scoop Up", "99", Rarity.UNCOMMON, [TRAINER, ITEM]),
   VS_SEEKER_100 ("VS Seeker", "100", Rarity.UNCOMMON, [TRAINER, ITEM]),
   POTION_101 ("Potion", "101", Rarity.COMMON, [TRAINER, ITEM]),
@@ -193,7 +196,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -294,9 +297,8 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               def dittoReplacement = my.discard.findAll{it.cardTypes.is(BASIC) && !it.cardTypes.is(EX) && it.name != "Ditto"}.select("Form Variation - Choose which Pokémon will replace Ditto.")
 
               dittoReplacement.moveTo(self.cards)
-              my.discard.add(ditto)
               self.cards.remove(ditto)
-              checkFaint()
+              my.discard.add(ditto)
               new CheckAbilities().run(bg)
             }
           }
@@ -423,11 +425,10 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           def eff
           pokeBody "Family Bonds", {
             text "As long as Nidoqueen is in play, the Retreat Cost for Nidoran♀, Nidorina, Nidoran♂, Nidorino and Nidoking is 0."
-            delayedA {
-              eff = getter (GET_RETREAT_COST, BEFORE_LAST) {
-                if (it.effect.target.name == "Nidoran♂" || it.effect.target.name == "Nidoran♀" || it.effect.target.name == "Nidorino" || it.effect.target.name == "Nidorina" || it.effect.target.name == "Nidoking") {
-                  it.object = 0
-                }
+            getterA (GET_RETREAT_COST, BEFORE_LAST) { holder ->
+              def pcs = holder.effect.target
+              if (["Nidoran♂", "Nidoran♀", "Nidorino", "Nidorina", "Nidoking"].contains(pcs.name)) {
+                holder.object = 0
               }
             }
           }
@@ -588,7 +589,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost P, C
             onAttack {
               damage 30
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
 
@@ -808,14 +809,14 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             text "Search your deck for up to 2 Pokémon Tool cards and attach them to any of your Pokémon (excluding Pokémon that already have a Pokémon Tool attached to them). Shuffle your deck afterward."
             energyCost C
             attackRequirement {
-              assert my.all.findAll({canAttachPokemonTool(it)})
+              assert my.all.findAll{canAttachPokemonTool(it)}
             }
             onAttack {
-              def tar = my.all.findAll({!(it.cards.filterByType(POKEMON_TOOL))})
-              if(tar){
-                my.deck.search(max : Math.min(2,tar.size()),"Search for up to 2 Pokémon tool",cardTypeFilter(POKEMON_TOOL)).each{
-                  def pcs = my.all.findAll({canAttachPokemonTool(it)}).select()
-                  attachPokemonTool(it,pcs)
+              def tar = my.all.findAll{canAttachPokemonTool(it)}
+              my.deck.search(max: Math.min(2,tar.size()),"Search for up to 2 Pokémon tool",cardTypeFilter(POKEMON_TOOL)).each{Card card ->
+                def pcs = my.all.findAll{canAttachPokemonTool(it, card)}.select("Attach $card to?", false)
+                if (pcs) {
+                  attachPokemonTool(card, pcs)
                 }
               }
               shuffleDeck()
@@ -868,7 +869,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             delayedA {
               before BEGIN_TURN, {
                 if(my.active.isSPC(ASLEEP)){
-                  directDamage 20, self, SRC_ABILITY
+                  directDamage 20, my.active, SRC_ABILITY
                 }
                 if(opp.active.isSPC(ASLEEP)){
                   directDamage 20, opp.active, SRC_ABILITY
@@ -917,7 +918,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost L, C
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
           move "Speed Shot", {
@@ -1044,7 +1045,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost P
             onAttack {
               damage 10
-              afterDamage {flipThenApplySC CONFUSED}
+              flipThenApplySC CONFUSED
             }
           }
           move "Double Spin", {
@@ -1074,7 +1075,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost P, C
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC CONFUSED}
+              flipThenApplySC CONFUSED
             }
           }
 
@@ -1125,7 +1126,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 10
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
           move "Tongue Whip", {
@@ -1144,7 +1145,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             text "Shuffle your opponent’s deck."
             energyCost C
             onAttack {
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
             }
           }
           move "Light Punch", {
@@ -1349,7 +1350,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost W, C
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
 
@@ -1712,8 +1713,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                     }
                   }
                   after FALL_BACK, pcs, {unregister()}
-                  after EVOLVE, pcs, {unregister()}
-                  after DEVOLVE, pcs, {unregister()}
+                  after CHANGE_STAGE, pcs, {unregister()}
                   unregisterAfter 2
                 }
               }
@@ -1799,15 +1799,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           move "Ascension", {
             text "Search your deck for a card that evolves from Magikarp and put it on Magikarp. (This counts as evolving Magikarp.) Shuffle your deck afterward."
             energyCost W, C
-            attackRequirement {
-              assert my.deck
-            }
-            onAttack {
-              def nam=self.name
-              def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              if(tar) evolve(self, tar.first(), OTHER)
-              shuffleDeck()
-            }
+            ascension delegate
           }
 
         };
@@ -1864,20 +1856,26 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
             onAttack {
               def revealCard = new CardList();
+              def foundBasic = false
               def ind = 0
               def curCard
               while(ind < my.deck.size()){
                 curCard = my.deck.get(ind)
                 ind+=1
                 revealCard.add(curCard)
-                if(curCard.cardTypes.is(BASIC))
+                if(curCard.cardTypes.is(BASIC)) {
+                  foundBasic = true
                   break
+                }
               }
+              bc "${self.owner.getPlayerUsername(bg)} revealed $ind cards from the top of the deck " + (foundBasic ? "and found $curCard" : "without finding any Basic Pokémon")
               revealCard.showToMe("Drawn cards")
-              revealCard.showToOpponent("revealed cards")
+              revealCard.showToOpponent("Revealed cards")
               revealCard.clear()
-              revealCard.add(curCard)
-              revealCard.moveTo(my.hand)
+              if (foundBasic) {
+                revealCard.add(curCard)
+                revealCard.moveTo(my.hand)
+              }
               shuffleDeck()
             }
           }
@@ -1929,7 +1927,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost G
             onAttack {
               damage 10
-              afterDamage {flipThenApplySC POISONED}
+              flipThenApplySC POISONED
             }
           }
 
@@ -2095,7 +2093,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost W
             onAttack {
               damage 10
-              afterDamage {flipThenApplySC ASLEEP}
+              flipThenApplySC ASLEEP
             }
           }
 
@@ -2156,7 +2154,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost L, C
             onAttack {
               damage 20
-              afterDamage {flipThenApplySC PARALYZED}
+              flipThenApplySC PARALYZED
             }
           }
 
@@ -2220,11 +2218,11 @@ public enum FireRedLeafGreen implements LogicCardInfo {
         return basicTrainer (this) {
           text "Move a basic Energy card attached to 1 of your Pokémon to another of your Pokémon."
           onPlay {
-            if(my.bench && my.all.findAll{it.cards.filterByType(BASIC_ENERGY)}){
-              def pcs = my.all.findAll{it.cards.filterByType(BASIC_ENERGY)}.select("Move energy from")
-              def tar = my.all.findAll{it != pcs}.select("Move energy to")
-              moveEnergy(basic: true, pcs, tar)
-            }
+            def pcs = my.all.findAll{it.cards.filterByType(BASIC_ENERGY)}.select("Move energy from")
+
+            def tar = my.all.findAll{it != pcs}.select("Move energy to")
+
+            moveEnergy(basic: true, pcs, tar)
           }
           playRequirement{
             assertMyBench()
@@ -2250,14 +2248,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                   }
                 }
               }
-              after EVOLVE, self, {check(self)}
-              after DEVOLVE, self, {check(self)}
-              //TODO: onMove() instead of this
-              after PROCESS_ATTACK_EFFECTS, {
-                if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
-                  check(self)
-                }
-              }
+              after CHANGE_STAGE, self, {check(self)}
             }
             check(self)
           }
@@ -2286,11 +2277,11 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           text "Flip a coin. If heads, choose 1 of your Pokémon (excluding Pokémon-ex), and remove all Special Conditions and 6 damage counters from that Pokémon (all if there are less than 6)."
           onPlay {
             flip {
-              def tar = my.all.findAll{(it.numberOfDamageCounters || !(it.noSPC())) && it.topPokemonCard.cardTypes.isNot(EX)}
+              def tar = my.all.findAll{(it.numberOfDamageCounters || it.specialConditions) && it.topPokemonCard.cardTypes.isNot(EX)}
               if(tar){
                 def pcs = tar.select("select 1 of your Pokémon (excluding Pokémon-ex) to remove all Special Conditions and 6 damage counters")
-                clearSpecialCondition(pcs,Source.TRAINER_CARD)
-                heal 60, pcs
+                clearSpecialCondition pcs, Source.TRAINER_CARD
+                heal 60, pcs, Source.TRAINER_CARD
               }
             }
           }
@@ -2415,7 +2406,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
         return basicTrainer (this) {
           text "Switch 1 of your Active Pokémon with 1 of your Benched Pokémon."
           onPlay {
-            sw my.active, my.bench.select()
+            if (sw(my.active, my.bench.select("New Active Pokemon"), Source.TRAINER_CARD)) {
+              throw new EffectRequirementException("No effect")
+            }
           }
           playRequirement{
             assert my.bench : "No benched Pokémon"
@@ -2508,9 +2501,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             onAttack {
               def moveList = []
               def labelList = []
-
-              moveList.addAll(defending.topPokemonCard.moves);
-              labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
+              def moves = defending.baseMoves
+              moveList.addAll(moves);
+              labelList.addAll(moves.collect{it.name})
 
               def move=choose(moveList, labelList)
               def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)

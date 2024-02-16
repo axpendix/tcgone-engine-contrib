@@ -139,10 +139,10 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
   FERALIGATR_108 ("Feraligatr", "108", Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
   MEGANIUM_109 ("Meganium", "109", Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
   TYPHLOSION_110 ("Typhlosion", "110", Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _FIRE_]),
-  HO_OH_LEGEND_111 ("Ho-Oh LEGEND", "111", Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_, LEGEND]),
-  HO_OH_LEGEND_112 ("Ho-Oh LEGEND", "112", Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_, LEGEND]),
-  LUGIA_LEGEND_113 ("Lugia LEGEND", "113", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
-  LUGIA_LEGEND_114 ("Lugia LEGEND", "114", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
+  HO_OH_LEGEND_111 ("Ho-Oh LEGEND", "111", Rarity.HOLORARE, [POKEMON, _FIRE_, LEGEND]),
+  HO_OH_LEGEND_112 ("Ho-Oh LEGEND", "112", Rarity.HOLORARE, [POKEMON, _FIRE_, LEGEND]),
+  LUGIA_LEGEND_113 ("Lugia LEGEND", "113", Rarity.HOLORARE, [POKEMON, _WATER_, LEGEND]),
+  LUGIA_LEGEND_114 ("Lugia LEGEND", "114", Rarity.HOLORARE, [POKEMON, _WATER_, LEGEND]),
   GRASS_ENERGY_115 ("Grass Energy", "115", Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
   FIRE_ENERGY_116 ("Fire Energy", "116", Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
   WATER_ENERGY_117 ("Water Energy", "117", Rarity.COMMON, [BASIC_ENERGY, ENERGY]),
@@ -219,7 +219,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -335,8 +335,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
                   }
                   unregisterAfter 2
                   after FALL_BACK, self, {unregister()}
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
+                  after CHANGE_STAGE, self, {unregister()}
                 }
               }
             }
@@ -449,7 +448,9 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             energyCost L, L
             onAttack {
               damage 100
-              discardAllSelfEnergy(null)
+              afterDamage {
+                discardAllSelfEnergy(null)
+              }
             }
           }
 
@@ -484,19 +485,28 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
         return evolution (this, from:"Slowpoke", hp:HP080, type:PSYCHIC, retreatCost:2) {
           weakness P
           pokePower "Second Sight", {
-            text " Once during your turn (before your attack), you may look at the top 3 cards in either player's deck and put them back on top of that player's deck in any order. This power can't be used if Slowking is affected by a Special Condition."
+            text "Once during your turn (before your attack), you may look at the top 3 cards in either player's deck and put them back on top of that player's deck in any order. This power can't be used if Slowking is affected by a Special Condition."
             actionA {
               checkLastTurn()
               checkNoSPC()
+              assert my.deck.notEmpty || opp.deck.notEmpty
               powerUsed()
-              def playerDeck = choose([0,1],["Your Deck", "Opponent's Deck"], "Whose deck do you want to look at")
-              if (playerDeck == 0) {
-                def list=rearrange(my.deck.subList(0,3), "Arrange top 3 cards in your deck (leftmost card is on top)")
-                deck.setSubList(0, list)
+              def choices = []
+              if (my.deck.notEmpty) {
+                choices.add("My Deck")
               }
-              else {
+              if (opp.deck.notEmpty) {
+                choices.add("Opponent's Deck")
+              }
+              def response = choose(choices, "Whose deck do you want to look at")
+              if (response == 'My Deck') {
+                def list=rearrange(my.deck.subList(0,3), "Arrange top 3 cards in your deck (leftmost card is on top)")
+                my.deck.setSubList(0, list)
+                bc "Rearranged top cards of own deck"
+              } else {
                 def list=rearrange(opp.deck.subList(0,3), "Arrange top 3 cards in your opponent's deck (leftmost card is on top)")
-                deck.setSubList(0, list)
+                opp.deck.setSubList(0, list)
+                bc "Rearranged top cards of opponent's deck"
               }
             }
           }
@@ -612,8 +622,8 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             text "Shuffle your hand into your deck, then draw 6 cards. Cleffa is now Asleep."
             energyCost ()
             onAttack {
-              shuffleDeck(hand)
-              hand.clear()
+              hand.moveTo(hidden:true, deck)
+              shuffleDeck()
               draw 6
               apply ASLEEP, self
             }
@@ -866,17 +876,17 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             text "Each player may search his or her deck for as many Basic Pokémon as he or she likes, put them onto his or her Bench, and shuffle his or her deck afterward. (You put your Pokémon on the Bench first.) Pichu is now Asleep."
             energyCost ()
             onAttack {
-              if(my.bench.notFull) {
+              if(my.bench.notFull && my.deck.notEmpty) {
                 deck.search (max:my.bench.freeBenchCount,"Please search for Basic Pokémon to put on your bench.",cardTypeFilter(BASIC)).each {
                   benchPCS(it)
                 }
                 shuffleDeck()
               }
-              if(opp.bench.notFull) {
+              if(opp.bench.notFull && opp.deck.notEmpty) {
                 opp.deck.oppSelect(min:0,max:opp.bench.getFreeBenchCount(),"Pichu used Playground: Each player may search his or her deck for as many Basic Pokémon as he or she likes, put them onto his or her Bench. Please search for Basic Pokémon to put on your bench.",cardTypeFilter(BASIC)).each{
                   benchPCS(it, OTHER)
                 }
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
               }
               apply ASLEEP, self
             }
@@ -922,18 +932,12 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
           move "Energy Antics", {
             text "Move an Energy card attached to 1 of your opponent’s Pokémon to another of your opponent’s Pokémon. Smoochum is now Asleep."
             energyCost ()
-            attackRequirement {
-              assert opp.all.findAll{it.cards.filterByType(ENERGY)} : "Opponent has no energy attached"
-              assert opp.bench
-            }
             onAttack {
-              def bothAll = new PcsList();
-              opp.all.each{
-                bothAll.add(it)
+              if (opp.all.findAll{it.cards.filterByType(ENERGY)} && opp.all.size() >= 2) {
+                def pcs = opp.all.findAll{it.cards.filterByType(ENERGY)}.select("Choose the pokémon to move the energy from")
+                def tar = opp.all.findAll{it != pcs}.select("Choose the pokémon to receive the energy")
+                energySwitch(pcs, tar, pcs.cards.filterByType(ENERGY).select("Choose the energy to move").first())
               }
-              def pcs = bothAll.findAll{it.cards.filterByType(ENERGY)}.select("Choose the pokémon to move the energy from")
-              def tar = bothAll.findAll{it != pcs}.select("Choose the pokémon to receive the energy")
-              energySwitch(pcs,tar, pcs.cards.filterByType(ENERGY).select("Choose the energy to move").first())
               apply ASLEEP, self
             }
 
@@ -979,7 +983,9 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             energyCost R, R, C
             onAttack {
               damage 120
-              discardSelfEnergy(C,C)
+              afterDamage {
+                discardSelfEnergy(C,C)
+              }
             }
           }
 
@@ -1281,10 +1287,10 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
         return evolution (this, from:"Caterpie", hp:HP080, type:GRASS, retreatCost:2) {
           weakness R
           pokeBody "Green Shield", {
-            text "Each of your Pokémon has no Weakness."
+            text "Each of your [G] Pokémon has no Weakness."
             delayedA {
               getterA GET_WEAKNESSES, { h ->
-                if (h.effect.target.owner == self.owner) {
+                if (h.effect.target.owner == self.owner && h.effect.target.types.contains(G)) {
                   h.object.clear()
                 }
               }
@@ -1357,7 +1363,9 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             energyCost R, C, C
             onAttack {
               damage 60
-              discardSelfEnergy C
+              afterDamage {
+                discardSelfEnergy C
+              }
             }
           }
 
@@ -1416,11 +1424,24 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
           move "Cosmic Cyclone", {
             text "20× damage. Choose as many [W] Energy attached to your Pokémon as you like. This attack does 20 damage times the number of Energy you chose. Shuffle those cards back into your deck."
             energyCost W
+            attackRequirement {
+              assert my.all.find{pcs->pcs.cards.hasEnergyType(W)} : "No [W] in play"
+            }
             onAttack {
-              def selectedCards = self.cards.filterByEnergyType(W).select(min:0, max:self.cards.filterByEnergyType(W).size())
-              damage 20*selectedCards.energyCount(W)
-              afterDamage{ selectedCards.moveTo(my.deck) }
-              shuffleDeck()
+              def energies = new CardList()
+              while (true) {
+                def tar = my.all.findAll{pcs->pcs.cards.hasEnergyType(W)}
+                if (!tar) break
+                def pcs = tar.select("Pokemon to select [W] energy from. Cancel to stop. Already selected: $energies", energies.empty)
+                if (!pcs) break
+                energies.addAll(pcs.cards.filterByEnergyType(W).findAll{!energies.contains(it)}.select(min:0, max:10, "Select as many [W] energy for 20x damage. Already selected: $energies"))
+              }
+              bc "Selected $energies"
+              damage 20*energies.energyCount(W)
+              afterDamage {
+                energies.moveTo(my.deck)
+                shuffleDeck()
+              }
             }
           }
 
@@ -1686,12 +1707,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             energyCost G
             onAttack {
               damage 10
-              afterDamage{
-                if(my.bench) {
-                  def pcs = my.bench.select("Select the new active Pokémon.")
-                  sw my.active, pcs
-                }
-              }
+              switchYourActive(may: true, now: false)
             }
           }
 
@@ -1716,8 +1732,8 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             text "Shuffle your hand into your deck. Then, draw a number of cards equal to the number of cards in your opponent’s hand."
             energyCost C
             onAttack {
-              shuffleDeck(hand)
-              hand.clear()
+              my.hand.moveTo(hidden: true, my.deck)
+              shuffleDeck()
               draw opp.hand.size()
             }
           }
@@ -1864,7 +1880,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             text "30 damage. Paras does 10 damage to itself."
             energyCost G, C
             onAttack {
-              damage 20
+              damage 30
               damage 10, self
             }
           }
@@ -2067,7 +2083,9 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             energyCost R, C
             onAttack {
               damage 30
-              flip 1, {}, {discardSelfEnergy(R)}
+              flip 1, {}, {
+                afterDamage{discardSelfEnergy(R)}
+              }
             }
           }
 
@@ -2105,7 +2123,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
       case COPYCAT_90:
         return copy(TeamRocketReturns.COPYCAT_83, this);
       case ENERGY_SWITCH_91:
-        return copy(BlackWhite.ENERGY_SWITCH_94, this);
+        return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this)
       case FISHERMAN_92:
         return supporter (this) {
           text "Search your discard pile for 4 basic Energy cards, show them to your opponent, and put them into your hand."
@@ -2130,13 +2148,12 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
         return itemCard (this) {
           text "Choose 1 of your Pokémon. Flip 2 coins. For each heads, remove 3 damage counters from that Pokémon."
           onPlay {
-            def tar = my.all.findAll{(it.numberOfDamageCounters != 0)}
-            if(tar){
-              def pcs = tar.select("Select the pokémon to be healed")
-              flip 2, {heal 30, pcs}
-            }
+            def pcs = my.all.findAll{it.numberOfDamageCounters}.select("Select the Pokémon to be healed")
+            flip 2, {heal 30, pcs}
           }
-          playRequirement{}
+          playRequirement{
+            assert my.all.find{it.numberOfDamageCounters} : "Your Pokémon have no damage"
+          }
         };
       case POKE_BALL_95:
         return copy (BlackWhite.POKE_BALL_97, this)
@@ -2204,7 +2221,9 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             energyCost L, C, C
             onAttack {
               damage 40
-              flip {damage 40} {discardDefendingEnergy()}
+              flip {damage 40} {
+                afterDamage{ discardDefendingEnergy() }
+              }
             }
           }
 
@@ -2238,7 +2257,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
 
         };
       case DONPHAN_107:
-        return evolution (this, from:"Phanpy", hp:HP120, type:FIGHTING, retreatCost:2) {
+        return evolution (this, from:"Phanpy", hp:HP120, type:FIGHTING, retreatCost:4) {
           weakness W
           resistance L, MINUS20
           pokeBody "Exoskeleton", {
@@ -2341,8 +2360,10 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             energyCost R, R, C
             onAttack {
               damage 70
-              discardSelfEnergy C
-              discardDefendingEnergy()
+              afterDamage {
+                discardSelfEnergy C
+                discardDefendingEnergy()
+              }
             }
           }
 
@@ -2356,7 +2377,7 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             getterA GET_ENERGY_TYPES, { holder->
               if( holder.effect.target == self ) {
                 int count = holder.object.size()
-                holder.object = [(1..count).collect{[FIRE] as Set}]
+                holder.object = (1..count).collect{[FIRE] as Set}
               }
             }
           }
@@ -2365,7 +2386,9 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             energyCost R, R, R, R
             onAttack {
               damage 100
-              discardSelfEnergy(C)
+              afterDamage {
+                discardSelfEnergy(C)
+              }
             }
           }
 
@@ -2393,9 +2416,11 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             energyCost R, W, L
             onAttack {
               damage 200
-              discardSelfEnergy(R)
-              discardSelfEnergy(W)
-              discardSelfEnergy(L)
+              afterDamage {
+                discardSelfEnergy(R)
+                discardSelfEnergy(W)
+                discardSelfEnergy(L)
+              }
             }
           }
         };

@@ -1,5 +1,8 @@
-package tcgwars.logic.impl.gen4;
+package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer
+import tcgwars.logic.effect.gm.Attack
+import tcgwars.logic.exception.EffectRequirementException;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen3.RubySapphire
 
@@ -221,7 +224,7 @@ public enum SecretWonders implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -271,14 +274,16 @@ public enum SecretWonders implements LogicCardInfo {
               checkNoSPC()
               assert my.hand.filterByBasicEnergyType(W) : "There are no basic [W] Energys in your hand."
               powerUsed({ usingThisAbilityEndsTurn delegate })
+              def first = true
               while(true){
                 if(!my.hand.filterByBasicEnergyType(W)) break
-                def tar = my.all.select("Attach energy to which Pokémon? (Cancel to stop)", false)
+                def tar = my.all.select("Attach [W] energy to which Pokémon? ${first?"":"(Cancel to stop)"}", first)
                 if(!tar) break
-                def energy = my.hand.select(min:0,max:my.hand.filterByBasicEnergyType(W).size(),"Attach any number of basic [W] Energys to $tar",basicEnergyFilter(W))
+                def energy = my.hand.select(min:first?1:0,max:my.hand.filterByBasicEnergyType(W).size(),"Attach any number of basic [W] Energys to $tar",basicEnergyFilter(W))
                 energy.each{
-                  attachEnergy(tar,it)
+                  attachEnergy(tar,it,PLAY_FROM_HAND)
                 }
+                first = false
               }
               usingThisAbilityEndsTurn delegate
             }
@@ -369,7 +374,13 @@ public enum SecretWonders implements LogicCardInfo {
                 damage 20, opp.bench.select("Does 20 damage to 1 of your opponent's Benched Pokémon.")
               }
               flip 1, {}, {
-                discardSelfEnergyAfterDamage R, R
+                def cards = self.cards.filterByEnergyType(R)
+                if (cards) {
+                  cards = cards.select(count: 2, "Discard")
+                }
+                afterDamage {
+                  cards.discard()
+                }
               }
             }
           }
@@ -452,21 +463,18 @@ public enum SecretWonders implements LogicCardInfo {
               checkNoSPC()
               assert bg.em().retrieveObject("Telepass") != bg.turnCount : "You can't use more than 1 Telepass Poke-Power each turn."
               assert opp.discard.hasType(SUPPORTER) : "Your opponent has no supporters discarded."
+              bg.em().storeObject("Telepass", bg.turnCount);
               powerUsed()
               def card = opp.discard.select("Opponent's discard. Select a supporter.", cardTypeFilter(SUPPORTER)).first()
-              bg.deterministicCurrentThreadPlayerType=bg.currentTurn
-              bg.em().run(new PlayTrainer(card).setDontDiscard(true))
-              bg.clearDeterministicCurrentThreadPlayerType()
-              bg.em().storeObject("Telepass",bg.turnCount)
+              bg.em().run(new ActivateSimpleTrainer(card))
             }
           }
           move "Psychic Lock", {
             text "60 damage. During your opponent’s next turn, your opponent can’t use any Poké-Powers on his or her Pokémon."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               damage 60
-              afterDamage {
+              runAtBeginningOfYourOpponentsTurn {
                 delayed {
                   def eff
                   register{
@@ -481,7 +489,7 @@ public enum SecretWonders implements LogicCardInfo {
                     eff.unregister()
                     new CheckAbilities().run(bg)
                   }
-                  unregisterAfter 2
+                  unregisterAfter 1
                 }
               }
             }
@@ -548,8 +556,40 @@ public enum SecretWonders implements LogicCardInfo {
           resistance F, MINUS20
           pokePower "Phoenix Turn", {
             text "Once during your opponent’s turn, if Ho-Oh would be Knocked Out by damage from an attack, you may flip a coin. If heads, Ho-Oh isn’t discarded. Instead, remove all damage counter, Special Conditions, and other effects from Ho-Oh. Then, discard all cards attached to Ho-Oh (except for Energy cards). This counts as Ho-Oh being Knocked Out and your opponent takes a Prize card."
-            delayedA {
-              //TODO
+            delayedA priority:LAST, {
+              before KNOCKOUT, self, {
+                if((ef as Knockout).byDamageFromAttack && confirm("Activate Phoenix Turn?", self.owner)) {
+                  tryWithDeterministicCurrentThreadPlayerType(self.owner) {
+                    powerUsed()
+                    flip {
+                      def pcs = self
+                      def pkmnCard = thisCard
+                      def newPokemon = new PokemonCardSet(self.owner)
+                      def active = pcs.active
+                      def index = !active ? pcs.owner.pbg.bench.indexOf(pcs) : -1
+                      if (active) {
+                        (ef as Knockout).setNextActive(newPokemon)
+                      }
+                      delayed(inline: true){
+                        before MOVE_CARD_INNER, {
+                          if (ef.fromPokemon == pcs && ef.card.cardTypes.isIn(POKEMON, ENERGY) && ef.toList?.zoneType == CardList.ZoneType.DISCARD) {
+                            bg.em().run(new MoveCard(ef.card, newPokemon).setSuppressLog(true))
+                            throw new EffectRequirementException() //cant use prevent() here bc it prevents above new MoveCard
+                          }
+                        }
+                        after KNOCKOUT, pcs, {
+                          if (!active) {
+                            pcs.owner.pbg.bench.set(index, newPokemon)
+                          }
+                          bc "$newPokemon REKINDLED!"
+                          unregister()
+                        }
+                        unregisterAfter 1
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
           move "Rainbow Wing", {
@@ -611,7 +651,7 @@ public enum SecretWonders implements LogicCardInfo {
                 sw2(tar) // The way I read this, even if the benched Pokémon is not successfully pulled into the active, 20 damage is still done to the selected Pokémon, then the defending Pokémon might be paralyzed.
               }
               damage 20, tar
-              applyAfterDamage PARALYZED
+              flip {applyAfterDamage PARALYZED}
             }
           }
           move "Boundless Power", {
@@ -629,14 +669,16 @@ public enum SecretWonders implements LogicCardInfo {
           weakness L, PLUS30
           pokeBody "Rain Dish", {
             text "At any time between turns, remove 1 damage counter from Ludicolo."
-            delayedA{
-                before BEGIN_TURN, {
-                  if (self.numberOfDamageCounters) {
-                    bc "$thisAbility activates"
-                    heal 10, self, Source.POKEBODY
-                  }
+            delayedA (anytime:true) {
+              def lastExecId = null
+              before BEGIN_TURN, {
+                if (lastExecId != e.executionId && self.numberOfDamageCounters) {
+                  bc "$thisAbility activates"
+                  heal 10, self
+                  lastExecId = e.executionId
                 }
               }
+            }
           }
           move "Nature Power", {
             text "60+ damage. If you have a Stadium Card in play, this attack does 60 damage plus 20 more damage. If your opponent has a Stadium card in play, the Defending Pokémon is now Confused."
@@ -727,10 +769,10 @@ public enum SecretWonders implements LogicCardInfo {
             text "Once during your turn , when you attach a [L] Energy card from your hand to Raikou, you may put 1 damage counter on 1 of your opponent’s Benched Pokémon."
             delayedA {
               after ATTACH_ENERGY, self, {
-                if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(L) && opp.bench && keyStore("Thunder Rumble",self,null) != bg.turnCount && confirm("Use Thunder Rumble?")) {
+                if (bg.currentThreadPlayerType == self.owner && !bg.em().currentEffectStack.find{it instanceof Attack} && ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(L) && opp.bench && keyStore("Thunder Rumble",self,null) != bg.turnCount && confirm("Use Thunder Rumble?")) {
                   keyStore("Thunder Rumble",self,bg.turnCount)
                   powerUsed()
-                  directDamage 10, opp.bench.select("put 1 damage counter on 1 of your opponent's Benched Pokémon"), Source.POKEPOWER
+                  directDamage 10, opp.bench.select("put 1 damage counter on 1 of your opponent's Benched Pokémon")
                 }
               }
             }
@@ -744,9 +786,11 @@ public enum SecretWonders implements LogicCardInfo {
                 def energy = my.deck.subList(0,3).discard().filterByBasicEnergyType(L)
                 if(energy) {
                   damage 10 * energy.size()
-                  def tar = my.all.select("Attach those [L] Energy cards to one of your Pokémon")
-                  energy.each {
-                    attachEnergy tar, it
+                  afterDamage {
+                    def tar = my.all.select("Attach those [L] Energy cards to one of your Pokémon")
+                    energy.each {
+                      attachEnergy tar, it
+                    }
                   }
                 }
               }
@@ -797,11 +841,14 @@ public enum SecretWonders implements LogicCardInfo {
               assert self.cards.filterByBasicEnergyType(R).size() >=2 || self.cards.filterByBasicEnergyType(W).size() >=2 : "$self doesn't have enough Basic [R] or [W] Energy cards to discard"
             }
             onAttack {
-              def energys = self.cards.select(count:2,"Select 2 basic [R] or [W] Energy cards to discard", {it.cardTypes.is(BASIC_ENERGY) && (it.asEnergyCard().containsType(R) || it.asEnergyCard().containsType(W))}, self.owner, {it[0].basicType == it[1].basicType}).discard()
-              if(energys.first().asEnergyCard().containsType(R)) {
+              def energies = self.cards.select(count:2,"Select 2 basic [R] or [W] Energy cards to discard", {it.cardTypes.is(BASIC_ENERGY) && (it.asEnergyCard().containsType(R) || it.asEnergyCard().containsType(W))}, self.owner, {it[0].basicType == it[1].basicType})
+              if(energies.first().asEnergyCard().containsType(R)) {
                 damage 100
-              }else if(energys.first().asEnergyCard().containsType(W) && opp.bench) {
+              }else if(energies.first().asEnergyCard().containsType(W) && opp.bench) {
                 damage 100, opp.bench.select("$thisMove does 100 damage to 1 of your opponent's Benched Pokémon")
+              }
+              afterDamage {
+                energies.discard()
               }
             }
           }
@@ -922,7 +969,7 @@ public enum SecretWonders implements LogicCardInfo {
             //Errata: Ghost Head can't cause Banette to Knock Out itself ... the attack has to leave Banette with at least 10 HP. "Put as many damage counters as you like on Banette. (You can't Knock Out Banette.) Put that many damage counters on the Defending Pokémon." (Jan 29, 2008 Pokemon Organized Play News)
             energyCost ()
             attackRequirement {
-              assert self.remainingHP.value == 10  : "You can't place any more damage counters in $self"
+              assert self.remainingHP.value != 10  : "You can't place any more damage counters on $self"
             }
             onAttack {
               def count = choose(1..((self.remainingHP.value / 10) - 1), "Put as many damage counters as you like on Banette")
@@ -962,8 +1009,7 @@ public enum SecretWonders implements LogicCardInfo {
                     }
                   }
                   after FALL_BACK, self, {unregister()}
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
+                  after CHANGE_STAGE, self, {unregister()}
                   unregisterAfter 2
                 }
               }
@@ -997,6 +1043,7 @@ public enum SecretWonders implements LogicCardInfo {
           }
           move "Discharge", {
             text "50× damage. Discard all [L] Energy attached to Electivire. Flip a coin for each [L] Energy you discarded. This attack does 50 damage times the number of heads."
+            // Errata: * Electivire's "Discharge" attack should say "for each Electric Energy CARD" rather than just "for each Electric Energy". (Nov 16, 2007 Pokemon Organized Play News)
             energyCost L, C, C
             attackRequirement {
               assert self.cards.energyCount(L) : "You ave no [L] Energy attached to Electivire"
@@ -1018,27 +1065,31 @@ public enum SecretWonders implements LogicCardInfo {
           resistance M, MINUS20
           pokePower "Energy Shift", {
             text "Once during your turn, if Electrode would be Knocked Out by damage from an attack, you may use this power. Electrode isn’t discarded. Instead, attach it as an Energy card to 1 of your Pokémon. While attached, this card is a Special Energy card and provides every type of Energy but provides on 1 Energy at a time."
-            delayedA priority:EffectPriority.BEFORE_LAST, {
+            delayedA priority:LAST, {
               before KNOCKOUT, self, {
-                if((ef as Knockout).byDamageFromAttack && self.owner.pbg.all.find{it != self} && confirm("Use Energy Shift?")){
-                  powerUsed()
-                  def pcs=self
-                  delayed(inline: true){
-                    after KNOCKOUT, pcs, {
-                      def pkmnCard = pcs.topPokemonCard
-                      def tar = pcs.owner.pbg.all.findAll{it != self}.select("Choose a pokemon to attach $self to",pcs.owner)
-                      def energyCard
-                      energyCard = specialEnergy(new CustomCardInfo(ELECTRODE_26).setCardTypes(ENERGY, SPECIAL_ENERGY), [valuesBasicEnergy()]) {
-                        typeImagesOverride = [RAINBOW]
-                        onPlay {}
-                        onRemoveFromPlay {
-                          bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
+                if((ef as Knockout).byDamageFromAttack && self.owner.pbg.all.find{it != self} && confirm("Use Energy Shift?", self.owner)){
+                  tryWithDeterministicCurrentThreadPlayerType(self.owner) {
+                    powerUsed()
+                    def pcs=self
+                    def pkmnCard = thisCard
+                    delayed(inline: true){
+                      after KNOCKOUT, pcs, {
+                        def tar = pcs.owner.pbg.all.findAll{it != self}.select("Choose a Pokemon to attach $self to",pcs.owner)
+                        def energyCard
+                        energyCard = specialEnergy(new CustomCardInfo(ELECTRODE_26).setCardTypes(ENERGY, SPECIAL_ENERGY), [valuesBasicEnergy()]) {
+                          typeImagesOverride = [RAINBOW]
+                          onPlay {}
+                          onRemoveFromPlay {
+                            bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
+                          }
                         }
+                        energyCard.initializeFrom thisCard
+                        bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
+                        attachEnergy(tar, energyCard)
+                        bc "$energyCard is now a Special Energy Card attached to $tar"
+                        unregister()
                       }
-                      energyCard.player = thisCard.player
-                      bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
-                      attachEnergy(tar, energyCard)
-                      bc "$energyCard is now a Special Energy Card attached to $tar"
+                      unregisterAfter 1
                     }
                   }
                 }
@@ -1077,10 +1128,12 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 40
-              if(my.bench && confirm("Switch Furret with 1 of your Benched Pokémon?")) {
-                if(sw2(my.bench.select("New Active Pokémon"))) {
-                  self.cards.select(min:0,max:self.cards.filterByType(ENERGY).size(),"Move any number of Energy cards to ${my.active}",cardTypeFilter(ENERGY)).each{
-                    energySwitch(self,my.active,it)
+              afterDamage {
+                if(my.bench && confirm("Switch Furret with 1 of your Benched Pokémon?")) {
+                  if(sw2(my.bench.select("New Active Pokémon"))) {
+                    self.cards.select(min:0,max:self.cards.filterByType(ENERGY).size(),"Move any number of Energy cards to ${my.active}",cardTypeFilter(ENERGY)).each{
+                      energySwitch(self,my.active,it)
+                    }
                   }
                 }
               }
@@ -1098,8 +1151,9 @@ public enum SecretWonders implements LogicCardInfo {
             onAttack {
               damage 20
               afterDamage {
-                if(!defending.topPokemonCard.moves.isEmpty()){
-                  def move=choose(defending.topPokemonCard.moves, defending.topPokemonCard.moves.collect({it.name}), "Encore") as Move
+                def moves = defending.baseMoves
+                if(moves){
+                  def move=choose(moves, moves.collect({it.name}), "Encore") as Move
                   def pcs = defending
                   bc "$pcs can only use ${move.name} next turn."
                   delayed{
@@ -1111,8 +1165,7 @@ public enum SecretWonders implements LogicCardInfo {
                     }
                     unregisterAfter 2
                     after FALL_BACK, pcs, {unregister()}
-                    after EVOLVE, pcs, {unregister()}
-                    after DEVOLVE, pcs, {unregister()}
+                    after CHANGE_STAGE, pcs, {unregister()}
                   }
                 }
               }
@@ -1193,10 +1246,11 @@ public enum SecretWonders implements LogicCardInfo {
               assert self.numberOfDamageCounters : "$self is healthy"
             }
             onAttack {
-              def max = Math.min(self.numberOfDamageCounters,self.getPokemonCards().find{it.name == "Smoochum"}?4:2)
-              def count = choose(1..max,"Move how many damage counters?",max)
-              self.damage -= hp(10 * count)
-              directDamage 10 * count, defending
+              def count = Math.min(self.numberOfDamageCounters,self.getPokemonCards().find{it.name == "Smoochum"}?4:2)
+              targeted (defending) {
+                self.damage -= hp(10 * count)
+                directDamage 10 * count, defending
+              }
             }
           }
 
@@ -1243,7 +1297,7 @@ public enum SecretWonders implements LogicCardInfo {
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
           resistance M, MINUS20
-          globalAbility {Card thisCard->
+          initHook {Card thisCard->
             delayed {
               before KNOCKOUT, {
                 if(ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){
@@ -1265,12 +1319,14 @@ public enum SecretWonders implements LogicCardInfo {
             }
           }
           move "Tag Play —", {
-            text "20 damage. If you have Plusle on your Bench, you may move an Energy card attached to Minum to 1 of your Benched Pokémon."
+            text "20 damage. If you have Plusle on your Bench, you may move an Energy card attached to Minun to 1 of your Benched Pokémon."
             energyCost L
             onAttack {
               damage 20
               if(my.bench.find{it.name == "Plusle"} && confirm("Move an energy attached to $self to 1 of your Benched Pokémon?")) {
-                moveEnergy(self,my.bench)
+                afterDamage {
+                  moveEnergy(self,my.bench)
+                }
               }
             }
           }
@@ -1365,7 +1421,7 @@ f
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
           resistance M, MINUS20
-          globalAbility {Card thisCard->
+          initHook {Card thisCard->
             delayed {
               before KNOCKOUT, {
                 if(ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){
@@ -1421,15 +1477,15 @@ f
           weakness R, PLUS20
           resistance W, MINUS20
           pokePower "Grass Whistle", {
-            text "Once during your turn , you may remove 1 damage counter from each of your Pokémon. You can’t use more than 1 Grass Whistle Poké-Power each turn. This power can’t be used if Sunflora is affected by a Special Condition."
+            text "Once during your turn , you may remove 1 damage counter from each of your [G] Pokémon. You can’t use more than 1 Grass Whistle Poké-Power each turn. This power can’t be used if Sunflora is affected by a Special Condition."
             actionA {
               checkLastTurn()
               checkNoSPC()
-              assert my.all.find{it.numberOfDamageCounters} : "Your Pokémon are healthy"
+              assert my.all.find{it.types.contains(G) && it.numberOfDamageCounters} : "Your [G] Pokémon are healthy"
               assert bg.em().retrieveObject("Grass Whistle") != bg.turnCount : "You cannot use Grass Whistle more than once per turn!"
               bg.em().storeObject("Grass Whistle", bg.turnCount)
               powerUsed()
-              my.all.each{
+              my.all.findAll{it.types.contains(G) && it.numberOfDamageCounters}.each{
                 heal 10, it, Source.POKEPOWER
               }
             }
@@ -1501,8 +1557,7 @@ f
                 }
                 unregisterAfter 1
                 after FALL_BACK, pcs, {unregister()}
-                after EVOLVE, pcs, {unregister()}
-                after DEVOLVE, pcs, {unregister()}
+                after CHANGE_STAGE, pcs, {unregister()}
               }
             }
           }
@@ -1523,9 +1578,11 @@ f
             energyCost D, D
             onAttack {
               damage 40
-              if(opp.hand.size() > 5) {
-                def count = opp.hand.size() - 5
-                opp.hand.shuffledCopy().select(hidden: true, count: count, "Choose ${count==1?'a':count} random ${count==1?'card':'cards'} from your opponent's hand to discard").discard()
+              afterDamage {
+                if(opp.hand.size() > 5) {
+                  def count = opp.hand.size() - 5
+                  opp.hand.shuffledCopy().select(hidden: true, count: count, "Choose ${count==1?'a':count} random ${count==1?'card':'cards'} from your opponent's hand to discard").discard()
+                }
               }
             }
           }
@@ -1741,7 +1798,7 @@ f
             text "During your next turn, Farfetch’d’s Leek Slap attack’s base damage is 60."
             energyCost C
             onAttack {
-              increasedBaseDamageNextTurn("Leek SLap", hp(30))
+              increasedBaseDamageNextTurn("Leek Slap", hp(30))
             }
           }
           move "Leek Slap", {
@@ -1842,22 +1899,8 @@ f
               assert my.discard.filterByType(SUPPORTER) : "There are no supporters in your discard pile"
             }
             onAttack {
-              delayed {
-                def eff
-                register {
-                  eff = getter (GET_MAX_SUPPORTER_PER_TURN) {h->
-                    h.object = h.object + 1
-                  }
-                }
-                unregister {
-                  eff.unregister()
-                }
-                unregisterAfter 1
-              }
               def card = my.discard.select("Select a Supporter to copy its effect as this attack.",cardTypeFilter(SUPPORTER)).first()
-              bg.deterministicCurrentThreadPlayerType=self.owner
-              bg.em().run(new PlayTrainer(card))
-              bg.clearDeterministicCurrentThreadPlayerType()
+              bg.em().run(new ActivateSimpleTrainer(card))
             }
           }
           move "Telekinesis", {
@@ -1963,11 +2006,9 @@ f
                     }
                     unregisterAfter 3
                     after FALL_BACK, pcs, {unregister()}
-                    after EVOLVE, pcs, {unregister()}
-                    after DEVOLVE, pcs, {unregister()}
+                    after CHANGE_STAGE, pcs, {unregister()}
                     after FALL_BACK, self, {unregister()}
-                    after EVOLVE, self, {unregister()}
-                    after DEVOLVE, self, {unregister()}
+                    after CHANGE_STAGE, self, {unregister()}
                   }
                 }
               }
@@ -2035,11 +2076,10 @@ f
             text "Once during your turn , if Quagsire is your Active Pokémon and the Defending Pokémon has any Energy attached to it, you may remove 3 damage counters from Quagsire."
             actionA {
               checkLastTurn()
-              checkNoSPC()
               assert self.active : "$self is not active"
               assert opp.active.cards.energyCount(C) : "$opp.active has no Energy attached to it"
               powerUsed()
-              heal 30, self, Source.POKEPOWER
+              heal 30, self
             }
           }
           move "Muddy Water", {
@@ -2151,11 +2191,11 @@ f
           weakness R, PLUS20
           resistance F, MINUS20
           pokeBody "Cotton Balloon", {
-            text "If Skiploom has any Energy attached to it, any damage done to Skiploom by attacks from your opponent’s Evolved Pokémon is reduced by 20 ."
+            text "If Skiploom has any [G] Energy attached to it, any damage done to Skiploom by attacks from your opponent’s Evolved Pokémon is reduced by 20 ."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if (self.cards.energyCount(C) && it.to == self && it.from.owner != self.owner && it.from.evolution && it.notNoEffect && it.dmg.value) {
+                  if (self.cards.energyCount(G) && it.to == self && it.from.owner != self.owner && it.from.evolution && it.notNoEffect && it.dmg.value) {
                     bc "Cotton Balloon -20"
                     it.dmg=hp(0)
                   }
@@ -2191,7 +2231,7 @@ f
             energyCost C
             attackRequirement {
               assert opp.bench : "Your opponent has no Benched Pokémon"
-              assert opp.bench.find{it.topPokemonCard.moves} : "None of your opponent's Benched Pokémon have any moves"
+              assert opp.bench.find{it.baseMoves} : "None of your opponent's Benched Pokémon have any moves"
             }
             onAttack {
               flip { metronome opp.bench, delegate }
@@ -2220,8 +2260,10 @@ f
             onAttack {
               flip {
                 def tar = opp.all.findAll{it.cards.filterByType(SPECIAL_ENERGY)}.select()
-                tar.cards.select("Shuffle a Special Energy card attached to $tar into your opponent's deck").moveTo(opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                targeted (tar) {
+                  tar.cards.filterByType(SPECIAL_ENERGY).select("Shuffle a Special Energy card attached to $tar into your opponent's deck").moveTo(opp.deck)
+                  shuffleOppDeck()
+                }
               }
             }
           }
@@ -2412,7 +2454,7 @@ f
             onAttack {
               damage 40
               flip {
-                discardDefendingEnergy()
+                discardDefendingEnergyAfterDamage()
               }
             }
           }
@@ -2607,7 +2649,7 @@ f
             //Moon Stone: Clefairy can evolve the turn you play it
             //TODO This is a rule box.
             delayedA {
-              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+              before PREVENT_EVOLVE, self, null, EVOLVE, {
                 if (bg.currentTurn == self.owner){
                   prevent()
                 }
@@ -2670,7 +2712,7 @@ f
             energyCost C
             attackRequirement { assert my.deck : "Deck is empty"}
             onAttack {
-              my.deck.subList(my.deck.size() - 1, my.deck.size()).moveTo(my.hand)
+              my.deck.subList(my.deck.size() - 1, my.deck.size()).moveTo(hidden: true, my.hand)
             }
           }
           move "Mud Spatter", {
@@ -2690,7 +2732,7 @@ f
             //Reaper Cloth: Clefairy can evolve the turn you play it
             //TODO This is a rule box.
             delayedA {
-              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+              before PREVENT_EVOLVE, self, null, EVOLVE, {
                 if (bg.currentTurn == self.owner){
                   prevent()
                 }
@@ -2778,9 +2820,9 @@ f
           weakness R, PLUS10
           resistance F, MINUS20
           pokeBody "Cottonweed", {
-            text "If Hoppip has any Energy attached to it, the Retreat Cost for Hoppip is 0."
+            text "If Hoppip has any [G] Energy attached to it, the Retreat Cost for Hoppip is 0."
             getterA (GET_RETREAT_COST, self) {h->
-              if(self.cards.energyCount(C)) {
+              if(self.cards.energyCount(G)) {
                 h.object = 0
               }
             }
@@ -2790,7 +2832,7 @@ f
             energyCost G
             onAttack {
               damage 10
-              clearSpecialCondition self
+              afterDamage {clearSpecialCondition self}
             }
           }
 
@@ -2891,7 +2933,7 @@ f
           resistance F, MINUS20
           customAbility{
             delayedA {
-              before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+              before PREVENT_EVOLVE, self, null, EVOLVE, {
                 if(bg.currentTurn == self.owner){
                   prevent()
                 }
@@ -2916,16 +2958,14 @@ f
             onAttack {
               flip {
                 damage 20
-                discardDefendingEnergy()
+                discardDefendingEnergyAfterDamage()
               }
             }
           }
           move "Future Sight", {
             text "Look at the top 5 cards of either player’s deck and put them back on top of that player’s deck in any order."
             energyCost P
-            onAttack {
-              foresight(5, delegate)
-            }
+            foresight(5, delegate)
           }
 
         };
@@ -3310,7 +3350,7 @@ f
             energyCost C
             onAttack {
               damage 10
-              if(self.cards.filterByType(BASIC_ENERGY).find{card->defending.cards.filterByType(BASIC_ENERGY).find{it.basicType == card.basicType}}) {
+              if(self.cards.filterByType(BASIC_ENERGY).find{card->defending.cards.energyCount(card.basicType)}) {
                 damage 30
               }
             }
@@ -3379,7 +3419,7 @@ f
                 if(my.deck) {
                   def sel = deck.search ("Select a Pokémon that evolves from $self.", {it.cardTypes.is(EVOLUTION) && self.name == it.predecessor}).first()
                   if (sel) {
-                    evolve(self, sel, OTHER)
+                    evolve(self, sel)
                   }
                 }
               }
@@ -3402,7 +3442,10 @@ f
             text "Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon."
             energyCost C
             onAttack {
-              sw opp.active, opp.bench.select()
+              sw2 opp.bench.select("Choose the new Defending Pokémon")
+            }
+            attackRequirement {
+              assert opp.bench
             }
           }
           move "Sand Tomb", {
@@ -3564,15 +3607,7 @@ f
           move "Bring Down", {
             text "Choose 1 Pokémon (your or your opponent’s) with the fewest remaining HP (excluding Gardevoir) and that Pokémon is now Knocked Out."
             energyCost P, P
-            onAttack {
-              def list = all.findAll{it!=self}.sort(false) {p1,p2 -> p1.remainingHP.value <=> p2.remainingHP.value}
-              def tar = new PcsList()
-              int min = list.get(0).remainingHP.value
-              while(list.get(0).remainingHP.value==min){
-                tar.add(list.remove(0))
-              }
-              new Knockout(tar.select("Knock Out")).run(bg)
-            }
+            bringDown(delegate)
           }
         };
       case HONCHKROW_LV_X_132:
@@ -3590,10 +3625,10 @@ f
             text "60 damage. If the Defending Pokémon would be Knocked Out by damage from this attack, you may search your discard pile for any 1 card, show it to your opponent, and put it into your hand."
             energyCost D, D, C
             onAttack {
-              delayed {
+              delayed (priority: LAST) {
                 def pcs = defending
-                after KNOCKOUT, pcs, {
-                  if(my.discard) {
+                before KNOCKOUT, pcs, {
+                  if(ef.byDamageFromAttack && my.discard) {
                     my.discard.select(min:0,"Darkness Wing: Search your discard pile for a card").showToOpponent("Darkness Wing: Selected Cards").moveTo(my.hand)
                   }
                 }

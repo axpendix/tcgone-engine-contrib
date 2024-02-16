@@ -1,6 +1,11 @@
 package tcgwars.logic.impl.gen4
 
-import tcgwars.logic.impl.gen3.FireRedLeafGreen;
+import tcgwars.logic.card.pokemon.EvolutionPokemonCard
+import tcgwars.logic.effect.basic.Evolve
+import tcgwars.logic.effect.blocking.CantRetreat
+import tcgwars.logic.exception.EffectRequirementException
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
+import tcgwars.logic.impl.gen3.Sandstorm;
 import tcgwars.logic.impl.gen5.*;
 import tcgwars.logic.impl.gen7.*;
 import static tcgwars.logic.card.HP.*;
@@ -115,12 +120,12 @@ public enum Unleashed implements LogicCardInfo {
   STEELIX_87 ("Steelix", "87", Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _METAL_]),
   TYRANITAR_88 ("Tyranitar", "88", Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _DARKNESS_]),
   URSARING_89 ("Ursaring", "89", Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
-  ENTEI_AND_RAIKOU_LEGEND_90 ("Entei & Raikou LEGEND", "90", Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_, LEGEND]),
-  ENTEI_AND_RAIKOU_LEGEND_91 ("Entei & Raikou LEGEND", "91", Rarity.HOLORARE, [BASIC, POKEMON, _FIRE_, LEGEND]),
-  RAIKOU_AND_SUICUNE_LEGEND_92 ("Raikou & Suicune LEGEND", "92", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
-  RAIKOU_AND_SUICUNE_LEGEND_93 ("Raikou & Suicune LEGEND", "93", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
-  SUICUNE_AND_ENTEI_LEGEND_94 ("Suicune & Entei LEGEND", "94", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
-  SUICUNE_AND_ENTEI_LEGEND_95 ("Suicune & Entei LEGEND", "95", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
+  ENTEI_AND_RAIKOU_LEGEND_90 ("Entei & Raikou LEGEND", "90", Rarity.HOLORARE, [POKEMON, _FIRE_, LEGEND]),
+  ENTEI_AND_RAIKOU_LEGEND_91 ("Entei & Raikou LEGEND", "91", Rarity.HOLORARE, [POKEMON, _FIRE_, LEGEND]),
+  RAIKOU_AND_SUICUNE_LEGEND_92 ("Raikou & Suicune LEGEND", "92", Rarity.HOLORARE, [POKEMON, _WATER_, LEGEND]),
+  RAIKOU_AND_SUICUNE_LEGEND_93 ("Raikou & Suicune LEGEND", "93", Rarity.HOLORARE, [POKEMON, _WATER_, LEGEND]),
+  SUICUNE_AND_ENTEI_LEGEND_94 ("Suicune & Entei LEGEND", "94", Rarity.HOLORARE, [POKEMON, _WATER_, LEGEND]),
+  SUICUNE_AND_ENTEI_LEGEND_95 ("Suicune & Entei LEGEND", "95", Rarity.HOLORARE, [POKEMON, _WATER_, LEGEND]),
   ALPH_LITHOGRAPH_TWO ("Alph Lithograph", "TWO", Rarity.HOLORARE, [TRAINER, ITEM]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
@@ -182,7 +187,7 @@ public enum Unleashed implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -210,7 +215,7 @@ public enum Unleashed implements LogicCardInfo {
               int max = self.cards.energyCount(C)
               def tar = opp.all.findAll{ it.evolution }
               multiSelect (tar, 0, max).each {
-                devolve(it, it.topPokemonCard, opp.hand)
+                devolve(it, opp.hand)
               }
             }
           }
@@ -234,7 +239,7 @@ public enum Unleashed implements LogicCardInfo {
             energyCost R, R, C, C
             onAttack {
               damage 100
-              discardSelfEnergy R, R
+              discardSelfEnergyAfterDamage R, R
             }
           }
 
@@ -247,7 +252,6 @@ public enum Unleashed implements LogicCardInfo {
             energyCost C
             onAttack {
               shuffleDeck(hand)
-              hand.clear()
               draw 5
             }
           }
@@ -267,7 +271,7 @@ public enum Unleashed implements LogicCardInfo {
             text "If you have any [P] Energy attached to your Active Pokémon, the Retreat Cost for that Pokémon is 0."
             delayedA {
               getterA (GET_RETREAT_COST,BEFORE_LAST) {h->
-                if(h.effect.target.owner == self.owner && h.effect.target.cards.energyCount(P)) {
+                if(h.effect.target.active && h.effect.target.owner == self.owner && h.effect.target.cards.energyCount(P)) {
                   h.object = 0
                 }
               }
@@ -323,10 +327,11 @@ public enum Unleashed implements LogicCardInfo {
         return evolution (this, from:"Remoraid", hp:HP080, type:WATER, retreatCost:2) {
           weakness L
           move "Switch Cannon", {
-            text "Switch Octillery with 1 of your Benched Pokémon."
+            text "Choose 1 of your opponent's Pokémon. This attack does 30 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.) Switch Octillery with 1 of your Benched Pokémon."
             energyCost W
             onAttack {
-              switchYourActive()
+              damage 30, opp.all.select("Deal damage to?")
+              afterDamage {switchYourActive()}
             }
           }
           move "Ink Bomb", {
@@ -501,7 +506,7 @@ public enum Unleashed implements LogicCardInfo {
         };
       case CROBAT_14:
         return evolution (this, from:"Golbat", hp:HP110, type:PSYCHIC, retreatCost:0) {
-          weakness P
+          weakness L
           resistance F, MINUS20
           move "Supersonic", {
             text "30 damage. The Defending Pokémon is now Confused."
@@ -634,9 +639,12 @@ public enum Unleashed implements LogicCardInfo {
           move "Heat Acceleration", {
             text "Search your discard pile for up to 3 [R] Energy cards and attach them to 1 of your Pokémon."
             energyCost R
+            attackRequirement {
+              assert my.discard.filterByEnergyType(R)
+            }
             onAttack {
               def tar = my.all.select("Attach energy to?")
-              my.discard.filterByEnergyType(R).select(min:0,max:3).each{
+              my.discard.filterByEnergyType(R).select(min:1,max:3).each{
                 attachEnergy(tar, it)
               }
             }
@@ -752,7 +760,8 @@ public enum Unleashed implements LogicCardInfo {
             text "Once during your turn, when you put Torkoal from you hand onto your Bench, you may flip a coin. If heads, the Defending Pokémon is now Burned."
             onActivate {r->
               if(r==PLAY_FROM_HAND && confirm('Use Hot Snort?')){
-                flip {apply BURNED, defending}
+                powerUsed()
+                flip {apply BURNED, self.owner.opposite.pbg.active}
               }
             }
           }
@@ -782,7 +791,7 @@ public enum Unleashed implements LogicCardInfo {
             energyCost D, D, C, C
             onAttack {
               damage 80
-              discardDefendingEnergy()
+              afterDamage {discardDefendingEnergy()}
             }
           }
         };
@@ -884,13 +893,13 @@ public enum Unleashed implements LogicCardInfo {
             text "Search your deck for a card that evolves from Kakuna and put it onto Kakuna. (This counts as evolving Kakuna.) Shuffle your deck afterward."
             energyCost C
             onAttack {
-              deck.search ("Evolves from ${self.name}", {it.cardTypes.is(EVOLUTION) && self.name==it.predecessor}).each { evolve(self, it, OTHER) }
+              deck.search ("Evolves from ${self.name}", {it.cardTypes.is(EVOLUTION) && self.name==it.predecessor}).each { evolve(self, it) }
               shuffleDeck()
             }
           }
           move "Poison Sting", {
             text "The Defending Pokémon is now Poisoned."
-            energyCost C
+            energyCost G
             onAttack {
               apply POISONED
             }
@@ -903,8 +912,12 @@ public enum Unleashed implements LogicCardInfo {
           move "Energy Crane", {
             text "Search your discard pile for up to 2 [P] Energy cards and attach them to your Pokémon in any way you like."
             energyCost P
+            attackRequirement {
+              assert my.discard.filterByEnergyType(P)
+            }
             onAttack {
-              (1..2).each {attachEnergyFrom(may: true, type: P, my.discard, my.all)}
+              attachEnergyFrom(type: P, my.discard, my.all)
+              attachEnergyFrom(may: true, type: P, my.discard, my.all)
             }
           }
           move "Psypunch", {
@@ -1446,7 +1459,7 @@ public enum Unleashed implements LogicCardInfo {
             energyCost C
             onAttack {
               heal 40, self
-              cantRetreat(self)
+              new CantRetreat(self).setForTurns(3).run(bg())
             }
           }
           move "Flap", {
@@ -1534,15 +1547,22 @@ public enum Unleashed implements LogicCardInfo {
 
         };
       case TURTWIG_67:
-        return basic (this, hp:HP050, type:GRASS, retreatCost:2) {
+        return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness R
           resistance W, MINUS20
           move "Leech Seed", {
-            text "10 damage. , remove 1 damage counter from Turtwig."
+            text "10 damage. If this attack does any damage to the Defending Pokémon (after applying Weakness and Resistance), remove 1 damage counter from Turtwig."
             energyCost G
             onAttack {
               damage 10
-              heal 10, self
+              delayed (priority: LAST) {
+                before APPLY_ATTACK_DAMAGES, {
+                  if(bg.dm().find{it.to == defending && it.from == self && it.dmg.value}) {
+                    heal 10, self
+                  }
+                }
+                unregisterAfter 1
+              }
             }
           }
           move "Ram", {
@@ -1578,7 +1598,7 @@ public enum Unleashed implements LogicCardInfo {
             onAttack {
               def nam=self.name
               def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              if(tar) evolve(self, tar.first(), OTHER)
+              if(tar) evolve(self, tar.first())
               shuffleDeck()
             }
           }
@@ -1680,11 +1700,11 @@ public enum Unleashed implements LogicCardInfo {
           onPlay {
             flip 1, {
               if (my.discard.filterByType(POKEMON)) {
-                my.discard.filterByType(POKEMON).select("Select a Pokémon").showToOpponent("Selected Pokémon").moveTo(addToTop:true, my.deck)
+                my.discard.filterByType(POKEMON).select("Select a Pokémon").moveTo(addToTop:true, my.deck)
               }
             }, {
-              if (my.discard.filterByType(TRAINER)) {
-                my.discard.filterByType(TRAINER).select("Select a Trainer card").showToOpponent("Selected Trainer card").moveTo(addToTop:true, my.deck)
+              if (my.discard.filterByType(ITEM)) {
+                my.discard.filterByType(ITEM).select("Select a Trainer card").moveTo(addToTop:true, my.deck)
               }
             }
           }
@@ -1740,7 +1760,27 @@ public enum Unleashed implements LogicCardInfo {
       case POKEMON_CIRCULATOR_81:
         return copy (SunMoon.REPEL_130, this);
       case RARE_CANDY_82:
-        return copy(DarkExplorers.RARE_CANDY_100, this)
+        return itemCard (this) {
+          text "Choose 1 of your Basic Pokémon in play. If you have a Stage 2 card in your hand that evolves from that Pokémon, put that card on the Basic Pokémon. (This counts as evolving that Pokémon.) You can't use this card during your first turn or on a Basic Pokémon that was put into play this turn.\nYou may play as many Item cards as you like during your turn (before your attack)."
+          // errata: The wording of Rare Candy is now as follows, “Choose 1 of your Basic Pokémon in play. If you have a Stage 2 card in your hand that evolves from that Pokémon, put that card on the Basic Pokémon. (This counts as evolving that Pokémon.) You can’t use this card during your first turn or on a Basic Pokémon that was put into play this turn.” So now it can’t be used on your first turn, and it can’t be used on a Pokémon played this turn.
+          // Source: TPCi Announcement (2011-04-11), PUI Rules Team (2011-05-05)
+          // errata: Rare Candy can be used on a Basic Pokémon that was just put into play that turn, including a player’s first turn only in the HGSS block format, every other format should follow the errata.
+          onPlay {
+            if (bg.gameFormat == GameFormat.HS_SERIES) {
+              rareCandyGen3Play()
+            } else {
+              rareCandyGen5Play()
+            }
+          }
+          playRequirement{
+            if (bg.gameFormat == GameFormat.HS_SERIES) {
+              rareCandyGen3Requirement()
+            } else {
+              rareCandyGen5Requirement()
+            }
+          }
+        };
+        return copy (DarkExplorers.RARE_CANDY_100, this)
       case SUPER_SCOOP_UP_83:
         return copy(FireRedLeafGreen.SUPER_SCOOP_UP_99, this);
       case CROBAT_84:
@@ -1943,14 +1983,16 @@ public enum Unleashed implements LogicCardInfo {
             energyCost R, C
             onAttack {
               damage 90
-              discardSelfEnergy(R)
+              discardSelfEnergyAfterDamage(R)
             }
           }
           move "Thunder Fall", {
             text "Discard all Energy attached to Entei & Raikou LEGEND. This attack does 80 damage to each Pokémon that has any Poké-Powers (both yours and your opponent's). This attack's damage isn't affected by Weakness or Resistance."
             energyCost L, C
             onAttack {
-              discardAllSelfEnergy(null)
+              afterDamage {
+                discardAllSelfEnergy(null)
+              }
               all.each{
                 if (it.abilities.keySet().find{it instanceof PokePower})
                   noWrDamage 80, it

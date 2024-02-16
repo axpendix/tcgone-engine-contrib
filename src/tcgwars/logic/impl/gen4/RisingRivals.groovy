@@ -2,6 +2,7 @@ package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.DamageManager
 import tcgwars.logic.effect.Source
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer
 import tcgwars.logic.impl.gen3.RubySapphire
 import tcgwars.logic.impl.gen4.MysteriousTreasures
 import tcgwars.logic.impl.gen7.CelestialStorm
@@ -202,7 +203,7 @@ public enum RisingRivals implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -369,9 +370,11 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost P, C
             onAttack {
               damage 30
-              if(defending.specialConditions) {
+              if (defending.specialConditions) {
                 damage 20
-                clearSpecialCondition defending
+                afterDamage {
+                  clearSpecialCondition defending
+                }
               }
             }
           }
@@ -384,11 +387,11 @@ public enum RisingRivals implements LogicCardInfo {
           pokePower "Final Wish", {
             text "Once during your opponent’s turn, if Jirachi would be Knocked Out by damage from an attack, you may search your deck for any 1 card and put it into your hand. Shuffle your deck afterward."
             delayedA {
-              before (KNOCKOUT,self) {
-                if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.pbg.deck && confirm("Use Final Wish?", self.owner)) {
+              before (KNOCKOUT, self) {
+                if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && self.owner.pbg.deck && confirm("Use Final Wish?", self.owner)) {
                   powerUsed()
-                  self.owner.pbg.deck.select("Search your deck for a card",{true},self.owner)
-                  shuffleDeck()
+                  self.owner.pbg.deck.select("Search your deck for a card",{true}, self.owner).moveTo(hidden:true, self.owner.pbg.hand)
+                  shuffleOppDeck()
                 }
               }
             }
@@ -400,22 +403,8 @@ public enum RisingRivals implements LogicCardInfo {
               assert my.playedSupporter : "You don't have a Supporter in play"
             }
             onAttack {
-              delayed {
-                def eff
-                register {
-                  eff = getter (GET_MAX_SUPPORTER_PER_TURN) {h->
-                    h.object = h.object + 1
-                  }
-                }
-                unregister {
-                  eff.unregister()
-                }
-                unregisterAfter 1
-              }
               def card = my.playedSupporter.select("Select a Supporter to copy its effect as this attack.").first()
-              bg.deterministicCurrentThreadPlayerType=self.owner
-              bg.em().run(new PlayTrainer(card))
-              bg.clearDeterministicCurrentThreadPlayerType()
+              bg.em().run(new ActivateSimpleTrainer(card))
             }
           }
           move "Swift", {
@@ -599,7 +588,7 @@ public enum RisingRivals implements LogicCardInfo {
               afterDamage {
                 delayed {
                   def eff
-                  register{
+                  register {
                     eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
                       if (h.effect.target == defending && h.effect.target.owner == self.owner.opposite && (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody)) {
                         h.object=true
@@ -612,6 +601,9 @@ public enum RisingRivals implements LogicCardInfo {
                     new CheckAbilities().run(bg)
                   }
                   unregisterAfter 2
+                  after FALL_BACK, defending, { unregister() }
+                  after LEVEL_UP, defending, { unregister() }
+                  after EVOLVE, defending, { unregister() }
                 }
               }
             }
@@ -622,14 +614,16 @@ public enum RisingRivals implements LogicCardInfo {
         return evolution (this, from:"Lairon", hp:HP130, type:METAL, retreatCost:3) {
           weakness R, PLUS30
           resistance P, MINUS20
-          def lastDamage = null
-          def turnCount = null
+          def lastDamage = hp(0)
+          def turnCount = 0
           customAbility {
             delayed (priority: LAST) {
               before APPLY_ATTACK_DAMAGES, {
-                if (bg().currentTurn==self.owner.opposite) {
+                if (bg().currentTurn == self.owner.opposite) {
                   turnCount = bg.turnCount
-                  lastDamage = bg().dm().find({it.to==self && it.dmg.value>=0})?.dmg
+                  lastDamage = bg().dm().find({
+                    it.to == self && it.dmg.value >= 0
+                  })?.dmg
                 }
               }
             }
@@ -638,7 +632,7 @@ public enum RisingRivals implements LogicCardInfo {
             text "If Aggron was damaged by an attack during your opponent’s last turn, this attack does the same amount of damage done to Aggron to the Defending Pokémon."
             energyCost C, C
             attackRequirement {
-              assert bg.turnCount == turnCount + 1 : "$self was not damaged by an attack last turn"
+              assert bg().turnCount == turnCount + 1 && lastDamage > hp(0): "$self was not damaged by an attack last turn"
             }
             onAttack {
               damage lastDamage.value
@@ -711,7 +705,7 @@ public enum RisingRivals implements LogicCardInfo {
               my.hand.moveTo(hidden:true,my.deck)
               shuffleDeck()
               opp.hand.moveTo(hidden:true,opp.deck)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
               draw choose((1..4),"Draw how many cards?")
               draw oppChoose((1..4),"Draw how many cards?"), TargetPlayer.OPPONENT
             }
@@ -782,7 +776,7 @@ public enum RisingRivals implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               powerUsed()
-              devolve(self,self.topPokemonCard,my.hand)
+              devolve(self, my.hand)
             }
           }
           move "Tail Slap", {
@@ -941,7 +935,7 @@ public enum RisingRivals implements LogicCardInfo {
         return basic (this, hp:HP090, type:GRASS, retreatCost:2) {
           weakness R
           move "Focus Energy", {
-            text "During your next turn, Heracross E4's Megahorn attack's base damage is 100. "
+            text "During your next turn, Heracross E4's Megahorn attack's base damage is 100."
             energyCost ()
             attackRequirement {}
             onAttack {
@@ -1018,7 +1012,7 @@ public enum RisingRivals implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               powerUsed()
-              devolve(self,self.topPokemonCard,my.hand)
+              devolve(self, my.hand)
             }
           }
           move "Quick Attack", {
@@ -1170,12 +1164,13 @@ public enum RisingRivals implements LogicCardInfo {
           pokeBody "Maternal Comfort", {
             text "At any times between turns, remove 1 damage counter from each of your Pokémon. You can’t use more than 1 Maternal Comfort Poké-Body between turns."
             delayedA {
-              before BEGIN_TURN, {
-                if(bg.em().retrieveObject("Maternal Comfort")!=bg.turnCount && my.all.find{it.numberOfDamageCounters}) {
+              after BETWEEN_TURNS, {
+                if (bg.em().retrieveObject("Maternal_Comfort") != bg.turnCount && self.owner.pbg.all.find {it.numberOfDamageCounters }) {
                   bc "$thisAbility Activates"
-                  my.all.each {
+                  self.owner.pbg.all.each {
                     heal 10, it, Source.POKEBODY
                   }
+                  bg.em().storeObject("Maternal_Comfort", bg.turnCount)
                 }
               }
             }
@@ -1287,7 +1282,7 @@ public enum RisingRivals implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               powerUsed()
-              devolve(self,self.topPokemonCard,my.hand)
+              devolve(self, my.hand)
             }
           }
           move "Muddy Water", {
@@ -1440,12 +1435,13 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              if(my.bench && self.cards.filterByType(ENERGY)) {
-                moveEnergy(self,my.bench)
+              afterDamage {
+                if (my.bench && self.cards.filterByType(ENERGY)) {
+                  moveEnergy(self, my.bench)
+                }
               }
             }
           }
-
         };
       case GENGAR_GL_40:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:1) {
@@ -1617,11 +1613,11 @@ public enum RisingRivals implements LogicCardInfo {
             onAttack {
               damage 40
               afterDamage {
-                if(my.hand.filterByType(BASIC_ENERGY)) {
-                  def card = my.hand.select(min:0,"You may attack a basic Energy card from your hand to 1 of your Pokémon",cardTypeFilter(BASIC_ENERGY)).first()
-                  if(card) {
+                if (my.hand.filterByType(BASIC_ENERGY)) {
+                  def card = my.hand.select("Attach a basic Energy card from your hand to 1 of your Pokémon.", cardTypeFilter(BASIC_ENERGY)).first()
+                  if (card) {
                     def tar = my.all.select("Attach $card to which Pokémon?")
-                    attachEnergy(tar,card,PLAY_FROM_HAND)
+                    attachEnergy(tar, card, PLAY_FROM_HAND)
                   }
                 }
               }
@@ -1661,7 +1657,7 @@ public enum RisingRivals implements LogicCardInfo {
             onAttack {
               targeted(defending) {
                 defending.cards.moveTo(opp.deck)
-                shuffleDeck null, TargetPlayer.OPPONENT
+                shuffleOppDeck()
                 removePCS(defending)
               }
             }
@@ -1745,6 +1741,7 @@ public enum RisingRivals implements LogicCardInfo {
               damage 20
               afterDamage {
                 increasedDamageDoneToDefending(self, defending, 40, thisMove.name)
+                increasedDamageDoneToDefending(defending, defending, 40, thisMove.name)
               }
             }
           }
@@ -1873,7 +1870,7 @@ public enum RisingRivals implements LogicCardInfo {
               damage 20 * opp.discard.filterByType(ENERGY).size()
               afterDamage {
                 opp.discard.filterByType(ENERGY).moveTo(opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
               }
             }
           }
@@ -1948,29 +1945,18 @@ public enum RisingRivals implements LogicCardInfo {
                       }
                     }
                     before LEVEL_UP, pcs, {
-                      if((ef as LevelUp).levelUpCard.player.pbg.hand.contains(ef.levelUpCard)) {
-                        warnAndPrevent()
-                      }
-                    }
-                    before LEVEL_UP_STANDARD, pcs, {
-                      if((ef as LevelUpStandard).levelUpCard.player.pbg.hand.contains(ef.levelUpCard)) {
+                      if(ef.activationReason == PLAY_FROM_HAND) {
                         warnAndPrevent()
                       }
                     }
                     before EVOLVE, pcs, {
-                      if ((ef as Evolve).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
-                        warnAndPrevent()
-                      }
-                    }
-                    before EVOLVE_STANDARD, pcs, {
-                      if ((ef as EvolveStandard).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
+                      if(ef.activationReason == PLAY_FROM_HAND) {
                         warnAndPrevent()
                       }
                     }
                     unregisterAfter 2
                     after FALL_BACK, pcs, {unregister()}
-                    after EVOLVE, pcs, {unregister()}
-                    after DEVOLVE, pcs, {unregister()}
+                    after CHANGE_STAGE, pcs, {unregister()}
                   }
                 }
               }
@@ -2271,7 +2257,7 @@ public enum RisingRivals implements LogicCardInfo {
               flip {
                 def name = self.name
                 def tar = my.deck.search("Evolves from $name", { it.cardTypes.is(EVOLUTION) && name == it.predecessor })
-                if (tar) evolve(self, tar.first(), OTHER)
+                if (tar) evolve(self, tar.first())
                 shuffleDeck()
               }
             }
@@ -2344,14 +2330,10 @@ public enum RisingRivals implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Snorlax from your hand onto Munchlax (this counts as evolving Munchlax) and remove all damage counters from Munchlax."
             actionA {
-              assert my.hand.findAll{it.name.contains("Snorlax")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Snorlax", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Snorlax") }.select()
-              if (tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution("Snorlax", self)
             }
           }
           move "Rest", {
@@ -2374,14 +2356,10 @@ public enum RisingRivals implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Snorlax from your hand onto Munchlax (this counts as evolving Munchlax) and remove all damage counters from Munchlax."
             actionA {
-              assert my.hand.findAll{it.name.contains("Snorlax")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Snorlax", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Snorlax") }.select()
-              if (tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution("Snorlax", self)
             }
           }
           move "Errand-Running", {
@@ -2593,8 +2571,7 @@ public enum RisingRivals implements LogicCardInfo {
                   }
                 }
                 unregisterAfter 2
-                after EVOLVE,self, {unregister()}
-                after DEVOLVE,self, {unregister()}
+                after CHANGE_STAGE,self, {unregister()}
                 after FALL_BACK,self, {unregister()}
               }
             }
@@ -2838,8 +2815,9 @@ public enum RisingRivals implements LogicCardInfo {
       case WEEZING_87:
         return evolution (this, from:"Koffing", hp:HP080, type:PSYCHIC, retreatCost:2) {
           weakness P, PLUS20
-          pokeBody "Camoflage Gas", {
-            getterA GET_GIVEN_PRIZES, self, {holder ->
+          pokeBody "Camouflage Gas", {
+            text "If Weezing is Confused and is Knocked Out, your opponent can’t take a Prize card."
+            getterA GET_GIVEN_PRIZES, LAST, self, {holder ->
               if(self.isSPC(CONFUSED)) {
                 bc "$thisAbility prevents taking any prize card from ${self}"
                 holder.object = 0
@@ -2849,12 +2827,12 @@ public enum RisingRivals implements LogicCardInfo {
           move "Damage Breakdown", {
             text "Count the number of damage counters on Weezing. Put that many damage counters on the Defending Pokémon and Weezing is now Confused."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert self.numberOfDamageCounters
+            }
             onAttack {
-              directDamage 10 * self.numberOfDamageCounters, defending
-              afterDamage {
-                apply CONFUSED, self
-              }
+              require(directDamage(10 * self.numberOfDamageCounters, defending))
+              apply CONFUSED, self
             }
           }
           move "Smog", {
@@ -2872,11 +2850,14 @@ public enum RisingRivals implements LogicCardInfo {
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your discard pile for up to 2 in any combination of Pokémon SP and basic Energy cards, show them to your opponent, and put them into your hand."
           onPlay {
-            my.discard.select(max:2, "Search your deck for up to 2 in any combination of Pokémon SP and basic Energy cards", { it.cardTypes.is(POKEMON_SP) || it.cardTypes.is(BASIC_ENERGY) }).showToOpponent("Aaron's Collection: Selected cards").moveTo(my.hand)
-            shuffleDeck()
+            my.discard.select(max:2, "Search your deck for up to 2 in any combination of Pokémon SP and basic Energy cards", {
+              it.cardTypes.is(POKEMON_SP) || it.cardTypes.is(BASIC_ENERGY)
+            }).showToOpponent("Aaron's Collection: Selected cards").moveTo(my.hand)
           }
           playRequirement{
-            assert my.discard.find{it.cardTypes.is(POKEMON_SP)||it.cardTypes.is(BASIC_ENERGY)} : "You have no Pokémon SP or basic Energy cards in your discard pile"
+            assert my.discard.find {
+              it.cardTypes.is(POKEMON_SP) || it.cardTypes.is(BASIC_ENERGY)
+            } : "You have no Pokémon SP or basic Energy cards in your discard pile"
           }
         };
       case BEBE_S_SEARCH_89:
@@ -2924,7 +2905,7 @@ public enum RisingRivals implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Pokemon Contest Hall") {
+            actions=action(thisCard, "Stadium: Pokemon Contest Hall") {
               assert my.deck
               assert my.bench.notFull
               assert lastTurn != bg().turnCount : "Already used"
@@ -3052,12 +3033,12 @@ public enum RisingRivals implements LogicCardInfo {
 
               powerUsed()
               def src = my.all.findAll {it.numberOfDamageCounters > 0 && it.pokemonSP }.select("Source for damage counter")
-              def tar = my.all
-              tar.remove(src)
-              tar = tar.select("Target for damage counter")
+              def validTargets = my.all.findAll { it.pokemonSP }
+              validTargets.remove(src)
+              def target = validTargets.select("Target for damage counter")
               src.damage -= hp(10)
-              directDamage 10, tar, Source.POKEPOWER
-              bc "Swapped a damage counter from $src to $tar"
+              directDamage 10, target, Source.POKEPOWER
+              bc "Swapped a damage counter from $src to $target"
               checkFaint()
             }
           }
@@ -3077,16 +3058,19 @@ public enum RisingRivals implements LogicCardInfo {
             text "Whenever any of your [W] Pokémon (excluding any Floatzel) is Knocked Out by damage from your opponent’s attack, you may put that Pokémon and all cards that were attached to it from your discard pile into your hand."
             delayedA (priority: BEFORE_LAST) {
               before KNOCKOUT, {
-                def pcs=ef.pokemonToBeKnockedOut
-                if((ef as Knockout).byDamageFromAttack && pcs != self && pcs.owner == self.owner && pcs.types.contains(W)) {
+                def pcs = ef.pokemonToBeKnockedOut
+                if ((ef as Knockout).byDamageFromAttack && pcs != self && pcs.owner == self.owner && pcs.types.contains(W) && !pcs.topPokemonCard.name.contains("Floatzel")) {
                   def tpc = pcs.topPokemonCard
-                  CardList dscrd = []
-                  dscrd.addAll(self.owner.pbg.discard)
-                  delayed(inline: true,priority: BEFORE_LAST){
+                  CardList lostZone = []
+                  CardList discarded = []
+                  discarded.addAll(self.owner.pbg.discard)
+                  lostZone.addAll(self.owner.pbg.lostZone)
+
+                  delayed(inline: true, priority: BEFORE_LAST) {
                     after KNOCKOUT, pcs, {
-                      if(self.owner.pbg.discard.contains(tpc) && confirm("Use Water Rescue?",self.owner)) {
+                      if (self.owner.pbg.discard.contains(tpc) && !self.owner.pbg.lostZone.contains(tpc) && confirm("Use Water Rescue?", self.owner)) {
                         bc "$thisAbility activates"
-                        self.owner.pbg.discard.getExcludedList(dscrd).moveTo(self.owner.pbg.hand)//This feels naive, but I haven't been able to break it yet
+                        self.owner.pbg.discard.getExcludedList(discarded).moveTo(self.owner.pbg.hand)
                       }
                       owner.delegate.unregister()
                     }
@@ -3171,14 +3155,26 @@ public enum RisingRivals implements LogicCardInfo {
               checkLastTurn()//This should never fail
               bg.em().storeObject("Sand_Reset_"+thisCard.player,1)
               powerUsed()
-              all.each{
+              def selfShuffle = self.owner.pbg.all.find {
+                it.cards.getExcludedList(it.cards.filterByType(POKEMON))
+              }
+              def oppShuffle = opp().all.find {
+                it.cards.getExcludedList(it.cards.filterByType(POKEMON))
+              }
+              all.each {
                 it.cards.getExcludedList(it.cards.filterByType(POKEMON)).moveTo(it.owner.pbg.deck)
               }
-              if(bg.stadiumInfoStruct) {
+              if (bg.stadiumInfoStruct) {
                 new CardList(bg.stadiumInfoStruct.stadiumCard).moveTo(bg.stadiumInfoStruct.stadiumCard.player.pbg.deck)
               }
-              shuffleDeck()
-              shuffleDeck null, TargetPlayer.OPPONENT
+
+              if (selfShuffle) {
+                shuffleDeck()
+              }
+
+              if (oppShuffle) {
+                shuffleOppDeck()
+              }
             }
           }
           move "Double Shoot", {
@@ -3187,7 +3183,7 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               discardSelfEnergyAfterDamage F, F
-              multiSelect(opp.bench,2,"Choose 2 of your opponent's Pokémon").each {
+              multiSelect(opp.bench,2,"Choose 2 of your opponent's Benched Pokémon").each {
                 damage 40, it
               }
             }
@@ -3287,6 +3283,7 @@ public enum RisingRivals implements LogicCardInfo {
             actionA {
               checkLastTurn()
               checkNoSPC()
+              assert self.active : "$self is not your Active Pokémon"
               assert my.deck : "Your deck is empty"
               assert my.hand.size() < 6 : "You already have 6 cards in your hand"
               powerUsed()
@@ -3300,7 +3297,7 @@ public enum RisingRivals implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 80
-              def energyList = my.hand.select(min:0,max:my.hand.filterByType(ENERGY).size(),"You many discard as many Energy cards as you like from you hand to remove that many damage counters from $self")
+              def energyList = my.hand.filterByType(ENERGY).select(min:0, max:my.hand.filterByType(ENERGY).size(),"You may discard as many Energy cards as you like from your hand. If you do, remove that many damage counters from Snorlax.")
               afterDamage {
                 heal 10 * energyList.size(), self
                 energyList.discard()
@@ -3633,8 +3630,7 @@ public enum RisingRivals implements LogicCardInfo {
               new CardList(tpc).moveTo(my.deck)
               new CheckAbilities().run(bg)
               clearSpecialCondition(pcs)
-              //Todo Find a way to remove "effects". This effect seems similar to Channeler/Pokémon Ranger
-              checkFaint()
+              //TODO Find a way to remove "effects". This effect seems similar to Channeler/Pokémon Ranger
             }
             shuffleDeck()
             delayed {

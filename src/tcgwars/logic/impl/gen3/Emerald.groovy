@@ -84,7 +84,7 @@ public enum Emerald implements LogicCardInfo {
   MUDKIP_56 ("Mudkip", "56", Rarity.COMMON, [BASIC, POKEMON, _WATER_]),
   NUMEL_57 ("Numel", "57", Rarity.COMMON, [BASIC, POKEMON, _FIRE_]),
   NUMEL_58 ("Numel", "58", Rarity.UNCOMMON, [BASIC, POKEMON, _FIRE_]),
-  PICHU_59 ("Pichu", "59", Rarity.COMMON, [BASIC, BABY, POKEMON, _LIGHTNING_]),
+  PICHU_59 ("Pichu", "59", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
   PIKACHU_60 ("Pikachu", "60", Rarity.COMMON, [BASIC, POKEMON, _LIGHTNING_]),
   RALTS_61 ("Ralts", "61", Rarity.COMMON, [BASIC, POKEMON, _PSYCHIC_]),
   RHYHORN_62 ("Rhyhorn", "62", Rarity.COMMON, [BASIC, POKEMON, _FIGHTING_]),
@@ -180,7 +180,7 @@ public enum Emerald implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -225,27 +225,9 @@ public enum Emerald implements LogicCardInfo {
           weakness PSYCHIC
           pokePower "Form Change", {
             text "Once during your turn (before your attack), you may search your deck for another Deoxys and switch it with Deoxys. (Any cards attached to Deoxys, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
-            actionA {
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
-              checkLastTurn()
-              assert my.deck : "Deck is empty"
-              bg.em().storeObject("Form_Change",bg.turnCount)
-              powerUsed()
-
-              def oldDeoxys = self.topPokemonCard
-              def newDeoxys = my.deck.search(min:0, max: 1, {
-                it.name == "Deoxys"
-              })
-
-              if (newDeoxys) {
-                newDeoxys.moveTo(self.cards)
-                my.deck.add(oldDeoxys)
-                self.cards.remove(oldDeoxys)
-                checkFaint()
-              }
-
-              shuffleDeck()
-            }
+            formChange(delegate, "Form Change", {
+              it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme")) //Deoxys cannot Form Change into Deoxys ex.
+            })
           }
           move "Swift", {
             text "30 damage. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Power, Poké-Bodies, or any other effects on the Defending Pokémon."
@@ -422,8 +404,7 @@ public enum Emerald implements LogicCardInfo {
                   }
                 }
                 after FALL_BACK, self, {unregister()}
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
                 unregisterAfter 3
               }
             }
@@ -445,7 +426,7 @@ public enum Emerald implements LogicCardInfo {
             text "As long as Sceptile is in play, each of your Active Pokémon that has [G] Energy attached to it can’t be affected by any Special Conditions."
             delayedA {
               before APPLY_SPECIAL_CONDITION, {
-                def pcs = ef.getResolvedTarget(bg, e)
+                def pcs = ef.getTargetPokemon()
                 if (pcs.active && pcs.owner==self.owner && pcs.cards.energyCount(G)) {
                   bc "Green Essence prevents special conditions"
                   prevent()
@@ -1762,7 +1743,7 @@ public enum Emerald implements LogicCardInfo {
               before BEGIN_TURN,{
                 if(self.numberOfDamageCounters >= 2) {
                   bc "Oran Berry activates"
-                  heal 20, self
+                  heal 20, self, Source.TRAINER_CARD
                   discard thisCard
                 }
               }
@@ -1777,12 +1758,13 @@ public enum Emerald implements LogicCardInfo {
       case PROFESSOR_BIRCH_82:
         return supporter (this) {
           text "Draw cards from your deck until you have 6 cards in your hand.\nYou may play only 1 Supporter card during your turn (before your attack)."
-          onPlay {
-            draw (7-my.hand.size())
-          }
           playRequirement {
-            assert my.deck
-            assert my.hand.size()<7 : "You have already more than 6 cards in your hand."
+            assert my.deck : "You have no cards in your deck"
+            CardList myRealHand = my.hand.getExcludedList(thisCard)
+            assert myRealHand.size() < 6 : "You already have 6 or more cards in your hand."
+          }
+          onPlay {
+            draw ( 6 - my.hand.getExcludedList(thisCard).size() )
           }
         };
       case RARE_CANDY_83:
@@ -1804,10 +1786,10 @@ public enum Emerald implements LogicCardInfo {
           onPlay {
             def activeName = my.active.name
             def sel = deck.search ("Select a Pokémon that evolves from ${activeName}.", {
-              it.cardTypes.is(EVOLUTION) && it.predecessor == activeName
+              it.cardTypes.is(EVOLUTION) && it.predecessors.contains(activeName)
             })
             if (sel) {
-              evolve(my.active, sel.first(), OTHER)
+              evolve(my.active, sel.first())
             }
 
             shuffleDeck()
@@ -1825,7 +1807,7 @@ public enum Emerald implements LogicCardInfo {
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
                 if (self.types.contains(D) || self.topPokemonCard.name.contains("Dark ")) {
-                  targeted self, Source.SRC_SPENERGY, {
+                  targeted self, {
                     bg.dm().each() {
                       if (it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value) {
                         bc "Darkness Energy +10"
@@ -1849,16 +1831,14 @@ public enum Emerald implements LogicCardInfo {
           def eff
           def check = {
             if (!it.evolution || it.EX) {
-              targeted null, Source.SRC_SPENERGY, {
-                discard thisCard
-              }
+              discard thisCard
             }
           }
           typeImagesOverride = [RAINBOW, RAINBOW]
           onPlay { reason ->
-            eff = delayed {
+            eff = delayed (priority: BEFORE_LAST) {
               after PROCESS_ATTACK_EFFECTS, {
-                targeted self, Source.SRC_SPENERGY, {
+                targeted self, {
                   if (ef.attacker == self) bg.dm().each {
                     if (it.to.owner != self.owner && it.dmg.value) {
                       bc "Double Rainbow Energy -10"
@@ -1867,8 +1847,7 @@ public enum Emerald implements LogicCardInfo {
                   }
                 }
               }
-              after EVOLVE, self, { check(self) }
-              after DEVOLVE, self, { check(self) }
+              after CHANGE_STAGE, self, { check(self) }
               after ATTACH_ENERGY, self, { check(self) }
               after CHECK_ABILITIES, { check(self) }
             }
@@ -1999,27 +1978,9 @@ public enum Emerald implements LogicCardInfo {
           weakness PSYCHIC
           pokePower "Form Change", {
             text "Once during your turn (before your attack), you may search your deck for another Deoxys ex and switch it with Deoxys ex. (Any cards attached to Deoxys ex, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys ex on top of your deck. Shuffle your deck afterward. You can’t use more than 1 Form Change Poké-Power each turn."
-            actionA {
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
-              checkLastTurn()
-              assert my.deck : "Deck is empty"
-              bg.em().storeObject("Form_Change",bg.turnCount)
-              powerUsed()
-
-              def oldDeoxys = self.topPokemonCard
-              def newDeoxys = my.deck.search(min:0, max: 1, {
-                it.name == "Deoxys ex"
-              })
-
-              if (newDeoxys) {
-                newDeoxys.moveTo(self.cards)
-                my.deck.add(oldDeoxys)
-                self.cards.remove(oldDeoxys)
-                checkFaint()
-              }
-
-              shuffleDeck()
-            }
+            formChange(delegate, "Form Change", {
+              it.name == "Deoxys ex"
+            })
           }
           move "Fastwave", {
             text "50 damage. This attack’s damage isn’t affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."

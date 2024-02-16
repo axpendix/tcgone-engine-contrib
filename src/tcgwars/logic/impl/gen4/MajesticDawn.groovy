@@ -194,7 +194,7 @@ public enum MajesticDawn implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -271,8 +271,7 @@ public enum MajesticDawn implements LogicCardInfo {
                   }
                   unregisterAfter 2
                   after FALL_BACK, pcs, {unregister()}
-                  after EVOLVE, pcs, {unregister()}
-                  after DEVOLVE, pcs, {unregister()}
+                  after CHANGE_STAGE, pcs, {unregister()}
                 }
               }
             }
@@ -344,7 +343,7 @@ public enum MajesticDawn implements LogicCardInfo {
             text "60 damage. This attack’s damage isn’t affected by Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost W, C, C
             onAttack {
-              swiftDamage(60, defending)
+              noResistanceOrAnyEffectDamage(60, defending)
             }
           }
 
@@ -417,10 +416,12 @@ public enum MajesticDawn implements LogicCardInfo {
           move "Chase Up", {
             text "Flip a coin. If heads, search your deck for any 1 card and put it into your hand. Shuffle your deck afterward."
             energyCost C
-            onAttack {
+            attackRequirement {
               assert my.deck : "Your deck is empty."
+            }
+            onAttack {
               flip {
-                my.deck.search(max:1,"Select 1 card",{true}).moveTo(my.hand)
+                my.deck.search(min:1, "Search your deck for 1 card",{true}).moveTo(hidden:true, my.hand)
                 shuffleDeck()
               }
             }
@@ -432,7 +433,7 @@ public enum MajesticDawn implements LogicCardInfo {
               damage 30
               if(my.hand.filterByBasicEnergyType(W) && my.bench) {
                 my.hand.select(min:0, max:2, "Choose up to 2 basic [W] Energy cards to attach to your Benched Pokémon",basicEnergyFilter(W)).each {
-                  attachEnergy(my.bench.select("Attach $it to"), it)
+                  attachEnergy(my.bench.select("Attach $it to"), it, PLAY_FROM_HAND)
                 }
               }
             }
@@ -557,14 +558,7 @@ public enum MajesticDawn implements LogicCardInfo {
               assert my.deck : "Your deck is emtpy"
             }
             onAttack {
-              def names = my.all.collect{it.name}
-              def sel = deck.search ("Select a Pokémon that evolves from 1 of your Pokémon.", {it.cardTypes.is(EVOLUTION) && names.contains(it.predecessor)}).first()
-              if(sel) {
-                def pcs = my.all.findAll{it.name == sel.predecessor}.select("Put $sel onto...")
-                evolve(pcs, sel, OTHER)
-                directDamage 10, self
-              }
-              shuffleDeck()
+              searchYourDeckThenEvolveOneOfYourPokemon()
             }
           }
           move "Water Pulse", {
@@ -641,28 +635,10 @@ public enum MajesticDawn implements LogicCardInfo {
           pokeBody "Primal Claw", {
             text "After your opponent’s Pokémon uses a Poké-Power, put 2 damage counters on that Pokémon."
             delayedA {
-              def pcs = null
-              def pcsTPC = null
-              before USE_ABILITY, {
-                if ((ef.getResolvedTarget(bg, e) as PokemonCardSet).owner == self.owner.opposite && ef.ability instanceof PokePower){
-                  pcs = ef.getResolvedTarget(bg, e)
-                  pcsTPC = pcs.topPokemonCard
-                }
-              }
-              after POKEPOWER, {
-                if (pcs && pcs.cards && pcsTPC == pcs.topPokemonCard) {
-                  bc "$thisAbility activates"
-                  directDamage(20, pcs, Source.POKEBODY)
-                  pcs = null
-                  pcsTPC = null
-                }
-              }
-              after ACTIVATE_ABILITY, {
-                if (pcs && pcs.cards && pcsTPC == pcs.topPokemonCard) {
-                  bc "$thisAbility activates"
-                  directDamage(20, pcs, Source.POKEBODY)
-                  pcs = null
-                  pcsTPC = null
+              after USE_ABILITY_OUTER, {
+                if (ef.targetPokemon.owner != self.owner && ef.ability instanceof PokePower) {
+                  bc "Primal Claw activates"
+                  directDamage(20, ef.targetPokemon)
                 }
               }
             }
@@ -762,33 +738,19 @@ public enum MajesticDawn implements LogicCardInfo {
           pokeBody "Sunlight Veil", {
             text "Each of your Pokémon that evolves from Eevee gets +20 HP. You can’t use more than 1 Sunlight Veil Poké-Body each turn."
 
-            def eff, source, target
+            def eff
             onActivate {
               eff = getter (GET_FULL_HP,BEFORE_LAST) {h->
                 def pcs = h.effect.target
-                if (pcs.owner == self.owner && pcs.realEvolution && pcs.topNonLevelUpPokemonCard.predecessor == "Eevee"){
-                  target = bg.em().retrieveObject("Sunlight_Veil_target")
-                  target = target?target:[]
-                  source = bg.em().retrieveObject("Sunlight_Veil_source")
-                  source = source?source:[]
-                  if(!target.contains(pcs)){
-                    h.object += hp(20)
-                    target.add(pcs)
-                    bg.em().storeObject("Sunlight_Veil_target", target)
-                    source.add(self)
-                    bg.em().storeObject("Sunlight_Veil_source", source)
-                  } else if(source.get(target.indexOf(pcs)) == self){
-                    h.object += hp(20)
-                  }
+                if (pcs.owner == self.owner && pcs.evolvesFrom('Eevee') && !h.context["Sunlight_Veil"]){
+                  h.object += hp(20)
+                  h.context["Sunlight_Veil"] = 1
+                  println "OK - Sunlight_Veil"
                 }
               }
             }
             onDeactivate {
               eff.unregister()
-              target = []
-              source = []
-              bg.em().storeObject("Sunlight_Veil_target", target)
-              bg.em().storeObject("Sunlight_Veil_source", source)
             }
           }
           move "Morning Sun", {
@@ -989,8 +951,7 @@ public enum MajesticDawn implements LogicCardInfo {
                 bg.em().storeObject("Primal_Swirl",bg.turnCount)
                 powerUsed()
                 opp.bench.findAll{it.evolution}.each {
-                  def top = it.topPokemonCard
-                  devolve(it, top, opp.hand)
+                  devolve(it, opp.hand)
                 }
               }
             }
@@ -1023,7 +984,7 @@ public enum MajesticDawn implements LogicCardInfo {
             onAttack {
               damage 30
               flip {
-                discardDefendingEnergy()
+                discardDefendingEnergyAfterDamage()
               }
             }
           }
@@ -1130,14 +1091,14 @@ public enum MajesticDawn implements LogicCardInfo {
             text "Each of your Pokémon that evolves from Eevee has no Weakness, and that Pokémon’s Retreat Cost is 0."
             getterA (GET_WEAKNESSES) { h->
               def pcs = h.effect.target
-              if(pcs.owner == self.owner && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee") {
+              if(pcs.owner == self.owner && pcs.evolvesFrom('Eevee')) {
                 def list = h.object as List<Weakness>
                 list.clear()
               }
             }
             getterA GET_RETREAT_COST ,{ h->
               def pcs = h.effect.target
-              if (pcs.owner == self.owner && pcs.realEvolution && pcs.topPokemonCard.predecessor == "Eevee") {
+              if (pcs.owner == self.owner && pcs.evolvesFrom('Eevee')) {
                 h.object = 0
               }
             }
@@ -1181,7 +1142,7 @@ public enum MajesticDawn implements LogicCardInfo {
 
         };
       case VAPOREON_34:
-        return evolution (this, from:"Eevee", hp:HP090, type:WATER, retreatCost:2) {
+        return evolution (this, from:"Eevee", hp:HP090, type:WATER, retreatCost:1) {
           weakness L, PLUS20
           move "Cleanse Away", {
             text "30 damage. Remove 2 damage counters from each of your Benched Pokémon."
@@ -1198,13 +1159,21 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost W, C, C
             onAttack {
               damage 60
-              def heads = 0
-              flipUntilTails {
-                heads ++
-              }
-              def types = (1..heads).collect {C} as Type[]
-              if(heads > 0) {
-                discardDefendingEnergyAfterDamage types
+              afterDamage {
+                def energyCards = defending.cards.filterByType(ENERGY)
+                def heads = 0
+                flipUntilTails {
+                  heads ++
+                }
+                def discardSize = Math.min(heads, energyCards.size())
+                if(discardSize > 0) {
+                  if (discardSize == energyCards.size()) {
+                    bc "All energies are being discarded."
+                    energyCards.discard()
+                  } else {
+                    energyCards.select(count: discardSize, "Choose $discardSize Energy cards to discard from the Defending Pokémon").discard()
+                  }
+                }
               }
             }
           }
@@ -1263,7 +1232,9 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 20
-              attachEnergyFrom(type:G, my.hand, my.all)
+              afterDamage {
+                attachEnergyFrom(type:G, my.hand, my.all)
+              }
             }
           }
           move "Body Slam", {
@@ -1476,7 +1447,7 @@ public enum MajesticDawn implements LogicCardInfo {
             onAttack {
               damage 50
               if(opp.bench) {
-                multiSelect(opp.all, 2, "Does 10 damage to 2 of your opponent's Benched Pokémon").each {
+                multiSelect(opp.bench, 2, "Does 10 damage to 2 of your opponent's Benched Pokémon").each {
                   damage 10, it
                 }
               }
@@ -1605,7 +1576,7 @@ public enum MajesticDawn implements LogicCardInfo {
                   eff.unregister()
                 }
               }
-              trcard.player = top.player
+              trcard.initializeFrom(top)
               def pcs = my.all.findAll {it!=self && canAttachPokemonTool(it)}.select("Attach to?")
               removeFromPlay(self, [top] as CardList)
               bg.em().run(new ChangeImplementation(trcard, top))
@@ -1819,19 +1790,15 @@ public enum MajesticDawn implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Chimecho from your hand onto Chingling (this counts as evolving Chingling) and remove all damage counters from Chingling."
             actionA {
-              assert my.hand.findAll{it.name.contains("Chimecho")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Chimecho", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Chimecho") }.select()
-              if (tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution("Chimecho", self)
             }
           }
           move "Uproar", {
             text "Flip a coin. If heads, this attack does 10 damage to each of your opponent’s Pokémon."
-            energyCost P
+            energyCost ()
             onAttack {
               flip {
                 opp.all.each {
@@ -2059,14 +2026,10 @@ public enum MajesticDawn implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Snorlax from your hand onto Munchlax (this counts as evolving Munchlax) and remove all damage counters from Munchlax."
             actionA {
-              assert my.hand.findAll{it.name.contains("Snorlax")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Snorlax", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Snorlax") }.select()
-              if (tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution("Snorlax", self)
             }
           }
           move "Lick", {
@@ -2394,7 +2357,7 @@ public enum MajesticDawn implements LogicCardInfo {
                       }
                     }
                   }
-                  acl = action("Discard $self", [TargetPlayer.SELF]) {
+                  acl = action(pokemonCard, "Discard $self", [TargetPlayer.SELF]) {
                     delayed {
                       before TAKE_PRIZE, {
                         if (ef.pcs==self) {
@@ -2410,7 +2373,7 @@ public enum MajesticDawn implements LogicCardInfo {
                 }
               }
             }
-            pokemonCard.player = trainerCard.player
+            pokemonCard.initializeFrom(trainerCard)
             bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
             benchPCS(pokemonCard)
           }
@@ -2431,14 +2394,14 @@ public enum MajesticDawn implements LogicCardInfo {
           text "Play Dome Fossil as if it were a [C] Basic Pokémon. (Dome Fossil counts as a Trainer card as well, but if Dome Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Dome Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Dome Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Rock Reaction When you attach a [F] Energy card from your hand to Dome Fossil (excluding effects of attacks or Poké-Powers), search your deck for a card that evolves from Dome Fossil and put it onto Dome Fossil (this counts as evolving Dome Fossil). Shuffle your deck afterward."
           onPlay {
             Card pokemonCard, trainerCard = thisCard
-            pokemonCard = basic (new CustomCardInfo(DOME_FOSSIL_89).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
+            pokemonCard = basic (new CustomCardInfo(DOME_FOSSIL_89).setCardTypes(BASIC, POKEMON, TRAINER, FOSSIL), hp:HP050, type:COLORLESS, retreatCost:0) {
               pokeBody "Rock Reaction", {
                 delayedA{
                   after ATTACH_ENERGY, self, {
-                    if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(F) && self.owner.pbg.deck) {
+                    if (e.source != ATTACK && e.source != SRC_ABILITY && ef.fromHand && ef.card.containsType(F) && self.owner.pbg.deck) {
                       def sel=my.deck.search("Search your deck for a card that evolved from $self",{it.cardTypes.is(EVOLUTION) && it.predecessor==self.name})
                       if(sel){
-                        evolve(self, sel.first(), OTHER)
+                        evolve(self, sel.first())
                       }
                       shuffleDeck()
                     }
@@ -2471,7 +2434,7 @@ public enum MajesticDawn implements LogicCardInfo {
                       }
                     }
                   }
-                  acl = action("Discard $self", [TargetPlayer.SELF]) {
+                  acl = action(pokemonCard, "Discard $self", [TargetPlayer.SELF]) {
                     delayed {
                       before TAKE_PRIZE, {
                         if (ef.pcs==self) {
@@ -2487,7 +2450,7 @@ public enum MajesticDawn implements LogicCardInfo {
                 }
               }
             }
-            pokemonCard.player = trainerCard.player
+            pokemonCard.initializeFrom(trainerCard)
             bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
             benchPCS(pokemonCard)
           }
@@ -2502,14 +2465,14 @@ public enum MajesticDawn implements LogicCardInfo {
           text "Play Helix Fossil as if it were a [C] Basic Pokémon. (Helix Fossil counts as a Trainer card as well, but if Helix Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Helix Fossil can’t be affected by any Special Conditions and can’t retreat. At any time during your turn before your attack, you may discard Helix Fossil from play. (This doesn’t count as a Knocked Out Pokémon.)\nPoké-BODY: Aqua Reaction When you attach a [W] Energy card from your hand to Helix Fossil (excluding effects of attacks or Poké-Powers), search your deck for a card that evolves from Helix Fossil and put it onto Helix Fossil (this counts as evolving Helix Fossil). Shuffle your deck afterwards."
           onPlay {
             Card pokemonCard, trainerCard = thisCard
-            pokemonCard = basic (new CustomCardInfo(HELIX_FOSSIL_91).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
+            pokemonCard = basic (new CustomCardInfo(HELIX_FOSSIL_91).setCardTypes(BASIC, POKEMON, TRAINER, FOSSIL), hp:HP050, type:COLORLESS, retreatCost:0) {
               pokeBody "Aqua Reaction", {
                 delayedA{
                   after ATTACH_ENERGY, self, {
-                    if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(W) && self.owner.pbg.deck) {
+                    if (e.source != ATTACK && e.source != SRC_ABILITY && ef.fromHand && ef.card.containsType(W) && self.owner.pbg.deck) {
                       def sel=my.deck.search("Search your deck for a card that evolved from $self",{it.cardTypes.is(EVOLUTION) && it.predecessor==self.name})
                       if(sel){
-                        evolve(self, sel.first(), OTHER)
+                        evolve(self, sel.first())
                       }
                       shuffleDeck()
                     }
@@ -2542,7 +2505,7 @@ public enum MajesticDawn implements LogicCardInfo {
                       }
                     }
                   }
-                  acl = action("Discard $self", [TargetPlayer.SELF]) {
+                  acl = action(pokemonCard, "Discard $self", [TargetPlayer.SELF]) {
                     delayed {
                       before TAKE_PRIZE, {
                         if (ef.pcs==self) {
@@ -2558,7 +2521,7 @@ public enum MajesticDawn implements LogicCardInfo {
                 }
               }
             }
-            pokemonCard.player = trainerCard.player
+            pokemonCard.initializeFrom(trainerCard)
             bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
             benchPCS(pokemonCard)
           }
@@ -2571,12 +2534,12 @@ public enum MajesticDawn implements LogicCardInfo {
           text "Call Energy provides [C] Energy. Once during your turn, if the Pokémon Call Energy is attached to is your Active Pokémon, you may search your deck for up to 2 Basic Pokémon and put them onto your Bench. If you do, shuffle your deck and your turn ends."
           def actions=[]
           onPlay {
-            actions = action("Call Energy", [TargetPlayer.SELF]) {
+            actions = action(thisCard, "Call Energy", [TargetPlayer.SELF]) {
               assert self.active : "Not active"
               assert my.bench.notFull : "Bench full"
               assert my.deck : "Your deck is empty!"
-              bc "Used Call Energy effect"
-              targeted null, Source.SRC_SPENERGY, {
+              sourced (source: SRC_SPECIAL_ENERGY, sourceEnergy: thisCard) {
+                bc "Used Call Energy effect"
                 int count = bench.freeBenchCount >= 2 ? 2 : 1
                 my.deck.search(max: count, "Search your deck for up to 2 Basic Pokémon and put them onto your Bench", cardTypeFilter(BASIC)).each {
                   benchPCS(it)
@@ -2598,19 +2561,18 @@ public enum MajesticDawn implements LogicCardInfo {
           text "Health Energy provides [C] Energy. When you attach this card from your hand to 1 of your Pokémon, remove 1 damage counter from that Pokémon."
           onPlay {reason->
             if (reason == PLAY_FROM_HAND) {
-              heal 10, self, SRC_SPENERGY
+              heal 10, self
             }
           }
         };
       case METAL_ENERGY_95:
         return copy (RubySapphire.METAL_ENERGY_94, this)
       case RECOVER_ENERGY_96:
-        // TODO: Is this just Full Heal Energy?
         return specialEnergy (this, [[C]]) {
           text "Recover Energy provides [C] Energy. When you attach this card from your hand to 1 of your Pokémon, remove all Special Conditions from that Pokémon."
           onPlay {reason->
             if (reason == PLAY_FROM_HAND) {
-              clearSpecialCondition(my.active, SRC_SPENERGY)
+              clearSpecialCondition(self)
             }
           }
         };

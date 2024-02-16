@@ -1,5 +1,7 @@
 package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.card.pokemon.LevelUpPokemonCard
+import tcgwars.logic.impl.gen3.CrystalGuardians
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen7.CelestialStorm;
 
@@ -212,7 +214,7 @@ public enum Platinum implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -233,7 +235,7 @@ public enum Platinum implements LogicCardInfo {
               }
             }
             getterA IS_ABILITY_BLOCKED, { Holder h ->
-              if (h.effect.target.numberOfDamageCounters && h.effect.target.pokemonGX && h.effect.ability instanceof PokePower) {
+              if (h.effect.target.numberOfDamageCounters && h.effect.ability instanceof PokePower) {
                 targeted(h.effect.target, Source.POKEBODY) {
                   h.object = true
                 }
@@ -279,12 +281,12 @@ public enum Platinum implements LogicCardInfo {
               checkNoSPC()
               assert my.deck : "Your deck is empty"
               powerUsed()
-              def top = my.deck.subList(0,3)
-              if(top.filterByEnergyType(W)) {
-                def max = top.filterByEnergyType(w).size()
-                top.select(max:max, "Choose any number of [W] Energy cards", energyFilter(W)).each {
+              def top = my.deck.subList(0, 3)
+              if (top.filterByEnergyType(W)) {
+                def max = top.filterByEnergyType(W).size()
+                top.select(min:0, max:max, "Choose any number of [W] Energy cards", energyFilter(W)).each {
                   def tar = my.all.select("Attach $it to")
-                  attachEnergy(tar,it)
+                  attachEnergy(tar, it)
                   top.remove(it)
                 }
               }
@@ -357,8 +359,12 @@ public enum Platinum implements LogicCardInfo {
               checkNoSPC()
               assert my.discard.filterByType(BASIC_ENERGY) : "You have no basic Energy cards in your discard"
               powerUsed()
-              def list = rearrange(my.discard.select(max:2, cardTypeFilter(BASIC_ENERGY)))
-              list.moveTo(addToTop : true, my.deck)
+
+              def list = my.discard.select(max:2, cardTypeFilter(BASIC_ENERGY))
+              list = rearrange(list)
+              my.discard.removeAll(list)
+              my.deck.addAll(0, list)
+
               directDamage 20, self, Source.POKEPOWER
             }
           }
@@ -384,11 +390,18 @@ public enum Platinum implements LogicCardInfo {
           resistance P, MINUS20
           pokePower "Reverse Time", {
             text "Once during your turn, when you put Dialga from your hand onto your Bench, you may search your discard pile for up to 3 in any combination of Pokémon (excluding Pokémon LV.X) and basic Energy cards. Show them to your opponent and put them on top of your deck in any order."
-            onActivate {r->
-              if (r==PLAY_FROM_HAND && my.discard.find{(it.cardTypes.is(POKEMON) && !it.cardTypes.is(LVL_X)) || it.cardTypes.is(BASIC_ENERGY)} && confirm("Use Reverse Time?")) {
+            onActivate { r ->
+              if (r == PLAY_FROM_HAND && my.discard.find {
+                (it.cardTypes.is(POKEMON) && !it.cardTypes.is(LVL_X)) || it.cardTypes.is(BASIC_ENERGY)
+              } && confirm("Use Reverse Time?")) {
                 powerUsed()
-                def list = rearrange(my.discard.select(max:3, "Search your discard pile for up to 3 in any combination of Pokémon (excluding Pokémon LV.X) and basic Energy cards", {(it.cardTypes.is(POKEMON) && !it.cardTypes.is(LVL_X)) || it.cardTypes.is(BASIC_ENERGY)}))
-                list.showToOpponent("Selected Cards").moveTo(addToTop : true, my.deck)
+                def list = my.discard.select(max:3, "Search your discard pile for up to 3 in any combination of Pokémon (excluding Pokémon LV.X) and basic Energy cards", {
+                  (it.cardTypes.is(POKEMON) && !it.cardTypes.is(LVL_X)) || it.cardTypes.is(BASIC_ENERGY)
+                })
+                list = rearrange(list)
+                list.showToOpponent("Selected Cards")
+                my.discard.removeAll(list)
+                my.deck.addAll(0, list)
               }
             }
           }
@@ -411,23 +424,13 @@ public enum Platinum implements LogicCardInfo {
             text "As long as Dialga is your Active Pokémon, your opponent can’t play any Pokémon from his or her hand to evolve his or her Active Pokémon."
             delayedA {
               def warnAndPrevent = {
-                if (self.active && bg.currentTurn == self.owner.opposite) {
-                  wcu "$self's Time Aura prevents playing Pokémon from your hand to evolve your Pokémon"
+                if (self.active && bg.currentTurn == self.owner.opposite && ef.pokemonToBeEvolved.active) {
+                  wcu "$self's Time Aura prevents playing Pokémon from your hand to evolve your Active Pokémon"
                   prevent()
                 }
               }
               before EVOLVE, {
-                if ((ef as Evolve).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
-                  warnAndPrevent()
-                }
-              }
-              before EVOLVE_STANDARD, {
-                if ((ef as EvolveStandard).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
-                  warnAndPrevent()
-                }
-              }
-              before PLAY_EVOLUTION, {
-                if ((ef as PlayEvolution).cardToPlay.player.pbg.hand.contains(ef.cardToPlay)) {
+                if ((ef as Evolve).activationReason == PLAY_FROM_HAND) {
                   warnAndPrevent()
                 }
               }
@@ -481,9 +484,10 @@ public enum Platinum implements LogicCardInfo {
           pokePower "Psychic Connect", {
             text "As often as you like during your turn , you may move a [P] Energy attached to 1 of your Benched Pokémon to your Active Pokémon. This power can’t be used if Gardevoir is affected by a Special Condition."
             actionA {
-              checkLastTurn()
               checkNoSPC()
-              assert my.bench.find{it.cards.filterByEnergyType(P)} : "You have no [P] Energy attached to your Benched Pokémon"
+              assert my.bench.find {
+                it.cards.filterByEnergyType(P)
+              } : "You have no [P] Energy attached to your Benched Pokémon"
               powerUsed()
               moveEnergy(type: P, my.bench, my.active)
             }
@@ -512,8 +516,7 @@ public enum Platinum implements LogicCardInfo {
                 }
                 unregisterAfter 2
                 after FALL_BACK, self, { unregister() }
-                after EVOLVE, self, { unregister() }
-                after DEVOLVE, self, { unregister() }
+                after CHANGE_STAGE, self, { unregister() }
               }
             }
           }
@@ -530,7 +533,7 @@ public enum Platinum implements LogicCardInfo {
                 my.hand.moveTo(hidden: true, my.deck)
                 opp.hand.moveTo(hidden: true, opp.deck)
                 shuffleDeck()
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
                 draw choose(1..4,"Let Loose: Draw how many cards?", 4)
                 draw oppChoose(1..4,"Let Loose: Draw how many cards?", 4), TargetPlayer.OPPONENT
               }
@@ -588,7 +591,7 @@ public enum Platinum implements LogicCardInfo {
             text "Prevent all damage done to your Benched Pokémon (excluding any Manectric) by attacks."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {if(it.to.owner==self.owner && it.from.owner!=self.owner && it.to.benched && !it.to.name == "Manectric" && it.dmg.value && it.notNoEffect){
+                bg.dm().each {if(it.to.owner==self.owner && it.from.owner!=self.owner && it.to.benched && it.to.name != "Manectric" && it.dmg.value && it.notNoEffect){
                   bc "Electric Barrier reduces damage"
                   it.dmg=hp(0)
                 }}
@@ -600,7 +603,7 @@ public enum Platinum implements LogicCardInfo {
             energyCost L
             onAttack {
               all.each {
-                if(it.hasPokePower) {
+                if(it.hasPokePower()) {
                   damage 30, it
                 }
               }
@@ -686,8 +689,7 @@ public enum Platinum implements LogicCardInfo {
                   }
                   unregisterAfter 3
                   after FALL_BACK, self, {unregister()}
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
+                  after CHANGE_STAGE, self, {unregister()}
                 }
               }
             }
@@ -711,9 +713,11 @@ public enum Platinum implements LogicCardInfo {
             energyCost G, C
             onAttack {
               damage 30
-              if(defending.specialConditions) {
+              if (defending.specialConditions) {
                 damage 50
-                clearSpecialCondition defending
+                afterDamage {
+                  clearSpecialCondition defending
+                }
               }
             }
           }
@@ -724,7 +728,6 @@ public enum Platinum implements LogicCardInfo {
           resistance F, MINUS20
           move "Growth", {
             text "Attach a [G] Energy card from your hand to Shaymin."
-            energyCost G
             attackRequirement {
               assert my.hand.filterByEnergyType(G) : "You have no [G] Energy cards in your hand"
             }
@@ -784,8 +787,7 @@ public enum Platinum implements LogicCardInfo {
                   }
                   unregisterAfter 2
                   after FALL_BACK, self, {unregister()}
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
+                  after CHANGE_STAGE, self, {unregister()}
                 }
               }
             }
@@ -822,14 +824,6 @@ public enum Platinum implements LogicCardInfo {
         return evolution (this, from:"Swablu", hp:HP090, type:COLORLESS, retreatCost:1) {
           weakness L, PLUS20
           resistance F, MINUS20
-          /*
-           Q. An Altaria that used the move "Midnight Eyes" on its previous turn is now knocked out on the opponent's next turn (or Pokémon Check). If another Altaria uses the "Perish Song" move on my turn, can I knockout the opponent's Active Pokémon that was hit by the "Midnight Eyes" move?
-           A. Yes, you can. Even if Altaria gets knocked out after using its "Midnight Eyes" move, the fact that the opponent's Active Pokémon was hit by the move does not change, so you can use Altaria's "Perish Song" to knock it out if it is asleep.
-
-           Q. When an opponent's Pokémon who was hit by Altaria's move "Midnight Eyes" on my turn is replaced by an opponent's Bench Pokémon by the Trainer "Switch" or other effect, and then appears on the Active spot again, can I make that opponent sleep and use Altaria's move "Perish Song" on my next turn to end it?
-A. Yes, you can.
-Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your previous turn goes back to the Bench, the fact that it was hit by the move "Midnight Eyes" does not change, so when you use Altaria's move "Perish Song" on your next turn, as long as the Pokémon is asleep, you can knock it out.
-           */
           move "Midnight Eyes", {
             text "20 damage. The Defending Pokémon is now Asleep."
             energyCost C
@@ -847,9 +841,10 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
                     unregister {
                       bg.em().storeObject("Altaria_Platinum_Midnight_Eyes_${pcs.hashCode()}", null)
                     }
-                    after EVOLVE, pcs, {unregister()}
-                    after DEVOLVE, pcs, {unregister()}
-                    after LEVEL_UP, pcs, {unregister()}
+                    after CHANGE_STAGE, pcs, { unregister() }
+                    after LEVEL_UP, pcs, {
+                      bg.em().storeObject("Altaria_Platinum_Midnight_Eyes_${pcs.hashCode()}", bg.turnCount)
+                    }
                   }
                 }
               }
@@ -929,11 +924,13 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
           resistance P, MINUS20
           pokeBody "Metal Trait", {
             text "As long as Bastiodon has a Pokémon Tool card attached to it, remove 1 damage counter from Bastiodon between turns."
-            delayedA{
+            delayedA (anytime:true) {
+              def lastExecId = null
               before BEGIN_TURN, {
-                if (self.numberOfDamageCounters && self.cards.filterByType(POKEMON_TOOL)) {
-                  bc "Metal Trait activates"
+                if (lastExecId != e.executionId && self.numberOfDamageCounters && self.cards.hasType(POKEMON_TOOL)) {
+                  bc "$thisAbility activates"
                   heal 10, self
+                  lastExecId = e.executionId
                 }
               }
             }
@@ -999,8 +996,11 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
               assert bg.em().retrieveObject("Nurse_Call") != bg.turnCount : "You cannot use Nurse Call more than once per turn"
               powerUsed()
               my.hand.select("Choose a card to discard").discard()
-              if (my.all.any{it.numberOfDamageCounters})
-                heal 20, my.all.findAll{it.numberOfDamageCounters}.select("Heal which Pokémon"), Source.POKEPOWER
+              if (my.all.any { it.numberOfDamageCounters })
+                heal 20, my.all.findAll {
+                  it.numberOfDamageCounters
+                }.select("Heal which Pokémon"), Source.POKEPOWER
+              bg.em().storeObject("Nurse_Call", bg.turnCount)
             }
           }
           move "Return", {
@@ -1024,7 +1024,7 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
         };
       case DIALGA_23:
         return basic (this, hp:HP100, type:METAL, retreatCost:3) {
-          weakness R
+          weakness R, PLUS30
           resistance P, MINUS20
           move "Energy Stream", {
             text "20 damage. Flip a coin. If heads, search your discard pile for a basic Energy card and attach it to Dialga."
@@ -1192,7 +1192,7 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
         };
       case GIRATINA_28:
         return basic (this, hp:HP110, type:PSYCHIC, retreatCost:2) {
-          weakness D
+          weakness D, PLUS30
           resistance C, MINUS20
           move "Dragon Claw", {
             text "30 damage. "
@@ -1358,26 +1358,25 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
         return evolution (this, from:"Lombre", hp:HP120, type:GRASS, retreatCost:2) {
           weakness L, PLUS30
           pokePower "Cheerful Voice", {
-            text "Once during your turn , you may use this power. If you do, your turn ends. During your next turn, each of Ludicolo’s attacks does 60 more damage to the Defending Pokémon . This power can’t be used if Ludicolo is affected by a Special Condition."
+            text "Once during your turn, you may use this power. If you do, your turn ends. During your next turn, each of Ludicolo’s attacks does 60 more damage to the Defending Pokémon. This power can’t be used if Ludicolo is affected by a Special Condition."
             actionA {
               checkLastTurn()
               checkNoSPC()
               powerUsed({ usingThisAbilityEndsTurn delegate })
               delayed {
-                def registeredOn=0
+                def registeredOn = 0
                 after PROCESS_ATTACK_EFFECTS, {
-                  if(bg.turnCount!=registeredOn){
-                    bg.dm().each {if(it.from==self && it.dmg.value){
-                      bc "Cheerfull Voice does +60 to ${it.to}"
-                      it.dmg+=hp(60)
-                    }}
+                  if (bg.turnCount != registeredOn) {
+                    bg.dm().each {if (it.from == self && it.dmg.value) {
+                        bc "Cheerfull Voice does +60 to ${it.to}"
+                        it.dmg += hp(60)
+                      }
+                    }
                   }
                 }
                 unregisterAfter 3
-                after FALL_BACK, self, {unregister()}
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
-                register{registeredOn=bg.turnCount}
+                after CHANGE_STAGE, self, {unregister()}
+                register { registeredOn = bg.turnCount }
               }
               usingThisAbilityEndsTurn delegate
             }
@@ -1562,7 +1561,7 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
             text "Prevent all effects of attacks, excluding damage, done to Toxicroak ."
             delayedA {
               before null, null, ATTACK, {
-                if (ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && (ef as TargetedEffect).getResolvedTarget(bg, e) == self) {
+                if (ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && e.getTargetPokemon() == self) {
                   bc "Anticipation prevents all effects done to $self."
                   prevent()
                 }
@@ -1629,12 +1628,15 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
             energyCost G, D
             onAttack {
               damage 20
-              if(self.cards.filterByEnergyType(G) || self.cards.filterByEnergyType(G) && confirm("Discard a [G] or [D] Energy attached to Cacturne?")) {
-                def energy = self.cards.select("Choose an Energy to discard", {it.cardTypes.is(ENERGY) && (it.asEnergyCard().containsType(G) || it.asEnergyCard().containsType(D))}).first()
-                if(energy.asEnergyCard().containsType(G)) {
+
+              if ((self.cards.filterByEnergyType(G) || self.cards.filterByEnergyType(D)) && confirm("Discard a [G] or [D] Energy attached to Cacturne?")) {
+                def energy = self.cards.select("Choose an Energy to discard.  If you discard a [G] Energy, the Defending Pokémon is now Poisoned. If you discard a [D] Energy, the Defending Pokémon is now Paralyzed.", {
+                  it.cardTypes.is(ENERGY) && (it.asEnergyCard().containsType(G) || it.asEnergyCard().containsType(D))
+                }).first()
+                if (energy.asEnergyCard().containsType(G)) {
                   applyAfterDamage POISONED
                 }
-                if(energy.asEnergyCard().containsType(D)) {
+                if (energy.asEnergyCard().containsType(D)) {
                   applyAfterDamage PARALYZED
                 }
                 afterDamage {
@@ -1646,7 +1648,7 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
         };
       case CARNIVINE_43:
         return basic (this, hp:HP080, type:GRASS, retreatCost:2) {
-          weakness R
+          weakness R, PLUS20
           resistance W, MINUS20
           move "Stretch Vine", {
             text "Choose 2 of your opponent’s Benched Pokémon. This attack does 10 damage to each of them."
@@ -1682,19 +1684,10 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
         };
       case CASCOON_44:
         return evolution (this, from:"Wurmple", hp:HP080, type:GRASS, retreatCost:2) {
-          weakness R
+          weakness R, PLUS20
           move "Ascension", {
             text "Search your deck for a card that evolves from Cascoon and put it onto Cascoon. (This counts as evolving Cascoon.) Shuffle your deck afterward."
-            energyCost ()
-            attackRequirement {
-              assert my.deck : "Your deck is empty"
-            }
-            onAttack {
-              def nam=self.name
-              def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              if(tar) evolve(self, tar.first(), OTHER)
-              shuffleDeck()
-            }
+            ascension delegate
           }
           move "Poison Thread", {
             text "20 damage. The Defending Pokémon is now Poisoned."
@@ -1823,29 +1816,33 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
         };
       case HOUNDOOM_G_50:
         return basic (this, hp:HP090, type:FIRE, retreatCost:1) {
-          weakness F, PLUS20
+          weakness F
           resistance P, MINUS20
           move "Black Cry", {
             text "20 damage. The Defending Pokémon can’t retreat or use any Poké-Powers during your opponent’s next turn."
             energyCost D, C
             onAttack {
               damage 20
-              cantRetreat defending
-              delayed {
-                def eff
-                register{
-                  eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
-                    if (h.effect.target.owner == self.owner.opposite && h.effect.ability instanceof PokePower) {
-                      h.object=true
+              targeted (defending) {
+                bc "During ${opp.owner.getPlayerUsername(bg)}'s next turn, the Defending ${defending} can't retreat or use any Poké-Powers. (This effect can be removed by evolving or benching ${defending}.)"
+                cantRetreat defending
+                def pcs = defending
+                delayed {
+                  def eff
+                  register {
+                    eff = getter (IS_ABILITY_BLOCKED) { Holder h->
+                      if (bg.currentTurn==self.owner.opposite && h.effect.target == defending && h.effect.ability instanceof PokePower) {
+                        h.object = true
+                      }
                     }
                   }
-                  new CheckAbilities().run(bg)
+                  unregister{
+                    eff.unregister()
+                  }
+                  unregisterAfter 2
+                  after FALL_BACK, pcs, {unregister()}
+                  after CHANGE_STAGE, pcs, {unregister()}
                 }
-                unregister{
-                  eff.unregister()
-                  new CheckAbilities().run(bg)
-                }
-                unregisterAfter 2
               }
             }
           }
@@ -1890,7 +1887,7 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
               damage 20
               flip {
                 opp.hand.shuffledCopy().select("Choose a card to shuffle into your opponent's deck").moveTo(opp.deck)
-                shuffleDeck null, TargetPlayer.OPPONENT
+                shuffleOppDeck()
               }
             }
           }
@@ -2161,8 +2158,7 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
                     }
                   }
                   unregisterAfter 2
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
+                  after CHANGE_STAGE, self, {unregister()}
                   after FALL_BACK, self, {unregister()}
                 }
               }
@@ -2189,16 +2185,7 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
           weakness R, PLUS20
           move "Ascension", {
             text "Search your deck for a card that evolves from Silcoon and put it onto Silcoon. (This counts as evolving Silcoon.) Shuffle your deck afterward."
-            energyCost ()
-            attackRequirement {
-              assert my.deck : "Your deck is empty"
-            }
-            onAttack {
-              def nam=self.name
-              def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-              if(tar) evolve(self, tar.first(), OTHER)
-              shuffleDeck()
-            }
+            ascension delegate
           }
           move "Sticky String", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
@@ -2327,7 +2314,7 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
         };
       case CARNIVINE_68:
         return basic (this, hp:HP080, type:GRASS, retreatCost:2) {
-          weakness R
+          weakness R, PLUS20
           resistance W, MINUS20
           move "Poison Breath", {
             text "Flip a coin. If heads, the Defending Pokémon is now Poisoned."
@@ -2507,14 +2494,10 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Chansey from your hand onto Happiny (this counts as evolving Happiny) and remove all damage counters from Happiny."
             actionA {
-              assert my.hand.findAll{it.name.contains("Chansey")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Chansey", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Chansey") }.select()
-              if (tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution("Chansey", self)
             }
           }
           move "Hospitality", {
@@ -3151,7 +3134,7 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
           def eff
           onPlay {
             eff = delayed {
-              before PREVENT_EVOLVE, null, null, EVOLVE_STANDARD, {
+              before PREVENT_EVOLVE, null, null, EVOLVE, {
                 prevent()
               }
             }
@@ -3195,9 +3178,14 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
           text "Flip a coin. If heads, search your deck for a Pokémon LV.X that levels up from 1 of your Pokémon, and put it onto that Pokémon (this counts as leveling up that Pokémon). Shuffle your deck afterward."
           onPlay {
             flip {
-              def names = my.all.collect{ it.name }
-              def sel_1 = deck.search ("Select a Pokémon that Levels up from $names.", {it.cardTypes.is(LVL_X) && names.contains(it.predecessor)}).first()
-              // TODO: Level up a Pokémon. Im guessing evolve won't work but I'll give it a shot once the rest of this is released
+              def names = my.all
+                .findAll { !it.pokemonLevelUp }
+                .collect { it.name }
+              LevelUpPokemonCard sel_1 = deck.search ("Select a Pokémon that Levels up from $names.", {it.cardTypes.is(LVL_X) && it.predecessor in names}).first() as LevelUpPokemonCard
+              if (sel_1) {
+                def sel_2 = my.all.findAll{ !it.pokemonLevelUp && sel_1.predecessor == it.name }.select("Select one of your Pokémon named ${sel_1.name}")
+                bg().em().run(new LevelUp(sel_2, sel_1))
+              }
               shuffleDeck()
             }
           }
@@ -3215,10 +3203,10 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
             def choice = choose([0,1],["${thisCard.player.getPlayerUsername(bg)}","${thisCard.player.opposite.getPlayerUsername(bg)}"],"Choose a player")
             if(choice) {
               opp.hand.moveTo(hidden:true, opp.deck)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
               draw oppChoose(1..5,"Looker's Investigation: Draw how many cards?", 5), TargetPlayer.OPPONENT
             } else {
-              my.hand.getExcludedList(thisCard).moveTo(my.deck)
+              my.hand.getExcludedList(thisCard).moveTo(hidden:true, my.deck)
               shuffleDeck()
               draw choose(1..5, "Looker's Investigation: Draw how many cards?", 5)
             }
@@ -3226,15 +3214,13 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
         };
       case MEMORY_BERRY_110:
         return pokemonTool (this) {
-          text "Attach Memory Berry to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nThe Pokémon this card is attached to can use any attack from its Basic Pokémon or its Stage 1 Evolution card. (You still have to pay for that attack’s Energy cost.)"
+          text "The Pokémon this card is attached to can use any attack from its Basic Pokémon or its Stage 1  Evolution card. (You still have to pay for that attack’s Energy cost.)"
           def eff
-          onPlay {
-            eff = getter (GET_MOVE_LIST) { holder->
-              if(holder.effect.target.active && holder.effect.target.evolution) {
-                for(card in holder.effect.target.cards.filterByType(STAGE1, BASIC)) {
-                  if(card!=holder.effect.target.topPokemonCard){
-                    holder.object.addAll(card.moves)
-                  }
+          onPlay { reason ->
+            eff = getter (GET_MOVE_LIST, self) { holder ->
+              if (self.active && self.evolution) {
+                for (card in self.pokemonCardsExceptTop) {
+                  holder.object.addAll(card.moves)
                 }
               }
             }
@@ -3249,8 +3235,8 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
           def eff
           onPlay {
             eff = delayed {
-              after PLAY_BASIC_POKEMON, {
-                if(!(ef.cardToPlay.types.contains(G) || ef.cardToPlay.types.contains(P))){
+              after PUT_ON_BENCH, {
+                if(ef.basicFromHand && !(ef.pokemonCard.types.contains(G) || ef.pokemonCard.types.contains(P))){
                   bc "Miasma Valley activates"
                   ef.place.damage += 20
                 }
@@ -3475,33 +3461,18 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
           pokeBody "Thankfulness", {
             text "Each of your [G] Pokémon (excluding any Shaymin) gets +40 HP. You can’t use more than 1 Thankfulness Poké-Body each turn."
             delayedA {
-              def eff, source, target
+              def eff
               onActivate {
                 eff = getter (GET_FULL_HP) {h->
                   def pcs = h.effect.target
-                  if (pcs.owner == self.owner && pcs.name != "Shaymin" && pcs.types.contains(G)) {
-                    target = bg.em().retrieveObject("Thankfulness_target")
-                    target = target ? target : []
-                    source = bg.em().retrieveObject("Thankfulness_source")
-                    source = source ? source : []
-                    if (!target.contains(pcs)) {
-                      h.object += hp(40)
-                      target.add(pcs)
-                      bg.em().storeObject("Thankfulness_target", target)
-                      source.add(self)
-                      bg.em().storeObject("Thankfulness_source", source)
-                    } else if (source.get(target.indexOf(pcs)) == self) {
-                      h.object += hp(40)
-                    }
+                  if (pcs.owner == self.owner && pcs.name != "Shaymin" && pcs.types.contains(G) && !h.context['Thankfulness']) {
+                    h.object += hp(40)
+                    h.context['Thankfulness'] = 1
                   }
                 }
               }
               onDeactivate {
                 eff.unregister()
-                target = []
-                source = []
-                bg.em().storeObject("Thankfulness_target", target)
-                bg.em().storeObject("Thankfulness_source", source)
               }
             }
           }
@@ -3521,21 +3492,21 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
         return levelUp (this, from:"Shaymin", hp:HP110, type:GRASS, retreatCost:0) {
           weakness R
           resistance F, MINUS20
-          globalAbility {Card thisCard->
+          initHook {Card thisCard->
             delayed {
               before KNOCKOUT, {
-                if(ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){
+                if ((ef as Knockout).byDamageFromAttack && ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite) {
                   bg.em().storeObject("Revenge_Seed", bg.turnCount)
                 }
               }
             }
           }
           pokeBody "Revenge Seed", {
-            text "If any of your Pokémon were Knocked Out by damage from an opponent’s attack during his or her last turn, each of Shaymin’s attacks does 60 more damage to the Active Pokémon ."
+            text "If any of your [G] Pokémon were Knocked Out by damage from an opponent’s attack during his or her last turn, each of Shaymin’s attacks does 60 more damage to the Active Pokémon ."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                if(ef.attacker==self && bg.em().retrieveObject("Revenge_Seed") == bg.turnCount-1) bg.dm().each {
-                  if(it.from==self && it.to.active && it.to.owner!=self.owner && it.dmg.value){
+                if (ef.attacker==self && bg.em().retrieveObject("Revenge_Seed") == bg.turnCount-1) bg.dm().each {
+                  if (it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value && it.to.types.contains(G)) {
                     bc "Revenge seed +60"
                     it.dmg += hp(60)
                   }
@@ -3631,9 +3602,9 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness L, PLUS10
           pokeBody "Swift Swim", {
-            text "If Lotad has any Energy attached to it, Lotad’s Retreat Cost is 0."
-            getterA (GET_RETREAT_COST, BEFORE_LAST, self) { h->
-              if (self.cards.filterByType(ENERGY)) {
+            text "If Lotad has any [W] Energy attached to it, Lotad’s Retreat Cost is 0."
+            getterA (GET_RETREAT_COST, BEFORE_LAST, self) { h ->
+              if (self.cards.filterByType(ENERGY) && self.cards.filterByEnergyType(W)) {
                 h.object = 0
               }
             }
@@ -3703,10 +3674,9 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
         };
       case VULPIX_SH6:
         return basic (this, hp:HP060, type:FIRE, retreatCost:1) {
-          weakness W
+          weakness W, PLUS10
           move "Find Wildfire", {
             text "Search your deck for up to 2 [R] Energy cards, show them to your opponent, and put them in your hand. Shuffle your deck afterward."
-            energyCost R
             attackRequirement {
               assert my.deck : "Your deck is empty"
             }
@@ -3717,11 +3687,11 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
           }
           move "Brushfire", {
             text "10 damage. Does 10 damage to each of your opponent's [G] Benched Pokémon."
-            energyCost R, G
+            energyCost R
             onAttack {
               damage 10
               opp.bench.each {
-                if(it.types.contains(G)) {
+                if (it.types.contains(G)) {
                   damage 10, it
                 }
               }
@@ -3736,7 +3706,7 @@ Even if the Pokémon that was hit by Altaria's move "Midnight Eyes" on your prev
             onAttack {
               damage 30
               afterDamage {
-                my.hand.select("Discard a [R] Energy card from your hand")
+                discardSelfEnergy(R)
               }
             }
           }

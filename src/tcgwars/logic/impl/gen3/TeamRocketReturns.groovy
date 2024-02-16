@@ -185,7 +185,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -225,6 +225,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
                 flag = (ef.evolutionCard as Card).player.pbg.hand.contains(ef.evolutionCard)
               }
               after EVOLVE, {
+                // Q. Dark Ampharos’ “Darkest Impulse” says that you can’t use more than 1 Darkest Impulse Poké-BODY each turn. Does that mean that this power goes off every time they evolve a Pokémon, or does it only go off the first time they evolve that turn?
+                // A. Darkest Impulse applies whenever the opponent evolves a Pokémon, but you cannot combine multiple Dark Ampharoses to do additional damage. The intent of the “can’t use more than one” phrase is to prevent it from being cumulative (i.e. 4 Dark Ampharos cannot be combined to place 8 damage counters). (Dec 2, 2004 PUI Rules Team)
                 if (flag) {
                   PokemonCardSet pcs = ef.pokemonToBeEvolved
                   if(pcs.owner != self.owner && bg.em().retrieveObject("Darkest Impulse") != (pcs.id+bg.turnCount)){
@@ -342,9 +344,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
                 if (list) {
                   damage 20
                   afterDamage {
-                    def de = new DiscardEnergy(list)
-                    de.source = ATTACK
-                    bg.em().activateEffect(de)
+                    bg.em().activateEffect(new DiscardEnergy(list))
                   }
                 }
               }
@@ -359,7 +359,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             text "Flip a coin. If heads, choose an attack on 1 of your Pokémon in play that has Dark in its name (excluding this one). Dark Link copies that attack except for its Energy cost. (You must still do anything else required for that attack.) (No matter what type that Pokémon is, Dark Hypno’s type is still .) Dark Hypno performs that attack."
             energyCost C
             attackRequirement {
-              assert my.bench.find {it.name.contains("Dark ") && it.topPokemonCard.moves} : "No moves to perform"
+              assert my.bench.find {it.name.contains("Dark ") && it.baseMoves} : "No moves to perform"
             }
             onAttack {
               flip {
@@ -367,8 +367,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
                 def labelList = []
                 my.bench.each {pcs->
                   if(pcs.name.contains("Dark ")){
-                    moveList.addAll(pcs.topPokemonCard.moves);
-                    labelList.addAll(pcs.topPokemonCard.moves.collect{pcs.name+"-"+it.name})
+                    def moves = pcs.baseMoves
+                    moveList.addAll(moves);
+                    labelList.addAll(moves.collect{pcs.name+"-"+it.name})
                   }
                 }
                 def move=choose(moveList, labelList)
@@ -442,7 +443,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               checkLastTurn()
               powerUsed()
               opp.deck.subList(0,1).showToMe("Opponent's top Deck")
-              if(confirm("Shuffle opponent's deck?")) shuffleDeck(null, TargetPlayer.OPPONENT)
+              if(confirm("Shuffle opponent's deck?")) shuffleOppDeck()
             }
           }
           move "Litter", {
@@ -612,8 +613,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
               def moveList = []
               def labelList = []
               opp.bench.each {pcs->
-                moveList.addAll(pcs.topPokemonCard.moves);
-                labelList.addAll(pcs.topPokemonCard.moves.collect{pcs.name+"-"+it.name})
+                def moves = pcs.baseMoves
+                moveList.addAll(moves);
+                labelList.addAll(moves.collect{pcs.name+"-"+it.name})
               }
               def move=choose(moveList, labelList)
               def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
@@ -710,8 +712,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
                     }
                   }
                   after FALL_BACK, pcs, {unregister()}
-                  after EVOLVE, pcs, {unregister()}
-                  after DEVOLVE, pcs, {unregister()}
+                  after CHANGE_STAGE, pcs, {unregister()}
                   unregisterAfter 2
                 }
               }
@@ -933,7 +934,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             energyCost P, C
             onAttack {
               damage 20
-              if(my.bench) sw self, my.bench.select()
+              switchYourActive()
             }
           }
 
@@ -1208,6 +1209,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             actionA {
               checkLastTurn()
               checkNoSPC()
+              assert self.active : "Must be Active Pokemon"
               powerUsed()
               flip{apply BURNED}
             }
@@ -1276,7 +1278,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
                 afterDamage{
                   if(my.deck) {
                     def tar = my.deck.search(max:1, "Search for a card that evolves from Dark Pupitar", {it.cardTypes.is(EVOLUTION) && self.name == it.predecessor})
-                    if(tar) evolve(self, tar.first(), OTHER)
+                    if(tar) evolve(self, tar.first())
                     shuffleDeck()
                   }
                 }
@@ -1428,7 +1430,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               assert my.deck
             }
             onAttack {
-              if(my.deck.search(max : 1,"Select a Pokémon Tool card or Rocket’s Secret Machine.",cardTypeFilter(POKEMON_TOOL)).showToOpponent("Selected card.").moveTo(my.hand)){
+              if(my.deck.search(max : 1,"Select a Pokémon Tool card or Rocket’s Secret Machine.",{it.cardTypes.is(POKEMON_TOOL)||it.cardTypes.is(ROCKETS_SECRET_MACHINE)}).showToOpponent("Selected card.").moveTo(my.hand)){
                 if(my.bench){
                   if(confirm("switch $self ?")) sw self, my.bench.select()
                 }
@@ -1551,9 +1553,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
               flip {
                 def moveList = []
                 def labelList = []
-
-                moveList.addAll(defending.topPokemonCard.moves);
-                labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
+                def moves = defending.baseMoves
+                moveList.addAll(moves);
+                labelList.addAll(moves.collect{it.name})
 
                 def move=choose(moveList, labelList, "Which move do you want to use")
                 def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
@@ -1978,23 +1980,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               flip{
                 delayed{
                   before PLAY_TRAINER, {
-                    def flag = false
-                    before PROCESS_ATTACK_EFFECTS, {
-                      flag = true
-                    }
-                    before BETWEEN_TURNS, {
-                      flag = false
-                    }
-                    before USE_ABILITY, {
-                      flag = true
-                    }
-                    after POKEPOWER, {
-                      flag = false
-                    }
-                    after ACTIVATE_ABILITY, {
-                      flag = false
-                    }
-                    if (bg.currentTurn == self.owner.opposite && !flag) {
+                    if (bg.currentTurn == self.owner.opposite) {
                       wcu "Psyduck's Headache prevents playing this card!"
                       prevent()
                     }
@@ -2320,9 +2306,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
             my.hand.getExcludedList(thisCard).moveTo(hidden:true, my.deck)
             opp.hand.moveTo(hidden:true, opp.deck)
             shuffleDeck()
-            shuffleDeck(null,TargetPlayer.OPPONENT)
-            draw choose(1..my.prizeCardSet.size(),"How many cards would you like to draw?")
-            draw(oppChoose(1..opp.prizeCardSet.size(),"How many cards would you like to draw?"),TargetPlayer.OPPONENT)
+            shuffleOppDeck()
+            draw choose(1..my.prizeCardSet.size(),"How many cards would you like to draw?",my.prizeCardSet.size())
+            draw(oppChoose(1..opp.prizeCardSet.size(),"How many cards would you like to draw?",opp.prizeCardSet.size()),TargetPlayer.OPPONENT)
           }
           playRequirement{
           }
@@ -2404,13 +2390,11 @@ public enum TeamRocketReturns implements LogicCardInfo {
             def pcs = my.all.findAll{it.evolution}.select("Select the Pokémon to devolve.")
             if(pcs.evolution) {
               targeted (pcs, SRC_ABILITY) {
-                def top=pcs.topPokemonCard
-                devolve(pcs, top, my.deck)
-                checkFaint()
+                devolve(pcs, my.deck)
                 if(pcs) {
-                  def tar = my.deck.search(max:1,"Search for an Evolution card that evolves from that Pokémon",{it.cardTypes.is(EVOLUTION) && it.predecessor==pcs.name})
+                  def tar = my.deck.search(max:1,"Search for an Evolution card that evolves from that Pokémon",{it.cardTypes.is(EVOLUTION) && it.predecessors.contains(pcs.name)})
                   if(tar) {
-                    evolve(pcs,tar.first(),OTHER)
+                    evolve(pcs,tar.first())
                   }
                 }
                 shuffleDeck()
@@ -2433,7 +2417,6 @@ public enum TeamRocketReturns implements LogicCardInfo {
               my.discard.add(tpc)
               pcs.cards.remove(tpc)
               new CheckAbilities().run(bg)
-              checkFaint()
             }
             shuffleDeck()
           }
@@ -2474,16 +2457,14 @@ public enum TeamRocketReturns implements LogicCardInfo {
           def turnCount
           def check = {
             if (!(it.name.contains("Dark ") || it.name.contains("Rocket's "))) {
-              targeted null, SRC_SPENERGY, {
-                discard thisCard
-              }
+              discard thisCard
             }
           }
           onPlay { reason ->
             turnCount = bg.turnCount
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
-                targeted self, SRC_SPENERGY, {
+                targeted self, {
                   bg.dm().each {
                     if (it.from == self && it.to.active && it.notNoEffect && it.dmg.value) {
                       bc "R Energy +10"
@@ -2494,13 +2475,10 @@ public enum TeamRocketReturns implements LogicCardInfo {
               }
               before BETWEEN_TURNS, {
                 if (bg.turnCount == turnCount) {
-                  targeted null, SRC_SPENERGY, {
-                    discard thisCard
-                  }
+                  discard thisCard
                 }
               }
-              after EVOLVE, self, { check(self) }
-              after DEVOLVE, self, { check(self) }
+              after CHANGE_STAGE, self, { check(self) }
               after ATTACH_ENERGY, self, { check(self) }
               after CHECK_ABILITIES, { check(self) }
             }

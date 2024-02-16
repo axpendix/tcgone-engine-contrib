@@ -201,7 +201,7 @@ public enum PowerKeepers implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -382,9 +382,8 @@ public enum PowerKeepers implements LogicCardInfo {
         pokeBody "Primal Stare", {
           text "As long as Kabutops is your Active Pokémon, your opponent can't play any Basic Pokémon or Evolution cards from his or her hand to evolve his or her Active Pokémon."
           delayedA {
-            //TODO: Prevent Baby Evolution from happening.
-            before EVOLVE_STANDARD, {
-              if (ef.pokemonToBeEvolved.owner != self.owner && ef.pokemonToBeEvolved.active && self.active) {
+            before EVOLVE, {
+              if (ef.activationReason == PLAY_FROM_HAND && ef.pokemonToBeEvolved.owner != self.owner && ef.pokemonToBeEvolved.active && self.active) {
                 wcu "Primal Stare prevents evolving your Active Pokémon"
                 prevent()
               }
@@ -636,8 +635,7 @@ public enum PowerKeepers implements LogicCardInfo {
           }
           onAttack {
             opp.all.findAll { it.evolution }.each {
-              def top = it.topPokemonCard
-              devolve(it, top, opp.hand)
+              devolve(it, opp.hand)
             }
           }
         }
@@ -1693,7 +1691,7 @@ public enum PowerKeepers implements LogicCardInfo {
       case ENERGY_REMOVAL_2_74:
       return copy(Expedition.ENERGY_REMOVAL_2_140, this);
       case ENERGY_SWITCH_75:
-      return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this);
+      return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this)
       case GLACIA_S_STADIUM_76:
       return stadium (this) {
         text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can't play this card." +
@@ -1743,7 +1741,7 @@ public enum PowerKeepers implements LogicCardInfo {
         onPlay {
           eff = delayed {
             before APPLY_SPECIAL_CONDITION, {
-              def pcs = ef.getResolvedTarget(bg, e)
+              def pcs = ef.getTargetPokemon()
               if ( pcs.types.contains(D) && [ASLEEP, CONFUSED, PARALYZED].contains(ef.type) ) {
                 bc "Sidney's Stadium - [D] Pokémon can't be Asleep, Confused or Paralyzed."
                 prevent()
@@ -1925,7 +1923,7 @@ public enum PowerKeepers implements LogicCardInfo {
             my.hand.moveTo(hidden:true, my.deck)
             opp.hand.moveTo(hidden:true, opp.deck)
             shuffleDeck()
-            shuffleDeck(null, TargetPlayer.OPPONENT)
+            shuffleOppDeck()
             draw 4
             draw 4, TargetPlayer.OPPONENT
           }
@@ -2061,24 +2059,8 @@ public enum PowerKeepers implements LogicCardInfo {
             if (r==PLAY_FROM_HAND && confirm("Use Chilling Breath?")) {
               bc "Chlling Breath activates"
               delayed {
-                def flag = false
-                before PROCESS_ATTACK_EFFECTS, {
-                  flag = true
-                }
-                before BETWEEN_TURNS, {
-                  flag = false
-                }
-                before USE_ABILITY, {
-                  flag = true
-                }
-                after POKEPOWER, {
-                  flag = false
-                }
-                after ACTIVATE_ABILITY, {
-                  flag = false
-                }
                 before PLAY_TRAINER, {
-                  if (bg.currentTurn == self.owner.opposite && !flag) {
+                  if (bg.currentTurn == self.owner.opposite) {
                     wcu "Chilling Breath prevents playing Trainer cards"
                     prevent()
                   }

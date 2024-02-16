@@ -214,7 +214,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -239,9 +239,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
           onAttack {
             def moveList = []
             def labelList = []
-
-            moveList.addAll(defending.topPokemonCard.moves);
-            labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
+            def moves = defending.baseMoves
+            moveList.addAll(moves);
+            labelList.addAll(moves.collect{it.name})
 
             def move=choose(moveList, labelList)
             def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
@@ -1132,11 +1132,9 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
                     }
                   }
                   after FALL_BACK, pcs, {unregister()}
-                  after EVOLVE, pcs, {unregister()}
-                  after DEVOLVE, pcs, {unregister()}
+                  after CHANGE_STAGE, pcs, {unregister()}
                   after FALL_BACK,self, {unregister()}
-                  after EVOLVE,self, {unregister()}
-                  after DEVOLVE,self, {unregister()}
+                  after CHANGE_STAGE,self, {unregister()}
                   unregisterAfter 2
                 }
               }

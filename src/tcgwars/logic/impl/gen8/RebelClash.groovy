@@ -43,7 +43,7 @@ public enum RebelClash implements LogicCardInfo {
   TREVENANT_15 ("Trevenant", "15", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   GRUBBIN_16 ("Grubbin", "16", Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
   RILLABOOM_V_17 ("Rillaboom V", "17", Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _GRASS_]),
-  RILLABOOM_VMAX_18 ("Rillaboom VMAX", "18", Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _GRASS_]),
+  RILLABOOM_VMAX_18 ("Rillaboom VMAX", "18", Rarity.HOLORARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _GRASS_]),
   ELDEGOSS_V_19 ("Eldegoss V", "19", Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _GRASS_]),
   APPLIN_20 ("Applin", "20", Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
   APPLIN_21 ("Applin", "21", Rarity.HOLORARE, [POKEMON, BASIC, _GRASS_]),
@@ -61,7 +61,7 @@ public enum RebelClash implements LogicCardInfo {
   CHANDELURE_33 ("Chandelure", "33", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
   HEATMOR_34 ("Heatmor", "34", Rarity.HOLORARE, [POKEMON, BASIC, _FIRE_]),
   CINDERACE_V_35 ("Cinderace V", "35", Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _FIRE_]),
-  CINDERACE_VMAX_36 ("Cinderace VMAX", "36", Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _FIRE_]),
+  CINDERACE_VMAX_36 ("Cinderace VMAX", "36", Rarity.HOLORARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _FIRE_]),
   GALARIAN_MR_MIME_37 ("Galarian Mr. Mime", "37", Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
   GALARIAN_MR_RIME_38 ("Galarian Mr. Rime", "38", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
   MAGIKARP_39 ("Magikarp", "39", Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
@@ -75,7 +75,7 @@ public enum RebelClash implements LogicCardInfo {
   GALARIAN_DARUMAKA_47 ("Galarian Darumaka", "47", Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
   GALARIAN_DARMANITAN_48 ("Galarian Darmanitan", "48", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
   INTELEON_V_49 ("Inteleon V", "49", Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _WATER_]),
-  INTELEON_VMAX_50 ("Inteleon VMAX", "50", Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _WATER_]),
+  INTELEON_VMAX_50 ("Inteleon VMAX", "50", Rarity.HOLORARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _WATER_]),
   CRAMORANT_51 ("Cramorant", "51", Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
   ARROKUDA_52 ("Arrokuda", "52", Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
   BARRASKEWDA_53 ("Barraskewda", "53", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
@@ -96,7 +96,7 @@ public enum RebelClash implements LogicCardInfo {
   TOXEL_68 ("Toxel", "68", Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_]),
   TOXTRICITY_69 ("Toxtricity", "69", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _LIGHTNING_]),
   TOXTRICITY_V_70 ("Toxtricity V", "70", Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _LIGHTNING_]),
-  TOXTRICITY_VMAX_71 ("Toxtricity VMAX", "71", Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _LIGHTNING_]),
+  TOXTRICITY_VMAX_71 ("Toxtricity VMAX", "71", Rarity.HOLORARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _LIGHTNING_]),
   PINCURCHIN_V_72 ("Pincurchin V", "72", Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _LIGHTNING_]),
   MORPEKO_73 ("Morpeko", "73", Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_]),
   CLEFAIRY_74 ("Clefairy", "74", Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
@@ -118,7 +118,7 @@ public enum RebelClash implements LogicCardInfo {
   DRAKLOAK_90 ("Drakloak", "90", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
   DRAGAPULT_91 ("Dragapult", "91", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _PSYCHIC_]),
   DRAGAPULT_V_92 ("Dragapult V", "92", Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _PSYCHIC_]),
-  DRAGAPULT_VMAX_93 ("Dragapult VMAX", "93", Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _PSYCHIC_]),
+  DRAGAPULT_VMAX_93 ("Dragapult VMAX", "93", Rarity.HOLORARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _PSYCHIC_]),
   GALARIAN_FARFETCH_D_94 ("Galarian Farfetch’d", "94", Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
   GALARIAN_SIRFETCH_D_95 ("Galarian Sirfetch’d", "95", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   NOSEPASS_96 ("Nosepass", "96", Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
@@ -131,7 +131,7 @@ public enum RebelClash implements LogicCardInfo {
   BINACLE_103 ("Binacle", "103", Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
   BARBARACLE_104 ("Barbaracle", "104", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   ROLYCOLY_105 ("Rolycoly", "105", Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
-  CARKOAL_106 ("Carkoal", "106", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
+  CARKOAL_106 ("Carkol", "106", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   COALOSSAL_107 ("Coalossal", "107", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _FIGHTING_]),
   SANDACONDA_V_108 ("Sandaconda V", "108", Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _FIGHTING_]),
   FALINKS_109 ("Falinks", "109", Rarity.HOLORARE, [POKEMON, BASIC, _FIGHTING_]),
@@ -147,7 +147,7 @@ public enum RebelClash implements LogicCardInfo {
   VULLABY_119 ("Vullaby", "119", Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
   MANDIBUZZ_120 ("Mandibuzz", "120", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
   MALAMAR_V_121 ("Malamar V", "121", Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _DARKNESS_]),
-  MALAMAR_VMAX_122 ("Malamar VMAX", "122", Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _DARKNESS_]),
+  MALAMAR_VMAX_122 ("Malamar VMAX", "122", Rarity.HOLORARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _DARKNESS_]),
   IMPIDIMP_123 ("Impidimp", "123", Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
   MORGREM_124 ("Morgrem", "124", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
   GRIMMSNARL_125 ("Grimmsnarl", "125", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _DARKNESS_]),
@@ -162,7 +162,7 @@ public enum RebelClash implements LogicCardInfo {
   DOUBLADE_134 ("Doublade", "134", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
   AEGISLASH_135 ("Aegislash", "135", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _METAL_]),
   COPPERAJAH_V_136 ("Copperajah V", "136", Rarity.HOLORARE, [POKEMON, POKEMON_V, BASIC, _METAL_]),
-  COPPERAJAH_VMAX_137 ("Copperajah VMAX", "137", Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _METAL_]),
+  COPPERAJAH_VMAX_137 ("Copperajah VMAX", "137", Rarity.HOLORARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _METAL_]),
   DURALUDON_138 ("Duraludon", "138", Rarity.HOLORARE, [POKEMON, BASIC, _METAL_]),
   ZACIAN_139 ("Zacian", "139", Rarity.HOLORARE, [POKEMON, BASIC, _METAL_]),
   ZAMAZENTA_140 ("Zamazenta", "140", Rarity.HOLORARE, [POKEMON, BASIC, _METAL_]),
@@ -218,13 +218,13 @@ public enum RebelClash implements LogicCardInfo {
   MILO_190 ("Milo", "190", Rarity.HOLORARE, [TRAINER, SUPPORTER]),
   OLEANA_191 ("Oleana", "191", Rarity.HOLORARE, [TRAINER, SUPPORTER]),
   SONIA_192 ("Sonia", "192", Rarity.HOLORARE, [TRAINER, SUPPORTER]),
-  RILLABOOM_VMAX_193 ("Rillaboom VMAX", "193", Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _GRASS_]),
-  CINDERACE_VMAX_194 ("Cinderace VMAX", "194", Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _FIRE_]),
-  INTELEON_VMAX_195 ("Inteleon VMAX", "195", Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _WATER_]),
-  TOXTRICITY_VMAX_196 ("Toxtricity VMAX", "196", Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _LIGHTNING_]),
-  DRAGAPULT_VMAX_197 ("Dragapult VMAX", "197", Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _PSYCHIC_]),
-  MALAMAR_VMAX_198 ("Malamar VMAX", "198", Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _DARKNESS_]),
-  COPPERAJAH_VMAX_199 ("Copperajah VMAX", "199", Rarity.HOLORARE, [POKEMON, EVOLUTION, VMAX, _METAL_]),
+  RILLABOOM_VMAX_193 ("Rillaboom VMAX", "193", Rarity.HOLORARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _GRASS_]),
+  CINDERACE_VMAX_194 ("Cinderace VMAX", "194", Rarity.HOLORARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _FIRE_]),
+  INTELEON_VMAX_195 ("Inteleon VMAX", "195", Rarity.HOLORARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _WATER_]),
+  TOXTRICITY_VMAX_196 ("Toxtricity VMAX", "196", Rarity.HOLORARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _LIGHTNING_]),
+  DRAGAPULT_VMAX_197 ("Dragapult VMAX", "197", Rarity.HOLORARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _PSYCHIC_]),
+  MALAMAR_VMAX_198 ("Malamar VMAX", "198", Rarity.HOLORARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _DARKNESS_]),
+  COPPERAJAH_VMAX_199 ("Copperajah VMAX", "199", Rarity.HOLORARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _METAL_]),
   BOSS_S_ORDERS_200 ("Boss's Orders", "200", Rarity.HOLORARE, [TRAINER, SUPPORTER]),
   MILO_201 ("Milo", "201", Rarity.HOLORARE, [TRAINER, SUPPORTER]),
   OLEANA_202 ("Oleana", "202", Rarity.HOLORARE, [TRAINER, SUPPORTER]),
@@ -282,7 +282,7 @@ public enum RebelClash implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -294,7 +294,7 @@ public enum RebelClash implements LogicCardInfo {
         bwAbility "Adaptive Evolution", {
           text "This Pokémon can evolve during your first turn or the turn you play it."
           delayedA {
-            before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+            before PREVENT_EVOLVE, self, null, EVOLVE, {
               if (bg.currentTurn == self.owner){
                 powerUsed()
                 prevent()
@@ -316,7 +316,7 @@ public enum RebelClash implements LogicCardInfo {
         bwAbility "Adaptive Evolution", {
           text "This Pokémon can evolve during your first turn or the turn you play it."
           delayedA {
-            before PREVENT_EVOLVE, self, null, EVOLVE_STANDARD, {
+            before PREVENT_EVOLVE, self, null, EVOLVE, {
               if (bg.currentTurn == self.owner){
                 powerUsed()
                 prevent()
@@ -516,8 +516,7 @@ public enum RebelClash implements LogicCardInfo {
                   }
                   unregisterAfter 2
                   after FALL_BACK, pcs, {unregister()}
-                  after EVOLVE, pcs, {unregister()}
-                  after DEVOLVE, pcs, {unregister()}
+                  after CHANGE_STAGE, pcs, {unregister()}
                 }
               }
             }
@@ -632,7 +631,7 @@ public enum RebelClash implements LogicCardInfo {
         move "Forest Feast", {
           text "Search your deck for up to 2 Basic [G] Pokémon and put them onto your Bench. Then, shuffle your deck."
           energyCost G
-          callForFamily([basic:true, types:G], 2, delegate)
+          callForFamily([basic:true, types:[G]], 2, delegate)
         }
         move "Wood Hammer", {
           text "220 damage. This Pokémon also does 30 damage to itself."
@@ -816,11 +815,11 @@ public enum RebelClash implements LogicCardInfo {
           text "Choose 1 of your opponent’s Active Pokémon’s attacks and use it as this attack."
           energyCost R, C, C
           attackRequirement {
-            assert opp.active.topPokemonCard.moves : "No moves to use."
+            assert opp.active.baseMoves : "No moves to use."
           }
           onAttack {
             def list = []
-            defending.topPokemonCard.moves.each{
+            defending.baseMoves.each{
               def copy = it.shallowCopy()
               copy.energyCost = thisMove.energyCost
               list.add(copy)
@@ -1088,7 +1087,7 @@ public enum RebelClash implements LogicCardInfo {
           text "As long as this Pokémon is in play, prevent effects of opponent’s attacks done to all of your Pokémon with Energy attached to them. (This does not remove existing effects.)"
           delayedA {
             before null, null, Source.ATTACK, {
-              def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+              def pcs = e.getTargetPokemon()
               if (pcs && pcs.cards.energyCount(C) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs.owner==self.owner) {
                 bc "Galarian Mr. Rime's Screen Cleaner prevents effect."
                 prevent()
@@ -2260,8 +2259,7 @@ public enum RebelClash implements LogicCardInfo {
                 }
 
                 after FALL_BACK, self, { unregister() }
-                after EVOLVE, self, { unregister() }
-                after DEVOLVE, self, { unregister() }
+                after CHANGE_STAGE, self, { unregister() }
               }
             }
           }
@@ -2452,7 +2450,7 @@ public enum RebelClash implements LogicCardInfo {
         }
       };
       case COALOSSAL_107:
-      return evolution (this, from:"Carkoal", hp:HP160, type:F, retreatCost:4) {
+      return evolution (this, from:"Carkol", hp:HP160, type:F, retreatCost:4) {
         weakness G
         bwAbility "Tar Generator", {
           text "Once during your turn, you may search your discard pile for up to 1 [R] Energy and 1 [F] Energy and attach them to your Pokémon in any way you like."
@@ -3325,7 +3323,6 @@ public enum RebelClash implements LogicCardInfo {
           energyCost C
           onAttack {
             shuffleDeck(hand)
-            hand.clear()
             draw 5
           }
         }
@@ -3375,7 +3372,7 @@ public enum RebelClash implements LogicCardInfo {
           onAttack {
             flip {
               targeted (defending) {
-                defending.cards.reverse().discard()
+                defending.cards.discard()
                 removePCS(defending)
               }
             }
@@ -3542,14 +3539,14 @@ public enum RebelClash implements LogicCardInfo {
           draw num*2
         }
         playRequirement {
-          def hand = my.hand.getExcludedList(thisCard).size() >= 1
-          assert (hand || my.deck) : "Not enough cards in your hand or your deck is empty."
+          assert my.hand.getExcludedList(thisCard) : "Not enough cards in your hand"
+          assert my.deck : "Your deck is empty"
         }
       };
       case NUGGET_162:
       return itemCard (this) {
         text "Play this card only when you draw it from your deck at the start of your turn (before putting it into your hand). Draw 3 cards. You may play as many Item cards as you like during your turn (before your attack)."
-        globalAbility {Card thisCard->
+        initHook {Card thisCard->
           delayed {
             before DRAW_CARD, {
               if (thisCard.player.pbg.deck && bg.em().retrieveObject("Nugget") != bg.turnCount && bg.em().currentEffectStack.find{it instanceof BeginTurn} && thisCard.player.pbg.deck.get(0) == thisCard && bg.currentTurn == thisCard.player && confirm("Play Nugget?",thisCard.player)) {
@@ -3593,7 +3590,7 @@ public enum RebelClash implements LogicCardInfo {
           def validTargets = my.all.findAll{ !it.pokemonV && !it.pokemonGX }
 
           def tar = validTargets.select("Which Pokémon to put back into your hand?")
-          scoopUpPokemon(pokemonOnly:true, tar, delegate)
+          scoopUpPokemon(pokemonOnly: true, tar, delegate)
         }
         playRequirement {
           assertMyAll(negateVariants: true, hasVariants: [POKEMON_V, POKEMON_GX])
@@ -3682,7 +3679,7 @@ public enum RebelClash implements LogicCardInfo {
         def lastTurn=0
         def actions=[]
         onPlay {
-          actions=action("Stadium: Training Court") {
+          actions=action(thisCard, "Stadium: Training Court") {
             assert my.discard.find(cardTypeFilter(BASIC_ENERGY)) : "No Basic Energies in your discard pile."
             assert lastTurn != bg().turnCount : "Already used this turn."
             bc "Used Training Court effect."
@@ -3700,7 +3697,7 @@ public enum RebelClash implements LogicCardInfo {
         def lastTurn=0
         def actions=[]
         onPlay {
-          actions=action("Stadium: Turffield Stadium") {
+          actions=action(thisCard, "Stadium: Turffield Stadium") {
             assert my.deck : "Your deck is empty!."
             assert lastTurn != bg().turnCount : "Already used this turn."
             bc "Used Turffield Stadium effect."
@@ -3720,12 +3717,10 @@ public enum RebelClash implements LogicCardInfo {
         text "This card provides [C] Energy only while attached to a Pokémon. When attaching this card from your hand to 1 of your Pokémon, search your deck for a Basic Pokémon and put it on your Bench. Then, shuffle your deck."
         onPlay {reason->
           if (reason == PLAY_FROM_HAND && my.deck && my.bench.notFull) {
-            targeted null, SRC_SPENERGY, {
-              my.deck.search(count: 1, { it.cardTypes.is(BASIC) }).each {
-                benchPCS(it)
-              }
-              shuffleDeck()
+            my.deck.search(count: 1, { it.cardTypes.is(BASIC) }).each {
+              benchPCS(it)
             }
+            shuffleDeck()
           }
         }
         getEnergyTypesOverride {
@@ -3750,9 +3745,9 @@ public enum RebelClash implements LogicCardInfo {
             }
             after APPLY_ATTACK_DAMAGES, {
               if(attackDidDamage && self.cards.contains(thisCard) && ef.attacker.inPlay) { // this energy card is still attached
-                targeted ef.attacker as PokemonCardSet, SRC_SPENERGY, {
+                targeted ef.attacker as PokemonCardSet, {
                   bc "Horror [P] Energy activates."
-                  directDamage(20, ef.attacker as PokemonCardSet, SRC_SPENERGY)
+                  directDamage(20, ef.attacker as PokemonCardSet)
                 }
                 attackDidDamage = false
               }
@@ -3772,9 +3767,7 @@ public enum RebelClash implements LogicCardInfo {
         text "This card provides 1 [L] Energy while it’s attached to a Pokémon. When you attach this card from your hand to an [L] Pokémon, draw 2 cards"
         onPlay {reason->
           if (reason == PLAY_FROM_HAND && self.types.contains(L)) {
-            targeted null, SRC_SPENERGY, {
-              draw 2
-            }
+            draw 2
           }
         }
         getEnergyTypesOverride {

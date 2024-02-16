@@ -194,7 +194,7 @@ public enum CrystalGuardians implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -453,9 +453,8 @@ public enum CrystalGuardians implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            def trainer = my.deck.search(count:1, "Select an Trainer card",cardTypeFilter(TRAINER)).showToOpponent("Mining - This is the Trainer card your opponent picked.")
-            trainer.moveTo(my.hand)
-            if (trainer.first().cardTypes.is(POKEMON_TOOL)) {
+            def trainer = my.deck.search("Select an Trainer card",cardTypeFilter(TRAINER)).showToOpponent("Mining - This is the Trainer card your opponent picked.").moveTo(my.hand)
+            if (trainer && trainer.hasType(POKEMON_TOOL) && confirm("Do you wish to attach $trainer too?")) {
               bg.em().run(new PlayCard(trainer.first()))
             }
             shuffleDeck()
@@ -1178,15 +1177,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Ascension", {
           text "Search your deck for a card that evolves from Shuppet and put it onto Shuppet. (This counts as evolving Shuppet.) Shuffle your deck afterward."
           energyCost C
-          attackRequirement {
-            assert my.deck
-          }
-          onAttack {
-            def nam=self.name
-            def tar = my.deck.search("Evolves from $nam", {it.cardTypes.is(EVOLUTION) && nam == it.predecessor})
-            if(tar) evolve(self, tar.first(), OTHER)
-            shuffleDeck()
-          }
+          ascension delegate
         }
         move "Tackle", {
           text "20 damage."
@@ -1746,14 +1737,7 @@ public enum CrystalGuardians implements LogicCardInfo {
             }
           }
           eff2 = delayed {
-            after EVOLVE, self, {check(self)}
-            after DEVOLVE, self, {check(self)}
-            //TODO: onMove() instead of this
-            after PROCESS_ATTACK_EFFECTS, {
-              if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
-                check(self)
-              }
-            }
+            after CHANGE_STAGE, self, {check(self)}
           }
           check(self)
           new CheckAbilities().run(bg)
@@ -1818,17 +1802,15 @@ public enum CrystalGuardians implements LogicCardInfo {
         def eff, eff2
         def flag = false
         onPlay { reason ->
-          eff = getter (GET_MOVE_LIST) { holder->
-            if(holder.effect.target.active && holder.effect.target.evolution) {
-              for(card in holder.effect.target.cards.filterByType(STAGE1, BASIC)) {
-                if(card!=holder.effect.target.topPokemonCard){
-                  holder.object.addAll(card.moves)
-                }
+          eff = getter (GET_MOVE_LIST, self) { holder->
+            if(self.active && self.evolution) {
+              for(card in self.pokemonCardsExceptTop) {
+                holder.object.addAll(card.moves)
               }
             }
           }
           eff2 = delayed {
-            before ATTACK_MAIN, {
+            before PROCESS_ATTACK_EFFECTS, {
               flag = (ef.attacker == self)
             }
             before BETWEEN_TURNS, {
@@ -1860,7 +1842,7 @@ public enum CrystalGuardians implements LogicCardInfo {
               }
             }
             before null, self, Source.ATTACK, {
-              def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+              def pcs = e.getTargetPokemon()
               if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs == self) {
                 bc "$name prevents effect"
                 prevent()
@@ -1873,14 +1855,7 @@ public enum CrystalGuardians implements LogicCardInfo {
                 discard thisCard
               }
             }
-            after EVOLVE, self, {check(self)}
-            after DEVOLVE, self, {check(self)}
-            //TODO: onMove() instead of this
-            after PROCESS_ATTACK_EFFECTS, {
-              if(["Switcheroo", "Trick"].contains( (ef as Attack).move.name )){
-                check(self)
-              }
-            }
+            after CHANGE_STAGE, self, {check(self)}
           }
           check(self)
         }
@@ -2107,7 +2082,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Star Light", {
           text "As long as your opponent has any Pokémon-ex or Stage 2 Evolved Pokémon in play, Jirachi ex pays [C] less Energy to use Shield Beam or Super Psy Bolt."
           getterA (GET_MOVE_LIST, BEFORE_LAST, self) {h->
-						if (opp.all.any{ it.EX || (it.evolution && it.stage2 ) }) {
+            if (opp.all.any{ it.EX || (it.evolution && it.stage2 ) }) {
               def list=[]
               for (move in h.object) {
                 def copy = move.shallowCopy()
@@ -2116,14 +2091,14 @@ public enum CrystalGuardians implements LogicCardInfo {
               }
               h.object=list
             }
-					}
+          }
         }
         move "Shield Beam", {
           text "30 damage. During your opponent's next turn, your opponent can't use any Poké-Powers on his or her Pokémon."
           energyCost P, C
           onAttack {
             damage 30
-            afterDamage {
+            runAtBeginningOfYourOpponentsTurn {
               delayed {
                 def eff
                 register{
@@ -2132,13 +2107,11 @@ public enum CrystalGuardians implements LogicCardInfo {
                       h.object=true
                     }
                   }
-                  new CheckAbilities().run(bg)
                 }
                 unregister{
                   eff.unregister()
-                  new CheckAbilities().run(bg)
                 }
-                unregisterAfter 2
+                unregisterAfter 1
               }
             }
           }
@@ -2181,7 +2154,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         weakness R
         resistance W, MINUS30
         pokeBody "Extra Liquid", {
-          def eff, source, target
+          def eff
           text "Each player's Pokémon-ex can't use any Poké-Powers and pays [C] more Energy to use its attacks. Each Pokémon can't be affected by more than 1 Extra Liquid Poké-Body."
           getterA (IS_ABILITY_BLOCKED) { Holder h ->
             if (h.effect.target.EX) {
@@ -2191,26 +2164,15 @@ public enum CrystalGuardians implements LogicCardInfo {
             }
           }
           onActivate {
-            eff = getter GET_MOVE_LIST, { h ->
-              if (h.effect.target.EX) {
+            eff = getter (GET_MOVE_LIST, BEFORE_LAST) { h ->
+              if (h.effect.target.EX && !h.context["Extra_Liquid"]) {
                 def list = []
                 for (move in h.object) {
                   def copy = move.shallowCopy()
-                  target = bg.em().retrieveObject("Extra_Liquid_target")
-                  target = target ? target : []
-                  source = bg.em().retrieveObject("Extra_Liquid_source")
-                  source = source ? source : []
-                  if(!target.contains(h.effect.target)){
-                    copy.energyCost.add(C)
-                    target.add(h.effect.target)
-                    bg.em().storeObject("Extra_Liquid_target", target)
-                    source.add(self)
-                    bg.em().storeObject("Extra_Liquid_source", source)
-                  } else if(source.get(target.indexOf(h.effect.target)) == self){
-                    copy.energyCost.add(C)
-                  }
+                  copy.energyCost.add(C)
                   list.add(copy)
                 }
+                h.context["Extra_Liquid"] = 1
                 h.object=list
               }
             }
@@ -2218,10 +2180,6 @@ public enum CrystalGuardians implements LogicCardInfo {
           }
           onDeactivate {
             eff.unregister()
-            target = []
-            source = []
-            bg.em().storeObject("Extra_Liquid_target", target)
-            bg.em().storeObject("Extra_Liquid_source", source)
             new CheckAbilities().run(bg)
           }
         }
@@ -2241,29 +2199,10 @@ public enum CrystalGuardians implements LogicCardInfo {
         pokeBody "Dark Eyes", {
           text "After your opponent's Pokémon uses a Poké-Power, put 2 damage counters on that Pokémon."
           delayedA {
-            def pcs = null
-            def pcsTPC = null
-            before USE_ABILITY, {
-              if ((ef.getResolvedTarget(bg, e) as PokemonCardSet).owner == self.owner.opposite && ef.ability instanceof PokePower){
-                pcs = ef.getResolvedTarget(bg, e)
-                pcsTPC = pcs.topPokemonCard
-              }
-            }
-            //TODO: Maybe update this so it actually stop working immediately after Imprison-like powers block it. Is there any other power that can block it?
-            after POKEPOWER, {
-              if (pcs && pcs.cards && pcsTPC == pcs.topPokemonCard) {
+            after USE_ABILITY_OUTER, {
+              if (ef.targetPokemon.owner != self.owner && ef.ability instanceof PokePower) {
                 bc "Dark Eyes activates"
-                directDamage(20, pcs, Source.SRC_ABILITY)
-                pcs = null
-                pcsTPC = null
-              }
-            }
-            after ACTIVATE_ABILITY, {
-              if (pcs && pcs.cards && pcsTPC == pcs.topPokemonCard) {
-                bc "Dark Eyes activates"
-                directDamage(20, pcs, Source.SRC_ABILITY)
-                pcs = null
-                pcsTPC = null
+                directDamage(20, ef.targetPokemon)
               }
             }
           }
@@ -2331,27 +2270,18 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Skill Copy", {
           text "Discard a Basic Pokémon or Evolution card from your hand. Choose 1 of that card's attacks. Skill Copy copies that attack. This attack does nothing if Alakazam Star doesn't have the Energy necessary to use that attack. (You must still do anything else required for that attack.) Alakazam Star performs that attack."
           energyCost C, C, C
-          def flag
+          def filter = {my.hand.findAll{(it.cardTypes.is(BASIC) || it.cardTypes.is(EVOLUTION)) && it instanceof PokemonCard && it.moves}}
           attackRequirement {
-            assert (flag || my.hand.filterByType(POKEMON)) : "No Pokémon in hand" //TODO: Ignore BREAKs and LEGENDs.
+            assert filter() : "No Basic or Evolution Pokémon with attacks in hand"
           }
           onAttack {
-            flag = true
-            def tmp = my.hand.filterByType(POKEMON).select(min:0, max:1, "Discard a Pokémon and use one of that Pokémon’s attacks as this attack.")
-            if (tmp) {
-              def card = tmp.first()
-              bc "$card was chosen"
-              discard card
-              def moves = card.asPokemonCard().moves
-              if (moves) {
-                def move = choose(moves, "Choose attack")
-                bc "$move was chosen"
-                def bef=blockingEffect(BETWEEN_TURNS)
-                attack (move as Move)
-                bef.unregisterItself(bg().em())
-                flag = false
-              }
-            }
+            def card = filter().select("Discard a Pokémon and use one of that Pokémon’s attacks as this attack.").first()
+            def move = choose(card.asPokemonCard().moves, "Choose attack to perform") as Move
+            bc "$move was chosen"
+            def bef=blockingEffect(BETWEEN_TURNS)
+            attack (move)
+            bef.unregisterItself(bg().em())
+            discard card // discard at the end because CHECK_ATTACK_REQUIREMENTS effect is rerun with subattack and since the presence of a pokemon card in hand is a requirement, it makes the subattack fail miserably.
           }
         }
       };
@@ -2365,11 +2295,11 @@ public enum CrystalGuardians implements LogicCardInfo {
               if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
                 bc "$self - Time Travel activated"
                 flip 1, {
-                  bc "$self is not knocked out and moved to the deck"
-                  prevent()
+                  bc "$self is not knocked out and is moved to bottom of deck."
                   self.cards.getExcludedList(self.topPokemonCard).discard()
-                  self.cards.moveTo(my.deck)
+                  moveCard(self.topPokemonCard, my.deck)
                   removePCS(self)
+                  prevent()
                 }
               }
             }

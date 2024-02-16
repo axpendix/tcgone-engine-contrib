@@ -211,7 +211,7 @@ public enum Stormfront implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -266,8 +266,7 @@ public enum Stormfront implements LogicCardInfo {
                   }
                 }
                 unregisterAfter(2)
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
                 after FALL_BACK, self, {unregister()}
               }
             }
@@ -280,7 +279,7 @@ public enum Stormfront implements LogicCardInfo {
           pokePower "Emperor Aura", {
             text "Once during your turn , when you play Empoleon from your hand to evolve 1 of your Active Pokémon, you may use this power. Your opponent can’t attach any Energy cards from his or her hand to his or her Pokémon during your opponent’s next turn."
             onActivate {r->
-              if (r==PLAY_FROM_HAND && confirm("Use Emperor Aura?")) {
+              if (r==PLAY_FROM_HAND && self.active && confirm("Use Emperor Aura?")) {
                 powerUsed()
                 delayed {
                   before ATTACH_ENERGY, {
@@ -352,8 +351,7 @@ public enum Stormfront implements LogicCardInfo {
                   }
                   unregisterAfter 2
                   after FALL_BACK, self, {unregister()}
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
+                  after CHANGE_STAGE, self, {unregister()}
                 }
               }
             }
@@ -669,9 +667,9 @@ public enum Stormfront implements LogicCardInfo {
               if (r==PLAY_FROM_HAND && my.all.find{it.types.contains(G)} && my.deck && confirm("Use Sunshine Song?")) {
                 powerUsed()
                 multiSelect(my.all,0,my.all.findAll{it.types.contains(G)}.size(),"Select as many of you [G] Pokémon in play as you like.").each {pcs->
-                  def evolution = deck.search ("Select a Pokémon that evolves from $pcs.", {it.cardTypes.is(EVOLUTION) && it.predecessor == pcs.name}).first()
+                  def evolution = deck.search ("Select a Pokémon that evolves from $pcs.", {it.cardTypes.is(EVOLUTION) && it.predecessors.contains(pcs.name)}).first()
                   if(evolution) {
-                    evolve(pcs, evolution, OTHER)
+                    evolve(pcs, evolution)
                   }
                 }
               }
@@ -692,8 +690,8 @@ public enum Stormfront implements LogicCardInfo {
             onAttack {
               damage 80
               delayed {
-                after PLAY_BASIC_POKEMON, {
-                  if(bg.currentTurn == self.owner.opposite){
+                after PUT_ON_BENCH, {
+                  if(ef.basicFromHand && bg.currentTurn == self.owner.opposite){
                     ef.place.damage += 20
                   }
                 }
@@ -1142,10 +1140,12 @@ public enum Stormfront implements LogicCardInfo {
             onAttack {
               def tar = opp.all.select("Choose 1 of your opponent's Pokémon")
               damage 30, tar
-              flip {
-                if(tar.cards.filterByType(ENERGY)) {
-                  targeted(tar){
-                    tar.cards.select("Choose an energy to discard from $tar",cardTypeFilter(ENERGY)).discard()
+              afterDamage{
+                flip {
+                  if(tar.cards.filterByType(ENERGY)) {
+                    targeted(tar){
+                      tar.cards.select("Choose an energy to discard from $tar",cardTypeFilter(ENERGY)).discard()
+                    }
                   }
                 }
               }
@@ -1261,9 +1261,7 @@ public enum Stormfront implements LogicCardInfo {
                     }
                     unregisterAfter 2
                     after FALL_BACK, pcs, {unregister()}
-                    after EVOLVE, pcs, {unregister()}
-                    after DEVOLVE, pcs, {unregister()}
-                    after LEVEL_UP, pcs, {unregister()}
+                    after CHANGE_STAGE, pcs, {unregister()}
                   }
                 }
               }
@@ -1294,11 +1292,20 @@ public enum Stormfront implements LogicCardInfo {
           weakness L, PLUS30
           resistance F, MINUS20
           pokeBody "Protect Wing", {
-            text "As long as Staraptor is your Active Pokémon, any damage done by attacks from your opponent’s Stage 2 Evolved Pokémon is reduced by 20 ."
+            text "As long as Staraptor is your Active Pokémon, any damage done by attacks from your opponent’s Stage 2 Pokémon is reduced by 20 ."
+            // ERRATA:
+            //    Some abilities referring to "Stage 2 Evolved Pokémon" are receiving errata.
+            //    These cards do not care if the Pokémon is evolved or not, only if it is a Stage 2 Pokémon.
+            //    So, Stage 2 Pokémon put into play with abilities like Garchomp LV.X's "Restore" attack still count for these abilities.
+            //    Staraptor's correct card text should read: "(Poké-Body) Protect Wing - As long as Staraptor is your Active Pokémon,
+            //    any damage done by attacks from your opponent's Stage 2 Pokémon is reduced by 20 (after applying Weakness and Resistance)".
+            //
+            //    (May 1, 2009 Pokemon Organized Play News; May 7, 2009 PUI Rules Team)
+            //
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if (self.active && it.from.stage2 && it.from.evolution && it.to.owner == self.owner && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
+                  if (self.active && it.from.stage2 && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
                     bc "$thisAbility -20"
                     it.dmg -= hp(20)
                   }
@@ -1317,7 +1324,7 @@ public enum Stormfront implements LogicCardInfo {
                 def tar = opp.bench.select()
                 targeted(tar) {
                   tar.cards.moveTo(opp.deck)
-                  shuffleDeck(null, TargetPlayer.OPPONENT)
+                  shuffleOppDeck()
                   removePCS(tar)
                 }
               }
@@ -1404,8 +1411,8 @@ public enum Stormfront implements LogicCardInfo {
           pokeBody "Darkness Drive", {
             text "After your opponent’s Pokémon uses a Poké-Power, you may search your discard pile for a basic [D] Energy and attach it to Tyranitar."
             delayedA {
-              after POKEPOWER, {
-                if (self.owner.pbg.discard.filterByBasicEnergyType(D) && confirm("Use Darkness Drive?",self.owner)) {
+              after USE_ABILITY_OUTER, {
+                if (ef.targetPokemon.owner != self.owner && ef.ability instanceof PokePower && self.owner.pbg.discard.filterByBasicEnergyType(D) && confirm("Use Darkness Drive?",self.owner)) {
                   bc "Darkness Drive activates"
                   def card = self.owner.pbg.discard.select("Select a basic [D] Energy to attach to $self",basicEnergyFilter(D),self.owner).first()
                   attachEnergy(self,card)
@@ -1480,7 +1487,7 @@ public enum Stormfront implements LogicCardInfo {
             text "Prevent all effects of attacks, excluding damage, done to Bibarel."
             delayedA {
               before null, null, ATTACK, {
-                if (ef instanceof TargetedEffect && bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE && (ef as TargetedEffect).getResolvedTarget(bg, e) == self) {
+                if (ef instanceof TargetedEffect && bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE && e.getTargetPokemon() == self) {
                   bc "$thisAbility prevents all effects done to $self."
                   prevent()
                 }
@@ -1535,14 +1542,10 @@ public enum Stormfront implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Roselia from your hand onto Budew (this counts as evolving Budew) and remove all damage counters from Budew."
             actionA {
-              assert my.hand.findAll{it.name.contains("Roselia")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Roselia", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Roselia") }.select()
-              if (tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution("Roselia", self)
             }
           }
           move "Buddy-buddy", {
@@ -1617,7 +1620,7 @@ public enum Stormfront implements LogicCardInfo {
 
         };
       case ELECTRODE_36:
-        return evolution (this, from:"Voltorb", hp:HP090, type:LIGHTNING, retreatCost:1) {
+        return evolution (this, from:"Voltorb", hp:HP090, type:LIGHTNING, retreatCost:0) {
           weakness F, PLUS20
           resistance M, MINUS20
           pokeBody "Radiance", {
@@ -1832,7 +1835,7 @@ public enum Stormfront implements LogicCardInfo {
         };
       case MILTANK_44:
         return basic (this, hp:HP070, type:COLORLESS, retreatCost:1) {
-          weakness F
+          weakness F, PLUS20
           move "Collect", {
             text "Draw a card."
             energyCost C
@@ -1877,14 +1880,10 @@ public enum Stormfront implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn , you may put Pikachu from your hand onto Pichu (this counts as evolving Pichu) and remove all damage counters from Pichu."
             actionA {
-              assert my.hand.findAll{it.name.contains("Pikachu")} : "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve("Pikachu", self)
               checkLastTurn()
               powerUsed()
-              def tar = my.hand.findAll { it.name.contains("Pikachu") }.select()
-              if (tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution("Pikachu", self)
             }
           }
           move "Electric Circuit", {
@@ -1969,20 +1968,12 @@ public enum Stormfront implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              def bef = delayed {
-                before PREVENT_PLAY_SUPPORTER, null, null, PLAY_TRAINER, {
-                  prevent()
-                }
-              }
               def card = my.deck.search("Search your deck for a Supporter and copy its effect as this attack.",cardTypeFilter(SUPPORTER)).first()
               if(card) {
-                bg.deterministicCurrentThreadPlayerType=self.owner
-                bg.em().run(new PlayTrainer(card))
-                bg.clearDeterministicCurrentThreadPlayerType()
                 discard card
+                bg.em().run(new ActivateSimpleTrainer(card))
               }
               shuffleDeck()
-              bef.unregister()
             }
           }
           move "Overconfident", {
@@ -2046,7 +2037,7 @@ public enum Stormfront implements LogicCardInfo {
       case SKARMORY_51:
         return basic (this, hp:HP080, type:METAL, retreatCost:1) {
           weakness L, PLUS20
-          resistance M, MINUS20
+          resistance F, MINUS20
           move "Quick Attack", {
             text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 20 more damage."
             energyCost M
@@ -2143,7 +2134,7 @@ public enum Stormfront implements LogicCardInfo {
           resistance R, MINUS20
           move "Gyro Swap", {
             text "Put a number of damage counters on the Defending Pokémon equal to the number of [C] Energy in Bronzor's Retreat Cost ."
-            energyCost P, C
+            energyCost P
             attackRequirement {
               assert self.retreatCost > 0 : "$self's retreat cost is 0"
             }
@@ -2485,8 +2476,7 @@ public enum Stormfront implements LogicCardInfo {
                   }
                 }
                 unregisterAfter 2
-                after EVOLVE,self, {unregister()}
-                after DEVOLVE,self, {unregister()}
+                after CHANGE_STAGE,self, {unregister()}
                 after FALL_BACK,self, {unregister()}
               }
             }
@@ -2807,7 +2797,7 @@ public enum Stormfront implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Conductive Quarry") {
+            actions=action(thisCard, "Stadium: Conductive Quarry") {
               assert my.discard.find{it.cardTypes.is(ENERGY) && (it.asEnergyCard().containsType(L)||it.asEnergyCard().containsType(M))} : "There are no [L] or [M] Energy cards in your discard pile"
               assert lastTurn != bg().turnCount : "You've already used Conductive Quarry this turn."
               bc "Used Conductive Quarry"
@@ -2827,7 +2817,7 @@ public enum Stormfront implements LogicCardInfo {
           def actions=[]
           onPlay {reason->
             if(!bg.em().retrieveObject("Energy_Link+$thisCard.player")) {
-              actions = action("Energy Link",[TargetPlayer.SELF]) {
+              actions = action(thisCard, "Energy Link",[TargetPlayer.SELF]) {
                 assert my.all.findAll{it.cards.find{it.name == "Energy Link"}}.size() >= 2 : "You don't have 2 Energy Link in play"
                 assert my.all.find{it.cards.find{it.name == "Energy Link"} && it.cards.filterByType(ENERGY)} : "You don't have any Energy attached to your Pokémon with Energy Link attached"
                 def src=my.all.findAll {it.cards.find{it.name == "Energy Link"} && it.cards.filterByType(ENERGY)}.select("Source for Energy")
@@ -2848,7 +2838,7 @@ public enum Stormfront implements LogicCardInfo {
           }
         };
       case ENERGY_SWITCH_84:
-        return copy(BlackWhite.ENERGY_SWITCH_94, this);
+        return copy(FireRedLeafGreen.ENERGY_SWITCH_90, this)
       case GREAT_BALL_85:
         return copy(FireRedLeafGreen.GREAT_BALL_92, this);
       case LUXURY_BALL_86:
@@ -2997,7 +2987,7 @@ public enum Stormfront implements LogicCardInfo {
                       moveCard(pkmnCard, thisCard.player.pbg.hand)
                     }
                   }
-                  stadiumCard.player = thisCard.player
+                  stadiumCard.initializeFrom thisCard
                   bg.em().run(new ChangeImplementation(stadiumCard, pkmnCard))
                   if (bg.stadiumInfoStruct) {
                     discardStadium()
@@ -3033,24 +3023,14 @@ public enum Stormfront implements LogicCardInfo {
           }
           pokeBody "Heat Metal", {
             text "Your opponent can’t remove the Special Condition Burned by evolving or devolving his or her Burned Pokémon. (This also includes putting a Pokémon Level-Up card onto the Burned Pokémon.) Whenever your opponent flips a coin for the Special Condition Burned between turns, treat it as tails."
-            def eff1, eff2, eff3, eff4, eff5
+            def eff1, eff4, eff5
             onActivate {
-              eff1 = delayed {//This was tripple triggering when put into a single delayed effect. This works but I don't know why.
-                before BURNED_SPC, null, null, EVOLVE, {
-                  bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
-                  prevent()
-                }
-              }
-              eff2 = delayed {
-                before BURNED_SPC, null, null, DEVOLVE, {//TODO: This doesn't work. REMOVE_FROM_PLAY is what actually clears the special condition and I don't know how to tell the difference.
-                  bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
-                  prevent()
-                }
-              }
-              eff3 = delayed {
-                before BURNED_SPC, null, null, LEVEL_UP, {
-                  bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving"
-                  prevent()
+              eff1 = delayed {
+                before BURNED_SPC, null, null, CHANGE_STAGE, {
+                  if (bg.em().currentEffectStack.find{it.effectType == EVOLVE || it.effectType == DEVOLVE || it.effectType == LEVEL_UP}) {
+                    bc "Heat Metal prevents removing the Special Condition Burned by evolving or devolving or levelling up"
+                    prevent()
+                  }
                 }
               }
               def heatMetalFlag
@@ -3073,8 +3053,6 @@ public enum Stormfront implements LogicCardInfo {
             }
             onDeactivate {
               eff1.unregister()
-              eff2.unregister()
-              eff3.unregister()
               eff4.unregister()
               eff5.unregister()
             }
@@ -3100,9 +3078,9 @@ public enum Stormfront implements LogicCardInfo {
         };
       case MACHAMP_LV_X_98:
         return levelUp (this, from:"Machamp", hp:HP150, type:FIGHTING, retreatCost:3) {
-          weakness P
+          weakness P, PLUS40
           pokeBody "No Guard", {
-            text "As long as Machamp is your Active Pokémon, each of Machamp’s attacks does 60 more damage to the Active Pokémon and any damage done to Machamp by your opponent’s Pokémon is increased by 60 ."
+            text "As long as Machamp is your Active Pokémon, each of Machamp’s attacks does 60 more damage to the Active Pokémon (before applying Weakness and Resistance) and any damage done to Machamp by your opponent’s Pokémon is increased by 60 (after applying Weakness and Resistance)."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
                 if(ef.attacker==self) bg.dm().each {
@@ -3114,7 +3092,7 @@ public enum Stormfront implements LogicCardInfo {
               }
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if(it.to == self && it.dmg.value && it.notNoEffect){
+                  if(it.to == self && self.active && it.dmg.value && it.notNoEffect){
                     bc "No Guard +60"
                     it.dmg+=hp(60)
                   }
@@ -3128,20 +3106,19 @@ public enum Stormfront implements LogicCardInfo {
             onAttack {
               damage 20
               afterDamage {
-                flip{
-                  delayed {
-                    before KNOCKOUT, self, {
-                      if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
+                delayed {
+                  before KNOCKOUT, self, {
+                    if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
+                      flip {
                         self.damage = self.fullHP - hp(10)
                         bc "$self endured the hit!"
                         prevent()
                       }
                     }
-                    unregisterAfter 2
-                    after EVOLVE, self, {unregister()}
-                    after DEVOLVE, self, {unregister()}
-                    after FALL_BACK, self, {unregister()}
                   }
+                  unregisterAfter 2
+                  after CHANGE_STAGE, self, {unregister()}
+                  after FALL_BACK, self, {unregister()}
                 }
               }
             }
@@ -3171,9 +3148,8 @@ public enum Stormfront implements LogicCardInfo {
                 if (flag && !self.specialConditions) {
                   def moveList = []
                   moveList.add("Don't attack")
-                  moveList.addAll(self.topPokemonCard.moves)
-                  moveList.addAll(self.topNonLevelUpPokemonCard.moves)//TODO: This breaks with Technical Machines. I wonder if the testers will notice?
-                  def move = choose(moveList, "Choose attack", moveList[0])
+                  moveList.addAll(self.baseMoves)
+                  def move = choose(moveList, "Link Lightning: Choose attack", moveList[0])
                   if(move != "Don't attack") {
                     def bef=blockingEffect(BETWEEN_TURNS)
                     flag = false
@@ -3369,8 +3345,7 @@ public enum Stormfront implements LogicCardInfo {
                       }
                       unregisterAfter 2
                       after FALL_BACK, pcs, {unregister()}
-                      after EVOLVE, pcs, {unregister()}
-                      after DEVOLVE, pcs, {unregister()}
+                      after CHANGE_STAGE, pcs, {unregister()}
                     }
                   }
                 }
@@ -3395,7 +3370,7 @@ public enum Stormfront implements LogicCardInfo {
           }
           move "Charge Beam", {
             text "10 damage. Search your discard pile for a [L] Energy card and attach it to Voltorb. ."
-            energyCost L, L
+            energyCost L
             onAttack {
               damage 10
               afterDamage {

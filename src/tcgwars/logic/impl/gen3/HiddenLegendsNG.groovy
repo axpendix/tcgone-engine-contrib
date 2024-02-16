@@ -184,7 +184,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -665,8 +665,9 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         weakness L
         pokePower "Temperamental Weather", {
           text "Once during your turn (before your attack), you may search your deck for Castform, Sunny Castform, or Snow-cloud Castform and switch it with Rain Castform. (Any cards attached to Rain Castform, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Rain Castform back into your deck. You can't use more than 1 Temperamental Weather Poké-Power each turn."
-          actionA {
-          }
+          formChange(delegate, "Temperamental Weather", {
+            it.name == "Sunny Castform" || it.name == "Castform" || it.name == "Snow-cloud Castform"
+          })
         }
         move "Scattered Shower", {
           text "Shuffle your hand into your deck. Draw up to 5 cards."
@@ -707,8 +708,9 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         weakness M
         pokePower "Temperamental Weather", {
           text "Once during your turn (before your attack), you may search your deck for Castform, Rain Castform, or Sunny Castform and switch it with Snow-cloud Castform. (Any cards attached to Snow-cloud Castform, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Snow-cloud Castform back into your deck. You can't use more than 1 Temperamental Weather Poké-Power each turn."
-          actionA {
-          }
+          formChange(delegate, "Temperamental Weather", {
+            it.name == "Sunny Castform" || it.name == "Castform" || it.name == "Rain Castform"
+          })
         }
         move "Flurries", {
           text "Flip a coin. If heads, the Defending Pokémon is now Paralyzed. If tails, the Defending Pokémon is now Asleep."
@@ -732,8 +734,9 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         weakness W
         pokePower "Temperamental Weather", {
           text "Once during your turn (before your attack), you may search your deck for Castform, Rain Castform, or Snow-cloud Castform and switch it with Sunny Castform. (Any cards attached to Sunny Castform, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Sunny Castform back into your deck. You can't use more than 1 Temperamental Weather Poké-Power each turn."
-          actionA {
-          }
+          formChange(delegate, "Temperamental Weather", {
+            it.name == "Rain Castform" || it.name == "Castform" || it.name == "Snow-cloud Castform"
+          })
         }
         move "Sunshine", {
           text "Search your discard pile for a Stadium card, show it to your opponent, and put it into your hand."
@@ -813,8 +816,9 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         weakness F
         pokePower "Temperamental Weather", {
           text "Once during your turn (before your attack), you may search your deck for Sunny Castform, Rain Castform, or Snow-cloud Castform and switch it with Castform. (Any cards attached to Castform, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Castform back into your deck. You can't use more than 1 Temperamental Weather Poké-Power each turn."
-          actionA {
-          }
+          formChange(delegate, "Temperamental Weather", {
+            it.name == "Sunny Castform" || it.name == "Rain Castform" || it.name == "Snow-cloud Castform"
+          })
         }
         move "Forecast", {
           text "Search your deck for a Stadium card and play it. Shuffle your deck afterward."
@@ -1420,10 +1424,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         move "Ascension", {
           text "Search your deck for a card that evolves from Feebas and put it on Feebas. (This counts as evolving Feebas.) Shuffle your deck afterward."
           energyCost W
-          attackRequirement {}
-          onAttack {
-
-          }
+          ascension delegate
         }
       };
       case GULPIN_62:
@@ -1784,11 +1785,10 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         }
         move "Ascension", {
           text "Search your deck for a card that evolves from Vulpix and put it on Vulpix. (This counts as evolving Vulpix.) Shuffle your deck afterward."
-          energyCost
-          attackRequirement {}
-          onAttack {
-
-          }
+          // errata: https://compendium.pokegym.net/ruling/705/
+          // EX Hidden Legends Feebas is receiving errata for its "Ascension" attack to bring it in line with the Japanese version of the card. It should read, "Flip a coin. If heads, search your deck for a card that evolves from Feebas and put it on Feebas. (This counts as evolving Feebas.) Shuffle your deck afterward." Please note that this only affects Feebas; Vulpix's "Ascension" attack does not require a coin flip.
+          // TODO: Handle the coin flip mentioned in the errata
+          ascension delegate
         }
       };
       case WHISMUR_82:
@@ -1857,54 +1857,85 @@ public enum HiddenLegendsNG implements LogicCardInfo {
       return stadium (this) {
         text "Don't apply Weakness for all Pokémon in play (excluding Pokémon-ex and Pokémon that has an owner in its name)." +
           "This card stays in play when you play it. Discard this card if another Stadium card comes into play."
+        def eff
         onPlay {
+          eff = getter (GET_WEAKNESSES) {h->
+            if(!h.effect.target.EX && !h.effect.target.topPokemonCard.cardTypes.is(OWNERS_POKEMON)){
+              h.object = []
+            }
+          }
         }
         onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case DESERT_RUINS_88:
       return stadium (this) {
         text "At any time between turns, each player puts 1 damage counter on his or her Pokémon-ex with maximum HP of at least 100." +
           "This card stays in play when you play it. Discard this card if another Stadium card comes into play."
+        def eff
         onPlay {
+          eff = delayed {
+            before BEGIN_TURN, {
+              def once = true
+              all.each {
+                if(it.EX && it.fullHP.value >= 100){
+                  if(once) {
+                    bc "[Desert Ruins]"
+                    once = false
+                  }
+                  directDamage(10, it, TRAINER_CARD)
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case ISLAND_CAVE_89:
       return stadium (this) {
         text "Whenever any player attaches an Energy card from his or her hand to [W] Pokémon, [F] Pokémon, or [M] Pokémon, remove any Special Conditions from that Pokémon." +
           "This card stays in play when you play it. Discard this card if another Stadium card comes into play."
+        def eff
         onPlay {
+          eff = delayed {
+            after ATTACH_ENERGY, {
+              def pcs = ef.resolvedTarget
+              if (pcs.specialConditions && ef.fromHand && (pcs.types.contains(W) || pcs.types.contains(F) || pcs.types.contains(M))) {
+                bc "Island Cave removes all Special Conditions from $pcs"
+                clearSpecialCondition(pcs, TRAINER_CARD)
+              }
+            }
+          }
         }
         onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case LIFE_HERB_90:
-      return itemCard (this) {
-        text "Flip a coin. If heads, choose 1 of your Pokémon (excluding Pokémon-ex). Remove all Special Conditions and 6 damage counters from that Pokémon (all if it has less than 6)."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(FireRedLeafGreen.LIFE_HERB_93, this)
       case MAGNETIC_STORM_91:
       return stadium (this) {
         text "Any damage done by attacks from [P] Pokémon and [F] Pokémon (both yours and your opponent's) is not affected by Resistance." +
           "This card stays in play when you play it. Discard this card if another Stadium card comes into play."
+        def eff = null
         onPlay {
+          eff = delayed {
+            before APPLY_RESISTANCE, {
+              if (ef.attacker.types.containsAny(new TypeSet(F, P))) {
+                prevent()
+              }
+            }
+          }
         }
         onRemoveFromPlay{
+          eff.unregister()
         }
       };
       case STEVEN_S_ADVICE_92:
-      return supporter (this) {
-        text "Draw a number of cards up to the number of your opponent's Pokémon in play. If you have more than 7 cards (including this one) in your hand you can't play this card."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(PowerKeepers.STEVEN_S_ADVICE_83, this)
       case GROUDON_EX_93:
       return basic (this, hp:HP100, type:F, retreatCost:3) {
         weakness W

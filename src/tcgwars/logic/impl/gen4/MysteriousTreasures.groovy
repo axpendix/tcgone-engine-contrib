@@ -31,8 +31,9 @@ import tcgwars.logic.effect.basic.*;
 import tcgwars.logic.effect.blocking.*;
 import tcgwars.logic.effect.event.*;
 import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import tcgwars.logic.effect.special.*
+import tcgwars.logic.exception.NotEnoughEnergyException;
+import tcgwars.logic.util.*
 
 /**
  * @author axpendix@hotmail.com
@@ -210,7 +211,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -223,16 +224,18 @@ public enum MysteriousTreasures implements LogicCardInfo {
           move "Heap Up", {
             text "40+ damage. Search your discard pile for all Energy cards and show them to your opponent. If you find any [M] Special Energy cards there this attack does 40 damage plus 30 more damage. Put all of those Energy cards on top of your deck. Shuffle your deck afterward."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 40
               def tar = my.discard.filterByType(ENERGY)
-              tar.showToOpponent("Energy cards in your opponent's discard pile.")
-              def toReturn = tar.findAll{it.cardTypes.is(SPECIAL_ENERGY) && it.name == "Metal Energy"}
-              if (toReturn) {
-                damage 30
-                toReturn.moveTo(my.deck)
-                shuffleDeck()
+              if (tar) {
+                tar.showToOpponent("Opponent Used Heap Up: Search your discard pile for all Energy cards and show them to your opponent. If you find any [M] Special Energy cards there this attack does 40 damage plus 30 more damage. Put all of those Energy cards on top of your deck. Shuffle your deck afterward. These are the energy cards in your opponent's discard pile.")
+                if (tar.find{it.cardTypes.is(SPECIAL_ENERGY) && it.name == "Metal Energy"}) {
+                  damage 30
+                }
+                afterDamage {
+                  tar.moveTo(my.deck)
+                  shuffleDeck()
+                }
               }
             }
           }
@@ -257,9 +260,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
           pokePower "Power Cancel", {
             text "Once during your opponent’s turn, when your opponent’s Pokémon uses any Poké-Power, you may discard 2 cards from your hand and prevent all effects of that Poké-Power. (This counts as that Pokémon using its Poké-Power.) This power can’t be used if Alakazam is affected by a Special Condition."
             delayedA {
-              //Yeah this is gonna be a fun one. axpendix: it was fun, USE_ABILITY is new
-              before USE_ABILITY, {
-                PokemonCardSet pcs = ef.getResolvedTarget(bg, e)
+              before USE_ABILITY_INNER, {
+                PokemonCardSet pcs = ef.getTargetPokemon()
                 Ability ability = ef.ability
                 if(
                   ability instanceof PokePower &&
@@ -298,8 +300,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   }
                   unregisterAfter 2
                   after FALL_BACK, self, { unregister() }
-                  after EVOLVE, self, { unregister() }
-                  after DEVOLVE, self, { unregister() }
+                  after CHANGE_STAGE, self, { unregister() }
                 }
               }
             }
@@ -341,42 +342,27 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return basic (this, hp:HP060, type:PSYCHIC, retreatCost:1) {
           weakness P, PLUS20
           pokeBody "Downer Material", {
-            def eff, source, target
+            def eff
             text "If you have Uxie and Mesprit in play, the attack cost of each of your opponent’s Basic Pokémon’s attacks is [C] more. You can’t use more than 1 Downer Material Poké-Body each turn."
             def selfOwner = self.owner
             //Adapted from Sceptile-ex Delta (CG 96)
             onActivate {
               eff = getter GET_MOVE_LIST, { h ->
                 def condition = selfOwner.pbg.all.any { it.name == "Uxie" } && selfOwner.pbg.all.any { it.name == "Mesprit" }
-                if (condition && h.effect.target.owner != selfOwner && h.effect.target.basic) {
+                if (condition && h.effect.target.owner != selfOwner && h.effect.target.basic && !h.context["Downer_Material"]) {
                   def list = []
                   for (move in h.object) {
                     def copy = move.shallowCopy()
-                    target = bg.em().retrieveObject("Downer_Material_target")
-                    target = target ? target : []
-                    source = bg.em().retrieveObject("Downer_Material_source")
-                    source = source ? source : []
-                    if (!target.contains(h.effect.target)) {
-                      copy.energyCost.add(C)
-                      target.add(h.effect.target)
-                      bg.em().storeObject("Downer_Material_target", target)
-                      source.add(self)
-                      bg.em().storeObject("Downer_Material_source", source)
-                    } else if (source.get(target.indexOf(h.effect.target)) == self) {
-                      copy.energyCost.add(C)
-                    }
+                    copy.energyCost.add(C)
                     list.add(copy)
                   }
+                  h.context["Downer_Material"] = 1
                   h.object = list
                 }
               }
             }
             onDeactivate {
               eff.unregister()
-              target = []
-              source = []
-              bg.em().storeObject("Downer_Material_target", target)
-              bg.em().storeObject("Downer_Material_source", source)
             }
           }
           move "Bind Pulse", {
@@ -407,7 +393,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             actionA {
               checkNoSPC()
               checkLastTurn()
-              assert self.getPokemonCards().findAll {it.name.contains("Happiny")} : "Happiny is not found under $self, you can't use this Poké-Power"
+              assert self.getPokemonCards().find {it.name == "Happiny"} : "Happiny is not found under $self, you can't use this Poké-Power"
               assert my.hand : "You don't have any cards in your hand"
               def energyCount = self.cards.energyCount(C)
               assert energyCount : "You have no Energy attached to $self"
@@ -529,7 +515,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 60
-              discardRandomCardFromOpponentsHand()
+              afterDamage {
+                discardRandomCardFromOpponentsHand()
+              }
             }
           }
 
@@ -569,9 +557,18 @@ public enum MysteriousTreasures implements LogicCardInfo {
           resistance F, MINUS20
           pokeBody "Dark Genes", {
             text "As long as Honchkrow has the Energy necessary to use its attack, each of your Murkrow can use Honchkrow’s attack as its own without the Energy necessary to use that attack."
-            delayedA {
-              //TODO
-              //Future TODO: This should work even when Honchkrow levels up, as it has the attack and Poké-Power of the base one (and Lv.X's attacks should also be available to be copied)
+            getterA GET_MOVE_LIST, { h ->
+              PokemonCardSet hTarget = h.effect.target
+              if (hTarget.active && hTarget.owner == self.owner && hTarget.name == "Murkrow" && self.benched) {
+                List honchkrowMoves = bg.em().activateGetter(new GetMoveList(self))
+                for (move in honchkrowMoves) {
+                  if (self.cards.energySufficient(move.energyCost)) {
+                    Move copy = move.shallowCopy()
+                    copy.energyCost.clear()
+                    h.object.add(copy)
+                  }
+                }
+              }
             }
           }
           move "Dark Wing Flaps", {
@@ -626,12 +623,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
             text "80 damage. If Magby isn’t anywhere under Magmortar, discard 2 Energy cards from your hand. (If you can’t discard 2 Energy cards from your hand, this attack does nothing.)"
             energyCost R, R, C
             attackRequirement {
-              def condition1 = (self.getPokemonCards().any{it.name.contains("Magby")})
+              def condition1 = (self.getPokemonCards().any{it.name == "Magby"})
               def condition2 = (my.hand.filterByType(ENERGY).size() >= 2)
               assert (condition1 || condition2) : "Magby isn't anywhere under Magmortar, and you can't discard 2 Energy cards from your hand"
             }
             onAttack {
-              if (!self.getPokemonCards().any{it.name.contains("Magby")}) {
+              if (!self.getPokemonCards().any{it.name == "Magby"}) {
                 def tar = my.hand.filterByType(ENERGY).select(count:2, "Discard 2 Energies.")
                 afterDamage{
                   tar.discard()
@@ -920,7 +917,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               draw 1
-              if (self.getPokemonCards().any{it.name.contains("Chingling")}) { draw 2 }
+              if (self.getPokemonCards().any{it.name == "Chingling"}) { draw 2 }
             }
           }
           move "Strange Bell", {
@@ -1144,7 +1141,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           pokeBody "Jumbo Fin", {
             text "If Mantyke is anywhere under Mantine, the Retreat Cost for each of your [W] Pokémon is [C][C] less."
             getterA (GET_RETREAT_COST) { h->
-              if (self.getPokemonCards().any{it.name.contains("Mantyke")} && h.effect.target.owner == self.owner && h.effect.target.types.contains(W)) {
+              if (self.getPokemonCards().any{it.name == "Mantyke"} && h.effect.target.owner == self.owner && h.effect.target.types.contains(W)) {
                 h.object -= 2
               }
             }
@@ -1167,7 +1164,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             text "If your opponent’s Pokémon that has 2 or less Energy cards attached to it attacks Mr. Mime, prevent all damage done to Mr. Mime from that attack. If Mime Jr. is anywhere under Mr. Mime, prevent all effects of that attack, including damage, done to Mr. Mime."
             delayedA {
               before null, self, Source.ATTACK, {
-                if (self.getPokemonCards().any{it.name.contains("Mime Jr.")} && ((self.owner.opposite.pbg.active as PokemonCardSet).cards.energyCount(C) <= 2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                if (self.getPokemonCards().any{it.name == "Mime Jr."} && ((self.owner.opposite.pbg.active as PokemonCardSet).cards.energyCount(C) <= 2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
                   bc "$thisAbility prevents effect"
                   prevent()
                 }
@@ -1190,7 +1187,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               def playerPick = choose([0, 1], ["Heads", "Tails"], "You're putting a coin next to your active Pokémon without showing your opponent. Pick which side they must guess:")
-              def oppPick = choose([0, 1], ["Heads", "Tails"], "Your opponent put a coin next to their active Pokémon without showing you. You must guess if it's Heads or Tails. If you guess incorrectly, ${self} will do 50 damage to the Defending Pokémon. If you guess correctly, ${self} will do 20 damage to itself (ignoring W/R in this case):")
+              def oppPick = oppChoose([0, 1], ["Heads", "Tails"], "Your opponent put a coin next to their active Pokémon without showing you. You must guess if it's Heads or Tails. If you guess incorrectly, ${self} will do 50 damage to the Defending Pokémon. If you guess correctly, ${self} will do 20 damage to itself (ignoring W/R in this case):")
               if (playerPick != oppPick)
                 damage 50
               else
@@ -1301,21 +1298,18 @@ public enum MysteriousTreasures implements LogicCardInfo {
           pokePower "Energetic Impulse", {
             text "Once during your turn (before your attack), if Slaking is your Active Pokémon, you may flip a coin. If heads, Slaking’s Lazy Blow attack’s base damage is 130 during this turn. If tails, Slaking can’t attack or retreat during this turn. (If Slaking is no longer your Active Pokémon, this effect ends.)"
             actionA {
-              checkNoSPC()
               checkLastTurn()
               assert self.active : "$self is not your Active Pokémon"
               powerUsed()
               flip 1, {
                 keyStore("EI_Buff_Lazy_Blow", self, true)
                 delayed{
-                  //TODO: Check this working properly.
                   unregister{
                     keyStore("EI_Buff_Lazy_Blow", self, 0)
                     bc "Energetic Impulse's effect wore off."
                   }
                   after FALL_BACK, self, {unregister()}
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
+                  after CHANGE_STAGE, self, {unregister()}
                   unregisterAfter 1
                 }
                 bc "During this turn, Slaking's Lazy Blow attack's base damage is 130."
@@ -1332,8 +1326,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                     prevent()
                   }
                   after FALL_BACK, self, {unregister()}
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
+                  after CHANGE_STAGE, self, {unregister()}
                   unregisterAfter 1
                 }
               }
@@ -1359,7 +1352,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              if (self.getPokemonCards().findAll {it.name.contains("Bonsly")}){
+              if (self.getPokemonCards().any {it.name == "Bonsly"}){
                 flip { preventAllEffectsNextTurn() }
               }
             }
@@ -1387,20 +1380,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
           pokeBody "Poison Sacs", {
             text "Your opponent can’t remove the Special Condition Poisoned by evolving or devolving his or her Poisoned Pokémon. (This also includes putting a Pokémon Level-Up card onto the Poisoned Pokémon.)"
             delayedA {
-              before POISONED_SPC, null, null, EVOLVE, {
-                if ((ef as Poisoned).getTarget().owner != self.owner) {
-                  bc "$thisAbility prevents removing the Special Condition Poisoned by evolving"
-                  prevent()
-                }
-              }
-              before POISONED_SPC, null, null, DEVOLVE, {
-                if ((ef as Poisoned).getTarget().owner != self.owner) {
-                  bc "$thisAbility prevents removing the Special Condition Poisoned by devolving"
-                  prevent()
-                }
-              }
-              before POISONED_SPC, null, null, LEVEL_UP, {
-                if(ef.target == self.owner.opposite){
+              before POISONED_SPC, null, null, CHANGE_STAGE, {
+                if ((ef as Poisoned).getTarget().owner != self.owner && bg.em().currentEffectStack.find{it.effectType == EVOLVE || it.effectType == DEVOLVE || it.effectType == LEVEL_UP}) {
+                  bc "$thisAbility prevents removing Poison"
                   prevent()
                 }
               }
@@ -1425,24 +1407,23 @@ public enum MysteriousTreasures implements LogicCardInfo {
             actionA {
               checkLastTurn()
               assert bg.em().retrieveObject("DP_Unown_ITEM") != bg.turnCount : "You can’t use more than 1 ITEM Poké-Power each turn."
-              //assert self.benched : "$self is not on the Bench"
               //Checking for any Unown I on the bench, text apparently wouldn't specify this one being the one benched. There's a no-more-than-1-use limit anyways.
-              ["Unown I", "Unown T", "Unown E", "Unown M"].each{
-                def cardName = it
-                assert my.benched.any{it.name == cardName} : "$cardName is not on your bench"
+              ["Unown I", "Unown T", "Unown E", "Unown M"].each{ cardName ->
+                assert my.bench.any{it.name == cardName} : "$cardName is not on your bench"
               }
               powerUsed()
               bg.em().storeObject("DP_Unown_ITEM", bg.turnCount)
-              my.deck.search(max:1, "Choose a Trainer-Item card.", cardTypeFilter(ITEM)).showToOpponent("Opponent's chosen Trainer-Item card.").moveTo(my.hand)
+              my.deck.search(max:1, "Choose a Trainer-Item card.", cardTypeFilter(ITEM)).moveTo(my.hand)
               shuffleDeck()
             }
           }
           move "Hidden Power", {
             text "Choose an Energy card attached to the Defending Pokémon and put it face down. Treat that card as a Special Energy card that provides [C] Energy and doesn’t have any effect other than providing Energy. Put that card face up at the end of your opponent’s next turn."
             energyCost C
-            attackRequirement {}
+            attackRequirement {
+              assert opp.active.cards.hasEnergy()
+            }
             onAttack {
-              //  TODO: Implement this oddly unique energy modification.
               //  Notes (taken from JP FAQs, none in english rulings):
               //    * The flipped energy cannot use any abilities included in it (see: Call Energy MD 92)
               //    * Neither does it keep its name while flipped. (See: Gorebyss LM 17)
@@ -1453,22 +1434,45 @@ public enum MysteriousTreasures implements LogicCardInfo {
               //    * If Multi Energy (MT 118) is attached to Venusaur (CG 28), and Hidden Power flips it it should convert by Chlorophyll into a grass energy. Only while flipped, if not it depends on multi energy alone.
               //    * Cards only attachable to a specific Pokémon (See: Scramble Energy DF 89) can be moved to non-valid Pokémon while flipped. But the instant they flip back to normal, they should be discarded.
               //
-              def chosenEnergy = defending.cards.filterByType(ENERGY).select(count:1)
-              def eff
-              /* delayed {
-                eff = getter GET_ENERGY_TYPES, { holder->
-                  if (holder.effect.card == chosenCard) {
-                    holder.object = [[C] as Set]
-                    ////holder.name := "Flipped Back Energy"
-                    ////holder.setCardTypes := specialEnergy
-                    ////holder.customAbility := disabled
+              targeted (defending) {
+                def chosenEnergy = defending.cards.filterByType(ENERGY).select(count:1).first()
+                delayed {
+                  before null, null, Source.SRC_SPECIAL_ENERGY, {
+                    if (ef.sourceEnergy == chosenEnergy) {
+                      prevent()
+                    }
                   }
+                  after DISCARD, {
+                    if (ef.card == chosenEnergy) {
+                      unregister()
+                    }
+                  }
+                  after REMOVE_FROM_PLAY, {
+                    LUtils.isRemoveFromPlayAndContainsCard(e, chosenEnergy) {
+                      unregister()
+                    }
+                  }
+                  List<GetterEffect> mods = []
+                  register {
+                    bc "Hidden Power: $chosenEnergy was chosen, it will now be treated as a Special Energy card that provides [C] Energy and without any effect other than providing Energy"
+                    mods.add(getter(GET_ENERGY_TYPES, { holder->
+                      if(holder.effect.card == chosenEnergy) {
+                        holder.object = [[C] as Set]
+                      }
+                    }))
+                    mods.add(getter(GET_CARD_TYPES, { holder->
+                      if(holder.effect.target == chosenEnergy) {
+                        holder.object = new CardTypeSet(SPECIAL_ENERGY, ENERGY)
+                      }
+                    }))
+                  }
+                  unregister {
+                    mods.each{it.unregister()}
+                    bc "Hidden Power: $chosenEnergy returns back"
+                  }
+                  unregisterAfter 2
                 }
-                unregister {
-                  eff.unregister()
-                }
-                unregisterAfter 2
-              } */
+              }
             }
           }
 
@@ -1522,7 +1526,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 flip 2, {}, {doEff = false}
                 if (doEff){
                   targeted (opp.active, Source.POKEPOWER) {
-                    opp.active.cards.reverse().discard()
+                    opp.active.cards.discard()
                     removePCS(opp.active)
                   }
                 }
@@ -1654,7 +1658,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             // Weird wording, but confirmed by a Rules Team member on 2007 that the intent is for it to be a search, you can choose as many as you want or even fail, no need to "choose all".
             // https://pokegym.net/community/index.php?threads/croconaw-mts-power.62819/#post-982469
             onActivate{reason ->
-              if(reason == PLAY_FROM_HAND && confirm("Use Evolutionary Vitality?")){
+              if(reason == PLAY_FROM_HAND && my.deck.notEmpty && confirm("Use Evolutionary Vitality?")){
                 powerUsed()
                 my.deck.subList(0, 5).select(min:0, max: 5, "Top cards of your deck. Which Energy cards do you want to put into your hand?", cardTypeFilter(ENERGY)).moveTo(my.hand)
                 shuffleDeck()
@@ -1881,9 +1885,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
               assert my.discard.filterByType(ENERGY).filterByEnergyType(M) : "There is no [M] Energy card in your discard"
             }
             onAttack {
+              def metalEnergyAmt = self.cards.energyCardCount(M)
               attachEnergyFrom(type : M, my.discard, self)
-              //TODO: Make this conditional on the attach
-              heal 10, self
+              if (metalEnergyAmt < self.cards.energyCardCount(M)) {
+
+                heal 20, self
+              }
             }
           }
           move "Confront", {
@@ -2179,7 +2186,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   eff.unregister()
                 }
               }
-              trcard.player = top.player
+              trcard.initializeFrom(top)
               def pcs = my.all.findAll {it!=self && canAttachPokemonTool(it)}.select("Attach to?")
               removeFromPlay(self, [top] as CardList)
               bg.em().run(new ChangeImplementation(trcard, top))
@@ -2257,7 +2264,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               if (opp.hand && !checkBodyguard()) {
                 def oppCard = opp.hand.shuffledCopy().select(count: 1, "Choose a random card from your opponent's hand to be shuffled into his or her deck").showToOpponent("Hidden Power: this card will be shuffled from your hand to your deck")
                 oppCard.moveTo(opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
               }
               if (my.hand) {
                 def myCard = my.hand.shuffledCopy().oppSelect(count: 1, "Choose 1 random card from your opponent's hand to be shuffled into his or her deck").showToMe("Hidden Power: this card will be shuffled from your hand to your deck")
@@ -2272,11 +2279,11 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return evolution (this, from:"Slakoth", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS20
           def asleepBeforeEvolve = false
-          globalAbility {Card thisCard->
+          initHook {Card thisCard->
             delayed {
-              before EVOLVE_STANDARD, {
-                if ( (ef as EvolveStandard).evolutionCard == thisCard) {
-                  def preEvo = (ef as EvolveStandard).pokemonToBeEvolved
+              before EVOLVE, {
+                if ( (ef as Evolve).evolutionCard == thisCard) {
+                  def preEvo = (ef as Evolve).pokemonToBeEvolved
                   asleepBeforeEvolve = ( preEvo.name == "Slakoth" && preEvo.isSPC(ASLEEP) )
                 }
               }
@@ -2325,7 +2332,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
             onAttack {
               def tar = my.deck.search("Searching for an Alakazam", {it.cardTypes.is(EVOLUTION) && it.name == "Alakazam"})
-              if(tar) evolve(self, tar.first(), OTHER)
+              if(tar) evolve(self, tar.first())
               shuffleDeck()
             }
           }
@@ -2458,15 +2465,13 @@ public enum MysteriousTreasures implements LogicCardInfo {
           move "Scrunch", {
             text "Flip a coin. If heads, prevent all damage done to Chansey by attacks during your opponent’s next turn."
             energyCost C, C
-            attackRequirement {}
             onAttack {
-            flip { preventAllEffectsNextTurn() }
+              flip { preventAllDamageNextTurn() }
             }
           }
           move "Double-edge", {
             text "80 damage. Chansey does 60 damage to itself."
             energyCost C, C, C, C
-            attackRequirement {}
             onAttack {
               damage 80
               damage 60, self
@@ -2851,7 +2856,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             actionA {
               checkNoSPC()
               checkLastTurn()
-              assert self.getPokemonCards().findAll {it.name.contains("Pichu")} : "Pichu is not found under $self, you can't use this Poké-Power"
+              assert self.getPokemonCards().any {it.name == "Pichu"} : "Pichu is not found under $self, you can't use this Poké-Power"
               assert my.discard.filterByEnergyType(L) : "There are no [L] Energy cards in your discard pile."
               powerUsed()
               my.discard.filterByEnergyType(L).select().moveTo(my.hand)
@@ -3269,7 +3274,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               my.hand.getExcludedList(thisCard).moveTo(hidden:true,my.deck)
               opp.hand.moveTo(hidden:true,opp.deck)
               shuffleDeck()
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
 
               def myMaxDraw = 3
               def oppMaxDraw = 3
@@ -3288,7 +3293,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             "Whenever Armor Fossil would be damaged by your opponent’s attack, flip a coin until you get tails. For each heads, reduce that damage by 10."
           onPlay {
             Card pokemonCard, trainerCard = thisCard
-            pokemonCard = basic (new CustomCardInfo(ARMOR_FOSSIL_116).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
+            pokemonCard = basic (new CustomCardInfo(ARMOR_FOSSIL_116).setCardTypes(BASIC, POKEMON, TRAINER, FOSSIL), hp:HP050, type:COLORLESS, retreatCost:0) {
               pokeBody "Armor Stone", {
                 delayedA {
                   before APPLY_ATTACK_DAMAGES, {
@@ -3332,15 +3337,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
                       }
                     }
                   }
-                  acl = action("Discard Armor Fossil", [TargetPlayer.SELF]) {
-                    delayed {
-                      before TAKE_PRIZE, {
-                        if (ef.pcs==self) {
-                          prevent()
-                        }
-                      }
-                    }
-                    new Knockout(self).run(bg)
+                  acl = action(pokemonCard, "Discard Armor Fossil", [TargetPlayer.SELF]) {
+                    self.cards.moveTo(self.owner.pbg.discard)
+                    removePCS(self)
                   }
                 }
                 onDeactivate {
@@ -3348,7 +3347,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 }
               }
             }
-            pokemonCard.player = trainerCard.player
+            pokemonCard.initializeFrom(trainerCard)
             bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
             benchPCS(pokemonCard)
           }
@@ -3362,7 +3361,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             "During your opponent’s turn, if Skull Fossil would be Knocked Out by damage from an opponent’s attack, flip a coin until you get tails. For each heads, put 1 damage counter on the Attacking Pokémon."
           onPlay {
             Card pokemonCard, trainerCard = thisCard
-            pokemonCard = basic (new CustomCardInfo(SKULL_FOSSIL_117).setCardTypes(BASIC, POKEMON), hp:HP050, type:COLORLESS, retreatCost:0) {
+            pokemonCard = basic (new CustomCardInfo(SKULL_FOSSIL_117).setCardTypes(BASIC, POKEMON, TRAINER, FOSSIL), hp:HP050, type:COLORLESS, retreatCost:0) {
               pokeBody "Skull Stone", {
                 delayedA{
                   before KNOCKOUT, self, {
@@ -3401,15 +3400,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
                       }
                     }
                   }
-                  acl = action("Discard Skull Fossil", [TargetPlayer.SELF]) {
-                    delayed {
-                      before TAKE_PRIZE, {
-                        if (ef.pcs==self) {
-                          prevent()
-                        }
-                      }
-                    }
-                    new Knockout(self).run(bg)
+                  acl = action(pokemonCard, "Discard Skull Fossil", [TargetPlayer.SELF]) {
+                    self.cards.moveTo(self.owner.pbg.discard)
+                    removePCS(self)
                   }
                 }
                 onDeactivate {
@@ -3417,7 +3410,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 }
               }
             }
-            pokemonCard.player = trainerCard.player
+            pokemonCard.initializeFrom trainerCard
             bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
             benchPCS(pokemonCard)
           }
@@ -3436,7 +3429,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             eff = delayed {
               after PROCESS_ATTACK_EFFECTS, {
                 if (ef.attacker == self && self.types.contains(D)) {
-                  targeted self, SRC_SPENERGY, {
+                  targeted self, {
                     bg.dm().each() {
                       //Self damage appears to be increased as well, similar to PlusPower
                       if (it.to.active && it.dmg.value) {
@@ -3471,19 +3464,22 @@ public enum MysteriousTreasures implements LogicCardInfo {
           move "Pulse Barrier", {
             text "50 damage. Discard all of your opponent’s Pokémon Tool cards and Stadium cards in play. If you do, prevent all effects, including damage, done to Electivire during your opponent’s next turn."
             energyCost L, C
-            attackRequirement {}
             onAttack {
               damage 50
               afterDamage {
-                def cardsDiscarded = new CardList()
+                // Pulse Barrier does not check to see if all the cards are discarded. It checks if ANY cards were discarded, in order to start the protective effect.
+                def flag = true
                 if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.player != self.owner){
-                  cardsDiscarded.add(bg.stadiumInfoStruct.stadiumCard)
+                  flag = discard(bg.stadiumInfoStruct.stadiumCard) && flag
                 }
-                opp.all.findAll {it.cards.hasType(POKEMON_TOOL)}.each{
-                  cardsDiscarded.addAll(it.cards.filterByType(POKEMON_TOOL))
+                opp.all.findAll { pcs ->
+                  pcs.cards.filterByType(POKEMON_TOOL).each { card ->
+                    targeted (pcs) {
+                      flag = discard(card) && flag
+                    }
+                  }
                 }
-                if (cardsDiscarded) {
-                  cardsDiscarded.discard()
+                if (!flag) {
                   preventAllEffectsNextTurn()
                 }
               }
@@ -3523,8 +3519,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   }
                   unregisterAfter 2
                   after FALL_BACK, self, {unregister()}
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
+                  after CHANGE_STAGE, self, {unregister()}
                 }
               }
             }
@@ -3546,8 +3541,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   }
                 }
                 unregisterAfter 2
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
                 after FALL_BACK, self, {unregister()}
               }
             }
@@ -3579,10 +3573,6 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 unregister {
                   eff.unregister()
                 }
-                //TODO: Remove if these are not needed.
-                // after EVOLVE, torridWaveRecipient, {unregister()}
-                // after DEVOLVE, torridWaveRecipient, {unregister()}
-                // after SWITCH, torridWaveRecipient, {unregister()}
                 after CLEAR_SPECIAL_CONDITION, torridWaveRecipient, {
                   if(ef.types.contains(BURNED)){
                     unregister()
@@ -3594,14 +3584,11 @@ public enum MysteriousTreasures implements LogicCardInfo {
           move "Flame Buster", {
             text "Discard 2 [R] Energy cards attached to Magmortar. Choose 1 of your opponent’s Pokémon. This attack does 100 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.) During your next turn, Magmortar can’t use Flame Bluster."
             //Errata'd, used to say "2 [R] Energy attached"
-            //TODO: Fix this attack so it discards energy cards, not just energy (also invert order, discard then damage).
             energyCost R, R, R, R
-            attackRequirement {}
             onAttack {
-              discardSelfEnergyAfterDamage R,R
-              damage 100, opp.all.select()
+              discardSelfEnergyAfterDamage(R, R)
+              damage 100, opp.all.select("Deal 100 damage to?")
               cantUseAttack(thisMove, self)
-              }
             }
           }
         };

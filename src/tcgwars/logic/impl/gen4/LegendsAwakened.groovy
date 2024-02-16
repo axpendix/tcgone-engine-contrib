@@ -230,7 +230,7 @@ public enum LegendsAwakened implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -241,24 +241,9 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness P
           pokePower "Form Change", {
             text "Once during your turn (before your attack), you may search your deck for any Deoxys and switch it with Deoxys Normal Forme. (Any cards attached to Deoxys Normal Forme, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys Normal Forme on top of your deck. Shuffle your deck afterward. You can't use more than 1 Form Change Poké-Power each turn."
-            actionA {
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
-              checkLastTurn()
-              assert my.deck : "Deck is empty"
-              bg.em().storeObject("Form_Change",bg.turnCount)
-              powerUsed()
-
-              def selected = my.deck.search(max:1,"Select a Deoxys",{it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme"))}) //Deoxys cannot Form Change into Deoxys ex.
-              if (selected) {
-                def tpc = self.topPokemonCard
-                selected.moveTo(suppressLog: true, self.cards)
-                tpc.moveTo(suppressLog: true, my.deck)
-                bc "${tpc.name} was swapped with ${selected.name}."
-                new CheckAbilities().run(bg)
-                checkFaint()
-              }
-              shuffleDeck()
-            }
+            formChange(delegate, "Form Change", {
+              it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme")) //Deoxys cannot Form Change into Deoxys ex.
+            })
           }
           move "Energy Crush", {
             text "20+ damage. Does 20 damage plus 10 more damage for each Energy attached to all of your opponent's Pokémon."
@@ -318,8 +303,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                     new Knockout(atk_pkm).run(bg)
                   }
                 }
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
                 after FALL_BACK, self, {unregister()}
                 unregisterAfter 2
               }
@@ -536,7 +520,6 @@ public enum LegendsAwakened implements LogicCardInfo {
             actionA {
               checkLastTurn()
               checkNoSPC()
-              assert self.active : "$self is not your active Pokémon."
               assert opp.bench : "There are no benched Pokémon to switch to"
               powerUsed()
               flip {
@@ -771,7 +754,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness G, '+30'
           pokeBody "Fossil Armor", {
             text "If Armaldo would be damaged by an attack, prevent that attack's damage done to Armaldo if that damage is 60 or less."
-            delayedA {
+            delayedA (priority: BEFORE_LAST) {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
                   if (it.to == self && it.notNoEffect && (it.dmg.value <= 60)) {
@@ -801,14 +784,20 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "Once during your turn, when you put Azelf from your hand onto your Bench, you may look at all of your face-down Prize cards. If you do, you may choose 1 Pokémon you find there, show it to your opponent, and put it into your hand. Then, choose 1 card in your hand and put it as a Prize card face down."
             onActivate { reason ->
               if (reason == PLAY_FROM_HAND && self.benched && confirm("Use Time Walk?")) {
-                assert my.prizeCardSet.faceDownCards.size() != 0 : "You cannot use Time Walk if all of your prizes are face-up."
+                assert my.prizeCardSet.faceDownCards.size() > 0 : "You cannot use Time Walk if all of your prizes are face-up."
                 powerUsed()
                 def tar = my.prizeCardSet.faceDownCards.select(hidden: false, min: 0, "Choose a Pokemon card from your prizes.", cardTypeFilter(POKEMON))
                 if (tar) {
-                  tar.moveTo(my.hand).showToOpponent("Your opponent has swapped this prize card with a card from their hand.")
+                  tar.showToOpponent("Your opponent has swapped this prize card with a card from their hand.").moveTo(my.hand)
                   my.hand.select("Card to put back into Prizes").moveTo(hidden:true, my.prizeCardSet)
                 }
-                my.prizeCardSet.shuffle()
+                if (confirm("Do you wish to rearrange your prize cards? ")) {
+                  def list = rearrange(my.prizeCardSet, "Rearrange your prize cards")
+                  my.prizeCardSet.clear()
+                  my.prizeCardSet.addAll(list)
+                  bc "Prize cards were rearranged"
+                }
+//                my.prizeCardSet.shuffle()
               }
             }
           }
@@ -941,24 +930,9 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness P
           pokePower "Form Change", {
             text "Once during your turn (before your attack), you may search your deck for any Deoxys and switch it with Deoxys Attack Forme. (Any cards attached to Deoxys Attack Forme, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys Attack Forme on top of your deck. Shuffle your deck afterward. You can't use more than 1 Form Change Poké-Power each turn."
-            actionA {
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
-              checkLastTurn()
-              assert my.deck : "Deck is empty"
-              bg.em().storeObject("Form_Change",bg.turnCount)
-              powerUsed()
-
-              def selected = my.deck.search(max:1,"Select a Deoxys",{it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme"))}) //Deoxys cannot Form Change into Deoxys ex.
-              if (selected) {
-                def tpc = self.topPokemonCard
-                selected.moveTo(suppressLog: true, self.cards)
-                tpc.moveTo(suppressLog: true, my.deck)
-                bc "${tpc.name} was swapped with ${selected.name}."
-                new CheckAbilities().run(bg)
-                checkFaint()
-              }
-              shuffleDeck()
-            }
+            formChange(delegate, "Form Change", {
+              it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme")) //Deoxys cannot Form Change into Deoxys ex.
+            })
           }
           move "Psychic Boost", {
             text "80 damage. During your next turn, Deoxys's Psychic Boost attack's base damage is 20."
@@ -977,24 +951,9 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness P
           pokePower "Form Change", {
             text "Once during your turn (before your attack), you may search your deck for any Deoxys and switch it with Deoxys Defense Forme. (Any cards attached to Deoxys Defense Forme, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys Defense Forme on top of your deck. Shuffle your deck afterward. You can't use more than 1 Form Change Poké-Power each turn."
-            actionA {
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
-              checkLastTurn()
-              assert my.deck : "Deck is empty"
-              bg.em().storeObject("Form_Change",bg.turnCount)
-              powerUsed()
-
-              def selected = my.deck.search(max:1,"Select a Deoxys",{it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme"))}) //Deoxys cannot Form Change into Deoxys ex.
-              if (selected) {
-                def tpc = self.topPokemonCard
-                selected.moveTo(suppressLog: true, self.cards)
-                tpc.moveTo(suppressLog: true, my.deck)
-                bc "${tpc.name} was swapped with ${selected.name}."
-                new CheckAbilities().run(bg)
-                checkFaint()
-              }
-              shuffleDeck()
-            }
+            formChange(delegate, "Form Change", {
+              it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme")) //Deoxys cannot Form Change into Deoxys ex.
+            })
           }
           move "Psychic Defense", {
             text "40 damage. During your opponent's next turn, prevent all effects of an attack, and any damage done to Deoxys by attacks is reduced by 20 (after applying Weakness and Resistance)."
@@ -1012,24 +971,9 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness P
           pokePower "Form Change", {
             text "Once during your turn (before your attack), you may search your deck for any Deoxys and switch it with Deoxys Speed Forme. (Any cards attached to Deoxys Speed Forme, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys Speed Forme on top of your deck. Shuffle your deck afterward. You can't use more than 1 Form Change Poké-Power each turn."
-            actionA {
-              assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
-              checkLastTurn()
-              assert my.deck : "Deck is empty"
-              bg.em().storeObject("Form_Change",bg.turnCount)
-              powerUsed()
-
-              def selected = my.deck.search(max:1,"Select a Deoxys",{it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme"))}) //Deoxys cannot Form Change into Deoxys ex.
-              if (selected) {
-                def tpc = self.topPokemonCard
-                selected.moveTo(suppressLog: true, self.cards)
-                tpc.moveTo(suppressLog: true, my.deck)
-                bc "${tpc.name} was swapped with ${selected.name}."
-                new CheckAbilities().run(bg)
-                checkFaint()
-              }
-              shuffleDeck()
-            }
+            formChange(delegate, "Form Change", {
+              it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme")) //Deoxys cannot Form Change into Deoxys ex.
+            })
           }
           move "Speed Shot", {
             text "Choose 1 of your opponent's Pokémon. This attack does 30 damage to that Pokémon. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
@@ -1048,12 +992,9 @@ public enum LegendsAwakened implements LogicCardInfo {
             def recur = false
             getterA (GET_FULL_HP, self) { Holder h->
               if (self.active) {
-                if (recur) { // if Ditto faces another Ditto, this prevents infinite loops
-                  h.object = self.owner.opposite.pbg.active.getLastFullHP() ?: h.object
-                } else {
-                  recur = true
-                  h.object = self.owner.opposite.pbg.active.getFullHP()
-                  recur = false
+                def pcs = self.owner.opposite.pbg.active
+                if (pcs) {
+                  h.object = pcs.topPokemonCard.getHp()
                 }
               }
             }
@@ -1069,11 +1010,11 @@ public enum LegendsAwakened implements LogicCardInfo {
             //Errata: https://compendium.pokegym.net/compendium-lvx.html#280
             delayedA {
               after ATTACH_ENERGY, self, {
-                if (ef.reason == PLAY_FROM_HAND && (ef.card as EnergyCard).cardTypes.is(BASIC_ENERGY)) {
-                  flip 1, { }, {
+                if (ef.fromHand && ef.card.cardTypes.is(BASIC_ENERGY)) {
+                  flip "Iron Shell", 1, { }, {
                     all.each {
                       if (it.name != "Forretress") {
-                        directDamage 20, it
+                        directDamage(20, it, SRC_ABILITY)
                       }
                     }
                   }
@@ -1101,8 +1042,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               assert my.hand.filterByBasicEnergyType(F) : "No [F] Energy cards in your hand"
             }
             onAttack {
-              def tar = my.all.select("Attach to which Pokemon?")
-              attachEnergyFrom(max: 2, type: F, basic: true, my.hand, tar)
+              attachEnergyFrom(max: 2, type: F, basic: true, my.hand, my.all)
             }
           }
           move "Major Earthquake", {
@@ -1186,8 +1126,8 @@ public enum LegendsAwakened implements LogicCardInfo {
                       unregister()
                     }
                   }
-                  after SWITCH, defending, { unregister() }
-                  after EVOLVE, defending, { unregister() }
+                  after FALL_BACK, defending, { unregister() }
+                  after CHANGE_STAGE, defending, { unregister() }
                   after REMOVE_FROM_PLAY, defending, {
                     if (ef.removedCards.contains(card)) {
                       unregister()
@@ -1270,21 +1210,21 @@ public enum LegendsAwakened implements LogicCardInfo {
               checkLastTurn()
               if (it == PLAY_FROM_HAND && my.deck && confirm("Use Psychic Bind?")) {
                 powerUsed()
-                delayed {
-                  def eff
-                  register {
-                    eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
-                      if (h.effect.target.owner == self.owner.opposite && h.effect.ability instanceof PokePower) {
-                        h.object = true
+                runAtBeginningOfYourOpponentsTurn {
+                  delayed {
+                    def eff
+                    register {
+                      eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
+                        if (h.effect.target.owner == self.owner.opposite && h.effect.ability instanceof PokePower) {
+                          h.object = true
+                        }
                       }
                     }
-                    new CheckAbilities().run(bg)
+                    unregister {
+                      eff.unregister()
+                    }
+                    unregisterAfter 1
                   }
-                  unregister {
-                    eff.unregister()
-                    new CheckAbilities().run(bg)
-                  }
-                  unregisterAfter 2
                 }
               }
             }
@@ -1309,9 +1249,9 @@ public enum LegendsAwakened implements LogicCardInfo {
           customAbility {
             delayed (priority: LAST) {
               before APPLY_ATTACK_DAMAGES, {
-                if (bg().currentTurn == self.owner.opposite) {
+                if (bg.currentTurn == self.owner.opposite) {
                   turnCount = bg.turnCount
-                  lastDamage = bg().dm().find({ it.to == self && it.dmg.value >= 0 })?.dmg
+                  lastDamage = bg.dm().find({ it.to == self && it.dmg.value >= 0 })?.dmg
                 }
               }
             }
@@ -1320,7 +1260,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "60 damage. If Poliwrath was damaged by an attack during your opponent's last turn, this attack does nothing."
             energyCost F
             attackRequirement {
-              assert turnCount + 1 == bg.turnCount && lastDamage > hp(0) : "Was not damaged last turn"
+              assert turnCount + 1 != bg.turnCount || lastDamage == null || lastDamage == hp(0) : "Was damaged last turn"
             }
             onAttack {
               damage 60
@@ -1509,7 +1449,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             delayedA {
               before null, null, ATTACK, {
                 if (self.active && ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
-                  def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+                  def pcs = e.getTargetPokemon()
                   if (pcs != null && pcs.benched && pcs.owner == self.owner) {
                     bc "White Smoke prevents effect"
                     prevent()
@@ -1548,9 +1488,9 @@ public enum LegendsAwakened implements LogicCardInfo {
               if (it == PLAY_FROM_HAND && confirm("Use ! PokePower?")) {
                 powerUsed()
                 flip 1, {
-                  directDamage 20, opp.all.select("Put 2 damage counters on which?")
+                  directDamage 20, opp.all.select("Put 2 damage counters on which?"), SRC_ABILITY
                 }, {
-                  directDamage 20, my.all.select("Put 2 damage counters on which?")
+                  directDamage 20, my.all.select("Put 2 damage counters on which?"), SRC_ABILITY
                 }
               }
             }
@@ -1575,7 +1515,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "Set Up", {
             text "Once during your turn, when you put Uxie from your hand onto your Bench, you may draw cards until you have 7 cards in your hand."
             onActivate { reason ->
-              if (reason == PLAY_FROM_HAND && self.benched && my.deck.notEmpty && my.hand.size() < 7 && confirm("Use Set Up?")) {
+              if (reason == PLAY_FROM_HAND && my.deck.notEmpty && my.hand.size() < 7 && confirm("Use Set Up?")) {
                 powerUsed()
                 draw 7 - my.hand.size()
               }
@@ -1588,9 +1528,11 @@ public enum LegendsAwakened implements LogicCardInfo {
             onAttack {
               damage 20
               if (confirm("Put Uxie on the bottom of your deck?")) {
-                def rearrangedCards = rearrange(self.cards)
-                rearrangedCards.moveTo(my.deck)
-                removePCS(self)
+                afterDamage {
+                  def rearrangedCards = rearrange(self.cards)
+                  rearrangedCards.moveTo(my.deck)
+                  removePCS(self)
+                }
               }
             }
           }
@@ -1628,8 +1570,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                     }
                   }
                   after FALL_BACK, pcs, { unregister() }
-                  after EVOLVE, pcs, { unregister() }
-                  after DEVOLVE, pcs, { unregister() }
+                  after CHANGE_STAGE, pcs, { unregister() }
                   unregisterAfter 2
                 }
               }
@@ -1640,17 +1581,17 @@ public enum LegendsAwakened implements LogicCardInfo {
         return evolution (this, from:"Gloom", hp:HP120, type:G, retreatCost:2) {
           weakness P, '+30'
           pokePower "Energy Reaction", {
-            text "Once during your turn (before your attack), when you attach a Grass or [P] Energy card from your hand to Vileplume (excluding effects of attacks or Poké-Powers), you may use this power. If you attach a [G] Energy card, the Defending Pokémon is now Asleep. If you attach a [P] Energy card, the Defending Pokémon is now Poisoned. This power can't be used if Vileplume is affected by a Special Condition."
+            text "Once during your turn (before your attack), when you attach a [G] or [P] Energy card from your hand to Vileplume (excluding effects of attacks or Poké-Powers), you may use this power. If you attach a [G] Energy card, the Defending Pokémon is now Asleep. If you attach a [P] Energy card, the Defending Pokémon is now Poisoned. This power can't be used if Vileplume is affected by a Special Condition."
             delayedA {
-              after ATTACH_ENERGY, self, {
-                if (ef.reason == PLAY_FROM_HAND && (ef.card.asEnergyCard().containsType(G) || ef.card.asEnergyCard().containsType(P)) && !self.specialConditions && confirm("Use Energy Reaction?")) {
-                  if (ef.card.asEnergyCard().containsType(G)) {
+              after ATTACH_ENERGY, {
+                if (e.source != ATTACK && e.source != SRC_ABILITY && ef.fromHand && ef.targetPokemon == self && (ef.card.containsType(G) || ef.card.containsType(P)) && !self.specialConditions && confirm("Use Energy Reaction?")) {
+                  if (ef.card.containsType(G)) {
                     bc "Energy Reaction inflicts Confusion"
-                    apply ASLEEP, opp.active
+                    apply ASLEEP, opp.active, SRC_ABILITY
                   }
-                  if (ef.card.asEnergyCard().containsType(P)) {
+                  if (ef.card.containsType(P)) {
                     bc "Energy Reaction inflicts Poison"
-                    apply POISONED, opp.active
+                    apply POISONED, opp.active, SRC_ABILITY
                   }
                 }
               }
@@ -1738,24 +1679,9 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness F, '+10'
           pokePower "Temperament", {
             text "Once during your turn (before your attack), you may search your deck for any Castform and switch it with Castform. (Any cards attached to Castform, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Castform on top of your deck. Shuffle your deck afterward. You can't use more than 1 Temperament Poké-Power each turn."
-            actionA {
-              assert bg.em().retrieveObject("Temperament") != bg.turnCount : "You can’t use more than 1 Temperament Poké-Power each turn"
-              checkLastTurn()
-              assert my.deck : "Deck is empty"
-              bg.em().storeObject("Temperament", bg.turnCount)
-              powerUsed()
-
-              def selected = my.deck.search(max:1,"Select a Castform",{it.name.contains("Castform")})
-              if (selected) {
-                def tpc = self.topPokemonCard
-                selected.moveTo(suppressLog: true, self.cards)
-                tpc.moveTo(suppressLog: true, my.deck)
-                bc "${tpc.name} was swapped with ${selected.name}."
-                new CheckAbilities().run(bg)
-                checkFaint()
-              }
-              shuffleDeck()
-            }
+            formChange(delegate, "Temperament", {
+              it.name.contains("Castform")
+            })
           }
           move "Weather Ball", {
             text "30+ damage. If you have a Stadium card in play, remove 3 damage counters from Castform. If your opponent has a Stadium card in play, this attack does 30 damage plus 30 more damage."
@@ -1778,24 +1704,9 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness L, '+10'
           pokePower "Temperament", {
             text "Once during your turn (before your attack), you may search your deck for any Castform and switch it with Castform Rain Form. (Any cards attached to Castform Rain Form, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Castform Rain Form back into your deck. You can't use more than 1 Temperament Poké-Power each turn."
-            actionA {
-              assert bg.em().retrieveObject("Temperament") != bg.turnCount : "You can’t use more than 1 Temperament Poké-Power each turn"
-              checkLastTurn()
-              assert my.deck : "Deck is empty"
-              bg.em().storeObject("Temperament", bg.turnCount)
-              powerUsed()
-
-              def selected = my.deck.search(max:1,"Select a Castform",{it.name.contains("Castform")})
-              if (selected) {
-                def tpc = self.topPokemonCard
-                selected.moveTo(suppressLog: true, self.cards)
-                tpc.moveTo(suppressLog: true, my.deck)
-                bc "${tpc.name} was swapped with ${selected.name}."
-                new CheckAbilities().run(bg)
-                checkFaint()
-              }
-              shuffleDeck()
-            }
+            formChange(delegate, "Temperament", {
+              it.name.contains("Castform")
+            })
           }
           move "Water Pulse", {
             text "30 damage. The Defending Pokémon is now Asleep."
@@ -1812,24 +1723,9 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness M, '+10'
           pokePower "Temperament", {
             text "Once during your turn (before your attack), you may search your deck for any Castform and switch it with Castform Snow-cloud Form. (Any cards attached to Castform Snow-cloud Form, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Castform Snow-cloud Form back into your deck. You can't use more than 1 Temperament Poké-Power each turn."
-            actionA {
-              assert bg.em().retrieveObject("Temperament") != bg.turnCount : "You can’t use more than 1 Temperament Poké-Power each turn"
-              checkLastTurn()
-              assert my.deck : "Deck is empty"
-              bg.em().storeObject("Temperament", bg.turnCount)
-              powerUsed()
-
-              def selected = my.deck.search(max:1,"Select a Castform",{it.name.contains("Castform")})
-              if (selected) {
-                def tpc = self.topPokemonCard
-                selected.moveTo(suppressLog: true, self.cards)
-                tpc.moveTo(suppressLog: true, my.deck)
-                bc "${tpc.name} was swapped with ${selected.name}."
-                new CheckAbilities().run(bg)
-                checkFaint()
-              }
-              shuffleDeck()
-            }
+            formChange(delegate, "Temperament", {
+              it.name.contains("Castform")
+            })
           }
           move "Hail", {
             text "This attack does 10 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
@@ -1847,24 +1743,9 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness W, '+10'
           pokePower "Temperament", {
             text "Once during your turn (before your attack), you may search your deck for any Castform and switch it with Castform Sunny Form. (Any cards attached to Castform Sunny Form, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) Shuffle Castform Sunny Form back into your deck. You can't use more than 1 Temperament Poké-Power each turn."
-            actionA {
-              assert bg.em().retrieveObject("Temperament") != bg.turnCount : "You can’t use more than 1 Temperament Poké-Power each turn"
-              checkLastTurn()
-              assert my.deck : "Deck is empty"
-              bg.em().storeObject("Temperament", bg.turnCount)
-              powerUsed()
-
-              def selected = my.deck.search(max:1,"Select a Castform",{it.name.contains("Castform")})
-              if (selected) {
-                def tpc = self.topPokemonCard
-                selected.moveTo(suppressLog: true, self.cards)
-                tpc.moveTo(suppressLog: true, my.deck)
-                bc "${tpc.name} was swapped with ${selected.name}."
-                new CheckAbilities().run(bg)
-                checkFaint()
-              }
-              shuffleDeck()
-            }
+            formChange(delegate, "Temperament", {
+              it.name.contains("Castform")
+            })
           }
           move "Ember", {
             text "40 damage. Discard a [R] Energy attached to Castform Sunny Form."
@@ -1882,10 +1763,9 @@ public enum LegendsAwakened implements LogicCardInfo {
           move "Wrap", {
             text "20 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
             energyCost C, C
-            attackRequirement {}
             onAttack {
               damage 20
-              flip { apply PARALYZED }
+              flip { applyAfterDamage PARALYZED }
             }
           }
           move "Rising Lunge", {
@@ -1941,7 +1821,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               }
               if (opp.hand) {
                 opp.hand.moveTo(hidden:true, my.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
               }
 
               if (toDraw) draw( choose(1..toDraw,"How many cards would you like to draw?") as int )
@@ -2002,30 +1882,8 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "The Defending Pokémon is now Confused. Put 6 damage counters instead of 3 on the Confused Pokémon."
             attackRequirement {}
             onAttack {
-              // TODO create GET_CONFUSED_DAMAGE static
-
-//              def magicalStepRecipient = opp.active
-//              apply CONFUSED, magicalStepRecipient, SRC_ABILITY
-//              delayed {
-//                def eff
-//                register {
-//                  eff = getter (GET_CONFUSED_DAMAGE) {h->
-//                    if (h.effect.target == magicalStepRecipient && h.effect.target.active && h.object < hp(30)) {
-//                      bc "Magical Step increases confused damage on $magicalStepRecipient to 60."
-//                      h.object = hp(60)
-//                    }
-//                  }
-//                }
-//                unregister {
-//                  eff.unregister()
-//                }
-//
-//                after CLEAR_SPECIAL_CONDITION, magicalStepRecipient, {
-//                  if(ef.types.contains(CONFUSED)){
-//                    unregister()
-//                  }
-//                }
-//              }
+              apply CONFUSED
+              bg.em().storeObject("Confusion Boost"+defending.hashCode(), "Magical Step")
             }
           }
           move "Grind", {
@@ -2285,7 +2143,6 @@ public enum LegendsAwakened implements LogicCardInfo {
           move "Bite On", {
             text "30 damage. If the Defending Pokémon isn't an Evolved Pokémon, that Pokémon can't attack, retreat, or use any Poké-Powers during your opponent's next turn."
             energyCost D
-            attackRequirement {}
             onAttack {
               damage 30
 
@@ -2296,24 +2153,23 @@ public enum LegendsAwakened implements LogicCardInfo {
                 targeted (defending) {
                   bc "During ${opp.owner.getPlayerUsername(bg)}'s next turn, the Defending ${defending} can't attack, retreat or use any Poké-Powers. (This effect can be removed by evolving or benching ${defending}.)"
                   def pcs = defending
-                  delayed {
-                    def eff
-                    register {
-                      eff = getter (IS_ABILITY_BLOCKED) { Holder h->
-                        if (h.effect.target == defending && h.effect.ability instanceof PokePower) {
-                          h.object = true
+                  runAtBeginningOfYourOpponentsTurn {
+                    delayed {
+                      def eff
+                      register {
+                        eff = getter (IS_ABILITY_BLOCKED) { Holder h->
+                          if (h.effect.target == pcs && h.effect.ability instanceof PokePower) {
+                            h.object = true
+                          }
                         }
                       }
-                      new CheckAbilities().run(bg)
+                      unregister{
+                        eff.unregister()
+                      }
+                      unregisterAfter 1
+                      after FALL_BACK, pcs, {unregister()}
+                      after CHANGE_STAGE, pcs, {unregister()}
                     }
-                    unregister{
-                      eff.unregister()
-                      new CheckAbilities().run(bg)
-                    }
-                    unregisterAfter 2
-                    after FALL_BACK, pcs, {unregister()}
-                    after EVOLVE, pcs, {unregister()}
-                    after DEVOLVE, pcs, {unregister()}
                   }
                 }
               }
@@ -2651,7 +2507,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               before APPLY_ATTACK_DAMAGES, {
                 if (ef.attacker.owner != self.owner && self.benched) {
                   bg.dm().each {
-                    if (it.to.owner==self.owner && it.to.benched && it.to.name.contains("Unown") && it.dmg.value && it.notNoEffect) {
+                    if (it.to.owner==self.owner && it.to.benched && it.to.name.startsWith("Unown") && it.dmg.value && it.notNoEffect) {
                       bc "UNSEEN prevents damage"
                       it.dmg = hp(0)
                     }
@@ -2659,10 +2515,12 @@ public enum LegendsAwakened implements LogicCardInfo {
                 }
               }
               before null, null, Source.ATTACK, {
-                def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
-                if (bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE && pcs && pcs.owner == self.owner && self.benched && pcs.topPokemonCard.name == "Unown") {
-                  bc "UNSEEN prevents effect"
-                  prevent()
+                if (ef instanceof TargetedEffect) {
+                  def pcs = e.getTargetPokemon()
+                  if (bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE && self.benched && pcs && pcs.owner == self.owner && pcs.benched && pcs.name.startsWith("Unown")) {
+                    bc "UNSEEN prevents effect"
+                    prevent()
+                  }
                 }
               }
             }
@@ -2685,6 +2543,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "VACATION", {
             text "Once during your turn (before your attack), you may remove 2 damage counters from each of your Pokémon. If you do, your turn ends. This power can't be used if Unown V is affected by a Special Condition."
             actionA {
+              assert my.all.any {it.numberOfDamageCounters} : "None of your Pokémon have any damage counters on them"
               checkNoSPC()
               checkLastTurn()
               powerUsed({ usingThisAbilityEndsTurn delegate })
@@ -2712,7 +2571,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokeBody "WALL", {
             text "As long as Unown W is your Active Pokémon, any damage done to your Pokémon by an opponent's attack is reduced by 10 (after applying Weakness and Resistance)."
             delayedA {
-              after PROCESS_ATTACK_EFFECTS, {
+              before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
                   if (self.active && it.to.owner == self.owner && it.dmg.value && it.notNoEffect) {
                     bc "Wall -10"
@@ -2860,24 +2719,23 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               flip {
-                delayed {
-                  def eff
-                  register {
-                    eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
-                      if (h.effect.target == defending && h.effect.ability instanceof PokePower) {
-                        h.object=true
+                runAtBeginningOfYourOpponentsTurn {
+                  delayed {
+                    def eff
+                    register {
+                      eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
+                        if (h.effect.target == defending && h.effect.ability instanceof PokePower) {
+                          h.object=true
+                        }
                       }
                     }
-                    new CheckAbilities().run(bg)
+                    unregister{
+                      eff.unregister()
+                    }
+                    unregisterAfter 1
+                    after SWITCH, defending, {unregister()}
+                    after CHANGE_STAGE, defending, {unregister()}
                   }
-                  unregister{
-                    eff.unregister()
-                    new CheckAbilities().run(bg)
-                  }
-                  unregisterAfter 2
-                  after SWITCH, defending, {unregister()}
-                  after EVOLVE, defending, {unregister()}
-                  after DEVOLVE, defending, {unregister()}
                 }
               }
             }
@@ -3658,7 +3516,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               opp.hand.showToMe("Opponent's hand")
               if (opp.hand.filterByType(POKEMON_TOOL, TECHNICAL_MACHINE)) {
                 opp.hand.filterByType(POKEMON_TOOL, TECHNICAL_MACHINE).moveTo(opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
               }
             }
           }
@@ -3787,17 +3645,10 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokePower "Baby Evolution", {
             text "Once during your turn (before your attack), you may put Hitmonlee, Hitmonchan, or Hitmontop from your hand onto Tyrogue (this counts as evolving Tyrogue) and remove all damage counters from Tyrogue."
             actionA {
-              def eligible = my.hand.findAll {
-                it.name.contains("Hitmonlee") || it.name.contains("Hitmonchan") || it.name.contains("Hitmontop")
-              }
-              assert eligible: "There is no pokémon in your hand to evolve ${self}."
+              checkCanBabyEvolve(["Hitmonlee", "Hitmonchan", "Hitmontop"], self)
               checkLastTurn()
               powerUsed()
-              def tar = eligible.select()
-              if (tar) {
-                evolve(self, tar.first(), OTHER)
-                heal self.numberOfDamageCounters*10, self
-              }
+              babyEvolution(["Hitmonlee", "Hitmonchan", "Hitmontop"], self)
             }
           }
           move "Gut Blow", {
@@ -3913,7 +3764,7 @@ public enum LegendsAwakened implements LogicCardInfo {
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card."+
             "Shuffle your hand into your deck. Then, draw 4 cards. If any of your Pokémon were Knocked Out during your opponent's last turn, draw 4 more cards."
-          globalAbility { Card thisCard->
+          initHook { Card thisCard->
             delayed {
               before KNOCKOUT, {
                 if (ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite) {
@@ -3924,7 +3775,6 @@ public enum LegendsAwakened implements LogicCardInfo {
           }
           onPlay {
             shuffleDeck(hand.getExcludedList(thisCard))
-            hand.removeAll(hand.getExcludedList(thisCard))
             draw 4
             if (keyStore("Cynthias_Feelings_KO", thisCard, null) == bg.turnCount - 1) {
               draw 4
@@ -3979,7 +3829,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           def lastTurn = 0
           def actions = []
           onPlay {
-            actions = action("Stadium: Stark Mountain") {
+            actions = action(thisCard, "Stadium: Stark Mountain") {
               assert my.all.find { it.cards.energyCount(R) || it.cards.energyCount(F) } : "There are no [R] or [F] Energy cards attached to your Pokémon"
               assert my.all.findAll { it.types.contains(R) || it.types.contains(F) } : "No [R] or [F] Pokémon to attach to"
               assert lastTurn != bg().turnCount : "Already used"
@@ -4017,9 +3867,134 @@ public enum LegendsAwakened implements LogicCardInfo {
           }
         };
       case CLAW_FOSSIL_138:
-        return copy(LegendMaker.CLAW_FOSSIL_78, this);
+        return itemCard (this) {
+          text "Play Claw Fossil as if it were a [C] Basic Pokémon. (Claw Fossil counts as a Trainer card as well, but if Claw Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Claw Fossil can't be affected by any Special Conditions and can't retreat. At any time during your turn before your attack, you may discard Claw Fossil from play. (This doesn't count as a Knocked Out Pokémon.)" +
+            "Jagged Stone: If Claw Fossil is your Active Pokémon and is damaged by an opponent's attack (even if Claw Fossil is Knocked Out), put 1 damage counter on the Attacking Pokémon."
+          onPlay {
+            Card pokemonCard, trainerCard = thisCard
+            pokemonCard = basic (new CustomCardInfo(CLAW_FOSSIL_138).setCardTypes(BASIC, POKEMON, TRAINER, FOSSIL), hp:HP040, type:COLORLESS, retreatCost:0) {
+              pokeBody "Jagged Stone", {
+                ifActiveAndDamagedByAttackBody(delegate) {
+                  directDamage(10, ef.attacker, Source.SRC_ABILITY)
+                }
+              }
+              customAbility {
+                def eff, acl
+                delayedA {
+                  before RETREAT, self, {
+                    if(self.topPokemonCard == thisCard){
+                      wcu "$self can't retreat"
+                      prevent()
+                    }
+                  }
+                  before APPLY_SPECIAL_CONDITION, self, {
+                    bc "$self can't be affected by any Special Conditions"
+                    prevent()
+                  }
+                }
+                onActivate{
+                  if (!eff) {
+                    eff = delayed {
+                      after REMOVE_FROM_PLAY, {
+                        if(ef.removedCards.contains(pokemonCard)) {
+                          bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
+                          unregister()
+                          eff = null
+                        }
+                      }
+                    }
+                  }
+                  acl = action(pokemonCard, "Discard $self", [TargetPlayer.SELF]) {
+                    delayed {
+                      before TAKE_PRIZE, {
+                        if (ef.pcs==self) {
+                          prevent()
+                        }
+                      }
+                    }
+                    new Knockout(self).run(bg)
+                  }
+                }
+                onDeactivate {
+                  acl.each{bg.gm().unregisterAction(it)}
+                }
+              }
+            }
+            pokemonCard.initializeFrom(trainerCard)
+            bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
+            benchPCS(pokemonCard)
+          }
+          playRequirement{
+            assert bench.notFull
+          }
+        };
       case ROOT_FOSSIL_139:
-        return copy(LegendMaker.ROOT_FOSSIL_80, this);
+        return itemCard (this) {
+          text "Play Root Fossil as if it were a [C] Basic Pokémon. (Root Fossil counts as a Trainer card as well, but if Root Fossil is Knocked Out, this counts as a Knocked Out Pokémon.) Root Fossil can't be affected by any Special Conditions and can't retreat. At any time during your turn before your attack, you may discard Root Fossil from play. (This doesn't count as a Knocked Out Pokémon.)" +
+            "Spongy Stone: At any time between turns, remove 1 damage counter from Root Fossil."
+          onPlay {
+            Card pokemonCard, trainerCard = thisCard
+            pokemonCard = basic (new CustomCardInfo(ROOT_FOSSIL_139).setCardTypes(BASIC, POKEMON, TRAINER, FOSSIL), hp:HP040, type:COLORLESS, retreatCost:0) {
+              pokeBody "Spongy Stone", {
+                delayedA{
+                  before BEGIN_TURN, {
+                    if (self.numberOfDamageCounters) {
+                      bc "Spongy Stone activates"
+                      heal 10, self
+                    }
+                  }
+                }
+              }
+              customAbility {
+                def eff, acl
+                delayedA {
+                  before RETREAT, self, {
+                    if(self.topPokemonCard == thisCard){
+                      wcu "$self can't retreat"
+                      prevent()
+                    }
+                  }
+                  before APPLY_SPECIAL_CONDITION, self, {
+                    bc "$self can't be affected by any Special Conditions"
+                    prevent()
+                  }
+                }
+                onActivate{
+                  if (!eff) {
+                    eff = delayed {
+                      after REMOVE_FROM_PLAY, {
+                        if(ef.removedCards.contains(pokemonCard)) {
+                          bg.em().run(new ChangeImplementation(trainerCard, pokemonCard))
+                          unregister()
+                          eff = null
+                        }
+                      }
+                    }
+                  }
+                  acl = action(pokemonCard, "Discard $self", [TargetPlayer.SELF]) {
+                    delayed{
+                      before TAKE_PRIZE, {
+                        if(ef.pcs==self){
+                          prevent()
+                        }
+                      }
+                    }
+                    new Knockout(self).run(bg)
+                  }
+                }
+                onDeactivate {
+                  acl.each{bg.gm().unregisterAction(it)}
+                }
+              }
+            }
+            pokemonCard.initializeFrom(trainerCard)
+            bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
+            benchPCS(pokemonCard)
+          }
+          playRequirement{
+            assert bench.notFull
+          }
+        };
       case AZELF_LV_X_140:
         return levelUp (this, from:"Azelf", hp:HP090, type:PSYCHIC, retreatCost:1) {
           weakness P
@@ -4147,7 +4122,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                 }
               }
               before APPLY_ATTACK_DAMAGES, {
-                if (ef.attacker.owner != self.owner && ef.attacker.evolution) {
+                if (ef.attacker.owner != self.owner && !ef.attacker.evolution) {
                   bg.dm().each {
                     if (it.to == self && it.dmg.value && it.notNoEffect) {
                       it.dmg = hp(0)
@@ -4164,7 +4139,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 120
-              discardAllSelfEnergy()
+              afterDamage {discardAllSelfEnergy()}
             }
           }
         };

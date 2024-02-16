@@ -1,6 +1,6 @@
 package tcgwars.logic.impl.gen8
 
-import tcgwars.logic.effect.gm.PlayEvolution
+import tcgwars.logic.effect.advanced.PutOnBench
 import tcgwars.logic.effect.gm.PlayTrainer
 
 import static tcgwars.logic.card.HP.*;
@@ -20,7 +20,6 @@ import tcgwars.logic.card.*
 import tcgwars.logic.effect.*;
 import tcgwars.logic.effect.ability.*
 import tcgwars.logic.effect.basic.*
-import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
 /**
@@ -32,7 +31,7 @@ import tcgwars.logic.util.*;
 public enum DarknessAblaze implements LogicCardInfo {
 
   BUTTERFREE_V_1 ("Butterfree V", "1", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _GRASS_]),
-  BUTTERFREE_VMAX_2 ("Butterfree VMAX", "2", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _GRASS_]),
+  BUTTERFREE_VMAX_2 ("Butterfree VMAX", "2", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _GRASS_]),
   PARAS_3 ("Paras", "3", Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
   PARASECT_4 ("Parasect", "4", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   CARNIVINE_5 ("Carnivine", "5", Rarity.UNCOMMON, [POKEMON, BASIC, _GRASS_]),
@@ -50,7 +49,7 @@ public enum DarknessAblaze implements LogicCardInfo {
   WIMPOD_17 ("Wimpod", "17", Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
   GOLISOPOD_18 ("Golisopod", "18", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   CHARIZARD_V_19 ("Charizard V", "19", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _FIRE_]),
-  CHARIZARD_VMAX_20 ("Charizard VMAX", "20", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _FIRE_]),
+  CHARIZARD_VMAX_20 ("Charizard VMAX", "20", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _FIRE_]),
   HOUNDOOM_V_21 ("Houndoom V", "21", Rarity.ULTRARARE, [POKEMON, POKEMON_V, BASIC, _FIRE_]),
   TORCHIC_22 ("Torchic", "22", Rarity.COMMON, [POKEMON, BASIC, _FIRE_]),
   COMBUSKEN_23 ("Combusken", "23", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
@@ -64,7 +63,7 @@ public enum DarknessAblaze implements LogicCardInfo {
   FLETCHINDER_31 ("Fletchinder", "31", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
   TALONFLAME_32 ("Talonflame", "32", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _FIRE_]),
   CENTISKORCH_V_33 ("Centiskorch V", "33", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _FIRE_]),
-  CENTISKORCH_VMAX_34 ("Centiskorch VMAX", "34", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _FIRE_]),
+  CENTISKORCH_VMAX_34 ("Centiskorch VMAX", "34", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _FIRE_]),
   GALARIAN_MR_MIME_35 ("Galarian Mr. Mime", "35", Rarity.COMMON, [POKEMON, BASIC, _WATER_]),
   GALARIAN_MR_RIME_36 ("Galarian Mr. Rime", "36", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _WATER_]),
   SUICUNE_37 ("Suicune", "37", Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
@@ -145,11 +144,11 @@ public enum DarknessAblaze implements LogicCardInfo {
   NICKIT_112 ("Nickit", "112", Rarity.COMMON, [POKEMON, BASIC, _DARKNESS_]),
   THIEVUL_113 ("Thievul", "113", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
   GRIMMSNARL_V_114 ("Grimmsnarl V", "114", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _DARKNESS_]),
-  GRIMMSNARL_VMAX_115 ("Grimmsnarl VMAX", "115", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _DARKNESS_]),
+  GRIMMSNARL_VMAX_115 ("Grimmsnarl VMAX", "115", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _DARKNESS_]),
   ETERNATUS_V_116 ("Eternatus V", "116", Rarity.ULTRARARE, [POKEMON, POKEMON_V, BASIC, _DARKNESS_]),
-  ETERNATUS_VMAX_117 ("Eternatus VMAX", "117", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _DARKNESS_]),
+  ETERNATUS_VMAX_117 ("Eternatus VMAX", "117", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _DARKNESS_]),
   SCIZOR_V_118 ("Scizor V", "118", Rarity.ULTRARARE, [POKEMON, POKEMON_V, BASIC, _METAL_]),
-  SCIZOR_VMAX_119 ("Scizor VMAX", "119", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _METAL_]),
+  SCIZOR_VMAX_119 ("Scizor VMAX", "119", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _METAL_]),
   SKARMORY_120 ("Skarmory", "120", Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
   ARON_121 ("Aron", "121", Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
   LAIRON_122 ("Lairon", "122", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _METAL_]),
@@ -174,7 +173,7 @@ public enum DarknessAblaze implements LogicCardInfo {
   SKITTY_141 ("Skitty", "141", Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
   DELCATTY_142 ("Delcatty", "142", Rarity.RARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
   SALAMENCE_V_143 ("Salamence V", "143", Rarity.ULTRARARE, [POKEMON, POKEMON_V, BASIC, _COLORLESS_]),
-  SALAMENCE_VMAX_144 ("Salamence VMAX", "144", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _COLORLESS_]),
+  SALAMENCE_VMAX_144 ("Salamence VMAX", "144", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _COLORLESS_]),
   STARLY_145 ("Starly", "145", Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
   STARAVIA_146 ("Staravia", "146", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
   STARAPTOR_147 ("Staraptor", "147", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
@@ -220,11 +219,11 @@ public enum DarknessAblaze implements LogicCardInfo {
   PIERS_187 ("Piers", "187", Rarity.ULTRARARE, [TRAINER, SUPPORTER]),
   POKEMON_BREEDER_S_NURTURING_188 ("Pokémon Breeder's Nurturing", "188", Rarity.ULTRARARE, [TRAINER, SUPPORTER]),
   ROSE_189 ("Rose", "189", Rarity.ULTRARARE, [TRAINER, SUPPORTER]),
-  BUTTERFREE_VMAX_190 ("Butterfree VMAX", "190", Rarity.SECRET, [POKEMON, EVOLUTION, VMAX, _GRASS_]),
-  CENTISKORCH_VMAX_191 ("Centiskorch VMAX", "191", Rarity.SECRET, [POKEMON, EVOLUTION, VMAX, _FIRE_]),
-  ETERNATUS_VMAX_192 ("Eternatus VMAX", "192", Rarity.SECRET, [POKEMON, EVOLUTION, VMAX, _DARKNESS_]),
-  SCIZOR_VMAX_193 ("Scizor VMAX", "193", Rarity.SECRET, [POKEMON, EVOLUTION, VMAX, _METAL_]),
-  SALAMENCE_VMAX_194 ("Salamence VMAX", "194", Rarity.SECRET, [POKEMON, EVOLUTION, VMAX, _COLORLESS_]),
+  BUTTERFREE_VMAX_190 ("Butterfree VMAX", "190", Rarity.SECRET, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _GRASS_]),
+  CENTISKORCH_VMAX_191 ("Centiskorch VMAX", "191", Rarity.SECRET, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _FIRE_]),
+  ETERNATUS_VMAX_192 ("Eternatus VMAX", "192", Rarity.SECRET, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _DARKNESS_]),
+  SCIZOR_VMAX_193 ("Scizor VMAX", "193", Rarity.SECRET, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _METAL_]),
+  SALAMENCE_VMAX_194 ("Salamence VMAX", "194", Rarity.SECRET, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _COLORLESS_]),
   POKEMON_BREEDER_S_NURTURING_195 ("Pokémon Breeder's Nurturing", "195", Rarity.SECRET, [TRAINER, SUPPORTER]),
   ROSE_196 ("Rose", "196", Rarity.SECRET, [TRAINER, SUPPORTER]),
   RILLABOOM_197 ("Rillaboom", "197", Rarity.SECRET, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
@@ -279,7 +278,7 @@ public enum DarknessAblaze implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -1329,17 +1328,7 @@ public enum DarknessAblaze implements LogicCardInfo {
               }
             }
             before EVOLVE, {
-              if ((ef as Evolve).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
-                warnAndPrevent()
-              }
-            }
-            before EVOLVE_STANDARD, {
-              if ((ef as EvolveStandard).evolutionCard.player.pbg.hand.contains(ef.evolutionCard)) {
-                warnAndPrevent()
-              }
-            }
-            before PLAY_EVOLUTION, {
-              if ((ef as PlayEvolution).cardToPlay.player.pbg.hand.contains(ef.cardToPlay)) {
+              if ((ef as Evolve).activationReason == PLAY_FROM_HAND) {
                 warnAndPrevent()
               }
             }
@@ -1771,7 +1760,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           onAttack {
             if (opp.hand) {
               opp.hand.shuffledCopy().select(hidden: true, count: 1, "Choose a random card from your opponent's hand").showToMe("Selected card").showToOpponent("this card will be shuffled into your deck").moveTo(opp.deck)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
             }
           }
         }
@@ -1810,7 +1799,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             afterDamage{
               if (opp.hand){
                 opp.hand.shuffledCopy().select(hidden: true, count: 2, "Choose 2 random cards from your opponent's hand").showToMe("Selected cards").showToOpponent("These cards will be shuffled into your deck").moveTo(opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                shuffleOppDeck()
               }
             }
           }
@@ -1924,7 +1913,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "Your opponent’s Benched Pokémon can’t be healed."
           delayedA {
             before REMOVE_DAMAGE_COUNTER, {
-              if(ef.lastTarget.owner == self.owner.opposite && ef.lastTarget.benched){
+              if(ef.targetPokemon.owner == self.owner.opposite && ef.targetPokemon.benched){
                 prevent()
                 bc "Heal Jamming prevents healing"
               }
@@ -2053,7 +2042,7 @@ public enum DarknessAblaze implements LogicCardInfo {
               if (my.deck) {
                 def tar = my.deck.search("Evolves from ${self.name}", { it.cardTypes.is(EVOLUTION) && it.predecessor == self.name })
                 if (tar) {
-                  evolve(self, tar.first(), OTHER)
+                  evolve(self, tar.first())
                 }
                 shuffleDeck()
               }
@@ -2684,8 +2673,9 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
           }
           def checkNewAbilities = { Effect ef ->
-            if (ef.cardToPlay != thisCard && ef.cardToPlay.player == self.owner &&
-              self.owner.pbg.all.find { !it.types.contains(D) }
+            if (ef.cardToPlay != thisCard
+                    && ef.cardToPlay.player == self.owner
+                    && self.owner.pbg.all.find { !it.types.contains(D) }
             ) {
               self.owner.pbg.triggerBenchSizeCheck()
               new CheckAbilities().run(bg)
@@ -2703,11 +2693,11 @@ public enum DarknessAblaze implements LogicCardInfo {
             bg.em().retrieveObject("Infinity_Zone_" + self.hashCode())
           }
 
-          def isPokemonPlayable = { Effect ef ->
+          def isPokemonPlayable = { PutOnBench ef ->
             def isInfinityZoneActive = bg.em().retrieveObject("Infinity_Zone_" + self.hashCode())
 
-            if (ef.cardToPlay.player == self.owner &&
-              isInfinityZoneActive && !ef.cardToPlay.types.contains(D)) {
+            if (ef.pokemonCard.player == self.owner &&
+              isInfinityZoneActive && !ef.pokemonCard.types.contains(D)) {
               return false
             }
             return true
@@ -2723,11 +2713,11 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
 
           delayedA (priority: BEFORE_LAST) {
-            after PLAY_BASIC_POKEMON, {
-              checkNewAbilities(ef)
-            }
-            after PLAY_EVOLUTION, {
-              checkNewAbilities(ef)
+            after PUT_ON_BENCH, {
+              if (ef.pokemonCard != thisCard && ef.pokemonCard.player == self.owner && self.owner.pbg.all.find { !it.types.contains(D) }) {
+                self.owner.pbg.triggerBenchSizeCheck()
+                new CheckAbilities().run(bg)
+              }
             }
             after SWITCH, {
               if (ef.switchedOut && ef.switchedOut.owner == self.owner || ef.fallenBack && ef.fallenBack.owner == self.owner) {
@@ -2749,26 +2739,25 @@ public enum DarknessAblaze implements LogicCardInfo {
                 self.owner.pbg.triggerBenchSizeCheck()
               }
             }
-            before PLAY_BASIC_POKEMON, {
-              if (!isPokemonPlayable(ef)) {
-                wcu "Cannot play non-Darkness Pokémon"
-                prevent()
+            after LEVEL_UP, {
+              if (ef.pokemonToLevelUp.owner == self.owner) {
+                self.owner.pbg.triggerBenchSizeCheck()
               }
             }
-            before PLAY_EVOLUTION, {
+            before PUT_ON_BENCH, {
               if (!isPokemonPlayable(ef)) {
-                wcu "Cannot play non-Darkness Pokémon"
-                prevent()
-              }
-            }
-            before EVOLVE_STANDARD, {
-              if (bg.em().retrieveObject("Infinity_Zone_" + self.hashCode()) && ef.evolutionCard.player == self.owner && !ef.evolutionCard.types.contains(D)) {
                 wcu "Cannot play non-Darkness Pokémon"
                 prevent()
               }
             }
             before EVOLVE, {
-              if (bg.em().retrieveObject("Infinity_Zone_" + self.hashCode()) && ef.evolutionCard.player == self.owner  && !ef.evolutionCard.types.contains(D)) {
+              if (bg.em().retrieveObject("Infinity_Zone_" + self.hashCode()) && ef.activationReason == PLAY_FROM_HAND && ef.evolutionCard.player == self.owner  && !ef.evolutionCard.types.contains(D)) {
+                wcu "Cannot play non-Darkness Pokémon"
+                prevent()
+              }
+            }
+            before LEVEL_UP, {
+              if (bg.em().retrieveObject("Infinity_Zone_" + self.hashCode()) && ef.activationReason == PLAY_FROM_HAND && ef.levelUpCard.player == self.owner  && !ef.levelUpCard.types.contains(D)) {
                 wcu "Cannot play non-Darkness Pokémon"
                 prevent()
               }
@@ -2922,15 +2911,17 @@ public enum DarknessAblaze implements LogicCardInfo {
         bwAbility "Sturdy", {
           text "If this Pokémon has full HP and would be Knocked Out by damage from an attack, it is not Knocked Out, and its remaining HP becomes 10."
             delayedA {
-              // Taken from Donphan LOT
+              def fullhpturn=0
               before APPLY_ATTACK_DAMAGES, {
-                if(ef.attacker.owner != self.owner) {
-                  bg.dm().each{
-                    if(it.to == self && it.notNoEffect && self.damage == hp(0) && it.dmg.value >= self.fullHP.value) {
-                      bc "Sturdy saved $self!"
-                      it.dmg = self.fullHP - hp(10)
-                    }
-                  }
+                if (bg.currentTurn==self.owner.opposite && self.numberOfDamageCounters==0)
+                  fullhpturn=bg.turnCount
+              }
+              before KNOCKOUT, self, {
+                if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && bg.turnCount==fullhpturn){
+                  bc "Sturdy is activated"
+                  self.damage = self.fullHP - hp(10)
+                  bc "Sturdy saved $self!"
+                  prevent()
                 }
               }
             }
@@ -3204,7 +3195,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           text "If this Pokémon is Knocked Out by damage from an attack from your opponent’s Pokémon, discard the top 2 cards of your opponent’s deck."
           delayedA (priority: LAST) {
             before (KNOCKOUT, self) {
-              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && opp.deck) {
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.opposite.pbg.deck) {
                 bc "One Last Dig - 2 cards will be discarded from the top of the opponent's deck"
                 self.owner.opposite.pbg.deck.subList(0,2).discard()
               }
@@ -3615,7 +3606,7 @@ public enum DarknessAblaze implements LogicCardInfo {
               //TODO: Handle Scoop-Up Block on this.
               if (my.all.any{ it.name != "Corviknight" } && confirm("Flying Taxi - Return one of your Pokémon (and all cards attached to it) back to your hand?")){
                 def pcs = my.all.findAll { it.name != "Corviknight" }.select("Which Pokémon to bring back to your hand?")
-                scoopUpPokemon([:], pcs, delegate, SRC_ABILITY)
+                scoopUpPokemon(pcs, delegate)
               }
             }
           }
@@ -3637,7 +3628,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           eff = delayed {
             before null, null, Source.ATTACK, {
               if (self.active) {
-                def pcs = (ef as TargetedEffect).getResolvedTarget(bg, e)
+                def pcs = e.getTargetPokemon()
                 if (pcs && pcs.owner == self.owner && bg.currentTurn == self.owner.opposite) {
                   if (ef.effectType != DAMAGE) {
                     bc "Big Parasol prevents effect"
@@ -3726,7 +3717,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         playRequirement{
           assert my.bench : "You have no benched Pokémon"
         }
-        globalAbility {Card thisCard->
+        initHook {Card thisCard->
           def flag
           delayed {
             before PLAY_TRAINER, {
@@ -3749,7 +3740,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         def eff
         onPlay {reason->
           eff = getter (GET_FULL_HP, self) {h->
-            if (self.basic && !self.pokemonGX) {
+            if (self && self.basic && !self.pokemonGX) {
               h.object += hp(50)
             }
           }
@@ -3793,10 +3784,10 @@ public enum DarknessAblaze implements LogicCardInfo {
             }
             before COIN_FLIP_BETWEEN_EXECUTION, {
               def lastTurn = bg.em().retrieveObject(key)
-              if (act && ef.object.player == bg.getCurrentTurn() && lastTurn != bg.turnCount && confirm("Glimwood Tangle: Result: $ef.object.lastResultString. Do you want to reflip?")) {
+              if (act && ef.coinFlip.player == bg.getCurrentTurn() && lastTurn != bg.turnCount && confirm("Glimwood Tangle: Result: $ef.coinFlip.lastResultString. Do you want to reflip?")) {
                 bg.em().storeObject(key, bg.turnCount)
                 bc "${bg().getCurrentTurn().pbg.active} used Glimwood Tangle and discarded those flips"
-                ef.object.run(bg) //flip again
+                bg.em().run(ef.coinFlip) //flip again
                 prevent()
               }
             }
@@ -3811,7 +3802,6 @@ public enum DarknessAblaze implements LogicCardInfo {
         text "Shuffle your hand into your deck. Then, draw 4 cards. If your Active Pokémon if your only Pokémon in play, draw 8 cards instead."
         onPlay {
           shuffleDeck(my.hand.getExcludedList(thisCard))
-          my.hand.removeAll(my.hand.getExcludedList(thisCard))
           draw(my.bench ? 4 : 8)
         }
         playRequirement{
@@ -3874,16 +3864,16 @@ public enum DarknessAblaze implements LogicCardInfo {
 
           def info = "Select ${ (preEvoNames.size() == 1 && pl.size() == 2) ? "up to 2" : "a"} Pokémon that evolves from ${preEvoNames[0] + (preEvoNames.size() == 2 ? " and a Pokémon that evolves from " + preEvoNames[1] : "")}:"
 
-          def sel = my.deck.search(max: pl.size(), info, { it.cardTypes.is(EVOLUTION) &&  preEvoNames.contains(it.predecessor) }, { CardList list -> preEvoNames.size() == 1 || ( list.findAll{it.predecessor == preEvoNames[0]}.size() <= 1 && list.findAll{it.predecessor == preEvoNames[1]}.size() <= 1 )})
+          def sel = my.deck.search(max: pl.size(), info, { it.cardTypes.is(EVOLUTION) &&  preEvoNames.contains(it.predecessor) }, { CardList list -> preEvoNames.size() == 1 || ( list.findAll{it.predecessors.contains(preEvoNames[0])}.size() <= 1 && list.findAll{it.predecessors.contains(preEvoNames[1])}.size() <= 1 )})
 
           sel.each{ evoCard ->
             def toEvolve
             if (preEvoNames.size() == 1 && pl.size() > 1){
               toEvolve = pl.select("Which of these Pokémon will evolve into ${evoCard.name}?")
             } else {
-              toEvolve = pl.find{it.name == evoCard.predecessor}
+              toEvolve = pl.find{evoCard.predecessors.contains(it.name)}
             }
-            evolve(toEvolve, evoCard, OTHER)
+            evolve(toEvolve, evoCard)
             pl.remove(toEvolve)
           }
 
@@ -3901,7 +3891,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         text "Play this card as if it were a 70-HP Basic [C] Pokémon. At any time during your turn, you may discard this card from play. This card can’t be affected by any Special Conditions, and it can’t retreat."
         onPlay {
           Card pokemonCard, trainerCard = thisCard
-          pokemonCard = basic (new CustomCardInfo(this[thisCard.enumName] as CardInfo).setCardTypes(BASIC, POKEMON), hp:HP070, type:COLORLESS, retreatCost:0) {
+          pokemonCard = basic (new CustomCardInfo(this[thisCard.enumName] as CardInfo).setCardTypes(BASIC, POKEMON, TRAINER, FOSSIL), hp:HP070, type:COLORLESS, retreatCost:0) {
             customAbility{
               def eff, acl
               delayedA {
@@ -3928,15 +3918,9 @@ public enum DarknessAblaze implements LogicCardInfo {
                     }
                   }
                 }
-                acl = action("Discard Rare Fossil", [TargetPlayer.SELF]){
-                  delayed{
-                    before TAKE_PRIZE, {
-                      if(ef.pcs==self){
-                        prevent()
-                      }
-                    }
-                  }
-                  new Knockout(self).run(bg)
+                acl = action(pokemonCard, "Discard Rare Fossil", [TargetPlayer.SELF]){
+                  self.cards.moveTo(self.owner.pbg.discard)
+                  removePCS(self)
                 }
               }
               onDeactivate{
@@ -3944,7 +3928,7 @@ public enum DarknessAblaze implements LogicCardInfo {
               }
             }
           }
-          pokemonCard.player = trainerCard.player
+          pokemonCard.initializeFrom trainerCard
           bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
           hand.remove(pokemonCard)
           benchPCS(pokemonCard)
@@ -3971,7 +3955,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         def lastTurn=0
         def actions=[]
         onPlay {
-          actions = action("Stadium: Rose Tower") {
+          actions = action(thisCard, "Stadium: Rose Tower") {
             assert lastTurn != bg().turnCount : "Already used"
             assert my.deck : "You don't have any cards left in your deck"
             assert (my.hand.size() < 3) : "You have 3 or more cards in your hand"
@@ -4065,9 +4049,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         def getterRegister = {
           eff1 = getter (GET_FULL_HP, self) {h->
             if (self.types.contains(R)) {
-              targeted self, SRC_SPENERGY, {
-                h.object += hp(20)
-              }
+              h.object += hp(20)
             }
           }
         }
@@ -4096,9 +4078,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         onPlay { reason->
           eff = getter (GET_RETREAT_COST, BEFORE_LAST, self) {h->
             if (self.types.contains(D)) {
-              targeted self, SRC_SPENERGY, {
-                h.object = 0
-              }
+              h.object = 0
             }
           }
         }
@@ -4117,7 +4097,7 @@ public enum DarknessAblaze implements LogicCardInfo {
         onPlay { reason->
           eff = delayed {
             after PROCESS_ATTACK_EFFECTS, {
-              targeted self, SRC_SPENERGY, {
+              targeted self, {
                 bg.dm().each {
                   if (it.from == self && it.to.active && it.to.owner != self.owner && self.types.contains(C) && it.dmg.value) {
                     bc "Powerful [C] Energy +20"

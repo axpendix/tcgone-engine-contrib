@@ -202,7 +202,7 @@ public enum HolonPhantoms implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -255,8 +255,7 @@ public enum HolonPhantoms implements LogicCardInfo {
                   }
                 }
                 after FALL_BACK, pcs, {unregister()}
-                after EVOLVE, pcs, {unregister()}
-                after DEVOLVE, pcs, {unregister()}
+                after CHANGE_STAGE, pcs, {unregister()}
                 unregisterAfter 2
               }
             }
@@ -276,27 +275,9 @@ public enum HolonPhantoms implements LogicCardInfo {
         weakness P
         pokePower "Form Change", {
           text "Once during your turn (before your attack), you may search your deck for another Deoxys and switch it with Deoxys. (Any cards attached to Deoxys, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys on top of your deck. Shuffle your deck afterward. You can't use more than 1 Form Change Poké-Power each turn."
-          actionA {
-            assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
-            checkLastTurn()
-            assert my.deck : "Deck is empty!"
-            bg.em().storeObject("Form_Change",bg.turnCount)
-            powerUsed()
-
-            def oldDeoxys = self.topPokemonCard
-            def newDeoxys = my.deck.search(min:0, max: 1, {
-              it.name == "Deoxys"
-            })
-
-            if (newDeoxys) {
-              newDeoxys.moveTo(self.cards)
-              my.deck.add(oldDeoxys)
-              self.cards.remove(oldDeoxys)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Form Change", {
+            it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme")) //Deoxys cannot Form Change into Deoxys ex.
+          })
         }
         move "Energy Loop", {
           text "60 damage. Return 2 Energy attached to Deoxys to your hand."
@@ -312,49 +293,17 @@ public enum HolonPhantoms implements LogicCardInfo {
         weakness P
         pokePower "Form Change", {
           text "Once during your turn (before your attack), you may search your deck for another Deoxys and switch it with Deoxys. (Any cards attached to Deoxys, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys on top of your deck. Shuffle your deck afterward. You can't use more than 1 Form Change Poké-Power each turn."
-          actionA {
-            assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
-            checkLastTurn()
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Form_Change",bg.turnCount)
-            powerUsed()
-
-            def oldDeoxys = self.topPokemonCard
-            def newDeoxys = my.deck.search(min:0, max: 1, {
-              it.name == "Deoxys"
-            })
-
-            if (newDeoxys) {
-              newDeoxys.moveTo(self.cards)
-              my.deck.add(oldDeoxys)
-              self.cards.remove(oldDeoxys)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Form Change", {
+            it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme")) //Deoxys cannot Form Change into Deoxys ex.
+          })
         }
         move "Delta Reduction", {
-          text "30 damage. During your opponent's next turn, any damage done to Deoxys by attacks is reduced by 30 (before applying Weakness and Resistance)."
+          text "30 damage. During your opponent's next turn, any damage done by attacks from the Defending Pokémon is reduced by 30 (before applying Weakness and Resistance)."
           energyCost M, C
           onAttack {
+            bc "errata: The English version of Deoxys is mistranslated. The effect is supposed to be on the Defending Pokémon, not Deoxys."
             damage 30
-            afterDamage{
-              delayed{
-                after PROCESS_ATTACK_EFFECTS, {
-                  bg.dm().each{
-                    if(it.from.owner == self.owner.opposite && it.to == self && it.notNoEffect && it.dmg.value) {
-                      bc "Delta Reduction -30 (before W/R)"
-                      it.dmg -= hp(30)
-                    }
-                  }
-                }
-                after FALL_BACK, self, {unregister()}
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
-                unregisterAfter 2
-              }
-            }
+            reduceDamageFromDefendingNextTurn(hp(30),thisMove,defending)
           }
         }
       };
@@ -363,27 +312,9 @@ public enum HolonPhantoms implements LogicCardInfo {
         weakness P
         pokePower "Form Change", {
           text "Once during your turn (before your attack), you may search your deck for another Deoxys and switch it with Deoxys. (Any cards attached to Deoxys, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys on top of your deck. Shuffle your deck afterward. You can't use more than 1 Form Change Poké-Power each turn."
-          actionA {
-            assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
-            checkLastTurn()
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Form_Change",bg.turnCount)
-            powerUsed()
-
-            def oldDeoxys = self.topPokemonCard
-            def newDeoxys = my.deck.search(min:0, max: 1, {
-              it.name == "Deoxys"
-            })
-
-            if (newDeoxys) {
-              newDeoxys.moveTo(self.cards)
-              my.deck.add(oldDeoxys)
-              self.cards.remove(oldDeoxys)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Form Change", {
+            it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme")) //Deoxys cannot Form Change into Deoxys ex.
+          })
         }
         move "Crystal Laser", {
           text "20 damage. During your next turn, Deoxys's attacks do 40 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
@@ -399,36 +330,16 @@ public enum HolonPhantoms implements LogicCardInfo {
         weakness P
         pokePower "Form Change", {
           text "Once during your turn (before your attack), you may search your deck for another Deoxys and switch it with Deoxys. (Any cards attached to Deoxys, damage counters, Special Conditions, and effects on it are now on the new Pokémon.) If you do, put Deoxys on top of your deck. Shuffle your deck afterward. You can't use more than 1 Form Change Poké-Power each turn."
-          actionA {
-            assert bg.em().retrieveObject("Form_Change") != bg.turnCount : "You can’t use more than 1 Form Change Poké-Power each turn"
-            checkLastTurn()
-            assert my.deck : "Deck is empty"
-            bg.em().storeObject("Form_Change",bg.turnCount)
-            powerUsed()
-
-            def oldDeoxys = self.topPokemonCard
-            def newDeoxys = my.deck.search(min:0, max: 1, {
-              it.name == "Deoxys"
-            })
-
-            if (newDeoxys) {
-              newDeoxys.moveTo(self.cards)
-              my.deck.add(oldDeoxys)
-              self.cards.remove(oldDeoxys)
-              checkFaint()
-            }
-
-            shuffleDeck()
-          }
+          formChange(delegate, "Form Change", {
+            it.name == "Deoxys" || (it.name.contains("Deoxys") && it.name.contains("Forme")) //Deoxys cannot Form Change into Deoxys ex.
+          })
         }
         move "Teleportation Burst", {
           text "20 damage. Switch Deoxys with 1 of your Benched Pokémon."
           energyCost L
           onAttack {
             damage 20
-            if (my.bench) {
-              sw my.active, my.bench.select()
-            }
+            switchYourActive()
           }
         }
       };
@@ -468,7 +379,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               if (ef.attacker.owner == self.owner && bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name.contains("Holon") && ef.attacker.topPokemonCard.cardTypes.is(DELTA)) {
                 bg.dm().each {
-                  if (it.to != self.owner && it.to.active && it.notNoEffect && it.dmg.value) {
+                  if (it.to.owner != self.owner && it.to.active && it.notNoEffect && it.dmg.value) {
                     bc "Delta Reactor +10"
                     it.dmg += hp(10)
                   }
@@ -482,7 +393,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost M, C
           onAttack {
             damage 20
-            flip { discardDefendingEnergy() }
+            flip { discardDefendingEnergyAfterDamage() }
           }
         }
         move "Heavy Impact", {
@@ -850,8 +761,7 @@ public enum HolonPhantoms implements LogicCardInfo {
                   eff.unregister()
                 }
                 after FALL_BACK, self, {unregister()}
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
                 unregisterAfter 2
               }
             }
@@ -1244,33 +1154,12 @@ public enum HolonPhantoms implements LogicCardInfo {
       case CHIMECHO_DELTA_37:
       return basic (this, hp:HP060, type:M, retreatCost:1) {
         weakness P
-        globalAbility {Card thisCard->
-          delayed {
-            def flag = false
-            before USE_ABILITY, {
-              if (ef.ability instanceof PokePower){
-                flag = true
-              }
-            }
-            after POKEPOWER, {
-              flag = false
-            }
-            after ACTIVATE_ABILITY, {
-              flag = false
-            }
-            before PLAY_TRAINER, {
-              if(!flag && ef.cardToPlay.cardTypes.is(SUPPORTER) && ef.cardToPlay.name.contains("Holon") && bg.currentTurn == thisCard.player){
-                bg.em().storeObject("Holon_Supporter", bg.turnCount)
-              }
-            }
-          }
-        }
         pokePower "Delta Support", {
           text "Once during your turn (before your attack), if you have a Supporter card with Holon in its name in play, you may search your discard pile for a basic Energy card or a δ Rainbow Energy card, show it to your opponent, and put it into your hand. This power can't be used if Chimecho is affected by a Special Condition."
           actionA {
             checkLastTurn()
             checkNoSPC()
-            assert bg.em().retrieveObject("Holon_Supporter") == bg.turnCount : "You haven't played a Supporter with Holon in its name this turn"
+            assert bg.ownPBG.playedSupporter.find {it.name.contains("Holon")} : "You don't have a Holon Supporter in play"
             assert my.discard.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"}) : "You dont't have the required energy in your discard"
             powerUsed()
             my.discard.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"}).select("Choose an energy to put into your hand").showToOpponent("Energy card to be put to hand").moveTo(my.hand)
@@ -2314,7 +2203,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             assert opp.bench.size() >= 4 : "Opponent needs to have 4 or more Benched Pokémon"
             powerUsed()
             def tar = opp.bench.select("Choose a Pokémon to return to your opponent's hand.")
-            scoopUpPokemon([:], tar, delegate, SRC_ABILITY)
+            scoopUpPokemon(tar, delegate)
           }
         }
         move "Power Blow", {
@@ -2354,9 +2243,8 @@ public enum HolonPhantoms implements LogicCardInfo {
             afterDamage {
               if (defending.evolution && !defending.slatedToKO && confirm("Discard 2 Energy to devolve the Defending Pokémon?")) {
                 discardSelfEnergy(C, C)
-                def top=defending.topPokemonCard
-                devolve(defending, top, opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                devolve(defending, opp.deck)
+                shuffleOppDeck()
               }
             }
           }

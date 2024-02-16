@@ -1,18 +1,14 @@
 package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.effect.EffectPriority
-import tcgwars.logic.effect.basic.Knockout;
+import tcgwars.logic.effect.basic.Knockout
+import tcgwars.logic.exception.EffectRequirementException;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.effect.EffectPriority.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.EffectType.ATTACH_ENERGY
-import static tcgwars.logic.effect.EffectType.DEVOLVE
-import static tcgwars.logic.effect.EffectType.EVOLVE
-import static tcgwars.logic.effect.EffectType.KNOCKOUT
-import static tcgwars.logic.effect.EffectType.KNOCKOUT;
+import static tcgwars.logic.effect.EffectType.*
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
@@ -136,10 +132,10 @@ public enum Triumphant implements LogicCardInfo {
   MAGNEZONE_96 ("Magnezone", "96", Rarity.ULTRARARE, [STAGE2, EVOLUTION, POKEMON, _LIGHTNING_]),
   MEW_97 ("Mew", "97", Rarity.ULTRARARE, [BASIC, POKEMON, _PSYCHIC_]),
   YANMEGA_98 ("Yanmega", "98", Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _GRASS_]),
-  DARKRAI_AND_CRESSELIA_LEGEND_99 ("Darkrai & Cresselia LEGEND", "99", Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
-  DARKRAI_AND_CRESSELIA_LEGEND_100 ("Darkrai & Cresselia LEGEND", "100", Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
-  PALKIA_AND_DIALGA_LEGEND_101 ("Palkia & Dialga LEGEND", "101", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
-  PALKIA_AND_DIALGA_LEGEND_102 ("Palkia & Dialga LEGEND", "102", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
+  DARKRAI_AND_CRESSELIA_LEGEND_99 ("Darkrai & Cresselia LEGEND", "99", Rarity.HOLORARE, [POKEMON, _PSYCHIC_, LEGEND]),
+  DARKRAI_AND_CRESSELIA_LEGEND_100 ("Darkrai & Cresselia LEGEND", "100", Rarity.HOLORARE, [POKEMON, _PSYCHIC_, LEGEND]),
+  PALKIA_AND_DIALGA_LEGEND_101 ("Palkia & Dialga LEGEND", "101", Rarity.HOLORARE, [POKEMON, _WATER_, LEGEND]),
+  PALKIA_AND_DIALGA_LEGEND_102 ("Palkia & Dialga LEGEND", "102", Rarity.HOLORARE, [POKEMON, _WATER_, LEGEND]),
   ALPH_LITHOGRAPH_FOUR ("Alph Lithograph", "FOUR", Rarity.HOLORARE, [TRAINER, ITEM]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
@@ -188,7 +184,7 @@ public enum Triumphant implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -254,21 +250,20 @@ public enum Triumphant implements LogicCardInfo {
             onAttack {
               if(!my.deck){
                 def list=rearrange(opp.deck.subList(0,5), "Arrange top 5 cards of your opponent's deck")
-                deck.setSubList(0, list)
+                opp.deck.setSubList(0, list)
               }
               else if(!opp.deck){
                 def list=rearrange(my.deck.subList(0,5), "Arrange top 5 cards of your deck")
-                deck.setSubList(0, list)
+                my.deck.setSubList(0, list)
               }
               else{
                 def choice = choose([0,1],["Your deck", "Your opponent's deck"], "Look at the top 5 cards of which player's deck?")
-                if (choice) {
+                if (choice == 1) {
                   def list=rearrange(opp.deck.subList(0,5), "Arrange top 5 cards of your opponent's deck")
-                  deck.setSubList(0, list)
-                }
-                else {
+                  opp.deck.setSubList(0, list)
+                } else {
                   def list=rearrange(my.deck.subList(0,5), "Arrange top 5 cards of your deck")
-                  deck.setSubList(0, list)
+                  my.deck.setSubList(0, list)
                 }
               }
             }
@@ -442,8 +437,8 @@ public enum Triumphant implements LogicCardInfo {
             onActivate {r->
               if(r==PLAY_FROM_HAND && (opp.hand||opp.deck) && confirm("Use Spooky Whirlpool")){
                 powerUsed()
-                opp.hand.moveTo(opp.deck)
-                shuffleDeck(null, TargetPlayer.OPPONENT)
+                opp.hand.moveTo(hidden: true, opp.deck)
+                shuffleOppDeck()
                 draw 6, TargetPlayer.OPPONENT
               }
             }
@@ -793,19 +788,19 @@ public enum Triumphant implements LogicCardInfo {
             energyCost P, C
             onAttack {
               damage 20
-              delayed {
-                def eff = getter IS_ABILITY_BLOCKED, { Holder h->
-                  if(h.effect.ability instanceof PokePower) {
-                    h.object = true
+              runAtBeginningOfYourOpponentsTurn {
+                delayed {
+                  def eff = getter IS_ABILITY_BLOCKED, { Holder h->
+                    if(bg.currentTurn == self.owner.opposite && h.effect.ability instanceof PokePower) {
+                      h.object = true
+                    }
+                  }
+                  unregisterAfter 1
+                  unregister {
+                    eff.unregister()
                   }
                 }
-                unregisterAfter 2
-                unregister {
-                  eff.unregister()
-                  new CheckAbilities().run(bg)
-                }
               }
-              new CheckAbilities().run(bg)
             }
           }
           move "Bench Manipulation", {
@@ -816,7 +811,7 @@ public enum Triumphant implements LogicCardInfo {
             }
             onAttack {
               flip opp.bench.size(), {}, {
-                noWrDamage 40
+                noWrDamage 40, defending
               }
             }
           }
@@ -1059,8 +1054,10 @@ public enum Triumphant implements LogicCardInfo {
             energyCost L, L, C
             onAttack {
               damage 60
-              flip 1, {}, {
-                discardAllSelfEnergy(L)
+              afterDamage {
+                flip 1, {}, {
+                  discardAllSelfEnergy(L)
+                }
               }
             }
           }
@@ -1202,7 +1199,7 @@ public enum Triumphant implements LogicCardInfo {
             text "30 damage. This attack’s damage isn’t affected by Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
             energyCost F
             onAttack {
-              swiftDamage 30, defending
+              shredDamage 30
             }
           }
           move "Strength", {
@@ -1378,20 +1375,12 @@ public enum Triumphant implements LogicCardInfo {
             text "30 damage. Flip 2 coins. If both of them are tails, this attack does nothing. For each heads, discard an Energy attached to the Defending Pokémon."
             energyCost C, C, C
             onAttack {
-              flip 2, {}, {}, [
-                2: {
-                  damage 30
-                  afterDamage {
-                    discardDefendingEnergy()
-                    discardDefendingEnergy()
-                  }
-                },
-                1: {
-                  damage 30
-                  afterDamage {
-                    discardDefendingEnergy()
-                  }
-                }]
+              def list = []
+              flip 2, { list.add C }
+              if (list) {
+                damage 30
+                discardDefendingEnergyAfterDamage(*list)
+              }
             }
           }
         };
@@ -1424,7 +1413,7 @@ public enum Triumphant implements LogicCardInfo {
 
         };
       case PORYGON2_49:
-        return evolution (this, from:"Porygon", hp:HP080, type:COLORLESS, retreatCost:2) {
+        return evolution (this, from:"Porygon", hp:HP080, type:COLORLESS, retreatCost:1) {
           weakness F
           pokePower "Mapping", {
             text "Once during your turn, when you play Porygon2 from you hand to evolve 1 of your Pokémon, you may search your deck for a Stadium card, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
@@ -1466,8 +1455,10 @@ public enum Triumphant implements LogicCardInfo {
             energyCost C, C, C
             onAttack {
               damage 50
-              flip {
-                discardDefendingEnergy()
+              afterDamage {
+                flip {
+                  discardDefendingEnergy()
+                }
               }
             }
           }
@@ -1588,7 +1579,7 @@ public enum Triumphant implements LogicCardInfo {
 
         };
       case ARON_56:
-        return basic (this, hp:HP060, type:METAL, retreatCost:1) {
+        return basic (this, hp:HP060, type:METAL, retreatCost:2) {
           weakness R
           resistance P, MINUS20
           move "Mountain Eater", {
@@ -1617,8 +1608,11 @@ public enum Triumphant implements LogicCardInfo {
           move "Inviting Scent", {
             text "Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon."
             energyCost C
+            attackRequirement {
+              assert opp.bench
+            }
             onAttack {
-              whirlwind()
+              sw2 opp.bench.select("New Defending Pokémon")
             }
           }
           move "Careless Tackle", {
@@ -1707,7 +1701,7 @@ public enum Triumphant implements LogicCardInfo {
           resistance L, MINUS20
           move "Sand Veil", {
             text "Flip a coin. If heads, prevent all effects of attacks, including damage, done to Diglett during your opponent’s next turn."
-            energyCost ()
+            energyCost C
             onAttack {
               flip {
                 preventAllEffectsNextTurn()
@@ -2005,7 +1999,7 @@ public enum Triumphant implements LogicCardInfo {
             text "Flip a coin. If heads, choose 1 of the Defending Pokémon’s attacks. That Pokémon can’t use that attack during your opponent’s next turn."
             energyCost C
             attackRequirement {
-              assert defending.topPokemonCard.moves : "The defending Pokémon has no attacks"
+              assert defending.baseMoves : "The defending Pokémon has no attacks"
             }
             onAttack {
               flip {
@@ -2198,6 +2192,9 @@ public enum Triumphant implements LogicCardInfo {
               unregisterAfter 1
             }
           }
+          playRequirement{
+            assert my.prizeCardSet.size() > opp.prizeCardSet.size() : "You don't have more prize cards remaining than your opponent"
+          }
         };
       case INDIGO_PLATEAU_86:
         return stadium (this) {
@@ -2218,11 +2215,12 @@ public enum Triumphant implements LogicCardInfo {
         return basicTrainer (this) {
           text "Discard 2 cards from you hand. Search your discard pile for a Trainer card, show it to your opponent, and put it into your hand. You can’t choose Junk Arm with the effect of this card."
           onPlay {
-            my.hand.select(count:2,"Discard 2 cards").discard()
+            my.hand.getExcludedList(thisCard).select(count:2,"Discard 2 cards").discard()
             my.discard.select("Choose a Trainer card to return to your hand", {it.cardTypes.is(ITEM) && it.name != "Junk Arm"}).showToOpponent("Selected Cards").moveTo(my.hand)
           }
           playRequirement{
             assert my.hand.getExcludedList(thisCard).size() >= 2 : "You don't have 2 other cards to discard"
+            assert my.discard.filterByType(ITEM).any{it.name != "Junk Arm"} : "You don't have any Trainer-Item cards not named \"Junk Arm\""
           }
         };
       case SEEKER_88:
@@ -2261,17 +2259,15 @@ public enum Triumphant implements LogicCardInfo {
           text "Rescue Energy provides 1 [C] Energy. If the Pokémon this card is attached to is Knocked Out by damage from an attack, put that Pokémon back into your hand. (Discard all cards attached to that Pokémon.)"
           def eff
           onPlay {reason->
-            eff = delayed priority:EffectPriority.BEFORE_LAST, {
+            eff = delayed priority:EffectPriority.LAST, {
+              def flag = false
               before KNOCKOUT, self, {
-                if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite ){
-                  def pcs=self
-                  delayed(inline: true){
-                    after KNOCKOUT, pcs, {
-                      bc "Rescue Energy activates"
-                      scoopUpPokemon(pokemonOnly:true, pcs, delegate)
-                      owner.delegate.unregister()
-                    }
-                  }
+                flag = (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite
+              }
+              before KNOCKOUT_DISCARD_STEP, self, {
+                if (flag) {
+                  bc "Rescue Energy activates"
+                  self.cards.filterByType(POKEMON).moveTo(self.owner.pbg.hand)
                 }
               }
             }
@@ -2291,8 +2287,8 @@ public enum Triumphant implements LogicCardInfo {
           pokeBody "Eye of Disaster", {
             text "As long as Absol is your Active Pokémon, whenever your opponent puts a Basic Pokémon from his or her hand onto his or her Bench, put 2 damage counters on that Pokémon."
             delayedA {
-              after PLAY_BASIC_POKEMON, {
-                if(self.active && bg.currentTurn == self.owner.opposite){
+              after PUT_ON_BENCH, {
+                if(ef.basicFromHand && self.active && bg.currentTurn == self.owner.opposite){
                   ef.place.damage += 20
                 }
               }
@@ -2346,7 +2342,7 @@ public enum Triumphant implements LogicCardInfo {
             actionA {
               checkNoSPC()
               checkLastTurn()
-              powerUsed()
+              powerUsed {new Knockout(self).run(bg)}
               new Knockout(self).run(bg)
               def top = my.deck.subList(0,7)
               def maximum = top.filterByType(ENERGY).size()
@@ -2378,23 +2374,19 @@ public enum Triumphant implements LogicCardInfo {
               before KNOCKOUT, {
                 if(self.active && ef.pokemonToBeKnockedOut.owner == self.owner.opposite ){
                   flag = ef.pokemonToBeKnockedOut.cards.filterByType(POKEMON).copy()
+                  bc "Catastrophe activates"
+                } else {
+                  flag = null
+                }
+              }
+              before MOVE_CARD_INNER, {
+                if (flag && flag.contains(ef.card) && ef.toList?.zoneType == CardList.ZoneType.DISCARD) {
+                  bg.em().run(new MoveCard(ef.card, ef.card.player.pbg.lostZone))
+                  throw new EffectRequirementException()
                 }
               }
               after KNOCKOUT, {
-                if(flag){
-                  bc "Catastrophe activates"
-                  def changedCardsList = bg.em().retrieveObject("impl_changed_cards")
-                  flag.each{ card ->
-                    def toMove = card
-                    def changedCard = changedCardsList.findAll{it[0] == card}
-                    if (changedCard) {
-                      bc "Card was changed: $changedCard"
-                      toMove = (changedCard.first())[1]
-                    }
-                    new CardList(toMove).moveTo(self.owner.opposite.pbg.lostZone)
-                  }
-                  flag = null
-                }
+                flag = null
               }
             }
           }

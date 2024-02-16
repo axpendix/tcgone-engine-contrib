@@ -1,34 +1,27 @@
-package tcgwars.logic.impl.gen8;
+package tcgwars.logic.impl.gen8
 
-import static tcgwars.logic.card.HP.*;
-import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
-import static tcgwars.logic.groovy.TcgStatics.*
-import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
-import static tcgwars.logic.effect.EffectPriority.*
+import tcgwars.logic.TargetPlayer
+import tcgwars.logic.card.*
+import tcgwars.logic.effect.basic.Knockout
+import tcgwars.logic.effect.basic.Move
+import tcgwars.logic.impl.gen3.TeamRocketReturns
+import tcgwars.logic.impl.gen5.PlasmaStorm
+import tcgwars.logic.util.CardTypeSet
+import tcgwars.logic.util.TypeSet
+
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.card.HP.*
+import static tcgwars.logic.card.Resistance.ResistanceType.MINUS30
+import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.effect.EffectType.APPLY_ATTACK_DAMAGES
+import static tcgwars.logic.effect.EffectType.CHECK_ATTACK_REQUIREMENTS
+import static tcgwars.logic.effect.EffectType.GET_MOVE_LIST
+import static tcgwars.logic.effect.EffectType.KNOCKOUT
+import static tcgwars.logic.effect.EffectType.PROCESS_ATTACK_EFFECTS
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.PLAY_FROM_HAND
 import static tcgwars.logic.effect.special.SpecialConditionType.*
-import static tcgwars.logic.card.Resistance.ResistanceType.*
-
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
-import tcgwars.logic.util.*;
+import static tcgwars.logic.groovy.TcgBuilders.*
+import static tcgwars.logic.groovy.TcgStatics.*
 
 /**
  * @author lithogenn@gmail.com
@@ -59,13 +52,13 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
   MAKUHITA_22 ("Makuhita", "22", Rarity.COMMON, [POKEMON, BASIC, _FIGHTING_]),
   HARIYAMA_23 ("Hariyama", "23", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   LYCANROC_V_24 ("Lycanroc V", "24", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _FIGHTING_]),
-  LYCANROC_VMAX_25 ("Lycanroc VMAX", "25", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _FIGHTING_]),
+  LYCANROC_VMAX_25 ("Lycanroc VMAX", "25", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _FIGHTING_]),
   GALARIAN_MOLTRES_26 ("Galarian Moltres", "26", Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
   ABSOL_27 ("Absol", "27", Rarity.UNCOMMON, [POKEMON, BASIC, _DARKNESS_]),
   CROAGUNK_28 ("Croagunk", "28", Rarity.COMMON, [POKEMON, BASIC, _DARKNESS_]),
   TOXICROAK_29 ("Toxicroak", "29", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
   GARBODOR_V_30 ("Garbodor V", "30", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _DARKNESS_]),
-  GARBODOR_VMAX_31 ("Garbodor VMAX", "31", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _DARKNESS_]),
+  GARBODOR_VMAX_31 ("Garbodor VMAX", "31", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _DARKNESS_]),
   NICKIT_32 ("Nickit", "32", Rarity.COMMON, [POKEMON, BASIC, _DARKNESS_]),
   THIEVUL_33 ("Thievul", "33", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _DARKNESS_]),
   GALARIAN_MEOWTH_34 ("Galarian Meowth", "34", Rarity.COMMON, [POKEMON, BASIC, _METAL_]),
@@ -83,7 +76,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
   NOIVERN_V_46 ("Noivern V", "46", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _DRAGON_]),
   DRAMPA_47 ("Drampa", "47", Rarity.UNCOMMON, [POKEMON, BASIC, _DRAGON_]),
   DURALUDON_V_48 ("Duraludon V", "48", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _DRAGON_]),
-  DURALUDON_VMAX_49 ("Duraludon VMAX", "49", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _DRAGON_]),
+  DURALUDON_VMAX_49 ("Duraludon VMAX", "49", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _DRAGON_]),
   SLAKOTH_50 ("Slakoth", "50", Rarity.COMMON, [POKEMON, BASIC, _COLORLESS_]),
   VIGOROTH_51 ("Vigoroth", "51", Rarity.COMMON, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
   SLAKING_52 ("Slaking", "52", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _COLORLESS_]),
@@ -114,10 +107,10 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
   RAIHAN_77 ("Raihan", "77", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   SCHOOLGIRL_78 ("Schoolgirl", "78", Rarity.COMMON, [TRAINER, SUPPORTER]),
   COPYCAT_79 ("Copycat", "79", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  LYCANROC_VMAX_80 ("Lycanroc VMAX", "80", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _FIGHTING_]),
-  GARBODOR_VMAX_81 ("Garbodor VMAX", "81", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _DARKNESS_]),
-  DURALUDON_VMAX_82 ("Duraludon VMAX", "82", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _DRAGON_]),
-  DURALUDON_VMAX_83 ("Duraludon VMAX", "83", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _DRAGON_]),
+  LYCANROC_VMAX_80 ("Lycanroc VMAX", "80", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _FIGHTING_]),
+  GARBODOR_VMAX_81 ("Garbodor VMAX", "81", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _DARKNESS_]),
+  DURALUDON_VMAX_82 ("Duraludon VMAX", "82", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _DRAGON_]),
+  DURALUDON_VMAX_83 ("Duraludon VMAX", "83", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _DRAGON_]),
   RAIHAN_84 ("Raihan", "84", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   SCHOOLGIRL_85 ("Schoolgirl", "85", Rarity.COMMON, [TRAINER, SUPPORTER]),
   COPYCAT_86 ("Copycat", "86", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
@@ -172,7 +165,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -184,14 +177,18 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         bwAbility "Quick Feet", {
           text "Once during your turn, if this Pokémon is in the Active Spot, you may draw a card."
           actionA {
+            checkLastTurn()
+            assert self.active : "$self must be in the Active Spot"
+            assert deck : "Deck is empty"
+            powerUsed()
+            draw 1
           }
         }
         move "Blizzard Rondo", {
           text "20+ damage. This attack does 20 more damage for each Benched Pokémon (both yours and your opponent's)."
           energyCost W, C
-          attackRequirement {}
           onAttack {
-            damage 20
+            damage 20 + 20 * all.findAll { it.benched }.size()
           }
         }
       };
@@ -201,15 +198,11 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Call for Family", {
           text " Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Then, shuffle your deck."
           energyCost C
-          attackRequirement {}
-          onAttack {
-
-          }
+          callForFamily basic: true, 2, delegate
         }
         move "Rain Splash", {
           text "20 damage."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -221,7 +214,6 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Wave Splash", {
           text "50 damage."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -232,13 +224,28 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         weakness L
         bwAbility "High-Tension Dance", {
           text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may use this Ability. During this turn, your Basic Pokémon's attacks do 100 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
-          actionA {
+          onActivate {r->
+            if(r == PLAY_FROM_HAND && my.all.any{ it.basic } && confirm("Use $thisAbility.name")) {
+              powerUsed()
+              delayed {
+                after PROCESS_ATTACK_EFFECTS, {
+                  bg.dm().each {if (
+                  it.to.active
+                    && it.from.basic
+                    && it.from.owner == thisCard.player
+                    && it.to.owner != it.from.owner
+                    && it.dmg.value) {
+                    bc "$thisAbility.name +100"
+                    it.dmg += hp 100
+                  }}
+                }
+              }
+            }
           }
         }
         move "Wave Splash", {
           text "120 damage."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 120
           }
@@ -250,9 +257,9 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Shove", {
           text "10 damage. Your opponent reveals their hand."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 10
+            opp.hand.showToMe bg, "Your opponent's hand."
           }
         }
       };
@@ -262,17 +269,20 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Water Pulse", {
           text "20 damage. You opponent's Active Pokémon is now Asleep."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 20
+            applyAfterDamage ASLEEP
           }
         }
         move "Drench Circus", {
           text "60× damage. Your opponent reveals their hand. This attack does 60 damage for each Supporter card you find there."
           energyCost C, C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.hand : "Opponent's hand is empty"
+          }
           onAttack {
-            damage 60
+            opp.hand.showToMe bg, "Your opponent's hand."
+            damage 60 * opp.hand.count { it.cardTypes.is SUPPORTER }.intValue()
           }
         }
       };
@@ -282,7 +292,6 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Water Gun", {
           text "10 damage."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -290,7 +299,6 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Vise Grip", {
           text "20 damage."
           energyCost W, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -302,15 +310,13 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Snipe Shot", {
           text " This attack does 50 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W
-          attackRequirement {}
           onAttack {
-
+            damage 50, opp.all.select(text)
           }
         }
         move "Crabhammer", {
           text "110 damage."
           energyCost W, W, C
-          attackRequirement {}
           onAttack {
             damage 110
           }
@@ -322,7 +328,6 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Icy Snow", {
           text "20 damage."
           energyCost W
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -330,9 +335,9 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Block Face", {
           text "70 damage. During your opponent's next turn, prevent all damage done to this Pokémon by attacks from Basic Pokémon."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 70
+            preventAllDamageFromCustomPokemonNextTurn thisMove, self, { it.basic }
           }
         }
       };
@@ -342,7 +347,6 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Pound", {
           text "20 damage."
           energyCost P
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -350,9 +354,12 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Everyone Rollout", {
           text "20× damage. This attack does 20 damage for each of your Benched Pokémon that has the Everyone Rollout attack."
           energyCost C, C
-          attackRequirement {}
+          attackRequirement {
+            assert my.bench.any { it.getTopPokemonCard().moves.any { it.name == "Everyone Rollout" } } :
+              "No benched Pokemon with the $thisMove.name move"
+          }
           onAttack {
-            damage 20
+            damage 20 * my.bench.findAll { it.getTopPokemonCard().moves.any { it.name == "Everyone Rollout" } }.size()
           }
         }
       };
@@ -362,15 +369,17 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Find Treasure", {
           text " Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
           energyCost P
-          attackRequirement {}
+          attackRequirement {
+            assert deck : "Deck is empty"
+          }
           onAttack {
-
+            deck.select(max: 2).moveTo hidden: true, hand
+            shuffleDeck()
           }
         }
         move "Hyper Voice", {
           text "90 damage."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             damage 90
           }
@@ -382,15 +391,21 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Cruel Charge", {
           text "When you play this Pokémon from your hand onto your Bench during your turn, you may attach up to 2 [P] Energy cards from your hand to it."
-          actionA {
+          onActivate {reason ->
+            if(reason == PLAY_FROM_HAND && my.hand.filterByEnergyType(P) && confirm("Use $thisAbility.name?")) {
+              powerUsed()
+              attachEnergyFrom max:2, type: P, my.hand, self
+            }
           }
         }
         move "Psylaser", {
           text " Discard all [P] Energy from this Pokémon. This attack does 120 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost P, P, C
-          attackRequirement {}
           onAttack {
-
+            damage 120, opp.all.select("This attack does 120 damage to 1 of your opponent's Pokémon.")
+            afterDamage {
+              self.cards.filterByEnergyType(P).discard()
+            }
           }
         }
       };
@@ -401,15 +416,18 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Mirror Pain", {
           text " Put damage counters on your opponent's Active Pokémon equal to the number of damage counters on 1 of your Benched Pokémon."
           energyCost C, C
-          attackRequirement {}
+          attackRequirement {
+            assert my.bench.any { it.numberOfDamageCounters } : "No damage counters on your Benched Pokémon"
+          }
           onAttack {
-
+            def info = "Pokémon with damage counters on your bench. That number of damage counters will be put on your opponent's Active Pokémon."
+            def source = bench.findAll { it.numberOfDamageCounters }.select info
+            directDamage source.numberOfDamageCounters * 10, defending
           }
         }
         move "Headbutt Bounce", {
           text "70 damage."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             damage 70
           }
@@ -422,17 +440,17 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Joust", {
           text "20 damage. Before doing damage, discard all Pokémon Tools from your opponent's Active Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
+            defending.cards.filterByType(POKEMON_TOOL).discard()
             damage 20
           }
         }
         move "Reflect Energy", {
           text "60 damage. Move an Energy from this Pokémon to 1 of your Benched Pokémon."
           energyCost P, C
-          attackRequirement {}
           onAttack {
             damage 60
+            moveEnergy self, my.bench
           }
         }
       };
@@ -443,7 +461,6 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Mega Punch", {
           text "80 damage."
           energyCost P, C, C
-          attackRequirement {}
           onAttack {
             damage 80
           }
@@ -451,9 +468,13 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Rewind Beam", {
           text "180 damage. If your opponent's Active Pokémon is an evolved Pokémon, devolve it by putting the highest Stage Evolution card on it into your opponent's hand."
           energyCost P, P, C, C
-          attackRequirement {}
           onAttack {
             damage 180
+            afterDamage {
+              if (defending.evolution) {
+                devolve defending, defending.owner.pbg.hand
+              }
+            }
           }
         }
       };
@@ -463,13 +484,16 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Pumpkin Hole", {
           text "When you play this Pokémon from your hand onto your Bench during your turn, you may discard any Stadium in play."
-          actionA {
+          onActivate {reason ->
+            if (reason == PLAY_FROM_HAND && bg().stadiumInfoStruct?.stadiumCard && confirm("Use $thisAbility.name?")) {
+              powerUsed()
+              discardStadium()
+            }
           }
         }
         move "Stampede", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -482,9 +506,17 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Night Parade of One Hundred Demons", {
           text "60× damage. Reveal the top 6 cards of your deck. This attack does 60 damage for each [P] Pokémon you find there. Then, shuffle those [P] Pokémon back into your deck and discard the other cards."
           energyCost C, C
-          attackRequirement {}
+          attackRequirement {
+            assert deck : "Deck is empty"
+          }
           onAttack {
-            damage 60
+            def revealedCards = deck.subList 0, 6
+            revealedCards.showToOpponent("Top 6 cards of your opponent's Deck.").showToMe("Top 6 cards of your Deck")
+            def pokemonCards = revealedCards.filterByAllType POKEMON, _PSYCHIC_
+            damage 60 * pokemonCards.size()
+            revealedCards.getExcludedList(pokemonCards).discard()
+            pokemonCards.moveTo deck
+            shuffleDeck()
           }
         }
       };
@@ -494,17 +526,16 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Clean Hit", {
           text "20+ damage. If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 50 more damage."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 20
+            if (defending.realEvolution) damage 50
           }
         }
         move "Bullet Straight", {
           text "40 damage. This attack's damage isn't affected by Resistance."
           energyCost F, C
-          attackRequirement {}
           onAttack {
-            damage 40
+            noResistanceDamage 40, defending
           }
         }
       };
@@ -513,15 +544,24 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         weakness P
         bwAbility "Strong Legs Charge", {
           text "When you play this Pokémon from your hand onto your Bench during your turn, you may attach up to 2 [F] Energy cards from your hand to it."
-          actionA {
+          onActivate {reason ->
+            if(reason == PLAY_FROM_HAND && my.hand.filterByEnergyType(F) && confirm("Use $thisAbility.name?")) {
+              powerUsed()
+              attachEnergyFrom max:2, type: F, my.hand, self
+            }
           }
         }
         move "Zapper Kick", {
           text "70 damage. You may discard all Energy from this Pokémon. If you do, your opponent's Active Pokémon is now Paralyzed."
           energyCost F, F, C
-          attackRequirement {}
           onAttack {
             damage 70
+            if (confirm("Discard all Energy from this Pokémon to paralyze the defending Pokémon?")) {
+              afterDamage {
+                discardAllSelfEnergy()
+                apply PARALYZED
+              }
+            }
           }
         }
       };
@@ -531,15 +571,13 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Poison Sting", {
           text " Your opponent's Active Pokémon is now Poisoned."
           energyCost F
-          attackRequirement {}
           onAttack {
-
+            apply POISONED
           }
         }
         move "Pierce", {
           text "30 damage."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -551,17 +589,17 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Cut Down", {
           text "30 damage. Discard an Energy from your opponent's Active Pokémon."
           energyCost F, C
-          attackRequirement {}
           onAttack {
             damage 30
+            discardDefendingEnergyAfterDamage()
           }
         }
         move "Venom Hit", {
           text "100 damage. Your opponent's Active Pokémon is now Poisoned."
           energyCost F, F, C
-          attackRequirement {}
           onAttack {
             damage 100
+            applyAfterDamage POISONED
           }
         }
       };
@@ -571,7 +609,6 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Lunge Out", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -579,7 +616,6 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Hammer In", {
           text "60 damage."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -590,13 +626,21 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         weakness P
         bwAbility "Guts", {
           text "If this Pokémon would be Knocked Out by damage from an attack, flip a coin. If heads, this Pokémon is not Knocked Out, and its remaining HP becomes 10."
-          actionA {
+          delayedA {
+            before KNOCKOUT, self, {
+              if ((ef as Knockout).byDamageFromAttack) {
+                flip {
+                  self.damage = self.fullHP - hp(10)
+                  bc "$self endured the hit!"
+                  prevent()
+                }
+              }
+            }
           }
         }
         move "Hammer In", {
           text "100 damage."
           energyCost F, C, C
-          attackRequirement {}
           onAttack {
             damage 100
           }
@@ -608,7 +652,6 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Rock Throw", {
           text "40 damage."
           energyCost F
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -616,9 +659,9 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Crash Fang", {
           text "200 damage. During your next turn, this Pokémon can't attack."
           energyCost F, F, C
-          attackRequirement {}
           onAttack {
             damage 200
+            cantAttackNextTurn self
           }
         }
       };
@@ -628,17 +671,20 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Hunting Claw", {
           text " Choose 1 of your opponent's Pokémon that has 60 HP or less remaining. That Pokémon is now Knocked Out."
           energyCost F
-          attackRequirement {}
+          attackRequirement {
+            assert opp.all.any { it.remainingHP.value <= 60 } : "No opponent Pokémon with 60 HP or less remaining"
+          }
           onAttack {
-
+            def target = opp.all.findAll { it.remainingHP.value <= 60 }.select text
+            new Knockout(target).run(bg)
           }
         }
         move "Max Edge", {
           text "190 damage. This attack also does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F, F, C
-          attackRequirement {}
           onAttack {
             damage 190
+            if (opp.bench) damage 30, opp.bench.select("This attack also does 30 damage to 1 of your opponent's Benched Pokémon.")
           }
         }
       };
@@ -647,15 +693,19 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         weakness G
         bwAbility "Malevolent Charge", {
           text "When you play this Pokémon from your hand onto your Bench during your turn, you may attach up to 2 [D] Energy cards from your hand to it."
-          actionA {
+          onActivate {reason ->
+            if(reason == PLAY_FROM_HAND && my.hand.filterByEnergyType(D) && confirm("Use $thisAbility.name?")) {
+              powerUsed()
+              attachEnergyFrom max:2, type: D, my.hand, self
+            }
           }
         }
         move "Fiery Wrath", {
           text "20+ damage. This attack does 50 more damage for each Prize card your opponent has taken."
           energyCost D, D, C
-          attackRequirement {}
           onAttack {
             damage 20
+            damage 50 * opp.prizeCardSet.takenCount
           }
         }
       };
@@ -665,15 +715,17 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Drag Off", {
           text " Switch 1 of your opponent's Benched Pokémon with their Active Pokémon. This attack does 30 damage to the new Active Pokémon."
           energyCost C, C
-          attackRequirement {}
+          attackRequirement {
+            assertOppBench()
+          }
           onAttack {
-
+            def target = opp.bench.select("Select the new Active Pokémon.")
+            if ( sw2(target) ) { damage 30, target }
           }
         }
         move "Slash", {
           text "80 damage."
           energyCost D, C, C
-          attackRequirement {}
           onAttack {
             damage 80
           }
@@ -685,7 +737,6 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Corkscrew Punch", {
           text "20 damage."
           energyCost D
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -697,15 +748,14 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Severe Poison", {
           text " Your opponent's Active Pokémon is now Poisoned . Put 4 damage counters instead of 1 on that Pokémon during Pokémon Checkup."
           energyCost D
-          attackRequirement {}
           onAttack {
-
+            apply POISONED
+            extraPoison 3
           }
         }
         move "Magnum Punch", {
           text "90 damage."
           energyCost D, C, C
-          attackRequirement {}
           onAttack {
             damage 90
           }
@@ -717,15 +767,15 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Garbage Stink", {
           text "40 damage. Your opponent's Active Pokémon is now Poisoned . During your opponent's next turn, the Defending Pokémon can't retreat."
           energyCost D, C
-          attackRequirement {}
           onAttack {
             damage 40
+            applyAfterDamage POISONED
+            cantRetreat defending
           }
         }
         move "Sludge Bomb", {
           text "130 damage."
           energyCost D, D, C
-          attackRequirement {}
           onAttack {
             damage 130
           }
@@ -736,15 +786,24 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         weakness F
         bwAbility "Junk Gather", {
           text "This Pokémon may have up to 2 Pokémon Tools attached to it. If it loses this Ability, discard Pokémon Tools from it until only 1 remains."
-          actionA {
+          def key = "OMEGA_DOUBLE_"
+          onActivate {
+            bg.em().storeObject(key + self.hashCode(), 1) //logic is in PlayPokemonTool
+          }
+          onDeactivate {
+            bg.em().storeObject(key + self.hashCode(), null)
+            while (self.cards.filterByType(POKEMON_TOOL).size() > 1) {
+              self.cards.filterByType(POKEMON_TOOL).select("Select to discard", { true }, self.owner).discard()
+            }
           }
         }
         move "G-Max Stink", {
           text "120 damage. Your opponent's Active Pokémon is now Poisoned . During your opponent's next turn, the Defending Pokémon can't retreat."
           energyCost D, C
-          attackRequirement {}
           onAttack {
             damage 120
+            applyAfterDamage POISONED
+            cantRetreat defending
           }
         }
       };
@@ -754,7 +813,6 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Tail Whap", {
           text "30 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -765,13 +823,30 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         weakness G
         bwAbility "Fumble Hand", {
           text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, each player shuffles their hand and puts it on the bottom of their deck. Then, each player draws 4 cards."
-          actionA {
+          onActivate { reason ->
+            def handWithoutThisCard = my.hand.getExcludedList(thisCard)
+            if (reason == PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && my.bench.notFull && (handWithoutThisCard.notEmpty || opp.hand.notEmpty) && confirm("Use $thisAbility?")) {
+              if (opp.hand){
+                bc "${opp.owner.getPlayerUsername(bg)} shuffled their hand of ${opp.hand.size()} cards, and put it at the bottom of their deck."
+                opp.hand.shuffledCopy().moveTo(suppressLog: true, opp.deck)
+              } else {
+                bc "${opp.owner.getPlayerUsername(bg)} doesn't have any cards in hand, only needs to draw."
+              }
+              draw 4, TargetPlayer.OPPONENT
+
+              if (handWithoutThisCard) {
+                bc "${my.owner.getPlayerUsername(bg)} shuffled their hand of ${my.hand.size() - 1} cards, and put it at the bottom of their deck."
+                my.hand.getExcludedList(thisCard).shuffledCopy().moveTo(suppressLog: true, my.deck)
+              } else {
+                bc "${my.owner.getPlayerUsername(bg)} doesn't have any cards in hand, only needs to draw."
+              }
+              draw 4
+            }
           }
         }
         move "Tail Smack", {
           text "60 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -784,15 +859,13 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Growl", {
           text " During your opponent's next turn, the Defending Pokémon's attacks do 20 less damage (before applying Weakness and Resistance)."
           energyCost M
-          attackRequirement {}
           onAttack {
-
+            reduceDamageFromDefendingNextTurn hp(20), thisMove, defending
           }
         }
         move "Slash", {
           text "20 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 20
           }
@@ -805,15 +878,17 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Inspire", {
           text " Search your deck for up to 2 basic Energy cards and attach them to your Pokémon in any way you like. Then, shuffle your deck."
           energyCost M
-          attackRequirement {}
+          attackRequirement {
+            assert deck : "Your deck is empty"
+          }
           onAttack {
-
+            attachEnergyFrom basic : true, my.deck, my.all
+            attachEnergyFrom basic : true, my.deck, my.all
           }
         }
         move "Headbang", {
           text "80 damage."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 80
           }
@@ -826,15 +901,14 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Steel Wing", {
           text "30 damage. During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
+            reduceDamageNextTurn hp(30), thisMove
           }
         }
         move "Slicing Blade", {
           text "110 damage."
           energyCost M, M, C
-          attackRequirement {}
           onAttack {
             damage 110
           }
@@ -847,9 +921,9 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Unlock", {
           text "10 damage. Draw 2 cards."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
+            draw 2
           }
         }
       };
@@ -860,7 +934,6 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Rollout", {
           text "10 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
           }
@@ -868,9 +941,9 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "High Horsepower", {
           text "1080 damage. This Pokémon also does 20 damage to itself."
           energyCost M, C, C
-          attackRequirement {}
           onAttack {
             damage 1080
+            damage 20, self
           }
         }
       };
@@ -881,17 +954,16 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Strength", {
           text "90 damage."
           energyCost M, C, C
-          attackRequirement {}
           onAttack {
             damage 90
           }
         }
         move "High Horsepower", {
-          text "10160 damage. This Pokémon also does 30 damage to itself."
+          text "160 damage. This Pokémon also does 30 damage to itself."
           energyCost M, C, C, C
-          attackRequirement {}
           onAttack {
-            damage 10160
+            damage 160
+            damage 30, self
           }
         }
       };
@@ -900,12 +972,16 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         bwAbility "Luring Melody", {
           text "Once during your turn, you may search your deck for a Supporter card and reveal it. Then, shuffle your deck and put that card on top of it."
           actionA {
+            checkLastTurn()
+            assert deck : "Deck is empty"
+            def tar = deck.search { it.cardTypes.is SUPPORTER }
+            tar.showToOpponent(bg, "Supporter Card placed on top of opponent's deck")
+            tar.moveTo addToTop:true, deck
           }
         }
         move "Glide", {
           text "60 damage."
           energyCost W, M
-          attackRequirement {}
           onAttack {
             damage 60
           }
@@ -916,15 +992,16 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Chrono Wind", {
           text "80 damage. If the Defending Pokémon is a Pokémon V , it can't attack during your opponent's next turn."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 80
+            if (defending.pokemonV) {
+              cantAttackNextTurn defending
+            }
           }
         }
         move "Heavy Impact", {
           text "210 damage."
           energyCost P, M, M, C
-          attackRequirement {}
           onAttack {
             damage 210
           }
@@ -935,15 +1012,11 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Call for Family", {
           text " Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck."
           energyCost D
-          attackRequirement {}
-          onAttack {
-
-          }
+          callForFamily basic:true, 1, delegate
         }
         move "Bite", {
           text "30 damage."
           energyCost P, D
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -954,7 +1027,6 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Bite", {
           text "40 damage."
           energyCost P, D
-          attackRequirement {}
           onAttack {
             damage 40
           }
@@ -962,7 +1034,6 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Dragon Headbutt", {
           text "100 damage."
           energyCost P, D, C, C
-          attackRequirement {}
           onAttack {
             damage 100
           }
@@ -973,15 +1044,14 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Dragon Counter", {
           text "20+ damage. This attack does 100 more damage for each Prize card your opponent took on their last turn."
           energyCost P, D
-          attackRequirement {}
           onAttack {
             damage 20
+            damage 100 * bg.lastTurnTakePrize
           }
         }
         move "Pitch-Black Fangs", {
           text "210 damage."
           energyCost P, D, C, C
-          attackRequirement {}
           onAttack {
             damage 210
           }
@@ -992,9 +1062,20 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Extreme Freeze", {
           text "60× damage. Discard any amount of [W] Energy from your Pokémon. This attack does 60 damage for each card you discarded in this way."
           energyCost W, W, M
-          attackRequirement {}
+          attackRequirement {
+            assert my.all.any { it.cards.energyCount W } : "No Pokémon with [W] Energy attached"
+          }
           onAttack {
-            damage 60
+            int count = 0
+            while (1) {
+              def tar = my.all.findAll { it.cards.filterByEnergyType(W).notEmpty() }
+              if (!tar) break
+              def pcs = tar.select("Pokémon that has [W] energy to discard. Cancel to stop", false)
+              if (!pcs) break
+              pcs.cards.filterByEnergyType(W).select("[W] Energy to discard").discard()
+              count++
+            }
+            damage 60 * count
           }
         }
       };
@@ -1003,17 +1084,16 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Boomburst", {
           text " This attack does 20 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost P
-          attackRequirement {}
           onAttack {
-
+            damage 20, opp.all
           }
         }
         move "Synchro Loud", {
           text "60+ damage. If you have the same number of cards in your hand as your opponent, this attack does 120 more damage."
           energyCost P, D
-          attackRequirement {}
           onAttack {
             damage 60
+            if (my.hand.size() == opp.hand.size()) damage 120
           }
         }
       };
@@ -1022,7 +1102,6 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Corkscrew Punch", {
           text "30 damage."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 30
           }
@@ -1030,9 +1109,9 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Berserk", {
           text "70+ damage. If your Benched Pokémon have any damage counters on them, this attack does 90 more damage."
           energyCost W, F
-          attackRequirement {}
           onAttack {
             damage 70
+            if (bench.any { it.numberOfDamageCounters }) damage 90
           }
         }
       };
@@ -1041,7 +1120,6 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Metal Claw", {
           text "70 damage."
           energyCost F, M
-          attackRequirement {}
           onAttack {
             damage 70
           }
@@ -1049,9 +1127,9 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Breaking Swipe", {
           text "140 damage. During your opponent's next turn, the Defending Pokémon's attacks do 30 less damage (before applying Weakness and Resistance)."
           energyCost F, M, M
-          attackRequirement {}
           onAttack {
             damage 140
+            reduceDamageFromDefendingNextTurn hp(30), thisMove, defending
           }
         }
       };
@@ -1059,15 +1137,22 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
       return evolution (this, from:"Duraludon V", hp:HP330, type:N, retreatCost:3) {
         bwAbility "Skyscraper", {
           text "Prevent all damage done to this Pokémon by attacks from your opponent's Pokémon that have any Special Energy attached to them."
-          actionA {
+          delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if(it.to == self && it.from.cards.filterByType(SPECIAL_ENERGY) && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
+                  bc "$thisAbility.name prevents damage from Pokémon with Special Energy attached."
+                  it.dmg = hp(0)
+                }
+              }
+            }
           }
         }
         move "G-Max Pulverization", {
           text "220 damage. This attack's damage isn't affected by any effects on your opponent's Active Pokémon."
           energyCost F, M, M
-          attackRequirement {}
           onAttack {
-            damage 220
+            shredDamage 220
           }
         }
       };
@@ -1077,9 +1162,11 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Smack 'n' Slack", {
           text "30 damage. This Pokémon is now Asleep."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 30
+            afterDamage {
+              apply ASLEEP, self
+            }
           }
         }
       };
@@ -1089,15 +1176,16 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Shatter", {
           text "20 damage. Discard a Stadium in play."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
+            afterDamage {
+              discardStadium()
+            }
           }
         }
         move "Slash", {
           text "50 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -1108,15 +1196,21 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         weakness F
         bwAbility "Self-Important", {
           text "If there is a Stadium in play, this Pokémon can't attack."
-          actionA {
+          delayedA {
+            before CHECK_ATTACK_REQUIREMENTS, {
+              if (self.active && bg.currentTurn == self.owner && bg.stadiumInfoStruct) {
+                wcu "Self-Important prevents attacking."
+                prevent()
+              }
+            }
           }
         }
         move "Rout", {
           text "120+ damage. This attack does 30 more damage for each of your opponent's Benched Pokémon."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
             damage 120
+            damage 30 * opp.bench.size()
           }
         }
       };
@@ -1127,9 +1221,10 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Surprise Attack", {
           text "30 damage. Flip a coin. If tails, this attack does nothing."
           energyCost C
-          attackRequirement {}
           onAttack {
-            damage 30
+            flip {
+              damage 30
+            }
           }
         }
       };
@@ -1139,17 +1234,20 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Derail", {
           text "10 damage. Discard a Special Energy from your opponent's Active Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
+            discardDefendingSpecialEnergy delegate
           }
         }
         move "Everyone Rollout", {
           text "20× damage. This attack does 20 damage for each of your Benched Pokémon that has the Everyone Rollout attack."
           energyCost C, C
-          attackRequirement {}
+          attackRequirement {
+            assert my.bench.any { it.getTopPokemonCard().moves.any { it.name == "Everyone Rollout" } } :
+              "No benched Pokemon with the $thisMove.name move"
+          }
           onAttack {
-            damage 20
+            damage 20 * my.bench.findAll { it.getTopPokemonCard().moves.any { it.name == "Everyone Rollout" } }.size()
           }
         }
       };
@@ -1159,85 +1257,123 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         move "Bounce", {
           text "30 damage. Switch this Pokémon with 1 of your Benched Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 30
+            switchYourActive()
           }
         }
         move "Rolling Tackle", {
           text "70 damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 70
           }
         }
       };
       case ESCAPE_ROPE_56:
-      return itemCard (this) {
-        text "Each player switches his or her Active Pokémon with 1 of his or her Benched Pokémon. (Your opponent switches first. If a player does not have a Benched Pokémon" +
-          "he or she doesn't switch Pokémon.)"
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(PlasmaStorm.ESCAPE_ROPE_120, this);
       case EVOLUTION_INCENSE_57:
-      return itemCard (this) {
-        text "Search your deck for an Evolution Pokémon" +
-          "reveal it" +
-          "and put it into your hand. Then" +
-          "shuffle your deck."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+      return copy(SwordShield.EVOLUTION_INCENSE_163, this);
       case SWITCHEROO_CUP_58:
       return itemCard (this) {
         text "Switch a card from your hand with the top card of your deck."
         onPlay {
+          hand.getExcludedList(thisCard).select().moveTo(addToTop: true, hidden: true, my.deck)
+          deck.subList(1,2).moveTo(hidden: true, my.hand) // Card placed on top, get the one underneath
         }
         playRequirement{
+          assert hand.getExcludedList(thisCard) : "You have no other cards in your hand"
+          assert deck : "Your deck is empty"
         }
       };
       case RESCUE_TROLLEY_59:
       return itemCard (this) {
         text "Put up to 2 Pokémon with 90 HP or less from your discard pile into your hand."
         onPlay {
+          def cards = my.discard.select thisCard.cardText, { it.cardTypes.is(POKEMON) && it.asPokemonCard().hp <= 90 }
+          cards.moveTo hand
         }
         playRequirement{
+          assert my.discard.any { it.cardTypes.is(POKEMON) && it.asPokemonCard().hp <= 90 } : "No Pokémon with 90 HP or less in your discard pile"
         }
       };
       case DIGGING_GLOVES_60:
       return pokemonTool (this) {
-        text "The attacks of the Pokémon this card is attached to do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
+        text "The attacks of the Pokémon this card is attached to do 30 more damage to your opponent's Active [F] Pokémon (before applying Weakness and Resistance)."
+        def eff
         onPlay {reason->
+          eff = delayed {
+            after PROCESS_ATTACK_EFFECTS, {
+              bg.dm().each {
+                if (it.from == self && it.to.active && it.to.owner == self.owner.opposite && it.dmg.value && it.to.types.contains(F)) {
+                  it.dmg += hp(30)
+                  bc "$thisCard +30"
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          eff.unregister()
         }
       };
       case SINGLE_STRIKE_SCROLL_OF_THE_DRAGON_FANG_61:
       return pokemonTool (this) {
         text "The Single Strike Pokémon this card is attached to can use the attack on this card. (You still need the necessary Energy to use this attack.)"
+        def newMove
         onPlay {reason->
+          def moveBody = {
+            text "Discard all Energy from this Pokémon"
+            attackRequirement {
+              // self is not set properly creating a move like this, use bg.ownActive() instead
+              assert bg.ownActive().singleStrike : "${bg.ownActive()} is not a $SINGLE_STRIKE Pokémon"
+            }
+            energyCost F, M, M, C, C
+            onAttakc {
+              damage 300
+              afterDamage {
+                discardAllSelfEnergy()
+              }
+            }
+          }
+
+          Move move = new Move("Superstrong Slash")
+          moveBody.delegate = new MoveBuilder(thisMove: move)
+          moveBody.call()
+          newMove = getter GET_MOVE_LIST, self, {h->
+            if (h.effect.target.singleStrike) {
+              def moveList = []
+              moveList.addAll h.object
+              moveList.add move
+              h.object = moveList
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          newMove.unregister()
         }
       };
       case FULL_FACE_GUARD_62:
       return pokemonTool (this) {
         text "If the Pokémon this card is attached to has no Abilities" +
           "it takes 20 less damage from attacks from your opponent's Pokémon (after applying Weakness and Resistance)."
+        def eff
         onPlay {reason->
+          eff = delayed {
+            before APPLY_ATTACK_DAMAGES, {
+              if(self.abilities.isEmpty()) {
+                bg.dm().each{
+                  if(it.to == self && it.from.owner == self.owner.opposite && it.notNoEffect && it.dmg.value) {
+                    bc "$thisCard -20"
+                    it.dmg -= hp(20)
+                  }
+                }
+              }
+            }
+          }
         }
         onRemoveFromPlay {
-        }
-        allowAttach {to->
+          eff.unregister()
         }
       };
       case RAIHAN_63:
@@ -1245,9 +1381,22 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         text "You can play this card only if 1 of your Pokémon was Knocked Out during your opponent's last turn. Attach a basic Energy card from your discard pile to 1 of your Pokémon. If you do" +
           "search your deck for a card and put it into your hand. Then" +
           "shuffle your deck."
+        initHook {Card thisCard->
+          delayed {
+            before KNOCKOUT, {
+              if(ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){
+                keyStore("Raihan_KO", thisCard, bg.turnCount)
+              }
+            }
+          }
+        }
         onPlay {
+          def card = deck.search count:1, { true }
+          card.moveTo hidden:true, hand
         }
         playRequirement{
+          assert keyStore("Rosa_KO", thisCard, null) == bg.turnCount - 1: "No Pokémon was Knocked Out during your opponent’s last turn"
+          assert my.discard.any { it.cardTypes.is(BASIC_ENERGY) } : "No basic Energy cards in your discard pile"
         }
       };
       case SCHOOLGIRL_64:
@@ -1262,37 +1411,31 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         }
       };
       case COPYCAT_65:
-      return supporter (this) {
-        text "Shuffle your hand into your deck. Then" +
-          "count the number of cards in your opponent's hand and draw that many cards."
-        onPlay {
-        }
-        playRequirement{
-        }
-      };
+        return copy(TeamRocketReturns.COPYCAT_83, this);
       case CRYSTAL_CAVE_66:
       return stadium (this) {
         text "Once during each player's turn" +
-          "that player may heal 30 damage from each of their Pokémon and Pokémon."
+          "that player may heal 30 damage from each of their [M] Pokémon and [N] Pokémon."
+        def lastTurn = 0
+        def actions = []
         onPlay {
+          actions = action(thisCard, "Stadium: $thisCard") {
+            assert lastTurn != bg.turnCount : "You have already used $thisCard this turn"
+            def targets = my.all.findAll { it.types.containsAny([M, N] as TypeSet) && it.numberOfDamageCounters }
+            assert targets : "You have no [M] or [N] Pokémon with damage counters"
+            bc "Used $thisCard"
+            lastTurn = bg.turnCount
+            targets.each {
+              heal 30, it
+            }
+          }
         }
         onRemoveFromPlay{
+          actions.each { bg.gm().unregisterAction(it) }
         }
       };
       case TWIN_ENERGY_67:
-      return specialEnergy (this, [[C]]) {
-        text "As long as this card is attached to a Pokémon that isn't a Pokémon V or a Pokémon-GX" +
-          "it provides Energy. If this card is attached to a Pokémon V or a Pokémon-GX" +
-          "it provides Energy instead."
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      };
+        return copy (RebelClash.TWIN_ENERGY_174, this)
       case SUICUNE_V_68:
       return copy (SUICUNE_V_1, this);
       case GOLURK_V_69:
@@ -1332,26 +1475,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
       case COPYCAT_86:
       return copy (COPYCAT_65, this);
       case CRESSELIA_87:
-      return basic (this, hp:HP120, type:P, retreatCost:1) {
-        weakness D
-        resistance F, MINUS30
-        move "Crescent Glow", {
-          text " Search your deck for a [P] Energy card and attach it to 1 of your Pokémon. If you go second and it's your first turn, instead search for up to 3 [P] Energy cards and attach them to 1 of your Pokémon. Then, shuffle your deck."
-          energyCost P
-          attackRequirement {}
-          onAttack {
-
-          }
-        }
-        move "Photon Laser", {
-          text "30+ damage. If you have at least 5 Energy in play, this attack does 90 more damage."
-          energyCost P, P
-          attackRequirement {}
-          onAttack {
-            damage 30
-          }
-        }
-      };
+      return copy (ChillingReign.CRESSELIA_64, this);
       case FULL_FACE_GUARD_88:
       return copy (FULL_FACE_GUARD_62, this);
       case CRYSTAL_CAVE_89:

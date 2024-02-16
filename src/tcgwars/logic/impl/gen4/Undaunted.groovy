@@ -1,6 +1,10 @@
 package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.effect.ability.CheckAbilities
+import tcgwars.logic.effect.blocking.PreventEvolve
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer
 import tcgwars.logic.effect.special.SpecialConditionType
+import tcgwars.logic.exception.EffectRequirementException
 import tcgwars.logic.impl.gen3.RubySapphire;
 
 import tcgwars.logic.effect.gm.PlayTrainer
@@ -118,10 +122,10 @@ public enum Undaunted implements LogicCardInfo {
   SCIZOR_84 ("Scizor", "84", Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _METAL_]),
   SLOWKING_85 ("Slowking", "85", Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _PSYCHIC_]),
   UMBREON_86 ("Umbreon", "86", Rarity.ULTRARARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  KYOGRE_AND_GROUDON_LEGEND_87 ("Kyogre & Groudon LEGEND", "87", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
-  KYOGRE_AND_GROUDON_LEGEND_88 ("Kyogre & Groudon LEGEND", "88", Rarity.HOLORARE, [BASIC, POKEMON, _WATER_, LEGEND]),
-  RAYQUAZA_AND_DEOXYS_LEGEND_89 ("Rayquaza & Deoxys LEGEND", "89", Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
-  RAYQUAZA_AND_DEOXYS_LEGEND_90 ("Rayquaza & Deoxys LEGEND", "90", Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_, LEGEND]),
+  KYOGRE_AND_GROUDON_LEGEND_87 ("Kyogre & Groudon LEGEND", "87", Rarity.HOLORARE, [POKEMON, _WATER_, LEGEND]),
+  KYOGRE_AND_GROUDON_LEGEND_88 ("Kyogre & Groudon LEGEND", "88", Rarity.HOLORARE, [POKEMON, _WATER_, LEGEND]),
+  RAYQUAZA_AND_DEOXYS_LEGEND_89 ("Rayquaza & Deoxys LEGEND", "89", Rarity.HOLORARE, [POKEMON, _PSYCHIC_, LEGEND]),
+  RAYQUAZA_AND_DEOXYS_LEGEND_90 ("Rayquaza & Deoxys LEGEND", "90", Rarity.HOLORARE, [POKEMON, _PSYCHIC_, LEGEND]),
   ALPH_LITHOGRAPH_THREE ("Alph Lithograph", "THREE", Rarity.HOLORARE, [TRAINER, ITEM]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
@@ -170,7 +174,7 @@ public enum Undaunted implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -365,9 +369,7 @@ public enum Undaunted implements LogicCardInfo {
               def randomOppHand = opp.hand.shuffledCopy()
               if(randomOppHand.hasType(SUPPORTER)){
                 def card = randomOppHand.select(min:1, "Opponent's hand. Select a Supporter.", cardTypeFilter(SUPPORTER)).first()
-                bg.deterministicCurrentThreadPlayerType=self.owner
-                bg.em().run(new PlayTrainer(card))
-                bg.clearDeterministicCurrentThreadPlayerType()
+                bg.em().run(new ActivateSimpleTrainer(card))
               } else {
                 randomOppHand.showToMe("Opponent's hand. No supporter there.")
               }
@@ -420,7 +422,7 @@ public enum Undaunted implements LogicCardInfo {
               damage 30
               delayed {
                 before null, self, Source.ATTACK, {
-                  if ((opp.active.hasPokePower() || opp.active.hasPokeBody() || opp.active.hasPokemonPower()) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                  if ((e.sourceAttack.attacker.hasPokePower() || e.sourceAttack.attacker.hasPokeBody() || e.sourceAttack.attacker.hasPokemonPower()) && e.sourceAttack.attacker.owner != self.owner && ef.effectType != DAMAGE){
                     bc "Moonlight Fang prevents effect"
                     prevent()
                   }
@@ -434,8 +436,7 @@ public enum Undaunted implements LogicCardInfo {
                   }
                 }
                 after FALL_BACK, self, {unregister()}
-                after EVOLVE, self, {unregister()}
-                after DEVOLVE, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
                 unregisterAfter 2
               }
             }
@@ -497,7 +498,7 @@ public enum Undaunted implements LogicCardInfo {
               shuffleDeck()
               opp.active.cards.moveTo(opp.deck)
               removePCS(opp.active)
-              shuffleDeck(null, TargetPlayer.OPPONENT)
+              shuffleOppDeck()
             }
           }
 
@@ -757,7 +758,7 @@ public enum Undaunted implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if(it.from.owner != self.owner && it.to.owner==self.owner && it.to.benched && it.to.types.contains(G) && it.dmg.value && it.notNoEffect){
+                  if(it.to.owner==self.owner && it.to.benched && it.to.types.contains(G) && it.dmg.value && it.notNoEffect){
                     bc "$thisAbility prevents damage"
                     it.dmg=hp(0)
                   }
@@ -783,8 +784,7 @@ public enum Undaunted implements LogicCardInfo {
                   }
                   unregisterAfter 3
                   after FALL_BACK, self, {unregister()}
-                  after EVOLVE, self, {unregister()}
-                  after DEVOLVE, self, {unregister()}
+                  after CHANGE_STAGE, self, {unregister()}
                 }
               }
             }
@@ -1089,8 +1089,7 @@ public enum Undaunted implements LogicCardInfo {
                     }
                   }
                   unregisterAfter 2
-                  after EVOLVE, self, { unregister() }
-                  after DEVOLVE, self, { unregister() }
+                  after CHANGE_STAGE, self, { unregister() }
                   after FALL_BACK, self, { unregister() }
                 }
               }
@@ -1392,7 +1391,7 @@ public enum Undaunted implements LogicCardInfo {
             text "more."
             energyCost P
             onAttack {
-              defendingRetreatsCostsMore (defending, [C])
+              defendingRetreatsCostsMore (defending,1)
             }
           }
           move "Sludge Toss", {
@@ -1734,17 +1733,18 @@ public enum Undaunted implements LogicCardInfo {
         return basic (this, hp:HP060, type:FIRE, retreatCost:2) {
           weakness W
           pokePower "Active Volcano", {
-            text "Once during your turn , you may discard the top card of your deck. If that card is a [R] Energy card, attach it to Slugma. This power can’t be used if Slugma is affected by a Special Condition."
+            text "Once during your turn, you may discard the top card of your deck. If that card is a [R] Energy card, attach it to Slugma. This power can’t be used if Slugma is affected by a Special Condition."
             actionA {
               checkNoSPC()
               checkLastTurn()
               assert my.deck : "Your deck is empty"
               powerUsed()
-              if(my.deck.subList(0,1).filterByBasicEnergyType(R)) {
-                attachEnergyFrom(my.deck.subList(0,1),my.all)
+              def topOfDeck = my.deck.subList(0,1)
+              if (topOfDeck.filterByBasicEnergyType(R)) {
+                attachEnergyFrom(topOfDeck,self)
               }
-              else{
-                my.deck.subList(0,1).discard()
+              else {
+                topOfDeck.discard()
               }
             }
           }
@@ -1819,12 +1819,14 @@ public enum Undaunted implements LogicCardInfo {
           def lastTurn=0
           def actions=[]
           onPlay {
-            actions=action("Stadium: Burned Tower") {
+            actions=action(thisCard, "Stadium: Burned Tower") {
               assert my.discard.find(cardTypeFilter(BASIC_ENERGY)) : "No Basic Energies in your discard pile."
               assert lastTurn != bg().turnCount : "Already used this turn."
-              bc "Used Training Court effect."
+              bc "Used $thisCard"
               lastTurn = bg().turnCount
-              my.discard.findAll(cardTypeFilter(BASIC_ENERGY)).select("Which Basic Energy to move to your hand?").moveTo(my.hand)
+              flip {
+                my.discard.findAll(cardTypeFilter(BASIC_ENERGY)).select("Which Basic Energy to move to your hand?").moveTo(my.hand)
+              }
             }
           }
           onRemoveFromPlay {
@@ -1845,9 +1847,9 @@ public enum Undaunted implements LogicCardInfo {
             my.hand.remove(thisCard)
 
             eff = delayed {
-              after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each {
-                  if (it.to == pcs && it.dmg.value && it.notNoEffect) {
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each{
+                  if(it.to == pcs && it.notNoEffect && it.dmg.value) {
                     bc "Defender -20"
                     it.dmg -= hp(20)
                   }
@@ -1902,24 +1904,32 @@ public enum Undaunted implements LogicCardInfo {
           onPlay {
             def top = my.deck.subList(0,10).showToOpponent("Top 10 cards of your opponent's deck")
             def hasMatch = top.find { Card card->
-              card.cardTypes.is(LEGEND) && top.getExcludedList(card).find{it.cardTypes.is(LEGEND) && card.getName().equals(it.getName()) && !card.getNumber().equals(it.getNumber())}
+              card.cardTypes.is(LEGEND) && top.find{ it != card && it.cardTypes.is(LEGEND) && card.getName() == it.getName() && card.getNumber() != it.getNumber() }
             }
             if(!hasMatch) {
               top.showToMe("Top 10 cards of your deck")
+              shuffleDeck()
             } else {
               def legendPair = top.select(count:2 , "Select both halves of a Pokémon LEGEND.", cardTypeFilter(LEGEND), thisCard.player, { CardList list ->
                 list[0].name == list[1].name && list[0].number != list[1].number
               })
               def topLegendCard = legendPair.get(0).getNumber() < legendPair.get(1).getNumber() ? legendPair.get(0) : legendPair.get(1)
               def bottomLegendCard = legendPair.find { it != topLegendCard }
-              def legendPokemon = benchPCS(topLegendCard)
-              legendPokemon.cards.add(bottomLegendCard)
+              // note for ordering: Legend Box must fully resolve before any come into play abilities of LEGEND pokemon should run
+              def pokemon = new PokemonCardSet(thisCard.player)
+              my.deck.remove(topLegendCard)
               my.deck.remove(bottomLegendCard)
+              pokemon.cards.add(topLegendCard)
+              pokemon.cards.add(bottomLegendCard)
+              my.bench.add(pokemon)
               top.getExcludedList(legendPair).filterByType(ENERGY).each{
-                attachEnergy(legendPokemon, it)
+                attachEnergy(pokemon, it)
               }
+              shuffleDeck()
+              bg.getGameManager().broadcastMessage("Put " + topLegendCard.getName() + " onto bench.")
+              bg.em().activateEffect(new PreventEvolve(pokemon, bg.getTurnCount()))
+              bg.em().activateEffect(new CheckAbilities(PLAY_FROM_HAND, pokemon))
             }
-            shuffleDeck()
           }
           playRequirement{
             assert my.deck : "Your deck is empty"
@@ -1947,6 +1957,7 @@ public enum Undaunted implements LogicCardInfo {
             def cnt = Math.min(2,top.size())
             def sel = top.select(count:cnt,"Choose $cnt cards to put into your hand")
             top.getExcludedList(sel).discard()
+            sel.moveTo(hidden: true, my.hand)
           }
           playRequirement{
             assert my.deck : "Your deck is empty"
@@ -1975,7 +1986,7 @@ public enum Undaunted implements LogicCardInfo {
           pokeBody "Evolution Memories", {
             text "Espeon can use the attacks of all Pokémon you have in play that evolve from Eevee as its own."
             metronomeA delegate, { my.all.findAll {
-              it.realEvolution && it.topPokemonCard.predecessor == "Eevee"
+              it.evolvesFrom('Eevee')
             } }
           }
           move "Solar Ray", {
@@ -2104,7 +2115,7 @@ public enum Undaunted implements LogicCardInfo {
               checkNoSPC()
               powerUsed()
               flip ({
-                scoopUpPokemon([:], self, delegate, Source.POKEPOWER)
+                scoopUpPokemon(self, delegate)
               })
             }
           }
@@ -2112,7 +2123,7 @@ public enum Undaunted implements LogicCardInfo {
             text "Does 50 damage plus 10 more damage for each of your Pokémon in play that evolves from Eevee."
             energyCost D, C, C
             onAttack {
-              damage 50 + 10 * my.all.findAll{it.realEvolution && it.topPokemonCard.predecessor == "Eevee"}.size()
+              damage 50 + 10 * my.all.findAll{it.evolvesFrom('Eevee')}.size()
             }
           }
 

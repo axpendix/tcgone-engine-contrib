@@ -34,7 +34,7 @@ import tcgwars.logic.util.*;
  * @author lithogenn@gmail.com
  */
 public enum PokemodNeoDestiny implements LogicCardInfo {
-    
+
   DARK_AMPHAROS_1 ("Dark Ampharos", "1", Rarity.HOLORARE, [POKEMON, DARK_POKEMON, EVOLUTION, STAGE2, _LIGHTNING_]),
   DARK_CROBAT_2 ("Dark Crobat", "2", Rarity.HOLORARE, [POKEMON, DARK_POKEMON, EVOLUTION, STAGE2, _GRASS_]),
   DARK_DONPHAN_3 ("Dark Donphan", "3", Rarity.HOLORARE, [POKEMON, DARK_POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
@@ -152,9 +152,9 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
   ROCKET_S_RAIKOU_EX_116 ("Rocket's Raikou ex", "116", Rarity.HOLORARE, [POKEMON, BASIC, EX, OWNERS_POKEMON, _DARKNESS_]),
   ROCKET_S_SNEASEL_EX_117 ("Rocket's Sneasel ex", "117", Rarity.HOLORARE, [POKEMON, BASIC, EX, OWNERS_POKEMON, _DARKNESS_]),
   ROCKET_S_SCIZOR_EX_118 ("Rocket's Scizor ex", "118", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, EX, OWNERS_POKEMON, _DARKNESS_]);
-    
+
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
-  
+
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
@@ -199,7 +199,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -236,7 +236,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost G, G
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -249,7 +249,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost F, F
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Giant Tusk", {
@@ -277,7 +277,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost P, C, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -324,7 +324,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Dark Fire", {
@@ -363,7 +363,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Slash", {
@@ -495,7 +495,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Poison Bind", {
@@ -533,7 +533,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Dark Tentacle", {
@@ -571,7 +571,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Battle Frenzy", {
@@ -579,7 +579,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -591,7 +591,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Protective Wave", {
@@ -611,7 +611,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost L
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Spark", {
@@ -632,7 +632,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Comet Punch", {
@@ -828,7 +828,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Explosion", {
@@ -849,7 +849,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Surround", {
@@ -870,7 +870,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -891,7 +891,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -903,7 +903,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost R
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Rushing Magma", {
@@ -924,7 +924,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Slap Awake", {
@@ -985,7 +985,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost D
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Lunge", {
@@ -1038,7 +1038,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost R
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Burning Flame", {
@@ -1058,7 +1058,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Core Blast", {
@@ -1078,7 +1078,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost L
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Thunder Needle", {
@@ -1098,7 +1098,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost F
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Gentle Kick", {
@@ -1118,7 +1118,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost R
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Fire Blast", {
@@ -1138,7 +1138,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Splash About", {
@@ -1158,7 +1158,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Hypnoshower", {
@@ -1179,7 +1179,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Synchronize", {
@@ -1200,7 +1200,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Body Slam", {
@@ -1241,7 +1241,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Spike Ball Tackle", {
@@ -1361,7 +1361,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Fury Attack", {
@@ -1458,7 +1458,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost F
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Supersonic Jab", {
@@ -1479,7 +1479,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Rock Throw", {
@@ -1513,7 +1513,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Solarbeam", {
@@ -1681,7 +1681,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost G, G
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1947,7 +1947,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Miracle Leaf", {
@@ -2001,7 +2001,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost P, L
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Psyburst", {
@@ -2093,7 +2093,7 @@ public enum PokemodNeoDestiny implements LogicCardInfo {
           energyCost R, R, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };

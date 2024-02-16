@@ -34,7 +34,7 @@ import tcgwars.logic.util.*;
  * @author lithogenn@gmail.com
  */
 public enum PokemodNeoRevelation implements LogicCardInfo {
-    
+
   AMPHAROS_1 ("Ampharos", "1", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE2, _LIGHTNING_]),
   BLISSEY_2 ("Blissey", "2", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
   CELEBI_3 ("Celebi", "3", Rarity.HOLORARE, [POKEMON, BASIC, _PSYCHIC_]),
@@ -105,9 +105,9 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
   HO_OH_EX_68 ("Ho-Oh ex", "68", Rarity.HOLORARE, [POKEMON, BASIC, EX, _FIRE_]),
   LUGIA_EX_69 ("Lugia ex", "69", Rarity.HOLORARE, [POKEMON, BASIC, EX, _COLORLESS_]),
   SCIZOR_EX ("Scizor ex", "70", Rarity.HOLORARE, [POKEMON, EVOLUTION, STAGE1, EX, _COLORLESS_]);
-    
+
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
-  
+
   protected CardTypeSet cardTypes;
   protected String name;
   protected Rarity rarity;
@@ -152,7 +152,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -209,7 +209,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -243,7 +243,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -273,7 +273,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost R
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Sacred Fire", {
@@ -281,7 +281,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost R, R, R
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Dive Bomb", {
@@ -323,7 +323,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Solarbeam", {
@@ -362,7 +362,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Perish Song", {
@@ -370,7 +370,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost P, P, P
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -461,8 +461,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
         weakness W
         pokeBody "Legendary Body", {
           text "As long as Entei is your Active Pokémon, Entei and Energy cards attached to it aren't affected by effects from Trainer cards other than Stadium cards. As long as this power is active, discard any Trainer cards attached to Entei. (This power works even if Entei is affected by a Special Condition.)"
-          delayedA {
-          }
+          legendaryBody(delegate)
         }
         move "Mega Flame", {
           text "50 damage. Flip 2 coins. For each tails, discard 1 [R] Energy card from Entei, if it has any."
@@ -494,7 +493,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Twister", {
@@ -544,8 +543,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
         weakness F
         pokeBody "Legendary Body", {
           text "As long as Raikou is your Active Pokémon, Raikou and Energy cards attached to it aren't affected by effects from Trainer cards other than Stadium cards. As long as this power is active, discard any Trainer cards attached to Raikou. (This power works even if Raikou is affected by a Special Condition.)"
-          delayedA {
-          }
+          legendaryBody(delegate)
         }
         move "Lightning Spark", {
           text "30 damage. If your opponent has any Benched Pokémon, flip a coin. If heads, choose 1 of them and this attack does 20 damage to it. (Don't apply Weakness and Resistance for Benched Pokémon.)"
@@ -586,7 +584,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost D
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Quick Attack", {
@@ -640,8 +638,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
         weakness L
         pokeBody "Legendary Body", {
           text "As long as Suicune is your Active Pokémon, Suicune and Energy cards attached to it aren't affected by effects from Trainer cards other than Stadium cards. As long as this power is active, discard any Trainer cards attached to Suicune. (This power works even if Suicune is affected by a Special Condition.)"
-          delayedA {
-          }
+          legendaryBody(delegate)
         }
         move "Crystal Wave", {
           text "30+ damage. Flip a coin. If heads, this attack does 30 damage plus 10 more damage. If tails, this attack does 30 damage and, if your opponent has any Benched Pokémon, he or she chooses 1 of them and switches it with the Defending Pokémon. (Do the damage before switching the Pokémon.)"
@@ -681,7 +678,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Poison Bite", {
@@ -721,7 +718,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Strange Dance", {
@@ -813,7 +810,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost C, C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "High-Speed Charge", {
@@ -854,7 +851,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Overhead Toss", {
@@ -909,7 +906,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Tail Punch", {
@@ -995,7 +992,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Flock Attack", {
@@ -1076,7 +1073,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1093,7 +1090,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost G, G
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1145,7 +1142,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost C
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1318,7 +1315,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost W
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Dragon Bond", {
@@ -1326,7 +1323,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost P
           attackRequirement {}
           onAttack {
-            
+
           }
         }
       };
@@ -1338,7 +1335,7 @@ public enum PokemodNeoRevelation implements LogicCardInfo {
           energyCost G
           attackRequirement {}
           onAttack {
-            
+
           }
         }
         move "Time Trap", {

@@ -41,10 +41,10 @@ public enum ShinyStarV implements LogicCardInfo {
   SNOM_4 ("Snom", "4", Rarity.HOLORARE, [POKEMON, BASIC, _WATER_]),
   ROTOM_5 ("Rotom", "5", Rarity.HOLORARE, [POKEMON, BASIC, _LIGHTNING_]),
   KOFFING_6 ("Koffing", "6", Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
-  CROBAT_VMAX_7 ("Crobat VMAX", "7", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _DARKNESS_]),
+  CROBAT_VMAX_7 ("Crobat VMAX", "7", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _DARKNESS_]),
   YVELTAL_8 ("Yveltal", "8", Rarity.HOLORARE, [POKEMON, BASIC, _DARKNESS_]),
   DITTO_V_9 ("Ditto V", "9", Rarity.ULTRARARE, [POKEMON, BASIC, POKEMON_V, _COLORLESS_]),
-  DITTO_VMAX_10 ("Ditto VMAX", "10", Rarity.ULTRARARE, [POKEMON, EVOLUTION, VMAX, _COLORLESS_]),
+  DITTO_VMAX_10 ("Ditto VMAX", "10", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _COLORLESS_]),
   TEAM_YELL_S_CHEERING_TOWEL_11 ("Team Yell's Cheering Towel", "11", Rarity.HOLORARE, [TRAINER, ITEM]),
   RUSTED_SWORD_12 ("Rusted Sword", "12", Rarity.HOLORARE, [TRAINER, POKEMON_TOOL, ITEM]),
   RUSTED_SHIELD_13 ("Rusted Shield", "13", Rarity.HOLORARE, [TRAINER, POKEMON_TOOL, ITEM]),
@@ -96,7 +96,7 @@ public enum ShinyStarV implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -182,17 +182,7 @@ public enum ShinyStarV implements LogicCardInfo {
         move "Ascension", {
           text "Search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
           energyCost D
-          attackRequirement {
-            assert my.deck : "Deck is empty"
-            // If copied, check that evolution exists
-            assert bg.gm().hasEvolution(self.name) : "This Pokémon does not evolve"
-          }
-          onAttack {
-            def evolution = deck.search { it.cardTypes.is(EVOLUTION) && (it as EvolutionPokemonCard).predecessor == self.name }
-            if (evolution) {
-              evolve self, evolution.first(), OTHER
-            }
-          }
+          ascension delegate
         }
       };
       case CROBAT_VMAX_7:
@@ -242,7 +232,7 @@ public enum ShinyStarV implements LogicCardInfo {
             discard self.topPokemonCard
             card.moveTo suppressLog:true, self.cards
             bc "Switched with $card"
-            bg.em().run new CheckAbilities(OTHER, new PcsList(self))
+            bg.em().run new CheckAbilities(self)
           }
         }
         move "Stick On", {

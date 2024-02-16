@@ -3,6 +3,8 @@ package tcgwars.logic.impl.pokemod
 import tcgwars.logic.effect.gm.PlayCard
 import tcgwars.logic.effect.gm.PlayStadium
 import tcgwars.logic.effect.gm.PlayTrainer
+import tcgwars.logic.impl.gen1.BaseSetNG
+import tcgwars.logic.impl.gen3.FireRedLeafGreen
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -208,7 +210,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
 
   @Override
   public String getEnumName() {
-    return name();
+    return this.name();
   }
 
   @Override
@@ -344,9 +346,9 @@ public enum PokemodBaseSet implements LogicCardInfo {
           onAttack {
             def moveList = []
             def labelList = []
-
-            moveList.addAll(defending.topPokemonCard.moves);
-            labelList.addAll(defending.topPokemonCard.moves.collect{it.name})
+            def moves = defending.baseMoves
+            moveList.addAll(moves);
+            labelList.addAll(moves.collect{it.name})
 
             def move=choose(moveList, labelList)
             def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
@@ -697,7 +699,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
                 bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
               }
             }
-            energyCard.player = thisCard.player
+            energyCard.initializeFrom pkmnCard
             bg.em().run(new ChangeImplementation(energyCard, pkmnCard))
             attachEnergy(pcs, energyCard)
             bc "$energyCard is now a Special Energy Card that provides 2 [$type] energy attached to $pcs"
@@ -1247,8 +1249,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
                   new Knockout(self.owner.opposite.pbg.active).run(bg)
                 }
               }
-              after EVOLVE, self, {unregister()}
-              after DEVOLVE, self, {unregister()}
+              after CHANGE_STAGE, self, {unregister()}
               after FALL_BACK, self, {unregister()}
               unregisterAfter 2
             }
@@ -1578,7 +1579,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
                     }
                   }
                 }
-                acl = action("Discard Clefairy Doll", [TargetPlayer.SELF]){
+                acl = action(pokemonCard, "Discard Clefairy Doll", [TargetPlayer.SELF]){
                   new Knockout(self).run(bg)
                 }
               }
@@ -1587,7 +1588,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
               }
             }
           }
-          pokemonCard.player = trainerCard.player
+          pokemonCard.initializeFrom trainerCard
           bg.em().run(new ChangeImplementation(pokemonCard, trainerCard))
           benchPCS(pokemonCard)
         }
@@ -1609,29 +1610,13 @@ public enum PokemodBaseSet implements LogicCardInfo {
         }
       };
       case DEVOLUTION_SPRAY_72:
-      return basicTrainer (this) {
-        text "Choose 1 of your own Pokémon in play and a Stage of Evolution. Discard all Evolution cards of that Stage or higher attached to that Pokémon. That Pokémon is no longer Asleep, Confused, Paralyzed, Poisoned, or anything else that might be the result of an attack (just as if you had evolved it)."
-        onPlay {
-          def pcs = my.all.findAll{it.evolution}.select("Pokémon to devolve")
-          def pkmn = []
-          pkmn.addAll(pcs.pokemonCards)
-          pkmn.remove(pcs.topPokemonCard)
-          def stage = pkmn.size()>1 ? pkmn.select("Choose stage to devolve to").first() : pkmn.first()
-          for(PokemonCard t7:pcs.pokemonCards){
-            if (t7 == stage) break
-            devolve(pcs, t7, my.discard)
-          }
-        }
-        playRequirement{
-          assert my.all.findAll{it.evolution} : "You have no evolved pokemon in play"
-        }
-      };
+        return copy(BaseSetNG.DEVOLUTION_SPRAY, this);
       case IMPOSTER_PROFESSOR_OAK_73:
       return basicTrainer (this) {
         text "Your opponent shuffles his or her hand into his or her deck, then draws 7 cards."
         onPlay {
           opp.hand.moveTo(hidden:true, opp.deck)
-          shuffleDeck(null, TargetPlayer.OPPONENT)
+          shuffleOppDeck()
           draw 7, TargetPlayer.OPPONENT
         }
         playRequirement{
@@ -1768,7 +1753,6 @@ public enum PokemodBaseSet implements LogicCardInfo {
         text "Shuffle 2 of the other cards from your hand into your deck in order to draw 2 cards."
         onPlay {
           def list = hand.getExcludedList(thisCard).select(count:2, "Shuffle to deck")
-          hand.removeAll(list)
           shuffleDeck(list)
           draw 2
         }
@@ -1915,18 +1899,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         }
       };
       case SWITCH_95:
-      return basicTrainer (this) {
-        text "Switch 1 of your Benched Pokémon with your Active Pokémon."
-        return basicTrainer (this) {
-          text "Switch your Active Pokémon with 1 of your Benched Pokémon."
-          onPlay {
-            sw my.active, my.bench.select()
-          }
-          playRequirement{
-            assert bench.notEmpty
-          }
-        };
-      };
+      return copy(FireRedLeafGreen.SWITCH_102, this);
       case DOUBLE_COLORLESS_ENERGY_96:
       return specialEnergy (this, [[C],[C]]) {
         text "Double Colorless Energy provides [C][C] Energy."
@@ -2205,8 +2178,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
                 prev = true
               }
             }
-            after EVOLVE, self, {check(self)}
-            after DEVOLVE, self, {check(self)}
+            after CHANGE_STAGE, self, {check(self)}
             after ATTACH_ENERGY, self, {check(self)}
           }
         }
@@ -2252,8 +2224,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
                 prev = true
               }
             }
-            after EVOLVE, self, {check(self)}
-            after DEVOLVE, self, {check(self)}
+            after CHANGE_STAGE, self, {check(self)}
             after ATTACH_ENERGY, self, {check(self)}
           }
         }
