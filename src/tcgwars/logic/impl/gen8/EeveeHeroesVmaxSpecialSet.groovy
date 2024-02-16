@@ -31,7 +31,7 @@ import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
 /**
- * @author lithogenn@gmail.com
+ * @author axpendix@hotmail.com
  */
 public enum EeveeHeroesVmaxSpecialSet implements LogicCardInfo {
 
@@ -112,19 +112,28 @@ public enum EeveeHeroesVmaxSpecialSet implements LogicCardInfo {
       return evolution (this, from:"Vaporeon V", hp:HP320, type:W, retreatCost:2) {
         weakness L
         move "Bubble Pod", {
-          text " Put a [W] Pokémon from your discard pile onto your Bench. Then, attach up to 3 [W] Energy from your discard pile to that Pokémon."
+          text "Put a [W] Pokémon from your discard pile onto your Bench. Then, attach up to 3 [W] Energy from your discard pile to that Pokémon."
           energyCost C
-          attackRequirement {}
+          def cl1 = {
+            my.discard.findAll{it.cardTypes.pokemon && it.asPokemonCard().types.contains(W)}
+          }
+          attackRequirement {
+            assert cl1() : "No [W] Pokémon in your discard pile"
+            assert my.bench.notFull : "Bench full"
+          }
           onAttack {
-
+            def pokemon = cl1().select("Put to bench").collect{benchPCS(it)}
+            if (pokemon) {
+              attachEnergyFrom(count: 3, type: W, my.discard, pokemon)
+            }
           }
         }
         move "Max Rapids", {
           text "100+ damage. If your opponent's Active Pokémon already has any damage counters on it, this attack does 100 more damage."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 100
+            if (opp.active.numberOfDamageCounters) damage 100
           }
         }
       };
@@ -134,9 +143,12 @@ public enum EeveeHeroesVmaxSpecialSet implements LogicCardInfo {
         move "Max Thunderclap", {
           text "100 damage. This attack also does 100 damage to 1 of your opponent's Benched Pokémon that already has any damage counters on it. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost L, C
-          attackRequirement {}
           onAttack {
             damage 100
+            def targets = opp.bench.findAll{ it.numberOfDamageCounters }
+            if (targets) {
+              damage 100, targets.select("Deal 100 damage to?")
+            }
           }
         }
       };
@@ -146,7 +158,14 @@ public enum EeveeHeroesVmaxSpecialSet implements LogicCardInfo {
         resistance F, MINUS30
         bwAbility "Solar Revelation", {
           text "Prevent all effects of your opponent's attacks, except damage, done to all of your Pokémon that have Energy attached. (Existing effects are not removed.)"
-          actionA {
+          delayedA {
+            before null, null, Source.ATTACK, {
+              def pcs = e.getTargetPokemon()
+              if (pcs && pcs.owner == self.owner && pcs.cards.energyCount(C) && ef.effectType != DAMAGE) {
+                bc "Espeon VMAX's Solar Revelation prevents effect."
+                prevent()
+              }
+            }
           }
         }
         move "Max Mindstorm", {
@@ -154,7 +173,8 @@ public enum EeveeHeroesVmaxSpecialSet implements LogicCardInfo {
           energyCost P, C, C
           attackRequirement {}
           onAttack {
-            damage 60
+            int count = opp.all.sum { it.cards.energyCount(C) }
+            damage 60 * count
           }
         }
       };
