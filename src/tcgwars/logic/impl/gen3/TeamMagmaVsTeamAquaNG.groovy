@@ -554,19 +554,29 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         }
       };
       case TEAM_MAGMA_S_CAMERUPT_19:
-      return evolution (this, from:"null", hp:HP080, type:R, retreatCost:2) {
+      return evolution (this, from:"Team Magma's Numel", hp:HP080, type:R, retreatCost:2) {
         weakness W
         pokePower "Overheat", {
           text "Once during your turn (before your attack), you may search your discard pile for a basic Energy card and attach it to Team Magma's Camerupt. Put 2 damage counters on Team Mamga's Camerupt. This power can't be used if Team Magma's Camerupt is affected by a Special Condition."
           actionA {
+            checkLastTurn()
+            checkNoSPC()
+            assert my.discard.hasType(BASIC_ENERGY)
+            powerUsed()
+            my.discard.filterByType(BASIC_ENERGY).each {attachEnergy(self, it)}
+            directDamage(20, self)
           }
         }
         move "Flame Ball", {
           text "50 damage. You may move a [R] Energy card attached to Team Magma's Camerupt to 1 of your Benched Pokémon."
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 50
+            afterDamage {
+              if ( my.bench && self.cards.energyCount(R) && confirm("Move a [R] Energy card attached to $self to 1 of your Pokémon?") ) {
+                moveEnergy(type: R, self, my.bench.select("Which pokémon will recieve the [R] Energy?"))
+              }
+            }
           }
         }
       };
