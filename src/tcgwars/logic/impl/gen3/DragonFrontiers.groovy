@@ -1,8 +1,8 @@
 package tcgwars.logic.impl.gen3
 
 import tcgwars.logic.effect.gm.ActivateSimpleTrainer;
-import tcgwars.logic.effect.gm.PlayTrainer;
-
+import tcgwars.logic.effect.gm.PlayTrainer
+import tcgwars.logic.exception.NotEnoughEnergyException;
 import tcgwars.logic.impl.gen3.Deoxys;
 import tcgwars.logic.impl.gen3.DeltaSpecies;
 import tcgwars.logic.impl.gen3.HolonPhantoms;
@@ -2105,12 +2105,17 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost R, R, C
           onAttack {
             damage 90
-            //Would a slatedToKO inside afterDamage work fine here? -starg
-            delayed {
-              def pcs = defending
-              after KNOCKOUT, pcs, {
-                discardSelfEnergy R,R
-                unregister()
+            // ruling: If you cannot discard 2 [R] Energy, then this attack does nothing
+            delayed (priority: LAST) {
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {if(it.to==defending && it.from==self && (it.dmg.value + defending.damage.value >= defending.fullHP.value)) { // slated to KO
+                  try {
+                    discardSelfEnergyInOrderTo(R, R)
+                  } catch (NotEnoughEnergyException ignored) {
+                    bc "Can't discard [R][R] for Power Crush, attack fails"
+                    it.dmg = hp(0)
+                  }
+                }}
               }
               unregisterAfter 1
             }
