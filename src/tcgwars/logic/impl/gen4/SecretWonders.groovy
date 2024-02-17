@@ -433,7 +433,7 @@ public enum SecretWonders implements LogicCardInfo {
               assert defending.remainingHP.value > 50 : "The Defending Pokémon has 50 or fewer remaining HP"
             }
             onAttack {
-              if(!bg.em().run(new DirectDamage(hp(defending.remainingHP.value - 50), defending).setSource(Source.ATTACK))) {
+              if(!bg.em().run(new DirectDamage(hp(defending.remainingHP.value - 50), defending))) {
                 whirlwind()
               }
             }
