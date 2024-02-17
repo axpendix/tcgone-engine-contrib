@@ -333,7 +333,7 @@ public enum SupremeVictors implements LogicCardInfo {
             }
             onAttack {
               def pcs = opp.bench.select(text)
-              new ResolvedDamage(hp(40), my.active, pcs, Source.ATTACK, DamageManager.DamageFlag.FORCE_WEAKNESS_RESISTANCE).run(bg)
+              new ResolvedDamage(hp(40), my.active, pcs, DamageManager.DamageFlag.FORCE_WEAKNESS_RESISTANCE).run(bg)
             }
           }
         };

@@ -360,7 +360,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
               before KNOCKOUT, self, {
                 if((ef as Knockout).byDamageFromAttack && !self.specialConditions){
                   def pcs = bg.currentTurn.pbg.active
-                  new ResolvedDamage(hp(20*self.cards.energyCount(W)), self, pcs, Source.POKEMONPOWER, DamageManager.DamageFlag.FORCE_WEAKNESS_RESISTANCE).run(bg)
+                  new ResolvedDamage(hp(20*self.cards.energyCount(W)), self, pcs, DamageManager.DamageFlag.FORCE_WEAKNESS_RESISTANCE).run(bg)
                   bg.dm().applyWeakness()
                   bg.dm().applyResistance()
                   def damage = bg.dm().getTotalDamage(self, pcs)
@@ -901,7 +901,7 @@ public enum PokemodTeamRocket implements LogicCardInfo {
                     }
                   }
                   if(dmgVal){
-                    new ResolvedDamage(hp(dmgVal), self, pcs, Source.ATTACK, DamageManager.DamageFlag.FORCE_WEAKNESS_RESISTANCE).run(bg)
+                    new ResolvedDamage(hp(dmgVal), self, pcs, DamageManager.DamageFlag.FORCE_WEAKNESS_RESISTANCE).run(bg)
                     bg.dm().applyWeakness()
                     bg.dm().applyResistance()
                     /*def damage = bg.dm().getTotalDamage(self, pcs)
