@@ -2428,7 +2428,7 @@ public enum UnseenForces implements LogicCardInfo {
                 if (!pcs) break
                 def energiesToDiscard = pcs.cards.filterByType(ENERGY)
                 if (energiesToDiscard) energiesToDiscard.discard()
-                healAll pcs, Source.SRC_ABILITY
+                healAll pcs
               }
             }
           }

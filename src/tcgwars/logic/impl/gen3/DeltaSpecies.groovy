@@ -314,7 +314,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             powerUsed()
             my.all.each {
               if (it.topPokemonCard.cardTypes.is(DELTA)) {
-                heal 10, it, SRC_ABILITY
+                heal 10, it
               }
             }
           }

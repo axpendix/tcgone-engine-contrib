@@ -2727,7 +2727,7 @@ public enum BattleStyles implements LogicCardInfo {
           my.all.each {
             if (it.realEvolution && it.numberOfDamageCounters) {
               def previousDamage = it.numberOfDamageCounters
-              heal it.damage.value, it, TRAINER_CARD
+              heal it.damage.value, it
 
               if (previousDamage != it.numberOfDamageCounters) {
                 it.cards.filterByType(ENERGY).discard()

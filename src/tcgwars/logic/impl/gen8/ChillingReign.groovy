@@ -477,7 +477,7 @@ public enum ChillingReign implements LogicCardInfo {
 
               my.all.each {
                 if (it.types.contains(G))
-                  heal(20, it, SRC_ABILITY)
+                  heal(20, it)
               }
             }
           }

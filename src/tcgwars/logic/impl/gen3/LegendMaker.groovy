@@ -1586,7 +1586,7 @@ public enum LegendMaker implements LogicCardInfo {
             after ATTACH_ENERGY, self, {
               if (ef.reason==PLAY_FROM_HAND && ef.card.name == "React Energy") {
                 bc "Reactive Healing Activates"
-                healAll self, SRC_ABILITY
+                healAll self
               }
             }
           }

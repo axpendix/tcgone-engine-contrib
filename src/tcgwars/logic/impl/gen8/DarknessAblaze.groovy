@@ -1050,7 +1050,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             assert my.all.any {it.numberOfDamageCounters} : "None of your Pokémon have taken damage"
             powerUsed()
             my.all.findAll {it.numberOfDamageCounters}.each {damagedPokemon ->
-              heal 20, damagedPokemon, SRC_ABILITY
+              heal 20, damagedPokemon
             }
           }
         }
