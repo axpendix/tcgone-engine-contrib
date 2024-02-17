@@ -76,7 +76,7 @@ public enum DiamondPearlTrainerKit implements LogicCardInfo {
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.Diamond_Pearl_Trainer_Kit;
+    return tcgwars.logic.card.Collection.DIAMOND_PEARL_TRAINER_KIT;
   }
 
   @Override
