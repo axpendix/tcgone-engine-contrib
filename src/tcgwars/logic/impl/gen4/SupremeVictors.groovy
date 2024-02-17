@@ -3697,7 +3697,7 @@ public enum SupremeVictors implements LogicCardInfo {
               after LEVEL_UP, {
                 if(ef.activationReason == PLAY_FROM_HAND) {
                   bc "Battle Tower activates"
-                  heal(40, ef.pokemonToLevelUp, TRAINER_CARD)
+                  heal(40, ef.pokemonToLevelUp)
                 }
               }
             }

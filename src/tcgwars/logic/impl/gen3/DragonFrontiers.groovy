@@ -482,7 +482,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             checkNoSPC()
             assert self.active : "$self is not your Active Pokémon"
             powerUsed()
-            heal 20, self, SRC_ABILITY
+            heal 20, self
             apply ASLEEP, self, SRC_ABILITY
           }
         }

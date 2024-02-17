@@ -251,7 +251,7 @@ public enum PowerKeepers implements LogicCardInfo {
           delayedA {
             before BETWEEN_TURNS, {
               if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Drake's Stadium") {
-                heal 10, self, SRC_ABILITY
+                heal 10, self
               }
             }
           }
@@ -2142,9 +2142,9 @@ public enum PowerKeepers implements LogicCardInfo {
             if (r==PLAY_FROM_HAND && confirm("Use Blue Ray?")) {
               powerUsed()
               clearSpecialCondition(my.active, Source.SRC_ABILITY)
-              heal 30, my.active, Source.SRC_ABILITY
+              heal 30, my.active
               clearSpecialCondition(opp.active, Source.SRC_ABILITY)
-              heal 30, opp.active, Source.SRC_ABILITY
+              heal 30, opp.active
             }
           }
         }

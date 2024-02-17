@@ -2281,7 +2281,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               if(tar){
                 def pcs = tar.select("select 1 of your Pokémon (excluding Pokémon-ex) to remove all Special Conditions and 6 damage counters")
                 clearSpecialCondition pcs, Source.TRAINER_CARD
-                heal 60, pcs, Source.TRAINER_CARD
+                heal 60, pcs
               }
             }
           }

@@ -999,7 +999,7 @@ public enum Platinum implements LogicCardInfo {
               if (my.all.any { it.numberOfDamageCounters })
                 heal 20, my.all.findAll {
                   it.numberOfDamageCounters
-                }.select("Heal which Pokémon"), Source.POKEPOWER
+                }.select("Heal which Pokémon")
               bg.em().storeObject("Nurse_Call", bg.turnCount)
             }
           }
@@ -2010,7 +2010,7 @@ public enum Platinum implements LogicCardInfo {
             delayedA(priority: BEFORE_LAST) {
               before BEGIN_TURN, {
                 if (self.specialConditions) {
-                  heal 20, self, Source.POKEBODY
+                  heal 20, self
                 }
               }
             }

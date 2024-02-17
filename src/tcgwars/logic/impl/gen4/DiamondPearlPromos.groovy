@@ -634,7 +634,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             delayedA {
               before BEGIN_TURN, {
                 if (my.all.find {it.name == "Darkrai" }) {
-                  heal 10, self, POKEBODY
+                  heal 10, self
                 }
               }
             }

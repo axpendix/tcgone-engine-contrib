@@ -1446,7 +1446,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             def tar = my.all.findAll { it.energyCards && it.numberOfDamageCounters }
             if (!tar) return
             def pcs = tar.select("Heal 30 damage from?", it == 0)
-            if (pcs) heal 30, pcs, TRAINER_CARD
+            if (pcs) heal 30, pcs
           }
         }
         playRequirement{

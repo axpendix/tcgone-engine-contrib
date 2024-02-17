@@ -1373,7 +1373,7 @@ public enum Stormfront implements LogicCardInfo {
             text "Remove 1 damage counter from Tangrowth between turns."
             delayedA {
               before BEGIN_TURN, {
-                heal 10, self, Source.POKEBODY
+                heal 10, self
               }
             }
           }
@@ -2921,11 +2921,11 @@ public enum Stormfront implements LogicCardInfo {
           text "You may play 2 Poké Healer + at the same time. If you play 1 Poké Healer +, remove 1 damage counter and a Special Condition from 1 of your Active Pokémon. If you play 2 Poké Healer +, remove 8 damage counters and all Special Conditions from 1 of your Active Pokémon."
           onPlay {
             if(my.hand.findAll({it.name=="Poké Healer +"}).size()>=2 && confirm("Play 2 Poké Healer + at the same time?")) {
-              heal 80, my.active, TRAINER_CARD
+              heal 80, my.active
               clearSpecialCondition(my.active, TRAINER_CARD)
               my.hand.findAll({it.name=="Poké Healer +" && it!= thisCard}).subList(0,1).discard()
             } else {
-              heal 10, my.active, TRAINER_CARD
+              heal 10, my.active
               if(my.active.specialConditions) {
                 SpecialConditionType spc = choose(my.active.specialConditions.asList(), "Which special condition you want to remove")
                 clearSpecialCondition(my.active, TRAINER_CARD, [spc])

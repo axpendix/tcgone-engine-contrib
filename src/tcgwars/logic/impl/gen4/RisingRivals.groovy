@@ -1168,7 +1168,7 @@ public enum RisingRivals implements LogicCardInfo {
                 if (bg.em().retrieveObject("Maternal_Comfort") != bg.turnCount && self.owner.pbg.all.find {it.numberOfDamageCounters }) {
                   bc "$thisAbility Activates"
                   self.owner.pbg.all.each {
-                    heal 10, it, Source.POKEBODY
+                    heal 10, it
                   }
                   bg.em().storeObject("Maternal_Comfort", bg.turnCount)
                 }
@@ -1322,7 +1322,7 @@ public enum RisingRivals implements LogicCardInfo {
               after ATTACH_ENERGY, self, {
                 if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(G)) {
                   bc "$thisAbility heals 10 damage from $self"
-                  heal 10, self, Source.POKEBODY
+                  heal 10, self
                 }
               }
             }
@@ -1601,7 +1601,7 @@ public enum RisingRivals implements LogicCardInfo {
               after ATTACH_ENERGY, {
                 if (ef.reason == PLAY_FROM_HAND && self.active) {
                   bc "$thisAbility activates."
-                  heal 20, ef.resolvedTarget, Source.POKEBODY
+                  heal 20, ef.resolvedTarget
                 }
               }
             }
@@ -2866,7 +2866,7 @@ public enum RisingRivals implements LogicCardInfo {
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nRemove 5 damage counters from 1 of your Pokémon SP."
           onPlay {
-            heal 50, my.all.findAll{it.pokemonSP && it.numberOfDamageCounters}.select("Remove 5 damage counters from 1 of your Pokémon SP"), TRAINER_CARD
+            heal 50, my.all.findAll { it.pokemonSP && it.numberOfDamageCounters }.select("Remove 5 damage counters from 1 of your Pokémon SP")
           }
           playRequirement{
             assert my.all.find{it.pokemonSP && it.numberOfDamageCounters} : "You have no damged Pokémon SP"

@@ -1006,7 +1006,7 @@ public enum GreatEncounters implements LogicCardInfo {
               before BEGIN_TURN, {
                 if (self.isSPC(ASLEEP)) {
                   bc "Sleeping Pulse activates."
-                  heal 10, self, Source.POKEBODY
+                  heal 10, self
                 }
               }
             }

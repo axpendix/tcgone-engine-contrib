@@ -2027,7 +2027,7 @@ public enum SwordShield implements LogicCardInfo {
           actionA {
             checkLastTurn()
             assert my.active.numberOfDamageCounters: "Your Active Active Pokémon has no damage counters."
-            heal(20, my.active, SRC_ABILITY)
+            heal(20, my.active)
             powerUsed()
           }
         }

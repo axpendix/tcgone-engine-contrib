@@ -433,7 +433,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
         text "Flip a coin. If heads, remove 2 damage counters from each Active Pokémon (remove 1 damage counter if a Pokémon has only 1). If tails, each Active Pokémon is now Asleep."
         onPlay {
           flip 1, {
-            [my.active, opp.active].each{ heal 20, it, TRAINER_CARD }
+            [my.active, opp.active].each{ heal 20, it }
           }, {
             [my.active, opp.active].each{apply ASLEEP, it, TRAINER_CARD }
           }

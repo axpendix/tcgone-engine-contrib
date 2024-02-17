@@ -1743,7 +1743,7 @@ public enum Emerald implements LogicCardInfo {
               before BEGIN_TURN,{
                 if(self.numberOfDamageCounters >= 2) {
                   bc "Oran Berry activates"
-                  heal 20, self, Source.TRAINER_CARD
+                  heal 20, self
                   discard thisCard
                 }
               }

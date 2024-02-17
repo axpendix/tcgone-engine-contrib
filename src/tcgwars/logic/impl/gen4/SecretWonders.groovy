@@ -1264,7 +1264,7 @@ public enum SecretWonders implements LogicCardInfo {
             after ATTACH_ENERGY, self, {
               if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(R)) {
                 bc "Flame Body removes 2 damage counters from $self"
-                heal 20, self, Source.POKEBODY
+                heal 20, self
               }
             }
           }
@@ -1486,7 +1486,7 @@ f
               bg.em().storeObject("Grass Whistle", bg.turnCount)
               powerUsed()
               my.all.findAll{it.types.contains(G) && it.numberOfDamageCounters}.each{
-                heal 10, it, Source.POKEPOWER
+                heal 10, it
               }
             }
           }
@@ -2278,7 +2278,7 @@ f
               checkLastTurn()
               assert opp.active.numberOfDamageCounters : "$opp.active is healthy"
               powerUsed()
-              heal 20, opp.active, Source.POKEPOWER
+              heal 20, opp.active
             }
           }
           move "Hidden Power", {
