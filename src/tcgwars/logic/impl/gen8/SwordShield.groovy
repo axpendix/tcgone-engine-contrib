@@ -3387,7 +3387,7 @@ public enum SwordShield implements LogicCardInfo {
         onPlay {
           def pcs = my.all.findAll{it.numberOfDamageCounters && it.cards.energyCount() >= 2}.select("Choose the Pokémon to heal.")
           heal 120, pcs
-          pcs.cards.filterByType(ENERGY).select(count: 2, "Discard which Energy card(s)?").discard()
+          new DiscardSelfEnergy(pcs, C, C).run(bg)
         }
         playRequirement{
           assertMyAll(info: "with damage on them and at least 2 Energy attached", {it.numberOfDamageCounters && it.cards.energyCount() >= 2})
