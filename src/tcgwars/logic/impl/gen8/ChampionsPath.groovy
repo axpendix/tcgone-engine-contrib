@@ -75,7 +75,7 @@ public enum ChampionsPath implements LogicCardInfo {
   FULL_HEAL_51 ("Full Heal", 51, Rarity.UNCOMMON, [TRAINER, ITEM]),
   GREAT_BALL_52 ("Great Ball", 52, Rarity.UNCOMMON, [TRAINER, ITEM]),
   HOP_53 ("Hop", 53, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  HYPER_POTION_54 ("Hyper Potion", 54, Rarity.UNCOMMON, [TRAINER]),
+  HYPER_POTION_54 ("Hyper Potion", 54, Rarity.UNCOMMON, [TRAINER, ITEM]),
   KABU_55 ("Kabu", 55, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   MARNIE_56 ("Marnie", 56, Rarity.HOLORARE, [TRAINER, SUPPORTER]),
   MILO_57 ("Milo", 57, Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
