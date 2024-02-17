@@ -21,7 +21,6 @@ import tcgwars.logic.impl.gen7.CelestialStorm;
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*
-import static tcgwars.logic.effect.Source.POKEPOWER;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
@@ -408,8 +407,8 @@ public enum SupremeVictors implements LogicCardInfo {
             onActivate {r->
               if (r==PLAY_FROM_HAND && confirm('Use Evolutionary Flame?')) {
                 powerUsed()
-                apply BURNED, opp.active, POKEPOWER
-                apply CONFUSED, opp.active, POKEPOWER
+                apply BURNED, opp.active
+                apply CONFUSED, opp.active
               }
             }
           }
@@ -1443,7 +1442,7 @@ public enum SupremeVictors implements LogicCardInfo {
             delayedA {
               after ATTACH_ENERGY, self, {
                 if (ef.reason == PLAY_FROM_HAND) {
-                  clearSpecialCondition(self, Source.POKEBODY)
+                  clearSpecialCondition(self)
                 }
               }
             }
@@ -2046,7 +2045,7 @@ public enum SupremeVictors implements LogicCardInfo {
             onActivate {r->
               if (r==PLAY_FROM_HAND && confirm('Use Evolutionary Pollen?')) {
                 powerUsed()
-                apply ASLEEP, opp.active, POKEPOWER
+                apply ASLEEP, opp.active
               }
             }
           }

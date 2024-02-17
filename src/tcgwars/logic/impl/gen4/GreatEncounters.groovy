@@ -979,7 +979,7 @@ public enum GreatEncounters implements LogicCardInfo {
               assert my.bench.find{it.name == "Unown L"} : "Unown L is not on your Bench"
               assert !my.active.getSpecialConditions().isEmpty() : "Your Active Pokémon needs to have at least 1 Special Condition applied"
               powerUsed()
-              clearSpecialCondition(my.active, Source.POKEPOWER)
+              clearSpecialCondition(my.active)
             }
           }
           move "Hidden Power", {
@@ -1054,8 +1054,8 @@ public enum GreatEncounters implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               powerUsed()
-              apply ASLEEP, my.active, Source.POKEPOWER
-              apply ASLEEP, opp.active, Source.POKEPOWER
+              apply ASLEEP, my.active
+              apply ASLEEP, opp.active
             }
           }
           move "Ballon Attack", {
@@ -2920,11 +2920,11 @@ public enum GreatEncounters implements LogicCardInfo {
               powerUsed()
               assertMyBench()
 
-              sw my.active, my.bench.oppSelect("$thisAbility: Select your opponent's new Active Pokémon"), Source.POKEPOWER
+              sw my.active, my.bench.oppSelect("$thisAbility: Select your opponent's new Active Pokémon")
 
               if (opp.bench) {
-                targeted (opp.active, Source.POKEPOWER) {
-                  sw opp.active, opp.bench.select("$thisAbility: Select your opponent's new Active Pokémon"), Source.POKEPOWER
+                targeted (opp.active) {
+                  sw opp.active, opp.bench.select("$thisAbility: Select your opponent's new Active Pokémon")
                 }
               }
 

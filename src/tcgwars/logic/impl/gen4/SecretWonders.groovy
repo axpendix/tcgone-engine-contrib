@@ -241,7 +241,7 @@ public enum SecretWonders implements LogicCardInfo {
                 if(ef.cardToPlay.cardTypes.is(SUPPORTER) && bg.em().retrieveObject("Jamming")!=bg.turnCount && bg.currentThreadPlayerType == self.owner.opposite){
                   bg.em().storeObject("Jamming",bg.turnCount)
                   self.owner.opposite.pbg.all.each {
-                    directDamage(10, it, Source.POKEBODY)
+                    directDamage(10, it)
                   }
                 }
               }
@@ -406,7 +406,7 @@ public enum SecretWonders implements LogicCardInfo {
               before BEGIN_TURN, {
                 if(self.active && !self.owner.opposite.pbg.active.types.contains(F)) {
                   bc "Irritating Buzz Activates"
-                  directDamage(10, self.owner.opposite.pbg.active, Source.POKEBODY)
+                  directDamage(10, self.owner.opposite.pbg.active)
                 }
               }
             }
@@ -508,7 +508,7 @@ public enum SecretWonders implements LogicCardInfo {
               powerUsed()
               def count = choose(1..Math.min(self.numberOfDamageCounters,3),"Move how many damage counters?",Math.min(self.numberOfDamageCounters,3))
               self.damage -= hp(10 * count)
-              directDamage 10 * count, my.all.findAll{it.name=="Gastrodon West Sea"}.select("Move damage counters to"), Source.POKEPOWER
+              directDamage 10 * count, my.all.findAll{it.name=="Gastrodon West Sea"}.select("Move damage counters to")
             }
           }
           move "Dwindling Wave", {
@@ -887,7 +887,7 @@ public enum SecretWonders implements LogicCardInfo {
               powerUsed()
               flip {
                 def spc = choose([ASLEEP,BURNED,POISONED], ["Asleep", "Burned", "Poisoned"], "Apply to your opponent's Active Pokémon")
-                apply(spc as SpecialConditionType, opp.active, Source.POKEPOWER)
+                apply(spc as SpecialConditionType, opp.active)
               }
             }
           }
@@ -941,7 +941,7 @@ public enum SecretWonders implements LogicCardInfo {
               if (r==PLAY_FROM_HAND && self.benched && confirm("Use Flame Dash?")) {
                 powerUsed()
                 def active = self.owner.pbg.active
-                if(sw2 (self, null, Source.POKEPOWER)) {
+                if(sw2 (self, null)) {
                   active.cards.select(min:0, max:active.cards.filterByType(ENERGY).size(), "Move any number of Energy cards attached to $active to $self",cardTypeFilter(ENERGY)).each{
                     energySwitch(active,self,it)
                   }
@@ -1460,7 +1460,7 @@ f
             text "If Sharpedo is your Active Pokémon and is damaged by an opponent’s attack , put 2 damage counter on the Attacking Pokémon."
             ifActiveAndDamagedByAttackBody(delegate) {
               bc "$thisAbility activates"
-              directDamage(20, ef.attacker, Source.POKEBODY)
+              directDamage(20, ef.attacker)
             }
           }
           move "Strike Wound", {

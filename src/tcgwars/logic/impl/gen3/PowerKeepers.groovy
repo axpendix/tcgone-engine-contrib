@@ -1240,7 +1240,7 @@ public enum PowerKeepers implements LogicCardInfo {
           text "If Carvanha is your Active Pokémon and is damaged by an opponent's attack (even if Carvanha is Knocked Out), put 1 damage counter on the Attacking Pokémon."
           ifActiveAndDamagedByAttackBody(delegate) {
             bc "$thisAbility activates"
-            directDamage(10, ef.attacker, Source.POKEBODY)
+            directDamage(10, ef.attacker)
           }
         }
         move "Gnaw", {

@@ -14,7 +14,6 @@ import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.effect.EffectPriority.BEFORE_LAST
 import static tcgwars.logic.effect.EffectType.*
-import static tcgwars.logic.effect.Source.POKEBODY
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.OTHER
 import static tcgwars.logic.effect.Source.*;
 import static tcgwars.logic.effect.special.SpecialConditionType.*

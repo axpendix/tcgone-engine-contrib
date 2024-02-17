@@ -1881,7 +1881,7 @@ public enum Unleashed implements LogicCardInfo {
             onActivate {
               if(self.specialConditions){
                 bc "Perfect Metal clears special conditions"
-                clearSpecialCondition(self, Source.POKEBODY)
+                clearSpecialCondition(self)
               }
             }
           }

@@ -215,7 +215,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
               }
             }
             onActivate {
-              clearSpecialCondition(self, POKEBODY, [ASLEEP])
+              clearSpecialCondition(self, [ASLEEP])
             }
           }
           move "Peck", {

@@ -274,7 +274,7 @@ public enum RisingRivals implements LogicCardInfo {
             delayedA {
               before BEGIN_TURN, {
                 if (self.owner.opposite.pbg.active.isSPC(ASLEEP)) {
-                  directDamage 10, opp.active, Source.POKEBODY
+                  directDamage 10, opp.active
                 }
               }
             }
@@ -965,7 +965,7 @@ public enum RisingRivals implements LogicCardInfo {
                 if(self.active &&self.owner.opposite.pbg.all.find{it.pokemonLevelUp}) {
                   bc "$thisAbility activates"
                   self.owner.opposite.pbg.all.findAll{it.pokemonLevelUp}.each {
-                    directDamage 10, it, Source.POKEBODY
+                    directDamage 10, it
                   }
                 }
               }
@@ -1056,10 +1056,10 @@ public enum RisingRivals implements LogicCardInfo {
                     bc "$thisAbility Activates"
                   }
                   if (!oppWaterType) {
-                    directDamage(10, self.owner.opposite.pbg.active, Source.POKEBODY)
+                    directDamage(10, self.owner.opposite.pbg.active)
                   }
                   if (!selfWaterType) {
-                    directDamage(10, self, Source.POKEBODY)
+                    directDamage(10, self)
                   }
                 }
               }
@@ -1128,7 +1128,7 @@ public enum RisingRivals implements LogicCardInfo {
               }
               after APPLY_ATTACK_DAMAGES, {
                 if (flag && ef.attacker.inPlay && bg.em().retrieveObject("Territoriality") != bg.turnCount) {
-                  directDamage 20, ef.attacker, Source.POKEBODY
+                  directDamage 20, ef.attacker
                   flag = false
                   bg.em().storeObject("Territoriality",bg.turnCount)
                 }
@@ -3037,7 +3037,7 @@ public enum RisingRivals implements LogicCardInfo {
               validTargets.remove(src)
               def target = validTargets.select("Target for damage counter")
               src.damage -= hp(10)
-              directDamage 10, target, Source.POKEPOWER
+              directDamage 10, target
               bc "Swapped a damage counter from $src to $target"
               checkFaint()
             }
@@ -3130,7 +3130,7 @@ public enum RisingRivals implements LogicCardInfo {
               if (r==PLAY_FROM_HAND && confirm('Use Blade Storm?')) {
                 powerUsed()
                 opp.all.each {
-                  directDamage 10, it, Source.POKEPOWER
+                  directDamage 10, it
                 }
               }
             }
@@ -3221,7 +3221,7 @@ public enum RisingRivals implements LogicCardInfo {
             onActivate {r->
               if(r==PLAY_FROM_HAND && opp.bench && confirm("Use Bright Look?")) {
                 powerUsed()
-                sw opp.active, opp.bench.select("Choose your opponent's new active Pokémon"), Source.POKEPOWER
+                sw opp.active, opp.bench.select("Choose your opponent's new active Pokémon")
               }
             }
           }
@@ -3288,7 +3288,7 @@ public enum RisingRivals implements LogicCardInfo {
               assert my.hand.size() < 6 : "You already have 6 cards in your hand"
               powerUsed()
               draw 6 - my.hand.size()
-              apply ASLEEP, self, Source.POKEPOWER
+              apply ASLEEP, self
             }
           }
           move "Exercise", {

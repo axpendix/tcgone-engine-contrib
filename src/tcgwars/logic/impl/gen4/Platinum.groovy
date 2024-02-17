@@ -236,7 +236,7 @@ public enum Platinum implements LogicCardInfo {
             }
             getterA IS_ABILITY_BLOCKED, { Holder h ->
               if (h.effect.target.numberOfDamageCounters && h.effect.ability instanceof PokePower) {
-                targeted(h.effect.target, Source.POKEBODY) {
+                targeted(h.effect.target) {
                   h.object = true
                 }
               }
@@ -329,7 +329,7 @@ public enum Platinum implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               powerUsed()
-              apply BURNED, opp.active, Source.POKEPOWER
+              apply BURNED, opp.active
             }
           }
           move "Clutch", {
@@ -365,7 +365,7 @@ public enum Platinum implements LogicCardInfo {
               my.discard.removeAll(list)
               my.deck.addAll(0, list)
 
-              directDamage 20, self, Source.POKEPOWER
+              directDamage 20, self
             }
           }
           move "Power Heal", {
@@ -885,7 +885,7 @@ public enum Platinum implements LogicCardInfo {
               checkNoSPC()
               assert my.hand : "Your hand is empty"
               powerUsed()
-              directDamage 10 * my.hand.select(min:0,max:my.hand.size(),"Discard as many cardsas you like from your hand").discard().size(), self, Source.POKEPOWER
+              directDamage 10 * my.hand.select(min:0,max:my.hand.size(),"Discard as many cardsas you like from your hand").discard().size(), self
             }
           }
           move "Darkness Switch", {
@@ -1056,7 +1056,7 @@ public enum Platinum implements LogicCardInfo {
             delayedA {
               after RETREAT, {
                 if(ef.retreater.owner == self.owner.opposite && ef.newActive != null){
-                  directDamage 20, ef.retreater, Source.POKEBODY
+                  directDamage 20, ef.retreater
                 }
               }
             }
@@ -1594,7 +1594,7 @@ public enum Platinum implements LogicCardInfo {
               def card = src.cards.select("Choose the Energy card to move",cardTypeFilter(ENERGY)).first()
               def tar = my.all.findAll{it!=src}.select("Move $card to")
               energySwitch(src, tar, card)
-              directDamage 20, self, Source.POKEBODY
+              directDamage 20, self
             }
           }
           move "Psychic Pulse", {
@@ -1749,7 +1749,7 @@ public enum Platinum implements LogicCardInfo {
             text "Once during your turn, when you put Crobat from your hand onto your Bench, you may put 1 damage counter on 1 of your opponent’s Pokémon."
             onActivate {r->
               if (r==PLAY_FROM_HAND && confirm("Use Flash Bite?")) {
-                directDamage 10, opp.all.select(), Source.POKEPOWER
+                directDamage 10, opp.all.select()
               }
             }
           }
@@ -2260,7 +2260,7 @@ public enum Platinum implements LogicCardInfo {
             onActivate {
               if(self.specialConditions){
                 bc "Thick Skin clears special conditions"
-                clearSpecialCondition(self, Source.POKEBODY)
+                clearSpecialCondition(self)
               }
             }
           }
@@ -2914,10 +2914,10 @@ public enum Platinum implements LogicCardInfo {
               assert !opp.active.pokemonSP || !my.active.pokemonSP : "Both active Pokémon are Pokémon SP"
               powerUsed()
               if(!opp.active.pokemonSP) {
-                apply POISONED, opp.active, Source.POKEPOWER
+                apply POISONED, opp.active
               }
               if(!my.active.pokemonSP) {
-                apply POISONED, my.active, Source.POKEPOWER
+                apply POISONED, my.active
               }
             }
           }
@@ -3359,7 +3359,7 @@ public enum Platinum implements LogicCardInfo {
               checkNoSPC()
               powerUsed()
               flip {
-                apply POISONED, opp.active, Source.POKEPOWER
+                apply POISONED, opp.active
                 extraPoison 2
               }
             }

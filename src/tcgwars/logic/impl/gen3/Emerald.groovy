@@ -436,7 +436,7 @@ public enum Emerald implements LogicCardInfo {
             onActivate {
               if(my.active.cards.energyCount(G) && my.active.specialConditions){
                 bc "Green Essence clears existing Special Conditions in the Active ${my.active}."
-                clearSpecialCondition(my.active, Source.POKEBODY)
+                clearSpecialCondition(my.active)
               }
             }
           }

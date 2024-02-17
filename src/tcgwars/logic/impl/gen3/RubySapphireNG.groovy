@@ -388,7 +388,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             my.deck.search("Search for a [P] Energy card to attach to one of your Pokémon.", energyFilter(P)).each {
               def tar = my.all.select("Attach $it to? That Pokémon will receive 2 damage counters.")
               attachEnergy(tar, it)
-              directDamage 20, tar, Source.POKEPOWER
+              directDamage 20, tar
             }
             shuffleDeck()
           }
@@ -746,7 +746,7 @@ public enum RubySapphireNG implements LogicCardInfo {
           text "If Sharpedo is your Active Pokémon and is damaged by an opponent's attack (even if Sharpedo is Knocked Out), put 2 damage counters on the Attacking Pokémon."
           ifActiveAndDamagedByAttackBody(delegate) {
             bc "$thisAbility activates"
-            directDamage(10, ef.attacker, Source.POKEBODY)
+            directDamage(10, ef.attacker)
           }
         }
         move "Dark Slash", {

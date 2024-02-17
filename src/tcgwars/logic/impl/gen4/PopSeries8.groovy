@@ -244,7 +244,7 @@ public enum PopSeries8 implements LogicCardInfo {
               }
             }
             onActivate {
-              clearSpecialCondition(self, POKEBODY, [PARALYZED])
+              clearSpecialCondition(self, [PARALYZED])
             }
           }
           move "Quick Attack", {
