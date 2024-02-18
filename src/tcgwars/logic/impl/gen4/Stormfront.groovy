@@ -2957,7 +2957,7 @@ public enum Stormfront implements LogicCardInfo {
                   // Manually playing the stadium based on those rulings. This is a very unique effect and should not exist elsewhere currently.
                   def pkmnCard = self.topPokemonCard
                   def stadiumCard
-                  stadiumCard = stadium(new CustomCardInfo(DUSKNOIR_LV_X_96).setCardTypes(TRAINER, STADIUM)) {
+                  stadiumCard = stadium(new CustomCardInfo(thisCard.staticInfo).setCardTypes(TRAINER, STADIUM)) {
                     def eff
                     onPlay {
                       eff = delayed inline:true, {

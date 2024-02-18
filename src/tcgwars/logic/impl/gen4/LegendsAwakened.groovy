@@ -3872,7 +3872,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             "Jagged Stone: If Claw Fossil is your Active Pokémon and is damaged by an opponent's attack (even if Claw Fossil is Knocked Out), put 1 damage counter on the Attacking Pokémon."
           onPlay {
             Card pokemonCard, trainerCard = thisCard
-            pokemonCard = basic (new CustomCardInfo(CLAW_FOSSIL_138).setCardTypes(BASIC, POKEMON, TRAINER, FOSSIL), hp:HP040, type:COLORLESS, retreatCost:0) {
+            pokemonCard = basic (new CustomCardInfo(thisCard.staticInfo).setCardTypes(BASIC, POKEMON, TRAINER, FOSSIL), hp:HP040, type:COLORLESS, retreatCost:0) {
               pokeBody "Jagged Stone", {
                 ifActiveAndDamagedByAttackBody(delegate) {
                   directDamage(10, ef.attacker, Source.SRC_ABILITY)
@@ -3934,7 +3934,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             "Spongy Stone: At any time between turns, remove 1 damage counter from Root Fossil."
           onPlay {
             Card pokemonCard, trainerCard = thisCard
-            pokemonCard = basic (new CustomCardInfo(ROOT_FOSSIL_139).setCardTypes(BASIC, POKEMON, TRAINER, FOSSIL), hp:HP040, type:COLORLESS, retreatCost:0) {
+            pokemonCard = basic (new CustomCardInfo(thisCard.staticInfo).setCardTypes(BASIC, POKEMON, TRAINER, FOSSIL), hp:HP040, type:COLORLESS, retreatCost:0) {
               pokeBody "Spongy Stone", {
                 delayedA{
                   before BEGIN_TURN, {

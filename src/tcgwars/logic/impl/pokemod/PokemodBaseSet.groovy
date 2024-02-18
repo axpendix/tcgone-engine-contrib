@@ -693,7 +693,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
             def pkmnCard = self.topPokemonCard
             def pcs = my.all.findAll{it != self}.select("Choose a pokemon to attach $self to")
             def energyCard
-            energyCard = specialEnergy(new CustomCardInfo(ELECTRODE_21).setCardTypes(ENERGY, SPECIAL_ENERGY), [[type],[type]]) {
+            energyCard = specialEnergy(new CustomCardInfo(thisCard.staticInfo).setCardTypes(ENERGY, SPECIAL_ENERGY), [[type],[type]]) {
               onPlay {}
               onRemoveFromPlay {
                 bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
@@ -1549,7 +1549,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         text "Play Clefairy Doll as if it were a Basic Pokémon. While in play, Clefairy Doll counts as a Pokémon (instead of a Trainer card.) Clefairy Doll has no attacks, can''t retreat, and can''t be Asleep, Confused, Paralyzed, or Poisoned. If Clefairy Doll is Knocked Out, it doesn''t count as a Knocked Out Pokémon. At any time during tyour turn before your attack, you may discard Clefairy Doll."
         onPlay {
           Card pokemonCard, trainerCard = thisCard
-          pokemonCard = basic (new CustomCardInfo(CLEFAIRY_DOLL).setCardTypes(BASIC, POKEMON), hp:HP010, type:COLORLESS, retreatCost:0) {
+          pokemonCard = basic (new CustomCardInfo(thisCard.staticInfo).setCardTypes(BASIC, POKEMON), hp:HP010, type:COLORLESS, retreatCost:0) {
             customAbility{
               def ef2, acl
               onActivate{
