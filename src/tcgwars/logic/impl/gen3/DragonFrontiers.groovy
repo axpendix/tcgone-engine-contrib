@@ -2042,7 +2042,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             after PROCESS_ATTACK_EFFECTS, {
               if (ef.attacker.owner != self.owner) {
                 bg.dm().each {
-                  if (it.to.owner == self.owner && it.to.EX && it.to.stage2 && it.dmg.value) {
+                  if (it.to.owner == self.owner && it.to.EX && it.to.stage2 && it.dmg.value && it.notNoEffect) {
                     bc "Extra Smoke -10"
                     it.dmg -= hp(10)
                   }
