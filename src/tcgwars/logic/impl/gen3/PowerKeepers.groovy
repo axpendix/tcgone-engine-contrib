@@ -1880,9 +1880,9 @@ public enum PowerKeepers implements LogicCardInfo {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {
                 if (it.to == self && it.dmg.value) {
-                  if (self.owner.pbg.hand && oppConfirm("Activate Psychic Protector to reduce damage taken?")) {
-                    def maxDiscard = Math.min(4, my.hand.size())
-                    def toDiscard = self.owner.pbg.hand.oppSelect(min: 0, max: maxDiscard, "For each card discarded, the damage Flygon ex takes will reduced by 10.")
+                  if (self.owner.pbg.hand && confirm("Activate Psychic Protector to reduce damage taken?", self.owner)) {
+                    def maxDiscard = Math.min(4, self.owner.pbg.hand.size())
+                    def toDiscard = self.owner.pbg.hand.select(min: 0, max: maxDiscard, "For each card discarded, the damage Flygon ex takes will reduced by 10.", {true}, self.owner)
                     def reductionAmount = toDiscard.size() * 10
                     toDiscard.discard()
                     if (it.notNoEffect) {
