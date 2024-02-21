@@ -2039,6 +2039,10 @@ public enum DragonFrontiers implements LogicCardInfo {
         pokeBody "Extra Smoke", {
           text "Any damage done to your Stage 2 Pokémon-ex by your opponent's attacks is reduced by 10 (before applying Weakness and Resistance)."
           delayedA {
+            /* ruling
+            Q. Say I have a Kingra-EX with “Extra Smoke” on the bench and a Stage 2 Pokémon-EX Active (other than Kingdra-EX). If my opponent attacks with “Swift” does it ignore “Extra Smoke” or not?
+            A. The effect of Extra Smoke is always attached to whatever Pokémon that the opponent attacks with, not on the Defending Pokémon nor even on the benched Kingdra-EX. And since Swift only ignores effects on the Defending Pokémon (not the player or Pokémon attacking with Swift), it does NOT ignore Extra Smoke and damage is reduced by -10. (Feb 22, 2007 PUI Rules Team)
+             */
             after PROCESS_ATTACK_EFFECTS, {
               if (ef.attacker.owner != self.owner) {
                 bg.dm().each {
