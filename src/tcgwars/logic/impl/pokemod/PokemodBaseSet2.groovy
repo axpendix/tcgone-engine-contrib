@@ -723,7 +723,7 @@ public enum PokemodBaseSet2 implements LogicCardInfo {
             assert my.bench.notFull : "Your bench is full."
           }
           onAttack {
-            my.deck.search("Choose Basic [f] Pokémon.",{(it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(F))}).each{
+            my.deck.search("Choose Basic [f] Pokémon.",{(it.cardTypes.is(BASIC) && it.types.contains(F))}).each{
               benchPCS(it)
             }
             shuffleDeck()

@@ -987,7 +987,7 @@ public enum LegendMaker implements LogicCardInfo {
           }
           onAttack {
             def selected = my.deck.search(max: 1, "Search for a [G] Pokémon (excluding Pokémon-ex) to put into your hand.", {
-              (it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(G) && !it.asPokemonCard().cardTypes.is(EX))
+              (it.cardTypes.is(POKEMON) && it.types.contains(G) && !it.cardTypes.is(EX))
             }).showToOpponent("Pinsir used Cry For Help.").moveTo(my.hand)
             shuffleDeck()
           }
@@ -1095,7 +1095,7 @@ public enum LegendMaker implements LogicCardInfo {
           }
           onAttack {
             def selected = deck.search (max: 1, "Search for a [R] Pokémon (excluding Pokémon-ex) to put into your hand.", {
-              (it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(R) && !it.asPokemonCard().cardTypes.is(EX))
+              (it.cardTypes.is(POKEMON) && it.types.contains(R) && !it.cardTypes.is(EX))
             }).showToOpponent("Torkoal used Cry For Help.").moveTo(my.hand)
             shuffleDeck()
           }
@@ -2461,7 +2461,7 @@ public enum LegendMaker implements LogicCardInfo {
           text "Whenever you attach a [R] Energy from your hand to Arcanine ex, remove 1 damage counter and all Special Conditions from Arcanine ex."
           delayedA {
             after ATTACH_ENERGY, self, {
-              if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(R)) {
+              if (ef.reason==PLAY_FROM_HAND && ef.card.containsType(R)) {
                 bc "Fire Remedy removes 1 damage counter and all Special Conditions from Arcanine ex"
                 heal 10, self
                 if (self.specialConditions) {

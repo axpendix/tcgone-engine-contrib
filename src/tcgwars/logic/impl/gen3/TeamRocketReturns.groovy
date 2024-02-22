@@ -946,8 +946,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
             text "When you attach a [W] Energy card from your hand to Quagsire, remove all Special Conditions and 2 damage counters from Quagsire."
             delayedA {
               before ATTACH_ENERGY, self, {
-                if(ef.reason==PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && ef.card.basicType == W){
-                  clearSpecialCondition(self,Source.SRC_ABILITY)
+                if(ef.reason==PLAY_FROM_HAND && ef.card.cardTypes.basicEnergy && ef.card.basicType == W){
+                  clearSpecialCondition(self)
                   heal 20, self
                 }
               }
@@ -1002,7 +1002,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
                 {
                   CardList list->
                     for(Type t1:Type.values()){
-                      if(list.findAll{it.asEnergyCard().containsTypePlain(t1)}.size() >= 2){
+                      if(list.findAll{it.containsTypePlain(t1)}.size() >= 2){
                         return false
                       }
                     }
@@ -1857,7 +1857,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               assert my.bench.notFull
             }
             onAttack {
-              my.deck.search (count: 1,{it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(G)}).each {
+              my.deck.search (count: 1,{it.cardTypes.is(BASIC) && it.types.contains(G)}).each {
                 benchPCS(it)
               }
               shuffleDeck()
@@ -2213,8 +2213,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
             text "When you attach a [W] Energy card from your hand to Wooper, remove all Special Conditions and 1 damage counter from Wooper."
             delayedA {
               before ATTACH_ENERGY, self, {
-                if(ef.reason==PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && ef.card.basicType == W){
-                  clearSpecialCondition(self,Source.SRC_ABILITY)
+                if(ef.reason==PLAY_FROM_HAND && ef.card.cardTypes.basicEnergy && ef.card.basicType == W){
+                  clearSpecialCondition(self)
                   heal 10, self
                 }
               }

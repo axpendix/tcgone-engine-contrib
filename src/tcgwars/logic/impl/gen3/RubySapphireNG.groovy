@@ -1837,7 +1837,7 @@ public enum RubySapphireNG implements LogicCardInfo {
             passFilter: { CardList cardList ->
               for (Card card : cardList) {
                 for (Card card2 : cardList) {
-                  if (card != card2 && ((BasicEnergyCard)card).getBasicType() == ((BasicEnergyCard)card2).getBasicType()) {
+                  if (card != card2 && card.getBasicType() == card2.getBasicType()) {
                     return false
                   }
                 }

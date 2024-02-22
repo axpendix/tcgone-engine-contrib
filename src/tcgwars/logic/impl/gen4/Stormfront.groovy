@@ -1,14 +1,9 @@
 package tcgwars.logic.impl.gen4
 
+import tcgwars.logic.effect.special.SpecialConditionType
 import tcgwars.logic.impl.gen2.Aquapolis
 import tcgwars.logic.impl.gen3.UnseenForces
 import tcgwars.logic.impl.gen3.FireRedLeafGreen
-import tcgwars.logic.impl.gen4.GreatEncounters;
-import tcgwars.logic.impl.gen5.BlackWhite;
-
-import tcgwars.logic.effect.gm.PlayTrainer
-import tcgwars.logic.effect.gm.PlayStadium
-import tcgwars.logic.effect.special.SpecialConditionType
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -23,34 +18,16 @@ import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
 
-import java.util.*;
-import tcgwars.entity.*;
 import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
+import tcgwars.logic.card.*
 import tcgwars.logic.effect.*;
 import tcgwars.logic.effect.ability.*;
 import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
+import tcgwars.logic.effect.basic.*
 import tcgwars.logic.util.*;
 
 import tcgwars.logic.effect.ability.Ability.ActivationReason
 import tcgwars.logic.effect.gm.*
-import tcgwars.logic.client.*
-
-import java.util.function.Predicate
-
-import static tcgwars.logic.groovy.TcgBuilders.delayed
-import static tcgwars.logic.groovy.TcgBuilders.getter
-import static tcgwars.logic.groovy.TcgBuilders.specialEnergy
-import tcgwars.logic.card.Resistance.ResistanceType
-
 
 /**
  * @author axpendix@hotmail.com
@@ -420,7 +397,7 @@ public enum Stormfront implements LogicCardInfo {
               checkNoSPC()
               assert my.deck : "Your deck is empty"
               powerUsed()
-              my.deck.search("Search your deck for a [L] or [M] Pokémon", {it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(L) || it.asPokemonCard().types.contains(M)}).showToOpponent("Selected Cards").moveTo(my.hand)
+              my.deck.search("Search your deck for a [L] or [M] Pokémon", {it.cardTypes.is(POKEMON) && it.types.contains(L) || it.types.contains(M)}).showToOpponent("Selected Cards").moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -450,9 +427,9 @@ public enum Stormfront implements LogicCardInfo {
             actionA {
               checkLastTurn()
               checkNoSPC()
-              assert my.discard.filterByType(ENERGY).any{it.asEnergyCard().containsTypePlain(L) || it.asEnergyCard().containsTypePlain(M)} : "There are no [L] or [M] Energy card in your discard."
+              assert my.discard.filterByType(ENERGY).any{it.containsTypePlain(L) || it.containsTypePlain(M)} : "There are no [L] or [M] Energy card in your discard."
               powerUsed()
-              attachEnergy(my.active,my.discard.filterByType(ENERGY).findAll{it.asEnergyCard().containsTypePlain(L) || it.asEnergyCard().containsTypePlain(M)}.select().first())
+              attachEnergy(my.active,my.discard.filterByType(ENERGY).findAll{it.containsTypePlain(L) || it.containsTypePlain(M)}.select().first())
               directDamage 10, my.active
             }
           }
@@ -2794,12 +2771,12 @@ public enum Stormfront implements LogicCardInfo {
           def actions=[]
           onPlay {
             actions=action(thisCard, "Stadium: Conductive Quarry") {
-              assert my.discard.find{it.cardTypes.is(ENERGY) && (it.asEnergyCard().containsType(L)||it.asEnergyCard().containsType(M))} : "There are no [L] or [M] Energy cards in your discard pile"
+              assert my.discard.find{it.cardTypes.is(ENERGY) && (it.containsType(L)||it.containsType(M))} : "There are no [L] or [M] Energy cards in your discard pile"
               assert lastTurn != bg().turnCount : "You've already used Conductive Quarry this turn."
               bc "Used Conductive Quarry"
               lastTurn = bg().turnCount
               flip {
-                my.discard.select("Return a [L] or [M] Energy to your hand",{it.cardTypes.is(ENERGY) && it.asEnergyCard().containsType(L)||it.asEnergyCard().containsType(M)}).moveTo(my.hand)
+                my.discard.select("Return a [L] or [M] Energy to your hand",{it.cardTypes.is(ENERGY) && it.containsType(L)||it.containsType(M)}).moveTo(my.hand)
               }
             }
           }
@@ -2918,13 +2895,13 @@ public enum Stormfront implements LogicCardInfo {
           onPlay {
             if(my.hand.findAll({it.name=="Poké Healer +"}).size()>=2 && confirm("Play 2 Poké Healer + at the same time?")) {
               heal 80, my.active
-              clearSpecialCondition(my.active, TRAINER_CARD)
+              clearSpecialCondition(my.active)
               my.hand.findAll({it.name=="Poké Healer +" && it!= thisCard}).subList(0,1).discard()
             } else {
               heal 10, my.active
               if(my.active.specialConditions) {
                 SpecialConditionType spc = choose(my.active.specialConditions.asList(), "Which special condition you want to remove")
-                clearSpecialCondition(my.active, TRAINER_CARD, [spc])
+                clearSpecialCondition(my.active, [spc])
               }
             }
           }
@@ -2970,7 +2947,7 @@ public enum Stormfront implements LogicCardInfo {
                       delayed inline:true, {
                         after REMOVE_FROM_PLAY, {
                           if (LUtils.isRemoveFromPlayAndContainsCard(e, stadiumCard)) {
-                            stadiumCard.onDiscard bg
+                            stadiumCard.onStadiumDiscard bg
                             bg.setStadiumInfoStruct null
                             unregister()
                           }

@@ -1,7 +1,6 @@
 package tcgwars.logic.impl.gen4
 
-import tcgwars.logic.card.pokemon.LevelUpPokemonCard
-import tcgwars.logic.impl.gen3.CrystalGuardians
+
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen7.CelestialStorm;
 
@@ -19,13 +18,11 @@ import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
 
 import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.*
 import tcgwars.logic.effect.*;
 import tcgwars.logic.effect.ability.*;
 import tcgwars.logic.effect.advanced.*;
 import tcgwars.logic.effect.basic.*
-import tcgwars.logic.effect.gm.*
 import tcgwars.logic.util.*;
 
 /**
@@ -1424,7 +1421,7 @@ public enum Platinum implements LogicCardInfo {
                 }
                 info += "or ${tar.types[tar.types.size()-1]} Pokémon"
               }
-              my.deck.search(info, {it.cardTypes.is(POKEMON) && it.asPokemonCard().types.containsAny(ts)}).showToOpponent("Opponent used love call").moveTo(my.hand)
+              my.deck.search(info, {it.cardTypes.is(POKEMON) && it.types.containsAny(ts)}).showToOpponent("Opponent used love call").moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -1631,12 +1628,12 @@ public enum Platinum implements LogicCardInfo {
 
               if ((self.cards.filterByEnergyType(G) || self.cards.filterByEnergyType(D)) && confirm("Discard a [G] or [D] Energy attached to Cacturne?")) {
                 def energy = self.cards.select("Choose an Energy to discard.  If you discard a [G] Energy, the Defending Pokémon is now Poisoned. If you discard a [D] Energy, the Defending Pokémon is now Paralyzed.", {
-                  it.cardTypes.is(ENERGY) && (it.asEnergyCard().containsType(G) || it.asEnergyCard().containsType(D))
+                  it.cardTypes.is(ENERGY) && (it.containsType(G) || it.containsType(D))
                 }).first()
-                if (energy.asEnergyCard().containsType(G)) {
+                if (energy.containsType(G)) {
                   applyAfterDamage POISONED
                 }
-                if (energy.asEnergyCard().containsType(D)) {
+                if (energy.containsType(D)) {
                   applyAfterDamage PARALYZED
                 }
                 afterDamage {
@@ -3181,7 +3178,7 @@ public enum Platinum implements LogicCardInfo {
               def names = my.all
                 .findAll { !it.pokemonLevelUp }
                 .collect { it.name }
-              LevelUpPokemonCard sel_1 = deck.search ("Select a Pokémon that Levels up from $names.", {it.cardTypes.is(LVL_X) && it.predecessor in names}).first() as LevelUpPokemonCard
+              Card sel_1 = deck.search ("Select a Pokémon that Levels up from $names.", {it.cardTypes.is(LVL_X) && it.predecessor in names}).first()
               if (sel_1) {
                 def sel_2 = my.all.findAll{ !it.pokemonLevelUp && sel_1.predecessor == it.name }.select("Select one of your Pokémon named ${sel_1.name}")
                 bg().em().run(new LevelUp(sel_2, sel_1))

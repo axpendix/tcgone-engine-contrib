@@ -608,7 +608,7 @@ public enum PokemodJungle implements LogicCardInfo {
               assert my.bench.notFull
             }
             onAttack {
-              deck.search (count: 1,{it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(F)}).each {
+              deck.search (count: 1,{it.cardTypes.is(BASIC) && it.types.contains(F)}).each {
                 benchPCS(it)
               }
               shuffleDeck()
@@ -1019,7 +1019,7 @@ public enum PokemodJungle implements LogicCardInfo {
        return basicTrainer(this) {
           text "Search your deck for a Pokémon with 50 HP or less, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
           onPlay{
-            my.deck.search("Search your deck for a Pokémon with 50 hp or less and put it in your hand.",{it.cardTypes.is(POKEMON) && it.asPokemonCard().hp.value <= 50}).showToOpponent("Chosen Pokémon cards.").moveTo(my.hand)
+            my.deck.search("Search your deck for a Pokémon with 50 hp or less and put it in your hand.",{it.cardTypes.is(POKEMON) && it.hp.value <= 50}).showToOpponent("Chosen Pokémon cards.").moveTo(my.hand)
           }
           playRequirement{
             assert my.deck : "There are no more cards in your deck"

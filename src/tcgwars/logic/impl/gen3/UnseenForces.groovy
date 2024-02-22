@@ -1313,7 +1313,7 @@ public enum UnseenForces implements LogicCardInfo {
           }
           onAttack {
             my.deck.search (max: 1, "Search for a [W] or [F] Pokémon (excluding Pokémon-ex) to put into your hand.", {
-              (it.cardTypes.is(POKEMON) && !it.asPokemonCard().cardTypes.is(EX) && (it.asPokemonCard().types.contains(W) || it.asPokemonCard().types.contains(F)))
+              (it.cardTypes.is(POKEMON) && !it.cardTypes.is(EX) && (it.types.contains(W) || it.types.contains(F)))
             }).moveTo(my.hand)
             shuffleDeck()
           }
@@ -3520,7 +3520,7 @@ public enum UnseenForces implements LogicCardInfo {
               {
                 CardList list->
                   for (Type t1:Type.values()) {
-                    if (list.findAll{it.asEnergyCard().containsTypePlain(t1)}.size() >= 2) {
+                    if (list.findAll{it.containsTypePlain(t1)}.size() >= 2) {
                       return false
                     }
                   }

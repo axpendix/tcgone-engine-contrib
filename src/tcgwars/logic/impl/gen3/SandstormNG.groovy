@@ -1811,10 +1811,10 @@ public enum SandstormNG implements LogicCardInfo {
               return false
             TypeSet typeSet = new TypeSet()
             for (card in list) {
-              if (typeSet.containsAny(card.asPokemonCard().types)) {
+              if (typeSet.containsAny(card.types)) {
                 return false
               }
-              typeSet.addAll(card.asPokemonCard().types)
+              typeSet.addAll(card.types)
             }
             return true
           }).showToOpponent("Cards moved to hand").moveTo(hand)

@@ -362,7 +362,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             my.bench.each {pcs ->
               if (!bg.gm().hasEvolution(pcs.name)) return
               def evolution = my.deck.search ("Evolve $pcs to?", {Card card ->
-                (card instanceof EvolutionPokemonCard) && (card as EvolutionPokemonCard).predecessors.contains(pcs.name)
+                card.cardTypes.evolution && card.predecessors.contains(pcs.name)
               }).first()
               if (!evolution) return
               evolve(pcs, evolution)
@@ -995,7 +995,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             damage 40
             if(my.deck) {
               def discarded = my.deck.subList(0, 1).discard().first()
-              if (!(discarded instanceof EnergyCard)) return
+              if (!(discarded.cardTypes.energy)) return
               damage 90
               attachEnergy self, discarded
             }

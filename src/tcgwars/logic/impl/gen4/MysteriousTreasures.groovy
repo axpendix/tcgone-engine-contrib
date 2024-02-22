@@ -1046,7 +1046,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             getterA(GET_MOVE_LIST, self) { holder ->
               boostedMoves.clear()
               self.cards.filterByType(BASIC).each { Card karp ->
-                karp.asPokemonCard().moves.each {
+                karp.moves.each {
                   boostedMoves.add(it.name)
                   holder.object.add(it)
                 }
@@ -1438,7 +1438,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 def chosenEnergy = defending.cards.filterByType(ENERGY).select(count:1).first()
                 delayed {
                   before null, null, Source.SRC_SPECIAL_ENERGY, {
-                    if (ef.sourceEnergy == chosenEnergy) {
+                    if (ef.sourceCard == chosenEnergy) {
                       prevent()
                     }
                   }

@@ -3,20 +3,13 @@ package tcgwars.logic.impl.gen4
 import tcgwars.logic.Battleground
 import tcgwars.logic.DamageManager
 import tcgwars.logic.TargetPlayer
-import tcgwars.logic.card.energy.BasicEnergyCard
-import tcgwars.logic.card.trainer.PokemonToolCard
 import tcgwars.logic.effect.Source
 import tcgwars.logic.effect.advanced.EnergySwitch
-import tcgwars.logic.effect.basic.DirectDamage
 import tcgwars.logic.effect.basic.Move
 import tcgwars.logic.effect.basic.ResolvedDamage
 import tcgwars.logic.effect.gm.ActivateSimpleTrainer
-import tcgwars.logic.effect.gm.PlayPokemonTool
-import tcgwars.logic.effect.gm.PlayPokemonToolFlare
-import tcgwars.logic.effect.gm.PlayTrainer
 import tcgwars.logic.effect.special.SpecialConditionType
 import tcgwars.logic.impl.gen3.FireRedLeafGreen
-import tcgwars.logic.impl.gen7.CelestialStorm;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -24,8 +17,7 @@ import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
@@ -1418,7 +1410,7 @@ public enum SupremeVictors implements LogicCardInfo {
             onAttack {
               def card = opp.deck.first()
               if(card.cardTypes.is(POKEMON)) {
-                damage card.asPokemonCard().hp.value
+                damage card.hp.value
               }
               afterDamage {
                 discard card
@@ -1627,7 +1619,7 @@ public enum SupremeVictors implements LogicCardInfo {
             def findShared = {
               TypeSet types = new TypeSet()
               self.cards.filterByType(ENERGY).each {
-                it.asEnergyCard().getEffectiveEnergyTypes().each {
+                it.getEffectiveEnergyTypes().each {
                   types.addAll(it)
                 }
               }
@@ -2292,7 +2284,7 @@ public enum SupremeVictors implements LogicCardInfo {
             onAttack {
               def pcs = opp.all.findAll { it.cards.filterByType(POKEMON_TOOL) }.select("Source Pokémon that has a Tool to move")
               targeted (pcs) {
-                def card = pcs.cards.filterByType(POKEMON_TOOL).select("Pokémon Tool to move").first() as PokemonToolCard
+                def card = pcs.cards.filterByType(POKEMON_TOOL).select("Pokémon Tool to move").first()
                 def pl = opp.all.findAll { canAttachPokemonTool(it, card) && it!=pcs }
                 if(!pl){wcu "No available Pokemon to move this card"; return}
                 def tar = pl.select("Move $card to which Pokémon?")

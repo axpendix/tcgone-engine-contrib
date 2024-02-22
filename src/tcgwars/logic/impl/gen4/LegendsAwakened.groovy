@@ -634,12 +634,12 @@ public enum LegendsAwakened implements LogicCardInfo {
               checkNoSPC()
               checkLastTurn()
               assert my.all.findAll { it.name == "Rayquaza" }.size() == 1 : "Can't use because more than 1 Rayquaza is in play"
-              assert my.discard.filterByType(ENERGY).any { it.asEnergyCard().containsTypePlain(R) || it.asEnergyCard().containsTypePlain(L)} : "There are no [R] or [L] Energy card in your discard pile."
+              assert my.discard.filterByType(ENERGY).any { it.containsTypePlain(R) || it.containsTypePlain(L)} : "There are no [R] or [L] Energy card in your discard pile."
               powerUsed()
 
               flipUntilTails {
                 attachEnergy(self,my.discard.filterByType(ENERGY).findAll {
-                  it.asEnergyCard().containsTypePlain(R) || it.asEnergyCard().containsTypePlain(L)
+                  it.containsTypePlain(R) || it.containsTypePlain(L)
                 }.select("Attach which Energy to Rayquaza?").first())
               }
             }
@@ -2636,7 +2636,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               def opponentChoice = oppChoose(choices, types, "Guess the type of Pokémon your opponent has chosen")
 
               myCard.showToOpponent("Your Opponent's chosen card.")
-              def myCardTypes = myCard.first().asPokemonCard().types
+              def myCardTypes = myCard.first().types
               bc "myCardTypes: $myCardTypes"
               bc "opponentChoice: $opponentChoice"
 
@@ -2668,7 +2668,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "Once during your turn (before your attack), when you attach a [M] Energy card from your hand to Beldum (excluding effects of attacks or Poké-Powers), you may search your deck for Beldum and put it onto your Bench. Shuffle your deck afterward. This power can't be used if Beldum is affected by a Special Condition."
             delayedA {
               after ATTACH_ENERGY, {
-                if (ef.reason == PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(M) && bg.currentTurn == self.owner && ef.resolvedTarget == self && self.noSPC() && deck.notEmpty && my.bench.notFull && confirm("Use Metal Chain?")) {
+                if (ef.reason == PLAY_FROM_HAND && ef.card.containsType(M) && bg.currentTurn == self.owner && ef.resolvedTarget == self && self.noSPC() && deck.notEmpty && my.bench.notFull && confirm("Use Metal Chain?")) {
                   checkLastTurn()
                   powerUsed()
                   deck.search({Card c -> c.name == "Beldum" && c.cardTypes.is(POKEMON)}).each {
@@ -3838,7 +3838,7 @@ public enum LegendsAwakened implements LogicCardInfo {
 
               def src = my.all.findAll { it.cards.energyCount(R) || it.cards.energyCount(F) }.select("Source for the Energy")
               def energy = src.cards.select("Energy to move", {
-                it.cardTypes.is(ENERGY) && (it.asEnergyCard().containsType(R) || it.asEnergyCard().containsType(F))
+                it.cardTypes.is(ENERGY) && (it.containsType(R) || it.containsType(F))
               }).first()
               def tar = my.all.findAll { it.types.contains(R) || it.types.contains(F) }.select("Target for the Energy")
               energySwitch(src, tar, energy)
@@ -4058,7 +4058,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               powerUsed()
               def src = my.all.findAll { it.cards.energyCount(M) > 0 || it.cards.energyCount(L) > 0 }.select("Source for [M] or [L]")
               def card = src.cards.select("Energy to move", {
-                it.cardTypes.is(ENERGY) && (it.asEnergyCard().containsType(M) || it.asEnergyCard().containsType(L))
+                it.cardTypes.is(ENERGY) && (it.containsType(M) || it.containsType(L))
               }).first()
               def tar = my.all
               tar.remove(src)

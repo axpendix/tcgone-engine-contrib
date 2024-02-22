@@ -691,7 +691,7 @@ public enum ChillingReign implements LogicCardInfo {
               def maxSearch = (bg.turnCount == 2) ? 3 : 1
 
               my.deck.search(min: 0, max: maxSearch, {
-                it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(G)
+                it.cardTypes.is(POKEMON) && it.types.contains(G)
               }).moveTo(my.hand)
               shuffleDeck()
             }
@@ -1689,7 +1689,7 @@ public enum ChillingReign implements LogicCardInfo {
               def maxSearch = (bg.turnCount == 2) ? 3 : 1
 
               def cards = my.deck.search(min: 0, max: maxSearch, {
-                it.cardTypes.is(ENERGY) && it.asEnergyCard().containsType(P)
+                it.cardTypes.is(ENERGY) && it.containsType(P)
               })
               def target = my.all.select("Attach energies to?")
               cards.each {
@@ -2919,7 +2919,7 @@ public enum ChillingReign implements LogicCardInfo {
             text "Whenever you attach an Energy from your hand to this Pokémon, remove all Special Conditions from this Pokémon."
             delayedA {
               after ATTACH_ENERGY, self, {
-                if (ef.reason == PLAY_FROM_HAND && ef.card instanceof EnergyCard) {
+                if (ef.reason == PLAY_FROM_HAND && ef.card.cardTypes.energy) {
                   clearSpecialCondition(self, SRC_ABILITY)
                 }
               }
@@ -3015,7 +3015,7 @@ public enum ChillingReign implements LogicCardInfo {
                 h.object.clear()
 
                 self.cards.filterByType(BASIC_ENERGY).each {
-                  h.object.add(it.asEnergyCard().asBasicEnergyCard().basicType)
+                  h.object.add(it.basicType)
                 }
               }
             }
@@ -3365,7 +3365,7 @@ public enum ChillingReign implements LogicCardInfo {
           text "Search your deck for either a Basic [P] Pokémon or [P] Energy, reveal it, and put it into your hand. Then, shuffle your deck. You may play as many Item cards as you like during your turn."
           onPlay {
             my.deck.search {
-              (it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(P)) || (it.cardTypes.energy && it.containsTypePlain(P))
+              (it.cardTypes.is(BASIC) && it.types.contains(P)) || (it.cardTypes.energy && it.containsTypePlain(P))
             }.moveTo(my.hand)
             shuffleDeck()
           }

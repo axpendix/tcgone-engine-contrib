@@ -1864,7 +1864,7 @@ public enum BattleStyles implements LogicCardInfo {
           onAttack {
             def top = my.deck.subList(0, 6)
             top.filterByType(ENERGY).each {
-              if (it.asEnergyCard().containsType(F)) {
+              if (it.containsType(F)) {
                 damage 60
               }
             }
@@ -2280,7 +2280,7 @@ public enum BattleStyles implements LogicCardInfo {
             powerUsed()
             def src = my.all.findAll { it.cards.energyCount(M) > 0 }.select("Source for [M]")
             def card = src.cards.select("Energy to move", {
-              it.cardTypes.is(ENERGY) && it.asEnergyCard().containsType(M)
+              it.cardTypes.is(ENERGY) && it.containsType(M)
             }).first()
             def tar = my.all
             tar.remove(src)
@@ -2930,7 +2930,7 @@ public enum BattleStyles implements LogicCardInfo {
         onPlay {reason->
           eff = delayed {
             before null, null, TRAINER_CARD, {
-              TrainerCard trainerCard = e.sourceTrainer
+              Card trainerCard = e.sourceCard
               if (trainerCard.cardTypes.is(POKEMON_TOOL) && self.active && self.owner.opposite.pbg.active && self.owner.opposite.pbg.active.cards.contains(trainerCard) && trainerCard.name != 'Tool Jammer' && ![PLAY_TRAINER, PLAY_POKEMON_TOOL, PLAY_POKEMON_TOOL_FLARE, ATTACH_POKEMON_TOOL].contains(ef.effectType)) {
                 prevent()
               }

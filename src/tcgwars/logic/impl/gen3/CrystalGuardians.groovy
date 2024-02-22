@@ -2270,13 +2270,13 @@ public enum CrystalGuardians implements LogicCardInfo {
         move "Skill Copy", {
           text "Discard a Basic Pokémon or Evolution card from your hand. Choose 1 of that card's attacks. Skill Copy copies that attack. This attack does nothing if Alakazam Star doesn't have the Energy necessary to use that attack. (You must still do anything else required for that attack.) Alakazam Star performs that attack."
           energyCost C, C, C
-          def filter = {my.hand.findAll{(it.cardTypes.is(BASIC) || it.cardTypes.is(EVOLUTION)) && it instanceof PokemonCard && it.moves}}
+          def filter = {my.hand.findAll{(it.cardTypes.is(BASIC) || it.cardTypes.is(EVOLUTION)) && it.moves}}
           attackRequirement {
             assert filter() : "No Basic or Evolution Pokémon with attacks in hand"
           }
           onAttack {
             def card = filter().select("Discard a Pokémon and use one of that Pokémon’s attacks as this attack.").first()
-            def move = choose(card.asPokemonCard().moves, "Choose attack to perform") as Move
+            def move = choose(card.moves, "Choose attack to perform") as Move
             bc "$move was chosen"
             def bef=blockingEffect(BETWEEN_TURNS)
             attack (move)

@@ -2082,13 +2082,13 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         onPlay { reason->
           if (my.hand.contains(thisCard)) bg.em().storeObject "NESSA", bg.turnCount
           def info = "$W Pokémon and $W Energy to put into your hand?"
-          def filter = {(it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(W)) || (it.cardTypes.is(ENERGY) && it.asEnergyCard().energyTypes.any { it.contains W }) }
+          def filter = {(it.cardTypes.is(POKEMON) && it.types.contains(W)) || (it.cardTypes.is(ENERGY) && it.energyTypes.any { it.contains W }) }
           def selected = my.discard.select max:4, info, filter
           selected.moveTo my.hand
         }
         playRequirement{
           assert my.discard.any {
-            (it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(W))
+            (it.cardTypes.is(POKEMON) && it.types.contains(W))
           } || my.discard.filterByEnergyType(W) : "No $W Pokémon or $W Energy in your discard pile"
         }
       };

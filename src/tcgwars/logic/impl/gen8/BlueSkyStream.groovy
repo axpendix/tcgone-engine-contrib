@@ -1070,12 +1070,12 @@ public enum BlueSkyStream implements LogicCardInfo {
           onAttack {
             damage 20
             def selectedEnergy = self.cards.select(min:0, max:2, "You may discard up to 2 basic [R] Energy or up to 2 basic [L] Energy from this Pokémon", { Card card ->
-              card instanceof BasicEnergyCard && (card.asEnergyCard().containsType(R) || card.asEnergyCard().containsType(L))
+              card.cardTypes.basicEnergy && (card.containsType(R) || card.containsType(L))
             }, bg.currentTurn, { CardList list ->
               def typeMap = ["R": 0, "L": 0]
               list.each {
-                if(it.asEnergyCard().containsType(R)) typeMap.R += 1
-                else if (it.asEnergyCard().containsType(L)) typeMap.L += 1
+                if(it.containsType(R)) typeMap.R += 1
+                else if (it.containsType(L)) typeMap.L += 1
               }
               // Cannot discard both R and L Energy https://compendium.pokegym.net/ruling/1596/
               (!typeMap.R && !typeMap.L) || (typeMap.R && !typeMap.L) || (!typeMap.R && typeMap.L)
@@ -1109,12 +1109,12 @@ public enum BlueSkyStream implements LogicCardInfo {
             def selectedEnergy = self.cards.select(min:0, max:self.cards.filterByType(BASIC_ENERGY).size(),
               "You may discard up to 2 basic [R] Energy or up to 2 basic [L] Energy from this Pokémon",
               { Card card ->
-              card instanceof BasicEnergyCard && (card.asEnergyCard().containsType(R) || card.asEnergyCard().containsType(L))
+              card.cardTypes.basicEnergy && (card.containsType(R) || card.containsType(L))
             }, bg.currentTurn, { CardList list ->
               def typeMap = ["R": 0, "L": 0]
               list.each {
-                if(it.asEnergyCard().containsType(R)) typeMap.R += 1
-                else if (it.asEnergyCard().containsType(L)) typeMap.L += 1
+                if(it.containsType(R)) typeMap.R += 1
+                else if (it.containsType(L)) typeMap.L += 1
               }
               // Cannot discard both R and L Energy https://compendium.pokegym.net/ruling/1596/
               (!typeMap.R && !typeMap.L) || (typeMap.R && !typeMap.L) || (!typeMap.R && typeMap.L)
@@ -1464,7 +1464,7 @@ public enum BlueSkyStream implements LogicCardInfo {
             bc "Used $thisCard"
             lastTurn = bg.turnCount
             def card = deck.search {Card c->
-              c.cardTypes.is(BASIC) && (c.asPokemonCard().types.contains(L) || c.asPokemonCard().types.contains(N))
+              c.cardTypes.is(BASIC) && (c.types.contains(L) || c.types.contains(N))
             }
             card.each {
               benchPCS it

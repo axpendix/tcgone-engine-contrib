@@ -1,6 +1,6 @@
-package tcgwars.logic.impl.gen8;
+package tcgwars.logic.impl.gen8
 
-import tcgwars.logic.impl.gen3.Emerald;
+
 import tcgwars.logic.impl.gen5.BlackWhite;
 import tcgwars.logic.impl.gen5.DarkExplorers;
 import tcgwars.logic.impl.gen5.EmergingPowers;
@@ -23,22 +23,11 @@ import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
 import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
+import tcgwars.logic.card.*
+import tcgwars.logic.effect.*
 import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
+import tcgwars.logic.effect.basic.*
 import tcgwars.logic.util.*;
 
 /**
@@ -3605,7 +3594,7 @@ public enum SwordShield implements LogicCardInfo {
       return specialEnergy (this, [[]]) {
         text "You can attach this card to 1 of your Pokémon only if you discard another card from your hand." +
           "As long as this card is attached to a Pokémon, it provides every type of Energy but provides only 1 Energy at a time."
-        typeImagesOverride = [RAINBOW]
+        energyTypesIconOverride = [RAINBOW]
         onPlay {reason->
           if (reason == PLAY_FROM_HAND) {
             my.hand.getExcludedList(thisCard).select("Select a card to discard.").discard()

@@ -6,8 +6,6 @@ import tcgwars.logic.exception.EffectRequirementException;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen3.RubySapphire
 
-import tcgwars.logic.effect.gm.PlayTrainer
-
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -21,21 +19,12 @@ import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
 import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
+import tcgwars.logic.card.*
 import tcgwars.logic.effect.*;
 import tcgwars.logic.effect.ability.*;
 import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
+import tcgwars.logic.effect.basic.*
 import tcgwars.logic.effect.special.*;
 import tcgwars.logic.util.*;
 
@@ -394,7 +383,7 @@ public enum SecretWonders implements LogicCardInfo {
           customAbility {
             delayedA {
               after ATTACH_ENERGY, self, {
-                if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(F)) {
+                if (ef.reason==PLAY_FROM_HAND && ef.card.containsType(F)) {
                   flag = bg.turnCount
                 }
               }
@@ -748,7 +737,7 @@ public enum SecretWonders implements LogicCardInfo {
               if(tmp){
                 def card = tmp.first()
                 bc "$card was chosen"
-                def moves = card.asPokemonCard().moves
+                def moves = card.moves
                 if(moves){
                   def move = choose(moves, "Choose attack")
                   bc "$move was chosen"
@@ -769,7 +758,7 @@ public enum SecretWonders implements LogicCardInfo {
             text "Once during your turn , when you attach a [L] Energy card from your hand to Raikou, you may put 1 damage counter on 1 of your opponent’s Benched Pokémon."
             delayedA {
               after ATTACH_ENERGY, self, {
-                if (bg.currentThreadPlayerType == self.owner && !bg.em().currentEffectStack.find{it instanceof Attack} && ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(L) && opp.bench && keyStore("Thunder Rumble",self,null) != bg.turnCount && confirm("Use Thunder Rumble?")) {
+                if (bg.currentThreadPlayerType == self.owner && !bg.em().currentEffectStack.find{it instanceof Attack} && ef.reason==PLAY_FROM_HAND && ef.card.containsType(L) && opp.bench && keyStore("Thunder Rumble",self,null) != bg.turnCount && confirm("Use Thunder Rumble?")) {
                   keyStore("Thunder Rumble",self,bg.turnCount)
                   powerUsed()
                   directDamage 10, opp.bench.select("put 1 damage counter on 1 of your opponent's Benched Pokémon")
@@ -841,10 +830,10 @@ public enum SecretWonders implements LogicCardInfo {
               assert self.cards.filterByBasicEnergyType(R).size() >=2 || self.cards.filterByBasicEnergyType(W).size() >=2 : "$self doesn't have enough Basic [R] or [W] Energy cards to discard"
             }
             onAttack {
-              def energies = self.cards.select(count:2,"Select 2 basic [R] or [W] Energy cards to discard", {it.cardTypes.is(BASIC_ENERGY) && (it.asEnergyCard().containsType(R) || it.asEnergyCard().containsType(W))}, self.owner, {it[0].basicType == it[1].basicType})
-              if(energies.first().asEnergyCard().containsType(R)) {
+              def energies = self.cards.select(count:2,"Select 2 basic [R] or [W] Energy cards to discard", {it.cardTypes.is(BASIC_ENERGY) && (it.containsType(R) || it.containsType(W))}, self.owner, {it[0].basicType == it[1].basicType})
+              if(energies.first().containsType(R)) {
                 damage 100
-              }else if(energies.first().asEnergyCard().containsType(W) && opp.bench) {
+              }else if(energies.first().containsType(W) && opp.bench) {
                 damage 100, opp.bench.select("$thisMove does 100 damage to 1 of your opponent's Benched Pokémon")
               }
               afterDamage {
@@ -860,9 +849,9 @@ public enum SecretWonders implements LogicCardInfo {
           pokePower "Aqua Recover", {
             text "Once during your turn, when you put Suicune from your hand onto your Bench, you may search you discard pile for up to 3 [W] Pokémon, show them to your opponent, and put them into your hand."
             onActivate {r->
-              if (r==PLAY_FROM_HAND && my.discard.find{it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(W)} && confirm('Use AquaRecovery?')) {
+              if (r==PLAY_FROM_HAND && my.discard.find{it.cardTypes.is(POKEMON) && it.types.contains(W)} && confirm('Use AquaRecovery?')) {
                 powerUsed()
-                my.discard.select(max:3,"Search you discard pile for up to 3 [W] Pokémon",{it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(W)}).showToOpponent("Selected Cards").moveTo(my.hand)
+                my.discard.select(max:3,"Search you discard pile for up to 3 [W] Pokémon",{it.cardTypes.is(POKEMON) && it.types.contains(W)}).showToOpponent("Selected Cards").moveTo(my.hand)
               }
             }
           }
@@ -1077,7 +1066,7 @@ public enum SecretWonders implements LogicCardInfo {
                         def tar = pcs.owner.pbg.all.findAll{it != self}.select("Choose a Pokemon to attach $self to",pcs.owner)
                         def energyCard
                         energyCard = specialEnergy(new CustomCardInfo(thisCard.staticInfo).setCardTypes(ENERGY, SPECIAL_ENERGY), [valuesBasicEnergy()]) {
-                          typeImagesOverride = [RAINBOW]
+                          energyTypesIconOverride = [RAINBOW]
                           onPlay {}
                           onRemoveFromPlay {
                             bg.em().run(new ChangeImplementation(pkmnCard, energyCard))
@@ -1262,7 +1251,7 @@ public enum SecretWonders implements LogicCardInfo {
             text "When you attach a [R] Energy card from your hand to Magmortar, remove 2 damage counters from Magmortar."
             delayedA {
             after ATTACH_ENERGY, self, {
-              if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(R)) {
+              if (ef.reason==PLAY_FROM_HAND && ef.card.containsType(R)) {
                 bc "Flame Body removes 2 damage counters from $self"
                 heal 20, self
               }
@@ -2682,10 +2671,10 @@ f
               my.deck.select(min:0, max:maxSpace, "Select up to $maxSpace Basic Pokémon of different types.", cardTypeFilter(BASIC), thisCard.player, { CardList list ->
                 TypeSet typeSet = new TypeSet()
                 for (card in list) {
-                  if (typeSet.containsAny(card.asPokemonCard().types)) {
+                  if (typeSet.containsAny(card.types)) {
                     return false
                   }
-                  typeSet.addAll(card.asPokemonCard().types)
+                  typeSet.addAll(card.types)
                 }
                 return true
               }).each {

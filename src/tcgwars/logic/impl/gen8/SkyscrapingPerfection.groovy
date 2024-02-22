@@ -1290,11 +1290,11 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
       return itemCard (this) {
         text "Put up to 2 Pokémon with 90 HP or less from your discard pile into your hand."
         onPlay {
-          def cards = my.discard.select thisCard.cardText, { it.cardTypes.is(POKEMON) && it.asPokemonCard().hp <= 90 }
+          def cards = my.discard.select thisCard.cardText, { it.cardTypes.is(POKEMON) && it.hp <= 90 }
           cards.moveTo hand
         }
         playRequirement{
-          assert my.discard.any { it.cardTypes.is(POKEMON) && it.asPokemonCard().hp <= 90 } : "No Pokémon with 90 HP or less in your discard pile"
+          assert my.discard.any { it.cardTypes.is(POKEMON) && it.hp <= 90 } : "No Pokémon with 90 HP or less in your discard pile"
         }
       };
       case DIGGING_GLOVES_60:

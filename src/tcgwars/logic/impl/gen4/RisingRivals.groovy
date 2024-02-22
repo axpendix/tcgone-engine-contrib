@@ -322,7 +322,7 @@ public enum RisingRivals implements LogicCardInfo {
             text "If any basic Energy card attached to Flygon is the same type as any of your Pokémon, the Retreat Cost for those Pokémon is 0."
             getterA (GET_RETREAT_COST) { h ->
               if (!self.active && h.effect.target.owner == self.owner && h.effect.target.active && self.cards.filterByType(BASIC_ENERGY).any {
-                h.effect.target.types.contains(it.asEnergyCard().energyTypes.first().first())
+                h.effect.target.types.contains(it.energyTypes.first().first())
               }) {
                 h.object = 0
               }
@@ -1320,7 +1320,7 @@ public enum RisingRivals implements LogicCardInfo {
             text "When you attach a [G] Energy card from your hand to Vespiquen E4, remove 1 damage counter from Vespiquen 4."
             delayedA {
               after ATTACH_ENERGY, self, {
-                if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(G)) {
+                if (ef.reason==PLAY_FROM_HAND && ef.card.containsType(G)) {
                   bc "$thisAbility heals 10 damage from $self"
                   heal 10, self
                 }

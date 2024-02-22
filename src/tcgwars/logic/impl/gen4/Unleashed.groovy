@@ -1,11 +1,8 @@
 package tcgwars.logic.impl.gen4
 
-import tcgwars.logic.card.pokemon.EvolutionPokemonCard
-import tcgwars.logic.effect.basic.Evolve
+
 import tcgwars.logic.effect.blocking.CantRetreat
-import tcgwars.logic.exception.EffectRequirementException
 import tcgwars.logic.impl.gen3.FireRedLeafGreen
-import tcgwars.logic.impl.gen3.Sandstorm;
 import tcgwars.logic.impl.gen5.*;
 import tcgwars.logic.impl.gen7.*;
 import static tcgwars.logic.card.HP.*;
@@ -14,8 +11,7 @@ import static tcgwars.logic.card.CardType.*;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
-import static tcgwars.logic.effect.EffectType.*;
-import static tcgwars.logic.effect.Source.*;
+import static tcgwars.logic.effect.EffectType.*
 import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
@@ -710,12 +706,12 @@ public enum Unleashed implements LogicCardInfo {
             text "When you attach a [G] Energy card or [P] Energy card from your hand to Roserade during your turn, you may use this power. If you attach a [G] Energy card, the Defending Pokémon is now Confused. If you attach a [P] Energy card, the Defending Pokémon is now Poisoned. This power can’t be used if Roserade is affected by a Special Condition."
             delayedA {
               after ATTACH_ENERGY, self, {
-                if (ef.reason == PLAY_FROM_HAND && (ef.card.asEnergyCard().containsType(G) || ef.card.asEnergyCard().containsType(P)) && !self.specialConditions && confirm("Use Energy Signal?")) {
-                  if (ef.card.asEnergyCard().containsType(G)) {
+                if (ef.reason == PLAY_FROM_HAND && (ef.card.containsType(G) || ef.card.containsType(P)) && !self.specialConditions && confirm("Use Energy Signal?")) {
+                  if (ef.card.containsType(G)) {
                     bc "Energy Signal inflicts Confusion"
                     apply CONFUSED, opp.active
                   }
-                  if (ef.card.asEnergyCard().containsType(P)) {
+                  if (ef.card.containsType(P)) {
                     bc "Energy Signal inflicts Poison"
                     apply POISONED, opp.active
                   }

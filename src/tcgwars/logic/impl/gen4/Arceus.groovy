@@ -283,7 +283,7 @@ public enum Arceus implements LogicCardInfo {
               damage 60
               def top = my.deck.subList(0,3)
               top.filterByType(ENERGY).each {
-                if(it.asEnergyCard().containsType(R)||it.asEnergyCard().containsType(M)) {
+                if(it.containsType(R)||it.containsType(M)) {
                   damage 20
                 }
               }
@@ -1055,7 +1055,7 @@ public enum Arceus implements LogicCardInfo {
             text "When you attach a [G] Energy card from your hand to Sceptile, remove 2 damage counters from Sceptile."
             delayedA {
               after ATTACH_ENERGY, self, {
-                if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(G)){
+                if (ef.reason==PLAY_FROM_HAND && ef.card.containsType(G)){
                   heal 20, self
                 }
               }
@@ -1745,7 +1745,7 @@ public enum Arceus implements LogicCardInfo {
               assert my.deck : "Your deck is emtpy"
             }
             onAttack {
-              my.deck.search("Search your deck for a Basic [R] Pokémon",{it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(R)}).showToOpponent("Selected cards").moveTo(my.hand)
+              my.deck.search("Search your deck for a Basic [R] Pokémon",{it.cardTypes.is(BASIC) && it.types.contains(R)}).showToOpponent("Selected cards").moveTo(my.hand)
               shuffleDeck()
             }
           }

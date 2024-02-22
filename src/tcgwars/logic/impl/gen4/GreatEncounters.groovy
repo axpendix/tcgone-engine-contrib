@@ -1,7 +1,7 @@
 package tcgwars.logic.impl.gen4
 
 import tcgwars.logic.DamageManager
-import tcgwars.logic.card.trainer.PokemonToolCard
+
 import tcgwars.logic.effect.gm.ActivateSimpleTrainer
 import tcgwars.logic.impl.gen3.Sandstorm
 
@@ -15,7 +15,6 @@ import tcgwars.logic.effect.advanced.EnergySwitch
 import tcgwars.logic.effect.basic.ApplyDamages
 import tcgwars.logic.effect.basic.ChangeImplementation
 import tcgwars.logic.effect.basic.Knockout
-import tcgwars.logic.effect.gm.PlayTrainer
 import tcgwars.logic.util.CardList
 import tcgwars.logic.util.CardTypeSet
 import tcgwars.logic.util.Holder
@@ -27,8 +26,6 @@ import static tcgwars.logic.card.Type.*
 import static tcgwars.logic.card.Weakness.*
 import static tcgwars.logic.effect.EffectPriority.BEFORE_LAST
 import static tcgwars.logic.effect.EffectType.*
-import static tcgwars.logic.effect.Source.*
-import static tcgwars.logic.effect.ability.Ability.ActivationReason.OTHER
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.PLAY_FROM_HAND
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.groovy.TcgBuilders.*
@@ -1324,7 +1321,7 @@ public enum GreatEncounters implements LogicCardInfo {
             onAttack {
               def pcs = opp.all.findAll { it.cards.filterByType(POKEMON_TOOL) }.select("Source Pokémon that has a Tool to move")
               targeted (pcs) {
-                def card = pcs.cards.filterByType(POKEMON_TOOL).select("Pokémon Tool to move").first() as PokemonToolCard
+                def card = pcs.cards.filterByType(POKEMON_TOOL).select("Pokémon Tool to move").first()
                 def pl = opp.all.findAll { canAttachPokemonTool(it, card) && it!=pcs}
                 if(!pl){wcu "No available Pokemon to move this card"; return}
                 def tar = pl.select("Move $tool to which Pokémon?")
@@ -2047,7 +2044,7 @@ public enum GreatEncounters implements LogicCardInfo {
               checkNoSPCForClassic()
               powerUsed()
               flip {
-                my.deck.search { it.cardTypes.is(BASIC) && it.asPokemonCard().types.contains(G) }.each {
+                my.deck.search { it.cardTypes.is(BASIC) && it.types.contains(G) }.each {
                   benchPCS(it)
                 }
                 shuffleDeck()

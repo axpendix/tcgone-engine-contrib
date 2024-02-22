@@ -1,8 +1,6 @@
 package tcgwars.logic.impl.pokemod
 
-import tcgwars.logic.effect.gm.PlayCard
-import tcgwars.logic.effect.gm.PlayStadium
-import tcgwars.logic.effect.gm.PlayTrainer
+
 import tcgwars.logic.impl.gen1.BaseSetNG
 import tcgwars.logic.impl.gen3.FireRedLeafGreen
 
@@ -18,22 +16,11 @@ import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import java.util.*;
-import org.apache.commons.lang.WordUtils;
-import tcgwars.entity.*;
 import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
+import tcgwars.logic.card.*
+import tcgwars.logic.effect.*
 import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
+import tcgwars.logic.effect.basic.*
 import tcgwars.logic.util.*;
 
 /**
@@ -1820,13 +1807,13 @@ public enum PokemodBaseSet implements LogicCardInfo {
       return basicTrainer (this) {
         text "Put 1 Basic Pokémon card (excluding Pokémon-ex) from your discard pile onto your Bench. Put damage counters on that Pokémon equal to half its HP (rounded down to the nearest 10). (You can't play Revive if your Bench is full.)"
         onPlay {
-          my.discard.findAll(cardTypeFilter(BASIC) && !it.asPokemonCard().types.contains(EX)).select().each {
+          my.discard.findAll(cardTypeFilter(BASIC) && !it.types.contains(EX)).select().each {
             def pcs = benchPCS(it)
             pcs.hp = ceil((pcs.fullHp/10)/2)*10
           }
         }
         playRequirement{
-          assert my.discard.find(cardTypeFilter(BASIC) && !it.asPokemonCard().types.contains(EX)) && my.bench.notFull
+          assert my.discard.find(cardTypeFilter(BASIC) && !it.types.contains(EX)) && my.bench.notFull
         }
       };
       case SUPER_POTION_90:
@@ -2150,7 +2137,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         def check = {
           if(it && !it.stage2){discard thisCard}
         }
-        typeImagesOverride = [RAINBOW, RAINBOW]
+        energyTypesIconOverride = [RAINBOW, RAINBOW]
         def eff
         def flag
         def prev
@@ -2200,7 +2187,7 @@ public enum PokemodBaseSet implements LogicCardInfo {
         def check = {
           if(!it.stage2){discard thisCard}
         }
-        typeImagesOverride = [RAINBOW, RAINBOW]
+        energyTypesIconOverride = [RAINBOW, RAINBOW]
         def eff
         def flag
         def prev

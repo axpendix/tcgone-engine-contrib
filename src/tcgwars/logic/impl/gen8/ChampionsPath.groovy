@@ -604,11 +604,11 @@ public enum ChampionsPath implements LogicCardInfo {
           text "20x damage. This attack does 20 damage for each Fighting Pokémon in your discard pile."
           energyCost F, C
           attackRequirement {
-            assert my.discard.filterByType(POKEMON).any {it.asPokemonCard().types.contains(F) } :
+            assert my.discard.filterByType(POKEMON).any {it.types.contains(F) } :
             "No $F Pokémon in the discard pile"
           }
           onAttack {
-            damage 20 * my.discard.filterByType(POKEMON).findAll {it.asPokemonCard().types.contains(F) }.size()
+            damage 20 * my.discard.filterByType(POKEMON).findAll {it.types.contains(F) }.size()
           }
         }
         move "Dynamite Punch", {

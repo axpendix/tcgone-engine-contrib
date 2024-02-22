@@ -668,7 +668,7 @@ public enum PowerKeepers implements LogicCardInfo {
           }
           onAttack {
             def selected = deck.search (max: 1, "Search for a [L] Pokémon (excluding Pokémon-ex) to put into your hand.", {
-              (it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(L) && !it.asPokemonCard().cardTypes.is(EX))
+              (it.cardTypes.is(POKEMON) && it.types.contains(L) && !it.cardTypes.is(EX))
             }).moveTo(my.hand)
             shuffleDeck()
           }
@@ -856,9 +856,9 @@ public enum PowerKeepers implements LogicCardInfo {
           text "When you attach a [R] Energy card from your hand to Combusken, remove all Special Conditions from Combusken."
           delayedA {
             after ATTACH_ENERGY, self, {
-              if(ef.reason==PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && ef.card.basicType == R){
+              if(ef.reason==PLAY_FROM_HAND && ef.card.cardTypes.basicEnergy && ef.card.basicType == R){
                 bc "Natural Cure clears all Special Conditions from ${self}."
-                clearSpecialCondition(self, SRC_ABILITY)
+                clearSpecialCondition(self)
               }
             }
           }
@@ -1988,7 +1988,7 @@ public enum PowerKeepers implements LogicCardInfo {
             if (pokeCards) {
               def card = pokeCards.select(max:1, "Select a Pokémon and use one of that Pokémon’s attacks as this attack.").first()
               bc "$card was chosen"
-              def moves = card.asPokemonCard().moves
+              def moves = card.moves
               if (moves) {
                 def move = choose(moves, "Choose attack")
                 bc "$move was chosen"

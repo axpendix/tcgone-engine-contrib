@@ -1413,7 +1413,7 @@ public enum RebelClash implements LogicCardInfo {
           text "Whenever you attach a [W] Energy card from your hand to this Pokémon during your turn, heal 30 damage from it."
           delayedA {
             before ATTACH_ENERGY, {
-              if (ef.reason == PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(W) && bg.currentTurn == self.owner && ef.resolvedTarget == self) {
+              if (ef.reason == PLAY_FROM_HAND && ef.card.containsType(W) && bg.currentTurn == self.owner && ef.resolvedTarget == self) {
                 powerUsed()
                 heal 30, ef.resolvedTarget
               }
@@ -3211,7 +3211,7 @@ public enum RebelClash implements LogicCardInfo {
           }
           onAttack {
             my.deck.search (max: 2, {
-              it.cardTypes.is(POKEMON) && it.asPokemonCard().resistances.find{res-> res.type==F}
+              it.cardTypes.is(POKEMON) && it.resistances.find{res-> res.type==F}
             }).showToOpponent("Opponent's chosen Pokémon.").moveTo(my.hand)
             shuffleDeck()
           }

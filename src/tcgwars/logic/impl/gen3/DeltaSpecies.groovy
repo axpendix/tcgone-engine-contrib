@@ -842,7 +842,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             chosenEnergy.showToOpponent("Your opponent has chosen this basic Energy card. They'll now search their deck for a Pokémon of that Energy type.")
             def cardType = chosenEnergy.basicType
             def sel = my.deck.search(max: 1, "search for a [${cardType}] Basic Pokémon or Evolution card", {
-              it.cardTypes.is(POKEMON) && it.asPokemonCard().types.contains(cardType.get(0))
+              it.cardTypes.is(POKEMON) && it.types.contains(cardType.get(0))
             })
             if (sel) {
               sel.showToOpponent("Your opponent has chosen this Pokémon card.")
@@ -1679,7 +1679,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             assert my.deck : "Deck is empty"
           }
           onAttack {
-            my.deck.search("Search your deck for a [M] Pokémon (excluding Pokémon-ex)", {Card card -> card.cardTypes.is(POKEMON) && card.cardTypes.isNot(EX) && card.asPokemonCard().types.contains(M)}).showToOpponent("Cry for Help: Selected Cards").moveTo(my.hand)
+            my.deck.search("Search your deck for a [M] Pokémon (excluding Pokémon-ex)", {Card card -> card.cardTypes.is(POKEMON) && card.cardTypes.isNot(EX) && card.types.contains(M)}).showToOpponent("Cry for Help: Selected Cards").moveTo(my.hand)
             shuffleDeck()
           }
         }
@@ -2322,7 +2322,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           toDiscard.discard()
 
           deck.search(max: 3, "Search your deck for up to 3 Basic Pokémon with 100 HP or less", {
-            it.cardTypes.pokemon && it.cardTypes.is(BASIC) && it.asPokemonCard().hp.value <= 100
+            it.cardTypes.pokemon && it.cardTypes.is(BASIC) && it.hp.value <= 100
           }).showToOpponent("Opponent used Holon Mentor").moveTo(my.hand)
 
           shuffleDeck()
@@ -2361,7 +2361,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           Battleground bg_test = Battleground.getInstance()
 
           my.deck.search(max: 1, "Select a [M] or a Pokémon card with δ in its card.", {
-            (it.cardTypes.is(ENERGY) && it.asEnergyCard().containsTypePlain(M)) ||
+            (it.cardTypes.is(ENERGY) && it.containsTypePlain(M)) ||
               (it.cardTypes.is(POKEMON) && it.getCardTypes(bg_test).is(DELTA))
           }).showToOpponent("Opponent's used Holon Researcher, and will put this card into their hand.").moveTo(my.hand)
 

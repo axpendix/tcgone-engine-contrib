@@ -1,7 +1,6 @@
 package tcgwars.logic.impl.gen8
 
-import tcgwars.logic.card.pokemon.PokemonCard
-import tcgwars.logic.effect.EffectPriority
+
 import tcgwars.logic.effect.gm.Attack;
 
 import static tcgwars.logic.card.HP.*;
@@ -1324,7 +1323,7 @@ public enum EeveeHeroes implements LogicCardInfo {
               cards.showToOpponent(bg, "Cards revealed to increase damage $thisMove does.")
               def types = [] as TypeSet
               cards.each {
-                def energyType = it.asEnergyCard().asBasicEnergyCard().basicType
+                def energyType = it.basicType
                 if (!types.contains(energyType)) {
                   damage 30
                   types.add energyType

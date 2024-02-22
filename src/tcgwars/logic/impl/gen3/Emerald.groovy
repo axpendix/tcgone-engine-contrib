@@ -1,6 +1,5 @@
-package tcgwars.logic.impl.gen3;
+package tcgwars.logic.impl.gen3
 
-import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -13,12 +12,9 @@ import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.*;
-import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*
+import tcgwars.logic.card.*
 import tcgwars.logic.effect.*;
 import tcgwars.logic.effect.ability.*
-import tcgwars.logic.effect.basic.*
 import tcgwars.logic.util.*;
 
 /**
@@ -1834,7 +1830,7 @@ public enum Emerald implements LogicCardInfo {
               discard thisCard
             }
           }
-          typeImagesOverride = [RAINBOW, RAINBOW]
+          energyTypesIconOverride = [RAINBOW, RAINBOW]
           onPlay { reason ->
             eff = delayed (priority: BEFORE_LAST) {
               after PROCESS_ATTACK_EFFECTS, {

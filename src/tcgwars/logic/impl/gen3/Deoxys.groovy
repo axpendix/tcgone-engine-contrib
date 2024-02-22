@@ -489,9 +489,9 @@ public enum Deoxys implements LogicCardInfo {
             actionA {
               checkLastTurn()
               checkNoSPC()
-              assert my.discard.filterByType(ENERGY).any{it.asEnergyCard().containsTypePlain(P) || it.asEnergyCard().containsTypePlain(M)} : "There are no [P] or [M] Energy card in your discard."
+              assert my.discard.filterByType(ENERGY).any{it.containsTypePlain(P) || it.containsTypePlain(M)} : "There are no [P] or [M] Energy card in your discard."
               powerUsed()
-              attachEnergy(my.active,my.discard.filterByType(ENERGY).findAll{it.asEnergyCard().containsTypePlain(P) || it.asEnergyCard().containsTypePlain(M)}.select().first())
+              attachEnergy(my.active,my.discard.filterByType(ENERGY).findAll{it.containsTypePlain(P) || it.containsTypePlain(M)}.select().first())
               directDamage 10, my.active, SRC_ABILITY
             }
           }
@@ -1120,8 +1120,8 @@ public enum Deoxys implements LogicCardInfo {
             text "When you attach a [W] Energy card from your hand to Lombre, remove all Special Conditions from Lombre."
             delayedA {
               after ATTACH_ENERGY, self, {
-                if(ef.reason==PLAY_FROM_HAND && ef.card instanceof BasicEnergyCard && ef.card.basicType == W){
-                  clearSpecialCondition(self,Source.SRC_ABILITY)
+                if(ef.reason==PLAY_FROM_HAND && ef.card.cardTypes.basicEnergy && ef.card.basicType == W){
+                  clearSpecialCondition(self)
                 }
               }
             }
@@ -2851,7 +2851,7 @@ public enum Deoxys implements LogicCardInfo {
             delayedA {
               after ATTACH_ENERGY, self, {
                 def oppPlayer = self.owner.opposite
-                if(!self.specialConditions && ef.reason == PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(D) && oppPlayer.pbg.bench){
+                if(!self.specialConditions && ef.reason == PLAY_FROM_HAND && ef.card.containsType(D) && oppPlayer.pbg.bench){
                   if (confirm("Make your opponent switch the Defending Pokémon with 1 of their Benched Pokémon? (Your opponent chooses the Benched Pokémon to switch)")) {
                     powerUsed()
                     sw oppPlayer.pbg.active, oppPlayer.pbg.bench.select("Select the new active Pokémon.", oppPlayer)

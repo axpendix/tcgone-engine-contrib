@@ -406,7 +406,7 @@ public enum MajesticDawn implements LogicCardInfo {
             text "When you attach a [W] Energy card from your hand to Manaphy, remove 2 damage counters from Manaphy."
             delayedA {
             after ATTACH_ENERGY, self, {
-              if (ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(W)) {
+              if (ef.reason==PLAY_FROM_HAND && ef.card.containsType(W)) {
                 bc "$thisAbility removes 2 damage counters from $self"
                 heal 20, self
               }
@@ -2538,7 +2538,7 @@ public enum MajesticDawn implements LogicCardInfo {
               assert self.active : "Not active"
               assert my.bench.notFull : "Bench full"
               assert my.deck : "Your deck is empty!"
-              sourced (source: SRC_SPECIAL_ENERGY, sourceEnergy: thisCard) {
+              sourced (source: SRC_SPECIAL_ENERGY, sourceCard: thisCard) {
                 bc "Used Call Energy effect"
                 int count = bench.freeBenchCount >= 2 ? 2 : 1
                 my.deck.search(max: count, "Search your deck for up to 2 Basic Pokémon and put them onto your Bench", cardTypeFilter(BASIC)).each {

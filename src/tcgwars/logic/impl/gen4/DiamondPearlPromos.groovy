@@ -1,9 +1,6 @@
 package tcgwars.logic.impl.gen4
 
-import tcgwars.logic.TargetPlayer
-import tcgwars.logic.card.pokemon.EvolutionPokemonCard
-import tcgwars.logic.card.pokemon.LevelUpPokemonCard
-import tcgwars.logic.effect.Source
+
 import tcgwars.logic.effect.ability.Ability
 import tcgwars.logic.effect.ability.PokeBody
 import tcgwars.logic.effect.basic.LevelUp
@@ -14,8 +11,6 @@ import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.effect.EffectPriority.BEFORE_LAST
 import static tcgwars.logic.effect.EffectType.*
-import static tcgwars.logic.effect.ability.Ability.ActivationReason.OTHER
-import static tcgwars.logic.effect.Source.*;
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
@@ -355,9 +350,9 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               def predecessors = my.all
                 .findAll { !it.pokemonLevelUp }
                 .collect { it.name }
-              LevelUpPokemonCard lvX = my.deck.search("Select a Pokémon LV.X that evolves from one of your Pokémon", {
+              Card lvX = my.deck.search("Select a Pokémon LV.X that evolves from one of your Pokémon", {
                 it.cardTypes.is(LVL_X) && it.predecessor in predecessors
-              }).first() as LevelUpPokemonCard
+              }).first()
 
               if (lvX) {
                 def target = my.all.findAll {
