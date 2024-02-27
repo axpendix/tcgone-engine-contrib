@@ -3505,8 +3505,7 @@ public enum ChillingReign implements LogicCardInfo {
               }
             }
             effect2 = getter IS_GLOBAL_ABILITY_BLOCKED, { Holder h ->
-              if ((h.effect.target.cardTypes.contains(POKEMON) && h.effect.target.cardTypes.isIn(POKEMON_EX, BREAK, MEGA_POKEMON,
-                PRISM_STAR, POKEMON_GX, TAG_TEAM, POKEMON_V, VMAX))) {
+              if (h.effect.target.cardTypes.contains(POKEMON) && h.effect.target.cardTypes.ruleBox) {
                 h.object=true
               }
             }
