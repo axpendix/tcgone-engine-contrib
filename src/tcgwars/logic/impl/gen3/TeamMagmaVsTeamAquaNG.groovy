@@ -563,7 +563,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
             checkNoSPC()
             assert my.discard.hasType(BASIC_ENERGY)
             powerUsed()
-            my.discard.filterByType(BASIC_ENERGY).each {attachEnergy(self, it)}
+            my.discard.filterByType(BASIC_ENERGY).select().each {attachEnergy(self, it)}
             directDamage(20, self)
           }
         }
