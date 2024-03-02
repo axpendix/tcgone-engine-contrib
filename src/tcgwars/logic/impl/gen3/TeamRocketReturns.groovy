@@ -945,9 +945,10 @@ public enum TeamRocketReturns implements LogicCardInfo {
           pokeBody "Saturation", {
             text "When you attach a [W] Energy card from your hand to Quagsire, remove all Special Conditions and 2 damage counters from Quagsire."
             delayedA {
-              before ATTACH_ENERGY, self, {
-                if(ef.reason==PLAY_FROM_HAND && ef.card.cardTypes.basicEnergy && ef.card.basicType == W){
-                  clearSpecialCondition(self)
+              after ATTACH_ENERGY, self, {
+                if(ef.reason==PLAY_FROM_HAND && ef.card.containsType(W)){
+                  bc "Saturation triggers"
+                  clearSpecialCondition self
                   heal 20, self
                 }
               }
