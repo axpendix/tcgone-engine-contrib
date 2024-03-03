@@ -101,7 +101,7 @@ public enum PokeParkForest implements LogicCardInfo {
 	  return basic (this, hp:HP060, type:GRASS, retreatCost:1){
 	    weakness R
 			pokeBody "Natural Cure", {
-				text "When you attach a [G] Energy card from your hand to this Pokémon, remove all Special Conditions from this Pokémon."
+				text "When you attach a [G] Energy card from your hand to PokéPark's Celebi, remove all Special Conditions from PokéPark's Celebi."
 				delayedA {
           after ATTACH_ENERGY, self, {
             if(ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(G)){
@@ -130,7 +130,7 @@ public enum PokeParkForest implements LogicCardInfo {
 				}
 			}
 			move "Flamethrower", {
-				text "40 damage. Discard a [R] Energy attached to this Pokémon."
+				text "40 damage. Discard a [R] Energy attached to PokéPark's Torchic."
 				energyCost R, C, C
 				onAttack {
 					damage 40
@@ -163,7 +163,7 @@ public enum PokeParkForest implements LogicCardInfo {
 	  return basic (this, hp:HP050, type:LIGHTNING, retreatCost:1){
 	    weakness F
 			move "Quick Attack", {
-				text "10+ damage. Flip a coin. If heads, this attack does 10 more damage."
+				text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
 				energyCost C
         onAttack {
 					damage 10
@@ -171,7 +171,7 @@ public enum PokeParkForest implements LogicCardInfo {
 				}
 			}
 			move "Thunderbolt", {
-				text "60 damage. Discard all Energy attached to this Pokémon."
+				text "60 damage. Discard all Energy cards attached to PokéPark's Pikachu."
 				energyCost L, L, C
 				onAttack {
 					damage 60
@@ -192,7 +192,7 @@ public enum PokeParkForest implements LogicCardInfo {
         }
 			}
 			move "Mist Ball", {
-				text "50 damage. Discard a [R] Energy and a [W] Energy attached to this Pokémon."
+				text "50 damage. Discard a [R] Energy and a [W] Energy attached to PokéPark's Latias."
 				energyCost R, W, C
 				onAttack {
 					damage 50
@@ -214,7 +214,7 @@ public enum PokeParkForest implements LogicCardInfo {
 				}
 			}
 			move "Luster Purge", {
-				text "60 damage. Discard 3 Energy attached to this Pokémon."
+				text "60 damage. Discard 3 Energy attached to PokéPark's Latios."
 				energyCost L, C, C
 				onAttack {
 					damage 60
@@ -244,7 +244,7 @@ public enum PokeParkForest implements LogicCardInfo {
 	  return basic (this, hp:HP060, type:COLORLESS, retreatCost:1){
 	    weakness F
 			move "Defense Curl", {
-				text "Flip a coin. If heads, prevent all damage done to this Pokémon during your opponent's next turn."
+				text "Flip a coin. If heads, prevent all damage done to PokéPark's Munchlax during your opponent's next turn."
 				energyCost C
 				onAttack {
 					flip {preventAllDamageNextTurn()}
