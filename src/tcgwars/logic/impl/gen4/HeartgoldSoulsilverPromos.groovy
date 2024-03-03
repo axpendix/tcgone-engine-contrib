@@ -44,7 +44,7 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
   SHUCKLE_HGSS15 ("Shuckle", "15", Rarity.PROMO, [BASIC, POKEMON, _FIGHTING_]),
   PLUSLE_HGSS16 ("Plusle", "16", Rarity.PROMO, [BASIC, POKEMON, _LIGHTNING_]),
   MINUN_HGSS17 ("Minun", "17", Rarity.PROMO, [BASIC, POKEMON, _LIGHTNING_]),
-  TROPICAL_TIDAL_WAVE_HGSS18 ("Tropical Tidal Wave", "18", Rarity.PROMO, [TRAINER]),
+  TROPICAL_TIDAL_WAVE_HGSS18 ("Tropical Tidal Wave", "18", Rarity.PROMO, [TRAINER, ITEM]),
   RAIKOU_HGSS19 ("Raikou", "19", Rarity.PROMO, [BASIC, POKEMON, _LIGHTNING_]),
   ENTEI_HGSS20 ("Entei", "20", Rarity.PROMO, [BASIC, POKEMON, _FIRE_]),
   SUICUNE_HGSS21 ("Suicune", "21", Rarity.PROMO, [BASIC, POKEMON, _WATER_]),
