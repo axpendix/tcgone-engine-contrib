@@ -2463,8 +2463,8 @@ public enum DeltaSpecies implements LogicCardInfo {
         def eff
         def eff2
         onPlay { reason ->
-          eff = getter(GET_WEAKNESSES, self) { h ->
-            if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(R)) {
+          eff = getter(GET_WEAKNESSES) { h ->
+            if (self != null && h.effect.target == self && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(R)) {
               h.object.clear()
             }
           }
@@ -2490,13 +2490,16 @@ public enum DeltaSpecies implements LogicCardInfo {
         text "Holon Energy GL provides [C] Energy. If the Pokémon that Holon Energy GL is attached to also has a basic [G] Energy card attached to it, that Pokémon can't be affected by any Special Conditions. If the Pokémon that Holon Energy GL is attached to also has a basic [L] Energy card attached to it, damage done by your opponent's Pokémon-ex is reduced by 10. Ignore these effects if Holon Energy GL is attached to Pokémon-ex."
         def eff
         def eff2
-        onPlay { reason ->
-          if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G)) {
-            clearSpecialCondition(self)
+        def doOnInit = { PokemonCardSet pokemon ->
+          if (pokemon != null && !pokemon.EX && pokemon.cards.filterByBasicEnergyType(G)) {
+            clearSpecialCondition(pokemon)
           }
+        }
+        onPlay { reason ->
+          doOnInit(self)
           eff = delayed {
-            before APPLY_SPECIAL_CONDITION, self, {
-              if (!self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G)) {
+            before APPLY_SPECIAL_CONDITION, {
+              if (self != null && e.targetPokemon == self && !self.EX && self.cards.filterByBasicEnergyType(G)) {
                 targeted self, {
                   bc "Holon Energy GL prevents special conditions"
                   prevent()
@@ -2504,19 +2507,19 @@ public enum DeltaSpecies implements LogicCardInfo {
               }
             }
             after ATTACH_ENERGY, {
-              if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G)) {
+              if (self != null && !self.EX && self.cards.filterByBasicEnergyType(G)) {
                 clearSpecialCondition(self)
               }
             }
             after ENERGY_SWITCH, {
-              if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G)) {
+              if (self != null && !self.EX && self.cards.filterByBasicEnergyType(G)) {
                 clearSpecialCondition(self)
               }
             }
           }
           eff2 = delayed {
             before APPLY_ATTACK_DAMAGES, {
-              if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(L)) {
+              if (self != null && !self.EX && self.cards.filterByBasicEnergyType(L)) {
                 targeted self, {
                   bg.dm().each {
                     if (it.to == self && it.from.owner != self.owner && it.from.EX && it.dmg.value && it.notNoEffect) {
@@ -2533,10 +2536,8 @@ public enum DeltaSpecies implements LogicCardInfo {
           eff.unregister()
           eff2.unregister()
         }
-        onMove {to->
-          if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(G)) {
-            clearSpecialCondition(self)
-          }
+        onMove {PokemonCardSet to->
+          doOnInit(to)
         }
       };
       case HOLON_ENERGY_WP_106:
@@ -2545,14 +2546,14 @@ public enum DeltaSpecies implements LogicCardInfo {
         def eff
         def eff2
         onPlay { reason ->
-          eff = getter(GET_RETREAT_COST, self) { h ->
-            if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(P)) {
+          eff = getter(GET_RETREAT_COST) { h ->
+            if (h.effect.target == self && self != null && !self.EX && self.cards.filterByBasicEnergyType(P)) {
               h.object = 0
             }
           }
           eff2 = delayed {
-            before null, self, Source.ATTACK, {
-              if (self != null && !self.EX && self.cards.filterByType(BASIC_ENERGY).filterByEnergyType(W) && bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages)) {
+            before null, null, Source.ATTACK, {
+              if (e.targetPokemon == self && self != null && !self.EX && self.cards.filterByBasicEnergyType(W) && bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages)) {
                 targeted self, {
                   bc "Holon Energy WP prevented effect"
                   prevent()
