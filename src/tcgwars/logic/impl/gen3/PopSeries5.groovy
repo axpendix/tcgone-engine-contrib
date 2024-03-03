@@ -302,10 +302,10 @@ public enum PopSeries5 implements LogicCardInfo {
         pokePower "Purple Ray", {
           text "Once during your turn, when you put Espeon Star from your hand onto your Bench, you may use this power. Each Active Pokémon (both yours and your opponent's) is now Confused."
           onActivate {
-            if (it==PLAY_FROM_HAND && opp.hand && confirm("Use Purple Ray?")) {
+            if (it==PLAY_FROM_HAND && confirm("Use Purple Ray?")) {
               powerUsed()
-              apply (CONFUSED, my.active, SRC_ABILITY)
-              apply (CONFUSED, opp.active, SRC_ABILITY)
+              apply (CONFUSED, my.active)
+              apply (CONFUSED, opp.active)
             }
           }
         }
