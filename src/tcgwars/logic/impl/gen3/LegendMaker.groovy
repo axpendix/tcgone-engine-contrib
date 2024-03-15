@@ -2636,10 +2636,14 @@ public enum LegendMaker implements LogicCardInfo {
         move "Power Move", {
           text "Search your deck for an Energy card and attach it to Mew ex. Shuffle your deck afterward. Then, you may switch Mew ex with 1 of your Benched Pokémon."
           energyCost P, C
+          attackRequirement {
+            assert my.deck
+          }
           onAttack {
-            attachEnergyFrom(my.deck, self)
+            def list = my.deck.search("Search your deck for an Energy card and attach it to $self", cardTypeFilter(ENERGY))
+            list.each {attachEnergy(self, it)}
             shuffleDeck()
-            switchYourActive(may: true)
+            if (list) switchYourActive(may: true)
           }
         }
       };
