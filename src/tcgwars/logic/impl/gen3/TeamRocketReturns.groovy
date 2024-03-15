@@ -2213,8 +2213,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
           pokeBody "Saturation", {
             text "When you attach a [W] Energy card from your hand to Wooper, remove all Special Conditions and 1 damage counter from Wooper."
             delayedA {
-              before ATTACH_ENERGY, self, {
-                if(ef.reason==PLAY_FROM_HAND && ef.card.cardTypes.basicEnergy && ef.card.basicType == W){
+              after ATTACH_ENERGY, self, {
+                if(ef.reason==PLAY_FROM_HAND && ef.card.containsType(W)){
                   clearSpecialCondition(self)
                   heal 10, self
                 }
