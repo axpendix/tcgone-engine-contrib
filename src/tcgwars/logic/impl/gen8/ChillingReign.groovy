@@ -2919,8 +2919,8 @@ public enum ChillingReign implements LogicCardInfo {
             text "Whenever you attach an Energy from your hand to this Pokémon, remove all Special Conditions from this Pokémon."
             delayedA {
               after ATTACH_ENERGY, self, {
-                if (ef.reason == PLAY_FROM_HAND && ef.card.cardTypes.energy) {
-                  clearSpecialCondition(self, SRC_ABILITY)
+                if (ef.reason == PLAY_FROM_HAND) {
+                  clearSpecialCondition(self)
                 }
               }
             }

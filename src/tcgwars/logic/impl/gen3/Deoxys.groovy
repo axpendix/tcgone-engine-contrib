@@ -1120,7 +1120,7 @@ public enum Deoxys implements LogicCardInfo {
             text "When you attach a [W] Energy card from your hand to Lombre, remove all Special Conditions from Lombre."
             delayedA {
               after ATTACH_ENERGY, self, {
-                if(ef.reason==PLAY_FROM_HAND && ef.card.cardTypes.basicEnergy && ef.card.basicType == W){
+                if(ef.reason==PLAY_FROM_HAND && ef.card.containsType(W)){
                   clearSpecialCondition(self)
                 }
               }
