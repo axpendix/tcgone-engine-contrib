@@ -2618,11 +2618,12 @@ public enum Deoxys implements LogicCardInfo {
           }
           move "Pivot Throw", {
             text "80 damage. During your opponent’s next turn, any damage done to Hariyama ex by attacks is increased by 10 (before applying Weakness and Resistance)."
+            // errata: Pivot Throw should increase damage after Weakness and Resistance, not before. The effect is placed on Hariyama ex, so when the opponent attacks, Hariyama ex is the defender. Effects on the defender are always processed after W/R in EX.
             energyCost F, F, C
             onAttack {
               damage 80
               delayed {
-                after PROCESS_ATTACK_EFFECTS, {
+                before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
                     if(it.from.owner==self.owner.opposite && it.to==self && it.dmg.value && it.notNoEffect){
                       bc "Pivot Throw increases damage"
