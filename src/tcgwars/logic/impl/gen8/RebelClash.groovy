@@ -1412,7 +1412,7 @@ public enum RebelClash implements LogicCardInfo {
         bwAbility "Cold Absorption", {
           text "Whenever you attach a [W] Energy card from your hand to this Pokémon during your turn, heal 30 damage from it."
           delayedA {
-            before ATTACH_ENERGY, {
+            after ATTACH_ENERGY, {
               if (ef.reason == PLAY_FROM_HAND && ef.card.containsType(W) && bg.currentTurn == self.owner && ef.resolvedTarget == self) {
                 powerUsed()
                 heal 30, ef.resolvedTarget
