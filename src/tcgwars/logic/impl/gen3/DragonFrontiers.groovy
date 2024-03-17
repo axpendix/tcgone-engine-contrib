@@ -374,7 +374,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 60
 
             if (my.hand.filterByType(POKEMON) && confirm("Discard Pokémon from Hand?")) {
-              my.hand.filterByType(BASIC, EVOLUTION).select("Which card to discard?").discard()
+              my.hand.filterByType(POKEMON).select("Which card to discard?").discard()
               if (opp.bench) damage 20, opp.bench.select("Damage to?")
             }
           }
