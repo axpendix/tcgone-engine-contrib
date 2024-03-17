@@ -1164,7 +1164,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           energyCost C, C, C
           attackRequirement {}
           onAttack {
-            damage 130
+            damage 120
             damage 30, self
           }
         }
