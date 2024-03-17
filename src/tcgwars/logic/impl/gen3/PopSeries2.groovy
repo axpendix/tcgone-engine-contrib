@@ -269,42 +269,14 @@ public enum PopSeries2 implements LogicCardInfo {
         }
       };
       case MULTI_TECHNICAL_MACHINE_01_9:
-      // Commented for now, TechnicalMachineGroovyImpl needs to be made first.
         return copy(Expedition.MULTI_TECHNICAL_MACHINE_01_144, this);
-      /*return basicTrainer (this) {
+      /*return technicalMachine (this) { // ready to be tested
         text "Attach this card to 1 of your Pokémon in play. This Pokémon may use this card's attack instead of its own. At the end of your turn, discard Multi Technical Machine 01"
-        def eff1, eff2
-        onPlay {reason->
-          def pcs = my.active
-          if (my.bench) {
-            pcs = my.all.select("Which Pokémon will you attach $thisCard to?")
-          }
-          pcs.cards.add(self)
-          my.hand.remove(self)
-
-          def moveBody = {
-            text "The Defending Pokémon is now Paralyzed."
-            energyCost C
-            onAttack {
-              apply PARALYZED
-            }
-          }
-          Move move=new Move("Paralyzing Gaze")
-          moveBody.delegate=new MoveBuilder(thisMove:move)
-          moveBody.call()
-          eff1 = getter GET_MOVE_LIST, pcs, {h->
-            h.object.add(move)
-          }
-          eff2 = delayed {
-            after DISCARD, {
-              if(ef.card == thisCard){
-                eff1.unregister()
-                eff2.unregister()
-              }
-            }
-            before BETWEEN_TURNS, {
-              discard thisCard
-            }
+        move 'Paralyzing Gaze', {
+          text "The Defending Pokémon is now Paralyzed."
+          energyCost C
+          onAttack {
+            apply PARALYZED
           }
         }
       };*/
