@@ -1844,7 +1844,6 @@ public enum RubySapphireNG implements LogicCardInfo {
               }
               return true
             })
-            .showToOpponent("Selected Basic Energy cards")
             .moveTo(my.hand)
           shuffleDeck()
         }
