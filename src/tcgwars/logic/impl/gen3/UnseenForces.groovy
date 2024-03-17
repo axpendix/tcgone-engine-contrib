@@ -3140,6 +3140,8 @@ public enum UnseenForces implements LogicCardInfo {
             def opponentChoice = oppChoose([1,2,3], ['Pokémon', 'Trainer', 'Energy'], "Guess the type of card your opponent has chosen")
 
             myCard.showToOpponent("Your Opponent's chosen card.")
+
+            myCard = myCard.first()
             if (
               (opponentChoice == 1 && myCard.cardTypes.is(POKEMON)) ||
               (opponentChoice == 2 && myCard.cardTypes.is(TRAINER)) ||
