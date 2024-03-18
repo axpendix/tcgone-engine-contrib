@@ -1010,28 +1010,10 @@ public enum DiamondPearl implements LogicCardInfo {
           move "Sand Eject", {
             text "60 damage. During your next turn, if an attack does damage to the Defending Pokémon (after applying Weakness and Resistance), that attack does 40 more damage."
             energyCost F, F, C, C
-            attackRequirement {}
             onAttack {
               damage 60
-              //TODO: Could be generalized into a method (adapted from LM DUSTOX_EX_86). Do some other cards use a similar effect under a different attack name/description?
-              afterDamage{
-                targeted (defending){
-                  bc "During ${my.owner.getPlayerUsername(bg)}'s next turn, if an attack does damage to the Defending ${defending} that attack will do 40 more damage (after W/R). (This effect can be removed by evolving or benching ${defending}.)"
-                  def pcs = defending
-                  delayed {
-                    before APPLY_ATTACK_DAMAGES, {
-                      bg.dm().each{
-                        if(it.to == pcs && it.notNoEffect && it.dmg.value && bg.currentTurn == self.owner) {
-                          bc "Sand Eject +40"
-                          it.dmg += hp(40)
-                        }
-                      }
-                    }
-                    after FALL_BACK, pcs, {unregister()}
-                    after CHANGE_STAGE, pcs, {unregister()}
-                    unregisterAfter 3
-                  }
-                }
+              afterDamage {
+                increasedDamageDoneToDefending(self, defending, 40, thisMove.name)
               }
             }
           }

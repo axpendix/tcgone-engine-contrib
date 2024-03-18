@@ -594,23 +594,25 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         }
       };
       case MASQUERAIN_20:
-      return evolution (this, from:"Surskit", hp:HP070, type:G, retreatCost:null) {
+      return evolution (this, from:"Surskit", hp:HP070, type:G, retreatCost:0) {
         weakness L
         resistance F, MINUS30
         move "Whirlwind", {
           text "20 damage. Your opponent switches the Defending Pokémon with 1 of his or her Benched Pokémon."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 20
+            whirlwind()
           }
         }
         move "Silver Wind", {
           text "30 damage. During your next turn, if an attack does damage to the Defending Pokémon (after applying Weakness and Resistance), that attack does 30 more damage."
           energyCost G, C
-          attackRequirement {}
           onAttack {
             damage 30
+            afterDamage {
+              increasedDamageDoneToDefending(self, defending, 30, thisMove.name)
+            }
           }
         }
       };
