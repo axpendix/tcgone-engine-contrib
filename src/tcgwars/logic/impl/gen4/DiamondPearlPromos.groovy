@@ -625,10 +625,13 @@ public enum DiamondPearlPromos implements LogicCardInfo {
           weakness P
           pokeBody "Lunar Aura", {
             text "If you have Darkrai in play, remove 1 damage counter from Cresselia between turns."
-            delayedA {
+            delayedA (anytime:true) {
+              def lastExecId = null
               before BEGIN_TURN, {
-                if (my.all.find {it.name == "Darkrai" }) {
+                if (lastExecId != e.executionId && self.numberOfDamageCounters && self.owner.pbg.all.any {it.hasNameEqualTo('Darkrai')}) {
+                  bc "$thisAbility activates"
                   heal 10, self
+                  lastExecId = e.executionId
                 }
               }
             }
