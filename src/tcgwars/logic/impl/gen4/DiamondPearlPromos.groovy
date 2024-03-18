@@ -381,7 +381,36 @@ public enum DiamondPearlPromos implements LogicCardInfo {
           pokeBody "Blind Eye", {
             text "As long as Gliscor is your Active Pokémon, your opponent can't remove any Special Conditions by evolving or devolving his or her Pokémon. (This also includes putting a Pokémon Level-Up card onto that Pokémon.)"
             delayedA {
-              // TODO
+              before ASLEEP_SPC, null, null, CHANGE_STAGE, {
+                if (ef.targetPokemon.owner == self.owner.opposite && self.active) {
+                  bc "Blind Eye prevents removal of ${ef.conditionType}"
+                  prevent()
+                }
+              }
+              before CONFUSED_SPC, null, null, CHANGE_STAGE, {
+                if (ef.targetPokemon.owner == self.owner.opposite && self.active) {
+                  bc "Blind Eye prevents removal of ${ef.conditionType}"
+                  prevent()
+                }
+              }
+              before PARALYZED_SPC, null, null, CHANGE_STAGE, {
+                if (ef.targetPokemon.owner == self.owner.opposite && self.active) {
+                  bc "Blind Eye prevents removal of ${ef.conditionType}"
+                  prevent()
+                }
+              }
+              before BURNED_SPC, null, null, CHANGE_STAGE, {
+                if (ef.targetPokemon.owner == self.owner.opposite && self.active) {
+                  bc "Blind Eye prevents removal of ${ef.conditionType}"
+                  prevent()
+                }
+              }
+              before POISONED_SPC, null, null, CHANGE_STAGE, {
+                if (ef.targetPokemon.owner == self.owner.opposite && self.active) {
+                  bc "Blind Eye prevents removal of ${ef.conditionType}"
+                  prevent()
+                }
+              }
             }
           }
           move "Cutting Turn", {
