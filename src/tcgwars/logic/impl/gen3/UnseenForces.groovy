@@ -92,7 +92,7 @@ public enum UnseenForces implements LogicCardInfo {
   MAGCARGO_41 ("Magcargo", "41", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
   MILTANK_42 ("Miltank", "42", Rarity.UNCOMMON, [POKEMON, BASIC, _COLORLESS_]),
   NOCTOWL_43 ("Noctowl", "43", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _COLORLESS_]),
-  QUAGSIRE_44 ("Quagsire", "44", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
+  QUAGSIRE_44 ("Quagsire", "44", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIGHTING_]),
   QUILAVA_45 ("Quilava", "45", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _FIRE_]),
   SCYTHER_46 ("Scyther", "46", Rarity.UNCOMMON, [POKEMON, BASIC, _GRASS_]),
   SHUCKLE_47 ("Shuckle", "47", Rarity.UNCOMMON, [POKEMON, BASIC, _GRASS_]),
