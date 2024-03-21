@@ -2440,8 +2440,8 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               powerUsed()
               def card = my.hand.filterByBasicEnergyType(W).first()
               def tar = my.all.select("To?")
-              directDamage 10, tar
               attachEnergy(tar, card, PLAY_FROM_HAND)
+              directDamage 10, tar
             }
           }
           move "Hyper Whirlpool", {
