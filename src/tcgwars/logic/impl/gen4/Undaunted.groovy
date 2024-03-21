@@ -1836,17 +1836,11 @@ public enum Undaunted implements LogicCardInfo {
       case DEFENDER_72:
         return basicTrainer (this) {
           text "Attach Defender to 1 of your Pokémon. Discard this card at the end of your opponent’s next turn. Any damage done to the Pokémon Defender is attached to by an opponent’s attack is reduced by 20 (after applying Weakness and Resistance)."
-          def eff
-          def turns = 1
           onPlay {
-            def pcs = my.active
-            if (my.bench) {
-              pcs = my.all.select("Which Pokémon will you attach $thisCard to?")
-            }
-            pcs.cards.add(thisCard)
-            my.hand.remove(thisCard)
-
-            eff = delayed {
+            def pcs = my.all.select("Which Pokémon will you attach $thisCard to?")
+            moveCard(thisCard, pcs)
+            int turns = 1
+            delayed {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
                   if(it.to == pcs && it.notNoEffect && it.dmg.value) {
@@ -1856,13 +1850,13 @@ public enum Undaunted implements LogicCardInfo {
                 }
               }
               before BETWEEN_TURNS, {
-                if(turns-- == 0){
+                if(turns-- <= 0){
                   discard thisCard
                 }
               }
               after REMOVE_FROM_PLAY, pcs, null, {
                 if(ef.removedCards.contains(thisCard)) {
-                  eff.unregister()
+                  unregister()
                 }
               }
             }
