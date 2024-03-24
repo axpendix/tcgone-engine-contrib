@@ -749,7 +749,6 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost G
           onAttack {
             apply CONFUSED
-            apply CONFUSED, self
           }
         }
         move "Green Blast", {
