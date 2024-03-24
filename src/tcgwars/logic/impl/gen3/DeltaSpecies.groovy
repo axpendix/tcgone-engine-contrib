@@ -442,7 +442,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         resistance F, MINUS30
         pokeBody "Delta Aura", {
           text "If you have Latios or Latios ex in play, the attack cost of Latias's Extra Crush is now [L][M][C]."
-          getterA GET_MOVE_LIST, self, {h->
+          getterA GET_MOVE_LIST, BEFORE_LAST, self, {h->
             if (my.all.find{it.name == "Latios" || it.name == "Latios ex"}) {
               def list=[]
               for (move in h.object) {
@@ -482,7 +482,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         resistance F, MINUS30
         pokeBody "Delta Aura", {
           text "If you have Latias or Latias ex in play, the attack cost of Latios's Psychic Force is now [L][M][C]."
-          getterA GET_MOVE_LIST, self, {h->
+          getterA GET_MOVE_LIST, BEFORE_LAST, self, {h->
             if (my.all.find{it.name == "Latias" || it.name == "Latias ex"}) {
               def list=[]
               for (move in h.object) {

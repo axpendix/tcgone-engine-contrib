@@ -557,7 +557,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           resistance F, MINUS20
           pokeBody "Dark Genes", {
             text "As long as Honchkrow has the Energy necessary to use its attack, each of your Murkrow can use Honchkrow’s attack as its own without the Energy necessary to use that attack."
-            getterA GET_MOVE_LIST, { h ->
+            getterA GET_MOVE_LIST, BEFORE_LAST, { h ->
               PokemonCardSet hTarget = h.effect.target
               if (hTarget.active && hTarget.owner == self.owner && hTarget.name == "Murkrow" && self.benched) {
                 List honchkrowMoves = bg.em().activateGetter(new GetMoveList(self))
@@ -1043,7 +1043,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           pokeBody "Dragon DNA", {
             def boostedMoves = []
             text "Gyarados can use any attack from its Basic Pokémon. (You still have to pay for that attack’s Energy cost.) If Gyarados uses any attack from its Basic Pokémon, that attack does 30 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
-            getterA(GET_MOVE_LIST, self) { holder ->
+            getterA (GET_MOVE_LIST, self) { holder ->
               boostedMoves.clear()
               self.cards.filterByType(BASIC).each { Card karp ->
                 karp.moves.each {
