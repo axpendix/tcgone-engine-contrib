@@ -274,17 +274,19 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         move "Swift", {
           text "30 damage. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on the Defending Pokémon."
           energyCost L
-          attackRequirement {}
           onAttack {
-            damage 30
+            swiftDamage 30, defending
           }
         }
         move "Mass Destruction", {
           text "Both Electrode and the Defending Pokémon are now Knocked Out. If Electrode has any Special Energy cards attached to it, this attack does nothing."
           energyCost C, C, C
-          attackRequirement {}
+          attackRequirement {
+            assert !self.cards.hasType(SPECIAL_ENERGY) : "Cannot have any Special Energy attached"
+          }
           onAttack {
-
+            bg.em().activateEffect(new Knockout(defending))
+            bg.em().activateEffect(new Knockout(self))
           }
         }
       };
