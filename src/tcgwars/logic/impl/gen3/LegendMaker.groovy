@@ -1241,9 +1241,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C
           onAttack {
             apply CONFUSED
-            if (confirm("switch Dunsparce with 1 of your Benched Pokémon?")) {
-              sw self, my.bench.select()
-            }
+            switchYourActive(may: true)
           }
         }
       };
