@@ -926,7 +926,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             text "Choose 1 of your opponent’s Pokémon. This attack does 40 damage to that Pokémon. This attack’s damage isn’t affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
             energyCost C, C, C
             onAttack {
-              directDamage 40, opp.all.select()
+              swiftDamage 40, opp.all.select()
             }
           }
 
