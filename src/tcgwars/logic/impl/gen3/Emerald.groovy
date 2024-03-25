@@ -532,7 +532,7 @@ public enum Emerald implements LogicCardInfo {
             text "20 damage."
             energyCost F, C
             onAttack {
-              damage 30
+              damage 20
             }
           }
           move "Eruption", {
