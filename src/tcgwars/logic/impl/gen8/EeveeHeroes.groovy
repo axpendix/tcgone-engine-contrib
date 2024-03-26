@@ -414,9 +414,8 @@ public enum EeveeHeroes implements LogicCardInfo {
           energyCost R, R, C
           onAttack {
             damage 150
-            def count = 0
-            flip 3, {}, { count++  }
-            def types = (1..count).collect{C} as Type[]
+            def count = flipTailsCount 3
+            def types = expandIntoTypes C, count
             discardSelfEnergyAfterDamage types
           }
         }

@@ -229,7 +229,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         }
       };
       case CROBAT_3:
-      return evolution (this, from:"Golbat", hp:HP090, type:G, retreatCost:null) {
+      return evolution (this, from:"Golbat", hp:HP090, type:G, retreatCost:0) {
         weakness P
         move "Flutter Trick", {
           text "20 damage. Flip a coin. If heads, look at your opponent's hand and choose 1 card. Your opponent discards the card you chose."
@@ -556,7 +556,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         }
       };
       case GOREBYSS_18:
-      return evolution (this, from:"Clamperl", hp:HP070, type:W, retreatCost:null) {
+      return evolution (this, from:"Clamperl", hp:HP070, type:W, retreatCost:0) {
         weakness L
         move "Stun Needle", {
           text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
@@ -882,7 +882,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         }
       };
       case DODRIO_33:
-      return evolution (this, from:"Doduo", hp:HP080, type:C, retreatCost:null) {
+      return evolution (this, from:"Doduo", hp:HP080, type:C, retreatCost:0) {
         weakness L
         resistance F, MINUS30
         pokeBody "Fast Feet", {
@@ -1120,17 +1120,15 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         move "Upper Hand", {
           text "Choose 1 of the Defending Pokémon's attacks. That Pokémon can't use that attack during your opponent's next turn."
           energyCost C
-          attackRequirement {}
           onAttack {
-
+            amnesia(delegate)
           }
         }
         move "Feint Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 40 damage to that Pokémon. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
           energyCost D, C, C
-          attackRequirement {}
           onAttack {
-
+            swiftDamage(40, opp.all.select())
           }
         }
       };
@@ -1165,15 +1163,13 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         move "Super Icy Wind", {
           text "Does 10 damage to each of your opponent's Pokémon. This attack's damage isn't affected by Weakness or Resistance."
           energyCost W
-          attackRequirement {}
           onAttack {
-
+            opp.all.each {noWrDamage(10, it)}
           }
         }
         move "Skull Bash", {
           text "50 damage."
           energyCost W, C, C
-          attackRequirement {}
           onAttack {
             damage 50
           }
@@ -1240,7 +1236,7 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         }
       };
       case TENTACRUEL_51:
-      return evolution (this, from:"Tentacool", hp:HP070, type:W, retreatCost:null) {
+      return evolution (this, from:"Tentacool", hp:HP070, type:W, retreatCost:0) {
         weakness L
         move "Long Tentacle", {
           text "Flip a coin. If heads, the Defending Pokémon is now Confused. If tails, discard an Energy card attached to the Defending Pokémon."

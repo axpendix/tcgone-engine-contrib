@@ -269,7 +269,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         }
       };
       case TEAM_AQUA_S_SHARPEDO_5:
-      return evolution (this, from:"null", hp:HP070, type:[W, D], retreatCost:null) {
+      return evolution (this, from:"null", hp:HP070, type:[W, D], retreatCost:0) {
         weakness L
         move "Rage", {
           text "10+ damage. Does 10 damage plus 10 more damage for each damage counter on Team Aqua's Sharpedo."
@@ -534,7 +534,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         }
       };
       case TEAM_AQUA_S_SHARPEDO_18:
-      return evolution (this, from:"null", hp:HP070, type:W, retreatCost:null) {
+      return evolution (this, from:"null", hp:HP070, type:W, retreatCost:0) {
         weakness L
         move "Slow-Acting Poison", {
           text "20 damage. At the end of your opponent's next turn, the Defending Pokémon is now Poisoned."
@@ -1341,9 +1341,8 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         move "Dig Under", {
           text "Choose 1 of your opponent's Pokémon. This attack does 10 damage to that Pokémon. This attack's damage isn't affected by Weakness or Resistance."
           energyCost F
-          attackRequirement {}
           onAttack {
-
+            noWrDamage(10, opp.all.select())
           }
         }
       };
@@ -1873,17 +1872,16 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         move "Quick Attack", {
           text "10+ damage. Flip a coin. If heads, this attack does 10 damage plus 10 more damage."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             damage 10
+            flip {damage 10}
           }
         }
         move "Feint Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 30 damage to that Pokémon. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies or any other effects on that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost D, D, C
-          attackRequirement {}
           onAttack {
-
+            swiftDamage(30, opp.all.select())
           }
         }
       };

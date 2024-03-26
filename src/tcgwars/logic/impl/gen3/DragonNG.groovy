@@ -549,7 +549,7 @@ public enum DragonNG implements LogicCardInfo {
         }
       };
       case NINJASK_18:
-      return evolution (this, from:"Nincada", hp:HP070, type:G, retreatCost:null) {
+      return evolution (this, from:"Nincada", hp:HP070, type:G, retreatCost:0) {
         weakness R
         pokePower "Loose Shell", {
           text "Once during your turn, when you play Ninjask from your hand to evolve 1 of your Pokémon, you may search your deck for Shedinja and put it onto your Bench. Treat the new Benched Pokémon as a Basic Pokémon. Shuffle your deck afterward."
@@ -872,17 +872,16 @@ public enum DragonNG implements LogicCardInfo {
         move "Feint Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 20 damage to that Pokémon. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
           energyCost D, C
-          attackRequirement {}
           onAttack {
-
+            swiftDamage(20, opp.all.select())
           }
         }
         move "Flamethrower", {
           text "50 damage. Discard a [R] Energy card attached to Houndoom."
           energyCost R, C, C
-          attackRequirement {}
           onAttack {
             damage 50
+            discardSelfEnergyAfterDamage(R)
           }
         }
       };
@@ -939,7 +938,7 @@ public enum DragonNG implements LogicCardInfo {
         }
       };
       case NINJASK_38:
-      return evolution (this, from:"Nincada", hp:HP070, type:G, retreatCost:null) {
+      return evolution (this, from:"Nincada", hp:HP070, type:G, retreatCost:0) {
         weakness R
         move "Supersonic", {
           text "10 damage. Flip a coin. If heads, the Defending Pokémon is now Confused."
@@ -1067,23 +1066,24 @@ public enum DragonNG implements LogicCardInfo {
         }
       };
       case SWELLOW_45:
-      return evolution (this, from:"Taillow", hp:HP070, type:C, retreatCost:null) {
+      return evolution (this, from:"Taillow", hp:HP070, type:C, retreatCost:0) {
         weakness L
         resistance F, MINUS30
         move "Clutch", {
           text "10 damage. The Defending Pokémon can't retreat until the end of your opponent's next turn."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
+            cantRetreat(defending)
           }
         }
         move "Quick Dive", {
           text "Flip a coin. If heads, choose 1 of your opponent's Pokémon. This attack does 50 damage to that Pokémon. This attack's damage isn't affected by Weakness or Resistance."
           energyCost C, C
-          attackRequirement {}
           onAttack {
-
+            flip {
+              noWrDamage(50, opp.all.select())
+            }
           }
         }
       };

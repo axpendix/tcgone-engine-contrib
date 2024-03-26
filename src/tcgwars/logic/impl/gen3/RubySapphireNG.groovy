@@ -2076,27 +2076,27 @@ public enum RubySapphireNG implements LogicCardInfo {
         }
       };
       case GRASS_ENERGY_104:
-      return basic (this, hp:null, type:null, retreatCost:null) {
+      return basic (this, hp:null, type:null, retreatCost:0) {
 
       };
       case FIGHTING_ENERGY_105:
-      return basic (this, hp:null, type:null, retreatCost:null) {
+      return basic (this, hp:null, type:null, retreatCost:0) {
 
       };
       case WATER_ENERGY_106:
-      return basic (this, hp:null, type:null, retreatCost:null) {
+      return basic (this, hp:null, type:null, retreatCost:0) {
 
       };
       case PSYCHIC_ENERGY_107:
-      return basic (this, hp:null, type:null, retreatCost:null) {
+      return basic (this, hp:null, type:null, retreatCost:0) {
 
       };
       case FIRE_ENERGY_108:
-      return basic (this, hp:null, type:null, retreatCost:null) {
+      return basic (this, hp:null, type:null, retreatCost:0) {
 
       };
       case LIGHTNING_ENERGY_109:
-      return basic (this, hp:null, type:null, retreatCost:null) {
+      return basic (this, hp:null, type:null, retreatCost:0) {
 
       };
       default:

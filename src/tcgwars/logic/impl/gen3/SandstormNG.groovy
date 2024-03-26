@@ -212,15 +212,16 @@ public enum SandstormNG implements LogicCardInfo {
         weakness R
         pokeBody "Poison Payback", {
           text "If Cacturne is your Active Pokémon and is damaged by an opponent's attack (even if Cacturne is Knocked Out), the Attacking Pokémon is now Poisoned."
-          delayedA {
+          ifActiveAndDamagedByAttackBody(delegate) {
+            bc "Poison Payback poison your Pokémon!"
+            apply POISONED, ef.attacker
           }
         }
         move "Feint Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 40 damage to that Pokémon. This attack's damage isn't affected by Weakness, Resistance, Poke-Powers, Poke-Bodies or any other effects on that Pokémon."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
-
+            swiftDamage(40, opp.all.select())
           }
         }
       };
@@ -614,15 +615,13 @@ public enum SandstormNG implements LogicCardInfo {
         move "Feint Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 40 damage to that Pokémon. This attack's damage isn't affected by Weakness, Resistance, Poke-Powers, Poke-Bodies, or any other effects on that Pokémon."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
-
+            swiftDamage(40, opp.all.select())
           }
         }
         move "Slash", {
           text "60 damage."
           energyCost G, C, C, C
-          attackRequirement {}
           onAttack {
             damage 60
           }
