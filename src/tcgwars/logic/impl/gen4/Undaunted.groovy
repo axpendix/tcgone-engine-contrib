@@ -2056,7 +2056,7 @@ public enum Undaunted implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(it.to == self && it.from.cards.filterByType(SPECIAL_ENERGY) && it.from.owner == self.owner.opposite){
+                  if(it.to == self && it.from.cards.filterByType(SPECIAL_ENERGY) && it.from.owner == self.owner.opposite && it.notNoEffect){
                     bc "Red Armor prevents damage"
                     it.dmg = hp(0)
                   }
