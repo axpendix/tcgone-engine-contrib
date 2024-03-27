@@ -2197,6 +2197,12 @@ public enum CrystalGuardians implements LogicCardInfo {
                 directDamage(20, ef.targetPokemon)
               }
             }
+            after ACTIVATE_ABILITY, {
+              if (ef.targetPokemon.owner != self.owner && ef.ability instanceof PokePower && ef.reason == PLAY_FROM_HAND && ef.hasUsedAbilityDuringActivation) {
+                bc "Dark Eyes activates"
+                directDamage(20, ef.targetPokemon)
+              }
+            }
           }
         }
         move "Target Attack", {

@@ -2119,8 +2119,8 @@ public enum PowerKeepers implements LogicCardInfo {
           onActivate {r->
             if (r==PLAY_FROM_HAND && confirm("Use Yellow Ray?")) {
               powerUsed()
-              directDamage 10, opp.active, SRC_ABILITY
-              directDamage 10, my.active, SRC_ABILITY
+              directDamage 10, opp.active
+              directDamage 10, my.active
             }
           }
         }
@@ -2141,9 +2141,9 @@ public enum PowerKeepers implements LogicCardInfo {
           onActivate {r->
             if (r==PLAY_FROM_HAND && confirm("Use Blue Ray?")) {
               powerUsed()
-              clearSpecialCondition(my.active, Source.SRC_ABILITY)
+              clearSpecialCondition(my.active)
               heal 30, my.active
-              clearSpecialCondition(opp.active, Source.SRC_ABILITY)
+              clearSpecialCondition(opp.active)
               heal 30, opp.active
             }
           }
