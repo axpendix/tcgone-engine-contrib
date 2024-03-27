@@ -1221,17 +1221,19 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         move "Amnesia", {
           text "10 damage. Choose 1 of the Defending Pokémon's attacks. That Pokémon can't use that attack during your opponent's next turn."
           energyCost C
-          attackRequirement {}
           onAttack {
             damage 10
+            amnesia(delegate)
           }
         }
         move "Swallow Up", {
           text "50+ damage. Before doing damage, count the remaining HP of the Defending Pokémon and Swalot. If the Defending Pokémon has fewer remaining HP than Swalot's, this attack does 50 damage plus 30 more damage."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 50
+            if (defending.remainingHP.value < self.remainingHP.value) {
+              damage 30
+            }
           }
         }
       };
