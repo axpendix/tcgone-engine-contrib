@@ -579,8 +579,8 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               assert self.damage != self.fullHP - hp(10) : "Slowbro can't be Knocked Out by Strange Behavior!"
               def tar = my.all.findAll{it != self && it.numberOfDamageCounters}
               assert tar : "There is no Pokémon with damage counter outside Slowbro"
+              powerUsed()
               def pcs = tar.select()
-
               self.damage+=hp(10)
               pcs.damage-=hp(10)
             }
