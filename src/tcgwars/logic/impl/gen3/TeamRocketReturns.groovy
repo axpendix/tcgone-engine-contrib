@@ -1640,7 +1640,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
       case DROWZEE_54:
         return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1) {
           weakness PSYCHIC
-          pokePower "Insomnia", {
+          pokeBody "Insomnia", {
             text "Drowzee can’t be Asleep."
             delayedA {
               after APPLY_SPECIAL_CONDITION, {

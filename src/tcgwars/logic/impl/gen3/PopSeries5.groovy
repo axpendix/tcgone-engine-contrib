@@ -199,7 +199,7 @@ public enum PopSeries5 implements LogicCardInfo {
       case CHARMANDER_DELTA_10:
         return copy(CrystalGuardians.CHARMANDER_DELTA_49, this);
       case MEOWTH_DELTA_11:
-      return basic (this, hp:HP050, type:D, retreatCost:1) {
+      return basic (this, hp:HP040, type:D, retreatCost:1) {
         weakness F
         move "Feint Attack", {
           text "Choose 1 of your opponent's Pokémon. This attack does 10 damage to that Pokémon. This attack's damage isn't affected by Weakness, Resistance, Poké-Powers, Poké-Bodies, or any other effects on that Pokémon."
