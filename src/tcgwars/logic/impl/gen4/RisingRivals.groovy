@@ -2952,11 +2952,20 @@ public enum RisingRivals implements LogicCardInfo {
           }
         };
       case TECHNICAL_MACHINE_G_95:
-        return basicTrainer (this) {
-          text "Attach this card to 1 of your Pokémon SP in play. That Pokémon may use this card’s attack instead of its own. When the Pokémon this card is attached to is no longer Pokémon SP, discard this card.\n[C][C][C] Damage Porter Choose 1 of your opponent’s Pokémon. This attack does 10 damage times the number of damage counters on the Pokémon this card is attached to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
-          onPlay {//TODO Implement technical machine groovy card type
-          }
-          playRequirement{
+        return technicalMachine (this) {
+          text "Attach this card to 1 of your Pokémon SP in play. That Pokémon may use this card’s attack instead of its own. When the Pokémon this card is attached to is no longer Pokémon SP, discard this card."
+          discardEndOfTurn false
+          addAllowedCardType POKEMON_SP
+          move "Damage Porter", {
+            energyCost C, C, C
+            text "Choose 1 of your opponent’s Pokémon. This attack does 10 damage times the number of damage counters on the Pokémon this card is attached to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+            attackRequirement {
+              assert self.numberOfDamageCounters : "0 damage"
+            }
+            onAttack {
+              int dmg = self.damage.value
+              damage dmg, opp.all.select("Deal $dmg damage to?")
+            }
           }
         };
       case SP_RADAR_96:

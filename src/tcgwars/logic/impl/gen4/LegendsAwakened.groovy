@@ -3849,21 +3849,33 @@ public enum LegendsAwakened implements LogicCardInfo {
           }
         };
       case TECHNICAL_MACHINE_TS_1_136:
-        return basicTrainer (this) {
-          text "Evoluter - Attach this card to 1 of your Pokémon in play. That Pokémon may use this card's attack instead of its own. " + "Search your deck for a card that evolves from 1 of your Pokémon and put it onto that Pokémon. (This counts as evolving that Pokémon.) Shuffle your deck afterward."
-          onPlay {
-            // TODO
-          }
-          playRequirement{
+        return technicalMachine (this) {
+          text "Attach this card to 1 of your Pokémon in play. That Pokémon may use this card's attack instead of its own."
+          discardEndOfTurn false
+          move "Evoluter", {
+            text "Search your deck for a card that evolves from 1 of your Pokémon and put it onto that Pokémon. (This counts as evolving that Pokémon.) Shuffle your deck afterward."
+            attackRequirement {
+              assert my.deck
+            }
+            onAttack {
+              searchYourDeckThenEvolveOneOfYourPokemon()
+            }
           }
         };
       case TECHNICAL_MACHINE_TS_2_137:
-        return basicTrainer (this) {
-          text "Devoluter - Attach this card to 1 of your Pokémon in play. That Pokémon may use this card's attack instead of its own. " + "Choose 1 of your opponent's Evolved Pokémon (excluding Pokémon LV.X). Remove the highest Stage Evolution card from that Pokémon and put that card back into your opponent's hand.\n"
-          onPlay {
-            // TODO
-          }
-          playRequirement{
+        return technicalMachine (this) {
+          text "Attach this card to 1 of your Pokémon in play. That Pokémon may use this card's attack instead of its own."
+          discardEndOfTurn false
+          move "Devoluter", {
+            text "Choose 1 of your opponent's Evolved Pokémon (excluding Pokémon LV.X). Remove the highest Stage Evolution card from that Pokémon and put that card back into your opponent's hand."
+            attackRequirement {
+              assert opp.all.find{it.evolution && !it.pokemonLevelUp} : "Your opponent has no non-LV.X Evolved Pokémon in play"
+            }
+            onAttack {
+              def pcs = opp.all.findAll{it.evolution && !it.pokemonLevelUp}.select("Choose 1 of your opponent's Evolved Pokémon")
+              devolve(pcs, opp.deck)
+              shuffleOppDeck()
+            }
           }
         };
       case CLAW_FOSSIL_138:

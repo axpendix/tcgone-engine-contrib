@@ -2520,7 +2520,7 @@ public enum Platinum implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              my.deck.search(max:2, "Search your deck for up to 2 Stadium or Trainer cards with Team Galactic's Invention in its name", {it.cardTypes.is(STADIUM) || (it.cardTypes.is(ITEM) && it.name.conatins("Team Galactic's Invention"))}).showToOpponent("Selected Cards").moveTo(my.hand)
+              my.deck.search(max:2, "Search your deck for up to 2 Stadium or Trainer cards with Team Galactic's Invention in its name", {it.cardTypes.is(STADIUM) || (it.cardTypes.is(ITEM) && it.name.contains("Team Galactic's Invention"))}).showToOpponent("Selected Cards").moveTo(my.hand)
               shuffleDeck()
             }
           }
