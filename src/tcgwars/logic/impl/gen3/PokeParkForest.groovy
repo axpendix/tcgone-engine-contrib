@@ -104,8 +104,8 @@ public enum PokeParkForest implements LogicCardInfo {
 				text "When you attach a [G] Energy card from your hand to PokéPark's Celebi, remove all Special Conditions from PokéPark's Celebi."
 				delayedA {
           after ATTACH_ENERGY, self, {
-            if(ef.reason==PLAY_FROM_HAND && ef.card.asEnergyCard().containsType(G)){
-              clearSpecialCondition(self, Source.SRC_ABILITY)
+            if(ef.reason==PLAY_FROM_HAND && ef.card.containsType(G)){
+              clearSpecialCondition self
             }
           }
         }
