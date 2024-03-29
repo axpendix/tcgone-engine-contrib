@@ -3873,8 +3873,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             }
             onAttack {
               def pcs = opp.all.findAll{it.evolution && !it.pokemonLevelUp}.select("Choose 1 of your opponent's Evolved Pokémon")
-              devolve(pcs, opp.deck)
-              shuffleOppDeck()
+              devolve(pcs, opp.hand)
             }
           }
         };
