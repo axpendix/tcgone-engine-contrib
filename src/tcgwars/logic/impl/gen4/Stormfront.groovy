@@ -1345,9 +1345,16 @@ public enum Stormfront implements LogicCardInfo {
           resistance W, MINUS20
           pokeBody "Green Renewal", {
             text "Remove 1 damage counter from Tangrowth between turns."
-            delayedA {
+            delayedA (anytime:true) {
+              def lastExecId=null
               before BEGIN_TURN, {
-                heal 10, self
+                if(lastExecId != e.executionId){
+                  if(self.numberOfDamageCounters>0){
+                    bc "Green Renewal activates"
+                    heal(10, self)
+                  }
+                  lastExecId = e.executionId
+                }
               }
             }
           }
