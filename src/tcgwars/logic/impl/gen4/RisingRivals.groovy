@@ -557,17 +557,18 @@ public enum RisingRivals implements LogicCardInfo {
           pokeBody "Unlucky Wind", {
             text "As long as Shiftry is your Active Pokémon, whenever your opponent flips a coin during his or her turn, treat it as tails."
             delayedA {
-              before COIN_FLIP, {
-                if (bg.currentThreadPlayerType == self.owner.opposite && bg.currentTurn == self.owner.opposite && self.active) {
-                  bc "$thisAbility forced the coin flip to be TAILS."
-                  bg.deterministicCoinFlipQueue.offer(false)
-                }
+              def key = CoinFlip.DROWZEE_35_Sinister_Suggestion
+              def unregisterA = {bg.em().storeObject(key, null)}
+              def registerA = {bg.em().storeObject(key, bg.turnCount)}
+              after SWITCH, {
+                if(self.active && bg.currentTurn == self.owner.opposite) registerA()
+                else unregisterA()
               }
-            }
-            getterA COIN_FLIP_GETTER, { h->
-              if (bg.currentThreadPlayerType == self.owner.opposite && bg.currentTurn == self.owner.opposite && self.active) {
-                h.object = false
+              after BETWEEN_TURNS, {
+                if(self.active && bg.currentTurn == self.owner.opposite) registerA()
+                else unregisterA()
               }
+              unregister{unregisterA()}
             }
           }
           move "Conform", {
