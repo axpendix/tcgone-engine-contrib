@@ -3122,7 +3122,7 @@ public enum Stormfront implements LogicCardInfo {
                 if (flag && !self.specialConditions) {
                   def moveList = []
                   moveList.add("Don't attack")
-                  moveList.addAll(self.baseMoves)
+                  moveList.addAll(self.moves)
                   def move = choose(moveList, "Link Lightning: Choose attack", moveList[0])
                   if(move != "Don't attack") {
                     def bef=blockingEffect(BETWEEN_TURNS)
