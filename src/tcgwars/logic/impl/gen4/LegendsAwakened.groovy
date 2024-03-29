@@ -1555,18 +1555,17 @@ public enum LegendsAwakened implements LogicCardInfo {
           move "Energy Dissolve", {
             text "60 damage. Discard an Energy attached to the Defending Pokémon at the end of your opponent's next turn."
             energyCost G, G, C
-            attackRequirement {}
             onAttack {
               damage 60
+              def pcs = defending
 
-              targeted (defending) {
-                bc "An Energy will be discarded from ${opp.owner.getPlayerUsername(bg)}'s Defending ${defending} at the end of their next turn. (This effect can be removed by evolving or benching ${defending}.)"
-                def pcs = defending
-                delayed {
+              targeted (pcs) {
+                bc "An Energy will be discarded from ${opp.owner.username}'s Defending ${pcs} at the end of their next turn. (This effect can be removed by evolving or benching ${pcs}.)"
+                delayed (target:pcs) {
                   before BETWEEN_TURNS, {
-                    if (bg.currentTurn == self.owner.opposite) {
+                    if (bg.currentTurn == pcs.owner) {
                       bc "Energy Dissolve activates"
-                      discardSelfEnergy C
+                      pcs.cards.filterByType(ENERGY).select("Discard an energy from $pcs", pcs.owner.opposite).discard()
                     }
                   }
                   after FALL_BACK, pcs, { unregister() }
