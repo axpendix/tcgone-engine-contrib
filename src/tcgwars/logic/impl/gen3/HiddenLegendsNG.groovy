@@ -2052,15 +2052,28 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         weakness W
         pokeBody "Healing Stone", {
           text "At any time between turns, remove 1 damage counter from Regirock ex."
-          delayedA {
+          delayedA (anytime:true) {
+            def lastExecId=null
+            before BEGIN_TURN, {
+              if(lastExecId != e.executionId){
+                if(self.numberOfDamageCounters>0){
+                  bc "Healing Stone activates"
+                  heal(10, self)
+                }
+                lastExecId = e.executionId
+              }
+            }
           }
         }
         move "Tonnage", {
           text "60+ damage. You may do 60 damage plus 20 more damage. If you do, Regirock ex does 30 damage to itself."
           energyCost F, F, C
-          attackRequirement {}
           onAttack {
             damage 60
+            if (confirm("You may do 60 damage plus 20 more damage. If you do, Regirock ex does 30 damage to itself.")) {
+              damage 20
+              damage 30, self
+            }
           }
         }
       };
