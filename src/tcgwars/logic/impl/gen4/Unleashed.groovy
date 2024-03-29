@@ -1648,10 +1648,11 @@ public enum Unleashed implements LogicCardInfo {
         return basicTrainer (this) {
           text "Flip 2 coins. For each heads, search your deck for a Basic Pokémon, show it to your opponent, and put it into your hand. If you do, shuffle your deck afterward."
           onPlay {
-            flip 2, {
-              my.deck.search ("Search your deck for a Basic Pokémon", cardTypeFilter(BASIC)).showToOpponent("Selected Pokémon").moveTo(my.hand)
+            int count = flipHeadsCount 2
+            if (count) {
+              my.deck.search(max:count, "Search your deck for up to $count Basic Pokémon", cardTypeFilter(BASIC)).showToOpponent("Selected Pokémon").moveTo(my.hand)
+              shuffleDeck()
             }
-            shuffleDeck()
           }
           playRequirement{
             assert my.deck.notEmpty
