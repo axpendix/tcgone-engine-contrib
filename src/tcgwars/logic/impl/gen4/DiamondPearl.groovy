@@ -397,11 +397,11 @@ public enum DiamondPearl implements LogicCardInfo {
           pokePower "Gleam Eyes", {
             text "Once during your turn, when you play Luxray from your hand to evolve 1 of your Pokémon, you may look at your opponent’s hand. If your opponent’s Bench isn’t full, choose 1 Basic Pokémon from your opponent’s hand, and put it onto his or her Bench. Then, switch it with the Defending Pokémon."
             onActivate { reason ->
-              if (reason==PLAY_FROM_HAND && opp.hand && opp.bench.notFull && confirm('Use Gleam Eyes?')) {
+              if (reason==PLAY_FROM_HAND && opp.hand && confirm('Use Gleam Eyes?')) {
                 powerUsed()
                 def list = opp.hand.shuffledCopy().showToMe("Opponent's hand").filterByType(BASIC)
-                if (list) {
-                  def card = list.select("Put a Basic Pokémon you find there onto your opponent's Bench").first()
+                if (list && opp.bench.notFull) {
+                  def card = list.select("Put a Basic Pokémon in your opponent’s hand onto your opponent's Bench then switch it with the Defending Pokémon").first()
                   def pcs = benchPCS(card, OTHER)
                   if (pcs) {
                     sw opp.active, pcs
