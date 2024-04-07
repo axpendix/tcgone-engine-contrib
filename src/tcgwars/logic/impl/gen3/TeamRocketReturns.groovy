@@ -344,7 +344,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
                 if (list) {
                   damage 20
                   afterDamage {
-                    bg.em().activateEffect(new DiscardEnergy(list))
+                    list.discard()
                   }
                 }
               }
