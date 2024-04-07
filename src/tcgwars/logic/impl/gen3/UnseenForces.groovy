@@ -443,13 +443,14 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             damage 100
 
-            if (my.bench) {
-              self.cards.filterByType(ENERGY).each {
-                energySwitch(self, my.bench.select("Move $it to?"), it)
+            afterDamage {
+              if (my.bench) {
+                self.cards.filterByType(ENERGY).each {
+                  energySwitch(self, my.bench.select("Move $it to?"), it)
+                }
               }
+              directDamage 70, self
             }
-
-            directDamage 70, self
           }
         }
       };
