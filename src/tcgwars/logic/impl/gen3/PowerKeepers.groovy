@@ -502,8 +502,10 @@ public enum PowerKeepers implements LogicCardInfo {
           text "Once during your opponent's turn, when any of your Pokémon is Knocked Out by your opponent's attacks, you may use this power. Choose a basic Energy card discarded from the Knocked Out Pokémon and attach it to Lanturn. You can't use more than 1 Energy Grounding Poké-Power each turn."
           delayedA{
             before KNOCKOUT, {
-              if (bg.em().retrieveObject("Energy_Grounding") != bg.turnCount && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && ef.pokemonToBeKnockedOut != self && ef.pokemonToBeKnockedOut.cards.filterByType(BASIC_ENERGY).energyCount(C)) {
-                moveEnergy(basic: true, playerType: self.owner, may: true, info: "Energy Grounding : You may move an energy from ${ef.pokemonToBeKnockedOut} to $self", ef.pokemonToBeKnockedOut,self,SRC_ABILITY)
+              PokemonCardSet knockedOut = ef.pokemonToBeKnockedOut
+              if (bg.em().retrieveObject("Energy_Grounding") != bg.turnCount && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && knockedOut != self && knockedOut.cards.filterByType(BASIC_ENERGY).energyCount(C) && confirm ("Use Energy Grounding? You may move an energy from $knockedOut to $self")) {
+                moveEnergy(basic: true, playerType: self.owner, info: "Energy Grounding : Move an energy from ${knockedOut} to $self", knockedOut, self)
+                powerUsed()
                 bg.em().storeObject("Energy_Grounding", bg.turnCount)
               }
             }
