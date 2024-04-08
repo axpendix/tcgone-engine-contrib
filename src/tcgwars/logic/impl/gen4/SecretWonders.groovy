@@ -1035,10 +1035,11 @@ public enum SecretWonders implements LogicCardInfo {
             // Errata: * Electivire's "Discharge" attack should say "for each Electric Energy CARD" rather than just "for each Electric Energy". (Nov 16, 2007 Pokemon Organized Play News)
             energyCost L, C, C
             attackRequirement {
-              assert self.cards.energyCount(L) : "You ave no [L] Energy attached to Electivire"
+              assert self.cards.energyCount(L) : "You have no [L] Energy attached to $self"
             }
             onAttack {
-              flip self.cards.energyCount(L), {
+              def count = self.cards.filterByEnergyType(L).size()
+              flip count, {
                 damage 50
               }
               afterDamage {
