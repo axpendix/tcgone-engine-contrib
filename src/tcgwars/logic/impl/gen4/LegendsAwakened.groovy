@@ -1565,7 +1565,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                   before BETWEEN_TURNS, {
                     if (bg.currentTurn == pcs.owner) {
                       bc "Energy Dissolve activates"
-                      pcs.cards.filterByType(ENERGY).select("Discard an energy from $pcs", pcs.owner.opposite).discard()
+                      pcs.cards.filterByType(ENERGY).select2(player: pcs.owner.opposite, text: "Discard an energy from $pcs").discard()
                     }
                   }
                   after FALL_BACK, pcs, { unregister() }
