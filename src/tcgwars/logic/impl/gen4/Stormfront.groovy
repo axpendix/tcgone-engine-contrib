@@ -1348,11 +1348,9 @@ public enum Stormfront implements LogicCardInfo {
             delayedA (anytime:true) {
               def lastExecId=null
               before BEGIN_TURN, {
-                if(lastExecId != e.executionId){
-                  if(self.numberOfDamageCounters>0){
-                    bc "Green Renewal activates"
-                    heal(10, self)
-                  }
+                if(lastExecId != e.executionId && self.numberOfDamageCounters){
+                  bc "Green Renewal activates"
+                  heal(10, self)
                   lastExecId = e.executionId
                 }
               }
