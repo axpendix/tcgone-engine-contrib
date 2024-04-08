@@ -2062,11 +2062,11 @@ f
           weakness G, PLUS30
           resistance L, MINUS20
           pokePower "Aqua Healing", {
-            text "Once during your turn , if Quagsire is your Active Pokémon and the Defending Pokémon has any Energy attached to it, you may remove 3 damage counters from Quagsire."
+            text "Once during your turn, if Quagsire is your Active Pokémon and the Defending Pokémon has any [W] Energy attached to it, you may remove 3 damage counters from Quagsire."
             actionA {
               checkLastTurn()
               assert self.active : "$self is not active"
-              assert opp.active.cards.energyCount(C) : "$opp.active has no Energy attached to it"
+              assert opp.active.cards.energyCount(W) : "$opp.active has no [W] Energy attached to it"
               powerUsed()
               heal 30, self
             }
