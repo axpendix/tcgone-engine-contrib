@@ -3389,7 +3389,7 @@ public enum Platinum implements LogicCardInfo {
               }
               before ATTACK_MAIN, {
                 if(bg.em().retrieveObject("Invisible_Tentacles") != bg.turnCount) {
-                  bg.em().storeObject("Invisible_Tentacles", bt.turnCount)
+                  bg.em().storeObject("Invisible_Tentacles", bg.turnCount)
                   opp.hand.oppSelect("Choose a card to discard").discard()
                 }
               }

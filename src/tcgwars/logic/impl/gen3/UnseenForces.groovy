@@ -420,9 +420,9 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 20
-            targeted (defending){
-              bc "3 damage counters will be put on ${opp.owner.getPlayerUsername(bg)}'s Defending ${defending} at the end of their next turn. (This effect can be removed by evolving or benching ${defending}.)"
-              def pcs = defending
+            def pcs = defending
+            targeted (pcs){
+              bc "3 damage counters will be put on ${opp.owner.getPlayerUsername(bg)}'s Defending ${pcs} at the end of their next turn. (This effect can be removed by evolving or benching ${pcs}.)"
               delayed {
                 before BETWEEN_TURNS, {
                   if (bg.currentTurn == self.owner.opposite) {
