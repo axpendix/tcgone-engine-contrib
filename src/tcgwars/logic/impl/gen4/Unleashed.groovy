@@ -1455,7 +1455,7 @@ public enum Unleashed implements LogicCardInfo {
             energyCost C
             onAttack {
               heal 40, self
-              new CantRetreat(self).setForTurns(3).run(bg())
+              cantRetreatSelf()
             }
           }
           move "Flap", {

@@ -261,9 +261,9 @@ public enum Platinum implements LogicCardInfo {
             text "70 damage. Move an Energy card attached to Ampharos to 1 of your Benched Pokémon."
             energyCost L, C, C
             onAttack {
-              damage 30
+              damage 70
               if(my.bench && self.cards.filterByType(ENERGY)) {
-                moveEnergy(self,my.bench)
+                afterDamage {moveEnergy(self,my.bench)}
               }
             }
           }
@@ -350,7 +350,7 @@ public enum Platinum implements LogicCardInfo {
         return evolution (this, from:"Skitty", hp:HP090, type:COLORLESS, retreatCost:1) {
           weakness F, PLUS20
           pokePower "Power Circulation", {
-            text "Once during your turn , you may search your discard pile for up to 2 basic Energy cards, show them to your opponent, and put those cards on top of your deck in any order. If you do, put 2 damage counters on Delcatty. This power can’t be used if Delcatty is affected by a Special Condition."
+            text "Once during your turn, you may search your discard pile for up to 2 basic Energy cards, show them to your opponent, and put those cards on top of your deck in any order. If you do, put 2 damage counters on Delcatty. This power can’t be used if Delcatty is affected by a Special Condition."
             actionA {
               checkLastTurn()
               checkNoSPC()
@@ -358,6 +358,7 @@ public enum Platinum implements LogicCardInfo {
               powerUsed()
 
               def list = my.discard.select(max:2, cardTypeFilter(BASIC_ENERGY))
+              bc "Put $list on top of deck"
               list = rearrange(list)
               my.discard.removeAll(list)
               my.deck.addAll(0, list)
@@ -407,8 +408,10 @@ public enum Platinum implements LogicCardInfo {
             energyCost M, C, C
             onAttack {
               damage 50
-              if(my.hand.size() < 7) {
-                draw 7 - my.hand.size()
+              afterDamage {
+                if(my.hand.size() < 7) {
+                  draw 7 - my.hand.size()
+                }
               }
             }
           }
@@ -588,8 +591,8 @@ public enum Platinum implements LogicCardInfo {
             text "Prevent all damage done to your Benched Pokémon (excluding any Manectric) by attacks."
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
-                bg.dm().each {if(it.to.owner==self.owner && it.from.owner!=self.owner && it.to.benched && it.to.name != "Manectric" && it.dmg.value && it.notNoEffect){
-                  bc "Electric Barrier reduces damage"
+                bg.dm().each {if(it.to.owner==self.owner && it.to.benched && it.to.name != "Manectric" && it.dmg.value && it.notNoEffect){
+                  bc "Electric Barrier prevents damage"
                   it.dmg=hp(0)
                 }}
               }
@@ -611,7 +614,9 @@ public enum Platinum implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 40
-              attachEnergyFrom(type:L, my.deck, my.all)
+              afterDamage {
+                attachEnergyFrom(type:L, my.deck, my.all)
+              }
             }
           }
         };
@@ -746,21 +751,15 @@ public enum Platinum implements LogicCardInfo {
       case SLAKING_16:
         return evolution (this, from:"Vigoroth", hp:HP150, type:COLORLESS, retreatCost:4) {
           weakness F, PLUS30
-          def flag = -1
-          customAbility {
-            delayed {
-              before ATTACK_MAIN, {
-                if(ef.attacker == self) {
-                  flag = bg.turnCount + 2
-                }
-              }
-            }
-          }
           pokeBody "Lazy Paunch", {
             text "If Slaking used any attacks during your last turn, Slaking can’t attack."
             delayedA {
-              before CHECK_ATTACK_REQUIREMENTS, {
-                if(ef.attacker == self && flag == bg.turnCount) {
+              def lastAttackedTurn = -1
+              after PROCESS_ATTACK_EFFECTS, self, {
+                lastAttackedTurn = bg.turnCount
+              }
+              before CHECK_ATTACK_REQUIREMENTS, self, {
+                if(lastAttackedTurn == bg.turnCount - 2) {
                   wcu "Lazy Paunch prevents attacking"
                   prevent()
                 }
@@ -830,19 +829,19 @@ public enum Platinum implements LogicCardInfo {
                 apply ASLEEP
 
                 def pcs = defending
-                targeted (pcs, ATTACK) {
-                  delayed {
-                    register {
-                      bg.em().storeObject("Altaria_Platinum_Midnight_Eyes_${pcs.hashCode()}", bg.turnCount)
-                    }
-                    unregister {
-                      bg.em().storeObject("Altaria_Platinum_Midnight_Eyes_${pcs.hashCode()}", null)
-                    }
-                    after CHANGE_STAGE, pcs, { unregister() }
-                    after LEVEL_UP, pcs, {
-                      bg.em().storeObject("Altaria_Platinum_Midnight_Eyes_${pcs.hashCode()}", bg.turnCount)
-                    }
+                delayed {
+                  register {
+                    bg.em().storeObject("Altaria_Platinum_Midnight_Eyes_${pcs.hashCode()}", bg.turnCount)
                   }
+                  unregister {
+                    bg.em().storeObject("Altaria_Platinum_Midnight_Eyes_${pcs.hashCode()}", null)
+                  }
+                  /*
+                  Q. Say I use Altaria's "Midnight Eyes" on an active Infernape. On my opponents turn, they level their Active up to Infernape Lv.X. On my next turn I put the active Infernape Lv.X back to sleep and use "Perish Song". Will this KO the active Infernape Lv.X?
+                  A. Although evolving or devolving would not allow Perish Song to be used (since it is no longer the same Pokemon), a Leveled Up Pokemon is still the same Pokemon as it was before and in this case the Infernape Lv.X would get KO'd by Perish Song. (Apr 2, 2009 PUI Rules Team)
+                   */
+                  after EVOLVE, pcs, { unregister() }
+                  after DEVOLVE, pcs, { unregister() }
                 }
               }
             }
@@ -855,9 +854,7 @@ public enum Platinum implements LogicCardInfo {
               assert bg.em().retrieveObject("Altaria_Platinum_Midnight_Eyes_${defending.hashCode()}") == bg.turnCount-2 : "The defending Pokémon was not damaged or affected by Midnight Eyes during your last turn"
             }
             onAttack {
-              targeted (defending) {
-                new Knockout(defending).run(bg)
-              }
+              new Knockout(defending).run(bg)
             }
           }
           move "Healing Song", {
@@ -991,13 +988,13 @@ public enum Platinum implements LogicCardInfo {
               checkNoSPC()
               assert my.hand : "Your hand is empty"
               assert bg.em().retrieveObject("Nurse_Call") != bg.turnCount : "You cannot use Nurse Call more than once per turn"
-              powerUsed()
+              powerUsed {bg.em().storeObject("Nurse_Call", bg.turnCount)}
+              bg.em().storeObject("Nurse_Call", bg.turnCount)
               my.hand.select("Choose a card to discard").discard()
               if (my.all.any { it.numberOfDamageCounters })
                 heal 20, my.all.findAll {
                   it.numberOfDamageCounters
                 }.select("Heal which Pokémon")
-              bg.em().storeObject("Nurse_Call", bg.turnCount)
             }
           }
           move "Return", {
@@ -1168,7 +1165,7 @@ public enum Platinum implements LogicCardInfo {
             energyCost P, C, C
             onAttack {
               damage 50
-              delayed {
+              delayed (target: defending) {
                 def knockedOut = null
                 before KNOCKOUT, {
                   if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner && self.active && ef.pokemonToBeKnockedOut == defending ) {
@@ -1580,7 +1577,7 @@ public enum Platinum implements LogicCardInfo {
         return basic (this, hp:HP090, type:METAL, retreatCost:3) {
           weakness P
           resistance R, MINUS20
-          pokeBody "Galactic Switch", {
+          pokePower "Galactic Switch", {
             text "Once during your turn (before your attack), you may move an Energy card attached to one of your Pokémon SP to another of your Pokémon. Then, put 2 damage counters on Bronzong G. This power can't be used if Bronzong G is affected by a Special Condition. "
             actionA {
               checkLastTurn()
@@ -2059,7 +2056,7 @@ public enum Platinum implements LogicCardInfo {
             energyCost W, W
             onAttack {
               damage 40
-              sandAttack(thisMove)
+              octazooka()
             }
           }
         };
@@ -3234,9 +3231,10 @@ public enum Platinum implements LogicCardInfo {
           onPlay {
             eff = delayed {
               after PUT_ON_BENCH, {
-                if(ef.basicFromHand && !(ef.pokemonCard.types.contains(G) || ef.pokemonCard.types.contains(P))){
+                def types = ef.place.types
+                if(ef.basicFromHand && !types.contains(G) && !types.contains(P)){
                   bc "Miasma Valley activates"
-                  ef.place.damage += 20
+                  directDamage(20, ef.place)
                 }
               }
             }
@@ -3479,9 +3477,10 @@ public enum Platinum implements LogicCardInfo {
             energyCost G, C, C
             onAttack {
               damage 40
-              my.hand.select(min:0, max:my.hand.filterByEnergyType(G).size(), "Choose any number of [G] Energy cards to attach to your Pokémon", energyFilter(G)).each {
+              my.hand.select(min:0, max:my.hand.filterByEnergyType(G).size(), "Choose any number of [G] Energy cards to attach to your Pokémon", energyFilter(G)).each { card->
                 damage 20
-                attachEnergy(my.all.select("Attach $it to"), it)
+                def pcs = my.all.select("Attach $card to?")
+                afterDamage {attachEnergy(pcs, card)}
               }
             }
           }
@@ -3491,20 +3490,20 @@ public enum Platinum implements LogicCardInfo {
           weakness R
           resistance F, MINUS20
           initHook {Card thisCard->
-            delayed {
+            delayed (priority: LAST) {
               before KNOCKOUT, {
-                if ((ef as Knockout).byDamageFromAttack && ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite) {
+                if ((ef as Knockout).byDamageFromAttack && ef.pokemonToBeKnockedOut.types.contains(G) && ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite) {
                   bg.em().storeObject("Revenge_Seed", bg.turnCount)
                 }
               }
             }
           }
           pokeBody "Revenge Seed", {
-            text "If any of your [G] Pokémon were Knocked Out by damage from an opponent’s attack during his or her last turn, each of Shaymin’s attacks does 60 more damage to the Active Pokémon ."
+            text "If any of your [G] Pokémon were Knocked Out by damage from an opponent’s attack during his or her last turn, each of Shaymin’s attacks does 60 more damage to the Active Pokémon."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
                 if (ef.attacker==self && bg.em().retrieveObject("Revenge_Seed") == bg.turnCount-1) bg.dm().each {
-                  if (it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value && it.to.types.contains(G)) {
+                  if (it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value) {
                     bc "Revenge seed +60"
                     it.dmg += hp(60)
                   }
@@ -3647,7 +3646,7 @@ public enum Platinum implements LogicCardInfo {
             energyCost ()
             onAttack {
               heal 40, self
-              cantRetreat(self)
+              cantRetreatSelf()
             }
           }
           move "Mirror Move", {
@@ -3699,12 +3698,12 @@ public enum Platinum implements LogicCardInfo {
             text "30 damage. Discard a [R] Energy card from your hand. (If you can’t discard a card from your hand, this attack does nothing.)"
             energyCost R, C
             attackRequirement {
-              assert my.hand.filterByEnergyType(R)
+              assert my.hand.filterByEnergyType(R) : "No [R] Energy in Hand"
             }
             onAttack {
               damage 30
               afterDamage {
-                discardSelfEnergy(R)
+                my.hand.filterByEnergyType(R).select("Discard").discard()
               }
             }
           }
