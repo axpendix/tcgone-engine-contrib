@@ -926,11 +926,17 @@ public enum Stormfront implements LogicCardInfo {
           pokePower "Fainting Spell", {
             text "Once during your opponent’s turn, if Gengar would be Knocked Out by damage from an attack, you may flip a coin. If heads, the Defending Pokémon is Knocked Out."
             delayedA (priority: LAST) {
+              def turn
+              def attacker
+              before (APPLY_ATTACK_DAMAGES) {
+                attacker = ef.attacker
+                turn = bg.turnCount
+              }
               before (KNOCKOUT, self) {
-                if ((ef as Knockout).byDamageFromAttack && self.active && bg.currentTurn==self.owner.opposite && self.owner.opposite.pbg.active != null && self.owner.opposite.pbg.active.inPlay) {
+                if ((ef as Knockout).byDamageFromAttack && bg.turnCount == turn && bg.currentTurn==self.owner.opposite && attacker && attacker.inPlay && confirm("Use Fainting Spell?", self.owner)) {
                   powerUsed()
                   flip{
-                    new Knockout(self.owner.opposite.pbg.active).run(bg)
+                    new Knockout(attacker).run(bg)
                   }
                 }
               }

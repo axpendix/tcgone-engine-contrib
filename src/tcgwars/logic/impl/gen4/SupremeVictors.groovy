@@ -1125,8 +1125,8 @@ public enum SupremeVictors implements LogicCardInfo {
             onAttack {
               def card = my.hand.select("Choose a Basic Energy card to attach to 1 of your Pokémon",cardTypeFilter(BASIC_ENERGY)).first()
               def tar = my.all.select("Choose a Pokémon to attach $card to")
-              attachEnergy (tar,card)
-              heal 20, tar
+              def failed = attachEnergy (tar,card,PLAY_FROM_HAND)
+              if (!failed) heal 20, tar
             }
           }
           move "Return", {
@@ -1250,7 +1250,7 @@ public enum SupremeVictors implements LogicCardInfo {
             onAttack {
               damage 60
               if(opp.deck) {
-                draw 2, TargetPlayer.OPPONENT
+                afterDamage {draw 2, TargetPlayer.OPPONENT}
               }
             }
           }
@@ -1370,28 +1370,26 @@ public enum SupremeVictors implements LogicCardInfo {
               afterDamage {
                 apply ASLEEP
                 def pcs = defending
-                targeted(pcs) {
-                  if (pcs.isSPC(ASLEEP)) {
-                    delayed {
-                      before ASLEEP_SPC, null, null, BEGIN_TURN, {
-                        flip "Asleep (Hibernation Spore)", 2, {}, {}, [2: {
-                          ef.unregisterItself(bg.em());
-                        }, 1:{
-                          bc "$pcs is still asleep."
-                        }, 0:{
-                          bc "$pcs is still asleep."
-                        }]
-                        prevent()
-                      }
-                      after CLEAR_SPECIAL_CONDITION, pcs, {
-                        if (ef.types.contains(ASLEEP)) {
-                          unregister()
-                        }
-                      }
-                      after FALL_BACK, pcs, { unregister() }
-                      after KNOCKOUT, pcs, { unregister() }
-                      after CHANGE_STAGE, pcs, { unregister() }
+                if (pcs.isSPC(ASLEEP)) {
+                  delayed (target:pcs) {
+                    before ASLEEP_SPC, pcs, null, BEGIN_TURN, {
+                      flip "Asleep (Hibernation Spore)", 2, {}, {}, [2: {
+                        ef.unregisterItself(bg.em());
+                      }, 1:{
+                        bc "$pcs is still asleep."
+                      }, 0:{
+                        bc "$pcs is still asleep."
+                      }]
+                      prevent()
                     }
+                    after CLEAR_SPECIAL_CONDITION, pcs, {
+                      if (ef.types.contains(ASLEEP)) {
+                        unregister()
+                      }
+                    }
+                    after FALL_BACK, pcs, { unregister() }
+                    after KNOCKOUT, pcs, { unregister() }
+                    after CHANGE_STAGE, pcs, { unregister() }
                   }
                 }
               }
@@ -2267,7 +2265,7 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              attachEnergyFrom(type:L,my.discard,my.all)
+              afterDamage{attachEnergyFrom(type:L,my.discard,my.all)}
             }
           }
         };
@@ -3890,9 +3888,9 @@ public enum SupremeVictors implements LogicCardInfo {
               checkNoSPC()
               assert my.discard.filterByType(ENERGY) : "You have no Energy cards in your discard pile"
               powerUsed({ usingThisAbilityEndsTurn delegate })
-              def maxCards = Math.min(3,my.discard.filterByEnergyType(L).size())
-              my.discard.select(max:maxCards,"Search your discard pile for up to 3 [L] Energy cards",energyFilter(L)).each {
-                attachEnergy(my.all.select("Attach $it to"), it)
+              def maxCards = Math.min(3,my.discard.filterByType(ENERGY).size())
+              my.discard.filterByType(ENERGY).select(max:maxCards,"Search your discard pile for up to 3 Energy cards and attach them to your Pokémon in any way you like").each {
+                attachEnergy(my.all.select("Attach $it to?"), it)
               }
               usingThisAbilityEndsTurn delegate
             }

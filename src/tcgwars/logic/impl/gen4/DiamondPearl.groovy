@@ -660,8 +660,8 @@ public enum DiamondPearl implements LogicCardInfo {
                       bc "Accelerative Dive prevents damage!"
                     }
                   }
-                  after FALL_BACK, defending, { unregister() }
-                  after CHANGE_STAGE, defending, { unregister() }
+                  after FALL_BACK, self, { unregister() }
+                  after CHANGE_STAGE, self, { unregister() }
                   unregisterAfter 3
                   unregister { bc "Accelerative Dive fades" }
                   register { bc "Accelerative Dive activated" }

@@ -98,7 +98,7 @@ public enum PokemonRumble implements LogicCardInfo {
           }
         }
       case CHERRIM_2:
-        return evolution (this, from:"Cherubi", hp:HP080, type:GRASS, retreatCost:2) {
+        return evolution (this, from:"Cherubi", hp:HP080, type:GRASS, retreatCost:1) {
           weakness R
           resistance W, MINUS20
           move "Solarbeam", {
@@ -257,7 +257,7 @@ public enum PokemonRumble implements LogicCardInfo {
         }
       case BASTIODON_14:
         return evolution (this, from:"Shieldon", hp:HP120, type:METAL, retreatCost:4) {
-          weakness F
+          weakness FIRE
           resistance P, MINUS20
           move "Strength", {
             text "40 damage."

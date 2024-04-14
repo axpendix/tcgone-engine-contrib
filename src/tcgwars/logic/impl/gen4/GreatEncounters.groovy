@@ -999,11 +999,13 @@ public enum GreatEncounters implements LogicCardInfo {
           weakness L
           pokeBody "Sleeping Pulse", {
             text "As long as Wailord remains Asleep between turns, remove 1 damage counter from Wailord."
-            delayedA {
+            delayedA (anytime:true) {
+              def lastExecId = null
               before BEGIN_TURN, {
-                if (self.isSPC(ASLEEP)) {
-                  bc "Sleeping Pulse activates."
+                if (lastExecId != e.executionId && self.numberOfDamageCounters && self.isSPC(ASLEEP)) {
+                  bc "$thisAbility activates"
                   heal 10, self
+                  lastExecId = e.executionId
                 }
               }
             }
@@ -1459,7 +1461,7 @@ public enum GreatEncounters implements LogicCardInfo {
             onAttack {
               def energies = my.hand.filterByType(BASIC_ENERGY).filterByEnergyType(W).select(max: 2, "Select 2 basic [W] Energy cards to attach to $self")
               energies.each {
-                attachEnergy(self, it)
+                attachEnergy(self, it, PLAY_FROM_HAND)
               }
               heal energies.size() * 20, self
             }
@@ -2764,16 +2766,16 @@ public enum GreatEncounters implements LogicCardInfo {
         return levelUp (this, from:"Cresselia", hp:HP100, type:PSYCHIC, retreatCost:1) {
           weakness P
           pokePower "Full Moon Dance", {
-            text "Once during your turn , you may move 1 damage counter from either player's Pokémon to another Pokémon. This power can't be used if Cresselia is affected by a Special Condition."
+            text "Once during your turn, you may move 1 damage counter from either player's Pokémon to another Pokémon. This power can't be used if Cresselia is affected by a Special Condition."
             actionA {
               assert all.find({ it.numberOfDamageCounters > 0 }) : "None of either player's Pokémon have damage counters."
               checkLastTurn()
               checkNoSPC()
               powerUsed()
               def source = all.findAll { it.numberOfDamageCounters > 0 }.select("Select a source for a damage counter.")
-              def target = all
-              all.remove(source)
-              target = target.select("Select a Pokémon to move the damage counter to.")
+              def targets = all
+              targets.remove(source)
+              def target = targets.select("Select a Pokémon to move the damage counter to.")
               source.damage -= hp(10)
               target.damage += hp(10)
               bc "Full Moon Dance moved a damage counter from $source to $target."
@@ -2839,29 +2841,27 @@ public enum GreatEncounters implements LogicCardInfo {
               afterDamage {
                 apply ASLEEP
                 def pcs = defending
-                targeted(pcs) {
-                  if (pcs.isSPC(ASLEEP)) {// Is !bg.em().run(new ApplySpecialCondition(POISONED, pcs, SOURCE.ATTACK)) better here
-                    delayed {
-                      before ASLEEP_SPC, null, null, BEGIN_TURN, {
-                        flip "Asleep (Endless Darkness)", 2, {}, {}, [2: {
-                          ef.unregisterItself(bg.em());
-                        }, 1:{
-                          bc "$pcs is still asleep."
-                        }, 0:{
-                          bc "$pcs is knocked out by $thisMove."
-                          new Knockout(pcs).run(bg)
-                        }]
-                        prevent()
-                      }
-                      after CLEAR_SPECIAL_CONDITION, pcs, {
-                        if (ef.types.contains(ASLEEP)) {
-                          unregister()
-                        }
-                      }
-                      after FALL_BACK, pcs, { unregister() }
-                      after KNOCKOUT, pcs, { unregister() }
-                      after CHANGE_STAGE, pcs, { unregister() }
+                if (pcs.isSPC(ASLEEP)) {
+                  delayed (target:pcs) {
+                    before ASLEEP_SPC, pcs, null, BEGIN_TURN, {
+                      flip "Asleep (Endless Darkness)", 2, {}, {}, [2: {
+                        ef.unregisterItself(bg.em());
+                      }, 1:{
+                        bc "$pcs is still asleep."
+                      }, 0:{
+                        bc "$pcs is knocked out by $thisMove."
+                        new Knockout(pcs).run(bg)
+                      }]
+                      prevent()
                     }
+                    after CLEAR_SPECIAL_CONDITION, pcs, {
+                      if (ef.types.contains(ASLEEP)) {
+                        unregister()
+                      }
+                    }
+                    after FALL_BACK, pcs, { unregister() }
+                    after KNOCKOUT, pcs, { unregister() }
+                    after CHANGE_STAGE, pcs, { unregister() }
                   }
                 }
               }
@@ -2914,8 +2914,8 @@ public enum GreatEncounters implements LogicCardInfo {
             actionA {
               checkLastTurn()
               checkNoSPC()
-              powerUsed()
               assertMyBench()
+              powerUsed()
 
               sw my.active, my.bench.oppSelect("$thisAbility: Select your opponent's new Active Pokémon")
 
