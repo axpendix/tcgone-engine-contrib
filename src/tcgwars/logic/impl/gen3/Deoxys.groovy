@@ -297,7 +297,7 @@ public enum Deoxys implements LogicCardInfo {
       case CLAYDOL_5:
         return evolution (this, from:"Baltoy", hp:HP080, type:FIGHTING, retreatCost:1) {
           weakness WATER
-          pokePower "Psychic Trance", {
+          pokePower "Psychic Trace", {
             text "Once during your turn (before you attack), if Claydol is your Active Pokémon, you may shuffle your hand into your deck. Then, draw a number of cards equal to the number of cards in your opponent’s hand. This power can’t be used if Claydol is affected by a Special Condition."
             actionA {
               checkLastTurn()
