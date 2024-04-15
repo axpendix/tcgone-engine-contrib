@@ -10,6 +10,7 @@ import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.effect.EffectPriority.BEFORE_LAST
+import static tcgwars.logic.effect.EffectPriority.LAST
 import static tcgwars.logic.effect.EffectType.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.groovy.TcgBuilders.*;
@@ -183,21 +184,24 @@ public enum DiamondPearlPromos implements LogicCardInfo {
         return copy(DiamondPearl.GLAMEOW_83, this);
       case DARKRAI_DP24:
         return basic (this, hp:HP080, type:DARKNESS, retreatCost:1) {
-          weakness F
+          weakness F, PLUS20
           resistance P, MINUS20
           // Enigma Berry: If Darkrai is damaged by an attack from your opponent's Fighting Pokémon, remove 4 damage counters at the end of that turn."
           customAbility {
-            ifDamagedByAttackNextTurn(delegate) {
-              if (opp.active.types.contains(F)) {
-                delayed {
-                  before BETWEEN_TURNS, {
-                    if (bg.currentTurn == self.owner.opposite) {
-                      bc "Enigma Berry activates"
-                      heal 40, self
+            text "Enigma Berry: If Darkrai is damaged by an attack from your opponent's Fighting Pokémon, remove 4 damage counters at the end of that turn."
+            delayedA (priority: LAST) {
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {if (it.to==self && it.from.owner!=self.owner && it.from.types.contains(FIGHTING) && bg.currentTurn == self.owner.opposite && it.notZero){
+                  delayed {
+                    before BETWEEN_TURNS, {
+                      if (self.inPlay) {
+                        bc "Enigma Berry triggers"
+                        heal(40, self)
+                      }
+                      unregister()
                     }
                   }
-                  unregisterAfter 1
-                }
+                }}
               }
             }
           }
