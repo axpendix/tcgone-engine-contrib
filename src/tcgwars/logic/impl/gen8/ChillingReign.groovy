@@ -3157,8 +3157,20 @@ public enum ChillingReign implements LogicCardInfo {
           weakness FIGHTING
           bwAbility "Brazen Tail", {
             text "Prevent all effects of your opponent's Item and Supporter cards that would discard Energy from your Pokémon or return Energy from your Pokémon to your hand or deck."
-            actionA {
-              // TODO
+            delayedA {
+              before MOVE_CARD_INNER,null,TRAINER_CARD,{
+                Card sourceCard=e.sourceTrainer
+                MoveCardInner eff = ef
+                if(sourceCard && sourceCard.player!=self.owner && sourceCard.cardTypes.isIn(ITEM, SUPPORTER)
+                  && eff.fromPokemon && eff.fromPokemon.owner==self.owner
+                  && eff.card && eff.card.cardTypes.isEnergy()
+                  && eff.toList && (eff.toList?.zoneType == CardList.ZoneType.DISCARD
+                  || eff.toList?.zoneType == CardList.ZoneType.DECK
+                  || eff.toList?.zoneType == CardList.ZoneType.HAND)) {
+                  bc "Brazen Tail prevents moving of ${eff.card}"
+                  prevent()
+                }
+              }
             }
           }
           move "Gnaw", {
@@ -3579,13 +3591,13 @@ public enum ChillingReign implements LogicCardInfo {
       case RUGGED_HELMET_152:
         return pokemonTool (this) {
           text "When the Pokémon this card is attached to is your Active Pokémon and is damaged by an opponent's attack, choose an Energy attached to the Attacking Pokémon and return it to your opponent's hand. You may play as many Item cards as you like during your turn."
-          ifActiveAndDamagedByAttackAttached(delegate) {
-            bc "Rugged Helmet activates"
-            def opponent = self.owner.opposite.pbg
-            def attacker = opponent.active
-            if (attacker.cards.filterByType(ENERGY)) {
-              def card = attacker.cards.filterByType(ENERGY).select("Energy card to move to hand", { true }, self.owner)
-              card.moveTo(opponent.hand)
+          ifActiveAndDamagedByAttackAttached(delegate) {ef->
+            PokemonCardSet attacker = ef.attacker
+            def list = attacker.cards.filterByType(CardType.ENERGY)
+            if (list) {
+              bc "Rugged Helmet activates"
+              def card = list.select("Energy card to move to hand", { true }, self.owner)
+              card.moveTo(attacker.owner.pbg.hand)
             }
           }
         };

@@ -181,7 +181,7 @@ public enum EeveeHeroes implements LogicCardInfo {
         bwAbility "Vise Coach", {
           text "Damage from the attacks of your Single Strike Pokémon isn't affected by Resistance on your opponent's Active Pokémon."
           delayedA {
-            before APPLY_RESISTANCE, { Attack ef ->
+            before APPLY_RESISTANCE, {
               if (ef.attacker.owner == self.owner && ef.attacker.singleStrike && ef.getTargetPokemon().owner == ef.attacker.owner.opposite && ef.getTargetPokemon().active) {
                 bc text
                 prevent()

@@ -359,7 +359,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             powerUsed()
             def energy = my.hand.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"}).select("Select an energy to attach to one of your δ Pokémon.").first()
             def tar = my.all.findAll{ it.topPokemonCard.cardTypes.is(DELTA) }.select("Select a δ Pokémon to attach the Energy to.")
-            attachEnergy(tar, energy)
+            attachEnergy(tar, energy, PLAY_FROM_HAND)
           }
         }
         move "Swift", {
