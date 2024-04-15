@@ -267,7 +267,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   ability instanceof PokePower &&
                   (!self.specialConditions) &&
                   (keyStore("Power_Cancel", self, null) != bg.turnCount) && //checkLastTurn() but without assert
-                  (bg.currentThreadPlayerType != self.owner) &&
+                  (bg.currentThreadPlayerType != self.owner && bg.currentTurn != self.owner) &&
                   (pcs.owner != self.owner) &&
                   (self.owner.pbg.hand.size() >= 2) &&
                   confirm("Activate Power Cancel to block ${pcs.name}'s ${ability.name}?", self.owner)
