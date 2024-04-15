@@ -1438,7 +1438,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 def chosenEnergy = defending.cards.filterByType(ENERGY).select(count:1).first()
                 delayed {
                   before null, null, Source.SRC_SPECIAL_ENERGY, {
-                    if (ef.sourceCard == chosenEnergy) {
+                    if (e.sourceCard == chosenEnergy) {
                       prevent()
                     }
                   }

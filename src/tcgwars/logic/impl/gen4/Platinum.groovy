@@ -680,7 +680,7 @@ public enum Platinum implements LogicCardInfo {
             onAttack {
               damage 40
               afterDamage {// Can't use reduceDamageNextTurn as this effect needs to reduce recoil damage done by Head Smash
-                delayed {
+                delayed (priority: BEFORE_LAST) {
                   before APPLY_ATTACK_DAMAGES, {
                     bg.dm().each {
                       if(it.to == self && it.dmg.value && it.notNoEffect){
