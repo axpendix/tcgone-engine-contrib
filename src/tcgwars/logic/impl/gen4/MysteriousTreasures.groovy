@@ -878,7 +878,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           def turnCount=-1
           HP lastDamage=null
           customAbility {
-            delayed (priority: LAST) {
+            delayedA (priority: LAST) {
               before APPLY_ATTACK_DAMAGES, {
                 if(bg().currentTurn==self.owner.opposite) {
                   turnCount=bg.turnCount

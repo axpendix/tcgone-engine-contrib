@@ -618,7 +618,7 @@ public enum RisingRivals implements LogicCardInfo {
           def lastDamage = hp(0)
           def turnCount = 0
           customAbility {
-            delayed (priority: LAST) {
+            delayedA (priority: LAST) {
               before APPLY_ATTACK_DAMAGES, {
                 if (bg().currentTurn == self.owner.opposite) {
                   turnCount = bg.turnCount

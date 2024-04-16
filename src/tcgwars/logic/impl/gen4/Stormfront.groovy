@@ -1620,7 +1620,7 @@ public enum Stormfront implements LogicCardInfo {
           def turnCount=-1
           HP lastDamage=null
           customAbility {
-            delayed (priority: LAST) {
+            delayedA (priority: LAST) {
               before APPLY_ATTACK_DAMAGES, {
                 if(bg().currentTurn==self.owner.opposite) {
                   turnCount=bg.turnCount
@@ -2998,7 +2998,7 @@ public enum Stormfront implements LogicCardInfo {
           def heatWaveFlag = false
           CardList energyList = []
           customAbility {
-            delayed {
+            delayedA {
               before ATTACK_MAIN, {
                 src = ef.attacker
                 energyList = ef.attacker.cards.filterByType(ENERGY)
@@ -3116,7 +3116,7 @@ public enum Stormfront implements LogicCardInfo {
           def flag = false // True when a 2nd move can be used
           def flag2 = false // True when a 2nd move is being used
           customAbility {
-            delayed {
+            delayedA {
               before ATTACK_MAIN, {
                 if(ef.move.name == "Voltage Shoot" && !flag2) {
                   if(self.lastEvolved == bg.turnCount) {
