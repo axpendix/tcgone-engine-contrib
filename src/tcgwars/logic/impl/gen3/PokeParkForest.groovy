@@ -149,7 +149,7 @@ public enum PokeParkForest implements LogicCardInfo {
 				}
 			}
 			move "Whirlpool", {
-				text "30 damage. If heads, discard an Energy card attached to the Defending Pokémon."
+				text "30 damage. Flip a coin. If heads, discard an Energy card attached to the Defending Pokémon."
 				energyCost W, C, C
 				onAttack {
 					damage 30
