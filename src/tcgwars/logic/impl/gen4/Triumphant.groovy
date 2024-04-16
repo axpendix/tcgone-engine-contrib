@@ -2484,10 +2484,10 @@ public enum Triumphant implements LogicCardInfo {
           pokeBody "Lost Link", {
             text "Mew can use the attacks of all of the Pokémon in the Lost Zone (both yours and your opponent's). (You still need the necessary Energy to use each attack.)"
             metronomeA delegate, {
-              self.owner.pbg.lostZone.filterByType(POKEMON)
-            }
-            metronomeA delegate, {
-              self.owner.opposite.pbg.lostZone.filterByType(POKEMON)
+              def list = new CardList()
+              list.addAll(self.owner.pbg.lostZone.filterByType(POKEMON))
+              list.addAll(self.owner.opposite.pbg.lostZone.filterByType(POKEMON))
+              return list
             }
           }
           move "See Off", {

@@ -3429,7 +3429,7 @@ public enum Platinum implements LogicCardInfo {
               checkNoSPC()
               assert my.bench.size() >=4 || opp.bench.size() >= 4 : "Neither player has 4 or more Benched Pokémon"
               powerUsed()
-              def list2 = LUtils.selectMultiPokemon(bg.oppClient(), my.bench, "Lost Cyclone: Select 3 pokemon to KEEP on your bench.", 3)
+              def list2 = LUtils.selectMultiPokemon(bg.ownClient(), my.bench, "Lost Cyclone: Select 3 pokemon to KEEP on your bench.", 3)
               my.bench.findAll{!list2.contains(it)}.each{
                 it.cards.moveTo(my.lostZone)
                 removePCS(it)

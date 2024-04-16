@@ -663,12 +663,11 @@ public enum MysteriousTreasures implements LogicCardInfo {
           weakness P, PLUS20
           pokeBody "Upper Material", {
             text "If you have Uxie and Azelf in play, the Retreat Cost for each Uxie, Mesprit, and Azelf (both yours and your opponent’s) is 0."
-            def selfOwner = self.owner
             getterA (GET_RETREAT_COST, BEFORE_LAST) {holder->
               def validNames = ["Uxie", "Mesprit", "Azelf"]
               def pcs = holder.effect.target
               if (
-                selfOwner.pbg.all.find{it.name == "Uxie"} && selfOwner.pbg.all.find{it.name == "Azelf"} && validNames.contains(pcs.name)
+                self.owner.pbg.all.find{it.name == "Uxie"} && self.owner.pbg.all.find{it.name == "Azelf"} && validNames.contains(pcs.name)
               ) {
                 holder.object = 0
               }

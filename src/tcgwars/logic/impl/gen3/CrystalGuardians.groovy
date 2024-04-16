@@ -2295,7 +2295,7 @@ public enum CrystalGuardians implements LogicCardInfo {
                 flip 1, {
                   bc "$self is not knocked out and is moved to bottom of deck."
                   self.cards.getExcludedList(self.topPokemonCard).discard()
-                  moveCard(self.topPokemonCard, my.deck)
+                  moveCard(self.topPokemonCard, self.owner.pbg.deck)
                   removePCS(self)
                   prevent()
                 }

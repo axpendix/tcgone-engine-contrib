@@ -1348,7 +1348,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 120
-            if (confirm("Search your deck for up to 2 cards to put in your hand?")) {
+            if (my.deck && confirm("Search your deck for up to 2 cards to put in your hand?")) {
               deck.search(min:1, max:2, { true }).moveTo hidden:true, my.hand
               shuffleDeck()
             }
