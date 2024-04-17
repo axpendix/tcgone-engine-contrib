@@ -2864,8 +2864,8 @@ public enum Platinum implements LogicCardInfo {
               assert my.bench : "You don't have any Benched Pokémon"
             }
             onAttack {
-              if (my.bench.notEmpty) {
-                damage 30
+              damage 30
+              afterDamage {
                 scoopUpPokemon(self, delegate)
               }
             }
