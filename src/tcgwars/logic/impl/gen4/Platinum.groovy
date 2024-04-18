@@ -1743,6 +1743,7 @@ public enum Platinum implements LogicCardInfo {
             text "Once during your turn, when you put Crobat from your hand onto your Bench, you may put 1 damage counter on 1 of your opponent’s Pokémon."
             onActivate {r->
               if (r==PLAY_FROM_HAND && confirm("Use Flash Bite?")) {
+                powerUsed()
                 directDamage 10, opp.all.select()
               }
             }
@@ -2864,8 +2865,8 @@ public enum Platinum implements LogicCardInfo {
               assert my.bench : "You don't have any Benched Pokémon"
             }
             onAttack {
-              if (my.bench.notEmpty) {
-                damage 30
+              damage 30
+              afterDamage {
                 scoopUpPokemon(self, delegate)
               }
             }

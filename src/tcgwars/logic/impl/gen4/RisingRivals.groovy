@@ -1604,7 +1604,7 @@ public enum RisingRivals implements LogicCardInfo {
             text "As long as Leafeon is your Active Pokémon, whenever you attach an Energy card from your hand to 1 of your Pokémon, remove 2 damage counters from that Pokémon."
             delayedA {
               after ATTACH_ENERGY, {
-                if (ef.reason == PLAY_FROM_HAND && self.active) {
+                if (ef.reason == PLAY_FROM_HAND && self.active && ef.resolvedTarget.owner == self.owner) {
                   bc "$thisAbility activates."
                   heal 20, ef.resolvedTarget
                 }
