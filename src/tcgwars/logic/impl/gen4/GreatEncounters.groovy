@@ -999,16 +999,25 @@ public enum GreatEncounters implements LogicCardInfo {
           weakness L
           pokeBody "Sleeping Pulse", {
             text "As long as Wailord remains Asleep between turns, remove 1 damage counter from Wailord."
-            delayedA (anytime:true) {
-              def lastExecId = null
+            delayedA {
+              // TODO directDamage should delay doing faint checks until end of between turns phase to let this interaction resolve properly
               before BEGIN_TURN, {
-                if (lastExecId != e.executionId && self.numberOfDamageCounters && self.isSPC(ASLEEP)) {
-                  bc "$thisAbility activates"
+                if (self.isSPC(ASLEEP)) {
+                  bc "Sleeping Pulse activates."
                   heal 10, self
-                  lastExecId = e.executionId
                 }
               }
             }
+//            delayedA (anytime:true) {
+//              def lastExecId = null
+//              before BEGIN_TURN, {
+//                if (lastExecId != e.executionId && self.numberOfDamageCounters && self.isSPC(ASLEEP)) {
+//                  bc "$thisAbility activates"
+//                  heal 10, self
+//                  lastExecId = e.executionId
+//                }
+//              }
+//            }
           }
           move "Sink Deep", {
             text "60 damage. If Wailord has any damage counters on it, Wailord is now Asleep."
