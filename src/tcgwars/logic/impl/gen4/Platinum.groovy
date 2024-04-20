@@ -3481,7 +3481,7 @@ public enum Platinum implements LogicCardInfo {
               my.hand.select(min:0, max:my.hand.filterByEnergyType(G).size(), "Choose any number of [G] Energy cards to attach to your Pokémon", energyFilter(G)).each { card->
                 damage 20
                 def pcs = my.all.select("Attach $card to?")
-                afterDamage {attachEnergy(pcs, card)}
+                afterDamage {attachEnergy(pcs, card, PLAY_FROM_HAND)}
               }
             }
           }
