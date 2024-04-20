@@ -258,7 +258,7 @@ public enum PopSeries3 implements LogicCardInfo {
         }
       };
       case VAPOREON_6:
-      return evolution (this, from:"Diglett", hp:HP070, type:W, retreatCost:1) {
+      return evolution (this, from:"Eevee", hp:HP070, type:W, retreatCost:1) {
         weakness L
         move "Bite", {
           text "20 damage."
