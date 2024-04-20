@@ -378,7 +378,7 @@ public enum AurasLucario implements LogicCardInfo {
 				text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
 				"Search your deck for an Aura's Lucario or Aura's Lucario ex card and a [M] Energy card, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
 				onPlay {
-					my.deck.search(max: 3, "Select an Aura's Lucario (ex) card and a [M] Energy card",
+					my.deck.search(max: 2, "Select an Aura's Lucario (ex) card and a [M] Energy card",
 					{["Aura's Lucario", "Aura's Lucario ex"].contains(it.name) || it.cardTypes.is(ENERGY) && it.containsTypePlain(M))},
 					{CardList list -> list.filterByType(POKEMON).size() <= 1 && list.filterByType(ENERGY).size() <= 1}).showToOpponent("Aaron's Aura: Selected cards").moveTo(my.hand)
 					shuffleDeck()
