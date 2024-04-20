@@ -794,13 +794,6 @@ public enum LegendsAwakened implements LogicCardInfo {
                   tar.showToOpponent("Your opponent has swapped this prize card with a card from their hand.").moveTo(my.hand)
                   my.hand.select("Card to put back into Prizes").moveTo(hidden:true, my.prizeCardSet)
                 }
-                if (confirm("Do you wish to rearrange your prize cards? ")) {
-                  def list = rearrange(my.prizeCardSet, "Rearrange your prize cards")
-                  my.prizeCardSet.clear()
-                  my.prizeCardSet.addAll(list)
-                  bc "Prize cards were rearranged"
-                }
-//                my.prizeCardSet.shuffle()
               }
             }
           }
