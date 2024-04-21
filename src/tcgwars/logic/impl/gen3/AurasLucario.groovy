@@ -59,7 +59,7 @@ public enum AurasLucario implements LogicCardInfo {
 	POKE_BALL_18 ("Poké Ball", "18", Rarity.PROMO, [TRAINER, ITEM]),
 	AARON_S_AURA_19 ("Aaron's Aura", "19", Rarity.PROMO, [TRAINER, SUPPORTER]),
 	DARK_METAL_ENERGY_20 ("Dark Metal Energy", "20", Rarity.PROMO, [ENERGY, SPECIAL_ENERGY]);
-	 
+
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
   protected CardTypeSet cardTypes;
@@ -154,11 +154,11 @@ public enum AurasLucario implements LogicCardInfo {
 			return basic (this, hp:HP050, type:PSYCHIC, retreatCost:1){
 				weakness P
 				move "Copy" {
-					text "Choose 1 of the Defending Pokémon’s attacks. Copy 
-						copies that attack. This attack does nothing if Ilene's 
-						Mime Jr. doesn’t have the Energy necessary to use that 
-						attack. (You must still do anything else required for that 
-						attack.) Ilene's Mime Jr. performs that attack."
+					text "Choose 1 of the Defending Pokémon’s attacks. Copy" +
+						"copies that attack. This attack does nothing if Ilene's" +
+						"Mime Jr. doesn’t have the Energy necessary to use that" +
+						"attack. (You must still do anything else required for that" +
+						"attack.) Ilene's Mime Jr. performs that attack."
 					energyCost C
 					attackRequirement {
 						assert defending.baseMoves : "No moves to perform"
@@ -323,7 +323,7 @@ public enum AurasLucario implements LogicCardInfo {
 				}
 				move "Tackle" {
 					text "40 damage."
-					energyCost M, C, C, C 
+					energyCost M, C, C, C
 					onAttack {
 						damage 40
 					}
@@ -355,14 +355,14 @@ public enum AurasLucario implements LogicCardInfo {
 			return copy(UnseenForces.POTION_95, this);
 			case TIME_FLOWER_15:
 			return itemCard(this) {
-				text "Search your discard pile for up to 2 in any combination of Basic Pokémon or Evolution cards with the "VS" set symbol, show them to your opponent, and put them into your hand."
+				text "Search your discard pile for up to 2 in any combination of Basic Pokémon or Evolution cards with the \"VS\" set symbol, show them to your opponent, and put them into your hand."
 				playRequirement{
 					assert my.discard.find {
 						it.cardTypes.is(POKEMON) && it.cardTypes.is(VS)
-					} : "You have no Basic Pokémon or Evolution cards with the "VS" set symbol in your discard pile"
+					} : "You have no Basic Pokémon or Evolution cards with the \"VS\" set symbol in your discard pile"
 				}
 				onPlay {
-					my.discard.select(max:2, "Search your discard pile for up to 2 Basic Pokémon or Evolution cards with the "VS" set symbol", {
+					my.discard.select(max:2, "Search your discard pile for up to 2 Basic Pokémon or Evolution cards with the \"VS\" set symbol", {
 						it.cardTypes.is(POKEMON) && it.cardTypes.is(VS)
 					}).showToOpponent("Time Flower: Selected cards").moveTo(my.hand)
 				}
@@ -379,7 +379,7 @@ public enum AurasLucario implements LogicCardInfo {
 				"Search your deck for an Aura's Lucario or Aura's Lucario ex card and a [M] Energy card, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
 				onPlay {
 					my.deck.search(max: 2, "Select an Aura's Lucario (ex) card and a [M] Energy card",
-					{["Aura's Lucario", "Aura's Lucario ex"].contains(it.name) || it.cardTypes.is(ENERGY) && it.containsTypePlain(M))},
+					{["Aura's Lucario", "Aura's Lucario ex"].contains(it.name) || it.cardTypes.is(ENERGY) && it.containsTypePlain(M)},
 					{CardList list -> list.filterByType(POKEMON).size() <= 1 && list.filterByType(ENERGY).size() <= 1}).showToOpponent("Aaron's Aura: Selected cards").moveTo(my.hand)
 					shuffleDeck()
 				}
