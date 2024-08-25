@@ -681,7 +681,7 @@ public enum DragonFrontiers implements LogicCardInfo {
             damage 10
             if (defending.EX) {
               damage 10
-              applyAfterDamage CONFUSED
+              applyAfterDamage POISONED
             }
           }
         }
