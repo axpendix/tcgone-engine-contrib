@@ -1583,7 +1583,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             onAttack {
               damage 10
               afterDamage {
-                flipThenApplySC PARALYZED
+                flip { apply PARALYZED }
               }
             }
           }
