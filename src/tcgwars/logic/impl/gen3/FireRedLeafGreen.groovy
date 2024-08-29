@@ -1583,7 +1583,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             onAttack {
               damage 10
               afterDamage {
-                apply PARALYZED
+                flip { apply PARALYZED }
               }
             }
           }
@@ -2626,7 +2626,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(it.to == self && it.notNoEffect && (it.dmg.value == 20 || it.dmg.value == 40 || it.dmg.value == 60 || it.dmg.value == 80 || it.dmg.value == 100 || it.dmg.value == 130 || it.dmg.value == 140 || it.dmg.value == 160  || it.dmg.value == 180)) {
+                  if(it.to == self && it.notNoEffect && (it.dmg.value == 20 || it.dmg.value == 40 || it.dmg.value == 60 || it.dmg.value == 80 || it.dmg.value == 100 || it.dmg.value == 120 || it.dmg.value == 140 || it.dmg.value == 160  || it.dmg.value == 180)) {
                     bc "Magic Evens prevent damage"
                     it.dmg = hp(0)
                   }

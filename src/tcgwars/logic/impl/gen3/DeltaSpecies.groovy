@@ -2546,7 +2546,7 @@ public enum DeltaSpecies implements LogicCardInfo {
         def eff
         def eff2
         onPlay { reason ->
-          eff = getter(GET_RETREAT_COST) { h ->
+          eff = getter(GET_RETREAT_COST, BEFORE_LAST) { h ->
             if (h.effect.target == self && self != null && !self.EX && self.cards.filterByBasicEnergyType(P)) {
               h.object = 0
             }
