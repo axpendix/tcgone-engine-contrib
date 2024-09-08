@@ -1904,7 +1904,16 @@ public enum DragonNG implements LogicCardInfo {
         weakness P
         pokeBody "Toxic Gas", {
           text "As long as Muk ex is your Active Pokémon, ignore all Poké-Powers and Poké-Bodies other than Toxic Gas."
-          delayedA {
+          getterA (IS_ABILITY_BLOCKED) { Holder h->
+            if (self.active && h.effect.ability instanceof PokemonPower && !(h.effect.ability.name == "Toxic Gas")) {
+              h.object=true
+            }
+          }
+          onActivate {
+            new CheckAbilities().run(bg)
+          }
+          onDeactivate{
+            new CheckAbilities().run(bg)
           }
         }
         move "Poison Breath", {
@@ -1913,6 +1922,7 @@ public enum DragonNG implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            applyAfterDamage POISONED
           }
         }
         move "Slimy Water", {
@@ -1920,7 +1930,7 @@ public enum DragonNG implements LogicCardInfo {
           energyCost G, G, C
           attackRequirement {}
           onAttack {
-            damage 40
+            damage 40 + opp.active.retreatCost * 10
           }
         }
       };
