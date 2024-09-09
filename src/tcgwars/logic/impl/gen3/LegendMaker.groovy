@@ -534,7 +534,9 @@ public enum LegendMaker implements LogicCardInfo {
         pokeBody "Stench", {
           text "As long as Muk is your Active Pokémon, each player's Pokémon can't use any Poké-Powers."
           getterA (IS_ABILITY_BLOCKED) { Holder h->
-            if (self.active && h.effect.ability instanceof PokePower) {
+            def abilityToBeBlocked = ((IsAbilityBlocked)h.effect).ability
+            if (self.active && abilityToBeBlocked instanceof PokePower) {
+              bc "Stench blocks " + abilityToBeBlocked.name
               h.object=true
             }
           }
