@@ -1905,7 +1905,9 @@ public enum DragonNG implements LogicCardInfo {
         pokeBody "Toxic Gas", {
           text "As long as Muk ex is your Active Pokémon, ignore all Poké-Powers and Poké-Bodies other than Toxic Gas."
           getterA (IS_ABILITY_BLOCKED) { Holder h->
-            if (self.active && h.effect.ability instanceof PokemonPower && !(h.effect.ability.name == "Toxic Gas")) {
+            def abilityToBeBlocked = ((IsAbilityBlocked)h.effect).ability
+            if (self.active && abilityToBeBlocked instanceof PokemonPower && !(abilityToBeBlocked.name == "Toxic Gas")) {
+              bc "Toxic Gas blocks " + abilityToBeBlocked.name
               h.object=true
             }
           }
