@@ -309,15 +309,12 @@ public enum ShinyStarV implements LogicCardInfo {
           "reveal them and put them into your hand. Then shuffle your deck."
         onPlay {
           def selection = deck.search max:3, "$cardText", {
-            it.cardTypes.is(ITEM) && it.name.endsWith("Ball")}, {
-            def selectionTest = []
-            def passed = true
-            it.each {
-              passed = !selectionTest.contains(it.name)
-              if (!passed) return false
-              selectionTest.add(it.name)
+            it.cardTypes.is(ITEM) && it.name.endsWith("Ball")}, { CardList testSelection ->
+            def validSelections = []
+            return testSelection.every {card ->
+              if (it.name in validSelections) return false
+              validSelections.add it.name
             }
-            return passed
           }
           selection.showToOpponent "$name used"
           selection.moveTo my.hand
