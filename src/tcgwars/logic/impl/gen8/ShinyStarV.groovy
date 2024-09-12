@@ -312,8 +312,8 @@ public enum ShinyStarV implements LogicCardInfo {
             it.cardTypes.is(ITEM) && it.name.endsWith("Ball")}, { CardList testSelection ->
             def validSelections = []
             return testSelection.every {card ->
-              if (it.name in validSelections) return false
-              validSelections.add it.name
+              if (card.name in validSelections) return false
+              validSelections.add card.name
             }
           }
           selection.showToOpponent "$name used"
