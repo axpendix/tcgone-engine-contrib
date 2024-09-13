@@ -947,9 +947,11 @@ public enum TeamRocketReturns implements LogicCardInfo {
             delayedA {
               after ATTACH_ENERGY, self, {
                 if(ef.reason==PLAY_FROM_HAND && ef.card.containsType(W)){
-                  bc "Saturation triggers"
-                  clearSpecialCondition self
-                  heal 20, self
+                  handleEnergyRainInteraction(thisAbility, self) {
+                    bc "$thisAbility triggers"
+                    clearSpecialCondition self
+                    heal 20, self
+                  }
                 }
               }
             }
@@ -2215,8 +2217,11 @@ public enum TeamRocketReturns implements LogicCardInfo {
             delayedA {
               after ATTACH_ENERGY, self, {
                 if(ef.reason==PLAY_FROM_HAND && ef.card.containsType(W)){
-                  clearSpecialCondition(self)
-                  heal 10, self
+                  handleEnergyRainInteraction(thisAbility, self) {
+                    bc "$thisAbility triggers"
+                    clearSpecialCondition self
+                    heal 10, self
+                  }
                 }
               }
             }

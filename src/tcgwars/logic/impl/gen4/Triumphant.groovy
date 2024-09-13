@@ -762,8 +762,11 @@ public enum Triumphant implements LogicCardInfo {
             text "Whenever you attach a Water Energy card from you hand to Golduck, remove 2 damage counters from Golduck."
             delayedA {
               after ATTACH_ENERGY, self, {
-                if (ef.reason == PLAY_FROM_HAND && self.numberOfDamageCounters) {
-                  heal 20, self
+                if (ef.reason == PLAY_FROM_HAND && ef.card.containsType(W)) {
+                  handleEnergyRainInteraction(thisAbility, self) {
+                    bc "$thisAbility triggers"
+                    heal 20, self
+                  }
                 }
               }
             }

@@ -407,8 +407,10 @@ public enum MajesticDawn implements LogicCardInfo {
             delayedA {
             after ATTACH_ENERGY, self, {
               if (ef.reason==PLAY_FROM_HAND && ef.card.containsType(W)) {
-                bc "$thisAbility removes 2 damage counters from $self"
-                heal 20, self
+                handleEnergyRainInteraction(thisAbility, self) {
+                  bc "$thisAbility removes 2 damage counters from $self"
+                  heal 20, self
+                }
               }
             }
           }
