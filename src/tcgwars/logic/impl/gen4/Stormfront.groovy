@@ -1958,7 +1958,6 @@ public enum Stormfront implements LogicCardInfo {
                 discard card
                 bg.em().run(new ActivateSimpleTrainer(card))
               }
-              shuffleDeck()
             }
           }
           move "Overconfident", {
