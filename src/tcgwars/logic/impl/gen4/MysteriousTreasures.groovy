@@ -1440,7 +1440,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                     }
                   }
                   after REMOVE_FROM_PLAY, {
-                    LUtils.isRemoveFromPlayAndContainsCard(e, chosenEnergy) {
+                    if (LUtils.isRemoveFromPlayAndContainsCard(e, chosenEnergy)) {
                       unregister()
                     }
                   }
