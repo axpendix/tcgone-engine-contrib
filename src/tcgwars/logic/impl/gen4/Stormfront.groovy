@@ -1403,6 +1403,13 @@ public enum Stormfront implements LogicCardInfo {
                   attachEnergy(self,card)
                 }
               }
+              after ACTIVATE_ABILITY, {
+                if (ef.targetPokemon.owner != self.owner && ef.ability instanceof PokePower && ef.reason == PLAY_FROM_HAND && ef.hasUsedAbilityDuringActivation && self.owner.pbg.discard.filterByBasicEnergyType(D) && confirm("Use Darkness Drive? (${self.nameWithRef})",self.owner)) {
+                  bc "Darkness Drive (${self.nameWithRef}) activates"
+                  def card = self.owner.pbg.discard.select("Select a basic [D] Energy to attach to $self.nameWithRef",basicEnergyFilter(D),self.owner).first()
+                  attachEnergy(self,card)
+                }
+              }
             }
           }
           move "Grind", {

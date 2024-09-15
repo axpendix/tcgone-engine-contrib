@@ -643,6 +643,12 @@ public enum MajesticDawn implements LogicCardInfo {
                   directDamage(20, ef.targetPokemon)
                 }
               }
+              after ACTIVATE_ABILITY, {
+                if (ef.targetPokemon.owner != self.owner && ef.ability instanceof PokePower && ef.reason == PLAY_FROM_HAND && ef.hasUsedAbilityDuringActivation) {
+                  bc "Primal Claw activates"
+                  directDamage(20, ef.targetPokemon)
+                }
+              }
             }
           }
           move "Supersonic", {
