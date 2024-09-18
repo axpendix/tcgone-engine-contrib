@@ -3398,24 +3398,25 @@ public enum Platinum implements LogicCardInfo {
             text "This attack does 30 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.) If any of your opponent's Pokémon would be Knocked Out by damage from this attack, put that Pokémon and all cards attached to it in the Lost Zone instead of discarding it. "
             energyCost P, P, C, C
             onAttack {
-              opp.all.each {
-                damage 30, it
-              }
-              delayed {
-                def knockedOut = null
-                before KNOCKOUT, {
-                  if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner && self.active && ef.pokemonToBeKnockedOut.owner != self.owner ) {
-                    knockedOut = ef.pokemonToBeKnockedOut.cards.copy()
+              opp.all.each {pcs->
+                damage 30, pcs
+
+                delayed (target: pcs) {
+                  def knockedOut = null
+                  before KNOCKOUT, {
+                    if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner && self.active && ef.pokemonToBeKnockedOut == pcs ) {
+                      knockedOut = ef.pokemonToBeKnockedOut.cards.copy()
+                    }
                   }
-                }
-                after KNOCKOUT, {
-                  if (knockedOut) {
-                    bc "Lost Boomerang GX sends Knocked Out Pokémon to the Lost Zone."
-                    knockedOut.moveTo(self.owner.opposite.pbg.lostZone)
-                    knockedOut = null
+                  after KNOCKOUT, {
+                    if (knockedOut) {
+                      bc "Darkness Lost puts all cards into the Lost Zone."
+                      knockedOut.moveTo(self.owner.opposite.pbg.lostZone)
+                      knockedOut = null
+                    }
                   }
+                  unregisterAfter 1
                 }
-                unregisterAfter 1
               }
             }
           }
