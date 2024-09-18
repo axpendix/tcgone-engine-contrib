@@ -2,7 +2,7 @@ package tcgwars.logic.impl.gen3
 
 import tcgwars.logic.effect.gm.ActivateSimpleTrainer;
 import tcgwars.logic.effect.gm.PlayTrainer
-import tcgwars.logic.exception.NotEnoughEnergyException;
+import tcgwars.logic.exception.NotEnoughEnergyException
 import tcgwars.logic.impl.gen3.Deoxys;
 import tcgwars.logic.impl.gen3.DeltaSpecies;
 import tcgwars.logic.impl.gen3.HolonPhantoms;
@@ -14,7 +14,7 @@ import tcgwars.logic.impl.gen7.CelestialStorm;
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import static tcgwars.logic.effect.EffectType.*;
@@ -824,30 +824,12 @@ public enum DragonFrontiers implements LogicCardInfo {
           onActivate {
             if (it==PLAY_FROM_HAND && confirm("Use Tropical Heal?")) {
               powerUsed()
-              def Imprison = []
-              def Shock_Wave = []
-              if(bg.em().retrieveObject("Imprison") != null){
-                Imprison = bg.em().retrieveObject("Imprison")
-              }
-              if(bg.em().retrieveObject("Shock_Wave") != null){
-                Shock_Wave = bg.em().retrieveObject("Shock_Wave")
-              }
-              my.all.each{
-                if(Imprison.contains(it)){
-                  Imprison.remove(it)
-                  bc"Removed an Imprison counter from $it"
-                  bg.em().storeObject("Imprison",Imprison)
-                  new CheckAbilities().run(bg)//Not sure if Gardevoir will update abilities in time so adding this here.
+              my.all.each{pcs->
+                targeted (IMPRISON_MARKER, pcs) {} // causes existing marker to be removed
+                targeted (SHOCKWAVE_MARKER, pcs) {} // causes existing marker to be removed
+                if(pcs.specialConditions){
+                  clearSpecialCondition pcs
                 }
-                if(Shock_Wave.contains(it)){
-                  Shock_Wave.remove(it)
-                  bc"Removed a Shock-wave counter from $it"
-                  bg.em().storeObject("Shock_Wave",Shock_Wave)
-                }
-                if(it.specialConditions){
-                  clearSpecialCondition(it,SRC_ABILITY)
-                }
-                new CheckAbilities().run(bg)
               }
             }
           }
@@ -1953,42 +1935,9 @@ public enum DragonFrontiers implements LogicCardInfo {
       case GARDEVOIR_EX_DELTA_93:
       return evolution (this, from:"Kirlia", hp:HP150, type:R, retreatCost:2) {
         weakness P
-        def Imprison = []
-        def actions = []
-        def _delegate = delegate
-        def imprisonLoader = {
-          bg.em().storeObject("Imprison_Loaded",true)
-
-          loadMarkerCheckerAction(_delegate, actions)
-
-          delayed {
-            getter (IS_ABILITY_BLOCKED) { Holder h ->
-              if(bg.em().retrieveObject("Imprison") != null){
-                Imprison = bg.em().retrieveObject("Imprison")
-              }
-              if (Imprison.contains(h.effect.target)) {
-                if (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody) {
-                  h.object=true
-                }
-              }
-            }
-          }
-        }
+        def Imprison
         initHook {Card thisCard ->
-          def temp
-          delayed {
-            after CHANGE_STAGE, {
-              if(bg.em().retrieveObject("Imprison") != null){
-                Imprison = bg.em().retrieveObject("Imprison")
-              }
-              def pcs = ef.resolvedTarget
-              if (Imprison.contains(pcs)) {
-                bc "${pcs} loses its Imprison marker when stage changes!"
-                Imprison.remove(pcs)
-                bg.em().storeObject("Imprison",Imprison)
-              }
-            }
-          }
+          Imprison = bg.em().retrieveAndStore("Imprison", {it ?: [] as Set})
         }
         pokePower "Imprison", {
           text "Once during your turn (before your attack), if Gardevoir ex is your Active Pokémon, you may put an Imprison marker on 1 of your opponent's Pokémon. Any Pokémon that has any Imprison markers on it can't use any Poké-Powers or Poké-Bodies. This power can't be used if Gardevoir ex is affected by a Special Condition."
@@ -1997,25 +1946,31 @@ public enum DragonFrontiers implements LogicCardInfo {
             checkNoSPC()
             assert self.active : "$self is not your Active Pokémon"
 
-            if(bg.em().retrieveObject("Imprison") != null){
-              Imprison = bg.em().retrieveObject("Imprison")
-            }
-            //Imprison_Loaded checks if an action setter was already triggered
-            def isImprisonLoaded = bg.em().retrieveObject("Imprison_Loaded")
-            if (!isImprisonLoaded) imprisonLoader.call()
-
-
-            assert opp.all.any{!Imprison.contains(it)} : "All of your opponent's Pokémon already have Imprison counters"
+            def targets = opp.all.findAll{!Imprison.contains(it)}
+            assert targets : "All of your opponent's Pokémon already have Imprison Marker"
             powerUsed()
-            def tar = opp.all.select("Choose a pokemon to put an Imprison marker on:")
-            while (Imprison.contains(tar)){
-              tar = opp.all.select("$tar already has an Imprison marker.\n\nChoose a pokemon to put an Imprison marker on:")
-            }
-            targeted (tar, SRC_ABILITY){
-              Imprison.add(tar)
-              bc "$tar received an Imprison marker"
-              bg.em().storeObject("Imprison",Imprison)
-              new CheckAbilities().run(bg)
+            def tar = targets.select("Choose a Pokémon to put an Imprison marker on:")
+
+            delayed (type:IMPRISON_MARKER, target:tar) {
+              def eff
+              register() {
+                eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
+                  if (h.effect.target == tar) {
+                    if (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody) {
+                      h.object=true
+                    }
+                  }
+                }
+                Imprison.add(tar)
+                bc "$tar received an Imprison marker"
+              }
+              unregister {
+                eff.unregister()
+                bc "${tar} loses its Imprison marker!"
+                Imprison.remove(tar)
+              }
+              after CHANGE_STAGE, tar, {unregister()}
+              before IMPRISON_MARKER, tar, {unregister()}
             }
           }
         }
@@ -2246,51 +2201,30 @@ public enum DragonFrontiers implements LogicCardInfo {
       case TYRANITAR_EX_DELTA_99:
       return evolution (this, from:"Pupitar", hp:HP150, type:L, retreatCost:3) {
         weakness G
-        def Shock_Wave = []
-        def actions = []
-        def shockWaveLoader = {
-          bg.em().storeObject("Shock_Wave_Loaded",true)
-
-          loadMarkerCheckerAction(delegate, actions)
-        }
+        def Shock_Wave
         initHook {Card thisCard ->
-          def temp
-          delayed {
-            after CHANGE_STAGE, {
-              if(bg.em().retrieveObject("Shock_Wave") != null){
-                Shock_Wave = bg.em().retrieveObject("Shock_Wave")
-              }
-              def pcs = ef.resolvedTarget
-              if (Shock_Wave.contains(pcs)) {
-                bc "${pcs} loses its Shock-wave marker when changed stage!"
-                Shock_Wave.remove(pcs)
-                bg.em().storeObject("Shock_Wave",Shock_Wave)
-              }
-            }
-          }
+          Shock_Wave = bg.em().retrieveAndStore("Shock_Wave", {it ?: [] as Set})
         }
         move "Electromark", {
           text "Put a Shock-wave marker on 1 of your opponent's Pokémon."
           energyCost L, C
-          attackRequirement{
-            if(bg.em().retrieveObject("Shock_Wave") != null){
-              Shock_Wave = bg.em().retrieveObject("Shock_Wave")
-            }
-            //Shock_Wave_Loaded checks if another shockwave loader was already triggered
-            def isShockWaveLoaded = bg.em().retrieveObject("Shock_Wave_Loaded")
-            if(!isShockWaveLoaded) shockWaveLoader.call()
-
+          attackRequirement {
             assert opp.all.any{!Shock_Wave.contains(it)} : "All of your opponent's Pokémon already have Shock-wave markers on them"
           }
           onAttack {
-            def tar = opp.all.select("Choose a pokemon to put an Shock-wave marker on:")
-            while (Shock_Wave.contains(tar)){
-              tar = opp.all.select("$tar already has an Shock-wave marker.\n\nChoose a pokemon to put an Shock-wave marker on:")
-            }
-            targeted (tar){
-              Shock_Wave.add(tar)
-              bc "$tar received a Shock-wave marker"
-              bg.em().storeObject("Shock_Wave",Shock_Wave)
+            def targets = opp.all.findAll { !Shock_Wave.contains(it) }
+            def tar = targets.select("Choose a Pokémon to put an Shock-wave marker on:")
+            delayed (type:SHOCKWAVE_MARKER, target: tar) {
+              register {
+                bc "$tar received a Shock-wave marker"
+                Shock_Wave.add(tar)
+              }
+              unregister {
+                bc "${tar} loses its Shock-wave marker!"
+                Shock_Wave.remove(tar)
+              }
+              after CHANGE_STAGE, tar, {unregister()}
+              before SHOCKWAVE_MARKER, tar, {unregister()}
             }
           }
         }
@@ -2308,25 +2242,12 @@ public enum DragonFrontiers implements LogicCardInfo {
           text "Choose 1 of your opponent's Pokémon that has any Shock-wave markers on it. That Pokémon is Knocked Out."
           energyCost L, L, C
           attackRequirement {
-            if(bg.em().retrieveObject("Shock_Wave") != null){
-              Shock_Wave = bg.em().retrieveObject("Shock_Wave")
-            }
-            //Check is also run here in case someone copies this first... for some reason.
-            def isShockWaveLoaded = bg.em().retrieveObject("Shock_Wave_Loaded")
-            if(!isShockWaveLoaded) shockWaveLoader.call()
-
             assert opp.all.any{Shock_Wave.contains(it)} : "None of your opponent's Pokémon have Shock-Wave markers on them"
           }
           onAttack {
-            def tar = opp.all.select("Choose 1 of your opponent’s Pokémon that has any Shock-wave markers on it. That Pokémon will be Knocked Out.")
-            while (!Shock_Wave.contains(tar)){
-              tar = opp.all.select("$tar doesn't have a Shock-wave marker.\n\nChoose 1 of your opponent’s Pokémon that has any Shock-wave markers on it. That Pokémon will be Knocked Out.")
-            }
-            targeted (tar){
-              Shock_Wave.remove(tar)
-              bg.em().storeObject("Shock_Wave",Shock_Wave)
-              new Knockout(tar).run(bg)
-            }
+            def targets = opp.all.findAll { Shock_Wave.contains(it) }
+            def tar = targets.select("Choose 1 of your opponent’s Pokémon that has any Shock-wave markers on it. That Pokémon will be Knocked Out.")
+            new Knockout(tar).run(bg)
           }
         }
       };
