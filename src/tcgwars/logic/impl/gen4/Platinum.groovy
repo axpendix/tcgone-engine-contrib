@@ -3196,8 +3196,8 @@ public enum Platinum implements LogicCardInfo {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nLook at your opponent’s hand, then choose you or your opponent. That player shuffles his or her hand into his or her deck and draws up to 5 cards."
           onPlay {
             opp.hand.shuffledCopy().showToMe("Opponent's hand")
-            def choice = choose([0,1],["${thisCard.player.getPlayerUsername(bg)}","${thisCard.player.opposite.getPlayerUsername(bg)}"],"Choose a player")
-            if(choice) {
+            def choice = choose([0,1],["${my.owner.username}","${my.owner.opposite.username}"],"Choose a player")
+            if(choice==1) {
               opp.hand.moveTo(hidden:true, opp.deck)
               shuffleOppDeck()
               draw oppChoose(1..5,"Looker's Investigation: Draw how many cards?", 5), TargetPlayer.OPPONENT
