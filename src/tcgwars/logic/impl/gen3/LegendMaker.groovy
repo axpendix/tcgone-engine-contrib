@@ -2214,8 +2214,8 @@ public enum LegendMaker implements LogicCardInfo {
           eff = getter (GET_BENCH_SIZE) {h->
             h.object = 3
           }
-          thisCard.player.opposite.pbg.triggerBenchSizeCheck()
           thisCard.player.pbg.triggerBenchSizeCheck()
+          thisCard.player.opposite.pbg.triggerBenchSizeCheck()
           new CheckAbilities().run(bg)
         }
         onRemoveFromPlay{
