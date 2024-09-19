@@ -1,7 +1,7 @@
 package tcgwars.logic.impl.gen4
 
 
-import tcgwars.logic.exception.EffectRequirementException;
+import tcgwars.logic.exception.EffectRequirementException
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -14,12 +14,19 @@ import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.card.*
-import tcgwars.logic.card.energy.*
-import tcgwars.logic.util.*;
-import tcgwars.logic.effect.ability.*
-import tcgwars.logic.effect.basic.*
+import java.util.*;
+import tcgwars.entity.*;
 import tcgwars.logic.*;
+import tcgwars.logic.card.*;
+import tcgwars.logic.effect.*;
+import tcgwars.logic.effect.ability.*;
+import tcgwars.logic.effect.advanced.*;
+import tcgwars.logic.effect.basic.*;
+import tcgwars.logic.effect.blocking.*;
+import tcgwars.logic.effect.event.*;
+import tcgwars.logic.effect.getter.*;
+import tcgwars.logic.effect.special.*;
+import tcgwars.logic.util.*;
 
 
 
