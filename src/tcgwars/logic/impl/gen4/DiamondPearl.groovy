@@ -1,6 +1,6 @@
 package tcgwars.logic.impl.gen4
 
-import tcgwars.logic.impl.gen1.BaseSet;
+
 import tcgwars.logic.impl.gen2.Expedition;
 import tcgwars.logic.impl.gen3.Sandstorm;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
@@ -20,21 +20,12 @@ import static tcgwars.logic.effect.special.SpecialConditionType.*
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 import static tcgwars.logic.card.Weakness.*
 
-import java.util.*;
-import tcgwars.entity.*;
 import tcgwars.logic.*;
 import tcgwars.logic.card.*;
 import tcgwars.logic.card.energy.*;
 import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
-import tcgwars.logic.effect.*;
-import tcgwars.logic.effect.ability.*;
-import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*;
-import tcgwars.logic.effect.blocking.*;
-import tcgwars.logic.effect.event.*;
-import tcgwars.logic.effect.getter.*;
-import tcgwars.logic.effect.special.*;
+import tcgwars.logic.card.trainer.*
+import tcgwars.logic.effect.basic.*
 import tcgwars.logic.util.*;
 
 /**
@@ -413,7 +404,9 @@ public enum DiamondPearl implements LogicCardInfo {
           move "Lightning Star", {
             text "80 damage. Move all [L] Energy attached to Luxray to 1 of your Benched Pokémon. (Ignore this effect if you don’t have any Benched Pokémon.)"
             energyCost L, L, L, L
-            attackRequirement {}
+            attackRequirement {
+              assert !isMetronomeAndMustDoEffects() || self.energyCards.energyCount(L)
+            }
             onAttack {
               damage 80
               afterDamage {
@@ -1788,7 +1781,7 @@ public enum DiamondPearl implements LogicCardInfo {
             onAttack {
               damage 50
               flip 1, {}, {
-                discardSelfEnergy R
+                discardSelfEnergyInOrderTo R
                 opp.bench.each{damage 10, it}
               }
             }
