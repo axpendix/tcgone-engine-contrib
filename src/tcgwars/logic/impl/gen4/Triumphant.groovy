@@ -1,8 +1,7 @@
 package tcgwars.logic.impl.gen4
 
-import tcgwars.logic.effect.EffectPriority
-import tcgwars.logic.effect.basic.Knockout
-import tcgwars.logic.exception.EffectRequirementException;
+
+import tcgwars.logic.exception.EffectRequirementException
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -13,17 +12,21 @@ import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
 import static tcgwars.logic.effect.special.SpecialConditionType.*
-import static tcgwars.logic.effect.Source.*;
 import static tcgwars.logic.card.Resistance.ResistanceType.*
 
-import tcgwars.logic.card.*
-import tcgwars.logic.card.energy.*
+import java.util.*;
+import tcgwars.entity.*;
+import tcgwars.logic.*;
+import tcgwars.logic.card.*;
 import tcgwars.logic.effect.*;
-import tcgwars.logic.util.*;
 import tcgwars.logic.effect.ability.*;
 import tcgwars.logic.effect.advanced.*;
-import tcgwars.logic.effect.basic.*
-import tcgwars.logic.*;
+import tcgwars.logic.effect.basic.*;
+import tcgwars.logic.effect.blocking.*;
+import tcgwars.logic.effect.event.*;
+import tcgwars.logic.effect.getter.*;
+import tcgwars.logic.effect.special.*;
+import tcgwars.logic.util.*;
 
 
 
@@ -1082,7 +1085,8 @@ public enum Triumphant implements LogicCardInfo {
             energyCost L, L, C
             onAttack {
               damage 40
-              if (confirm("Discard all [L] Energy attached to $self in order to deal 60 additional damage?")) {
+              def skipPrompt = isMetronomeAndMustDoEffects() && !self.energyCards.energyCount(L)
+              if (!skipPrompt && confirm("Discard all [L] Energy attached to $self in order to deal 60 additional damage?")) {
                 damage 60
                 afterDamage {
                   discardAllSelfEnergy(L)
