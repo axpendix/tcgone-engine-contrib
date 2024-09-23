@@ -2500,16 +2500,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             text "Choose 1 of the Defending Pokémon’s attacks. Metronome copies that attack except for its Energy cost. (You must still do anything else in order to use that attack.) (No matter what type that Pokémon is, Clefable ex’s type is still [C].) Clefable ex performs that attack."
             energyCost C, C
             onAttack {
-              def moveList = []
-              def labelList = []
-              def moves = defending.baseMoves
-              moveList.addAll(moves);
-              labelList.addAll(moves.collect{it.name})
-
-              def move=choose(moveList, labelList)
-              def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
-              attack (move as Move)
-              bef.unregisterItself(bg().em())
+              metronome defending, delegate
             }
           }
           move "Moon Impact", {
