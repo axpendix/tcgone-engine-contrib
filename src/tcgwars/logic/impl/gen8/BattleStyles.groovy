@@ -2061,7 +2061,7 @@ public enum BattleStyles implements LogicCardInfo {
         }
       };
       case GALARIAN_SLOWBRO_92:
-      return evolution (this, from:"GalarianSlowpoke", hp:HP130, type:D, retreatCost:3) {
+      return evolution (this, from:"Galarian Slowpoke", hp:HP130, type:D, retreatCost:3) {
         weakness FIGHTING
         move "Splattering Poison", {
           text "Both Active Pokémon are now Poisoned."

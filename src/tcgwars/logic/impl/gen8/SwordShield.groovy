@@ -952,7 +952,8 @@ public enum SwordShield implements LogicCardInfo {
         }
       };
       case CINDERACE_36:
-      return evolution (this, from:"Raboot", hp:HP170, type:R, retreatCost:1) {
+      return evolution (this, from:"Raboot", hp:HP170, type:R, retreatCost:2) {
+        // errata: Misprinted, retreat cost is actually 2. https://www.pokemon.com/us/pokemon-news/errata-for-cinderace-in-pokemon-tcg-sword-shield
         weakness W
         move "Flame Cloak", {
           text "40 damage. Attach a [R] Energy card from your discard pile to this Pokémon."
