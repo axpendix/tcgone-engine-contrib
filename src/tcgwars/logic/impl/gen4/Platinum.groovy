@@ -3228,22 +3228,29 @@ public enum Platinum implements LogicCardInfo {
       case MIASMA_VALLEY_111:
         return stadium (this) {
           text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nWhenever any player puts a Basic Pokémon (excluding [G] or [P] Pokémon) from his or hand onto his or her Bench, put 2 damage counters on that Pokémon."
-          def eff
+          // Ruling: Works like Rocket's Minefield Gym/Team Magma Hideout/Base, etc when forcing a card from opponent's hand to bench
+          // https://www.pokemon-card.com/rules/faq/search.php?freeword=瘴気の谷+ネオラント&regulation_faq_main_item1=all
+          def effect
           onPlay {
-            eff = delayed {
+            effect = delayed {
+              def basicFromEitherHand // Should affect Basic Pokémon you play onto your opponent's bench from their hand
+              before PUT_ON_BENCH, {
+                def isBasic = ef.pokemonCard.cardTypes.is(BASIC)
+                def fromEitherHand = ef.pokemonCard in opp.hand || ef.pokemonCard in my.hand
+                basicFromEitherHand = ef.basicFromHand || isBasic && fromEitherHand
+              }
               after PUT_ON_BENCH, {
-                def types = ef.place.types
-                if(ef.basicFromHand && !types.contains(G) && !types.contains(P)){
-                  bc "Miasma Valley activates"
-                  directDamage(20, ef.place)
+                if (basicFromEitherHand && !types.contains(G) && !types.contains(P)) {
+                  bc "Miasma Valley puts 2 damage counters on ${ef.place}"
+                  directDamage 20, ef.place
                 }
               }
             }
           }
           onRemoveFromPlay {
-            eff.unregister()
+            effect.unregister()
           }
-        };
+        }
       case PLUSPOWER_112:
         return copy (DiamondPearl.PLUSPOWER_109, this);
       case POKE_BALL_113:
