@@ -1656,16 +1656,9 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         def effect
         onPlay {
           effect = delayed {
-            def basicFromEitherHand // Should affect Basic Pokémon you play onto your opponent's bench from their hand
-            before PUT_ON_BENCH, {
-              // Prior to DP "Basic Pokemon" referring to in play Pokémon means "No Pokémon cards underneath"
-              def isBasic = ef.place.pokemonCards.empty
-              def fromEitherHand = ef.pokemonCard in opp.hand || ef.pokemonCard in my.hand
-              basicFromEitherHand = ef.basicFromHand || isBasic && fromEitherHand
-            }
             after PUT_ON_BENCH, {
-              if (basicFromEitherHand) {
-                bc "Team Magma Hideout puts 1 damage counters on ${ef.place}"
+              if (ef.basicFromEitherHand && ef.pokemonCard.getCardTypes().isNot(TEAM_MAGMA)) {
+                bc "Team Magma Hideout puts 1 damage counter on ${ef.place}"
                 directDamage 10, ef.place
               }
             }

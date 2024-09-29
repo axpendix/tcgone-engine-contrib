@@ -3233,14 +3233,8 @@ public enum Platinum implements LogicCardInfo {
           def effect
           onPlay {
             effect = delayed {
-              def basicFromEitherHand // Should affect Basic Pokémon you play onto your opponent's bench from their hand
-              before PUT_ON_BENCH, {
-                def isBasic = ef.pokemonCard.cardTypes.is(BASIC)
-                def fromEitherHand = ef.pokemonCard in opp.hand || ef.pokemonCard in my.hand
-                basicFromEitherHand = ef.basicFromHand || isBasic && fromEitherHand
-              }
               after PUT_ON_BENCH, {
-                if (basicFromEitherHand && !types.contains(G) && !types.contains(P)) {
+                if (ef.basicFromEitherHand && !types.contains(G) && !types.contains(P)) {
                   bc "Miasma Valley puts 2 damage counters on ${ef.place}"
                   directDamage 20, ef.place
                 }
