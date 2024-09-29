@@ -3234,6 +3234,7 @@ public enum Platinum implements LogicCardInfo {
           onPlay {
             effect = delayed {
               after PUT_ON_BENCH, {
+                def types = ef.place.types
                 if (ef.basicFromEitherHand && !types.contains(G) && !types.contains(P)) {
                   bc "Miasma Valley puts 2 damage counters on ${ef.place}"
                   directDamage 20, ef.place
