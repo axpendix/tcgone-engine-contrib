@@ -1657,7 +1657,7 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         onPlay {
           effect = delayed {
             after PUT_ON_BENCH, {
-              if (ef.basicFromEitherHand && ef.pokemonCard.getCardTypes().isNot(TEAM_MAGMA)) {
+              if (ef.fromEitherHand && ef.pokemonCard.getCardTypes().isNot(TEAM_MAGMA)) {
                 bc "Team Magma Hideout puts 1 damage counter on ${ef.place}"
                 directDamage 10, ef.place
               }
