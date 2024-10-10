@@ -1652,9 +1652,20 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
       return stadium (this) {
         text "Whenever any player plays a Basic Pokémon that doesn't have Team Magma in its name from his or her hand, that player puts 1 damage counter on that Pokémon." +
           "This card stays in play when you play it. Discard this card if another Stadium card comes into play."
+        // Japanese text implies "when either player plays a Pokémon to the bench"
+        def effect
         onPlay {
+          effect = delayed {
+            after PUT_ON_BENCH, {
+              if (ef.fromEitherHand && ef.pokemonCard.getCardTypes().isNot(TEAM_MAGMA)) {
+                bc "Team Magma Hideout puts 1 damage counter on ${ef.place}"
+                directDamage 10, ef.place
+              }
+            }
+          }
         }
         onRemoveFromPlay{
+          effect.unregister()
         }
       };
       case TEAM_MAGMA_S_TECHNICAL_MACHINE_01_84:
