@@ -18,7 +18,6 @@ import static tcgwars.logic.card.Resistance.ResistanceType.*
 
 import tcgwars.logic.*
 import tcgwars.logic.card.*
-import tcgwars.logic.card.pokemon.*
 import tcgwars.logic.effect.*
 import tcgwars.logic.effect.ability.*
 import tcgwars.logic.effect.advanced.*

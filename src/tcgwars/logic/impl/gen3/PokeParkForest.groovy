@@ -17,9 +17,6 @@ import org.apache.commons.lang.WordUtils;
 import tcgwars.entity.*;
 import tcgwars.logic.*;
 import tcgwars.logic.card.*;
-import tcgwars.logic.card.energy.*;
-import tcgwars.logic.card.pokemon.*;
-import tcgwars.logic.card.trainer.*;
 import tcgwars.logic.effect.*;
 import tcgwars.logic.effect.ability.*;
 import tcgwars.logic.effect.advanced.*;
@@ -154,7 +151,7 @@ public enum PokeParkForest implements LogicCardInfo {
 				onAttack {
 					damage 30
 					afterDamage{
-						flip {discardDefendingEnergy}
+						flip {discardDefendingEnergy()}
 					}
 				}
 			}
