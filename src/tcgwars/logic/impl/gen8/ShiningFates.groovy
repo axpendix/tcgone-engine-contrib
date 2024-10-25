@@ -103,7 +103,7 @@ public enum ShiningFates implements LogicCardInfo {
   CARA_LISS_67 ("Cara Liss", "67", Rarity.SECRET, [TRAINER, SUPPORTER]),
   GYM_TRAINER_68 ("Gym Trainer", "68", Rarity.SECRET, [TRAINER, SUPPORTER]),
   PIERS_69 ("Piers", "69", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  POKE_KID_70 ("Poke Kid", "70", Rarity.SECRET, [TRAINER, SUPPORTER]),
+  POKE_KID_70 ("Poké Kid", "70", Rarity.SECRET, [TRAINER, SUPPORTER]),
   ROSE_71 ("Rose", "71", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   SKYLA_72 ("Skyla", "72", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   ALCREMIE_VMAX_73 ("Alcremie VMAX", "73", Rarity.ULTRARARE, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _PSYCHIC_]),
