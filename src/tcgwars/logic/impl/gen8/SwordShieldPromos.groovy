@@ -285,6 +285,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
         }
         move "Headbutt", {
           text "20 damage."
+          energyCost C, C
           onAttack {
             damage 20
           }
@@ -552,7 +553,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
       return evolution (this, from:"Eevee", hp:HP110, type:R, retreatCost:2) {
         weakness W
         move "Singe", {
-          text "Your opponent’s Active Pokémon is now Burned."
+          text "Your opponent's Active Pokémon is now Burned."
           energyCost R
           attackRequirement {}
           onAttack {
@@ -560,7 +561,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           }
         }
         move "Kindle", {
-          text "120 damage. Discard an Energy from this Pokémon. Then, discard an Energy from your opponent’s Active Pokémon."
+          text "120 damage. Discard an Energy from this Pokémon. Then, discard an Energy from your opponent's Active Pokémon."
           energyCost R, R, C
           attackRequirement {}
           onAttack {
@@ -791,7 +792,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           }
         }
         move "Hydro Pump", {
-          text "60+ damage. This attack does 20 more damage for each [W] Energy attached to this Pokémon"
+          text "60+ damage. This attack does 20 more damage for each [W] Energy attached to this Pokémon."
           energyCost C, C, C
           onAttack {
             damage 60
@@ -835,7 +836,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           }
         }
         move "Electro Ball", {
-          text "Damage 30."
+          text "30 damage."
           energyCost L, C
           onAttack {
             damage 30
@@ -846,7 +847,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
       return evolution (this, from: "Charmeleon", hp:HP160, type:R, retreatCost:3) {
         weakness W
         move "Happy Delivery", {
-          text "Search your deck for an Item card, reveal it, and put it into your hand. Then, shuffle your deck."
+          text "Search your deck for up to 2 Item cards, reveal them, and put them into your hand. Then, shuffle your deck."
           energyCost C
           attackRequirement {
             assert my.deck : "Deck is empty"
@@ -860,7 +861,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           }
         }
         move "Flamethrower", {
-          text "Damage 160."
+          text "160 damage. Discard an Energy from this Pokémon."
           energyCost R, R, C
           onAttack {
             damage 160
@@ -894,7 +895,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
       return evolution (this, from: "Eevee V", hp:HP300, type:C, retreatCost:2) {
         weakness F
         move "G-Max Cuddle", {
-          text "During your opponent’s next turn, if the Defending Pokémon tries to attack, your opponent flips a coin. If tails, that attack doesn’t happen."
+          text "During your opponent's next turn, if the Defending Pokémon tries to attack, your opponent flips a coin. If tails, that attack doesn't happen."
           energyCost C, C, C
           attackRequirement {}
           onAttack {
@@ -1003,7 +1004,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           }
         }
         move "Torrential Cannon", {
-          text "200 damage. During your next turn, this Pokémon can’t use Torrential Cannon."
+          text "200 damage. During your next turn, this Pokémon can't use Torrential Cannon."
           energyCost W, W, W
           attackRequirement {}
           onAttack {
@@ -1052,7 +1053,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           }
         }
         move "G-Max Bombard", {
-          text "220 damage. This attack also does 30 damage to 2 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+          text "220 damage. This attack also does 30 damage to 2 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost W, W, W, W
           attackRequirement {}
           onAttack {
@@ -1077,7 +1078,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           }
         }
         move "Brawny Knuckle", {
-          text "180 damage. This attack’s damage isn’t affected by Resistance."
+          text "180 damage. This attack's damage isn't affected by Resistance."
           energyCost F, F, F, F
           attackRequirement {}
           onAttack {
@@ -1098,7 +1099,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           }
         }
         move "Sonic Legs", {
-          text "90 damage. This attack also does 20 damage to 2 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+          text "90 damage. This attack also does 20 damage to 2 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F, F, C
           attackRequirement {}
           onAttack {
@@ -1135,7 +1136,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           }
         }
         move "Thunder Shock", {
-          text "40 damage. Flip a coin. If heads, your opponent’s Active Pokémon is now Paralyzed."
+          text "40 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
           energyCost L, C
           attackRequirement {}
           onAttack {

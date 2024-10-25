@@ -1012,7 +1012,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP210, type:R, retreatCost:2) {
         weakness W
         bwAbility "Field Runner", {
-          text "If there is a Stadium card in play, this Pokémon has no Retreat Cost."
+          text "If a Stadium is in play, this Pokémon has no Retreat Cost."
           getterA (GET_RETREAT_COST, BEFORE_LAST, self) { h->
             if (bg.stadiumInfoStruct) {
               h.object = 0

@@ -1362,7 +1362,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       return evolution (this, from:"Phanpy", hp:HP150, type:F, retreatCost:4) {
         weakness G
         move "Earthquake", {
-          text "120 damage. This attack does 20 damage to each of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+          text "120 damage. This attack also does 20 damage to each of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
           energyCost F
           onAttack {
             damage 120
