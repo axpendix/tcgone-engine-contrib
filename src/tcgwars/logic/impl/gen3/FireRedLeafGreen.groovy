@@ -124,7 +124,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
   EXP_ALL_91 ("EXP.ALL", "91", Rarity.UNCOMMON, [POKEMON_TOOL, TRAINER, ITEM]),
   GREAT_BALL_92 ("Great Ball", "92", Rarity.UNCOMMON, [TRAINER, ITEM]),
   LIFE_HERB_93 ("Life Herb", "93", Rarity.UNCOMMON, [TRAINER, ITEM]),
-  MT__MOON_94 ("Mt. Moon", "94", Rarity.UNCOMMON, [STADIUM, TRAINER, ITEM]),
+  MT__MOON_94 ("Mt. Moon", "94", Rarity.UNCOMMON, [STADIUM, TRAINER]),
   POKE_BALL_95 ("Poké Ball", "95", Rarity.UNCOMMON, [TRAINER, ITEM]),
   POKEDEX_HANDY909_96 ("PokéDex Handy909", "96", Rarity.UNCOMMON, [TRAINER, ITEM]),
   POKEMON_REVERSAL_97 ("Pokémon Reversal", "97", Rarity.UNCOMMON, [TRAINER, ITEM]),
