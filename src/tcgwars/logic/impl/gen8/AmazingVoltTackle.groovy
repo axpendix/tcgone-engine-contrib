@@ -368,7 +368,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
             switchYourActive may:true
           }
         }
-        move "Mystery Wave", {
+        move "Mysterious Wave", {
           text "50+ damage. This attack does 30 more damage times the amount of Energy attached to your opponent's Active Pokémon."
           energyCost G, C
           onAttack {
@@ -454,7 +454,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           }
         }
         move "Royal Blaze", {
-          text "100+ damage. This attack does 50 more damage for each Leon in your discard pile."
+          text "100+ damage. This attack does 50 more damage for each Leon card in your discard pile."
           energyCost R, R
           onAttack {
             damage 100

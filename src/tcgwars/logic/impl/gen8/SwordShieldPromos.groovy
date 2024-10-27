@@ -531,7 +531,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
       return basic (this, hp:HP060, type:L, retreatCost:1) {
         weakness F
         move "Tail Whip" , {
-          text "Flip a coin. If heads, the Defending Pokémon can't attack during your opponent's next turn."
+          text "Flip a coin. If heads, during your opponent's next turn, the Defending Pokémon can't attack."
           energyCost C
           onAttack{
             flip{
@@ -555,15 +555,13 @@ public enum SwordShieldPromos implements LogicCardInfo {
         move "Singe", {
           text "Your opponent's Active Pokémon is now Burned."
           energyCost R
-          attackRequirement {}
           onAttack {
             apply BURNED
           }
         }
         move "Kindle", {
-          text "120 damage. Discard an Energy from this Pokémon. Then, discard an Energy from your opponent's Active Pokémon."
+          text "120 damage. Discard an Energy from this Pokémon. If you do, discard an Energy from your opponent's Active Pokémon."
           energyCost R, R, C
-          attackRequirement {}
           onAttack {
             damage 120
             if (self.cards.energyCount(C)) {
@@ -577,7 +575,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
       return basic (this, hp:HP060, type:C, retreatCost:1) {
         weakness F
         move "Signs of Evolution", {
-          text "Search your deck for a Pokémon that evolves from Eevee, reveal it, and put it into your hand. Then, shuffle your deck."
+          text "Search your deck for a card that evolves from Eevee, reveal it, and put it into your hand. Then, shuffle your deck."
           energyCost C
           attackRequirement {
             assert my.deck : "There are no cards left in your deck"
@@ -586,10 +584,9 @@ public enum SwordShieldPromos implements LogicCardInfo {
             my.deck.search("Select a Pokémon that evolves from Eevee.", {it.cardTypes.is(EVOLUTION) && it.predecessor == "Eevee"}).showToOpponent("Your opponent chose this Pokémon that evolves from Eevee").moveTo(my.hand)
           }
         }
-        move "Kick Attack", {
+        move "Wild Kick", {
           text "30 damage. Flip a coin. If tails, this attack does nothing."
           energyCost C, C
-          attackRequirement {}
           onAttack {
             flip { damage 30 }
           }
@@ -669,7 +666,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           }
         }
         move "Mental Crush", {
-          text "90 damage. If your opponent's Active Pokémon is Confused, this attack does 90 more damage."
+          text "90+ damage. If your opponent's Active Pokémon is Confused, this attack does 90 more damage."
           energyCost P, P, C
           onAttack {
             damage 90

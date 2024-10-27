@@ -1545,7 +1545,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Luxio", hp:HP160, type:L, retreatCost:1) {
         weakness F
         move "Raid", {
-          text "60 damage. If this Pokémon evolved from Luxio during your turn, this attack does 100 more damage."
+          text "60 damage. If this Pokémon evolved from Luxio during this turn, this attack does 100 more damage."
           energyCost L
           onAttack {
             damage 60
@@ -2453,7 +2453,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Carkol", hp:HP160, type:F, retreatCost:4) {
         weakness G
         bwAbility "Tar Generator", {
-          text "Once during your turn, you may search your discard pile for up to 1 [R] Energy and 1 [F] Energy and attach them to your Pokémon in any way you like."
+          text "Once during your turn, you may attach a [R] Energy card, a [F] Energy card, or 1 of each from your discard pile to your Pokémon in any way you like."
           actionA {
             checkLastTurn()
             assert (my.discard.filterByEnergyType(R) || my.discard.filterByEnergyType(F)) : "No [R] or [F] Energy cards in your discard pile."
@@ -2673,7 +2673,7 @@ public enum RebelClash implements LogicCardInfo {
       return evolution (this, from:"Trubbish", hp:HP120, type:D, retreatCost:2) {
         weakness F
         bwAbility "Poisonous Puddle", {
-          text "Once during your turn, if there is a Stadium in play, you may leave your opponents Active Pokémon Poisoned."
+          text "Once during your turn, if a Stadium is in play, you may make your opponent's Active Pokémon Poisoned."
           actionA {
             assert bg.stadiumInfoStruct : "There is no Stadium in play."
             checkLastTurn()
@@ -3050,7 +3050,7 @@ public enum RebelClash implements LogicCardInfo {
         weakness R
         resistance G, MINUS30
         move "Adamantine Press", {
-          text "90 damage. During your opponent’s next turn, this Pokémon takes 30 less damage from attacks."
+          text "90 damage. During your opponent’s next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
           energyCost M, M, C
           onAttack {
             damage 90
@@ -3422,7 +3422,7 @@ public enum RebelClash implements LogicCardInfo {
       return basic (this, hp:HP210, type:C, retreatCost:2) {
         weakness F
         bwAbility "Soft Wool", {
-          text "Damage done to this Pokémon by attacks is reduced by 30."
+          text "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
           delayedA {
             before APPLY_ATTACK_DAMAGES, {
               bg.dm().each {

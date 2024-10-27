@@ -601,7 +601,7 @@ public enum ChampionsPath implements LogicCardInfo {
       return evolution (this, from:"Machoke", hp:HP170, type:F, retreatCost:3) {
         weakness P
         move "Macho Revenge", {
-          text "20x damage. This attack does 20 damage for each Fighting Pokémon in your discard pile."
+          text "20x damage. This attack does 20 damage for each [F] Pokémon in your discard pile."
           energyCost F, C
           attackRequirement {
             assert my.discard.filterByType(POKEMON).any {it.types.contains(F) } :
