@@ -2928,7 +2928,7 @@ public enum BattleStyles implements LogicCardInfo {
           eff = delayed {
             before null, null, TRAINER_CARD, {
               Card trainerCard = e.sourceCard
-              if (trainerCard.cardTypes.is(POKEMON_TOOL) && self.active && self.owner.opposite.pbg.active && self.owner.opposite.pbg.active.cards.contains(trainerCard) && trainerCard.name != 'Tool Jammer' && ![PLAY_TRAINER, PLAY_POKEMON_TOOL, PLAY_POKEMON_TOOL_FLARE, ATTACH_POKEMON_TOOL].contains(ef.effectType)) {
+              if (pokemonToolLockCondition(delegate) && self.active && self.owner.opposite.pbg.active && self.owner.opposite.pbg.active.cards.contains(trainerCard) && trainerCard.name != 'Tool Jammer') {
                 prevent()
               }
             }
