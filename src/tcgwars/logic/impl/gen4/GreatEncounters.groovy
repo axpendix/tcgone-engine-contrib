@@ -18,6 +18,7 @@ import tcgwars.logic.effect.basic.Knockout
 import tcgwars.logic.util.CardList
 import tcgwars.logic.util.CardTypeSet
 import tcgwars.logic.util.Holder
+import tcgwars.logic.util.PokemonCardSet
 
 import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.card.HP.*
@@ -1707,15 +1708,18 @@ public enum GreatEncounters implements LogicCardInfo {
               assert my.all.findAll {it != self && canAttachPokemonTool(it)} : "No available Pokémon to attach $self to"
               powerUsed()
 
-              def top = self.topPokemonCard
+              Card top = self.topPokemonCard
               self.cards.getExcludedList(top).discard()
 
-              def toolCard
+              PokemonCardSet pokemon = my.all.findAll {it!=self && canAttachPokemonTool(it)}.select("Attach to?")
+              removeFromPlay(self, [top] as CardList)
+
+              Card toolCard
               toolCard = pokemonTool(new CustomCardInfo(top.staticInfo).setCardTypes(TRAINER, POKEMON_TOOL)) {
                 def eff
                 onPlay {
                   eff = delayed {
-                    before null, self, Source.ATTACK, {
+                    before null, pokemon, Source.ATTACK, {
                       if (e.sourceAttack.attacker.owner == self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages)) {
                         bc "GUARD prevents effect ${ef.effectType}"
                         prevent()
@@ -1731,12 +1735,8 @@ public enum GreatEncounters implements LogicCardInfo {
                   eff.unregister()
                 }
               }
-              bg.em().run(new ChangeImplementation(toolCard, top))
               toolCard.initializeFrom(top)
-              def pcs = my.all.findAll {it!=self && canAttachPokemonTool(it)}.select("Attach to?")
-              removeFromPlay(self, [top] as CardList)
-              bg.em().run(new ChangeImplementation(toolCard, top))
-              attachPokemonTool(toolCard, pcs)
+              attachPokemonTool(toolCard, pokemon)
               removePCS(self)
             }
           }
