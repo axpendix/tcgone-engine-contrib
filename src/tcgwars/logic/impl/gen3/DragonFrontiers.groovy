@@ -1861,7 +1861,9 @@ public enum DragonFrontiers implements LogicCardInfo {
 
             delayed {
               before PLAY_TRAINER, {
-                if (!ef.cardToPlay.cardTypes.is(SUPPORTER) && bg.currentTurn == self.owner.opposite) {
+                if (!ef.cardToPlay.cardTypes.is(SUPPORTER)
+                  && bg.currentTurn == self.owner.opposite
+                  && (ef.cardToPlay as Card).player == self.owner.opposite) {
                   wcu "Deafen prevents playing trainer cards"
                   prevent()
                 }
