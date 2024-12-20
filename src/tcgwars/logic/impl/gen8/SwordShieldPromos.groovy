@@ -846,7 +846,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           }
           onAttack {
             if (sw2(opp.bench.select("Select the new Active Pokémon."))) { 
-              apply ASLEEP
+              apply CONFUSED
             }
           }
         }
