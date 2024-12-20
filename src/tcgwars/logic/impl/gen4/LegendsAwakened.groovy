@@ -4126,8 +4126,8 @@ public enum LegendsAwakened implements LogicCardInfo {
           pokeBody "Psybarrier", {
             text "Prevent all effects of attacks, including damage, done to Mewtwo by your opponent's Pokémon that isn't an Evolved Pokémon."
             delayedA {
-              before null, self, Source.ATTACK, {
-                if (!self.owner.opposite.pbg.active.evolution && bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE) {
+              before null, self, ATTACK, {
+                if (!e.sourceAttack.attacker.evolution && bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE) {
                   bc "Psybarrier prevents effect"
                   prevent()
                 }
