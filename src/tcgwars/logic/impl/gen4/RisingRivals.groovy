@@ -1050,7 +1050,7 @@ public enum RisingRivals implements LogicCardInfo {
             text "As long as Mamoswine GL is your Active Pokémon, put 1 damage counter on each Active Pokémon (excluding W Pokémon) between turns."
             delayedA {
               before BEGIN_TURN, {
-                if (self.active) {
+                if (self.active && !ef.firstTurn) {
                   def selfWaterType = self.types.contains(W)
                   def oppWaterType = self.owner.opposite.pbg.active.types.contains(W)
                   if (!selfWaterType||!oppWaterType) {
