@@ -1208,10 +1208,10 @@ public enum GreatEncounters implements LogicCardInfo {
             text "Switch 1 of your opponent's Benched Pokémon with 1 of the Defending Pokémon. This attack does 10 damage to the new Defending Pokémon."
             energyCost ()
             attackRequirement {
-              assert opp.bench : "Your opponent has no Benched Pokémon"
+              assertOppBench()
             }
             onAttack {
-              if (sw2(opp.bench.select("Choose the new Active Pokémon"))) {
+              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) {
                 damage 10
               }
             }

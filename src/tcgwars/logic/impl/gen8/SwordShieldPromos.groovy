@@ -842,12 +842,12 @@ public enum SwordShieldPromos implements LogicCardInfo {
           text "Switch 1 of your opponent's Benched Pokémon with their Active Pokémon. The new Active Pokémon is now Confused."
           energyCost P, C
           attackRequirement {
-            assert opp.bench : "Opponent's Bench is empty"
+            assertOppBench()
           }
           onAttack {
-            if (!opp.bench) return
-            switchYourOpponentsBenchedWithActive()
-            applyAfterDamage CONFUSED
+            if (sw2(opp.bench.select("Select the new Active Pokémon."))) { 
+              apply ASLEEP
+            }
           }
         }
         move "Mental Crush", {

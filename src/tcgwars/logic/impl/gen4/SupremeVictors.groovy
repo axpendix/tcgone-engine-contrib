@@ -283,11 +283,12 @@ public enum SupremeVictors implements LogicCardInfo {
             text "Switch the Defending Pokémon with 1 of your opponent's Benched Pokémon. The new Defending Pokémon is now Burned."
             energyCost R
             attackRequirement {
-              assert opp.bench : "Your opponent has no Benched Pokémon"
+              assertOppBench()
             }
             onAttack {
-              def target = opp.bench.select("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")
-              if ( sw2(target) ) { apply BURNED, target }
+              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+                apply BURNED
+              }
             }
           }
           move "Vapor Kick", {
@@ -598,12 +599,14 @@ public enum SupremeVictors implements LogicCardInfo {
           move "Drag Off", {
             text "30 damage. Before doing damage, you may switch your opponent's Active Pokémon with 1 of his or her Benched Pokémon."
             energyCost W, C, C
-            attackRequirement {}
             onAttack {
-              if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")) {
-                switchYourOpponentsBenchedWithActive()
+              if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon?")) {
+                if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+                  damage 30 
+                }
+              } else {
+                damage 30
               }
-              damage 30
             }
           }
           move "Push Over", {

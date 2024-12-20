@@ -458,15 +458,13 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              def pcs = defending
-              if (opp.bench) {
-                if (confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")) {
-                  pcs = opp.bench.select()
-                  sw defending, pcs
+              if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon?")) {
+                if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+                  damage 30 
                 }
+              } else {
+                damage 30
               }
-
-              damage 30, pcs
             }
           }
           move "Giga Hammer", {

@@ -358,11 +358,12 @@ public enum RisingRivals implements LogicCardInfo {
             text "Switch the Defending Pokémon with one of your opponent’s Benched Pokémon. The new Defending Pokémon is now Asleep."
             energyCost C
             attackRequirement {
-              assert opp.bench : "Your opponent has no Benched Pokémon"
+              assertOppBench()
             }
             onAttack {
-              def target = opp.bench.select("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")
-              if ( sw2(target) ) { apply ASLEEP, target }
+              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+                apply ASLEEP
+              }
             }
           }
           move "Wake-Up Slap", {

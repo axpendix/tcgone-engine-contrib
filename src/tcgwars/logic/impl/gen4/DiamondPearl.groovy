@@ -1649,16 +1649,17 @@ public enum DiamondPearl implements LogicCardInfo {
           move "Magnetic Ray", {
             text "40 damage. Before doing damage, you may choose 1 of your opponent’s Benched Pokémon that has any Energy attached to it and switch that Pokémon with 1 of the Defending Pokémon."
             energyCost M, C, C
-            attackRequirement {}
             onAttack {
               //TODO: Generalize on Statics, with "may" and "filter" params. See "Drag Off" (BLAZIKEN_EX_90 in CG) as a similar attack for base.
               def target = defending
               def tar = opp.bench.findAll{ it.cards.energyCount() }
               if (tar && confirm("Before doing damage, you may choose 1 of your opponent’s Benched Pokémon that has any Energy attached to it and switch that Pokémon with 1 of the Defending Pokémon.")) {
-                target = tar.select("Select the new active")
-                sw defending, target
+                target = tar.select("Select the new Defending Pokémon.")
+                if ( sw2(target) ) {
+                  damage 40
+                }
               }
-              damage 40, target
+              damage 40
             }
           }
 
@@ -2279,11 +2280,12 @@ public enum DiamondPearl implements LogicCardInfo {
             text "Switch 1 of your opponent’s Benched Pokémon with 1 of the Defending Pokémon. The new Defending Pokémon is now Asleep."
             energyCost G
             attackRequirement {
-              assert opp.bench : "Your opponent has no Benched Pokémon."
+              assertOppBench()
             }
             onAttack {
-              def target = opp.bench.select("Select the new Active Pokémon.")
-              if ( sw2(target) ) { apply ASLEEP, target }
+              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+                apply ASLEEP
+              }
             }
           }
           move "Gust", {

@@ -840,14 +840,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           move "Drain Down", {
             text "30 damage. Before doing damage, you may switch 1 of the Defending Pokémon with 1 of your opponent's Benched Pokémon. If you do, this attack does 30 damage to the new Defending Pokémon. If the Defending Pokémon would be Knocked Out by this attack, you may remove all damage counters from Cradily."
             energyCost G
-            attackRequirement {}
             onAttack {
-              def pcs = defending
-              if (opp.bench && confirm("Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon?")) {
-                pcs = opp.bench.select("New Defending Pokémon")
-                sw2 pcs
-              }
-
               delayed {
                 before KNOCKOUT, pcs, {
                   if (self.numberOfDamageCounters && confirm("Remove all damage counters from Cradily?")) {
@@ -857,7 +850,13 @@ public enum LegendsAwakened implements LogicCardInfo {
                 }
                 unregisterAfter 1
               }
-              damage 30
+              if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon?")) {
+                if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+                  damage 30 
+                }
+              } else {
+                damage 30
+              }
             }
           }
           move "Acid", {
@@ -1535,14 +1534,16 @@ public enum LegendsAwakened implements LogicCardInfo {
           weakness R, '+30'
           move "Burning Scent", {
             text "The Defending Pokémon is now Burned and Poisoned. Before applying these effects, you may switch 1 of the Defending Pokémon with 1 of your opponent's Benched Pokémon. The new Defending Pokémon is now Burned and Poisoned."
-            attackRequirement {}
             onAttack {
-              if (opp.bench && confirm("Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon?")) {
-                sw2 opp.bench.select("New Defending Pokémon")
+              if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon?")) {
+                if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+                  apply BURNED
+                  apply POISONED
+                }
+              } else {
+                apply BURNED
+                apply POISONED
               }
-
-              apply BURNED
-              apply POISONED
             }
           }
           move "Energy Dissolve", {

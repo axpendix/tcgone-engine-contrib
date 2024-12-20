@@ -2263,7 +2263,7 @@ public enum Platinum implements LogicCardInfo {
             text "Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon. This attack does 20 damage to the new Defending Pokémon."
             energyCost C
             attackRequirement {
-              assert opp.bench : "Your opponent has no Benched Pokémon"
+              assertOppBench()
             }
             onAttack {
               def target = opp.bench.select("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")
@@ -2498,12 +2498,12 @@ public enum Platinum implements LogicCardInfo {
           move "Hospitality", {
             text "Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon. Remove 2 damage counters from the new Defending Pokémon."
             energyCost ()
-            attackRequirement {}
+            attackRequirement {
+              assertOppBench()
+            }
             onAttack {
-              def target = opp.bench.select("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")
-              if (sw2(target)) {
-                heal 20, target
-              }
+              def target = opp.bench.select("Select the new Defending Pokémon.")
+              if ( sw2(target) ) { heal 20, target }
             }
           }
         };

@@ -955,10 +955,10 @@ public enum Undaunted implements LogicCardInfo {
             text "Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon. The new Defending Pokémon is now Confused and Poisoned."
             energyCost P
             attackRequirement {
-              assert opp.bench : "Your opponent has no Benched Pokémon"
+              assertOppBench()
             }
             onAttack {
-              if(sw2(opp.bench.select("Choose the new Active Pokémon"))) {
+              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) {
                 apply CONFUSED
                 apply POISONED
               }
