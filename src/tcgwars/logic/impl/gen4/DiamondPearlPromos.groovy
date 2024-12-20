@@ -82,7 +82,8 @@ public enum DiamondPearlPromos implements LogicCardInfo {
   ARCEUS_LV_X_DP53 ("Arceus Lv.X", "DP53", Rarity.PROMO, [LVL_X, POKEMON, _COLORLESS_]),
   BEGINNING_DOOR_DP54 ("Beginning Door", "DP54", Rarity.PROMO, [TRAINER, ITEM]),
   ULTIMATE_ZONE_DP55 ("Ultimate Zone", "DP55", Rarity.PROMO, [TRAINER, STADIUM]),
-  ARCEUS_LV_X_DP56 ("Arceus Lv.X", "DP56", Rarity.PROMO, [LVL_X, POKEMON, _COLORLESS_]);
+  ARCEUS_LV_X_DP56 ("Arceus Lv.X", "DP56", Rarity.PROMO, [LVL_X, POKEMON, _COLORLESS_]),
+  VICTORY_MEDAL("Victory Medal", "MEDAL", Rarity.PROMO, [TRAINER, ITEM]);
 
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
@@ -715,6 +716,21 @@ public enum DiamondPearlPromos implements LogicCardInfo {
         return copy(Arceus.ULTIMATE_ZONE_91, this);
       case ARCEUS_LV_X_DP56:
         return copy(Arceus.ARCEUS_LV_X_95, this);
+      case VICTORY_MEDAL:
+        return itemCard (this) {
+          text "Flip 2 coins. If one of them is heads, draw a card. If both are heads, search your deck for any 1 card, put it into your hand, and shuffle your deck afterward. "
+          onPlay {
+            flip 2, {}, {}, [1: {
+              draw 1
+            }, 2: {
+              my.deck.select("Put any card to your hand").moveTo(my.hand)
+              shuffleDeck()
+            }]
+          }
+          playRequirement{
+            assert my.deck : "Your deck is empty"
+          }
+        };
       default:
         return null;
     }
