@@ -3198,13 +3198,13 @@ public enum Platinum implements LogicCardInfo {
             opp.hand.shuffledCopy().showToMe("Opponent's hand")
             def choice = choose([0,1],["${my.owner.username}","${my.owner.opposite.username}"],"Choose a player")
             if(choice==1) {
-              opp.hand.moveTo(hidden:true, opp.deck)
+              opp.hand.moveTo(hidden:false, opp.deck)
               shuffleOppDeck()
-              draw oppChoose(1..5,"Looker's Investigation: Draw how many cards?", 5), TargetPlayer.OPPONENT
+              drawUpTo(5, TargetPlayer.OPPONENT)
             } else {
               my.hand.getExcludedList(thisCard).moveTo(hidden:true, my.deck)
               shuffleDeck()
-              draw choose(1..5, "Looker's Investigation: Draw how many cards?", 5)
+              drawUpTo(5)
             }
           }
         };
@@ -3383,7 +3383,7 @@ public enum Platinum implements LogicCardInfo {
             text "Whenever your opponent’s Pokémon tries to attack, your opponent discards 1 card from his or her hand. (If your opponent can’t discard 1 card, your opponent’s Pokémon can’t attack.) You can’t use more than 1 Invisible Tentacles Poké-Body each turn."
             delayedA {
               before CHECK_ATTACK_REQUIREMENTS, {
-                if (ef.attacker.owner == self.owner.opposite && opp.hand.empty) {
+                if (ef.attacker.owner == self.owner.opposite && self.owner.opposite.pbg.hand.empty) {
                   wcu "Invisible Tentacles prevents attacking"
                   prevent()
                 }
@@ -3391,7 +3391,7 @@ public enum Platinum implements LogicCardInfo {
               before ATTACK_MAIN, {
                 if(bg.em().retrieveObject("Invisible_Tentacles") != bg.turnCount) {
                   bg.em().storeObject("Invisible_Tentacles", bg.turnCount)
-                  opp.hand.oppSelect("Choose a card to discard").discard()
+                  self.owner.opposite.pbg.hand.select("Invisible Tentacles: Discard a card", {true}, self.owner.opposite).discard()
                 }
               }
             }
