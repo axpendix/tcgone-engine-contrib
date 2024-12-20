@@ -908,7 +908,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             assertOppBench()
           }
           onAttack {
-            if (sw2(opp.bench.select("Select the new Active Pokémon."))) { 
+            if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
               apply ASLEEP
             }
           }
