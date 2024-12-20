@@ -439,7 +439,7 @@ public enum Stormfront implements LogicCardInfo {
             onAttack {
               damage 60
               afterDamage {
-                if(confirm("Switch $self with 1 of your Benched Pokémon?")) {
+                if(my.bench && confirm("Switch $self with 1 of your Benched Pokémon?")) {
                   if(sw2(my.bench.select("New Active Pokémon"))) {
                     whirlwind()
                   }
