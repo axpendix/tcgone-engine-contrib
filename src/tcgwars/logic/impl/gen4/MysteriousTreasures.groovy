@@ -3055,14 +3055,14 @@ public enum MysteriousTreasures implements LogicCardInfo {
             text "Switch 1 of your opponent’s Benched Pokémon with 1 of the Defending Pokémon. The new Defending Pokémon is now Asleep."
             energyCost G
             attackRequirement {
-              assert opp.bench
+              assertOppBench()
             }
             onAttack {
-              sw opp.active, opp.bench.select()
-              apply ASLEEP, opp.active
+              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+                apply ASLEEP
+              }
             }
           }
-
         };
       case TEDDIURSA_105:
         return basic (this, hp:HP060, type:COLORLESS, retreatCost:1) {

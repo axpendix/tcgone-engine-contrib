@@ -905,11 +905,12 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "Switch 1 of your opponent's Benched Pokémon with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch. The new Defending Pokémon is now Asleep."
           energyCost C
           attackRequirement{
-            assert opp.bench : "There is no Pokémon on your opponent's bench"
+            assertOppBench()
           }
           onAttack {
-            def target = opp.bench.select("Select the new Active Pokémon.")
-            if ( sw2(target) ) { apply ASLEEP, target }
+            if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+              apply ASLEEP
+            }
           }
         }
         move "Psyshot", {

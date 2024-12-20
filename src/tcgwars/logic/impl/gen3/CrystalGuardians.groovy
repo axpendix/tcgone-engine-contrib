@@ -1938,13 +1938,16 @@ public enum CrystalGuardians implements LogicCardInfo {
         weakness P
         move "Drag Off", {
           text "30 damage. Before doing damage, you may choose 1 of your opponent's Benched Pokémon and switch it with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
+          //If switch is chosen, damage is only inflicted if the switch is successful.
           energyCost F, C
           onAttack {
-            if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")) {
-              switchYourOpponentsBenchedWithActive()
+            if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon?")) {
+              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+                damage 30 
+              }
+            } else {
+              damage 30
             }
-
-            damage 30
           }
         }
         move "Burn Away", {

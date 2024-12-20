@@ -1607,13 +1607,13 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             text "Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon. The new Defending Pokémon is now Asleep."
             energyCost P
             attackRequirement {
-              assert opp.bench
+              assertOppBench()
             }
             onAttack {
-              sw opp.active, opp.bench.select()
-              apply ASLEEP, opp.active
+              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+                apply ASLEEP
+              }
             }
-
           }
           move "Gentle Slap", {
             text "20 damage. "

@@ -633,14 +633,16 @@ public enum SecretWonders implements LogicCardInfo {
           weakness F, PLUS30
           move "Tongue Reel", {
             text "Choose 1 of your opponent’s Pokémon. If you choose a Benched Pokémon, switch the Defending Pokémon with that Pokémon. This attack does 20 damage to the Pokémon you chose. Flip a coin. If heads, the Defending Pokémon is now Paralyzed."
+            //Japanese text says flip to paralyze the chosen Pokémon, not the Defending.
             energyCost C, C
             onAttack {
-              def tar = opp.all.select("Choose 1 of your opponent's Pokémon")
-              if(tar.benched) {
-                sw2(tar) // The way I read this, even if the benched Pokémon is not successfully pulled into the active, 20 damage is still done to the selected Pokémon, then the defending Pokémon might be paralyzed.
-              }
+              def tar = opp.all.select("Choose 1 of your opponent's Pokémon.")
               damage 20, tar
-              flip {applyAfterDamage PARALYZED}
+              if (!tar.benched) {
+                flip {applyAfterDamage PARALYZED}
+              } else if (sw2(tar)) {
+                flip {applyAfterDamage PARALYZED}
+              }
             }
           }
           move "Boundless Power", {
@@ -1352,11 +1354,15 @@ f
             text "20 damage. The Defending Pokémon is now Poisoned. Before doing damage, you may switch 1 of the Defending Pokémon with 1 of your opponent’s Benched Pokémon. The new Defending Pokémon is now Poisoned."
             energyCost C, C
             onAttack {
-              if(opp.bench && confirm("Switch the Defending Pokémon with 1 of your opponent’s Benched Pokémon?")) {
-                sw2 opp.bench.select("New Defending Pokémon")
+              if(opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon?")) {
+                if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+                  damage 20
+                  applyAfterDamage POISONED
+                }
+              } else {
+                damage 20
+                applyAfterDamage POISONED
               }
-              damage 20
-              applyAfterDamage POISONED
             }
           }
           move "Pride Attack", {

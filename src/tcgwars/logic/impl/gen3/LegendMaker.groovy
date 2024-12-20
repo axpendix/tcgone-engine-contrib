@@ -949,11 +949,14 @@ public enum LegendMaker implements LogicCardInfo {
         move "Drag Off", {
           text "10 damage. Before doing damage, you may choose 1 of your opponent's Benched Pokémon and switch it with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
           energyCost C
-          onAttack{
-            if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")) {
-              switchYourOpponentsBenchedWithActive()
+          onAttack {
+            if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon?")) {
+              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+                damage 10 
+              }
+            } else {
+              damage 10
             }
-            damage 10
           }
         }
         move "Hydro Splash", {
@@ -1540,11 +1543,12 @@ public enum LegendMaker implements LogicCardInfo {
           text "Switch 1 of your opponent's Benched Pokémon with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch. The new Defending Pokémon is now Poisoned."
           energyCost C
           attackRequirement{
-            assert opp.bench : "Your opponent has no benched Pokémon"
+            assertOppBench()
           }
           onAttack {
-            def target = opp.bench.select("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon.")
-            if ( sw2(target) ) { apply POISONED, target }
+            if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+              apply POISONED
+            }
           }
         }
       };
@@ -2105,7 +2109,7 @@ public enum LegendMaker implements LogicCardInfo {
           text "Switch 1 of your opponent's Benched Pokémon with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
           energyCost C
           attackRequirement {
-            assert opp.bench : "There is no Pokémon on your opponent's bench"
+            assertOppBench()
           }
           onAttack {
             switchYourOpponentsBenchedWithActive()

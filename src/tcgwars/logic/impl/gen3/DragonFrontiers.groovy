@@ -235,15 +235,16 @@ public enum DragonFrontiers implements LogicCardInfo {
         }
         move "Drag Off", {
           text "20 damage. Before doing damage, you may choose 1 of your opponent's Benched Pokémon and switch it with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
+          //If switch is chosen, damage is only inflicted if the switch is successful.
           energyCost C, C
           onAttack {
-            if(opp.bench){
-              if(confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")){
-                def target = opp.bench.select()
-                sw2(target)
+            if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon?")) {
+              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+                damage 20 
               }
+            } else {
+              damage 20
             }
-            damage 20
           }
         }
         move "Sharp Fang", {

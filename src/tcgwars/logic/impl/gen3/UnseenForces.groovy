@@ -292,14 +292,14 @@ public enum UnseenForces implements LogicCardInfo {
           text "The Defending Pokémon is now Asleep and Poisoned. Before applying this effect, you may switch 1 of your opponent's Benched Pokémon with 1 of the Defending Pokémon. If you do, the new Defending Pokémon is now Asleep and Poisoned. Your opponent chooses the Defending Pokémon to switch."
           energyCost G
           onAttack {
-            def pcs = defending
-            if(opp.bench && confirm("Switch 1 of your opponent's Benched Pokémon with the Defending Pokémon?")){
-              def target = opp.bench.select("Select the new Active Pokémon.")
-              if ( sw2(target) ) { pcs = target }
-            }
-            targeted(pcs) {
-              apply ASLEEP, pcs
-              apply POISONED, pcs
+            if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon?")) {
+              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+                apply ASLEEP
+                apply POISONED
+              }
+            } else {
+              apply ASLEEP
+              apply POISONED
             }
           }
         }
@@ -820,10 +820,13 @@ public enum UnseenForces implements LogicCardInfo {
           text "20 damage. Before doing damage, you may switch 1 of your opponent's Benched Pokémon with the Defending Pokémon. If you do, this attack does 20 damage to the new Defending Pokémon. Your opponent chooses the Defending Pokémon to switch."
           energyCost C, C
           onAttack {
-            if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon before doing damage?")) {
-              switchYourOpponentsBenchedWithActive()
+            if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon?")) {
+              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+                damage 20 
+              }
+            } else {
+              damage 20
             }
-            damage 20
           }
         }
         move "Rock Smash", {
@@ -1145,11 +1148,12 @@ public enum UnseenForces implements LogicCardInfo {
           text "Switch 1 of your opponent's Benched Pokémon with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch. The new Defending Pokémon is now Asleep."
           energyCost C
           attackRequirement{
-            assert opp.bench : "Your opponent has no Benched Pokémon."
+            assertOppBench()
           }
           onAttack {
-            def target = opp.bench.select("Select the new Active Pokémon.")
-            if ( sw2(target) ) { apply ASLEEP, target }
+            if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+              apply ASLEEP
+            }
           }
         }
         move "Plunder", {

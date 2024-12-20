@@ -2737,8 +2737,9 @@ public enum RebelClash implements LogicCardInfo {
             assertOppBench()
           }
           onAttack {
-            def target = opp.bench.select("Select the new Active Pokémon.")
-            if ( sw2(target) ) { damage 30, target }
+            if (sw2(opp.bench.select("Select the new Active Pokémon."))) { 
+              damage 30
+            }
           }
         }
         move "Brain Shake", {
