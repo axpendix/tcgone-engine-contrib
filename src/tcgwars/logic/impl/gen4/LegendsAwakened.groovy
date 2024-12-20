@@ -3761,7 +3761,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             boolean first
             Feelings = bg.em().retrieveAndStore("Feelings", {
               first = !it
-              it ?: [:] as Map
+              it != null ? it : [:] as Map
             })
             if (first) {
               delayed {

@@ -1936,7 +1936,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         weakness P
         def Imprison
         initHook {Card thisCard ->
-          Imprison = bg.em().retrieveAndStore("Imprison", {it ?: [] as Set})
+          Imprison = bg.em().retrieveAndStore("Imprison", {it != null ? it : [] as Set})
         }
         pokePower "Imprison", {
           text "Once during your turn (before your attack), if Gardevoir ex is your Active Pokémon, you may put an Imprison marker on 1 of your opponent's Pokémon. Any Pokémon that has any Imprison markers on it can't use any Poké-Powers or Poké-Bodies. This power can't be used if Gardevoir ex is affected by a Special Condition."
@@ -2202,7 +2202,7 @@ public enum DragonFrontiers implements LogicCardInfo {
         weakness G
         def Shock_Wave
         initHook {Card thisCard ->
-          Shock_Wave = bg.em().retrieveAndStore("Shock_Wave", {it ?: [] as Set})
+          Shock_Wave = bg.em().retrieveAndStore("Shock_Wave", {it != null ? it : [] as Set})
         }
         move "Electromark", {
           text "Put a Shock-wave marker on 1 of your opponent's Pokémon."
