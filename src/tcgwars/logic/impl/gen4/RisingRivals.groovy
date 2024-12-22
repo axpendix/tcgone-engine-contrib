@@ -1165,17 +1165,15 @@ public enum RisingRivals implements LogicCardInfo {
           resistance L, MINUS20
           pokeBody "Maternal Comfort", {
             text "At any times between turns, remove 1 damage counter from each of your Pokémon. You can’t use more than 1 Maternal Comfort Poké-Body between turns."
-            delayedA (anytime:true) {
-              def lastExecId = null
+            delayedA (priority: BEFORE_LAST2) {
               before BEGIN_TURN, {
-                if (lastExecId != e.executionId && bg.em().retrieveObject("Maternal_Comfort" + self.owner) != ef.oldTurnCount && self.owner.pbg.all.any{it.numberOfDamageCounters} ) {
+                if (bg.em().retrieveObject("Maternal_Comfort" + self.owner) != ef.oldTurnCount) {
                   bc "$thisAbility activates"
                   self.owner.pbg.all.each {
                     if (it.numberOfDamageCounters) {
                       heal 10, it
                     }
                   }
-                  lastExecId = e.executionId
                   bg.em().storeObject("Maternal_Comfort" + self.owner, ef.oldTurnCount)
                 }
               }
