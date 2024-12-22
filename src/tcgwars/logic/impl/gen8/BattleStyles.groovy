@@ -1299,10 +1299,9 @@ public enum BattleStyles implements LogicCardInfo {
         move "Defiant Spark", {
           text "130 damage. If this Pokémon has any damage counters on it, this attack can be used for [L]."
           energyCost LIGHTNING
-          // TODO: How does this work with metronome/foul play?
           attackRequirement {
             if (!self.numberOfDamageCounters)  {
-              assert self.cards.energySufficient(L, L, C) : "Not enough Energy"
+              assert self.cards.energySufficient(L, L, C) || bg.em().findAttack().subattack : "Not enough Energy"
             }
           }
           onAttack {
