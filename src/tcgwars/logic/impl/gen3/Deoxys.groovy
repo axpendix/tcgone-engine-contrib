@@ -588,7 +588,7 @@ public enum Deoxys implements LogicCardInfo {
 
           pokeBody "Empty Shell", {
             text "When Shedinja is Knocked Out, your opponent doesn’t take any Prize cards."
-            getterA GET_GIVEN_PRIZES, self, {holder ->
+            getterA GET_GIVEN_PRIZES, BEFORE_LAST, self, {holder ->
               bc "Empty Shell prevents taking any prize card from ${self}"
               holder.object = 0
             }

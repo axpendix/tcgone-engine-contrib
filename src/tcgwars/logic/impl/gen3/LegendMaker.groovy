@@ -951,8 +951,8 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C
           onAttack {
             if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon?")) {
-              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
-                damage 10 
+              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) {
+                damage 10
               }
             } else {
               damage 10
@@ -1546,7 +1546,7 @@ public enum LegendMaker implements LogicCardInfo {
             assertOppBench()
           }
           onAttack {
-            if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+            if (sw2(opp.bench.select("Select the new Defending Pokémon."))) {
               apply POISONED
             }
           }
@@ -2296,7 +2296,7 @@ public enum LegendMaker implements LogicCardInfo {
                   prevent()
                 }
               }
-              getterA GET_GIVEN_PRIZES, self, {holder ->
+              getterA GET_GIVEN_PRIZES, BEFORE_LAST, self, {holder ->
                 bc "Claw Fossil gives no prizes"
                 holder.object = 0
               }
@@ -2338,7 +2338,7 @@ public enum LegendMaker implements LogicCardInfo {
           pokemonCard = basic (new CustomCardInfo(thisCard.staticInfo).setCardTypes(BASIC, POKEMON, TRAINER, FOSSIL), hp:HP050, type:COLORLESS, retreatCost:0) {
             customAbility{
               def eff, acl
-              getterA GET_GIVEN_PRIZES, self, {holder ->
+              getterA GET_GIVEN_PRIZES, BEFORE_LAST, self, {holder ->
                 bc "Mysterious Fossil gives no prizes"
                 holder.object = 0
               }
@@ -2401,7 +2401,7 @@ public enum LegendMaker implements LogicCardInfo {
             }
             customAbility {
               def eff, acl
-              getterA GET_GIVEN_PRIZES, self, {holder ->
+              getterA GET_GIVEN_PRIZES, BEFORE_LAST, self, {holder ->
                 bc "Root Fossil gives no prizes"
                 holder.object = 0
               }

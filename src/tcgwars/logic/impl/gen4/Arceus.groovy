@@ -2275,7 +2275,7 @@ public enum Arceus implements LogicCardInfo {
                 }
               }
             }
-            effPrize = getter GET_GIVEN_PRIZES, BEFORE_LAST, self, {holder->
+            effPrize = getter GET_GIVEN_PRIZES, self, {holder->
               bc "Expert Belt increases prizes taken by one."
               holder.object += 1
             }
@@ -2419,9 +2419,9 @@ public enum Arceus implements LogicCardInfo {
                   }
                   def eff
                   register {
-                    eff = getter GET_GIVEN_PRIZES, BEFORE_LAST, {Holder holder ->
+                    eff = getter GET_GIVEN_PRIZES, {Holder holder ->
                       def pcs = holder.effect.target
-                      if ( flag && holder.object > 0 && pcs.owner != self.owner && pcs.KOBYDMG == bg.turnCount ) {
+                      if ( flag && pcs.owner != self.owner && pcs.KOBYDMG == bg.turnCount ) {
                         bc "$thisAbility gives the player an additional prize."
                         holder.object += 1
                       }

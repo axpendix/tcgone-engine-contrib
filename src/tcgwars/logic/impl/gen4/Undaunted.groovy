@@ -2166,7 +2166,7 @@ public enum Undaunted implements LogicCardInfo {
             text "If your opponent’s Pokémon is Knocked Out by damage from an attack of Rayquaza & Deoxys LEGEND, take 1 more Prize card."
             getterA GET_GIVEN_PRIZES, BEFORE_LAST, {Holder holder ->
               def pcs = holder.effect.target
-              if (self.active && pcs.owner != self.owner && pcs.KOBYDMG == bg.turnCount && holder.object > 0) {
+              if (self.active && pcs.owner != self.owner && pcs.KOBYDMG == bg.turnCount) {
                 bc "Space Virus gives the player an additional prize."
                 holder.object += 1
               }

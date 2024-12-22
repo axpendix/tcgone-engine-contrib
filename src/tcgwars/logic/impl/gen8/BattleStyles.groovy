@@ -2591,8 +2591,8 @@ public enum BattleStyles implements LogicCardInfo {
             delayed {
               def eff2
               register {
-                eff2 = getter GET_GIVEN_PRIZES, BEFORE_LAST, pcs, { Holder holder ->
-                  if (holder.object > 0 && pcs.KOBYDMG == bg.turnCount && defending.basic) {
+                eff2 = getter GET_GIVEN_PRIZES, pcs, { Holder holder ->
+                  if (pcs.KOBYDMG == bg.turnCount && defending.basic) {
                     bc "Double Dip Fangs gives the player an additional prize"
                     holder.object += 1
                   }

@@ -1474,7 +1474,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
             if (self.pokemonVMAX) holder.object -= hp(100)
           }
           prizeEff = getter GET_GIVEN_PRIZES, self, { holder ->
-            if (self.pokemonVMAX && fromOppAttackFlag && holder.object > 0) {
+            if (self.pokemonVMAX && fromOppAttackFlag) {
               bc "$thisCard reduces prizes taken from KOing $self by one."
               holder.object -= 1
             }

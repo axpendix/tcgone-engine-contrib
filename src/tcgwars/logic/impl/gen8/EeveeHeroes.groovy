@@ -1467,7 +1467,7 @@ public enum EeveeHeroes implements LogicCardInfo {
         def eff
         onPlay {reason->
           eff = getter GET_GIVEN_PRIZES, self, {holder->
-            if (self.name.contains("Sylveon") && self.pokemonV && self.KOBYDMG == bg.turnCount && holder.object > 0) {
+            if (self.name.contains("Sylveon") && self.pokemonV && self.KOBYDMG == bg.turnCount) {
               bc "$thisCard.name reduces prizes taken from KOing ${self} by one."
               holder.object -= 1
             }
