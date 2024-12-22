@@ -293,7 +293,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost G
           onAttack {
             if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon?")) {
-              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) {
                 apply ASLEEP
                 apply POISONED
               }
@@ -341,7 +341,7 @@ public enum UnseenForces implements LogicCardInfo {
         weakness L
         pokeBody "Intimidating Fang", {
           text "As long as Feraligatr is your Active Pokémon, any damage done to your Pokémon by an opponent's attack is reduced by 10 (before applying Weakness and Resistance)."
-          delayedA {
+          delayedA (priority: BEFORE_LAST) {
             after PROCESS_ATTACK_EFFECTS, {
               bg.dm().each {
                 if(self.active && it.to.owner==self.owner && it.from.owner==self.owner.opposite && it.dmg.value && it.notNoEffect) {
@@ -821,8 +821,8 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C, C
           onAttack {
             if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon?")) {
-              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
-                damage 20 
+              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) {
+                damage 20
               }
             } else {
               damage 20
@@ -1151,7 +1151,7 @@ public enum UnseenForces implements LogicCardInfo {
             assertOppBench()
           }
           onAttack {
-            if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+            if (sw2(opp.bench.select("Select the new Defending Pokémon."))) {
               apply ASLEEP
             }
           }
@@ -1356,7 +1356,7 @@ public enum UnseenForces implements LogicCardInfo {
         weakness F
         pokeBody "Intimidating Fang", {
           text "As long as Granbull is your Active Pokémon, any damage done to your Pokémon by an opponent's attack is reduced by 10 (before applying Weakness and Resistance)."
-          delayedA {
+          delayedA (priority: BEFORE_LAST) {
             after PROCESS_ATTACK_EFFECTS, {
               bg.dm().each {
                 if (self.active && it.to.owner == self.owner && it.dmg.value && it.notNoEffect) {

@@ -444,7 +444,7 @@ public enum RubySapphireNG implements LogicCardInfo {
         resistance P, MINUS30
         pokeBody "Intimidating Fang", {
           text "As long as Mightyena is your Active Pokémon, any damage done to your Pokémon done by an opponent's attack is reduced by 10 (before applying Weakness and Resistance)."
-          delayedA {
+          delayedA (priority: BEFORE_LAST) {
             after PROCESS_ATTACK_EFFECTS, {
               if (self.active && ef.attacker.owner != self.owner) {
                 bg.dm().each {

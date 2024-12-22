@@ -5,6 +5,7 @@ import tcgwars.logic.impl.gen3.Sandstorm
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.effect.Source.*;
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
@@ -143,7 +144,7 @@ public enum PopSeries8 implements LogicCardInfo {
           resistance M, MINUS20
           pokeBody "Intimidating Fang", {
             text "As long as Luxray is your Active Pokémon, any damage done by an opponent’s attack is reduced by 10."
-            delayedA {
+            delayedA (priority: BEFORE_LAST) {
               after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each {
                   if (self.active && it.from.owner != self.owner && it.dmg.value && it.notNoEffect) {

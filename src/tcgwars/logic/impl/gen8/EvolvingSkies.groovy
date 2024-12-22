@@ -5,7 +5,8 @@ import tcgwars.logic.impl.gen3.TeamRocketReturns;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
-import static tcgwars.logic.card.CardType.*;
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.effect.EffectPriority.*
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
@@ -1285,17 +1286,15 @@ enum EvolvingSkies implements LogicCardInfo {
           weakness FIGHTING
           bwAbility "Intimidating Fang", {
             text "As long as this Pokémon is in the Active Spot, your opponent's Active Pokémon's attacks do 30 less damage (before applying Weakness and Resistance)."
-            actionA {
-              delayed {
-                  after PROCESS_ATTACK_EFFECTS, {
-                    bg.dm().each {
-                      if (self.active && it.from.active && it.from.owner != self.owner && it.dmg.value && it.notNoEffect) {
-                        bc "$thisAbility -30"
-                        it.dmg -= hp(30)
-                      }
-                    }
+            delayedA (priority: BEFORE_LAST) {
+              after PROCESS_ATTACK_EFFECTS, {
+                bg.dm().each {
+                  if (self.active && it.from.active && it.from.owner != self.owner && it.dmg.value && it.notNoEffect) {
+                    bc "$thisAbility -30"
+                    it.dmg -= hp(30)
                   }
                 }
+              }
             }
           }
           move "Knock Away", {
