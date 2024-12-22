@@ -361,7 +361,7 @@ public enum RisingRivals implements LogicCardInfo {
               assertOppBench()
             }
             onAttack {
-              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) {
                 apply ASLEEP
               }
             }
@@ -2246,7 +2246,7 @@ public enum RisingRivals implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if (self.active && it.to == self && it.dmg.value && it.notNoEffect) {
+                  if (it.to == self && it.dmg.value && it.notNoEffect) {
                     bc "$thisAbility -20"
                     it.dmg -= hp(20)
                   }

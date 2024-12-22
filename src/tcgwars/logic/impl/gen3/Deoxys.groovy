@@ -234,8 +234,8 @@ public enum Deoxys implements LogicCardInfo {
             energyCost G
             onAttack {
               if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon?")) {
-                if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
-                  damage 20 
+                if (sw2(opp.bench.select("Select the new Defending Pokémon."))) {
+                  damage 20
                 }
               } else {
                 damage 20
@@ -1432,7 +1432,7 @@ public enum Deoxys implements LogicCardInfo {
           weakness GRASS
           pokeBody "Sunbeam", {
             text "The maximum HP for each Lunatone you have in play is now 80."
-            getterA GET_FULL_HP ,{h->
+            getterA (GET_FULL_HP, AFTER_FIRST) {h->
               if(h.effect.target.name == "Lunatone" && h.effect.target.owner == self.owner) {
                 h.object = hp(80)
               }
@@ -2742,8 +2742,8 @@ public enum Deoxys implements LogicCardInfo {
             energyCost C, C
             onAttack {
               if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon?")) {
-                if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
-                  damage 20 
+                if (sw2(opp.bench.select("Select the new Defending Pokémon."))) {
+                  damage 20
                 }
               } else {
                 damage 20

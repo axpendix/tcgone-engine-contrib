@@ -2110,11 +2110,8 @@ public enum HolonPhantoms implements LogicCardInfo {
               shuffleDeck()
             }
           },{
-            def eligible = my.hand.findAll { ["Omanyte", "Kabuto", "Aerodactyl", "Aerodactyl ex", "Lileep", "Anorith"].contains(it.name) }
-            if(eligible){
-              eligible.select("Select which Pokémon to bench.").each {
-                benchPCS(it)
-              }
+            my.hand.select(min: 0, "Put an Omanyte, Kabuto, Aerodactyl, Aerodactyl ex, Lileep, or Anorith from your hand onto your Bench", {["Omanyte", "Kabuto", "Aerodactyl", "Aerodactyl ex", "Lileep", "Anorith"].contains(it.name)}).each {
+              benchPCS(it)
             }
           }
         }

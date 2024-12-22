@@ -2471,7 +2471,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               after PROCESS_ATTACK_EFFECTS, {
                 targeted self, {
                   bg.dm().each {
-                    if (it.from == self && it.to.active && it.notNoEffect && it.dmg.value) {
+                    if (it.from == self && it.to.active && it.dmg.value) {
                       bc "R Energy +10"
                       it.dmg += hp(10)
                     }
@@ -2712,8 +2712,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
             energyCost D
             onAttack {
               if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon?")) {
-                if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
-                  damage 10 
+                if (sw2(opp.bench.select("Select the new Defending Pokémon."))) {
+                  damage 10
                 }
               } else {
                 damage 10
