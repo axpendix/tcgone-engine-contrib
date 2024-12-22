@@ -2091,14 +2091,13 @@ public enum DiamondPearl implements LogicCardInfo {
           move "Fake Tears", {
             text "Flip a coin. If heads, your opponent can’t play any Trainer cards from his or her hand during your opponent’s next turn, and any damage done to Bonsly by attacks is reduced by 30 (after applying Weakness and Resistance)"
             energyCost ()
-            attackRequirement {}
             onAttack {
               flip {
                 reduceDamageNextTurn(hp(30),thisMove)
                 //This could be generalized into a Statics method.
                 delayed {
                   before PLAY_TRAINER, {
-                    if (ef.cardToPlay.cardTypes.is(ITEM) && bg.currentTurn == self.owner.opposite) {
+                    if (ef.cardToPlay.cardTypes.is(ITEM) && bg.currentTurn == self.owner.opposite && (ef.cardToPlay as Card).player == self.owner.opposite) {
                       wcu "Fake Tears prevents you from playing Trainer [Item] cards."
                       prevent()
                     }
@@ -2283,7 +2282,7 @@ public enum DiamondPearl implements LogicCardInfo {
               assertOppBench()
             }
             onAttack {
-              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) {
                 apply ASLEEP
               }
             }

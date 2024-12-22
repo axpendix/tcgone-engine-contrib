@@ -1010,7 +1010,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 flip {
                   delayed {
                     before PLAY_TRAINER, {
-                      if (bg.currentTurn == self.owner.opposite && (
+                      if (bg.currentTurn == self.owner.opposite && (ef.cardToPlay as Card).player == self.owner.opposite && (
                         ef.cardToPlay.cardTypes.is(ITEM) || ef.cardToPlay.cardTypes.is(SUPPORTER)
                       )) {
                         wcu "$thisMove prevents you from playing any Trainer-Item or Supporter cards"
@@ -3058,7 +3058,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               assertOppBench()
             }
             onAttack {
-              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) {
                 apply ASLEEP
               }
             }

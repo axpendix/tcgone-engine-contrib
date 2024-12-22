@@ -851,8 +851,8 @@ public enum LegendsAwakened implements LogicCardInfo {
                 unregisterAfter 1
               }
               if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon?")) {
-                if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
-                  damage 30 
+                if (sw2(opp.bench.select("Select the new Defending Pokémon."))) {
+                  damage 30
                 }
               } else {
                 damage 30
@@ -1536,7 +1536,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "The Defending Pokémon is now Burned and Poisoned. Before applying these effects, you may switch 1 of the Defending Pokémon with 1 of your opponent's Benched Pokémon. The new Defending Pokémon is now Burned and Poisoned."
             onAttack {
               if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon?")) {
-                if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+                if (sw2(opp.bench.select("Select the new Defending Pokémon."))) {
                   apply BURNED
                   apply POISONED
                 }
@@ -1593,14 +1593,13 @@ public enum LegendsAwakened implements LogicCardInfo {
           move "Disturbing Pollen", {
             text "60 damage. Flip a coin. If heads, your opponent can't play any Trainer, Supporter, or Stadium cards from his or her hand during your opponent's next turn."
             energyCost P, C, C
-            attackRequirement {}
             onAttack {
               damage 60
 
               flip {
                 delayed {
                   before PLAY_TRAINER, {
-                    if (bg.currentTurn == self.owner.opposite && (ef.cardToPlay.cardTypes.is(TRAINER))) {
+                    if (bg.currentTurn == self.owner.opposite && (ef.cardToPlay.cardTypes.is(TRAINER)) && (ef.cardToPlay as Card).player == self.owner.opposite) {
                       wcu "Disturbing Pollen prevents playing Trainer Cards this turn"
                       prevent()
                     }

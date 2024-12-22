@@ -458,7 +458,9 @@ public enum Platinum implements LogicCardInfo {
               damage 10
               delayed {
                 before PLAY_TRAINER, {
-                  if ((ef.cardToPlay.cardTypes.is(ITEM) || ef.cardToPlay.cardTypes.is(STADIUM)) && bg.currentTurn == self.owner.opposite) {
+                  if ((ef.cardToPlay.cardTypes.is(ITEM) || ef.cardToPlay.cardTypes.is(STADIUM))
+                    && bg.currentTurn == self.owner.opposite
+                    && (ef.cardToPlay as Card).player == self.owner.opposite) {
                     wcu "Deafen prevents playing this card"
                     prevent()
                   }
@@ -2736,7 +2738,7 @@ public enum Platinum implements LogicCardInfo {
               flip {
                 delayed {
                   before PLAY_TRAINER, {
-                    if ((ef.cardToPlay.cardTypes.is(ITEM) || ef.cardToPlay.cardTypes.is(SUPPORTER) || ef.cardToPlay.cardTypes.is(STADIUM)) && bg.currentTurn == self.owner.opposite) {
+                    if ((ef.cardToPlay.cardTypes.is(ITEM) || ef.cardToPlay.cardTypes.is(SUPPORTER) || ef.cardToPlay.cardTypes.is(STADIUM)) && bg.currentTurn == self.owner.opposite && (ef.cardToPlay as Card).player == self.owner.opposite) {
                       wcu "Headache prevents you from playing Item cards."
                       prevent()
                     }

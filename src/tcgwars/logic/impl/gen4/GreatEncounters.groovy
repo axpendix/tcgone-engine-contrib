@@ -634,7 +634,7 @@ public enum GreatEncounters implements LogicCardInfo {
                 bc "${self.owner.opposite.getPlayerUsername(bg)} can't play any Trainer (Item, Supporter, or Stadium) cards from their hand during their next turn."
                 delayed {
                   before PLAY_TRAINER, {
-                    if (bg.currentTurn == self.owner.opposite && (ef.cardToPlay.cardTypes.isIn(TRAINER, ITEM, SUPPORTER, STADIUM))) {
+                    if (bg.currentTurn == self.owner.opposite && (ef.cardToPlay.cardTypes.isIn(TRAINER, ITEM, SUPPORTER, STADIUM)) && (ef.cardToPlay as Card).player == self.owner.opposite) {
                       wcu "Ambient Noise prevents you from playing any Trainer (Item, Supporter, or Stadium) cards."
                       prevent()
                     }
@@ -1577,7 +1577,7 @@ public enum GreatEncounters implements LogicCardInfo {
               flip {
                 delayed {
                   before PLAY_TRAINER, {
-                    if (bg.currentTurn == self.owner.opposite && ef.cardToPlay.cardTypes.is(ITEM)) {
+                    if (bg.currentTurn == self.owner.opposite && ef.cardToPlay.cardTypes.is(ITEM) && (ef.cardToPlay as Card).player == self.owner.opposite) {
                       wcu "Tail Blade prevents playing Trainer Cards this turn"
                       prevent()
                     }

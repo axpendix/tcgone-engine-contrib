@@ -2294,7 +2294,7 @@ public enum Stormfront implements LogicCardInfo {
             onAttack {
               delayed {
                 before PLAY_TRAINER, {
-                  if (ef.cardToPlay.cardTypes.is(ITEM) && bg.currentTurn == self.owner.opposite) {
+                  if (ef.cardToPlay.cardTypes.is(ITEM) && bg.currentTurn == self.owner.opposite && (ef.cardToPlay as Card).player == self.owner.opposite) {
                     wcu "$thisMove prevents you from playing Trainer cards."
                     prevent()
                   }
