@@ -1153,7 +1153,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             text "If your opponent’s Pokémon that has 2 or less Energy cards attached to it attacks Mr. Mime, prevent all damage done to Mr. Mime from that attack. If Mime Jr. is anywhere under Mr. Mime, prevent all effects of that attack, including damage, done to Mr. Mime."
             delayedA {
               before null, self, Source.ATTACK, {
-                if (self.getPokemonCards().any{it.name == "Mime Jr."} && ((self.owner.opposite.pbg.active as PokemonCardSet).cards.energyCount(C) <= 2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                if (self.getPokemonCards().any{it.name == "Mime Jr."} && ((self.owner.opposite.pbg.active as PokemonCardSet).cards.energyCardCount() <= 2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
                   bc "$thisAbility prevents effect"
                   prevent()
                 }
