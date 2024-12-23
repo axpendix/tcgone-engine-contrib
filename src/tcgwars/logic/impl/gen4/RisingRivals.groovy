@@ -2854,7 +2854,7 @@ public enum RisingRivals implements LogicCardInfo {
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your discard pile for up to 2 in any combination of Pokémon SP and basic Energy cards, show them to your opponent, and put them into your hand."
           onPlay {
-            my.discard.select(max:2, "Search your deck for up to 2 in any combination of Pokémon SP and basic Energy cards", {
+            my.discard.select(max:2, "Search your discard pile for up to 2 in any combination of Pokémon SP and basic Energy cards", {
               it.cardTypes.is(POKEMON_SP) || it.cardTypes.is(BASIC_ENERGY)
             }).showToOpponent("Aaron's Collection: Selected cards").moveTo(my.hand)
           }
