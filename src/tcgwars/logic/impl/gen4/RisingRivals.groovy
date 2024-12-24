@@ -2727,6 +2727,8 @@ public enum RisingRivals implements LogicCardInfo {
             onAttack {
               if (opp.all.find{it.realEvolution}) {
                 draw 3
+              } else {
+                bc "Opponent doesn't have any Evolution Pokémon in play"
               }
             }
           }
