@@ -2667,7 +2667,7 @@ public enum MajesticDawn implements LogicCardInfo {
               attachEnergy(pcs, energy, PLAY_FROM_HAND)
             }
           }
-          move "Verdant Force", {
+          move "Verdant Dance", {
             text "30+ damage. Does 30 damage plus 10 more damage for each Energy attached to all of your Pokémon."
             energyCost G, C
             onAttack {

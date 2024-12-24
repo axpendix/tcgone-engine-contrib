@@ -999,7 +999,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost G, C
           onAttack {
             damage 30
-            damage 20, my.bench.select()
+            if (my.bench) { damage 20, my.bench.select() }
           }
         }
       };

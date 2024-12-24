@@ -343,7 +343,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             //Adapted from Sceptile-ex Delta (CG 96)
             getterA (GET_MOVE_LIST) {h->
               def condition = self.owner.pbg.all.any { it.name == "Uxie" } && self.owner.pbg.all.any { it.name == "Mesprit" }
-              if (condition && h.effect.target.owner != self.owner && h.effect.target.basic && !h.context["Downer_Material"]) {
+              if (condition && h.effect.target.owner != self.owner && (h.effect.target.basic || (h.effect.target.notEvolution && (h.effect.target.stage1 || h.effect.target.stage2))) && !h.context["Downer_Material"]) {
+                //This affects Pokémon that are printed as Basic, or Stage 1/2s that have been cheated into play, but not LEGENDs, Restored, V-UNIONs.
                 def list = []
                 for (move in h.object) {
                   def copy = move.shallowCopy()
@@ -915,7 +916,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              if (defending.basic) {
+              if (defending.basic || (defending.notEvolution && ( defending.stage1 || defending.stage2))) {
+                //This affects Pokémon that are printed as Basic, or Stage 1/2s that have been cheated into play, but not LEGENDs, Restored, V-UNIONs.
                 applyAfterDamage CONFUSED
               }
             }
@@ -1153,7 +1155,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             text "If your opponent’s Pokémon that has 2 or less Energy cards attached to it attacks Mr. Mime, prevent all damage done to Mr. Mime from that attack. If Mime Jr. is anywhere under Mr. Mime, prevent all effects of that attack, including damage, done to Mr. Mime."
             delayedA {
               before null, self, Source.ATTACK, {
-                if (self.getPokemonCards().any{it.name == "Mime Jr."} && ((self.owner.opposite.pbg.active as PokemonCardSet).cards.energyCount(C) <= 2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                if (self.getPokemonCards().any{it.name == "Mime Jr."} && ((self.owner.opposite.pbg.active as PokemonCardSet).cards.energyCardCount() <= 2) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
                   bc "$thisAbility prevents effect"
                   prevent()
                 }
