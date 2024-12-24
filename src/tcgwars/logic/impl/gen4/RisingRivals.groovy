@@ -992,12 +992,12 @@ public enum RisingRivals implements LogicCardInfo {
               damage 80
               my.bench.each {
                 if(!it.evolution) {
-                  directDamage 10, it
+                  damage 10, it
                 }
               }
               opp.bench.each {
                 if(!it.evolution) {
-                  directDamage 10, it
+                  damage 10, it
                 }
               }
             }
