@@ -915,7 +915,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              if (defending.basic) {
+              if (defending.basic || defending.notEvolution) {
                 applyAfterDamage CONFUSED
               }
             }
