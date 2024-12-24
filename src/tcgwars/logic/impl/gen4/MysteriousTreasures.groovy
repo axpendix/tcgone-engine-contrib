@@ -343,7 +343,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             //Adapted from Sceptile-ex Delta (CG 96)
             getterA (GET_MOVE_LIST) {h->
               def condition = self.owner.pbg.all.any { it.name == "Uxie" } && self.owner.pbg.all.any { it.name == "Mesprit" }
-              if (condition && h.effect.target.owner != self.owner && h.effect.target.basic && !h.context["Downer_Material"]) {
+              if (condition && h.effect.target.owner != self.owner && (h.effect.target.basic || h.effect.target.notEvolution) && !h.context["Downer_Material"]) {
                 def list = []
                 for (move in h.object) {
                   def copy = move.shallowCopy()
