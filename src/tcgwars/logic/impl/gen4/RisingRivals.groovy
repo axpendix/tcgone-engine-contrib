@@ -343,10 +343,11 @@ public enum RisingRivals implements LogicCardInfo {
             }
           }
           move "Power Swing", {
-            text "60+ damage. Does 60 damage plus 10 more damage for each Evolved Pokémon on your Bench."
+            text "60+ damage. Does 60 damage plus 10 more damage for each Evolution Pokémon on your Bench."
+            //Errata: Evolution 「進化ポケモン」, not Evolved 進化している. https://www.pokemon-card.com/rules/faq/search.php?freeword=パワースイング
             energyCost C, C, C
             onAttack {
-              damage 60 + 10 * my.bench.findAll{it.evolution}.size()
+              damage 60 + 10 * my.bench.findAll{it.realEvolution}.size()
             }
           }
 
@@ -2717,14 +2718,16 @@ public enum RisingRivals implements LogicCardInfo {
         return basic (this, hp:HP050, type:WATER, retreatCost:1) {
           weakness L, PLUS10
           move "Cosmic Draw", {
-            text "If your opponent has any Evolved Pokémon in play, draw 3 cards."
+            text "If your opponent has any Evolution Pokémon in play, draw 3 cards."
+            //Errata: Evolution 「進化ポケモン」, not Evolved 進化している. https://www.pokemon-card.com/card-search/details.php/card/22091/regu/all
             energyCost C
             attackRequirement {
-              assert my.deck : "Your deck is empty"
-              assert opp.all.find{it.evolution} : "Your opponent doesn't have any Evolved Pokémon in play"
+              assert my.deck : "Your deck is empty"              
             }
             onAttack {
-              draw 3
+              if (opp.all.find{it.realEvolution}) {
+                draw 3
+              }
             }
           }
           move "Swift", {

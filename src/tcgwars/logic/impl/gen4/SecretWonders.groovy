@@ -2187,11 +2187,12 @@ f
           weakness R, PLUS20
           resistance F, MINUS20
           pokeBody "Cotton Balloon", {
-            text "If Skiploom has any [G] Energy attached to it, any damage done to Skiploom by attacks from your opponent’s Evolved Pokémon is reduced by 20."
+            text "If Skiploom has any [G] Energy attached to it, any damage done to Skiploom by attacks from your opponent’s Evolution Pokémon is reduced by 20."
+            //Errata: Evolution 「進化ポケモン」, not Evolved 進化している. https://www.pokemon-card.com/card-search/details.php/card/3007/regu/all
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if (self.cards.energyCount(G) && it.to == self && it.from.owner != self.owner && it.from.evolution && it.notNoEffect && it.dmg.value) {
+                  if (self.cards.energyCount(G) && it.to == self && it.from.owner != self.owner && it.from.realEvolution && it.notNoEffect && it.dmg.value) {
                     bc "Cotton Balloon -20"
                     it.dmg -= hp(20)
                   }

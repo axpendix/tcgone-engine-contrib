@@ -510,7 +510,8 @@ public enum GreatEncounters implements LogicCardInfo {
             }
           }
           move "Cotton Cloud", {
-            text "60 damage. During your opponent's nest turn, any damage done to Altaria by attacks from your opponent's Evolved Pokémon is reduced by 30"
+            text "60 damage. During your opponent's nest turn, any damage done to Altaria by attacks from your opponent's Evolution Pokémon is reduced by 30."
+            //Errata: Evolution 「進化ポケモン」, not Evolved 進化している. https://www.pokemon-card.com/card-search/details.php/card/10118/regu/all
             energyCost C, C, C
             onAttack {
               damage 60
@@ -518,7 +519,7 @@ public enum GreatEncounters implements LogicCardInfo {
                 delayed {
                   before APPLY_ATTACK_DAMAGES, {
                     bg.dm().each {
-                      if(it.from.evolution && it.from.owner == self.owner.opposite && it.notNoEffect && it.dmg.value){
+                      if(it.from.realEvolution && it.from.owner == self.owner.opposite && it.notNoEffect && it.dmg.value){
                         bc "${thisMove.name} -30"
                         it.dmg-=30
                       }
