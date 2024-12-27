@@ -2722,14 +2722,11 @@ public enum RisingRivals implements LogicCardInfo {
             //Errata: Evolution 「進化ポケモン」, not Evolved 進化している. https://www.pokemon-card.com/card-search/details.php/card/22091/regu/all
             energyCost C
             attackRequirement {
-              assert my.deck : "Your deck is empty"              
+              assert my.deck : "Your deck is empty"
+              assert opp.all.find{it.realEvolution} : "Opponent doesn't have any Evolution Pokémon in play"
             }
             onAttack {
-              if (opp.all.find{it.realEvolution}) {
-                draw 3
-              } else {
-                bc "Opponent doesn't have any Evolution Pokémon in play"
-              }
+              draw 3
             }
           }
           move "Swift", {
