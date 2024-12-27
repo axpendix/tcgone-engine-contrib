@@ -1706,11 +1706,12 @@ public enum MysteriousTreasures implements LogicCardInfo {
             }
           }
           move "Triple Pick", {
-            text "Choose 3 of your opponent’s Evolved Pokémon. This attack does 30 damage to each of them. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+            text "Choose 3 of your opponent’s Evolution Pokémon. This attack does 30 damage to each of them. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+            //Errata: Evolution 「進化ポケモン」, not Evolved 進化している. https://www.pokemon-card.com/rules/faq/search.php?freeword=トリプルピッキング
             energyCost C, C, C
             attackRequirement {}
             onAttack {
-              multiSelect(opp.all.findAll{it.evolution}, 3, text).each{
+              multiSelect(opp.all.findAll{it.realEvolution}, 3, text).each{
                 targeted(it){
                   damage 30, it
                 }
