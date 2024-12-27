@@ -707,6 +707,7 @@ public enum Unleashed implements LogicCardInfo {
             delayedA {
               after ATTACH_ENERGY, self, {
                 if (ef.reason == PLAY_FROM_HAND && (ef.card.containsType(G) || ef.card.containsType(P)) && !self.specialConditions && confirm("Use Energy Signal?")) {
+                  powerUsed()
                   if (ef.card.containsType(G)) {
                     bc "Energy Signal inflicts Confusion"
                     apply CONFUSED, opp.active
