@@ -2614,10 +2614,10 @@ public enum Arceus implements LogicCardInfo {
               def allDifferentTypes = true
               TypeSet typeSet = new TypeSet()
               my.all.findAll {it.name == "Arceus"}.each {
-                if (typeSet.containsAny(it.topPokemonCard.types)) {
+                if (typeSet.containsAny(it.types)) {
                   allDifferentTypes = false
                 }
-                typeSet.addAll(it.topPokemonCard.types)
+                typeSet.addAll(it.types)
               }
               assert allDifferentTypes : "Not all of your Arceuses are different types"
               assert my.deck : "Your deck is emtpy"
