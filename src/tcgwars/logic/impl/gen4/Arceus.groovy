@@ -2227,10 +2227,10 @@ public enum Arceus implements LogicCardInfo {
           text "Attach Bench Shield to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nAs long as the Pokémon this card is attached to is on your Bench, prevent all damage done to that Pokémon by attacks (both yours and your opponent’s)."
           def eff
           onPlay {
-            eff = delayed {
+            eff = delayed (priority: BEFORE_LAST2) {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(!self.active && it.to == self && it.dmg.value && it.notNoEffect){
+                  if(self.benched && it.to == self && it.notZero && it.notNoEffect){
                     bc "Bench Shield prevents all damage"
                     it.dmg=hp(0)
                   }
