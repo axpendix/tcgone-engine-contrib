@@ -146,9 +146,9 @@ public enum Platinum implements LogicCardInfo {
   POKE_BALL_113 ("Poké Ball", "113", Rarity.UNCOMMON, [ITEM, TRAINER]),
   POKEDEX_HANDY910IS_114 ("Pokédex HANDY910is", "114", Rarity.UNCOMMON, [ITEM, TRAINER]),
   POKEMON_RESCUE_115 ("Pokémon Rescue", "115", Rarity.UNCOMMON, [ITEM, TRAINER]),
-  ENERGY_GAIN_116 ("Team Galactic's Invention G-101 Energy Gain", "116", Rarity.UNCOMMON, [POKEMON_TOOL, ITEM, TRAINER]),
-  POWER_SPRAY_117 ("Team Galactic's Invention G-103 Power Spray", "117", Rarity.UNCOMMON, [ITEM, TRAINER]),
-  POKE_TURN_118 ("Team Galactic's Invention G-105 Poké Turn", "118", Rarity.UNCOMMON, [ITEM, TRAINER]),
+  ENERGY_GAIN_116 ("Energy Gain", "116", Rarity.UNCOMMON, [POKEMON_TOOL, ITEM, TRAINER, TEAM_GALACTICS_INVENTION]),
+  POWER_SPRAY_117 ("Power Spray", "117", Rarity.UNCOMMON, [ITEM, TRAINER, TEAM_GALACTICS_INVENTION]),
+  POKE_TURN_118 ("Poké Turn", "118", Rarity.UNCOMMON, [ITEM, TRAINER, TEAM_GALACTICS_INVENTION]),
   ARMOR_FOSSIL_119 ("Armor Fossil", "119", Rarity.COMMON, [ITEM, TRAINER]),
   SKULL_FOSSIL_120 ("Skull Fossil", "120", Rarity.COMMON, [ITEM, TRAINER]),
   RAINBOW_ENERGY_121 ("Rainbow Energy", "121", Rarity.UNCOMMON, [SPECIAL_ENERGY, ENERGY]),
@@ -2514,13 +2514,13 @@ public enum Platinum implements LogicCardInfo {
           weakness L
           resistance F, MINUS20
           move "Honcho’s Command", {
-            text "Search your deck for up to 2 in any combination of Stadium cards or Trainer cards that has Team Galactic’s Invention in its name, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
+            text "Search your deck for up to 2 in any combination of Stadium cards or Trainer cards that has Team Galactic's Invention in its name, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
             energyCost ()
             attackRequirement {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              my.deck.search(max:2, "Search your deck for up to 2 Stadium or Trainer cards with Team Galactic's Invention in its name", {it.cardTypes.is(STADIUM) || (it.cardTypes.is(ITEM) && it.name.contains("Team Galactic's Invention"))}).showToOpponent("Selected Cards").moveTo(my.hand)
+              my.deck.search(max:2, "Search your deck for up to 2 Stadium or Trainer cards with Team Galactic's Invention in its name", {it.cardTypes.is(STADIUM) || it.cardTypes.isAll(ITEM, TEAM_GALACTICS_INVENTION)}).showToOpponent("Selected Cards").moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -3142,9 +3142,9 @@ public enum Platinum implements LogicCardInfo {
         };
       case CYRUS_S_CONSPIRACY_105:
         return supporter (this) {
-          text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for a Supporter card, a basic Energy card, and a Trainer card that has Team Galactic’s Invention in its name, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
+          text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for a Supporter card, a basic Energy card, and a Trainer card that has Team Galactic's Invention in its name, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
           onPlay {
-            my.deck.search(max:3,"Search your deck for a Supporter card, a basic Energy card, and a Trainer card with Team Galactic's Invention in its name",{it.cardTypes.is(SUPPORTER) || it.cardTypes.is(BASIC_ENERGY) || (it.cardTypes.is(ITEM) && it.name.contains("Team Galactic's Invention"))}, {!(it.filterByType(SUPPORTER).size() > 1 || it.filterByType(BASIC_ENERGY).size() > 1 || it.filterByType(ITEM).size() > 1)}).showToOpponent("Selected Cards").moveTo(my.hand)
+            my.deck.search(max:3,"Search your deck for a Supporter card, a basic Energy card, and a Trainer card with Team Galactic's Invention in its name",{it.cardTypes.is(SUPPORTER) || it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.isAll(ITEM, TEAM_GALACTICS_INVENTION)}, {!(it.filterByType(SUPPORTER).size() > 1 || it.filterByType(BASIC_ENERGY).size() > 1 || it.filterByType(ITEM).size() > 1)}).showToOpponent("Selected Cards").moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
@@ -3266,7 +3266,7 @@ public enum Platinum implements LogicCardInfo {
         };
       case ENERGY_GAIN_116:
         return pokemonTool (this) {
-          text "Attach Energy Gain to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nAttach Team Galactic’s Invention G-101 Energy Gain to 1 of your Pokémon SP that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card. When the Pokémon this card is attached to is no longer a Pokémon SP, discard this card.\nAs long as Team Galactic’s Invention G-101 Energy Gain is attached to a Pokémon, the attack cost of that Pokémon’s attacks is [C] less."
+          text "Attach Energy Gain to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nAttach Team Galactic's Invention G-101 Energy Gain to 1 of your Pokémon SP that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card. When the Pokémon this card is attached to is no longer a Pokémon SP, discard this card.\nAs long as Team Galactic's Invention G-101 Energy Gain is attached to a Pokémon, the attack cost of that Pokémon’s attacks is [C] less."
           def eff1
           onPlay {reason->
             eff1=getter GET_MOVE_LIST, self, {h->
