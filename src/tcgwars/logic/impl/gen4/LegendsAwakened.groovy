@@ -3718,7 +3718,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             }
             effect2 = delayed (priority: LAST) {
               before APPLY_ATTACK_DAMAGES, {
-                if (bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value && it.notNoEffect})) {
+                if (bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value})) {
                   bc "Bubble Coat will be discarded at the end of the turn"
                   keyStore("Bubble_Coat", thisCard, bg.turnCount)
                 }
