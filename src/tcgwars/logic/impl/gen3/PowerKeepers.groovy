@@ -392,8 +392,8 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost F, C
           onAttack {
             if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon?")) {
-              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
-                damage 20 
+              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) {
+                damage 20
               }
             } else {
               damage 20
@@ -502,7 +502,7 @@ public enum PowerKeepers implements LogicCardInfo {
           delayedA{
             before KNOCKOUT, {
               PokemonCardSet knockedOut = ef.pokemonToBeKnockedOut
-              if (bg.em().retrieveObject("Energy_Grounding") != bg.turnCount && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && knockedOut != self && knockedOut.cards.filterByType(BASIC_ENERGY).energyCount(C) && confirm ("Use Energy Grounding? You may move an energy from $knockedOut to $self", self.owner)) {
+              if (knockedOut.owner == self.owner && bg.em().retrieveObject("Energy_Grounding") != bg.turnCount && (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && knockedOut != self && knockedOut.cards.filterByType(BASIC_ENERGY).energyCount(C) && confirm ("Use Energy Grounding? You may move an energy from $knockedOut to $self", self.owner)) {
                 moveEnergy(basic: true, playerType: self.owner, info: "Energy Grounding : Move an energy from ${knockedOut} to $self", knockedOut, self)
                 powerUsed()
                 bg.em().storeObject("Energy_Grounding", bg.turnCount)
