@@ -3050,12 +3050,13 @@ public enum Stormfront implements LogicCardInfo {
           }
           pokePower "Heat Wave", {
             text "Once at the end of your turn, if Heatran is on your Bench, you may use this power. If you discarded basic Energy cards attached to your [R] or [M] Active Pokémon by that Pokémon’s attack this turn, attach up to 2 of those Energy cards to that Pokémon."
+            actionA {
+            }
             delayedA {
               before BETWEEN_TURNS, {
                 if(heatWaveFlag) {
                   energyList.removeAll(src.cards.filterByType(ENERGY))
-                  if(bg.currentTurn == self.owner && src && (src.types.contains(R) || src.types.contains(M)) && energyList.filterByType(BASIC_ENERGY) && self.benched && confirm("Use Heat Wave?")) {
-                    powerUsed()
+                  if(bg.currentTurn == self.owner && src && (src.types.contains(R) || src.types.contains(M)) && energyList.filterByType(BASIC_ENERGY) && self.benched && confirm("Use Heat Wave?") && powerUsedSuccess()) {
                     energyList.select(max:2,"Attach up to 2 Basic Energy cards to $src",cardTypeFilter(BASIC_ENERGY)).each {
                       attachEnergy(src, it)
                     }
