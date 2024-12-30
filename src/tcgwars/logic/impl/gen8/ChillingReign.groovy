@@ -3156,7 +3156,7 @@ public enum ChillingReign implements LogicCardInfo {
             text "Prevent all effects of your opponent's Item and Supporter cards that would discard Energy from your Pokémon or return Energy from your Pokémon to your hand or deck."
             delayedA {
               before MOVE_CARD_INNER,null,TRAINER_CARD,{
-                Card sourceCard=e.sourceTrainer
+                Card sourceCard=e.sourceCard
                 MoveCardInner eff = ef
                 if(sourceCard && sourceCard.player!=self.owner && sourceCard.cardTypes.isIn(ITEM, SUPPORTER)
                   && eff.fromPokemon && eff.fromPokemon.owner==self.owner
