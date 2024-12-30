@@ -1515,15 +1515,12 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
       };
       case OPAL_72:
       return supporter (this) {
-        text "Flip 2 coins. For each heads" +
-          "you may search your deck for a card and put it into your hand. Then" +
-          "shuffle your deck."
+        text "Flip 2 coins. For each heads you may search your deck for a card and put it into your hand. Then, shuffle your deck."
         onPlay {
           def count = 0
           flip 2, { count++ }
           if (count == 0) return
-          my.deck.search(min:count, max:count, { true }).moveTo hidden:true, my.hand
-          shuffleDeck()
+          my.deck.search(max:count, { true }).moveTo(my.hand)
         }
         playRequirement{
           assert my.deck : "Your deck is empty!"
