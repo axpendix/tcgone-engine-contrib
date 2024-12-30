@@ -818,17 +818,7 @@ public enum RebelClash implements LogicCardInfo {
             assert opp.active.baseMoves : "No moves to use."
           }
           onAttack {
-            def list = []
-            defending.baseMoves.each{
-              def copy = it.shallowCopy()
-              copy.energyCost = thisMove.energyCost
-              list.add(copy)
-            }
-            def selected = choose(list, "Choose an attack to use.")
-            bc "$selected was chosen."
-            def bef = blockingEffect(BETWEEN_TURNS)
-            attack (selected as Move)
-            bef.unregisterItself(bg().em())
+            metronome defending, delegate
           }
         }
         move "Flamethrower", {
@@ -2558,7 +2548,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost F, C, C, C
           onAttack {
             damage 120
-            if (self.cards.energySufficient( thisMove.energyCost + C )) {
+            if (self.cards.energySufficient( effectiveEnergyCost + C )) {
               damage 60
             }
           }
@@ -2737,7 +2727,7 @@ public enum RebelClash implements LogicCardInfo {
             assertOppBench()
           }
           onAttack {
-            if (sw2(opp.bench.select("Select the new Active Pokémon."))) { 
+            if (sw2(opp.bench.select("Select the new Active Pokémon."))) {
               damage 30
             }
           }

@@ -2362,7 +2362,7 @@ public enum SwordShield implements LogicCardInfo {
           text "60+ damage. If this Pokémon has at least 1 extra [F] Energy attached (in addition to this attack's cost), this attack does 70 more damage."
           energyCost F, F
           onAttack {
-            if (self.cards.energySufficient(thisMove.energyCost + F)) {
+            if (self.cards.energySufficient(effectiveEnergyCost + F)) {
               damage 70+60
             } else {
               damage 60
