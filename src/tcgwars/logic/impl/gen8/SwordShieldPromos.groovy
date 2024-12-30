@@ -845,7 +845,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
             assertOppBench()
           }
           onAttack {
-            if (sw2(opp.bench.select("Select the new Active Pokémon."))) { 
+            if (sw2(opp.bench.select("Select the new Active Pokémon."))) {
               apply CONFUSED
             }
           }
@@ -1077,11 +1077,11 @@ public enum SwordShieldPromos implements LogicCardInfo {
       return evolution (this, from: "Eevee V", hp:HP300, type:C, retreatCost:2) {
         weakness F
         move "G-Max Cuddle", {
-          text "During your opponent's next turn, if the Defending Pokémon tries to attack, your opponent flips a coin. If tails, that attack doesn't happen."
+          text "150 damage. During your opponent's next turn, if the Defending Pokémon tries to attack, your opponent flips a coin. If tails, that attack doesn't happen."
           energyCost C, C, C
-          attackRequirement {}
           onAttack {
-            // TODO
+            damage 150
+            sandAttack thisMove
           }
         }
       }
