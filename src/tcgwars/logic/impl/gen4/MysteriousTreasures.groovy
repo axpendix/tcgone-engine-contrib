@@ -1161,7 +1161,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 }
               }
               before APPLY_ATTACK_DAMAGES, {
-                if(ef.attacker.owner != self.owner && (ef.attacker as PokemonCardSet).cards.energyCount(C) <= 2) {
+                if(ef.attacker.owner != self.owner && (ef.attacker as PokemonCardSet).cards.energyCardCount(C) <= 2) {
                   bg.dm().each {
                     if (it.to == self && it.notNoEffect) {
                       it.dmg = hp(0)
