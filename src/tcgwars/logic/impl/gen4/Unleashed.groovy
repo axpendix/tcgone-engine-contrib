@@ -1764,14 +1764,14 @@ public enum Unleashed implements LogicCardInfo {
           // Source: TPCi Announcement (2011-04-11), PUI Rules Team (2011-05-05)
           // errata: Rare Candy can be used on a Basic Pokémon that was just put into play that turn, including a player’s first turn only in the HGSS block format, every other format should follow the errata.
           onPlay {
-            if (bg.gameFormat == GameFormat.HS_SERIES) {
+            if (bg.gameFormat == GameFormat.HS_SERIES || bg.gameFormat == GameFormat.DP_UL) {
               rareCandyGen3Play()
             } else {
               rareCandyGen5Play()
             }
           }
           playRequirement{
-            if (bg.gameFormat == GameFormat.HS_SERIES) {
+            if (bg.gameFormat == GameFormat.HS_SERIES || bg.gameFormat == GameFormat.DP_UL) {
               rareCandyGen3Requirement()
             } else {
               rareCandyGen5Requirement()
