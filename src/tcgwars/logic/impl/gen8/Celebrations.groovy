@@ -1,9 +1,18 @@
 package tcgwars.logic.impl.gen8
 
+import tcgwars.logic.effect.special.SpecialConditionType
 
+import static tcgwars.logic.card.HP.*
 import static tcgwars.logic.card.Type.*
-import static tcgwars.logic.groovy.TcgBuilders.*;
+import static tcgwars.logic.card.CardType.*
+import static tcgwars.logic.groovy.TcgBuilders.*
 import static tcgwars.logic.groovy.TcgStatics.*
+import static tcgwars.logic.effect.ability.Ability.ActivationReason.*
+import static tcgwars.logic.effect.EffectType.*
+import static tcgwars.logic.effect.Source.*
+import static tcgwars.logic.effect.EffectPriority.*
+import static tcgwars.logic.effect.special.SpecialConditionType.*
+import static tcgwars.logic.card.Resistance.ResistanceType.*
 
 import tcgwars.logic.card.*
 
@@ -79,11 +88,13 @@ public enum Celebrations implements ImplOnlyCardInfo {
       case HO_OH_1: return cardng (stub) {
 				moveAttack "Sacred Fire", {
 					// This attack does 50 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
+          damage 50, opp.all.select()
 
 				}
 				moveAttack "Fire Blast", {
 					// 120 damage. Discard an Energy from this Pokémon.
 					damage 120
+          discardSelfEnergy(C)
 				}
 			}
 
@@ -92,21 +103,33 @@ public enum Celebrations implements ImplOnlyCardInfo {
       case RESHIRAM_2: return cardng (stub) {
 				moveAttack "Scorching Wind", {
 					// This attack does 20 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
-
+          opp.bench.each {damage 20, it}
 				}
 				moveAttack "Black Flame", {
 					// 80+ damage. If Zekrom is on your Bench, this attack does 80 more damage.
 					damage 80
+          if (my.bench.find{it.name == "Zekrom"}) damage 80
 				}
 			}
 
 
 
       case KYOGRE_3: return cardng (stub) {
-				moveAttack "Aqua Storm", {
+				moveFull "Aqua Storm", {
 					// Discard the top 5 cards of your deck, and then choose 2 of your opponent's Benched Pokémon. This attack does 50 damage for each Energy card you discarded in this way to each of those Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
-
-				}
+          attackRequirement {
+            assert my.deck
+            assertOppBench()
+          }
+          onAttack {
+            def count = my.deck.subList(0, 5).discard().energyCardCount()
+            if (count) {
+              multiSelect(opp.bench, 2, "Deal damage to?").each {
+                damage 50 * count, it
+              }
+            }
+          }
+        }
 				moveAttack "Surf", {
 					// 120 damage.
 					damage 120
@@ -118,12 +141,19 @@ public enum Celebrations implements ImplOnlyCardInfo {
       case PALKIA_4: return cardng (stub) {
 				bwAbility "Absolute Space", {
 					// As long as this Pokémon is in the Active Spot, your opponent can't play any Stadium cards from their hand.
-					actionA {
+					delayedA {
+            before PLAY_TRAINER, {
+              if (ef.cardToPlay.cardTypes.is(STADIUM) && bg.currentTurn == self.owner.opposite && self.active) {
+                wcu "Absolute Space prevents playing this card"
+                prevent()
+              }
+            }
 					}
 				}
 				moveAttack "Overdrive Smash", {
 					// 80+ damage. During your next turn, this Pokémon's Overdrive Smash attack does 80 more damage (before applying Weakness and Resistance).
 					damage 80
+          increasedBaseDamageNextTurn("Overdrive Smash",hp(80))
 				}
 			}
 
@@ -137,6 +167,7 @@ public enum Celebrations implements ImplOnlyCardInfo {
 				moveAttack "Thunder Jolt", {
 					// 30 damage. Flip a coin. If tails, this Pokémon also does 10 damage to itself.
 					damage 30
+          flipTails {damage 10, self}
 				}
 			}
 
@@ -146,6 +177,7 @@ public enum Celebrations implements ImplOnlyCardInfo {
 				moveAttack "Thunder Shock", {
 					// 20 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed.
 					damage 20
+          flipThenApplySC PARALYZED
 				}
 				moveAttack "Fly", {
 					// 120 damage. Flip a coin. If tails, this attack does nothing. If heads, during your opponent's next turn, prevent all damage from and effects of attacks done to this Pokémon.
@@ -159,6 +191,7 @@ public enum Celebrations implements ImplOnlyCardInfo {
 				moveAttack "Max Balloon", {
 					// 160 damage. During your opponent's next turn, prevent all damage done to this Pokémon by attacks from Basic Pokémon.
 					damage 160
+          preventAllDamageFromCustomPokemonNextTurn thisMove, self, { it.basic }
 				}
 			}
 
@@ -177,6 +210,7 @@ public enum Celebrations implements ImplOnlyCardInfo {
 				moveAttack "Max Surfer", {
 					// 160 damage. This attack also does 30 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
 					damage 160
+          opp.bench.each{damage 30,it}
 				}
 			}
 
@@ -186,10 +220,13 @@ public enum Celebrations implements ImplOnlyCardInfo {
 				moveAttack "Field Crush", {
 					// 30 damage. If your opponent has a Stadium in play, discard it.
 					damage 30
+          if (bg.stadiumInfoStruct?.stadiumCard?.player==self.owner.opposite)
+            afterDamage {discard(bg.stadiumInfoStruct.stadiumCard)}
 				}
 				moveAttack "White Thunder", {
 					// 80+ damage. If Reshiram is on your Bench, this attack does 80 more damage.
 					damage 80
+          if (my.bench.find {it.name=="Reshiram"}) damage 80
 				}
 			}
 
