@@ -1904,15 +1904,8 @@ public enum DragonNG implements LogicCardInfo {
           getterA (IS_ABILITY_BLOCKED) { Holder h->
             def abilityToBeBlocked = ((IsAbilityBlocked)h.effect).ability
             if (self.active && abilityToBeBlocked instanceof PokemonPower && !(abilityToBeBlocked.name == "Toxic Gas")) {
-              bc "Toxic Gas blocks " + abilityToBeBlocked.name
               h.object=true
             }
-          }
-          onActivate {
-            new CheckAbilities().run(bg)
-          }
-          onDeactivate{
-            new CheckAbilities().run(bg)
           }
         }
         move "Poison Breath", {
