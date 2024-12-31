@@ -222,10 +222,10 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
       case LUDICOLO_4:
       return evolution (this, from:"Lombre", hp:HP140, type:W, retreatCost:2) {
         weakness L
-        bwAbility "High-Tension Dance", {
+        bwAbility "Enthusiastic Dance", {
           text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may use this Ability. During this turn, your Basic Pokémon's attacks do 100 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
           onActivate {r->
-            if(r == PLAY_FROM_HAND && my.all.any{ it.basic } && confirm("Use $thisAbility.name")) {
+            if(r == PLAY_FROM_HAND && confirm("Use $thisAbility.name")) {
               powerUsed()
               delayed {
                 after PROCESS_ATTACK_EFFECTS, {
