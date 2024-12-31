@@ -1739,17 +1739,14 @@ public enum Unleashed implements LogicCardInfo {
           }
         };
       case PLUSPOWER_80:
-        return basicTrainer (this) {
+        return itemCard (this) {
           text "During this turn, your Pokémon’s attacks do 10 more damage to the Active Pokémon (before applying Weakness and Resistance)."
           onPlay {
-            delayed {
-              after PROCESS_ATTACK_EFFECTS, {
-                bg.dm().each {if(it.to.active && it.from.owner==thisCard.player && it.to.owner!=it.from.owner && it.dmg.value){
-                  bc "Plus Power +10"
-                  it.dmg += hp(10)
-                }}
-              }
-              unregisterAfter 1
+            // errata: any format that includes unleashed, but before black and white should use original UL (DP) print, the rest BLW print
+            if (checkUnleashedPrint()) {
+              plusPowerDPPrint(delegate)
+            } else {
+              plusPowerBLWPrint(delegate)
             }
           }
           playRequirement{
@@ -1764,14 +1761,14 @@ public enum Unleashed implements LogicCardInfo {
           // Source: TPCi Announcement (2011-04-11), PUI Rules Team (2011-05-05)
           // errata: Rare Candy can be used on a Basic Pokémon that was just put into play that turn, including a player’s first turn only in the HGSS block format, every other format should follow the errata.
           onPlay {
-            if (bg.gameFormat == GameFormat.HS_SERIES || bg.gameFormat == GameFormat.DP_UL) {
+            if (checkUnleashedPrint()) {
               rareCandyGen3Play()
             } else {
               rareCandyGen5Play()
             }
           }
           playRequirement{
-            if (bg.gameFormat == GameFormat.HS_SERIES || bg.gameFormat == GameFormat.DP_UL) {
+            if (checkUnleashedPrint()) {
               rareCandyGen3Requirement()
             } else {
               rareCandyGen5Requirement()

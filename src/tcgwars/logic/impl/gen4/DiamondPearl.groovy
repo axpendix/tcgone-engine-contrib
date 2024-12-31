@@ -2896,35 +2896,8 @@ public enum DiamondPearl implements LogicCardInfo {
       // This print increases before W/R, do not use it as copy for older prints that do it after W/R. Another diference is it affecting damage to any active, not just the defending like old prints.
       return itemCard (this) {
         text "Attach PlusPower to 1 of your Pokémon. Discard this card at the end of your turn.\nIf the Pokémon PlusPower is attached to attacks, the attack does 10 more damage to the Active Pokémon (before applying Weakness and Resistance)."
-        def eff
         onPlay {reason->
-          def pcs = my.active
-          if (my.bench) {
-            pcs = my.all.select("Which Pokémon will you attach $thisCard to?")
-          }
-          pcs.cards.add(thisCard)
-          my.hand.remove(thisCard)
-
-          eff = delayed {
-            after PROCESS_ATTACK_EFFECTS, {
-              if (ef.attacker == pcs) {
-                bg.dm().each {
-                  if (it.to.active && it.dmg.value) {
-                    bc "PlusPower +10"
-                    it.dmg += hp(10)
-                  }
-                }
-              }
-            }
-            before BETWEEN_TURNS, {
-              discard thisCard
-            }
-            after REMOVE_FROM_PLAY, pcs, null, {
-              if(ef.removedCards.contains(thisCard)) {
-                eff.unregister()
-              }
-            }
-          }
+          plusPowerDPPrint(delegate)
         }
       };
       case POKE_BALL_110:
