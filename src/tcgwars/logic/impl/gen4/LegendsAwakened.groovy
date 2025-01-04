@@ -326,7 +326,9 @@ public enum LegendsAwakened implements LogicCardInfo {
           move "Shadow Force", {
             text "Choose 1 of your opponent's Benched Pokémon. This attack does 20 damage to that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.) Flip a coin. If heads, prevent all effects of an attack, including damage, done to Giratina during your opponent's next turn."
             energyCost P, C
-            attackRequirement {}
+            attackRequirement {
+              assertOppBench()
+            }
             onAttack {
               damage 20, opp.bench.select("Choose a Benched Pokémon to deal damage to")
               flip { preventAllEffectsNextTurn() }
