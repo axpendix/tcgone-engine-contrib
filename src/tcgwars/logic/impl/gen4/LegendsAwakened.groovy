@@ -841,6 +841,12 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "30 damage. Before doing damage, you may switch 1 of the Defending Pokémon with 1 of your opponent's Benched Pokémon. If you do, this attack does 30 damage to the new Defending Pokémon. If the Defending Pokémon would be Knocked Out by this attack, you may remove all damage counters from Cradily."
             energyCost G
             onAttack {
+              def pcs = defending
+              def tryToSwitch = false
+              if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon?")) {
+                pcs = opp.bench.select("Select the new Defending Pokémon.")
+                tryToSwitch = true
+              }
               delayed {
                 before KNOCKOUT, pcs, {
                   if (self.numberOfDamageCounters && confirm("Remove all damage counters from Cradily?")) {
@@ -850,11 +856,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                 }
                 unregisterAfter 1
               }
-              if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon?")) {
-                if (sw2(opp.bench.select("Select the new Defending Pokémon."))) {
-                  damage 30
-                }
-              } else {
+              if (!tryToSwitch || (tryToSwitch && sw2(pcs))) {
                 damage 30
               }
             }
