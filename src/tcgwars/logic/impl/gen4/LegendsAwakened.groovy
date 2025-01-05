@@ -1583,7 +1583,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               after ATTACH_ENERGY, {
                 if (e.source != ATTACK && e.source != SRC_ABILITY && ef.fromHand && ef.targetPokemon == self && (ef.card.containsType(G) || ef.card.containsType(P)) && !self.specialConditions && confirm("Use Energy Reaction?")) {
                   if (ef.card.containsType(G)) {
-                    bc "Energy Reaction inflicts Confusion"
+                    bc "Energy Reaction inflicts Sleep"
                     apply ASLEEP, opp.active, SRC_ABILITY
                   }
                   if (ef.card.containsType(P)) {
