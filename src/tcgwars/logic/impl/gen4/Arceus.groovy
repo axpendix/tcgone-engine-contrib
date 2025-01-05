@@ -2270,7 +2270,7 @@ public enum Arceus implements LogicCardInfo {
                 if(ef.attacker==self) bg.dm().each {
                   if(it.from==self && it.to.active && it.to.owner!=self.owner && it.dmg.value){
                     it.dmg += hp(20)
-                    bc "Expect Belt +20"
+                    bc "Expert Belt +20"
                   }
                 }
               }
