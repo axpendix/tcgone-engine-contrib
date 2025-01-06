@@ -1277,7 +1277,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           text "As long as any Stadium card with Holon in its name is in play, your opponent can't play any Stadium cards from his or her hand."
           delayedA {
             before PLAY_TRAINER, {
-              if (ef.cardToPlay.cardTypes.is(STADIUM) && bg.currentTurn == self.owner.opposite && bg.stadiumInfoStruct.stadiumCard.name.contains("Holon")) {
+              if (ef.cardToPlay.cardTypes.is(STADIUM) && bg.currentTurn == self.owner.opposite && bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name.contains("Holon")) {
                 wcu "Delta Block prevents playing this card"
                 prevent()
               }
