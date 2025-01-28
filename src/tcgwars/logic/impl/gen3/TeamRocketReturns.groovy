@@ -2550,7 +2550,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 10
-              if(my.discard.filterByType(ENERGY)) attachEnergyFrom(my.discard,self)
+              afterDamage{
+                attachEnergyFrom(my.discard,self)
+              }
             }
           }
           move "Volcanic Ash", {
