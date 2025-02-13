@@ -379,7 +379,7 @@ public enum PopSeries1 implements LogicCardInfo {
         }
       };
       case SWELLOW_15:
-      return evolution (this, from:"Tailow", hp:HP070, type:C, retreatCost:1) {
+      return evolution (this, from:"Taillow", hp:HP070, type:C, retreatCost:1) {
         weakness L
         resistance F, MINUS30
         move "Focus Energy", {
