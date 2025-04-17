@@ -3,3 +3,4 @@
 .classpath
 *.iml
 .sublime-workspace
+.DS_Store
