@@ -420,7 +420,9 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             energyCost W, C, C
             onAttack {
               damage 40
-              damage(20,opp.bench.select("20 damage to "))
+              if (opp.bench) {
+                damage 20, opp.bench.select("20 damage to which Benched Pokémon?")
+              }
             }
           }
           move "Mud Shot", {

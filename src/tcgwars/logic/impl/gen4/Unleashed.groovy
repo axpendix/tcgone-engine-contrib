@@ -1056,7 +1056,9 @@ public enum Unleashed implements LogicCardInfo {
             energyCost W
             onAttack {
               damage 20
-              damage 10, opp.bench.select()
+              if (opp.bench) {
+                damage 10, opp.bench.select()
+              }
             }
           }
           move "Razor Fin", {
