@@ -3124,7 +3124,7 @@ public enum Stormfront implements LogicCardInfo {
           def flag2 = false // True when a 2nd move is being used
           customAbility {
             delayedA {
-              before ATTACK_MAIN, {
+              before PROCESS_ATTACK_EFFECTS, {
                 if(ef.move.name == "Voltage Shoot" && !flag2) {
                   if(self.lastEvolved == bg.turnCount) {
                     flag = true
