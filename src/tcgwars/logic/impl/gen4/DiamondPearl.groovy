@@ -1658,8 +1658,9 @@ public enum DiamondPearl implements LogicCardInfo {
                 if ( sw2(target) ) {
                   damage 40
                 }
+              } else {
+                damage 40
               }
-              damage 40
             }
           }
 
