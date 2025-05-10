@@ -328,7 +328,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               if (opp.hand.size() >= 2 && oppConfirm("Do you want to discard 2 card from your hand?\nIf you do, $thisMove will have a base damage of 10 instead of 80.")){
                 opp.hand.oppSelect(count:2, "Which card to discard?").discard()
               } else {
-                if (!opp.hand.size() >= 2) bc "The opponent has less than 2 cards in hand! $thisMove hits at full power!"
+                if (opp.hand.size() < 2) bc "The opponent has less than 2 cards in hand! $thisMove hits at full power!"
                 damage 70
               }
             }

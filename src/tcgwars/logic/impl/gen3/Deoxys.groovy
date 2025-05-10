@@ -2259,7 +2259,7 @@ public enum Deoxys implements LogicCardInfo {
               h.object.add(C)
             }
             eff2 = delayed{
-              before ATTACK_MAIN, {
+              before PROCESS_ATTACK_EFFECTS, {
                 flag = (ef.attacker == self)
               }
               before BETWEEN_TURNS, {
