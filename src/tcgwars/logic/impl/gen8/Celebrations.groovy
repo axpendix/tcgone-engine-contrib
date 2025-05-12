@@ -232,10 +232,29 @@ public enum Celebrations implements ImplOnlyCardInfo {
 
 
 
-      case MEW_11: return cardng (stub) {
+      case MEW_11: return cardng (stub) {				
 				bwAbility "Mysterious Tail", {
-					// Once during your turn, if this Pokémon is in the Active Spot, you may look at the top 6 cards of your deck, reveal an Item card you find there, and put it into your hand. Shuffle the other cards back into your deck.
+				// Once during your turn, if this Pokémon is in the Active Spot, you may look at the top 6 cards of your deck, reveal an Item card you find there, and put it into your hand. Shuffle the other cards back into your deck.
 					actionA {
+						assert self.active // Check if Mew is active
+						assert my.deck     // Make sure there are cards in deck
+
+						def topCards = my.deck.subList(0, 6)
+						def itemCards = topCards.findAll{it.cardTypes.is(ITEM)}
+						
+						if (itemCards) {
+							def selectedCard = itemCards.size() == 1 ? itemCards.first() : select(itemCards, "Select an Item card to add to your hand")
+							if (selectedCard) {
+								topCards.showToOpponent("Top 6 cards revealed by Mysterious Tail")
+								selectedCard.moveTo(my.hand)
+								topCards.findAll{it != selectedCard}.moveTo(my.deck)
+								shuffleDeck()
+							}
+						} else {
+							topCards.showToOpponent("No Item cards found in top 6 cards")
+							topCards.moveTo(my.deck)
+							shuffleDeck()
+						}
 					}
 				}
 				moveAttack "Psyshot", {
