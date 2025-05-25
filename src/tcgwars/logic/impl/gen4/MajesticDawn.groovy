@@ -350,7 +350,7 @@ public enum MajesticDawn implements LogicCardInfo {
           weakness G, PLUS30
           pokeBody "Primal Shell", {
             text "As long as Kabutops is your Active Pokémon, your opponent can’t play any Trainer-Item cards from his or her hand."
-            delayed {
+            delayedA {
               before PLAY_TRAINER, {
                 if (self.active && ef.cardToPlay.cardTypes.is(ITEM) && bg.currentTurn == self.owner.opposite && (ef.cardToPlay as Card).player == self.owner.opposite) {
                   wcu "Primal Shell prevents you from playing this card."
