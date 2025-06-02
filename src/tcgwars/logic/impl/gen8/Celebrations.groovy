@@ -240,21 +240,8 @@ public enum Celebrations implements ImplOnlyCardInfo {
 						assert my.deck     // Make sure there are cards in deck
 
 						def topCards = my.deck.subList(0, 6)
-						def itemCards = topCards.findAll{it.cardTypes.is(ITEM)}
-						
-						if (itemCards) {
-							def selectedCard = itemCards.size() == 1 ? itemCards.first() : select(itemCards, "Select an Item card to add to your hand")
-							if (selectedCard) {
-								topCards.showToOpponent("Top 6 cards revealed by Mysterious Tail")
-								selectedCard.moveTo(my.hand)
-								topCards.findAll{it != selectedCard}.moveTo(my.deck)
-								shuffleDeck()
-							}
-						} else {
-							topCards.showToOpponent("No Item cards found in top 6 cards")
-							topCards.moveTo(my.deck)
-							shuffleDeck()
-						}
+						topCards.select2(min:0, filter:cardTypeFilter(ITEM), text:"You may select an Item card to add to your hand").moveTo(my.hand)
+						shuffleDeck()
 					}
 				}
 				moveAttack "Psyshot", {
