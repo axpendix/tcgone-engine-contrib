@@ -1863,7 +1863,7 @@ public enum Triumphant implements LogicCardInfo {
             onAttack {
               damage 20
               flip {
-                apply PARALYZED
+                applyAfterDamage PARALYZED
               }
             }
           }
