@@ -1721,7 +1721,7 @@ public enum GreatEncounters implements LogicCardInfo {
                 onPlay {
                   eff = delayed {
                     before null, pokemon, Source.ATTACK, {
-                      if (e.sourceAttack.attacker.owner == self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages)) {
+                      if (e.targetPokemon == self && bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages)) {
                         bc "GUARD prevents effect ${ef.effectType}"
                         prevent()
                       }
