@@ -2520,7 +2520,7 @@ public enum Platinum implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              my.deck.search(max:2, "Search your deck for up to 2 Stadium or Trainer cards with Team Galactic's Invention in its name", {it.cardTypes.is(STADIUM) || it.cardTypes.isAll(ITEM, TEAM_GALACTICS_INVENTION)}).showToOpponent("Selected Cards").moveTo(my.hand)
+              my.deck.search(max:2, "Search your deck for up to 2 Stadium or Trainer cards with Team Galactic's Invention in its name", {it.cardTypes.is(TEAM_GALACTICS_INVENTION) && (it.cardTypes.is(STADIUM) || it.cardTypes.is(ITEM))}).showToOpponent("Selected Cards").moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -3144,7 +3144,7 @@ public enum Platinum implements LogicCardInfo {
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nSearch your deck for a Supporter card, a basic Energy card, and a Trainer card that has Team Galactic's Invention in its name, show them to your opponent, and put them into your hand. Shuffle your deck afterward."
           onPlay {
-            my.deck.search(max:3,"Search your deck for a Supporter card, a basic Energy card, and a Trainer card with Team Galactic's Invention in its name",{it.cardTypes.is(SUPPORTER) || it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.isAll(ITEM, TEAM_GALACTICS_INVENTION)}, {!(it.filterByType(SUPPORTER).size() > 1 || it.filterByType(BASIC_ENERGY).size() > 1 || it.filterByType(ITEM).size() > 1)}).showToOpponent("Selected Cards").moveTo(my.hand)
+            my.deck.search(max:3,"Search your deck for a Supporter card, a basic Energy card, and a Trainer card with Team Galactic's Invention in its name",{it.cardTypes.is(SUPPORTER) || it.cardTypes.is(BASIC_ENERGY) || it.cardTypes.isAll(ITEM) && (it.cardTypes.is(TEAM_GALACTICS_INVENTION) )}, {!(it.filterByType(SUPPORTER).size() > 1 || it.filterByType(BASIC_ENERGY).size() > 1 || it.filterByType(ITEM).size() > 1)}).showToOpponent("Selected Cards").moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
