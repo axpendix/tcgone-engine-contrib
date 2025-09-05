@@ -1112,7 +1112,7 @@ public enum Arceus implements LogicCardInfo {
             text "As long as Spiritomb is your Active Pokémon, each player can’t play any Trainer cards from his or her hand."
             delayedA {
               before PLAY_TRAINER, {
-                if(ef.item && self.active) {
+                if (ef.cardToPlay.cardTypes.is(ITEM) && self.active && bg.currentTurn == self.owner.opposite && (ef.cardToPlay as Card).player == self.owner.opposite) {
                   wcu "$thisAbility prevents playing Trainer cards"
                   prevent()
                 }
