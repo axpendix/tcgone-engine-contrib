@@ -3803,7 +3803,8 @@ public enum LegendsAwakened implements LogicCardInfo {
         return itemCard (this) {
           text "Look at the top 5 cards of your deck, choose as many Pokémon as you like, show them to your opponent, and put them into your hand. Put the other cards back on top of your deck. Shuffle your deck afterward."
           onPlay {
-            my.deck.subList(0,5).select(min:0, "Choose the cards to put in your hand", cardTypeFilter(POKEMON)).moveTo(my.hand)
+            def top = my.deck.subList(0,5)
+            top.select(min:0, max:top.filterByType(POKEMON).size(), "Choose the cards to put in your hand", cardTypeFilter(POKEMON)).moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
