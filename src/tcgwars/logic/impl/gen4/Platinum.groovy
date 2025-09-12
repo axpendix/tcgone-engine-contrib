@@ -3393,7 +3393,12 @@ public enum Platinum implements LogicCardInfo {
               before ATTACK_MAIN, {
                 if(ef.attacker.owner == self.owner.opposite && bg.em().retrieveObject("Invisible_Tentacles") != bg.turnCount) {
                   bg.em().storeObject("Invisible_Tentacles", bg.turnCount)
-                  self.owner.opposite.pbg.hand.select("Invisible Tentacles: Discard a card", {true}, self.owner.opposite).discard()
+                  if (self.owner.opposite.pbg.hand.empty) {
+                    bc "Invisible Tentacles prevents attacking"
+                    prevent()
+                  } else {
+                    self.owner.opposite.pbg.hand.select("Invisible Tentacles: Discard a card", {true}, self.owner.opposite).discard()
+                  }
                 }
               }
             }
