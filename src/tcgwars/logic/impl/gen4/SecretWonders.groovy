@@ -1208,24 +1208,12 @@ public enum SecretWonders implements LogicCardInfo {
       case JYNX_30:
         return basic (this, hp:HP070, type:PSYCHIC, retreatCost:2) {
           weakness P, PLUS20
-          def turnCount = -1
-          HP lastDamage = null
-          customAbility {
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(bg().currentTurn==self.owner.opposite) {
-                  turnCount=bg.turnCount
-                  lastDamage=bg().dm().find({it.to==self && it.dmg.value>=0})?.dmg
-                }
-              }
-            }
-          }
           move "Icy Kiss", {
-            text "30 damage. If Jynx was damaged by an attack during your opponent’s last turn, the Defending Pokémon is now Paralyzed."
+            text "30 damage. If Jynx was damaged by an attack during your opponent's last turn, the Defending Pokémon is now Paralyzed."
             energyCost W, C
             onAttack {
               damage 30
-              if(turnCount + 1 == bg.turnCount && lastDamage > hp(0)) {
+              if(self.wasDamagedByOpponentLastTurn()) {
                 applyAfterDamage PARALYZED
               }
             }
@@ -1380,26 +1368,14 @@ f
         return evolution (this, from:"Pidgeotto", hp:HP120, type:COLORLESS, retreatCost:0) {
           weakness L, PLUS30
           resistance F, MINUS20
-          def turnCount = -1
-          HP lastDamage = null
-          customAbility {
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(bg().currentTurn==self.owner.opposite) {
-                  turnCount=bg.turnCount
-                  lastDamage=bg().dm().find({it.to==self && it.dmg.value>=0})?.dmg
-                }
-              }
-            }
-          }
           move "Mirror Move", {
-            text "If Pidgeot was damaged by an attack during your opponent’s last turn, this attack does the same amount of damage done to Pidgeot to the Defending Pokémon."
+            text "If Pidgeot was damaged by an attack during your opponent's last turn, this attack does the same amount of damage done to Pidgeot to the Defending Pokémon."
             energyCost C, C
             attackRequirement {
-              assert bg.turnCount == turnCount + 1 : "$self was not damaged by an attack last turn"
+              assert self.wasDamagedByOpponentLastTurn() : "$self was not damaged by an attack last turn"
             }
             onAttack {
-              damage lastDamage.value
+              damage self.lastOpponentAttackDamage.value
             }
           }
           move "Whirlwind", {

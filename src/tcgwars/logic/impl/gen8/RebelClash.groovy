@@ -1020,25 +1020,13 @@ public enum RebelClash implements LogicCardInfo {
       case CINDERACE_VMAX_36:
       return evolution (this, from:"Cinderace V", hp:HP320, type:R, retreatCost:2) {
         weakness W
-        def turnCount=-1
-        HP lastDamage=null
-        customAbility {
-          delayedA (priority: LAST) {
-            before APPLY_ATTACK_DAMAGES, {
-              if(bg().currentTurn==self.owner.opposite) {
-                turnCount=bg.turnCount
-                lastDamage=bg().dm().find({it.to==self && it.dmg.value>=0})?.dmg
-              }
-            }
-          }
-        }
         move "Counter", {
-          text "30+ damage. This attack does additional damage equal to the amount of damage done to this Pokémon by attacks from your opponent’s Pokémon during your opponent’s last turn."
+          text "30+ damage. This attack does additional damage equal to the amount of damage done to this Pokémon by attacks from your opponent's Pokémon during your opponent's last turn."
           energyCost R, C
           onAttack {
             damage 30
-            if (turnCount+1==bg.turnCount && lastDamage > hp(0)) {
-              damage lastDamage.value
+            if (self.wasDamagedByOpponentLastTurn()) {
+              damage self.lastOpponentAttackDamage.value
             }
           }
         }

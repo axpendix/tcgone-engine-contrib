@@ -414,13 +414,32 @@ public enum AstralRadiance implements ImplOnlyCardInfo {
 
 
       case LEAFEON_13: return cardng (stub) {
-				moveAttack "Energy Garden", {
+				moveFull "Energy Garden", {
 					// Search your deck for up to 3 basic Energy cards of different types and attach them to your Pokémon in any way you like. Then, shuffle your deck.
-
+          attackRequirement {
+            assert my.deck
+          }
+          onAttack {
+            my.deck.select2(min: 0, max: 3,
+              text: "Search your deck for up to 3 basic Energy cards of different types and attach them to your Pokémon in any way you like",
+              filter: cardTypeFilter(BASIC_ENERGY),
+              passFilter: { CardList cardList ->
+                for (Card card : cardList) {
+                  for (Card card2 : cardList) {
+                    if (card != card2 && card.getBasicType() == card2.getBasicType()) {
+                      return false
+                    }
+                  }
+                }
+                return true
+              }).each {attachEnergy(my.all.select("Attach $it to?"), it)}
+            shuffleDeck()
+          }
 				}
 				moveAttack "Leafy Cyclone", {
 					// 120 damage. During your next turn, this Pokémon can't attack.
 					damage 120
+          cantAttackNextTurn self
 				}
 			}
 

@@ -2520,7 +2520,7 @@ public enum Platinum implements LogicCardInfo {
               assert my.deck : "Your deck is empty"
             }
             onAttack {
-              my.deck.search(max:2, "Search your deck for up to 2 Stadium or Trainer cards with Team Galactic's Invention in its name", {it.cardTypes.is(TEAM_GALACTICS_INVENTION) && (it.cardTypes.is(STADIUM) || it.cardTypes.is(ITEM))}).showToOpponent("Selected Cards").moveTo(my.hand)
+              my.deck.search(max:2, "Search your deck for up to 2 Stadium or Trainer cards with Team Galactic's Invention in its name", {it.cardTypes.is(STADIUM) || it.cardTypes.isAll(TEAM_GALACTICS_INVENTION, ITEM)}).showToOpponent("Selected Cards").moveTo(my.hand)
               shuffleDeck()
             }
           }
@@ -3393,7 +3393,12 @@ public enum Platinum implements LogicCardInfo {
               before ATTACK_MAIN, {
                 if(ef.attacker.owner == self.owner.opposite && bg.em().retrieveObject("Invisible_Tentacles") != bg.turnCount) {
                   bg.em().storeObject("Invisible_Tentacles", bg.turnCount)
-                  self.owner.opposite.pbg.hand.select("Invisible Tentacles: Discard a card", {true}, self.owner.opposite).discard()
+                  if (self.owner.opposite.pbg.hand.empty) {
+                    bc "Invisible Tentacles prevents attacking"
+                    prevent()
+                  } else {
+                    self.owner.opposite.pbg.hand.select("Invisible Tentacles: Discard a card", {true}, self.owner.opposite).discard()
+                  }
                 }
               }
             }
@@ -3635,18 +3640,6 @@ public enum Platinum implements LogicCardInfo {
         return basic (this, hp:HP050, type:COLORLESS, retreatCost:1) {
           weakness L, PLUS10
           resistance F, MINUS20
-          def turnCount = -1
-          HP lastDamage = null
-          customAbility {
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(bg().currentTurn==self.owner.opposite) {
-                  turnCount=bg.turnCount
-                  lastDamage=bg().dm().find({it.to==self && it.dmg.value>=0})?.dmg
-                }
-              }
-            }
-          }
           move "Roost", {
             text "Remove 4 damage counters from Swablu. Swablu can't retreat during your next turn."
             energyCost ()
@@ -3656,13 +3649,13 @@ public enum Platinum implements LogicCardInfo {
             }
           }
           move "Mirror Move", {
-            text "If Swablu was damaged by an attack during your opponent’s last turn, this attack does the same amount of damage done to Swablu to the Defending Pokémon."
+            text "If Swablu was damaged by an attack during your opponent's last turn, this attack does the same amount of damage done to Swablu to the Defending Pokémon."
             energyCost C
             attackRequirement {
-              assert bg.turnCount == turnCount + 1 : "$self was not damaged by an attack last turn"
+              assert self.wasDamagedByOpponentLastTurn() : "$self was not damaged by an attack last turn"
             }
             onAttack {
-              damage lastDamage.value
+              damage self.lastOpponentAttackDamage.value
             }
           }
           move "Fury Attack", {

@@ -1240,23 +1240,11 @@ public enum LegendsAwakened implements LogicCardInfo {
       case POLIWRATH_35:
         return evolution (this, from:"Poliwhirl", hp:HP130, type:W, retreatCost:2) {
           weakness L, '+30'
-          def turnCount = -1
-          HP lastDamage = null
-          customAbility {
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if (bg.currentTurn == self.owner.opposite) {
-                  turnCount = bg.turnCount
-                  lastDamage = bg.dm().find({ it.to == self && it.dmg.value >= 0 })?.dmg
-                }
-              }
-            }
-          }
           move "Focus Punch", {
             text "60 damage. If Poliwrath was damaged by an attack during your opponent's last turn, this attack does nothing."
             energyCost F
             attackRequirement {
-              assert turnCount + 1 != bg.turnCount || lastDamage == null || lastDamage == hp(0) : "Was damaged last turn"
+              assert !self.wasDamagedByOpponentLastTurn() : "Was damaged last turn"
             }
             onAttack {
               damage 60
@@ -1275,18 +1263,6 @@ public enum LegendsAwakened implements LogicCardInfo {
       case REGICE_36:
         return basic (this, hp:HP090, type:W, retreatCost:3) {
           weakness M
-          def turnCount =- 1
-          HP lastDamage = null
-          customAbility {
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if (bg().currentTurn == self.owner.opposite) {
-                  turnCount = bg.turnCount
-                  lastDamage = bg().dm().find({ it.to == self && it.dmg.value >= 0 })?.dmg
-                }
-              }
-            }
-          }
           pokePower "Regi Move", {
             text "Once during your turn (before your attack), you may use this power. Discard 2 cards from your hand and choose 1 of your opponent's Active Pokémon that isn't an Evolved Pokémon. Then, your opponent switches that Pokémon with 1 of his or her Benched Pokémon. This power can't be used if Regice is affected by a Special Condition."
             actionA {
@@ -1310,7 +1286,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
-              if (turnCount + 1 == bg.turnCount && lastDamage > hp(0)) {
+              if (self.wasDamagedByOpponentLastTurn()) {
                 applyAfterDamage PARALYZED
               }
             }
