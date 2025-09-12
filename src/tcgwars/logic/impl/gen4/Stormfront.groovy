@@ -1621,24 +1621,12 @@ public enum Stormfront implements LogicCardInfo {
               }
             }
           }
-          def turnCount=-1
-          HP lastDamage=null
-          customAbility {
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(bg().currentTurn==self.owner.opposite) {
-                  turnCount=bg.turnCount
-                  lastDamage=bg().dm().find({it.to==self && it.dmg.value>=0})?.dmg
-                }
-              }
-            }
-          }
           move "Low Current", {
-            text "30 damage. If Electrode was damaged by an attack during your opponent’s last turn, the Defending Pokémon is now Paralyzed."
+            text "30 damage. If Electrode was damaged by an attack during your opponent's last turn, the Defending Pokémon is now Paralyzed."
             energyCost L
             onAttack {
               damage 30
-              if(turnCount+1==bg.turnCount && lastDamage > hp(0)) {
+              if(self.wasDamagedByOpponentLastTurn()) {
                 applyAfterDamage PARALYZED
               }
             }

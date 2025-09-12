@@ -872,26 +872,13 @@ public enum MysteriousTreasures implements LogicCardInfo {
               }
             }
           }
-          //Taken from Sudowoodo
-          def turnCount=-1
-          HP lastDamage=null
-          customAbility {
-            delayedA (priority: LAST) {
-              before APPLY_ATTACK_DAMAGES, {
-                if(bg().currentTurn==self.owner.opposite) {
-                  turnCount=bg.turnCount
-                  lastDamage=bg().dm().find({it.to==self && it.dmg.value>=0})?.dmg
-                }
-              }
-            }
-          }
           move "Anger Revenge", {
-            text "60 damage. If Bastiodon was damaged by an attack during your opponent’s last turn, this attack does 40 damage to 1 of your opponent’s Benched Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
+            text "60 damage. If Bastiodon was damaged by an attack during your opponent's last turn, this attack does 40 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
             energyCost M, M, C
             attackRequirement {}
             onAttack {
               damage 60
-              if (opp.bench && turnCount+1==bg.turnCount && lastDamage > hp(0)) {
+              if (opp.bench && self.wasDamagedByOpponentLastTurn()) {
                 damage 40, opp.bench.select()
               }
             }
