@@ -313,6 +313,8 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case CATERPIE_1: return cardng (stub) {
 				moveAttack "Flock", {
 					// Search your deck for a Caterpie and put it onto your Bench. Then, shuffle your deck.
+          my.deck.search ("Search your deck for a Caterpie and put it onto your Bench", {it.name == "Caterpie"}).each {benchPCS(it)}
+          shuffleDeck()
 
 				}
 				moveAttack "Bug Bite", {
@@ -321,12 +323,18 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				}
 			}
 
-
-
       case METAPOD_2: return cardng (stub) {
 				bwAbility "Exoskeleton", {
 					// This Pokémon takes 20 less damage from attacks (after applying Weakness and Resistance).
-					actionA {
+					delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if(it.to==self && it.dmg.value && it.notNoEffect){
+                  bc "Exoskeleton -20"
+                  it.dmg -= hp(20)
+                }
+              }
+            }
 					}
 				}
 				moveAttack "Ram", {
@@ -335,12 +343,16 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				}
 			}
 
-
-
       case BUTTERFREE_3: return cardng (stub) {
 				bwAbility "Tricolored Scales", {
 					// When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may make your opponent's Active Pokémon Burned, Confused, and Poisoned.
-					actionA {
+					onActivate {reason->
+            if(reason == ActivationReason.PLAY_FROM_HAND && bg.currentTurn == self.owner && confirm("Use Tricolored Scales to make your opponent's Active Pokémon Burned, Confused, and Poisoned?")) {
+              powerUsed()
+              apply BURNED, opp.active
+              apply CONFUSED, opp.active
+              apply POISONED, opp.active
+            }
 					}
 				}
 				moveAttack "Gust", {
@@ -348,8 +360,6 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 					damage 90
 				}
 			}
-
-
 
       case SHROOMISH_4: return cardng (stub) {
 				moveAttack "Tackle", {
@@ -362,8 +372,6 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				}
 			}
 
-
-
       case BRELOOM_5: return cardng (stub) {
 				moveAttack "Headbutt", {
 					// 30 damage.
@@ -372,23 +380,22 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				moveAttack "Impact Blow", {
 					// 150 damage. During your next turn, this Pokémon can't use Impact Blow.
 					damage 150
+          cantUseAttack thisMove, self
 				}
 			}
-
-
 
       case BRELOOM_V_6: return cardng (stub) {
 				moveAttack "Counter", {
 					// 20+ damage. If this Pokémon was damaged by an attack during your opponent's last turn, this attack does that much more damage.
 					damage 20
+          if(self.wasDamagedByOpponentLastTurn()) damage self.lastOpponentAttackDamage.value
+          
 				}
 				moveAttack "Mach Cross", {
 					// 140 damage.
 					damage 140
 				}
 			}
-
-
 
       case PANSAGE_7: return cardng (stub) {
 				moveAttack "Scratch", {
@@ -397,12 +404,16 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				}
 			}
 
-
-
       case SIMISAGE_8: return cardng (stub) {
 				moveAttack "Return", {
 					// 30 damage. You may draw cards until you have 6 cards in your hand.
 					damage 30
+          afterDamage {
+            int maxDraw = 6 - my.hand.size()
+            if(maxDraw > 0 && confirm("Draw cards until you have 6 cards in your hand?")) {
+              draw maxDraw
+            }
+          }
 				}
 				moveAttack "Whip Smash", {
 					// 70 damage.
@@ -410,21 +421,19 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				}
 			}
 
-
-
       case SEWADDLE_9: return cardng (stub) {
 				moveAttack "Grass Munch", {
 					// 10 damage. Discard a [G] Energy from your opponent's Active Pokémon.
 					damage 10
+          discardDefendingEnergyAfterDamage G
 				}
 			}
-
-
 
       case SWADLOON_10: return cardng (stub) {
 				moveAttack "Trip Over", {
 					// 10+ damage. Flip a coin. If heads, this attack does 20 more damage.
 					damage 10
+          flip {damage 20}
 				}
 				moveAttack "Seed Bomb", {
 					// 60 damage.
@@ -432,12 +441,21 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				}
 			}
 
-
-
       case LEAVANNY_11: return cardng (stub) {
 				moveAttack "Healing Circle", {
 					// Heal all damage from each of your Benched Pokémon. If you healed any damage in this way, shuffle this Pokémon and all attached cards into your deck.
-
+          boolean healed = false
+          my.bench.each {
+            if(it.numberOfDamageCounters) {
+              heal it.damage.value, it
+              healed = true
+            }
+          }
+          if(healed) {
+            self.cards.moveTo deck
+            removePCS self
+            shuffleDeck()
+          }
 				}
 				moveAttack "Razor Leaf", {
 					// 120 damage.
@@ -445,20 +463,22 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				}
 			}
 
-
-
       case MARACTUS_12: return cardng (stub) {
 				moveAttack "Peck", {
 					// 20 damage.
 					damage 20
 				}
-				moveAttack "Ditch and Shake", {
+				moveFull "Ditch and Shake", {
 					// 50x damage. Discard any number of Pokémon Tool cards from your hand. This attack does 50 damage for each card you discarded in this way.
-					damage 50
+          attackRequirement {
+            assert my.hand.filterByType(POKEMON_TOOL).size() > 0
+          }
+          onAttack {
+            int count = my.hand.filterByType(POKEMON_TOOL).select2(max: my.hand.filterByType(POKEMON_TOOL).size(), "Discard any number of Pokémon Tool cards from your hand").discard()
+            damage 50 * count
+          }
 				}
 			}
-
-
 
       case SHELMET_13: return cardng (stub) {
 				moveAttack "Spit Beam", {
@@ -467,29 +487,36 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				}
 			}
 
-
-
       case ACCELGOR_14: return cardng (stub) {
-				moveAttack "Ninja Tornado", {
+				moveFull "Ninja Tornado", {
 					// 120 damage. If this Pokémon moved from your Bench to the Active Spot this turn, this attack can be used for Grass.
-					damage 120
+          energyCost G
+          attackRequirement {
+            if (!self.movedFromBenchToActiveThisTurn()) {
+              assert self.cards.energySufficient(G, C, C) || bg.em().findAttack().subattack : "Not enough energy"
+            }
+          }
+          onAttack {
+            damage 120
+          }
 				}
 			}
 
-
-
       case VIRIZION_15: return cardng (stub) {
-				moveAttack "Bail Out", {
+				moveFull "Bail Out", {
 					// Put up to 2 Pokémon from your discard pile into your hand.
-
+          attackRequirement {
+            assert my.discard.filterByType(POKEMON).size() > 0
+          }
+          onAttack {
+            my.discard.filterByType(POKEMON).select2(max: 2, "Put up to 2 Pokémon from your discard pile into your hand").moveTo(my.hand)
+          }
 				}
 				moveAttack "Solar Beam", {
 					// 90 damage.
 					damage 90
 				}
 			}
-
-
 
       case PHANTUMP_16: return cardng (stub) {
 				moveAttack "Tackle", {
@@ -502,8 +529,6 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				}
 			}
 
-
-
       case TREVENANT_17: return cardng (stub) {
 				moveAttack "Gentle Slap", {
 					// 40 damage.
@@ -515,20 +540,21 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				}
 			}
 
-
-
       case GRUBBIN_18: return cardng (stub) {
-				moveAttack "Energize", {
+				moveFull "Energize", {
 					// Attach a [L] Energy card from your discard pile to this Pokémon.
-
+          attackRequirement {
+            assert my.discard.filterByEnergyType(L).size() > 0
+          }
+          onAttack {
+            my.discard.filterByEnergyType(L).select().each {attachEnergy(self, it)}
+          }
 				}
 				moveAttack "Surprise Attack", {
 					// 50 damage. Flip a coin. If tails, this attack does nothing.
-					damage 50
+					flip {damage 50}
 				}
 			}
-
-
 
       case DEWPIDER_19: return cardng (stub) {
 				moveAttack "Bug Bite", {
@@ -536,8 +562,6 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 					damage 20
 				}
 			}
-
-
 
       case ARAQUANID_20: return cardng (stub) {
 				moveAttack "Bug Bite", {
@@ -547,24 +571,36 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				moveAttack "Bubble Launch", {
 					// 110 damage. Move an Energy from this Pokémon to 1 of your Benched Pokémon.
 					damage 110
+          moveSelfEnergyAfterDamage my.bench.select("Move an Energy from $self to which Benched Pokémon?")
 				}
 			}
-
-
 
       case TSAREENA_V_21: return cardng (stub) {
 				moveAttack "Queen's Orders", {
 					// 20+ damage. You may discard any number of your Benched Pokémon. This attack does 40 more damage for each Benched Pokémon you discarded in this way.
 					damage 20
+          def targets = new PcsList(my.bench)
+          while (targets.isNotEmpty()) {
+            def pcs = targets.select2("Queen's Orders. Discard which Benched Pokémon? Cancel to stop", false)
+            if(pcs) {
+              targets.remove(pcs)
+              pcs.cards.discard()
+              removePCS pcs
+              damage 40
+            } else {
+              break
+            }
+          }
 				}
 			}
-
-
 
       case RILLABOOM_V_22: return cardng (stub) {
 				moveAttack "Drain Punch", {
 					// 60 damage. Heal 30 damage from this Pokémon.
 					damage 60
+          afterDamage {
+            heal 30, self
+          }
 				}
 				moveAttack "Drum Rush", {
 					// 160 damage.
@@ -572,16 +608,13 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				}
 			}
 
-
-
       case RILLABOOM_VMAX_23: return cardng (stub) {
 				moveAttack "G-Max Drum Solo", {
 					// 180 damage. This attack also does 40 damage to 2 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
 					damage 180
+          multiDamage(opp.bench, 2, 40)
 				}
 			}
-
-
 
       case GOSSIFLEUR_24: return cardng (stub) {
 				moveAttack "Leafage", {
@@ -590,16 +623,15 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				}
 			}
 
-
-
       case ELDEGOSS_25: return cardng (stub) {
 				moveAttack "Sunny Wind", {
 					// 50 damage. Heal 20 damage from this Pokémon.
 					damage 50
+          afterDamage {
+            heal 20, self
+          }
 				}
 			}
-
-
 
       case APPLETUN_V_26: return cardng (stub) {
 				moveAttack "Headbutt", {
@@ -609,10 +641,11 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				moveAttack "Sweet Impact", {
 					// 100 damage. Heal 30 damage from this Pokémon.
 					damage 100
+          afterDamage {
+            heal 30, self
+          }
 				}
 			}
-
-
 
       case ZARUDE_27: return cardng (stub) {
 				moveAttack "Scratch", {
@@ -622,10 +655,9 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				moveAttack "Wild Whip", {
 					// 40+ damage. Flip a coin. If heads, this attack does 30 more damage.
 					damage 40
+          flip {damage 30}
 				}
 			}
-
-
 
       case VULPIX_28: return cardng (stub) {
 				moveAttack "Live Coal", {
@@ -634,16 +666,12 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				}
 			}
 
-
-
       case VULPIX_29: return cardng (stub) {
 				moveAttack "Smash Kick", {
 					// 10 damage.
 					damage 10
 				}
 			}
-
-
 
       case NINETALES_30: return cardng (stub) {
 				moveAttack "Supernatural Flames", {
@@ -652,12 +680,13 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				}
 			}
 
-
-
       case NINETALES_31: return cardng (stub) {
 				bwAbility "Byway of the Nine-Tailed Fox", {
 					// The Retreat Cost of each of your Pokémon that has any [R] Energy attached is [C][C] less.
-					actionA {
+					getterA GET_RETREAT_COST, BEFORE_LAST, { h->
+            if (h.target.owner == self.owner && h.target.cards.energyCount(R)) {
+              h.object -= 2
+            }
 					}
 				}
 				moveAttack "Flame Tail", {
@@ -666,20 +695,22 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				}
 			}
 
-
-
       case GROWLITHE_32: return cardng (stub) {
-				moveAttack "Warm Up", {
+				moveFull "Warm Up", {
 					// Search your deck for a [R] Energy card and attach it to 1 of your Pokémon. Then, shuffle your deck.
-
+          attackRequirement {
+            assert my.deck
+          }
+          onAttack {
+            my.deck.search("Search your deck for a [R] Energy card and attach it to 1 of your Pokémon", energyFilter(R)).each {attachEnergy(my.all.select("Attach [R] Energy to?"), it)}
+            shuffleDeck()
+          }
 				}
 				moveAttack "Combustion", {
 					// 30 damage.
 					damage 30
 				}
 			}
-
-
 
       case ARCANINE_33: return cardng (stub) {
 				moveAttack "Fire Claws", {
@@ -689,10 +720,9 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				moveAttack "Heat Tackle", {
 					// 160 damage. This Pokémon also does 30 damage to itself.
 					damage 160
+          damage 30, self
 				}
 			}
-
-
 
       case SLUGMA_34: return cardng (stub) {
 				moveAttack "Live Coal", {
@@ -705,8 +735,6 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				}
 			}
 
-
-
       case MAGCARGO_35: return cardng (stub) {
 				moveAttack "Rock Throw", {
 					// 40 damage.
@@ -715,15 +743,22 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				moveAttack "Body Splash", {
 					// 150 damage. Flip 3 coins. For each tails, discard an Energy from this Pokémon.
 					damage 150
+          def count = flipTailsCount 3
+          def types = expandIntoTypes C, count
+          discardSelfEnergyAfterDamage types
 				}
 			}
 
-
-
       case VICTINI_36: return cardng (stub) {
-				moveAttack "Fiery Cheering", {
+				moveFull "Fiery Cheering", {
 					// Attach a basic Energy card from your discard pile to 1 of your Benched Pokémon.
-
+          attackRequirement {
+            assert my.discard.filterByType(BASIC_ENERGY).size() > 0
+            assert my.bench.notEmpty
+          }
+          onAttack {
+            my.discard.filterByType(BASIC_ENERGY).select().each {attachEnergy(my.bench.select("Attach basic Energy to?"), it)}
+          }
 				}
 				moveAttack "Flare", {
 					// 20 damage.
@@ -731,80 +766,95 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				}
 			}
 
-
-
       case PANSEAR_37: return cardng (stub) {
 				moveAttack "Surprise Attack", {
 					// 30 damage. Flip a coin. If tails, this attack does nothing.
-					damage 30
+					flip {damage 30}
 				}
 			}
-
-
 
       case SIMISEAR_38: return cardng (stub) {
 				moveAttack "Light Punch", {
 					// 20 damage.
 					damage 20
 				}
-				moveAttack "Fling Fire", {
+				moveFull "Fling Fire", {
 					// 60x damage. Discard up to 2 basic Energy cards from your hand. This attack does 60 damage for each card you discarded in this way.
-					damage 60
+          attackRequirement {
+            assert my.hand.filterByType(BASIC_ENERGY).size() > 0
+          }
+          onAttack {
+            def list = my.hand.select2(max: 2, "Discard up to 2 basic Energy cards from your hand").discard()
+            damage 60 * list.size()
+          }
 				}
 			}
-
-
 
       case CHANDELURE_V_39: return cardng (stub) {
 				moveAttack "Confuse Ray", {
 					// Your opponent's Active Pokémon is now Confused.
-
+          apply CONFUSED
 				}
-				moveAttack "Poltergeist", {
+				moveFull "Poltergeist", {
 					// 40x damage. Your opponent reveals their hand. This attack does 40 damage for each Trainer card you find there.
-					damage 40
+          attackRequirement {
+            assert opp.hand : "Your opponent's hand is empty"
+          }
+          onAttack {
+            opp.hand.showToMe("Your opponent's hand")
+            damage 40 * opp.hand.filterByType(TRAINER).size()
+          }
 				}
 			}
-
-
 
       case CHANDELURE_VMAX_40: return cardng (stub) {
 				bwAbility "Cursed Shimmer", {
 					// As long as this Pokémon is in the Active Spot, your opponent can't play any Pokémon Tool cards from their hand.
-					actionA {
+					delayedA {
+						before PLAY_TRAINER, {
+							if (self.active && ef.cardToPlay.cardTypes.is(POKEMON_TOOL) && bg.currentTurn == self.owner.opposite && ef.cardToPlay.owner == self.owner.opposite) {
+								wcu "Cursed Shimmer prevents you from playing Pokémon Tool cards."
+								prevent()
+							}
+						}
 					}
 				}
 				moveAttack "Max Poltergeist", {
 					// 70x damage. Your opponent reveals their hand. This attack does 70 damage for each Trainer card you find there.
-					damage 70
+          attackRequirement {
+            assert opp.hand : "Your opponent's hand is empty"
+          }
+          onAttack {
+            opp.hand.showToMe("Your opponent's hand")
+            damage 70 * opp.hand.filterByType(TRAINER).size()
+          }
 				}
 			}
-
-
 
       case HEATMOR_41: return cardng (stub) {
 				moveAttack "Flame Cloak", {
 					// 20 damage. Attach a [R] Energy card from your discard pile to this Pokémon.
 					damage 20
+          afterDamage {
+            if(my.discard.filterByEnergyType(R).size() > 0) my.discard.filterByEnergyType(R).select().each {attachEnergy(self, it)}
+          }
 				}
 				moveAttack "Exciting Flame", {
 					// 90 damage. If this Pokémon has at least 3 extra Energy attached (in addition to this attack's cost), this attack also does 180 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
 					damage 90
+          if (opp.bench && self.cards.energySufficient(effectiveEnergyCost + [C,C,C])) {
+            damage 180, opp.bench.select("Exciting Flame. Do 180 damage to which Benched Pokémon?")
+          }
 				}
 			}
-
-
-
-
 
       case CINDERACE_V_43: return cardng (stub) {
 				moveAttack "Blaze Kick", {
 					// 210 damage. Discard 2 [R] Energy from this Pokémon.
 					damage 210
+          discardSelfEnergyAfterDamage R, R
 				}
 			}
-
-
 
       case CINDERACE_V_44: return cardng (stub) {
 				moveAttack "Flare", {
@@ -814,19 +864,18 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				moveAttack "All-Out Shot", {
 					// 210 damage. During your next turn, this Pokémon can't attack.
 					damage 210
+          cantAttackNextTurn self
 				}
 			}
-
-
 
       case CINDERACE_VMAX_45: return cardng (stub) {
 				moveAttack "G-Max Fireball", {
 					// 230 damage. Your opponent's Active Pokémon is now Burned. During your next turn, this Pokémon can't attack.
 					damage 230
+          applyAfterDamage BURNED
+          cantAttackNextTurn self
 				}
 			}
-
-
 
       case SIZZLIPEDE_46: return cardng (stub) {
 				moveAttack "Gnaw", {
@@ -839,29 +888,24 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				}
 			}
 
-
-
       case SIZZLIPEDE_47: return cardng (stub) {
 				moveAttack "Singe", {
 					// Your opponent's Active Pokémon is now Burned.
-
+          apply BURNED
 				}
 			}
-
-
 
       case CENTISKORCH_48: return cardng (stub) {
 				moveAttack "Coil", {
 					// 30 damage. During your next turn, this Pokémon's attacks do 90 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance).
 					damage 30
+          doMoreDamageNextTurn thisMove, 90, self
 				}
 				moveAttack "Burning Train", {
 					// 120 damage.
 					damage 120
 				}
 			}
-
-
 
       case CENTISKORCH_49: return cardng (stub) {
 				moveAttack "Steady Firebreathing", {
@@ -874,8 +918,6 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				}
 			}
 
-
-
       case SHELLDER_50: return cardng (stub) {
 				moveAttack "Tongue Slap", {
 					// 10 damage.
@@ -887,34 +929,33 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 				}
 			}
 
-
-
       case CLOYSTER_51: return cardng (stub) {
 				bwAbility "Shell Armor", {
 					// This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance).
-					actionA {
-					}
+					reducedDamageFromAttacksAbility self, 30, delegate
 				}
 				moveAttack "Aqua Split", {
 					// 60 damage. This attack also does 30 damage to 2 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
 					damage 60
+          multiDamage(opp.bench, 2, 30)
 				}
 			}
 
-
-
       case STARYU_52: return cardng (stub) {
-				moveAttack "Soak in Water", {
+				moveFull "Soak in Water", {
 					// Attach a [W] Energy card from your hand to this Pokémon.
-
+          attackRequirement {
+            assert my.hand.filterByEnergyType(W).size() > 0
+          }
+          onAttack {
+            my.hand.filterByEnergyType(W).select().each {attachEnergy(self, it)}
+          }
 				}
 				moveAttack "Spinning Attack", {
 					// 10 damage.
 					damage 10
 				}
 			}
-
-
 
       case STARMIE_53: return cardng (stub) {
 				moveAttack "Multishot Star", {
