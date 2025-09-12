@@ -6,6 +6,7 @@ import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 
 import tcgwars.logic.card.*
+import tcgwars.logic.util.CardList
 
 /**
  * @author
@@ -423,7 +424,7 @@ public enum AstralRadiance implements ImplOnlyCardInfo {
             my.deck.select2(min: 0, max: 3,
               text: "Search your deck for up to 3 basic Energy cards of different types and attach them to your Pokémon in any way you like",
               filter: cardTypeFilter(BASIC_ENERGY),
-              passFilter: { CardList cardList ->
+              passFilter: { cardList ->
                 for (Card card : cardList) {
                   for (Card card2 : cardList) {
                     if (card != card2 && card.getBasicType() == card2.getBasicType()) {

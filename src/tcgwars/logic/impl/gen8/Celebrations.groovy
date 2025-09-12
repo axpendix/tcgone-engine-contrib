@@ -431,37 +431,37 @@ public enum Celebrations implements ImplOnlyCardInfo {
       case CHARIZARD_4: return cardng (stub) {
 				pokemonPower "Energy Burn", {
 					// As often as you like during your turn (before your attack), you may turn all Energy attached to Charizard into [R] Energy for the rest of the turn. This power can't be used if Charizard is Asleep, Confused, or Paralyzed.
-           def set = [] as Set
-            def eff1, eff2
-            onActivate {
-              if(eff1) eff1.unregister()
-              if(eff2) eff2.unregister()
-              eff1 = delayed {
-                before BETWEEN_TURNS, {
-                  set.clear()
-                }
-              }
-              eff2 = getter GET_ENERGY_TYPES, { holder->
-                if(set.contains(holder.effect.card)) {
-                  int count = holder.object.size()
-                  holder.object = [(1..count).collect{[FIRE] as Set}]
-                }
+          def set = [] as Set
+          def eff1, eff2
+          onActivate {
+            if(eff1) eff1.unregister()
+            if(eff2) eff2.unregister()
+            eff1 = delayed {
+              before BETWEEN_TURNS, {
+                set.clear()
               }
             }
-            actionA {
-              checkNoSPCForClassic()
-              def newSet = [] as Set
-              newSet.addAll(self.cards.filterByType(ENERGY))
-              if(newSet != set){
-                powerUsed()
-                set.clear()
-                set.addAll(newSet)
-              } else {
-                wcu "Nothing to burn more"
+            eff2 = getter GET_ENERGY_TYPES, { holder->
+              if(set.contains(holder.effect.card)) {
+                int count = holder.object.size()
+                holder.object = [(1..count).collect{[FIRE] as Set}]
               }
             }
           }
- 				}
+          actionA {
+            checkNoSPCForClassic()
+            def newSet = [] as Set
+            newSet.addAll(self.cards.filterByType(ENERGY))
+            if(newSet != set){
+              powerUsed()
+              set.clear()
+              set.addAll(newSet)
+            } else {
+              wcu "Nothing to burn more"
+            }
+          }
+        }
+			
 				moveAttack "Fire Spin", {
 					// 100 damage. Discard 2 Energy cards attached to Charizard in order to use this attack.
 					damage 100
