@@ -1850,16 +1850,10 @@ public enum RebelClash implements LogicCardInfo {
         weakness D
         resistance F, MINUS30
         bwAbility "Perish Body", {
-          text "If this Pokémon is your Active Pokémon and is Knocked Out by damage from an opponent’s attack, flip a coin. If heads, the Attacking Pokémon is Knocked Out."
-          delayedA (priority: LAST) {
-            before (KNOCKOUT, self) {
-              if ((ef as Knockout).byDamageFromAttack && self.active && bg.currentTurn==self.owner.opposite && self.owner.opposite.pbg.active != null && self.owner.opposite.pbg.active.inPlay) {
-                flip "Perish Body", self.owner, {
-                  targeted (self.owner.opposite.pbg.active, SRC_ABILITY){
-                    new Knockout(self.owner.opposite.pbg.active).run(bg)
-                  }
-                }
-              }
+          text "If this Pokémon is your Active Pokémon and is Knocked Out by damage from an opponent's attack, flip a coin. If heads, the Attacking Pokémon is Knocked Out."
+          ifActiveAndKnockedOutByAttack (delegate) {pcs->
+            flip "Perish Body", self.owner, {
+              new Knockout(pcs).run(bg)
             }
           }
         }

@@ -285,19 +285,13 @@ public enum LegendsAwakened implements LogicCardInfo {
           move "Destiny Bond", {
             text "Discard a [P] Energy attached to Froslass. During your opponent's next turn, if Froslass would be Knocked Out by damage from an attack, the Attacking Pokémon is Knocked Out."
             energyCost P
-            attackRequirement {}
             onAttack {
               discardSelfEnergy(P)
-              delayed {
-                def atk_pkm = null
-                before PROCESS_ATTACK_EFFECTS, {
-                  //needed to make ensure attacking pokemon is the target of Destiny Bond.
-                  atk_pkm = (bg.currentTurn == self.owner.opposite) ? self.owner.opposite.pbg.active : null
-                }
-                before KNOCKOUT, self, {
-                  if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && atk_pkm && atk_pkm.inPlay){
+              delayed (priority: BEFORE_LAST) {
+                before (KNOCKOUT, self) {
+                  if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && ef.attackingPokemon?.inPlay){
                     bc "Destiny Bond activates"
-                    new Knockout(atk_pkm).run(bg)
+                    new Knockout(ef.attackingPokemon).run(bg)
                   }
                 }
                 after CHANGE_STAGE, self, {unregister()}

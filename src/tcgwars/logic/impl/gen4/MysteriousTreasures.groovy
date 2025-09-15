@@ -3342,15 +3342,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
             Card pokemonCard, trainerCard = thisCard
             pokemonCard = basic (new CustomCardInfo(thisCard.staticInfo).setCardTypes(BASIC, POKEMON, TRAINER, FOSSIL), hp:HP050, type:COLORLESS, retreatCost:0) {
               pokeBody "Skull Stone", {
-                delayedA{
-                  before KNOCKOUT, self, {
-                    if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
-                      bc "$self - Skull Stone activated"
-                      if (self.owner.opposite.pbg.all) {
-                        flipUntilTails({ directDamage(10, self.owner.opposite.pbg.active) }, self.owner)
-                      }
-                    }
-                  }
+                ifActiveAndKnockedOutByAttack (delegate) {pcs->
+                  bc "Skull Stone activated"
+                  flipUntilTails({ directDamage(10, pcs) }, self.owner)
                 }
               }
               customAbility {

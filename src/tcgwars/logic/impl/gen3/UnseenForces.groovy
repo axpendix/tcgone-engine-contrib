@@ -594,13 +594,9 @@ public enum UnseenForces implements LogicCardInfo {
         weakness P
         pokeBody "Spiral Swirl", {
           text "If Poliwrath is your Active Pokémon and is Knocked Out by damage from an opponent's attack, the Attacking Pokémon is now Confused."
-          delayedA {
-            before (KNOCKOUT,self) {
-              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && self.owner.opposite.pbg.active != null && self.owner.opposite.pbg.active.inPlay) {
-                bc "Spiral Swirl activates"
-                apply CONFUSED, self.owner.opposite.pbg.active, SRC_ABILITY
-              }
-            }
+          ifActiveAndKnockedOutByAttack (delegate) {pcs->
+            bc "Spiral Swirl activates"
+            apply CONFUSED, pcs
           }
         }
         move "Beatdown", {
@@ -2182,11 +2178,11 @@ public enum UnseenForces implements LogicCardInfo {
           if(!it.evolution || it.EX){discard thisCard}
         }
         onPlay {
-          eff = delayed {
+          eff = delayed (priority: BEFORE_LAST) {
             before (KNOCKOUT, self) {
-              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite) {
+              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && ef.attackingPokemon?.inPlay) {
                 bc "Curse Powder activates"
-                directDamage 30, self.owner.opposite.pbg.active//, Source.POKEMON_TOOL or something similar
+                directDamage 30, ef.attackingPokemon
               }
             }
             after CHANGE_STAGE, self, {check(self)}

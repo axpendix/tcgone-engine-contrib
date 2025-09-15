@@ -490,12 +490,12 @@ public enum Celebrations implements ImplOnlyCardInfo {
       case DARK_GYARADOS_8: return cardng (stub) {
         pokemonPower "Final Beam", {
           // When Dark Gyarados is Knocked Out by an attack, flip a coin. If heads, this power does 20 damage for each [W] Energy attached to Dark Gyarados to the Pokémon that Knocked Out Dark Gyarados. Apply Weakness and Resistance. This power doesn't work if Dark Gyarados is Asleep, Confused, or Paralyzed.
-          delayedA {
+          delayedA (priority: BEFORE_LAST) {
             before KNOCKOUT, self, {
-              if((ef as Knockout).byDamageFromAttack && !self.checkNoSPCForClassic() && self.cards.energyCardCount(W) > 0){
+              if((ef as Knockout).byDamageFromAttack && ef.attackingPokemon?.inPlay && !self.checkNoSPCForClassic() && self.cards.energyCardCount(W) > 0){
                 powerUsed()
                 flip "Final Beam", {
-                  def pcs = bg.currentTurn.pbg.active
+                  def pcs = ef.attackingPokemon
                   new ResolvedDamage(hp(20*self.cards.energyCount(W)), self, pcs, DamageManager.DamageFlag.FORCE_WEAKNESS_RESISTANCE).run(bg)
                   bg.dm().applyWeakness()
                   bg.dm().applyResistance()

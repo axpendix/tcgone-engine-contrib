@@ -1796,15 +1796,11 @@ public enum TeamRocketReturns implements LogicCardInfo {
         return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
           weakness PSYCHIC
           pokeBody "Knockout Gas", {
-            text "If Koffing is your Active Pokémon and is Knocked Out by damage from an opponent’s attack, the Attacking Pokémon is now Confused and Poisoned."
-            //Errata'd, used to say "is Knocked Out by an opponent’s attack"
-            delayedA {
-              before KNOCKOUT, self, {
-                if((ef as Knockout).byDamageFromAttack && self.active){
-                  apply CONFUSED, self.owner.opposite.pbg.active
-                  apply POISONED, self.owner.opposite.pbg.active
-                }
-              }
+            text "If Koffing is your Active Pokémon and is Knocked Out by damage from an opponent's attack, the Attacking Pokémon is now Confused and Poisoned."
+            //Errata'd, used to say "is Knocked Out by an opponent's attack"
+            ifActiveAndKnockedOutByAttack (delegate) {pcs->
+              apply CONFUSED, pcs
+              apply POISONED, pcs
             }
           }
           move "Gnaw", {
