@@ -259,6 +259,9 @@ public enum BrilliantStars implements ImplOnlyCardInfo {
 				moveAttack "Mega Drain", {
 					// 70 damage. Heal 30 damage from this Pokémon.
 					damage 70
+					afterDamage {
+						heal 30, self
+					}
 				}
 				moveAttack "Seed Bomb", {
 					// 130 damage.
@@ -291,11 +294,25 @@ public enum BrilliantStars implements ImplOnlyCardInfo {
 
 
       case TROPIUS_5: return cardng (stub) {
-				bwAbility "Curative Bower", {
-					// All of your Pokémon that have [G] Energy attached can't be Confused, and if they are already Confused, they recover from that Special Condition.
-					actionA {
-					}
+			bwAbility "Curative Bower", {
+				// All of your Pokémon that have [G] Energy attached can't be Confused, and if they are already Confused, they recover from that Special Condition.
+				delayedA {
+					before APPLY_SPECIAL_CONDITION, {
+            if(ef.getTargetPokemon().cards.energyCount(G) > 0){
+              bc "Curative Bower prevents from being Confused."
+              prevent()
+            }
+          }
 				}
+        onActivate {
+          my.all.findAll{it.cards.energyCount(G) > 0}.each { pokemon ->
+            if(pokemon.isSPC(CONFUSED)){
+              bc "Curative Bower prevents from being Confused."
+              clearSpecialCondition(pokemon, [CONFUSED])
+            }
+          }
+        }
+			}
 				moveAttack "Slicing Blade", {
 					// 100 damage.
 					damage 100
@@ -318,11 +335,16 @@ public enum BrilliantStars implements ImplOnlyCardInfo {
 
 
       case GROTLE_7: return cardng (stub) {
-				bwAbility "Sun-Drenched Shell", {
-					// Once during your turn, you may search your deck for a [G] Pokémon, reveal it, and put it into your hand. Then, shuffle your deck.
-					actionA {
-					}
+			bwAbility "Sun-Drenched Shell", {
+				// Once during your turn, you may search your deck for a [G] Pokémon, reveal it, and put it into your hand. Then, shuffle your deck.
+				actionA {
+					checkLastTurn()
+          assert my.deck : "Your deck is empty"
+					powerUsed()
+					my.deck.search("Search for a [G] Pokémon", {it.cardTypes.is(POKEMON) && it.types.contains(G)}).moveTo(my.hand)
+					shuffleDeck()
 				}
+			}
 				moveAttack "Razor Leaf", {
 					// 50 damage.
 					damage 50
@@ -332,10 +354,10 @@ public enum BrilliantStars implements ImplOnlyCardInfo {
 
 
       case TORTERRA_8: return cardng (stub) {
-				moveAttack "Evopress", {
-					// 50x damage. This attack does 50 damage for each of your Evolution Pokémon in play.
-					damage 50
-				}
+			moveAttack "Evopress", {
+				// 50x damage. This attack does 50 damage for each of your Evolution Pokémon in play.
+				damage 50*my.all.count{it.realEvolution()}
+			}
 				moveAttack "Hammer In", {
 					// 160 damage.
 					damage 160
@@ -380,11 +402,17 @@ public enum BrilliantStars implements ImplOnlyCardInfo {
 
 
       case CHERUBI_12: return cardng (stub) {
-				bwAbility "Lively Fruit", {
-					// Prevent all effects of attacks from your opponent's Pokémon done to this Pokémon. (Damage is not an effect.)
-					actionA {
+			bwAbility "Lively Fruit", {
+				// Prevent all effects of attacks from your opponent's Pokémon done to this Pokémon. (Damage is not an effect.)
+				delayedA {
+					before null, self, Source.ATTACK, {
+						if(e.sourceAttack.attacker.owner == self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof ApplyDamages)){
+							bc "Lively Fruit prevents effect"
+							prevent()
+						}
 					}
 				}
+			}
 				moveAttack "Leafage", {
 					// 20 damage.
 					damage 20
@@ -398,24 +426,32 @@ public enum BrilliantStars implements ImplOnlyCardInfo {
 					// 30 damage.
 					damage 30
 				}
-				moveAttack "Revenge Blast", {
-					// 60+ damage. This attack does 40 more damage for each Prize card your opponent has taken.
-					damage 60
-				}
+			moveAttack "Revenge Blast", {
+				// 60+ damage. This attack does 40 more damage for each Prize card your opponent has taken.
+				damage 60 + 40*opp.prizeCardSet.takenCount
+			}
 			}
 
 
 
       case SHAYMIN_VSTAR_14: return cardng (stub) {
-				bwAbility "Star Bloom", {
-					// During your turn, you may heal 120 damage from each of your Benched [G] Pokémon. (You can't use more than 1 VSTAR Power in a game.)
-					actionA {
+			bwAbility "Star Bloom", {
+				// During your turn, you may heal 120 damage from each of your Benched [G] Pokémon. (You can't use more than 1 VSTAR Power in a game.)
+				actionA {
+					checkLastTurn()
+					vStarCheck()
+          assert my.bench.findAll{it.types.contains(G) && it.numberOfDamageCounters} : "No [G] Pokémon on your Bench with damage counters"
+					powerUsed()
+					vStarPerform()
+					my.bench.findAll{it.types.contains(G) && it.numberOfDamageCounters}.each {
+						heal 120, it
 					}
 				}
-				moveAttack "Revenge Blast", {
-					// 120+ damage. This attack does 40 more damage for each Prize card your opponent has taken.
-					damage 120
-				}
+			}
+			moveAttack "Revenge Blast", {
+				// 120+ damage. This attack does 40 more damage for each Prize card your opponent has taken.
+				damage 120 + 40*opp.prizeCardSet.takenCount
+			}
 			}
 
 
@@ -433,10 +469,12 @@ public enum BrilliantStars implements ImplOnlyCardInfo {
 				moveAttack "Leap to Leap", {
 					// 30 damage. This attack also does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
 					damage 30
+          if(opp.bench) damage 30, opp.bench.select("Pokémon to deal 30 damage to?")
 				}
 				moveAttack "Jungle Rage", {
 					// 120+ damage. If your opponent's Active Pokémon is a Pokémon V, this attack does 120 more damage.
 					damage 120
+					if(defending.isPokemonV()) damage 120
 				}
 			}
 
@@ -464,55 +502,64 @@ public enum BrilliantStars implements ImplOnlyCardInfo {
 					// 50 damage.
 					damage 50
 				}
-				moveAttack "Boltsplosion", {
-					// 120+ damage. If Electivire is on your Bench, this attack does 120 more damage.
-					damage 120
-				}
+			moveAttack "Boltsplosion", {
+				// 120+ damage. If Electivire is on your Bench, this attack does 120 more damage.
+				damage 120
+				if(my.bench.find{it.name=="Electivire"}) damage 120
+			}
 			}
 
 
 
       case MOLTRES_21: return cardng (stub) {
-				moveAttack "Inferno Wings", {
-					// 20+ damage. If this Pokémon has any damage counters on it, this attack does 70 more damage. This attack's damage isn't affected by Weakness.
-					damage 20
-				}
+			moveAttack "Inferno Wings", {
+				// 20+ damage. If this Pokémon has any damage counters on it, this attack does 70 more damage. This attack's damage isn't affected by Weakness.
+				noWeaknessDamage 20, defending
+				if(self.numberOfDamageCounters) noWeaknessDamage 70, defending
+			}
 			}
 
 
 
       case ENTEI_V_22: return cardng (stub) {
-				bwAbility "Fleet-Footed", {
-					// Once during your turn, if this Pokémon is in the Active Spot, you may draw a card.
-					actionA {
-					}
+			bwAbility "Fleet-Footed", {
+				// Once during your turn, if this Pokémon is in the Active Spot, you may draw a card.
+				actionA {
+					checkLastTurn()
+					assert self.active : "$self is not your Active Pokémon."
+					powerUsed()
+					draw 1
 				}
-				moveAttack "Burning Rondo", {
-					// 20+ damage. This attack does 20 more damage for each Benched Pokémon (both yours and your opponent's).
-					damage 20
-				}
+			}
+			moveAttack "Burning Rondo", {
+				// 20+ damage. This attack does 20 more damage for each Benched Pokémon (both yours and your opponent's).
+				damage 20 + 20*(my.bench.size() + opp.bench.size())
+			}
 			}
 
 
 
       case TORKOAL_23: return cardng (stub) {
-				moveAttack "Firebreathing", {
-					// 30+ damage. Flip a coin. If heads, this attack does 30 more damage.
-					damage 30
-				}
-				moveAttack "Guard Press", {
-					// 90 damage. During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance).
-					damage 90
-				}
+			moveAttack "Firebreathing", {
+				// 30+ damage. Flip a coin. If heads, this attack does 30 more damage.
+				damage 30
+				flip { damage 30 }
+			}
+			moveAttack "Guard Press", {
+				// 90 damage. During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance).
+				damage 90
+				reduceDamageNextTurn(hp(30), thisMove)
+			}
 			}
 
 
 
       case CHIMCHAR_24: return cardng (stub) {
-				moveAttack "Ember", {
-					// 30 damage. Discard an Energy from this Pokémon.
-					damage 30
-				}
+			moveAttack "Ember", {
+				// 30 damage. Discard an Energy from this Pokémon.
+				damage 30
+        discardSelfEnergy C
+			}
 			}
 
 
@@ -618,19 +665,20 @@ public enum BrilliantStars implements ImplOnlyCardInfo {
 					// 30 damage.
 					damage 30
 				}
-				moveAttack "Crab Impact", {
-					// 150 damage. Discard 2 Energy from this Pokémon.
-					damage 150
-				}
+			moveAttack "Crab Impact", {
+				// 150 damage. Discard 2 Energy from this Pokémon.
+				damage 150
+				discardSelfEnergy C, C
+			}
 			}
 
 
 
       case SNORUNT_34: return cardng (stub) {
-				moveAttack "Ice Breath", {
-					// Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed.
-
-				}
+			moveAttack "Ice Breath", {
+				// Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed.
+				flip { apply PARALYZED, defending }
+			}
 				moveAttack "Icy Snow", {
 					// 20 damage.
 					damage 20
