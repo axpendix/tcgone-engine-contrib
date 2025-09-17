@@ -389,15 +389,21 @@ public enum SilverTempest implements ImplOnlyCardInfo {
 
 
       case AMOONGUSS_12: return cardng (stub) {
-				bwAbility "Surprise Spores", {
-					// During your opponent's turn, if this Pokémon is discarded from your hand by an effect of an attack or Ability from your opponent's Pokémon, or by an effect of your opponent's Item or Supporter cards, discard your opponent's hand.
-					actionA {
-					}
+			bwAbility "Surprise Spores", {
+				// During your opponent's turn, if this Pokémon is discarded from your hand by an effect of an attack or Ability from your opponent's Pokémon, or by an effect of your opponent's Item or Supporter cards, discard your opponent's hand.
+				// TODO: Implement complex discard trigger from hand
+				delayedA {
+					// This would need to trigger when discarded from hand by opponent effects
+					// Complex implementation requiring discard event tracking
 				}
-				moveAttack "Hypno Hammer", {
-					// 50 damage. Your opponent's Active Pokémon is now Asleep.
-					damage 50
+			}
+			moveAttack "Hypno Hammer", {
+				// 50 damage. Your opponent's Active Pokémon is now Asleep.
+				damage 50
+				afterDamage {
+					apply ASLEEP, defending
 				}
+			}
 			}
 
 

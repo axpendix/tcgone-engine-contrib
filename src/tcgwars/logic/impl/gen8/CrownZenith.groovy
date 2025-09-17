@@ -402,11 +402,14 @@ public enum CrownZenith implements ImplOnlyCardInfo {
 
 
       case ENTEI_21: return cardng (stub) {
-				bwAbility "Explosive Heat Dash", {
-					// If this Pokémon has any [R] Energy attached, it has no Retreat Cost.
-					actionA {
+			bwAbility "Explosive Heat Dash", {
+				// If this Pokémon has any [R] Energy attached, it has no Retreat Cost.
+				getterA(GET_RETREAT_COST, self) { h ->
+					if (self.cards.energyCount(R) > 0) {
+						h.object = 0
 					}
 				}
+			}
 				moveAttack "Claw Slash", {
 					// 90 damage.
 					damage 90
@@ -595,15 +598,20 @@ public enum CrownZenith implements ImplOnlyCardInfo {
 
 
       case LUXRAY_44: return cardng (stub) {
-				bwAbility "Explosiveness", {
-					// If this Pokémon is in your hand when you are setting up to play, you may put it face down as your Active Pokémon.
-					actionA {
-					}
-				}
-				moveAttack "Seeking Fang", {
-					// 50 damage. Search your deck for up to 2 Trainer cards, reveal them, and put them into your hand. Then, shuffle your deck.
-					damage 50
-				}
+			bwAbility "Explosiveness", {
+				// If this Pokémon is in your hand when you are setting up to play, you may put it face down as your Active Pokémon.
+        // Implementation is in BeginGame
+			}
+			moveAttack "Seeking Fang", {
+				// 50 damage. Search your deck for up to 2 Trainer cards, reveal them, and put them into your hand. Then, shuffle your deck.
+				damage 50
+				afterDamage {
+          if (my.deck) {
+            my.deck.search(max: 2, "Search for up to 2 Trainer cards", {it.cardTypes.is(TRAINER)}).moveTo(my.hand)
+            shuffleDeck()
+  				}
+        }
+			}
 			}
 
 

@@ -375,11 +375,16 @@ public enum AstralRadiance implements ImplOnlyCardInfo {
 
 
       case KRICKETUNE_10: return cardng (stub) {
-				bwAbility "Swelling Tune", {
-					// Your [G] Pokémon in play, except any Kricketune, get +40 HP. You can't apply more than 1 Swelling Tune Ability at a time.
-					actionA {
-					}
-				}
+			bwAbility "Swelling Tune", {
+				// Your [G] Pokémon in play, except any Kricketune, get +40 HP. You can't apply more than 1 Swelling Tune Ability at a time.
+				getterA(GET_FULL_HP) { h ->
+          def pcs = h.effect.target
+          if (pcs.owner == self.owner && pcs.types.contains(G) && !pcs.name.contains("Kricketune") && !h.context['Swelling_Tune']) {
+            h.object += hp(40)
+            h.context['Swelling_Tune'] = 1
+          }
+        }
+			}
 				moveAttack "Slash", {
 					// 50 damage.
 					damage 50
@@ -495,15 +500,31 @@ public enum AstralRadiance implements ImplOnlyCardInfo {
 
 
       case HISUIAN_LILLIGANT_VSTAR_18: return cardng (stub) {
-				bwAbility "Star Perfume", {
-					// During your turn, you may search your deck for up to 5 in any combination of [G] Pokémon and [G] Energy cards, reveal them, and put them into your hand. Then, shuffle your deck. (You can't use more than 1 VSTAR Power in a game.)
-					actionA {
-					}
+			bwAbility "Star Perfume", {
+				// During your turn, you may search your deck for up to 5 in any combination of [G] Pokémon and [G] Energy cards, reveal them, and put them into your hand. Then, shuffle your deck. (You can't use more than 1 VSTAR Power in a game.)
+				actionA {
+					checkLastTurn()
+					vStarCheck()
+          assert my.deck : "Your deck is empty"
+					powerUsed()
+					vStarPerform()
+					my.deck.search(max: 5, "Search for up to 5 [G] Pokémon and [G] Energy cards", {
+						(it.cardTypes.is(POKEMON) && it.types.contains(G)) ||
+						(it.cardTypes.is(ENERGY) && it.containsType(G))
+					}).moveTo(my.hand)
+					shuffleDeck()
 				}
-				moveAttack "Parallel Spin", {
-					// 130+ damage. You may put an Energy attached to this Pokémon into your hand. If you do, this attack does 100 more damage.
-					damage 130
+			}
+			moveAttack "Parallel Spin", {
+				// 130+ damage. You may put an Energy attached to this Pokémon into your hand. If you do, this attack does 100 more damage.
+				damage 130
+				if (self.cards.energyCount(C) > 0 && confirm("Put an Energy into your hand for 100 more damage?")) {
+					damage 100
+          afterDamage {
+            self.cards.filterByType(ENERGY).select("Put an Energy into your hand").moveTo(my.hand)
+          }
 				}
+			}
 			}
 
 

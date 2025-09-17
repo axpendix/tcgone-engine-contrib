@@ -314,15 +314,23 @@ public enum LostOrigin implements ImplOnlyCardInfo {
 
 
       case PARASECT_5: return cardng (stub) {
-				bwAbility "Lethargy Spores", {
-					// When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may make both Active Pokémon Asleep and Poisoned.
-					actionA {
+			bwAbility "Lethargy Spores", {
+				// When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may make both Active Pokémon Asleep and Poisoned.
+				onActivate { reason ->
+					if (reason == PLAY_FROM_HAND && confirm("Use Lethargy Spores?")) {
+						powerUsed()
+						apply ASLEEP, my.active
+						apply POISONED, my.active
+						apply ASLEEP, opp.active
+						apply POISONED, opp.active
 					}
 				}
-				moveAttack "X-Scissor", {
-					// 50+ damage. Flip a coin. If heads, this attack does 50 more damage.
-					damage 50
-				}
+			}
+			moveAttack "X-Scissor", {
+				// 50+ damage. Flip a coin. If heads, this attack does 50 more damage.
+				damage 50
+				flip { damage 50 }
+			}
 			}
 
 
@@ -354,15 +362,22 @@ public enum LostOrigin implements ImplOnlyCardInfo {
 
 
       case BEAUTIFLY_8: return cardng (stub) {
-				bwAbility "Stoked Straw", {
-					// Once during your turn, you may draw cards until you have 6 cards in your hand.
-					actionA {
-					}
+			bwAbility "Stoked Straw", {
+				// Once during your turn, you may draw cards until you have 6 cards in your hand.
+				actionA {
+					checkLastTurn()
+          assert my.hand.size() < 6 : "You already have 6 cards in your hand"
+					powerUsed()
+					draw 6 - my.hand.size()
 				}
-				moveAttack "Mega Drain", {
-					// 70 damage. Heal 30 damage from this Pokémon.
-					damage 70
+			}
+			moveAttack "Mega Drain", {
+				// 70 damage. Heal 30 damage from this Pokémon.
+				damage 70
+				afterDamage {
+					heal 30, self
 				}
+			}
 			}
 
 

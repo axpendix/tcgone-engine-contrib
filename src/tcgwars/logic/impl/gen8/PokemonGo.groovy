@@ -130,11 +130,20 @@ public enum PokemonGo implements ImplOnlyCardInfo {
 
 
       case VENUSAUR_3: return cardng (stub) {
-				bwAbility "Loopy Lasso", {
-					// Once during your turn, you may flip a coin. If heads, switch 1 of your opponent's Benched Pokémon with their Active Pokémon, and the new Active Pokémon is now Asleep and Poisoned.
-					actionA {
+			bwAbility "Loopy Lasso", {
+				// Once during your turn, you may flip a coin. If heads, switch 1 of your opponent's Benched Pokémon with their Active Pokémon, and the new Active Pokémon is now Asleep and Poisoned.
+				actionA {
+					checkLastTurn()
+					assert opp.bench : "No opponent bench"
+					powerUsed()
+					flip {
+						def newActive = opp.bench.select("Select a Pokémon to switch with the Active Pokémon")
+						sw opp.active, newActive
+						apply ASLEEP, opp.active
+						apply POISONED, opp.active
 					}
 				}
+			}
 				moveAttack "Solar Beam", {
 					// 130 damage.
 					damage 130
@@ -144,15 +153,27 @@ public enum PokemonGo implements ImplOnlyCardInfo {
 
 
       case RADIANT_VENUSAUR_4: return cardng (stub) {
-				bwAbility "Sunny Bloom", {
-					// Once at the end of your turn (after your attack), you may use this Ability. Draw cards until you have 4 cards in your hand.
-					actionA {
+			bwAbility "Sunny Bloom", {
+				// Once at the end of your turn (after your attack), you may use this Ability. Draw cards until you have 4 cards in your hand.
+				delayedA {
+					before BETWEEN_TURNS, {
+						if (bg.currentTurn == self.owner && self.owner.pbg.hand.size() < 4 && confirm("Use Sunny Bloom to draw cards?")) {
+							def cardsToDraw = 4 - self.owner.pbg.hand.size()
+							draw cardsToDraw, self.owner
+							bc "Sunny Bloom: drew $cardsToDraw cards"
+						}
 					}
 				}
-				moveAttack "Pollen Hazard", {
-					// 90 damage. Your opponent's Active Pokémon is now Burned, Confused, and Poisoned.
-					damage 90
+			}
+			moveAttack "Pollen Hazard", {
+				// 90 damage. Your opponent's Active Pokémon is now Burned, Confused, and Poisoned.
+				damage 90
+				afterDamage {
+					apply BURNED, defending
+					apply CONFUSED, defending
+					apply POISONED, defending
 				}
+			}
 			}
 
 
@@ -448,14 +469,37 @@ public enum PokemonGo implements ImplOnlyCardInfo {
 
 
       case MEWTWO_VSTAR_31: return cardng (stub) {
-				moveAttack "Psy Purge", {
-					// 90x damage. Discard up to 3 [P] Energy from your Pokémon. This attack does 90 damage for each card you discarded in this way.
-					damage 90
-				}
-				moveAttack "Star Raid", {
-					// This attack does 120 damage to each of your opponent's Pokémon V. This damage isn't affected by Weakness or Resistance. (You can't use more than 1 VSTAR Power in a game.)
-
-				}
+			moveFull "Psy Purge", {
+				// 90x damage. Discard up to 3 [P] Energy from your Pokémon. This attack does 90 damage for each card you discarded in this way.
+        attackRequirement {
+          assert my.all.findAll {it.cards.filterByEnergyType(P).notEmpty()}
+        }
+        onAttack {
+          int count=0
+          def first=true
+          while (count < 3) {
+            def pcs = my.all.findAll {it.cards.filterByEnergyType(P).notEmpty()}.select("Pokemon that has [P] energy to discard. Cancel to stop after first one", first)
+            first = false
+            if (!pcs) break
+            pcs.cards.filterByEnergyType(P).select("[P] Energy to discard").discard()
+            count++
+          }
+          damage 90 * count
+        }
+			}
+			moveFull "Star Raid", {
+				// This attack does 120 damage to each of your opponent's Pokémon V. This damage isn't affected by Weakness or Resistance. (You can't use more than 1 VSTAR Power in a game.)
+        attackRequirement {
+          assert opp.all.findAll {it.pokemonV} : "No opponent Pokémon V"
+        }
+        onAttack {
+          vStarCheck()
+          vStarPerform()
+          opp.all.findAll{it.pokemonV}.each {
+            noWrDamage 120, it
+          }
+        }
+			}
 			}
 
 
