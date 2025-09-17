@@ -38,35 +38,6 @@ public enum Mcd2022 implements ImplOnlyCardInfo {
   public Card getImplementation(EnhancedCardInfo stub) {
     switch (this) {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         default:
       return null;
     }
