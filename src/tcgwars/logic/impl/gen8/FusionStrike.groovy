@@ -4,6 +4,7 @@ package tcgwars.logic.impl.gen8
 import static tcgwars.logic.card.Type.*
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
+import static tcgwars.logic.effect.EffectPriority.*
 
 import tcgwars.logic.card.*
 import tcgwars.logic.effect.basic.*
@@ -962,7 +963,14 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case STARMIE_53: return cardng (stub) {
         moveAttack "Multishot Star", {
           // Discard any amount of [W] Energy from this Pokémon. Then, for each Energy card you discarded in this way, choose 1 of your opponent's Pokémon and do 30 damage to it. (You can choose the same Pokémon more than once.) This damage isn't affected by Weakness or Resistance.
-
+          def waterEnergies = self.cards.filterByEnergyType(W)
+          if (waterEnergies.notEmpty()) {
+            def toDiscard = waterEnergies.select2(max: waterEnergies.size(), "Discard any amount of [W] Energy from this Pokémon")
+            toDiscard.discard()
+            toDiscard.size().times {
+              noWrDamage 30, opp.all.select("Choose 1 of your opponent's Pokémon for 30 damage")
+            }
+          }
         }
       }
 
@@ -971,11 +979,17 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case LAPRAS_54: return cardng (stub) {
         moveAttack "Icy Wind", {
           // Your opponent's Active Pokémon is now Asleep.
-
+          apply ASLEEP, opp.active
         }
         moveAttack "Splash Arch", {
           // Put all Energy attached to this Pokémon into your hand. This attack does 100 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
 
+          if (opp.bench) {
+            noWrDamage 100, opp.bench.select("Do 100 damage to which Benched Pokémon?")
+            afterDamage {
+              self.cards.filterByType(ENERGY).moveTo(my.hand)
+            }
+          }
         }
       }
 
@@ -1006,12 +1020,29 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case FERALIGATR_57: return cardng (stub) {
         bwAbility "Rowdy", {
           // When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you must flip a coin. If heads, discard the top 5 cards of your opponent's deck. If tails, discard the top 5 cards of your deck.
-          actionA {
+          onActivate { reason ->
+            if (reason == PLAY_FROM_HAND && bg.currentTurn == self.owner) {
+              powerUsed()
+              flip (1, {
+                // Heads - discard opponent's deck
+                if (opp.deck) {
+                  opp.deck.subList(0, Math.min(5, opp.deck.size())).discard()
+                  bc "Rowdy: discarded top 5 cards of opponent's deck"
+                }
+              }, {
+                // Tails - discard your deck
+                if (my.deck) {
+                  my.deck.subList(0, Math.min(5, my.deck.size())).discard()
+                  bc "Rowdy: discarded top 5 cards of your deck"
+                }
+              })
+            }
           }
         }
         moveAttack "Crunch", {
           // 140 damage. Discard an Energy from your opponent's Active Pokémon.
           damage 140
+          discardDefendingEnergyAfterDamage C
         }
       }
 
@@ -1020,11 +1051,13 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case MARILL_58: return cardng (stub) {
         moveAttack "Aqua Liner", {
           // This attack does 20 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
-
+          if (opp.bench) {
+            noWrDamage 20, opp.bench.select("Do 20 damage to which Benched Pokémon?")
+          }
         }
         moveAttack "Let's All Rollout", {
           // 20x damage. This attack does 20 damage for each of your Benched Pokémon that has the Let's All Rollout attack.
-          damage 20
+          damage 20 * my.bench.count{it.baseMoves.find{it.name == "Let's All Rollout"}}
         }
       }
 
@@ -1033,7 +1066,10 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case AZUMARILL_59: return cardng (stub) {
         moveAttack "Dive and Rescue", {
           // Put up to 3 in any combination of Pokémon and Supporter cards from your discard pile into your hand.
-
+          def eligibleCards = my.discard.findAll{it.cardTypes.is(POKEMON) || it.cardTypes.is(SUPPORTER)}
+          if (eligibleCards.notEmpty()) {
+            eligibleCards.select2(max: 3, "Put up to 3 Pokémon and Supporter cards into your hand").moveTo(my.hand)
+          }
         }
         moveAttack "Surf", {
           // 90 damage.
@@ -1046,7 +1082,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case QWILFISH_60: return cardng (stub) {
         moveAttack "Collect", {
           // Draw a card.
-
+          draw 1
         }
         moveAttack "Spike Sting", {
           // 30 damage.
@@ -1060,6 +1096,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Bounce", {
           // 20 damage. You may switch this Pokémon with 1 of your Benched Pokémon.
           damage 20
+          switchYourActive(may: true)
         }
         moveAttack "Wave Splash", {
           // 80 damage.
@@ -1090,6 +1127,11 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Energy Loop", {
           // 80 damage. Put an Energy attached to this Pokémon into your hand.
           damage 80
+          afterDamage {
+            if (self.cards.filterByType(ENERGY).notEmpty()) {
+              self.cards.filterByType(ENERGY).select("Put an Energy into your hand").moveTo(my.hand)
+            }
+          }
         }
       }
 
@@ -1099,11 +1141,20 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         bwAbility "Muddy Maker", {
           // Once during your turn, you may attach a [W] Energy card or a [F] Energy card from your hand to 1 of your Pokémon.
           actionA {
+            checkLastTurn()
+            def eligibleEnergies = my.hand.findAll{it.cardTypes.is(ENERGY) && (it.containsType(W) || it.containsType(F))}
+            assert eligibleEnergies : "No [W] or [F] Energy cards in your hand"
+            powerUsed()
+            def energy = eligibleEnergies.select("Choose a [W] or [F] Energy to attach")
+            attachEnergy(my.all.select("Attach $energy to which Pokémon?"), energy)
           }
         }
         moveAttack "Earthquake", {
           // 180 damage. This attack also does 20 damage to each of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
           damage 180
+          my.bench.each {
+            noWrDamage 20, it
+          }
         }
       }
 
@@ -1121,7 +1172,9 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case HUNTAIL_66: return cardng (stub) {
         bwAbility "Single Strike Jammer", {
           // Your opponent's Single Strike Pokémon's attacks cost [C] more.
-          actionA {
+          // TODO: Implement attack cost increase for opponent's Single Strike Pokemon
+          delayedA {
+            // Complex implementation requiring cost modification system
           }
         }
         moveAttack "Cavernous Chomp", {
@@ -1135,7 +1188,9 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case GOREBYSS_67: return cardng (stub) {
         bwAbility "Rapid Strike Canceler", {
           // Your opponent's Rapid Strike Pokémon in play have no Abilities.
-          actionA {
+          // TODO: Implement ability cancellation for opponent's Rapid Strike Pokemon
+          delayedA {
+            // Complex implementation requiring ability cancellation system
           }
         }
         moveAttack "Draining Kiss", {
@@ -1228,7 +1283,9 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case CLAWITZER_75: return cardng (stub) {
         moveAttack "Snipe Shot", {
           // This attack does 50 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
-
+          if (opp.bench) {
+            noWrDamage 50, opp.bench.select("Do 50 damage to which Benched Pokémon?")
+          }
         }
         moveAttack "Crabhammer", {
           // 110 damage.
@@ -1241,11 +1298,11 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case CRABOMINABLE_V_76: return cardng (stub) {
         moveAttack "Trigger Avalanche", {
           // Discard the top 2 cards of your opponent's deck.
-
+          opp.deck.subList(0, Math.min(2, opp.deck.size())).discard()
         }
         moveAttack "Destroyer Punch", {
           // 90+ damage. This attack does 60 more damage for each damage counter on your opponent's Active Pokémon.
-          damage 90
+          damage 90 + 60 * opp.active.numberOfDamageCounters
         }
       }
 
@@ -1261,6 +1318,9 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Aqua Bullet", {
           // 120 damage. This attack also does 20 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
           damage 120
+          if (opp.bench) {
+            noWrDamage 20, opp.bench.select("Do 20 damage to which Benched Pokémon?")
+          }
         }
       }
 
@@ -1270,11 +1330,26 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         bwAbility "Double Gunner", {
           // You must discard a [W] Energy card from your hand in order to use this Ability. Once during your turn, you may choose 2 of your opponent's Benched Pokémon and put 2 damage counters on each of them.
           actionA {
+            checkLastTurn()
+            assert my.hand.filterByEnergyType(W) : "No [W] Energy cards in your hand"
+            assert opp.bench.size() >= 2 : "Opponent doesn't have 2 Benched Pokémon"
+            powerUsed()
+            my.hand.filterByEnergyType(W).select("Discard a [W] Energy card").discard()
+            def targets = opp.bench.select2(max: 2, "Choose 2 Benched Pokémon to put damage counters on")
+            targets.each {
+              damage 20, it
+            }
           }
         }
         moveAttack "G-Max Spiral", {
           // 70+ damage. You may put an Energy attached to this Pokémon into your hand. If you do, this attack does 70 more damage.
           damage 70
+          if (self.cards.filterByType(ENERGY).notEmpty() && confirm("Put an Energy into your hand for 70 more damage?")) {
+            damage 70
+            afterDamage {
+              self.cards.filterByType(ENERGY).select("Put an Energy into your hand").moveTo(my.hand)
+            }
+          }
         }
       }
 
@@ -1319,7 +1394,10 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case SNOM_84: return cardng (stub) {
         moveAttack "Find Ice", {
           // Search your deck for up to 2 [W] Energy cards, reveal them, and put them into your hand. Then, shuffle your deck.
-
+          if (my.deck) {
+            my.deck.search(max: 2, "Search for up to 2 [W] Energy cards", {it.cardTypes.is(ENERGY) && it.containsType(W)}).moveTo(my.hand)
+            shuffleDeck()
+          }
         }
       }
 
@@ -1328,11 +1406,14 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case FROSMOTH_85: return cardng (stub) {
         moveAttack "Icy Wind", {
           // Your opponent's Active Pokémon is now Asleep.
-
+          apply ASLEEP, opp.active
         }
         moveAttack "Blizzard Loop", {
           // 160 damage. Put all Energy attached to this Pokémon into your hand.
           damage 160
+          afterDamage {
+            self.cards.filterByType(ENERGY).moveTo(my.hand)
+          }
         }
       }
 
@@ -1344,8 +1425,9 @@ public enum FusionStrike implements ImplOnlyCardInfo {
           damage 20
         }
         moveAttack "Thunderbolt", {
-          // 100 damage.
+          // 100 damage. Discard all Energy from this Pokémon.
           damage 100
+          discardSelfEnergyAfterDamage self.cards.filterByType(ENERGY).collect{C}
         }
       }
 
@@ -1354,7 +1436,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case VOLTORB_87: return cardng (stub) {
         moveAttack "Single Shot Blast", {
           // 30 damage. Flip a coin. If tails, this attack does nothing.
-          damage 30
+          flip {damage 30}
         }
       }
 
@@ -1363,11 +1445,12 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case ELECTRODE_88: return cardng (stub) {
         moveAttack "Sonic Boom", {
           // 40 damage. This attack's damage isn't affected by Weakness or Resistance.
-          damage 40
+          noWrDamage 40, defending
         }
         moveAttack "Explosion", {
           // 120 damage. This Pokémon also does 90 damage to itself.
           damage 120
+          damage 90, self
         }
       }
 
@@ -1377,6 +1460,9 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Spark Duo", {
           // 20+ damage. If 1 of your Minun used an attack during your last turn, this attack does 100 more damage.
           damage 20
+          if (bg.getActivePokemonLastTurn(my) && bg.getActivePokemonLastTurn(my).name.contains("Minun")) {
+            damage 100
+          }
         }
       }
 
@@ -1385,7 +1471,10 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case MINUN_90: return cardng (stub) {
         moveAttack "Call for Family", {
           // Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Then, shuffle your deck.
-
+          if (my.deck && my.bench.size() < 5) {
+            my.deck.search(max: 2, "Search for up to 2 Basic Pokémon", {it.cardTypes.is(POKEMON) && it.stage == BASIC}).each{benchPCS(it)}
+            shuffleDeck()
+          }
         }
         moveAttack "Static Shock", {
           // 20 damage.
@@ -1429,7 +1518,9 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case ROTOM_94: return cardng (stub) {
         moveAttack "Surprise Short", {
           // Discard all Pokémon Tools from all of your opponent's Pokémon.
-
+          opp.all.each { pokemon ->
+            pokemon.cards.filterByType(POKEMON_TOOL).discard()
+          }
         }
         moveAttack "Static Shock", {
           // 30 damage.
@@ -1442,7 +1533,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case TYNAMO_95: return cardng (stub) {
         moveAttack "Thunder Wave", {
           // Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed.
-
+          flip { apply PARALYZED, opp.active }
         }
         moveAttack "Tackle", {
           // 20 damage.
@@ -1460,6 +1551,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Thunder", {
           // 80 damage. This Pokémon also does 20 damage to itself.
           damage 80
+          damage 20, self
         }
       }
 
@@ -1469,10 +1561,16 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Upper Shock", {
           // 40 damage. If this Pokémon evolved from Eelektrik during this turn, your opponent's Active Pokémon is now Paralyzed.
           damage 40
+          if (self.evolutionTurn == bg.turnNumber && self.pcs[1]?.name?.contains("Eelektrik")) {
+            afterDamage {
+              apply PARALYZED, opp.active
+            }
+          }
         }
         moveAttack "Wild Charge", {
           // 160 damage. This Pokémon also does 30 damage to itself.
           damage 160
+          damage 30, self
         }
       }
 
@@ -1499,6 +1597,9 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Electrobullet", {
           // 60 damage. This attack also does 20 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
           damage 60
+          if (opp.bench) {
+            noWrDamage 20, opp.bench.select("Do 20 damage to which Benched Pokémon?")
+          }
         }
       }
 
@@ -1524,7 +1625,8 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         }
         moveAttack "Electro Blaster", {
           // Discard 2 [L] Energy from this Pokémon. This attack does 200 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
-
+          discardSelfEnergy L, L
+          noWrDamage 200, opp.all.select("Do 200 damage to which Pokémon?")
         }
       }
 
@@ -1534,6 +1636,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Wild Charge", {
           // 70 damage. This Pokémon also does 20 damage to itself.
           damage 70
+          damage 20, self
         }
       }
 
@@ -1544,11 +1647,12 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case BOLTUND_VMAX_104: return cardng (stub) {
         moveAttack "Bolt Storm", {
           // 30+ damage. This attack does 30 more damage for each [L] Energy attached to all of your Pokémon.
-          damage 30
+          damage 30 + 30 * my.all.sum{it.cards.energyCount(L)}
         }
         moveAttack "Max Bolt", {
           // 230 damage. During your next turn, this Pokémon can't use Max Bolt.
           damage 230
+          cantUseAttack thisMove, self
         }
       }
 
@@ -1569,6 +1673,12 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Punk Shock", {
           // 70 damage. You may choose to make your opponent's Active Pokémon Paralyzed. If you do, this Pokémon also does 70 damage to itself.
           damage 70
+          if (confirm("Make your opponent's Active Pokémon Paralyzed? (This Pokémon also does 70 damage to itself)")) {
+            afterDamage {
+              apply PARALYZED, opp.active
+              damage 70, self
+            }
+          }
         }
       }
 
@@ -1577,7 +1687,11 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case TOXTRICITY_108: return cardng (stub) {
         bwAbility "Maximum Downer", {
           // If all your Pokémon in play are Fusion Strike Pokémon, your opponent's Pokémon VMAX in play get -30 HP.
-          actionA {
+          getterA(GET_FULL_HP) { h ->
+            def pcs = h.effect.target
+            if (pcs.owner == self.owner.opposite && pcs.pokemonVMAX && my.all.every{it.topPokemonCard.ruleText?.contains("Fusion Strike")}) {
+              h.object -= hp(30)
+            }
           }
         }
         moveAttack "Head Bolt", {
@@ -1591,7 +1705,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case MORPEKO_109: return cardng (stub) {
         moveAttack "Targeted Spark", {
           // This attack does 30 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
-
+          noWrDamage 30, opp.all.select("Do 30 damage to which Pokémon?")
         }
       }
 
@@ -1604,7 +1718,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         }
         moveAttack "Let's All Rollout", {
           // 20x damage. This attack does 20 damage for each of your Benched Pokémon that has the Let's All Rollout attack.
-          damage 20
+          damage 20 * my.bench.count{it.topPokemonCard.attacks.find{it.name == "Let's All Rollout"}}
         }
       }
 
@@ -1626,11 +1740,12 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case JYNX_112: return cardng (stub) {
         moveAttack "Double Draw", {
           // Draw 2 cards.
-
+          draw 2
         }
         moveAttack "Dazzle Dance", {
           // 30 damage. Your opponent's Active Pokémon is now Confused.
           damage 30
+          apply CONFUSED, opp.active
         }
       }
 
@@ -1639,11 +1754,27 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case MEW_V_113: return cardng (stub) {
         moveAttack "Energy Mix", {
           // Search your deck for an Energy card and attach it to 1 of your Fusion Strike Pokémon. Then, shuffle your deck.
-
+          if (my.deck) {
+            def energy = my.deck.search("Search for an Energy card", energyFilter()).select()
+            if (energy) {
+              def fusionStrikePokemon = my.all.findAll{it.topPokemonCard.ruleText?.contains("Fusion Strike")}
+              if (fusionStrikePokemon) {
+                attachEnergy(fusionStrikePokemon.select("Attach Energy to which Fusion Strike Pokémon?"), energy)
+              }
+            }
+            shuffleDeck()
+          }
         }
         moveAttack "Psychic Leap", {
           // 70 damage. You may shuffle this Pokémon and all attached cards into your deck.
           damage 70
+          if (confirm("Shuffle this Pokémon and all attached cards into your deck?")) {
+            afterDamage {
+              self.cards.moveTo(deck)
+              removePCS self
+              shuffleDeck()
+            }
+          }
         }
       }
 
@@ -1652,11 +1783,11 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case MEW_VMAX_114: return cardng (stub) {
         moveAttack "Cross Fusion Strike", {
           // Choose 1 of your Benched Fusion Strike Pokémon's attacks and use it as this attack.
-
+          // TODO: Complex attack copying requiring special framework implementation
         }
         moveAttack "Max Miracle", {
           // 130 damage. This attack's damage isn't affected by any effects on your opponent's Active Pokémon.
-          damage 130
+          noWrDamage 130, defending
         }
       }
 
@@ -1678,7 +1809,14 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case GRANBULL_116: return cardng (stub) {
         bwAbility "Dig Up", {
           // When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may put up to 2 Pokémon Tool cards from your discard pile into your hand.
-          actionA {
+          onActivate { reason ->
+            if (reason == PLAY_FROM_HAND && bg.currentTurn == self.owner) {
+              def toolCards = my.discard.filterByType(POKEMON_TOOL)
+              if (toolCards && confirm("Use Dig Up?")) {
+                powerUsed()
+                toolCards.select2(max: 2, "Put up to 2 Pokémon Tool cards into your hand").moveTo(my.hand)
+              }
+            }
           }
         }
         moveAttack "Bite", {
@@ -1701,7 +1839,17 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case GALARIAN_CURSOLA_118: return cardng (stub) {
         moveAttack "Force Regeneration", {
           // Put a Basic Pokémon V from your opponent's discard pile onto their Bench. If you do, put damage counters on that Pokémon until its remaining HP is 30.
-
+          def basicVPokemon = opp.discard.findAll{it.cardTypes.is(POKEMON) && it.stage == BASIC && it.pokemonV}
+          if (basicVPokemon && opp.bench.notFull) {
+            def pokemon = basicVPokemon.select("Put which Basic Pokémon V onto opponent's Bench?")
+            def benchedPokemon = benchPCS(pokemon)
+            if (benchedPokemon) {
+              def damageNeeded = benchedPokemon.fullHP.value - 30
+              if (damageNeeded > 0) {
+                directDamage damageNeeded, benchedPokemon
+              }
+            }
+          }
         }
         moveAttack "Spooky Shot", {
           // 80 damage.
@@ -1715,6 +1863,8 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Chomp Chomp Hold", {
           // 30 damage. During your opponent's next turn, the Defending Pokémon's attacks cost [C] more, and its Retreat Cost is [C] more.
           damage 30
+          defendingAttacksCostsMore defending, [C]
+          defendingRetreatsCostsMore defending, 1
         }
       }
 
@@ -1734,11 +1884,15 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case MUSHARNA_122: return cardng (stub) {
         moveAttack "Sleep Inducer", {
           // Switch 1 of your opponent's Benched Pokémon with their Active Pokémon. The new Active Pokémon is now Asleep.
-
+          if (opp.bench) {
+            def newActive = opp.bench.select("Switch with which Benched Pokémon?")
+            sw opp.active, newActive
+            apply ASLEEP, opp.active
+          }
         }
         moveAttack "Psychic", {
           // 30+ damage. This attack does 30 more damage for each Energy attached to your opponent's Active Pokémon.
-          damage 30
+          damage 30 + 30 * opp.active.cards.energyCount(C)
         }
       }
 
@@ -1747,11 +1901,15 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case SIGILYPH_123: return cardng (stub) {
         moveAttack "Joust", {
           // 20 damage. Before doing damage, discard all Pokémon Tools from your opponent's Active Pokémon.
+          targeted (opp.active) {
+            opp.active.cards.filterByType(POKEMON_TOOL).discard()
+          }
           damage 20
         }
         moveAttack "Reflect Energy", {
           // 60 damage. Move an Energy from this Pokémon to 1 of your Benched Pokémon.
           damage 60
+          afterDamage {moveEnergy(self, my.bench)}
         }
       }
 
@@ -1760,7 +1918,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case MELOETTA_124: return cardng (stub) {
         moveAttack "Melodious Echo", {
           // 70x damage. This attack does 70 damage for each Fusion Strike Energy attached to all of your Pokémon.
-          damage 70
+          damage 70 * my.all.sum{it.cards.count{it.name == "Fusion Strike Energy"}}
         }
       }
 
@@ -1786,7 +1944,9 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         }
         moveAttack "Oppressing Sandstorm", {
           // If your opponent's Active Pokémon is a Basic Pokémon, it is Knocked Out.
-
+          if (opp.active.basic) {
+            knockout opp.active
+          }
         }
       }
 
@@ -1795,7 +1955,10 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case INDEEDEE_127: return cardng (stub) {
         moveAttack "Call for Family", {
           // Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Then, shuffle your deck.
-
+          if (my.deck && my.bench.notFull) {
+            my.deck.search(max: Math.min(2, my.bench.freeBenchCount), "Search for up to 2 Basic Pokémon", {it.cardTypes.isAll(POKEMON, BASIC)}).each{benchPCS(it)}
+            shuffleDeck()
+          }
         }
         moveAttack "Heart Sign", {
           // 80 damage.
@@ -1809,6 +1972,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Infestation", {
           // 10 damage. During your opponent's next turn, the Defending Pokémon can't retreat.
           damage 10
+          cantRetreatNextTurn defending
         }
       }
 
@@ -1822,6 +1986,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "U-turn", {
           // 30 damage. Switch this Pokémon with 1 of your Benched Pokémon.
           damage 30
+          switchYourActive()
         }
       }
 
@@ -1830,7 +1995,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case DRAGAPULT_130: return cardng (stub) {
         moveAttack "Fusion Strike Assault", {
           // 30x damage. This attack does 30 damage for each of your Fusion Strike Pokémon in play.
-          damage 30
+          damage 30 * my.all.count{it.topPokemonCard.cardTypes.contains(CardType.FUSION_STRIKE)}
         }
         moveAttack "Speed Attack", {
           // 120 damage.
@@ -1843,11 +2008,17 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case SANDSHREW_131: return cardng (stub) {
         moveAttack "Dig It Up", {
           // Look at the top card of your deck. You may discard that card.
-
+          if (my.deck) {
+            def topCard = my.deck.subList(0, 1)
+            topCard.showToMe("Top card of your deck")
+            if (confirm("Discard this card?")) {
+              topCard.discard()
+            }
+          }
         }
         moveAttack "Let's All Rollout", {
           // 20x damage. This attack does 20 damage for each of your Benched Pokémon that has the Let's All Rollout attack.
-          damage 20
+          damage 20 * my.bench.count{it.baseMoves.find{it.name == "Let's All Rollout"}}
         }
       }
 
@@ -1857,6 +2028,11 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Dig Uppercut", {
           // 60 damage. Put a card from your discard pile into your hand.
           damage 60
+          if (my.discard) {
+            afterDamage {
+              my.discard.select("Put a card from your discard pile into your hand").moveTo(my.hand)
+            }
+          }
         }
       }
 
@@ -1875,6 +2051,9 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Gut Punch", {
           // 30+ damage. If your opponent's Active Pokémon is a Pokémon V, this attack does 60 more damage.
           damage 30
+          if (opp.active.pokemonV) {
+            damage 60
+          }
         }
       }
 
@@ -1909,12 +2088,15 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case GOLEM_137: return cardng (stub) {
         bwAbility "Desperate Blast", {
           // If this Pokémon is in the Active Spot and is Knocked Out by damage from an attack from your opponent's Pokémon, put 10 damage counters on the Attacking Pokémon.
-          actionA {
+          ifActiveAndKnockedOutByAttack (delegate) {attackingPokemon ->
+            bc "Desperate Blast activates"
+            directDamage 100, attackingPokemon
           }
         }
         moveAttack "Double-Edge", {
           // 160 damage. This Pokémon also does 30 damage to itself.
           damage 160
+          damage 30, self
         }
       }
 
@@ -1924,6 +2106,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Guard Press", {
           // 30 damage. During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance).
           damage 30
+          reduceDamageNextTurn(hp(30), thisMove)
         }
         moveAttack "Rock Throw", {
           // 90 damage.
@@ -1936,11 +2119,14 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case STEELIX_139: return cardng (stub) {
         moveAttack "Powerful Rage", {
           // 20x damage. This attack does 20 damage for each damage counter on this Pokémon.
-          damage 20
+          damage 20 * self.numberOfDamageCounters
         }
         moveAttack "Earthquake", {
           // 180 damage. This attack also does 30 damage to each of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)
           damage 180
+          my.bench.each {
+            noWrDamage 30, it
+          }
         }
       }
 
@@ -1949,7 +2135,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case GLIGAR_140: return cardng (stub) {
         moveAttack "Poison Sting", {
           // Your opponent's Active Pokémon is now Poisoned.
-
+          apply POISONED, opp.active
         }
         moveAttack "Pierce", {
           // 30 damage.
@@ -1963,10 +2149,12 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Cut Down", {
           // 30 damage. Discard an Energy from your opponent's Active Pokémon.
           damage 30
+          discardDefendingEnergyAfterDamage C
         }
         moveAttack "Venomous Hit", {
           // 100 damage. Your opponent's Active Pokémon is now Poisoned.
           damage 100
+          apply POISONED, opp.active
         }
       }
 
@@ -1988,7 +2176,16 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case HARIYAMA_143: return cardng (stub) {
         bwAbility "Guts", {
           // If this Pokémon would be Knocked Out by damage from an attack, flip a coin. If heads, this Pokémon is not Knocked Out, and its remaining HP becomes 10.
-          actionA {
+          delayedA {
+            before KNOCKOUT, self, {
+              if (ef.byDamageFromAttack) {
+                flip("Guts") {
+                  bc "Guts prevents knockout!"
+                  prevent()
+                  self.damage = self.fullHP - hp(10)
+                }
+              }
+            }
           }
         }
         moveAttack "Hammer In", {
@@ -2012,10 +2209,21 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Rapid Spin", {
           // 30 damage. Switch this Pokémon with 1 of your Benched Pokémon. If you do, your opponent switches their Active Pokémon with 1 of their Benched Pokémon.
           damage 30
+          afterDamage{
+            if(my.bench){
+              sw self, my.bench.select("Switch with which Benched Pokémon?")
+              if(opp.bench){
+                sw defending, opp.bench.oppSelect("Switch with which Benched Pokémon?")
+              }
+            }
+          }
         }
         moveAttack "Ancient Imprint", {
           // Put damage counters on your opponent's Active Pokémon until its remaining HP is 60.
-
+          def damageNeeded = opp.active.fullHP.value - 60
+          if (damageNeeded > 0) {
+            directDamage damageNeeded, opp.active
+          }
         }
       }
 
@@ -2043,10 +2251,16 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Strafe", {
           // 20 damage. You may switch this Pokémon with 1 of your Benched Pokémon.
           damage 20
+          switchYourActive(may: true)
         }
         moveAttack "Earthen Boom", {
           // 120 damage. Move all Energy from this Pokémon to your Benched Pokémon in any way you like.
           damage 120
+          afterDamage {
+            if (my.bench) {
+              self.cards.filterByType(ENERGY).each { energy -> energySwitch(self, my.bench.select("Move $energy to which Benched Pokémon?"), energy) }
+            }
+          }
         }
       }
 
@@ -2055,7 +2269,10 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case PANCHAM_149: return cardng (stub) {
         moveAttack "Raised Bad", {
           // Search your deck for up to 2 [D] Energy cards and attach them to this Pokémon. Then, shuffle your deck.
-
+          if (my.deck) {
+            my.deck.search(max: 2, "Search for up to 2 [D] Energy cards", energyFilter(D)).each{attachEnergy(self, it)}
+            shuffleDeck()
+          }
         }
         moveAttack "Smash Kick", {
           // 30 damage.
@@ -2082,6 +2299,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Split Spiral Punch", {
           // 40 damage. Your opponent's Active Pokémon is now Confused.
           damage 40
+          applyAfterDamage CONFUSED
         }
         moveAttack "Strength", {
           // 130 damage.
@@ -2125,6 +2343,9 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Cliff Edge Formation", {
           // 60+ damage. If your opponent has exactly 1 Prize card remaining, this attack does 160 more damage.
           damage 60
+          if (opp.prizeCardSet.remainingCount == 1) {
+            damage 160
+          }
         }
       }
 
@@ -2143,10 +2364,12 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Dark Slumber", {
           // 40 damage. Your opponent's Active Pokémon is now Asleep.
           damage 40
+          applyAfterDamage ASLEEP
         }
         moveAttack "Pain Explosion", {
           // 190 damage. Put 3 damage counters on this Pokémon.
           damage 190
+          directDamage 30, self
         }
       }
 
@@ -2155,11 +2378,12 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case GENGAR_VMAX_157: return cardng (stub) {
         moveAttack "Fear and Panic", {
           // 60x damage. This attack does 60 damage for each of your opponent's Pokémon V and Pokémon-GX in play.
-          damage 60
+          damage 60 * opp.all.count{it.pokemonV || it.pokemonGX}
         }
         moveAttack "G-Max Swallow Up", {
           // 250 damage. During your next turn, this Pokémon can't attack.
           damage 250
+          cantAttackNextTurn self
         }
       }
 
@@ -2182,6 +2406,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Lick", {
           // 10 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed.
           damage 10
+          flipThenApplySC PARALYZED
         }
       }
 
@@ -2200,10 +2425,14 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Silence", {
           // 30 damage. Choose 1 of your opponent's Active Pokémon's attacks. During your opponent's next turn, that Pokémon can't use that attack.
           damage 30
+          amnesia delegate
         }
         moveAttack "Merciless Strike", {
           // 60+ damage. If your opponent's Active Pokémon already has any damage counters on it, this attack does 90 more damage.
           damage 60
+          if (opp.active.numberOfDamageCounters > 0) {
+            damage 90
+          }
         }
       }
 
@@ -2230,7 +2459,11 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case ABSOL_164: return cardng (stub) {
         moveAttack "Drag Off", {
           // Switch 1 of your opponent's Benched Pokémon with their Active Pokémon. This attack does 30 damage to the new Active Pokémon.
-
+          if (opp.bench) {
+            def newActive = opp.bench.select("Switch with which Benched Pokémon?")
+            sw opp.active, newActive
+            damage 30, opp.active
+          }
         }
         moveAttack "Slash", {
           // 80 damage.
@@ -2245,7 +2478,8 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case TOXICROAK_166: return cardng (stub) {
         moveAttack "Severe Poison", {
           // Your opponent's Active Pokémon is now Poisoned. During Pokémon Checkup, put 4 damage counters on that Pokémon instead of 1.
-
+          apply POISONED, opp.active
+          extraPoison 3
         }
         moveAttack "Magnum Punch", {
           // 90 damage.
@@ -2267,11 +2501,15 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case TRUBBISH_168: return cardng (stub) {
         moveAttack "Call for Family", {
           // Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck.
-
+          if (my.deck && my.bench.notFull) {
+            my.deck.search("Search for a Basic Pokémon", {it.cardTypes.is(POKEMON) && it.stage == BASIC}).each{benchPCS(it)}
+            shuffleDeck()
+          }
         }
         moveAttack "Super Poison Breath", {
           // 20 damage. Your opponent's Active Pokémon is now Poisoned.
           damage 20
+          applyAfterDamage POISONED
         }
       }
 
@@ -2281,6 +2519,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Poison Gas", {
           // 30 damage. Your opponent's Active Pokémon is now Poisoned.
           damage 30
+          applyAfterDamage POISONED
         }
         moveAttack "Sludge Whirlpool", {
           // 130 damage.
@@ -2306,7 +2545,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case ZOROARK_171: return cardng (stub) {
         moveAttack "Double Claw", {
           // 40x damage. Flip 2 coins. This attack does 40 damage for each heads.
-          damage 40
+          flip 2, {damage 40}
         }
         moveAttack "Night Daze", {
           // 100 damage.
@@ -2324,6 +2563,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Air Slash", {
           // 30 damage. Discard an Energy from this Pokémon.
           damage 30
+          discardSelfEnergyAfterDamage C
         }
       }
 
@@ -2333,6 +2573,17 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Bone Block", {
           // 20 damage. During your opponent's next turn, Pokémon can't be played from your opponent's hand to evolve the Defending Pokémon.
           damage 20
+          delayed {
+            before EVOLVE, {
+              if(ef.activationReason == PLAY_FROM_HAND && ef.pokemonToBeEvolved == defending) {
+                bc "Bone Block prevents evolution"
+                prevent();
+              }
+            }
+            unregisterAfter 2
+            after FALL_BACK, self, {unregister()}
+            after CHANGE_STAGE, self, {unregister()}
+          }
         }
         moveAttack "Dark Cutter", {
           // 70 damage.
@@ -2346,10 +2597,20 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Knocking Hammer", {
           // 90 damage. Discard the top card of your opponent's deck.
           damage 90
+          if (opp.deck) {
+            afterDamage {
+              opp.deck.subList(0, 1).discard()
+            }
+          }
         }
         moveAttack "Shakedown", {
           // 150 damage. Discard a random card from your opponent's hand.
           damage 150
+          if (opp.hand) {
+            afterDamage {
+              opp.hand.select("Discard a random card from your opponent's hand").discard()
+            }
+          }
         }
       }
 
@@ -2372,6 +2633,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Play Rough", {
           // 10+ damage. Flip a coin. If heads, this attack does 30 more damage.
           damage 10
+          flip { damage 30 }
         }
       }
 
@@ -2385,6 +2647,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Crushing Blow", {
           // 40 damage. Flip a coin. If heads, discard an Energy from your opponent's Active Pokémon.
           damage 40
+          flip { discardDefendingEnergyAfterDamage C }
         }
       }
 
@@ -2398,6 +2661,9 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Rear Attack", {
           // 100+ damage. If you have 2 or fewer Benched Pokémon, this attack does 140 more damage.
           damage 100
+          if (my.bench.size() <= 2) {
+            damage 140
+          }
         }
       }
 
@@ -2406,7 +2672,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case MORPEKO_179: return cardng (stub) {
         moveAttack "Explosive Discontent", {
           // 30x damage. This attack does 30 damage for each damage counter on this Pokémon.
-          damage 30
+          damage 30 * self.numberOfDamageCounters
         }
       }
 
@@ -2415,7 +2681,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case GALARIAN_MEOWTH_180: return cardng (stub) {
         moveAttack "Growl", {
           // During your opponent's next turn, the Defending Pokémon's attacks do 20 less damage (before applying Weakness and Resistance).
-
+          reduceDamageFromDefendingNextTurn hp(20), thisMove, defending
         }
         moveAttack "Slash", {
           // 20 damage.
@@ -2428,7 +2694,12 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case GALARIAN_PERRSERKER_181: return cardng (stub) {
         moveAttack "Call to Muster", {
           // Search your deck for up to 2 basic Energy cards and attach them to your Pokémon in any way you like. Then, shuffle your deck.
-
+          if (my.deck) {
+            my.deck.search(max: 2, "Search for up to 2 basic Energy cards", cardTypeFilter(BASIC_ENERGY)).each { energy ->
+              attachEnergy(my.all.select("Attach $energy to which Pokémon?"), energy)
+            }
+            shuffleDeck()
+          }
         }
         moveAttack "Headbang", {
           // 80 damage.
@@ -2442,6 +2713,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Steel Wing", {
           // 30 damage. During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance).
           damage 30
+          reduceDamageNextTurn hp(30), thisMove
         }
         moveAttack "Slicing Blade", {
           // 110 damage.
@@ -2459,6 +2731,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Rock Tomb", {
           // 120 damage. During your opponent's next turn, the Defending Pokémon can't retreat.
           damage 120
+          cantRetreatNextTurn defending
         }
       }
 
@@ -2468,6 +2741,9 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Adversity Jaws", {
           // 70 damage. If your opponent's Active Pokémon is a [R] Pokémon, it is now Paralyzed.
           damage 70
+          if (opp.active.types.contains(R)) {
+            applyAfterDamage PARALYZED
+          }
         }
       }
 
@@ -2477,11 +2753,18 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         bwAbility "Fusion Strike System", {
           // Once during your turn, you may draw cards until you have as many cards in your hand as you have Fusion Strike Pokémon in play.
           actionA {
+            checkLastTurn()
+            def fusionStrikePokemon = my.all.count{it.topPokemonCard.cardTypes.is(FUSION_STRIKE)}
+            def cardsToDraw = fusionStrikePokemon - my.hand.size()
+            assert cardsToDraw > 0 : "You already have enough cards in your hand"
+            powerUsed()
+            draw cardsToDraw
           }
         }
         moveAttack "Techno Blast", {
           // 210 damage. During your next turn, this Pokémon can't attack.
           damage 210
+          cantAttackNextTurn self
         }
       }
 
@@ -2491,6 +2774,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Unlock", {
           // 10 damage. Draw 2 cards.
           damage 10
+          draw 2
         }
       }
 
@@ -2499,7 +2783,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case TOGEDEMARU_187: return cardng (stub) {
         moveAttack "Let's All Rollout", {
           // 20x damage. This attack does 20 damage for each of your Benched Pokémon that has the Let's All Rollout attack.
-          damage 20
+          damage 20 * my.bench.count{it.baseMoves.find{it.name == "Let's All Rollout"}}
         }
         moveAttack "Rolling Attack", {
           // 50 damage.
@@ -2512,7 +2796,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case MELTAN_188: return cardng (stub) {
         moveAttack "Iron Intake", {
           // Heal 30 damage from this Pokémon.
-
+          heal 30, self
         }
         moveAttack "Headbutt", {
           // 20 damage.
@@ -2526,10 +2810,12 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Ingot Swing", {
           // 80 damage. During your opponent's next turn, prevent all damage done to this Pokémon by attacks from Pokémon that have an Ability.
           damage 80
+          preventAllDamageFromCustomPokemonNextTurn thisMove, self, { it.hasModernAbility }
         }
         moveAttack "Blasting Hammer", {
           // 150 damage. Discard an Energy from this Pokémon.
           damage 150
+          discardSelfEnergyAfterDamage C
         }
       }
 
@@ -2539,10 +2825,14 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Steel Wing", {
           // 50 damage. During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance).
           damage 50
+          reduceDamageNextTurn hp(30), thisMove
         }
         moveAttack "Power Cyclone", {
           // 160 damage. Move an Energy from this Pokémon to 1 of your Benched Pokémon.
           damage 160
+          if (self.cards.filterByType(ENERGY).notEmpty() && my.bench) {
+            moveSelfEnergyAfterDamage my.bench.select("Move an Energy to which Benched Pokémon?")
+          }
         }
       }
 
@@ -2556,6 +2846,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "High Horsepower", {
           // 80 damage. This Pokémon also does 20 damage to itself.
           damage 80
+          damage 20, self
         }
       }
 
@@ -2569,6 +2860,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "High Horsepower", {
           // 160 damage. This Pokémon also does 30 damage to itself.
           damage 160
+          damage 30, self
         }
       }
 
@@ -2580,11 +2872,20 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         bwAbility "Blue Assist", {
           // Once during your turn, you may attach a [P] Energy card from your hand to 1 of your Latias.
           actionA {
+            checkLastTurn()
+            def psychicEnergies = my.hand.filterByEnergyType(P)
+            def latiasPokemon = my.all.findAll{it.name.contains("Latias")}
+            assert psychicEnergies : "No [P] Energy cards in your hand"
+            assert latiasPokemon : "No Latias in play"
+            powerUsed()
+            def energy = psychicEnergies.select("Choose a [P] Energy to attach")
+            attachEnergy(latiasPokemon.select("Attach to which Latias?"), energy)
           }
         }
         moveAttack "Luster Purge", {
           // 210 damage. Discard 2 Energy from this Pokémon.
           damage 210
+          discardSelfEnergyAfterDamage C, C
         }
       }
 
@@ -2611,6 +2912,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Body Slam", {
           // 50 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed.
           damage 50
+          flipThenApplySC PARALYZED
         }
       }
 
@@ -2619,7 +2921,16 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case GOODRA_197: return cardng (stub) {
         bwAbility "Slimy Room", {
           // As long as this Pokémon is in the Active Spot, whenever your opponent tries to attach an Energy card from their hand to a Pokémon, they must flip a coin. If tails, your opponent discards that Energy card instead of attaching it, and this doesn't use up their Energy attachment for the turn.
-          actionA {
+          delayedA {
+            before ATTACH_ENERGY, {
+              if (self.active && ef.activationReason == PLAY_FROM_HAND && ef.pokemonToBeAttached.owner == self.owner.opposite && bg.currentTurn == self.owner.opposite) {
+                flip "Slimy Room", {}, {
+                  bc "Slimy Room prevents energy attachment"
+                  discard ef.energyCard
+                  prevent()
+                }
+              }
+            }
           }
         }
         moveAttack "Buster Tail", {
@@ -2634,6 +2945,10 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Shell Trap", {
           // 30 damage. During your opponent's next turn, if this Pokémon is damaged by an attack (even if it is Knocked Out), put 8 damage counters on the Attacking Pokémon.
           damage 30
+          ifDamagedByAttackNextTurn(delegate) {
+            bc "Shell Trap activates"
+            directDamage(80, ef.attacker as PokemonCardSet)
+          }
         }
         moveAttack "Heat Crash", {
           // 80 damage.
@@ -2647,6 +2962,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Pay Day", {
           // 10 damage. Draw a card.
           damage 10
+          draw 1
         }
       }
 
@@ -2656,6 +2972,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Pay Day", {
           // 30 damage. Draw a card.
           damage 30
+          draw 1
         }
         moveAttack "Bite", {
           // 70 damage.
@@ -2669,10 +2986,12 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "No Reprieve", {
           // 20 damage. During your next turn, this Pokémon's attacks do 80 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance).
           damage 20
+          doMoreDamageNextTurn thisMove, 80, self
         }
         moveAttack "Rampage Drill", {
           // 160 damage. This Pokémon also does 30 damage to itself.
           damage 160
+          damage 30, self
         }
       }
 
@@ -2682,6 +3001,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Drain Slap", {
           // 30 damage. Heal 30 damage from this Pokémon.
           damage 30
+          heal 30, self
         }
         moveAttack "Gentle Slap", {
           // 70 damage.
@@ -2694,12 +3014,20 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case BLISSEY_203: return cardng (stub) {
         bwAbility "Expert in Roundness", {
           // Prevent all damage done to each of your Pokémon that has the Let's All Rollout attack by attacks from your opponent's Pokémon VMAX.
-          actionA {
+          delayedA {
+            before APPLY_ATTACK_DAMAGES, {
+              bg.dm().each {
+                if (it.to.owner == self.owner && it.to.baseMoves.find{it.name == "Let's All Rollout"} && it.sourceAttack && it.sourceAttack.attacker.pokemonVMAX) {
+                  bc "Expert in Roundness prevents damage"
+                  it.dmg = hp(0)
+                }
+              }
+            }
           }
         }
         moveAttack "Let's All Rollout", {
           // 20x damage. This attack does 20 damage for each of your Benched Pokémon that has the Let's All Rollout attack.
-          damage 20
+          damage 20 * my.bench.count{it.baseMoves.find{it.name == "Let's All Rollout"}}
         }
       }
 
@@ -2713,6 +3041,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Coordinated One-Two Punch", {
           // 60+ damage. Flip a coin. If heads, this attack does 100 more damage.
           damage 60
+          flip { damage 100 }
         }
       }
 
@@ -2721,7 +3050,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case EEVEE_205: return cardng (stub) {
         moveAttack "Continuous Steps", {
           // 30x damage. Flip a coin until you get tails. This attack does 30 damage for each heads.
-          damage 30
+          flipUntilTails { damage 30 }
         }
       }
 
@@ -2739,7 +3068,11 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case DUNSPARCE_207: return cardng (stub) {
         bwAbility "Mysterious Nest", {
           // [C] Pokémon in play (both yours and your opponent's) have no Weakness.
-          actionA {
+          getterA(GET_WEAKNESS) { h ->
+            def pcs = h.effect.target
+            if (pcs.types.contains(C)) {
+              h.object.clear()
+            }
           }
         }
         moveAttack "Rollout", {
@@ -2757,7 +3090,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         }
         moveAttack "Wild Dive", {
           // 30x damage. This attack does 30 damage for each Energy attached to your opponent's Active Pokémon.
-          damage 30
+          damage 30 * opp.active.cards.energyCount(C)
         }
       }
 
@@ -2766,7 +3099,10 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case SMEARGLE_209: return cardng (stub) {
         moveAttack "Sketching Trash", {
           // Put up to 2 Fusion Strike Trainer cards from your discard pile into your hand.
-
+          def fusionStrikeTrainers = my.discard.findAll{it.cardTypes.is(TRAINER) && it.cardTypes.is(FUSION_STRIKE)}
+          if (fusionStrikeTrainers) {
+            fusionStrikeTrainers.select(max: 2, "Put up to 2 Fusion Strike Trainer cards into your hand").moveTo(my.hand)
+          }
         }
         moveAttack "Tail Whap", {
           // 80 damage.
@@ -2779,7 +3115,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case SKITTY_210: return cardng (stub) {
         moveAttack "Whimsy Tackle", {
           // 30 damage. Flip a coin. If tails, this attack does nothing.
-          damage 30
+          flip {damage 30}
         }
       }
 
@@ -2788,11 +3124,13 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case DELCATTY_211: return cardng (stub) {
         moveAttack "Willful Busybody", {
           // Your opponent reveals their hand. Choose a card you find there and put it on the bottom of their deck.
-
+          if (opp.hand) {
+            opp.hand.select("Your opponent's hand: Choose a card to put on the bottom of their deck").moveTo(opp.deck)
+          }
         }
         moveAttack "Double Slap", {
           // 50x damage. Flip 2 coins. This attack does 50 damage for each heads.
-          damage 50
+          flip 2, {damage 50}
         }
       }
 
@@ -2801,7 +3139,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case BUNEARY_212: return cardng (stub) {
         moveAttack "Double Kick", {
           // 20x damage. Flip 2 coins. This attack does 20 damage for each heads.
-          damage 20
+          flip 2, {damage 20}
         }
       }
 
@@ -2819,11 +3157,15 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case BUNNELBY_214: return cardng (stub) {
         moveAttack "Find a Friend", {
           // Search your deck for a Pokémon, reveal it, and put it into your hand. Then, shuffle your deck.
-
+          if (my.deck) {
+            my.deck.search("Search for a Pokémon", {it.cardTypes.is(POKEMON)}).moveTo(my.hand)
+            shuffleDeck()
+          }
         }
         moveAttack "Take Down", {
           // 30 damage. This Pokémon also does 10 damage to itself.
           damage 30
+          damage 10, self
         }
       }
 
@@ -2837,6 +3179,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Take Down", {
           // 150 damage. This Pokémon also does 30 damage to itself.
           damage 150
+          damage 30, self
         }
       }
 
@@ -2846,6 +3189,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Flying Stomp", {
           // 20 damage. Discard a Special Energy from your opponent's Active Pokémon.
           damage 20
+          discardDefendingSpecialEnergy delegate
         }
       }
 
@@ -2855,10 +3199,12 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Body Slam", {
           // 40 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed.
           damage 40
+          flipThenApplySC PARALYZED
         }
         moveAttack "Nom-Nom-Nom Incisors", {
           // 120 damage. Draw 3 cards.
           damage 120
+          draw 3
         }
       }
 
@@ -2868,10 +3214,30 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Turn a Profit", {
           // 30 damage. If your opponent's Basic Pokémon is Knocked Out by damage from this attack, take 2 more Prize cards.
           damage 30
+          def pcs = defending
+          delayed {
+            def eff2
+            register {
+              eff2 = getter GET_GIVEN_PRIZES, pcs, {Holder holder ->
+                if (holder.effect.target.basic && pcs.KOBYDMG == bg.turnCount) {
+                  bc "Turn a Profit gives the player 2 additional prizes."
+                  holder.object += 2
+                }
+              }
+            }
+            unregister {
+              eff2.unregister()
+            }
+            after KNOCKOUT, pcs, {
+              unregister()
+            }
+            unregisterAfter 1
+          }
         }
         moveAttack "Max Gimme Gimme", {
           // 160 damage. Draw 3 cards.
           damage 160
+          draw 3
         }
       }
 
@@ -2880,7 +3246,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case ROOKIDEE_219: return cardng (stub) {
         moveAttack "Fury Attack", {
           // 10x damage. Flip 3 coins. This attack does 10 damage for each heads.
-          damage 10
+          flip 3, {damage 10}
         }
       }
 
@@ -2889,7 +3255,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case CORVISQUIRE_220: return cardng (stub) {
         moveAttack "Fury Attack", {
           // 30x damage. Flip 3 coins. This attack does 30 damage for each heads.
-          damage 30
+          flip 3, {damage 30}
         }
       }
 
@@ -2899,10 +3265,11 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Derail", {
           // 10 damage. Discard a Special Energy from your opponent's Active Pokémon.
           damage 10
+          discardDefendingSpecialEnergy delegate
         }
         moveAttack "Let's All Rollout", {
           // 20x damage. This attack does 20 damage for each of your Benched Pokémon that has the Let's All Rollout attack.
-          damage 20
+          damage 20 * my.bench.count{it.baseMoves.find{it.name == "Let's All Rollout"}}
         }
       }
 
@@ -2912,6 +3279,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Knock Away", {
           // 20+ damage. Flip a coin. If heads, this attack does 40 more damage.
           damage 20
+          flip { damage 40 }
         }
       }
 
@@ -2921,6 +3289,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
         moveAttack "Bounce", {
           // 30 damage. You may switch this Pokémon with 1 of your Benched Pokémon.
           damage 30
+          switchYourActive(may: true)
         }
         moveAttack "Rolling Tackle", {
           // 70 damage.
@@ -2933,8 +3302,11 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case ADVENTURER_S_DISCOVERY_224: return cardng (stub) {
         // Search your deck for up to 3 Pokémon V, reveal them, and put them into your hand. Then, shuffle your deck.
         onPlay {
+          my.deck.search(max: 3, "Search for up to 3 Pokémon V", {it.cardTypes.isAll(POKEMON, POKEMON_V)}).moveTo(my.hand)
+          shuffleDeck()
         }
         playRequirement{
+          assert my.deck : "Deck is empty"
         }
       }
 
@@ -2943,8 +3315,13 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case BATTLE_VIP_PASS_225: return cardng (stub) {
         // You can use this card only during your first turn.Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Then, shuffle your deck.
         onPlay {
+          my.deck.search(max: 2, "Search for up to 2 Basic Pokémon", {it.cardTypes.isAll(POKEMON, BASIC)}).each{benchPCS(it)}
+          shuffleDeck()
         }
         playRequirement{
+          assert bg.turnCount == 1 || bg.turnCount == 2 : "You can only use this card on your first turn"
+          assert my.bench.notFull : "Bench is full"
+          assert my.deck : "Deck is empty"
         }
       }
 
@@ -2953,8 +3330,11 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case BUG_CATCHER_226: return cardng (stub) {
         // Draw 2 cards. Flip a coin. If heads, draw 2 more cards.
         onPlay {
+          draw 2
+          flip { draw 2 }
         }
         playRequirement{
+          assert my.deck : "Deck is empty"
         }
       }
 
@@ -2963,8 +3343,11 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case CHILI_CILAN_CRESS_227: return cardng (stub) {
         // Search your deck for up to 3 Fusion Strike Pokémon, reveal them, and put them into your hand. Then, shuffle your deck.
         onPlay {
+          my.deck.search(max: 3, "Search for up to 3 Fusion Strike Pokémon", {it.cardTypes.isAll(POKEMON, FUSION_STRIKE)}).moveTo(my.hand)
+          shuffleDeck()
         }
         playRequirement{
+          assert my.deck : "Deck is empty"
         }
       }
 
@@ -2973,8 +3356,10 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case COOK_228: return cardng (stub) {
         // Heal 70 damage from your Active Pokémon.
         onPlay {
+          heal 70, my.active
         }
         playRequirement{
+          assert my.active.numberOfDamageCounters : "Active Pokémon has no damage counters"
         }
       }
 
@@ -2983,8 +3368,15 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case CRAM_O_MATIC_229: return cardng (stub) {
         // You can use this card only if you discard another Item card from your hand. Flip a coin. If heads, search your deck for a card and put it into your hand. Then, shuffle your deck.
         onPlay {
+          my.hand.getExcludedList(thisCard).filterByType(ITEM).select("Discard an Item card").discard()
+          flip {
+            my.deck.select("Search for a card").moveTo(hidden: true, my.hand)
+            shuffleDeck()
+          }
         }
         playRequirement{
+          assert my.hand.getExcludedList(thisCard).filterByType(ITEM).size() > 1 : "You need another Item card to discard"
+          assert my.deck : "Deck is empty"
         }
       }
 
@@ -2993,8 +3385,21 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case CROSS_SWITCHER_230: return cardng (stub) {
         // You must play 2 Cross Switcher cards at once. (This effect works one time for 2 cards.)Switch 1 of your opponent's Benched Pokémon with their Active Pokémon. If you do, switch your Active Pokémon with 1 of your Benched Pokémon.
         onPlay {
+          def oppPokemon = opp.bench.select("Switch which opponent's Benched Pokémon?")
+          sw opp.active, oppPokemon
+          if (!oppPokemon.active) {
+            throw new EffectRequirementException("Failed to switch opponent's Benched Pokémon with their Active Pokémon")
+          }
+          if (my.bench) {
+            def myPokemon = my.bench.select("Switch your Active with which Benched Pokémon?")
+            sw my.active, myPokemon
+          }
+          // discard the other Cross Switcher card (this one will be discarded at the end of the onPlay clause)
+          my.hand.getExcludedList(thisCard).findAll{it.name == "Cross Switcher"}.subList(0,1).discard()
         }
         playRequirement{
+          assert opp.bench : "Opponent needs Benched Pokémon"
+          assert my.hand.getExcludedList(thisCard).count{it.name == "Cross Switcher"} >= 1 : "You need 2 Cross Switcher cards"
         }
       }
 
@@ -3003,8 +3408,14 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case CROSSCEIVER_231: return cardng (stub) {
         // You must play 2 Crossceiver cards at once. (This effect works one time for 2 cards.)Put a Pokémon or a Supporter card from your discard pile into your hand.
         onPlay {
+          def eligibleCards = my.discard.findAll{it.cardTypes.is(POKEMON) || it.cardTypes.is(SUPPORTER)}
+          eligibleCards.select("Put a Pokémon or Supporter from discard into your hand").moveTo(my.hand)
+          // discard the other Crossceiver card (this one will be discarded at the end of the onPlay clause)
+          my.hand.getExcludedList(thisCard).findAll{it.name == "Crossceiver"}.subList(0,1).discard()
         }
         playRequirement{
+          assert my.hand.getExcludedList(thisCard).count{it.name == "Crossceiver"} >= 1 : "You need 2 Crossceiver cards"
+          assert my.discard.findAll{it.cardTypes.is(POKEMON) || it.cardTypes.is(SUPPORTER)} : "No Pokémon or Supporter cards in discard"
         }
       }
 
@@ -3013,8 +3424,13 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case DANCER_232: return cardng (stub) {
         // Draw 2 cards. If you go second and it's your first turn, draw 3 more cards.
         onPlay {
+          draw 2
+          if (bg.turnCount == 2) {
+            draw 3
+          }
         }
         playRequirement{
+          assert my.deck : "Deck is empty"
         }
       }
 
@@ -3023,8 +3439,15 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case ELESA_S_SPARKLE_233: return cardng (stub) {
         // Choose up to 2 of your Fusion Strike Pokémon. For each of those Pokémon, search your deck for a Fusion Strike Energy card and attach it to that Pokémon. Then, shuffle your deck.
         onPlay {
+          def fusionStrikePokemon = my.all.findAll{it.topPokemonCard.cardTypes.is(FUSION_STRIKE)}
+          multiSelect(fusionStrikePokemon, 2, "Choose Fusion Strike Pokémon").each { pokemon ->
+            my.deck.search("Search for a Fusion Strike Energy card to attach to $pokemon",
+              {it.name == "Fusion Strike Energy"}).each { attachEnergy(pokemon, it) } }
+          shuffleDeck()
         }
         playRequirement{
+          assert my.all.findAll{it.topPokemonCard.cardTypes.is(FUSION_STRIKE)} : "No Fusion Strike Pokémon"
+          assert my.deck : "Deck is empty"
         }
       }
 
@@ -3032,11 +3455,25 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 
       case FAREWELL_BELL_234: return cardng (stub) {
         // If the Pokémon VMAX this card is attached to is Knocked Out by damage from an attack from your opponent's Pokémon, search your deck for a card and put it into your hand. Then, shuffle your deck.
+        def eff
         onPlay {reason->
+          eff = delayed {
+            before KNOCKOUT, {
+              if (ef.knockoutByDamageFromAttack && ef.pokemonToBeKnockedOut == self
+                && ef.attackingPokemon?.owner == self.owner.opposite
+                && self.pokemonVMAX && self.owner.pbg.deck.notEmpty) {
+                bc "Farewell Bell activates"
+                self.owner.pbg.deck.select2(text: "Search for a card", player: self.owner).moveTo(self.owner.pbg.hand)
+                shuffleDeck(null, self.owner.toTargetPlayer())
+              }
+            }
+          }
         }
         onRemoveFromPlay {
+          eff.unregister()
         }
         allowAttach {to->
+          true
         }
       }
 
@@ -3045,6 +3482,12 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case JUDGE_235: return cardng (stub) {
         // Each player shuffles their hand into their deck and draws 4 cards.
         onPlay {
+          my.hand.getExcludedList(thisCard).moveTo(my.deck)
+          opp.hand.getExcludedList(thisCard).moveTo(opp.deck)
+          shuffleDeck(null, TargetPlayer.SELF)
+          shuffleDeck(null, TargetPlayer.OPPONENT)
+          draw 4
+          draw 4, TargetPlayer.OPPONENT
         }
         playRequirement{
         }
@@ -3055,6 +3498,17 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case POWER_TABLET_236: return cardng (stub) {
         // During this turn, your Fusion Strike Pokémon's attacks do 30 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance).
         onPlay {
+          delayed {
+            after PROCESS_ATTACK_EFFECTS, {
+              bg.dm().each {
+                if (it.to.active && it.from.owner == thisCard.player && it.from.topPokemonCard.cardTypes.is(FUSION_STRIKE) && it.dmg.value) {
+                  bc "Power Tablet adds 30 damage"
+                  it.dmg += hp(30)
+                }
+              }
+            }
+            unregisterAfter 1
+          }
         }
         playRequirement{
         }
@@ -3065,8 +3519,13 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case QUICK_BALL_237: return cardng (stub) {
         // You can play this card only if you discard another card from your hand. Search your deck for a Basic Pokémon, reveal it, and put it into your hand. Then, shuffle your deck.
         onPlay {
+          my.hand.getExcludedList(thisCard).select("Discard a card").discard()
+          my.deck.search("Search for a Basic Pokémon", {it.cardTypes.isAll(POKEMON, BASIC)}).moveTo(my.hand)
+          shuffleDeck()
         }
         playRequirement{
+          assert my.hand.getExcludedList(thisCard).size() >= 1 : "You need another card to discard"
+          assert my.deck : "Deck is empty"
         }
       }
 
@@ -3075,6 +3534,11 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case SCHOOLBOY_238: return cardng (stub) {
         // Draw 2 cards. If your opponent has exactly 1, 3, or 5 Prize cards remaining, draw 2 more cards.
         onPlay {
+          draw 2
+          def prizeCount = opp.prizeCardSet.remainingCount
+          if (prizeCount == 1 || prizeCount == 3 || prizeCount == 5) {
+            draw 2
+          }
         }
         playRequirement{
         }
@@ -3085,6 +3549,11 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case SCHOOLGIRL_239: return cardng (stub) {
         // Draw 2 cards. If your opponent has exactly 2, 4, or 6 Prize cards remaining, draw 2 more cards.
         onPlay {
+          draw 2
+          def prizeCount = opp.prizeCardSet.remainingCount
+          if (prizeCount == 2 || prizeCount == 4 || prizeCount == 6) {
+            draw 2
+          }
         }
         playRequirement{
         }
@@ -3095,6 +3564,8 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case SHAUNA_240: return cardng (stub) {
         // Shuffle your hand into your deck. Then, draw 5 cards.
         onPlay {
+          shuffleDeck(my.hand.getExcludedList(thisCard))
+          draw 5
         }
         playRequirement{
         }
@@ -3105,8 +3576,10 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case SIDNEY_241: return cardng (stub) {
         // Your opponent reveals their hand. Discard up to 2 in any combination of Pokémon Tool cards, Special Energy cards, and Stadium cards from it.
         onPlay {
+          opp.hand.select2(text: "Your opponent's hand: Discard up to 2 Pokémon Tool, Special Energy, or Stadium cards", filter: {it.cardTypes.is(POKEMON_TOOL) || it.cardTypes.is(SPECIAL_ENERGY) || it.cardTypes.is(STADIUM)}, min: 0, max: 2).discard()
         }
         playRequirement{
+          assert opp.hand : "Opponent's hand is empty"
         }
       }
 
@@ -3114,9 +3587,26 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 
       case SKATERS_PARK_242: return cardng (stub) {
         // Whenever either player's Active Pokémon retreats, put any basic Energy that would be discarded into their hand instead of the discard pile.
+        def eff
         onPlay {
+          eff = delayed (priority: BEFORE_LAST) {
+            def retreat = null
+            before TRY_RETREAT, {
+              if (retreat && retreat.retreater && retreat.discardEnergy) {
+                def energyToBeRedirected = retreat.discardEnergy?.getDiscardedCards().filterByType(BASIC_ENERGY)
+                if (energyToBeRedirected) {
+                  bc "Skaters' Park redirects Basic Energy to hand"
+                  energyToBeRedirected.moveTo(retreat.retreater.owner.pbg.hand)
+                }
+              }
+            }
+            before RETREAT, {
+              retreat = ef
+            }
+          }
         }
         onRemoveFromPlay{
+          eff.unregister()
         }
       }
 
@@ -3125,10 +3615,23 @@ public enum FusionStrike implements ImplOnlyCardInfo {
       case SPONGY_GLOVES_243: return cardng (stub) {
         // The attacks of the Pokémon this card is attached to do 30 more damage to your opponent's Active [W] Pokémon (before applying Weakness and Resistance).
         onPlay {reason->
+          delayed {
+            after PROCESS_ATTACK_EFFECTS, {
+              bg.dm().each {
+                if (it.to.active && it.to.containsType(W) && it.from == self && it.dmg.value) {
+                  bc "Spongy Gloves adds 30 damage"
+                  it.dmg += hp(30)
+                }
+              }
+              }
+            }
+          }
         }
         onRemoveFromPlay {
+          eff.unregister()
         }
         allowAttach {to->
+          true
         }
       }
 
@@ -3136,103 +3639,58 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 
       case FUSION_STRIKE_ENERGY_244: return cardng (stub) {
         // This card can only be attached to a Fusion Strike Pokémon. If this card is attached to anything other than a Fusion Strike Pokémon, discard this card. As long as this card is attached to a Pokémon, it provides every type of Energy but provides only 1 Energy at a time. Prevent all effects of your opponent's Pokémon's Abilities done to the Pokémon this card is attached to.
+        def eff
+        def check = {
+          if (!it?.topPokemonCard?.cardTypes?.is(FUSION_STRIKE)) {
+            discard thisCard
+          }
+        }
         onPlay {reason->
+          eff = delayed {
+            before null, self, Source.SRC_ABILITY, {
+              if (e.sourceAbility.owner.owner == self?.owner.opposite) {
+                bc "Fusion Strike Energy prevents ability effect"
+                prevent()
+              }
+            }
+            after CHECK_ABILITIES, { check(self) }
+          }
+          check(self)
         }
         onRemoveFromPlay {
+          eff.unregister()
         }
         onMove {to->
+          check(to)
         }
         allowAttach {to->
+          to.topPokemonCard?.cardTypes?.is(FUSION_STRIKE)
+        }
+        getEnergyTypesOverride {
+          if (self && self.topPokemonCard?.cardTypes?.is(FUSION_STRIKE)) return [valuesBasicEnergy() as Set]
+          else return [[] as Set]
         }
       }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
       case TRAINING_COURT_282: return cardng (stub) {
         // Once during each player's turn, that player may put a basic Energy card from their discard pile into their hand.
+        def lastTurn=0
+        def actions=[]
         onPlay {
+          actions=action(thisCard, "Stadium: Training Court") {
+            assert lastTurn != bg().turnCount : "Already used Training Court"
+            assert my.deck : "Deck is empty."
+            assert my.discard.findAll{it.cardTypes.is(BASIC_ENERGY)} : "No Basic Energy cards in discard"
+            bc "Used Training Court effect"
+            lastTurn = bg().turnCount
+            my.discard.select("Put a Basic Energy from discard into your hand").moveTo(my.hand)
+          }
         }
         onRemoveFromPlay{
+          actions.each { bg().gm().unregisterAction(it) }
         }
       }
-
-
-
-
 
         default:
       return null;

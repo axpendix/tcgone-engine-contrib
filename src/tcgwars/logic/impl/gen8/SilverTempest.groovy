@@ -663,7 +663,8 @@ public enum SilverTempest implements ImplOnlyCardInfo {
       case ALOLAN_VULPIX_VSTAR_34: return cardng (stub) {
 				moveAttack "Snow Mirage", {
 					// 160 damage. This attack's damage isn't affected by any effects on your opponent's Active Pokémon. During your opponent's next turn, prevent all damage done to this Pokémon by attacks from Pokémon that have an Ability.
-					damage 160
+					swiftDamage 160, defending
+          preventAllDamageFromCustomPokemonNextTurn thisMove, self, { it.hasModernAbility }
 				}
 				moveAttack "Silvery Snow Star", {
 					// 70x damage. This attack does 70 damage for each of your opponent's Pokémon V in play. This damage isn't affected by Weakness or Resistance. (You can't use more than 1 VSTAR Power in a game.)
