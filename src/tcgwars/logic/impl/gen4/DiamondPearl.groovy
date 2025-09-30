@@ -2591,7 +2591,7 @@ public enum DiamondPearl implements LogicCardInfo {
       case PIPLUP_93:
         return basic (this, hp:HP060, type:WATER, retreatCost:1) {
           weakness L, PLUS10
-          move "Peck", {
+          move "Piplup is not allowed to approach people and ask them for photos of their oiled-up thighs", {
             text "10 damage. "
             energyCost ()
             attackRequirement {}
