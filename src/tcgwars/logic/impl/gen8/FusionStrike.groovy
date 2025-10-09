@@ -2,6 +2,7 @@ package tcgwars.logic.impl.gen8
 
 
 import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
 import static tcgwars.logic.effect.EffectPriority.*
@@ -3622,7 +3623,6 @@ public enum FusionStrike implements ImplOnlyCardInfo {
                   bc "Spongy Gloves adds 30 damage"
                   it.dmg += hp(30)
                 }
-              }
               }
             }
           }

@@ -1,11 +1,14 @@
 package tcgwars.logic.impl.gen8
 
-
 import static tcgwars.logic.card.Type.*
+import static tcgwars.logic.card.CardType.*
 import static tcgwars.logic.groovy.TcgBuilders.*;
 import static tcgwars.logic.groovy.TcgStatics.*
+import static tcgwars.logic.effect.EffectPriority.*
 
 import tcgwars.logic.card.*
+import tcgwars.logic.effect.basic.*
+import tcgwars.logic.util.*
 
 /**
  * @author
@@ -284,6 +287,7 @@ public enum BrilliantStars implements ImplOnlyCardInfo {
         moveAttack "Spore Ball", {
           // 30 damage. Your opponent's Active Pokémon is now Asleep.
           damage 30
+          applyAfterDamage ASLEEP
         }
         moveAttack "Powdery Uppercut", {
           // 130 damage. You can use this attack only if this Pokémon used Spore Ball during your last turn.
