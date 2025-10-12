@@ -143,9 +143,8 @@ public enum Web implements LogicCardInfo {
   public Card getImplementation() {
     switch (this) {
       case IVYSAUR_1:
-        return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
-          weakness R, PLUS10
-          resistance W, MINUS20
+        return evolution (this, from:"Bulbasaur", hp:HP070, type:GRASS, retreatCost:2) {
+          weakness R
           move "Leech Seed", {
             text "20 Damage. If this attack does any damage to the Defending Pokémon (after applying Weakness and Resistance), remove 1 damage counter from Cherubi."
             energyCost G, G
