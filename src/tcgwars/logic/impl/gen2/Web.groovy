@@ -142,8 +142,35 @@ public enum Web implements LogicCardInfo {
   @Override
   public Card getImplementation() {
     switch (this) {
-// IDK how to do ivysaur (its the same as base set bulbasaur but with a second attack)
-// https://m.bulbapedia.bulbagarden.net/wiki/Ivysaur_(Bulbasaur_Deck_22)
+      case IVYSAUR_1:
+        return basic (this, hp:HP050, type:GRASS, retreatCost:1) {
+          weakness R, PLUS10
+          resistance W, MINUS20
+          move "Leech Seed", {
+            text "20 Damage. If this attack does any damage to the Defending Pokémon (after applying Weakness and Resistance), remove 1 damage counter from Cherubi."
+            energyCost G, G
+            attackRequirement {}
+            onAttack {
+              damage 20
+              delayed (priority: LAST){ //Taken from BS1 BULBASAUR
+                before APPLY_ATTACK_DAMAGES, {
+                  if(bg.dm().find{it.to == defending && it.from == self && it.dmg.value}) {
+                    heal 10, self
+                  }
+                }
+                unregisterAfter 1
+              }
+            }
+            
+          }
+          move "Vine Whip", {
+            text "40 damage."
+            energyCost G, G, C
+            onAttack {
+              damage 40
+            }
+          }
+        };
       case NIDORAN_MALE_2:
         return copy(VENDING_MACHINE.NIDORAN_MALE_8, this);
       case VENONAT_3:
