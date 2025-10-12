@@ -1,16 +1,17 @@
 package tcgwars.logic.impl.gen2
 
 // I don't know what the enumid is for vending machine, unnumbered promos, best of game
-import tcgwars.logic.impl.gen1.Vending_Machine;
-import tcgwars.logic.impl.gen2.Best_Of_Game;
-import tcgwars.logic.impl.gen1.Unnumbered_Promos;
+import tcgwars.logic.impl.gen1.VendingMachine;
+import tcgwars.logic.impl.gen2.BestOfGame;
+import tcgwars.logic.impl.gen1.UnnumberedPromos;
 
-import tcgwars.logic.impl.gen1.Base_set;
+import tcgwars.logic.impl.gen1.BaseSet;
 import tcgwars.logic.impl.gen1.Jungle;
-import tcgwars.logic.impl.gen1.Team_Rocket;
-import tcgwars.logic.impl.gen1.Gym_Challenge
-import tcgwars.logic.impl.gen1.Wizards_Black_Star_Promos;
-import tcgwars.logic.impl.gen2.Neo_Genesis;
+import tcgwars.logic.impl.gen1.TeamRocket;
+import tcgwars.logic.impl.gen1.GymChallenge
+import tcgwars.logic.impl.gen1.WizardsBlackStarPromos;
+import tcgwars.logic.impl.gen2.NeoGenesis;
+import tcgwars.logic.impl.gen2.NeoDiscovery;
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -170,9 +171,9 @@ public enum Web implements LogicCardInfo {
           }
         };
       case NIDORAN_MALE_2:
-        return copy(VENDING_MACHINE.NIDORAN_MALE_8, this);
+        return copy(VendingMachine.NIDORAN_MALE_8, this);
       case VENONAT_3:
-        return copy(VENDING_MACHINE.VENONAT_15, this);
+        return copy(VendingMachine.VENONAT_15, this);
       case EXEGGCUTE_4:
         return copy(Jungle.EXEGGCUTE, this);
       case TANGELA_5:
@@ -215,9 +216,9 @@ public enum Web implements LogicCardInfo {
           }
         };
       case CHARMELEON_7:
-        return copy(BASE_SET.CHARMELEON, this);
+        return copy(BaseSet.CHARMELEON, this);
       case VULPIX_8:
-        return copy(VENDING_MACHINE.VULPIX_26, this);
+        return copy(VendingMachine.VULPIX_26, this);
       case WARTORTLE_9:
         return evolution (this, from:"Squirtle", hp:HP070, type:W, retreatCost:2) {
           weakness L
@@ -238,11 +239,11 @@ public enum Web implements LogicCardInfo {
           }
         };
       case MARILL_10:
-        return copy (WIZARDS_BLACK_STAR_PROMOS.MARILL_29, this);
+        return copy (WizardsBlackStarPromos.MARILL_29, this);
       case VOLTORB_11:
-        return copy (BASE_SET.VOLTORB, this);
+        return copy (BaseSet.VOLTORB, this);
       case SLOWPOKE_12:
-        return copy (UNNUMBERED_PROMOS.SLOWPOKE_1, this);
+        return copy (UnnumberedPromos.SLOWPOKE_1, this);
       case DIGLETT_13:
         return basic (this, hp:HP050, type:F, retreatCost:1) {
           weakness G
@@ -264,7 +265,7 @@ public enum Web implements LogicCardInfo {
           }
         };
       case HITMONLEE_14:
-        return copy(VENDING_MACHINE.HITMONLEE_79, this);
+        return copy(VendingMachine.HITMONLEE_79, this);
       case BILL_S_TELEPORTER_15:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." + "Flip a coin. If heads, draw 4 cards"
@@ -276,19 +277,19 @@ public enum Web implements LogicCardInfo {
           }
         };
       case NEW_POKEDEX_16:
-        return copy(NEO_GENESIS.NEW_POKEDEX_95, this);
+        return copy(NeoGenesis.NEW_POKEDEX_95, this);
       case DARK_IVYSAUR_17:
-        return copy(BEST_OF_GAME.DARK_IVYSAUR_6, this);
+        return copy(BestOfGame.DARK_IVYSAUR_6, this);
       case NIDORINO_18:
-        return copy(VENDING_MACHINE.NIDORINO_10, this);
+        return copy(VendingMachine.NIDORINO_10, this);
       case VENOMOTH_19:
-        return copy(VENDING_MACHINE.VENOMOTH_16, this);
+        return copy(VendingMachine.VENOMOTH_16, this);
       case EXEGGUTOR_20:
-        return copy(JUNGLE.EXEGGUTOR, this);
+        return copy(Jungle.EXEGGUTOR, this);
       case DARK_WEEZING_21:
-        return copy(TEAM_ROCKET.DARK_WEEZING_14, this);
+        return copy(TeamRocket.DARK_WEEZING_14, this);
       case DARK_CHARMELEON_22:
-        return copy(TEAM_ROCKET.DARK_CHARMELEON, this);
+        return copy(TeamRocket.DARK_CHARMELEON, this);
       case ARCANINE_23:
         return evolution (this, from:"growlithe", hp:HP070, type:R, retreatCost:2) {
           weakness W
@@ -302,9 +303,9 @@ public enum Web implements LogicCardInfo {
           }
         );
       case DARK_WARTORTLE_24:
-        return copy(TEAM_ROCKET.DARK_WARTORTLE, this);
+        return copy(TeamRocket.DARK_WARTORTLE, this);
       case SURFING_PIKACHU_25:
-        return copy(WIZARDS_BLACK_STAR_PROMOS.SURFING_PIKACHU_28, this);
+        return copy(WizardsBlackStarPromos.SURFING_PIKACHU_28, this);
       case ELECTRODE_26:
         return evolution (this, from:"Voltorb", hp:HP070, type:L, retreatCost:1) {
           weakness F
@@ -326,9 +327,9 @@ public enum Web implements LogicCardInfo {
           }
         };
       case DARK_KADABRA_27:
-        return copy(TEAM_ROCKET.DARK_KADABRA, this);
+        return copy(TeamRocket.DARK_KADABRA, this);
       case DARK_SLOWBRO_28:
-        return copy(TEAM_ROCKET.DARK_SLOWBRO_12, this);
+        return copy(TeamRocket.DARK_SLOWBRO_12, this);
       case DUGTRIO_29:
         return evolution (this, from:"Diglett", hp:HP080, type:F, retreatCost:2) {
           weakness G
@@ -359,15 +360,15 @@ public enum Web implements LogicCardInfo {
           }
         };
       case MAX_REVIVE_30:
-        return copy(GYM_CHALLENGE.MAX_REVIVE_117, this);
+        return copy(GymChallenge.MAX_REVIVE_117, this);
       case HYPER_DEVOLUTION_SPRAY_31:
-        return copy(NEO_DISCOVERY.HYPER_DEVOLUTION_SPRAY_73, this);
+        return copy(NeoDiscovery.HYPER_DEVOLUTION_SPRAY_73, this);
       case POKEMON_RETRANSFER_32:
-        return copy(VENDING_MACHINE.POKEMON_RETRANSFER_108, this);
+        return copy(VendingMachine.POKEMON_RETRANSFER_108, this);
       case NIDOKING_33:
-        return copy(BASE_SET.NIDOKING, this);
+        return copy(BaseSet.NIDOKING, this);
       case NINETALES_34:
-        return copy(BASE_SET.NINETALES, this);
+        return copy(BaseSet.NINETALES, this);
       case MAGIKARP_35:
         return basic (this, hp:HP030, type:W, retreatCost:1) {
           weakness L
@@ -387,13 +388,13 @@ public enum Web implements LogicCardInfo {
           }
         };
       case RAICHU_36:
-        return copy(BASE_SET.RAICHU, this);
+        return copy(BaseSet.RAICHU, this);
       case DARK_ALAKAZAM_37:
-        return copy(TEAM_ROCKET.DARK_ALAKAZAM_1, this);
+        return copy(TeamRocket.DARK_ALAKAZAM_1, this);
       case DRAGONITE_38:
-        return copy(WIZARDS_BLACK_STAR_PROMOS.DRAGONITE_5, this);
+        return copy(WizardsBlackStarPromos.DRAGONITE_5, this);
       case TEAM_ROCKET_S_MEOWTH_39:
-        return copy(WIZARDS_BLACK_STAR_PROMOS.TEAM_ROCKET_S_MEOWTH_18, this);
+        return copy(WizardsBlackStarPromos.TEAM_ROCKET_S_MEOWTH_18, this);
       case ROCKET_S_SNEAK_ATTACK_40:
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
@@ -409,9 +410,9 @@ public enum Web implements LogicCardInfo {
           }
         };
       case DARK_VENUSAUR_41:
-        return copy(BEST_OF_GAME.DARK_VENUSAUR_7, this);
+        return copy(BestOfGame.DARK_VENUSAUR_7, this);
       case DARK_CHARIZARD_42:
-        return copy(TEAM_ROCKET.DARK_CHARIZARD_4);
+        return copy(TeamRocket.DARK_CHARIZARD_4);
       case MOLTRES_43:
         return basic (this, hp:HP070, type:R, retreatCost:1) {
           weakness W
@@ -432,7 +433,7 @@ public enum Web implements LogicCardInfo {
           }
         };
       case DARK_BLASTOISE_44:
-        return copy(TEAM_ROCKET.DARK_BLASTOISE, this);
+        return copy(TeamRocket.DARK_BLASTOISE, this);
       case ARTICUNO_45:
         return basic (this, hp:HP070, type:W, retreatcost:1) {
           weakness M
@@ -497,4 +498,4 @@ public enum Web implements LogicCardInfo {
           }
         };
       case MACHAMP_48:
-        return copy(WIZARDS_BLACK_STAR_PROMOS.MACHAMP_43, this);
+        return copy(WizardsBlackStarPromos.MACHAMP_43, this);
