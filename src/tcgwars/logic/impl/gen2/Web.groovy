@@ -146,7 +146,7 @@ public enum Web implements LogicCardInfo {
         return evolution (this, from:"Bulbasaur", hp:HP070, type:GRASS, retreatCost:2) {
           weakness R
           move "Leech Seed", {
-            text "20 Damage. If this attack does any damage to the Defending Pokémon (after applying Weakness and Resistance), remove 1 damage counter from Cherubi."
+            text "20 Damage. Unless all damage from this attack is prevented, you may remove one damage counter from Ivysaur."
             energyCost G, G
             attackRequirement {}
             onAttack {
@@ -160,7 +160,6 @@ public enum Web implements LogicCardInfo {
                 unregisterAfter 1
               }
             }
-            
           }
           move "Vine Whip", {
             text "40 damage."
