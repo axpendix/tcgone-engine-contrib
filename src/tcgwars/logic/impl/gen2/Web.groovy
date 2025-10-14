@@ -299,9 +299,9 @@ public enum Web implements LogicCardInfo {
             onAttack {
               damage 50
               damage 20, self
-              }
             }
-          };
+          }
+        };
       case DARK_WARTORTLE_24:
         return copy(TeamRocket.DARK_WARTORTLE, this);
       case SURFING_PIKACHU_25:
