@@ -383,7 +383,7 @@ public enum Web implements LogicCardInfo {
             text "50 damage. Flip 2 coins.  If either of them is tails, this attack does nothing."
             energyCost W, W
             onAttack {
-              flip 2, {}, {}, [2:{ damage 50 }
+              flip 2, {}, {}, [2:{ damage 50 }]
             }
           }
         };
