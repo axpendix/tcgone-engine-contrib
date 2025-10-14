@@ -353,8 +353,9 @@ public enum Web implements LogicCardInfo {
             onAttack {
               damage 30
               if (opp.bench) {
-              multiSelect(opp.bench, 2, text).each {
-                damage 10, it
+                multiSelect(opp.bench, 2, text).each {
+                  damage 10, it
+                }
               }
             }
           }
