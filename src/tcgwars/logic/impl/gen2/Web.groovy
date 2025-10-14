@@ -499,3 +499,6 @@ public enum Web implements LogicCardInfo {
         };
       case MACHAMP_48:
         return copy(WizardsBlackStarPromos.MACHAMP_43, this);
+      }
+    }
+  };
