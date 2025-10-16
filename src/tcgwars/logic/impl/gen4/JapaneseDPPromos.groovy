@@ -134,8 +134,8 @@ public enum JapaneseDPPromos implements LogicCardInfo {
               def top = my.deck.subList(0,7)
               top.select(min:0,max:my.bench.freeBenchCount,"Choose as many basic Pokemon as you like",it.cardTypes.is(BASIC)).each {
                 benchPCS(it)
-              shuffleDeck()
               }
+              shuffleDeck()
             }
           }
           onRemoveFromPlay{
@@ -379,7 +379,7 @@ public enum JapaneseDPPromos implements LogicCardInfo {
             }
           }
           move "Close Combat", {
-            text "60 damage. During your opponent's next turn, any damage done to Wave-Guiding Hero Lucario by attacks is increased by 30 (after applying Weakness and Resistance).
+            text "60 damage. During your opponent's next turn, any damage done to Wave-Guiding Hero Lucario by attacks is increased by 30 (after applying Weakness and Resistance)."
             energyCost F, C, C
             onAttack {
               damage 60
@@ -422,6 +422,8 @@ public enum JapaneseDPPromos implements LogicCardInfo {
             }
           }
         };
+        default:
+        return null;
       }
     }
   }
