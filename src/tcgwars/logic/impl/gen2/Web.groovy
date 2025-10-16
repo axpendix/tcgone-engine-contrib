@@ -291,7 +291,7 @@ public enum Web implements LogicCardInfo {
       case DARK_CHARMELEON_22:
         return copy(TeamRocket.DARK_CHARMELEON, this);
       case ARCANINE_23:
-        return evolution (this, from:"growlithe", hp:HP070, type:R, retreatCost:2) {
+        return evolution (this, from:"Growlithe", hp:HP070, type:R, retreatCost:2) {
           weakness W
           move "Take Down", {
             text "50 damage. Arcanine does 20 damage to itself"
@@ -436,7 +436,7 @@ public enum Web implements LogicCardInfo {
       case DARK_BLASTOISE_44:
         return copy(TeamRocket.DARK_BLASTOISE, this);
       case ARTICUNO_45:
-        return basic (this, hp:HP070, type:W, retreatcost:1) {
+        return basic (this, hp:HP070, type:W, retreatCost:1) {
           weakness M
           resistance F, MINUS30
           move "Diamond Dust", {
@@ -454,7 +454,7 @@ public enum Web implements LogicCardInfo {
           }
         };
       case ZAPDOS_46:
-        return basic (this, hp:HP070, type:L, retreatcost:1) {
+        return basic (this, hp:HP070, type:L, retreatCost:1) {
           weakness L
           resistance F, MINUS30
           move "Lightning Burn", {
@@ -471,7 +471,7 @@ public enum Web implements LogicCardInfo {
           }
         };
       case GENGAR_47:
-        return evolution (this, from:"Haunter", hp:HP080, type:P, retreatcost:2) {
+        return evolution (this, from:"Haunter", hp:HP080, type:P, retreatCost:2) {
           resistance F, MINUS30
           pokePower "Power of Darkness", {
             text "Once during your turn, when you play Gengar from your hand to evolve 1 of your Pokémon, you may flip a coin. If heads, choose 1 of your opponent's Pokémon. Your opponent returns that Pokémon and all cards attached to it to his or her hand."
@@ -500,6 +500,8 @@ public enum Web implements LogicCardInfo {
         };
       case MACHAMP_48:
         return copy(WizardsBlackStarPromos.MACHAMP_43, this);
+      default:
+        return null;
       }
     }
   };
