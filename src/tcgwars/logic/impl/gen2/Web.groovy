@@ -413,7 +413,7 @@ public enum Web implements LogicCardInfo {
       case DARK_VENUSAUR_41:
         return copy(BestOfGame.DARK_VENUSAUR_7, this);
       case DARK_CHARIZARD_42:
-        return copy(TeamRocket.DARK_CHARIZARD_4);
+        return copy(TeamRocket.DARK_CHARIZARD_4, this);
       case MOLTRES_43:
         return basic (this, hp:HP070, type:R, retreatCost:1) {
           weakness W
