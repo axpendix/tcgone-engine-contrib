@@ -55,8 +55,9 @@ public enum AurasLucario implements LogicCardInfo {
 	POKEMON_REVERSAL_17 ("Pokémon Reversal", "17", Rarity.PROMO, [TRAINER, ITEM]),
 	POKE_BALL_18 ("Poké Ball", "18", Rarity.PROMO, [TRAINER, ITEM]),
 	AARON_S_AURA_19 ("Aaron's Aura", "19", Rarity.PROMO, [TRAINER, SUPPORTER]),
-	DARK_METAL_ENERGY_20 ("Dark Metal Energy", "20", Rarity.PROMO, [ENERGY, SPECIAL_ENERGY]);
-
+	DARK_METAL_ENERGY_20 ("Dark Metal Energy", "20", Rarity.PROMO, [ENERGY, SPECIAL_ENERGY]),
+  VICTORY_RING_21 ("Victory ring", "21", Rarity.PROMO, [TRAINER, ITEM]);
+                   
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS, Y = FAIRY, N = DRAGON;
 
   protected CardTypeSet cardTypes;
@@ -383,6 +384,19 @@ public enum AurasLucario implements LogicCardInfo {
 			};
 			case DARK_METAL_ENERGY_20:
 			return copy(TeamRocketReturns.DARK_METAL_ENERGY_94, this);
+      case VICTORY_RING:
+      return itemCard (this) {
+        text "Turn all of your Prize cards face up. You may choose any number of them and return them to your deck. If you do, shuffle your deck. Then, take the same number of cards from the top of your deck and put them face down as your Prize cards without looking at them."
+        onPlay {
+          my.prizeCardSet.allVisible=true
+          def tar = my.prizeCardSet.select(max:my.prizeCardSet.size(), "select cards to put into your deck").each
+          def tarCount = tar.size()
+          tar.showToOpponent.moveTo(my.deck)
+          if (tarCount > 0) { shuffleDeck() }
+          tarCount.times{ my.prizeCardSet.add(my.deck.remove(0)) }
+        }
+      };
 		}
 	}
 }
+
