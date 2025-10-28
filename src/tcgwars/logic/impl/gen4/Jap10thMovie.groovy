@@ -22,25 +22,22 @@ import tcgwars.logic.effect.ability.*
 import tcgwars.logic.effect.special.*;
 
 /**
- * @author 
+ * https://bulbapedia.bulbagarden.net/wiki/10th_Movie_Commemoration_Set_(TCG)
  */
-public enum JapaneseDPPromos implements LogicCardInfo {
+public enum Jap10thMovie implements LogicCardInfo {
 
-  MIRACLE_DIAMOND_1 ("Miracle Diamond", "1", Rarity.PROMO, [TRAINER, ITEM]),
-  MYSTERIOUS_PEARL_2 ("Mysterious Pearl", "2", Rarity.PROMO, [TRAINER, ITEM]),
-  POKEMON_PAL_CITY_3 ("Pokémon Pal City", "3", Rarity.PROMO, [TRAINER, STADIUM]),
-  STRIKING_BACK_MEWTWO_4 ("Striking Back Mewtwo", "4", Rarity.PROMO, [BASIC, POKEMON, OWNERS_POKEMON, _PSYCHIC_]),
-  EXPLOSIVE_BIRTH_LUGIA_5 ("Explosive Birth Lugia", "5", Rarity.PROMO, [BASIC, POKEMON, OWNERS_POKEMON, _COLORLESS_]),
-  CRYSTAL_TOWER_S_ENTEI_6 ("Crystal Tower's Entei", "6", Rarity.PROMO, [BASIC, POKEMON, OWNERS_POKEMON, _FIRE_]),
-  TIMELESS_CELEBI_7 ("Timeless Celebi", "7", Rarity.PROMO, [BASIC, POKEMON, OWNERS_POKEMON, _GRASS_]),
-  ALTO_MARE_S_LATIAS_8 ("Alto Mare's Latias", "8", Rarity.PROMO, [BASIC, POKEMON, OWNERS_POKEMON, _COLORLESS_]),
-  ALTO_MARE_S_LATIOS_9 ("Alto Mare's Latios", "9", Rarity.PROMO, [BASIC, POKEMON, OWNERS_POKEMON, _COLORLESS_]),
-  SEVEN_NIGHTS_JIRACHI_10 ("Seven Nights Jirachi", "10", Rarity.PROMO, [BASIC, POKEMON, OWNERS_POKEMON, _METAL_]),
-  VISITOR_DEOXYS_11 ("Visitor Deoxys", "11", Rarity.PROMO, [BASIC, POKEMON, OWNERS_POKEMON, _PSYCHIC_]),
-  TREE_OF_BEGINNING_S_MEW_12 ("Tree of Beginning's Mew", "12", Rarity.PROMO, [BASIC, POKEMON, OWNERS_POKEMON, _PSYCHIC_]),
-  WAVE_GUIDING_HERO_LUCARIO_13 ("Wave-Guiding Hero Lucario", "13", Rarity.PROMO, [BASIC, POKEMON, OWNERS_POKEMON, _FIGHTING_]),
-  PRINCE_OF_THE_SEA_MANAPHY_14 ("Prince of the Sea Manaphy", "14", Rarity.PROMO, [BASIC, POKEMON, OWNERS_POKEMON, _WATER_]);
-    
+  STRIKING_BACK_MEWTWO_1 ("Striking Back Mewtwo", "1", Rarity.PROMO, [BASIC, POKEMON, OWNERS_POKEMON, _PSYCHIC_]),
+  EXPLOSIVE_BIRTH_LUGIA_2 ("Explosive Birth Lugia", "2", Rarity.PROMO, [BASIC, POKEMON, OWNERS_POKEMON, _COLORLESS_]),
+  CRYSTAL_TOWER_S_ENTEI_3 ("Crystal Tower's Entei", "3", Rarity.PROMO, [BASIC, POKEMON, OWNERS_POKEMON, _FIRE_]),
+  TIMELESS_CELEBI_4 ("Timeless Celebi", "4", Rarity.PROMO, [BASIC, POKEMON, OWNERS_POKEMON, _GRASS_]),
+  ALTO_MARE_S_LATIAS_5 ("Alto Mare's Latias", "5", Rarity.PROMO, [BASIC, POKEMON, OWNERS_POKEMON, _COLORLESS_]),
+  ALTO_MARE_S_LATIOS_6 ("Alto Mare's Latios", "6", Rarity.PROMO, [BASIC, POKEMON, OWNERS_POKEMON, _COLORLESS_]),
+  SEVEN_NIGHTS_JIRACHI_7 ("Seven Nights Jirachi", "7", Rarity.PROMO, [BASIC, POKEMON, OWNERS_POKEMON, _METAL_]),
+  VISITOR_DEOXYS_8 ("Visitor Deoxys", "8", Rarity.PROMO, [BASIC, POKEMON, OWNERS_POKEMON, _PSYCHIC_]),
+  TREE_OF_BEGINNING_S_MEW_9 ("Tree of Beginning's Mew", "9", Rarity.PROMO, [BASIC, POKEMON, OWNERS_POKEMON, _PSYCHIC_]),
+  WAVE_GUIDING_HERO_LUCARIO_10 ("Wave-Guiding Hero Lucario", "10", Rarity.PROMO, [BASIC, POKEMON, OWNERS_POKEMON, _FIGHTING_]),
+  PRINCE_OF_THE_SEA_MANAPHY_11 ("Prince of the Sea Manaphy", "11", Rarity.PROMO, [BASIC, POKEMON, OWNERS_POKEMON, _WATER_]);
+
   static Type C = COLORLESS, R = FIRE, F = FIGHTING, G = GRASS, W = WATER, P = PSYCHIC, L = LIGHTNING, M = METAL, D = DARKNESS;
 
   protected CardTypeSet cardTypes;
@@ -48,7 +45,7 @@ public enum JapaneseDPPromos implements LogicCardInfo {
   protected Rarity rarity;
   protected String collectionLineNo;
 
-  JapaneseDPPromos(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
+  Jap10thMovie(String name, String collectionLineNo, Rarity rarity, List<CardType> cardTypes) {
     this.cardTypes = new CardTypeSet(cardTypes as CardType[]);
     this.name = name;
     this.rarity = rarity;
@@ -77,7 +74,7 @@ public enum JapaneseDPPromos implements LogicCardInfo {
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.JapaneseDPPromos;
+    return tcgwars.logic.card.Collection.JAP_10TH_MOVIE;
   }
 
   @Override
@@ -93,56 +90,7 @@ public enum JapaneseDPPromos implements LogicCardInfo {
   @Override
   public Card getImplementation() {
     switch (this) {
-      case MIRACLE_DIAMOND_1:
-        return itemCard (this) {
-          text "Look at all of your face-down Prize cards. You may choose 1 Trainer, Supporter, or Stadium card you find there, show it to your opponent, and put it into your hand. If you do, put this card as a Prize card face up instead of discarding it."
-          def tar = my.prizeCardSet.faceDownCards.select(hidden: false, min: 0, "Choose a trainer, supporter, or stadium card from your prizes.", {it.cardTypes.isIn(ITEM, SUPPORTER, STADIUM)})
-          if (tar) {
-            tar.showToOpponent("Your opponent has swapped this prize card with Miracle Diamond.").moveTo(my.hand)
-            thisCard.moveTo(hidden:true, my.prizeCardSet)
-            my.prizeCardSet.setVisible(thisCard, true)
-          }
-          playRequirement{
-            assert my.prizeCardSet.faceDownCards.size() > 0 : "You cannot use this card if all of your prizes are face-up."
-          }
-        };
-      case MYSTERIOUS_PEARL_2:
-        return itemCard (this) {
-          text "Look at all of your face-down Prize cards. You may choose 1 Pokémon you find there, show it to your opponent, and put it into your hand. If you do, put this card as a Prize card face up instead of discarding it."
-          def tar = my.prizeCardSet.faceDownCards.select(hidden: false, min: 0, "Choose a Pokemon card from your prizes.", {it.cardTypes.is(POKEMON)})
-          if (tar) {
-            tar.showToOpponent("Your opponent has swapped this prize card with Mysterious Pearl.").moveTo(my.hand)
-            thisCard.moveTo(hidden:true, my.prizeCardSet)
-            my.prizeCardSet.setVisible(thisCard, true)
-          }
-          playRequirement{
-            assert my.prizeCardSet.faceDownCards.size() > 0 : "You cannot use this card if all of your prizes are face-up."
-          }
-        };
-      case POKEMON_PAL_CITY_3:
-        return stadium (this) {
-          text "This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card.\nLook at the top 7 cards in your deck. Choose as many Basic Pokémon cards as you like and put those cards onto your Bench. Put the other cards back on top of your deck. Shuffle your deck afterward. (Ignore this effect if your Bench is full.)"
-          def lastTurn=0
-          def actions=[]
-          onPlay {
-            actions=action(thisCard, "Stadium: Pokémon Pal City") {
-              assert my.deck : "Your deck is empty"
-              assert my.bench.notFull : "Your bench is full"
-              assert lastTurn != bg().turnCount : "You've already used Pokémon Pal City this turn."
-              bc "Used Pokémon Pal City"
-              lastTurn = bg().turnCount
-              def top = my.deck.subList(0,7)
-              top.select(min:0,max:my.bench.freeBenchCount,"Choose as many basic Pokemon as you like",it.cardTypes.is(BASIC)).each {
-                benchPCS(it)
-              }
-              shuffleDeck()
-            }
-          }
-          onRemoveFromPlay{
-            actions.each { bg().gm().unregisterAction(it) }
-          }
-        };
-      case STRIKING_BACK_MEWTWO_4:
+      case STRIKING_BACK_MEWTWO_1:
         return basic  (this, hp:HP090, type:P, retreatCost:2) {
           weakness W, PLUS30
           move "Barrier", {
@@ -162,7 +110,7 @@ public enum JapaneseDPPromos implements LogicCardInfo {
             }
           }
         };
-      case EXPLOSIVE_BIRTH_LUGIA_5:
+      case EXPLOSIVE_BIRTH_LUGIA_2:
         return basic  (this, hp:HP100, type:C, retreatCost:3) {
           weakness P, PLUS30
           resistance F, MINUS20
@@ -187,7 +135,7 @@ public enum JapaneseDPPromos implements LogicCardInfo {
             }
           }
         };
-      case CRYSTAL_TOWER_S_ENTEI_6:
+      case CRYSTAL_TOWER_S_ENTEI_3:
         return basic  (this, hp:HP080, type:R, retreatCost:2) {
           weakness W, PLUS20
           move "Roar", {
@@ -215,7 +163,7 @@ public enum JapaneseDPPromos implements LogicCardInfo {
             }
           }
         };
-      case TIMELESS_CELEBI_7:
+      case TIMELESS_CELEBI_4:
         return basic  (this, hp:HP060, type:G, retreatCost:1) {
           weakness F, PLUS10
           move "Heal Bell", {
@@ -236,7 +184,7 @@ public enum JapaneseDPPromos implements LogicCardInfo {
             }
           }
         };
-      case ALTO_MARE_S_LATIAS_8:
+      case ALTO_MARE_S_LATIAS_5:
         return basic  (this, hp:HP070, type:C, retreatCost:1) {
           weakness C, PLUS20
           resistance F, MINUS20
@@ -258,7 +206,7 @@ public enum JapaneseDPPromos implements LogicCardInfo {
             }
           }
         };
-      case ALTO_MARE_S_LATIOS_9:
+      case ALTO_MARE_S_LATIOS_6:
         return basic  (this, hp:HP070, type:C, retreatCost:1) {
           weakness C, PLUS20
           resistance F, MINUS20
@@ -279,7 +227,7 @@ public enum JapaneseDPPromos implements LogicCardInfo {
             }
           }
         };
-      case SEVEN_NIGHTS_JIRACHI_10:
+      case SEVEN_NIGHTS_JIRACHI_7:
         return basic  (this, hp:HP060, type:M, retreatCost:1) {
           weakness R, PLUS10
           resistance P, MINUS20
@@ -323,7 +271,7 @@ public enum JapaneseDPPromos implements LogicCardInfo {
             }
           }
         };
-      case VISITOR_DEOXYS_11:
+      case VISITOR_DEOXYS_8:
         return basic  (this, hp:HP080, type:P, retreatCost:2) {
           weakness P, PLUS20
           move "Refresh", {
@@ -340,11 +288,10 @@ public enum JapaneseDPPromos implements LogicCardInfo {
             onAttack {
               damage 60
               decreasedBaseDamageNextTurn("Psycho Boost", hp(30))
-              }
             }
           }
         };
-      case TREE_OF_BEGINNING_S_MEW_12:
+      case TREE_OF_BEGINNING_S_MEW_9:
         return basic  (this, hp:HP060, type:P, retreatCost:1) {
           weakness P, PLUS10
           move "Teleport", {
@@ -365,7 +312,7 @@ public enum JapaneseDPPromos implements LogicCardInfo {
             }
           }
         };
-      case WAVE_GUIDING_HERO_LUCARIO_13:
+      case WAVE_GUIDING_HERO_LUCARIO_10:
         return basic  (this, hp:HP080, type:F, retreatCost:1) {
           weakness P, PLUS20
           move "Aura Sphere", {
@@ -401,7 +348,7 @@ public enum JapaneseDPPromos implements LogicCardInfo {
             }
           }
         };
-      case PRINCE_OF_THE_SEA_MANAPHY_14:
+      case PRINCE_OF_THE_SEA_MANAPHY_11:
         return basic  (this, hp:HP070, type:W, retreatCost:1) {
           weakness L, PLUS20
           move "Aqua Ring", {

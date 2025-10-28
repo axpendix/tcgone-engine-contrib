@@ -127,7 +127,7 @@ public enum Web implements LogicCardInfo {
 
   @Override
   public tcgwars.logic.card.Collection getCollection() {
-    return tcgwars.logic.card.Collection.Web;
+    return tcgwars.logic.card.Collection.WEB;
   }
 
   @Override
@@ -152,7 +152,7 @@ public enum Web implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              delayed (priority: LAST){ //Taken from BS1 BULBASAUR
+              delayed (priority: LAST){
                 before APPLY_ATTACK_DAMAGES, {
                   if(bg.dm().find{it.to == defending && it.from == self && it.dmg.value}) {
                     heal 10, self
@@ -319,6 +319,9 @@ public enum Web implements LogicCardInfo {
           move "Energy Spike", {
             text "Search your deck for a basic Energy card and attach it to 1 of your Pokémon. Shuffle your deck afterward."
             energyCost L, L, L
+            attackRequirement {
+              assert my.deck : "Deck is empty"
+            }
             onAttack {
               deck.search (cardTypeFilter(BASIC_ENERGY)).each{
                 attachEnergy(my.all.select("Attach the Energy to?"), it)
@@ -339,7 +342,7 @@ public enum Web implements LogicCardInfo {
             delayedA {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each {
-                  if (!self.active && it.to == self && it.notNoEffect) {
+                  if (self.benched && it.to == self && it.notNoEffect && it.dmg.value) {
                     bc "Go Underground prevents all damage"
                     it.dmg=hp(0)
                   }
@@ -401,13 +404,19 @@ public enum Web implements LogicCardInfo {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
             "Look at your opponent's hand. If he or she has any Trainer cards, choose 1 of them. Your opponent shuffles that card into his or her deck."
           onPlay {
-            def card = opp.hand.select(min:0, max: 1,"Look at your opponent's hand. If he or she has any Trainer cards, choose 1 of them. Your opponent shuffles that card into his or her deck. ", cardTypeFilter(TRAINER))
-                if (card.notEmpty()) {
-                  card.moveTo(opp.deck)
+            def list = opp.hand.shuffledCopy()
+            if (list.filterByType(TRAINER).empty) {
+              list.showToMe("Your opponent's hand. No trainers found in it.")
+            } else {
+              list = list.select(count: 1, "Opponent's hand. If there is a Trainer card, choose 1 of them to have your opponent shuffle that card into their deck", cardTypeFilter(TRAINER))
+              if(list) {
+                list.showToOpponent("Opponent played Rocket's Sneak Attack and this card from your hand will be shuffled into your deck").moveTo(opp.deck)
+                shuffleOppDeck()
+              }
             }
           }
           playRequirement{
-            assert opp.hand : "Your opponent's hand is empty"
+            assert opp.hand
           }
         };
       case DARK_VENUSAUR_41:
