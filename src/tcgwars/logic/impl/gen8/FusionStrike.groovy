@@ -26,6 +26,7 @@ import tcgwars.logic.effect.blocking.*;
 import tcgwars.logic.effect.event.*;
 import tcgwars.logic.effect.getter.*;
 import tcgwars.logic.effect.special.*;
+import tcgwars.logic.exception.*;
 import tcgwars.logic.util.*;
 
 /**
