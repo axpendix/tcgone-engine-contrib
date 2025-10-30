@@ -171,7 +171,7 @@ public enum Web implements LogicCardInfo {
           }
         };
       case NIDORAN_MALE_2:
-        return copy(VendingMachine.NIDORAN_MALE_8, this);
+        return copy(VendingMachine.NIDORAN_M_9, this);
       case VENONAT_3:
         return copy(VendingMachine.VENONAT_15, this);
       case EXEGGCUTE_4:
@@ -242,8 +242,8 @@ public enum Web implements LogicCardInfo {
         return copy (WizardsBlackStarPromos.MARILL_29, this);
       case VOLTORB_11:
         return copy (BaseSet.VOLTORB, this);
-      case SLOWPOKE_12:
-        return copy (UnnumberedPromos.SLOWPOKE_1, this);
+//      case SLOWPOKE_12:
+//        return copy (UnnumberedPromos.SLOWPOKE_1, this);
       case DIGLETT_13:
         return basic (this, hp:HP050, type:F, retreatCost:1) {
           weakness G
