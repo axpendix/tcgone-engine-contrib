@@ -386,3 +386,4 @@ public enum AurasLucario implements LogicCardInfo {
 		}
 	}
 }
+
