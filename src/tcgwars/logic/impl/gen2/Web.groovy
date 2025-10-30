@@ -2,7 +2,7 @@ package tcgwars.logic.impl.gen2
 
 // I don't know what the enumid is for vending machine, unnumbered promos, best of game
 import tcgwars.logic.impl.gen1.VendingMachine;
-import tcgwars.logic.impl.gen2.BestOfGame;
+import tcgwars.logic.impl.gen1.BestOfGame;
 import tcgwars.logic.impl.gen1.UnnumberedPromos;
 
 import tcgwars.logic.impl.gen1.BaseSet;
