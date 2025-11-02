@@ -288,7 +288,7 @@ public enum Jap10thMovie implements LogicCardInfo {
             energyCost P, P, C
             onAttack {
               damage 60
-              decreasedBaseDamageNextTurn("Psycho Boost", hp(30))
+              decreasedBaseDamageNextTurn(self, "Psycho Boost", hp(30))
             }
           }
         };
@@ -353,20 +353,32 @@ public enum Jap10thMovie implements LogicCardInfo {
         return basic  (this, hp:HP070, type:W, retreatCost:1) {
           weakness L, PLUS20
           move "Aqua Ring", {
-            text "Switch Prince of the Sea Manaphy with one of your Benched Pokémon."
+            text "20 damage. Switch Prince of the Sea Manaphy with one of your Benched Pokémon."
             energyCost W
-            damage 20
             onAttack {
+              damage 20
               switchYourActive()
             }
           }
           move "Heart Swap", {
             text "Choose 1 of your opponent's Benched Pokémon. Switch all damage counters on that Pokémon with those on your opponent's Active Pokémon. (If an effect of this attack is prevented, this attack does nothing.)"
             energyCost W, C
+            attackRequirement {
+              assert opp.bench.notEmpty : "Opponent's bench cannot be empty"
+            }
             onAttack {
-              def src = opp.all.findAll{it.numberOfDamageCounters}.select("Choose the Pokémon to move damage counters from")
-              directDamage 10 * src.numberOfDamageCounters
-              healAll(src)
+              def pkmn1 = opp.bench.select("Choose the Pokémon to move damage counters from")
+              def pkmn2 = defending
+              if (pkmn1.numberOfDamageCounters != pkmn2.numberOfDamageCounters) {
+                targeted(pkmn1) {
+                  targeted(pkmn2) {
+                    def tmp = pkmn1.damage
+                    pkmn1.damage = pkmn2.damage
+                    pkmn2.damage = tmp
+                    bc "Swapped damage counters of $pkmn1 and $pkmn2!"
+                  }
+                }
+              }
             }
           }
         };
