@@ -1178,12 +1178,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
           resistance FIGHTING, MINUS30
           pokeBody "Dark Scale", {
             text "If Dark Gyarados is your Active Pokémon and is Knocked Out by an opponent’s attack, put 3 damage counters on the Attacking Pokémon."
-            delayedA {
-              before KNOCKOUT, self, {
-                if((ef as Knockout).byDamageFromAttack){
-                  directDamage 30,bg.currentTurn.pbg.active
-                }
-              }
+            ifActiveAndKnockedOutByAttack (delegate) {pcs->
+              directDamage(30, pcs)
             }
           }
           move "Sharp Fang", {
