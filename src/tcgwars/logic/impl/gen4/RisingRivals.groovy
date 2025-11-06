@@ -709,8 +709,8 @@ public enum RisingRivals implements LogicCardInfo {
               shuffleDeck()
               opp.hand.moveTo(hidden:true,opp.deck)
               shuffleOppDeck()
-              draw choose((1..4),"Draw how many cards?")
-              draw oppChoose((1..4),"Draw how many cards?"), TargetPlayer.OPPONENT
+              drawUpTo(4)
+              drawUpTo(4, TargetPlayer.OPPONENT)
             }
           }
           move "Payback", {

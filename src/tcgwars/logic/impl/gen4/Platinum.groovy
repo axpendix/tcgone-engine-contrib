@@ -536,8 +536,8 @@ public enum Platinum implements LogicCardInfo {
                 opp.hand.moveTo(hidden: true, opp.deck)
                 shuffleDeck()
                 shuffleOppDeck()
-                draw choose(1..4,"Let Loose: Draw how many cards?", 4)
-                draw oppChoose(1..4,"Let Loose: Draw how many cards?", 4), TargetPlayer.OPPONENT
+                drawUpTo(4)
+                drawUpTo(4, TargetPlayer.OPPONENT)
               }
             }
           }

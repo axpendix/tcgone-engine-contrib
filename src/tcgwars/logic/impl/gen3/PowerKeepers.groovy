@@ -1768,7 +1768,7 @@ public enum PowerKeepers implements LogicCardInfo {
         text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card." +
           "Draw a number of cards up to the number of your opponent's Pokémon in play. If you have 7 or more cards (including this one) in your hand, you can't play this card."
         onPlay {
-          draw choose(1..opp.all.size(),"How many cards would you like to draw?")
+          drawUpTo(opp.all.size())
         }
         playRequirement {
           assert my.deck : "Your deck is empty!"

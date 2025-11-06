@@ -1790,8 +1790,8 @@ public enum LegendsAwakened implements LogicCardInfo {
                 shuffleOppDeck()
               }
 
-              if (toDraw) draw( choose(1..toDraw,"How many cards would you like to draw?") as int )
-              if (oppToDraw) draw( oppChoose(1..oppToDraw, "How many cards would you like to draw?") as int, TargetPlayer.OPPONENT )
+              drawUpTo(toDraw)
+              drawUpTo(oppToDraw, TargetPlayer.OPPONENT)
             }
           }
           move "Super Eggsplosion", {

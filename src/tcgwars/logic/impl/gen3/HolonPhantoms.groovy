@@ -1319,7 +1319,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           }
           onAttack {
             def maxCards = my.all.count{ it.topPokemonCard.cardTypes.is(DELTA) }
-            draw choose(1..maxCards, "Draw how many cards?")
+            drawUpTo(maxCards)
           }
         }
       };

@@ -328,8 +328,7 @@ public enum RubySapphireNG implements LogicCardInfo {
 
             my.hand.filterByType(ENERGY).select("Discard").discard()
             if (my.deck){
-              def maxDraw = Math.min(3, my.deck.size())
-              draw choose(1..maxDraw, "Draw how many cards?")
+              drawUpTo(3)
             }
           }
         }

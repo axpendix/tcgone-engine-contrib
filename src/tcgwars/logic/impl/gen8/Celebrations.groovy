@@ -541,8 +541,8 @@ public enum Celebrations implements ImplOnlyCardInfo {
       case SHINING_MAGIKARP_66: return cardng (stub) {
         moveAttack "Gold Scale", {
           // Your opponent may draw 2 cards. Either way, you may draw 2 cards.
-          draw oppChoose([0,2], ["0","2"], "Opponent used Gold Scale. Draw how many cards?", 2), TargetPlayer.OPPONENT
-          draw choose([0,2], ["0","2"], "Draw how many cards?", 2)
+          drawUpTo(2, TargetPlayer.OPPONENT)
+          drawUpTo(2)
         }
         moveAttack "Dragon Bond", {
           // Search your deck for a card named Gyarados, Dark Gyarados, or Shining Gyarados. Show it to your opponent and put it into your hand. Shuffle your deck afterward.

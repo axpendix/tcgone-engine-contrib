@@ -3260,8 +3260,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
               rockPaperScissors ({myMaxDraw = 6}, {oppMaxDraw = 6})
               //flip 1, {myMaxDraw = 6}, {oppMaxDraw = 6}
 
-              draw choose(1..myMaxDraw,"How many cards would you like to draw?")
-              draw (oppChoose(1..oppMaxDraw,"How many cards would you like to draw?"),TargetPlayer.OPPONENT)
+              drawUpTo(myMaxDraw)
+              drawUpTo(oppMaxDraw, TargetPlayer.OPPONENT)
           }
           playRequirement{
           }
