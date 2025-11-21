@@ -138,7 +138,7 @@ public enum HolonPhantoms implements LogicCardInfo {
   METAL_ENERGY_95 ("Metal Energy", "95", Rarity.RARE, [ENERGY, SPECIAL_ENERGY]),
   MULTI_ENERGY_96 ("Multi Energy", "96", Rarity.RARE, [ENERGY, SPECIAL_ENERGY]),
   DARK_METAL_ENERGY_97 ("Dark Metal Energy", "97", Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
-  DELTA_RAINBOW_ENERGY_98 ("δ Rainbow Energy", "98", Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
+  DELTA_RAINBOW_ENERGY_98 ("Delta Rainbow Energy", "98", Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
   CRAWDAUNT_EX_99 ("Crawdaunt ex", "99", Rarity.ULTRARARE, [POKEMON, EVOLUTION, EX, STAGE1, _WATER_]),
   MEW_EX_100 ("Mew ex", "100", Rarity.ULTRARARE, [POKEMON, BASIC, EX, _PSYCHIC_]),
   MIGHTYENA_EX_101 ("Mightyena ex", "101", Rarity.ULTRARARE, [POKEMON, EVOLUTION, EX, STAGE1, _DARKNESS_]),
