@@ -130,7 +130,7 @@ public enum DragonFrontiers implements LogicCardInfo {
   HOLON_ENERGY_GL_85 ("Holon Energy GL", "85", Rarity.RARE, [ENERGY, SPECIAL_ENERGY]),
   HOLON_ENERGY_WP_86 ("Holon Energy WP", "86", Rarity.RARE, [ENERGY, SPECIAL_ENERGY]),
   BOOST_ENERGY_87 ("Boost Energy", "87", Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
-  DELTA_RAINBOW_ENERGY_88 ("δ Rainbow Energy", "88", Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
+  DELTA_RAINBOW_ENERGY_88 ("Delta Rainbow Energy", "88", Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
   SCRAMBLE_ENERGY_89 ("Scramble Energy", "89", Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
   ALTARIA_EX_DELTA_90 ("Altaria ex", "90", Rarity.ULTRARARE, [POKEMON, EVOLUTION, STAGE1, EX, DELTA, _WATER_]),
   DRAGONITE_EX_DELTA_91 ("Dragonite ex", "91", Rarity.ULTRARARE, [POKEMON, EVOLUTION, STAGE2, EX, DELTA, _GRASS_]),
@@ -239,8 +239,8 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C, C
           onAttack {
             if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon?")) {
-              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
-                damage 20 
+              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) {
+                damage 20
               }
             } else {
               damage 20

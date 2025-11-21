@@ -350,11 +350,11 @@ public enum HolonPhantoms implements LogicCardInfo {
           actionA {
             checkLastTurn()
             checkNoSPC()
-            assert my.hand.filterByType(BASIC_ENERGY) || my.hand.any{it.name.contains("δ Rainbow Energy")}: "No Basic Energy or δ Rainbow Energy in Hand"
+            assert my.hand.filterByType(BASIC_ENERGY) || my.hand.any{it.name.contains("Delta Rainbow Energy")}: "No Basic Energy or Delta Rainbow Energy in Hand"
             assert my.all.any{ it.topPokemonCard.cardTypes.is(DELTA) } : "No Delta Pokémon in play"
             //TODO: Handle Cursed Glare, shouldn't be allowed to attach in that case.
             powerUsed()
-            def energy = my.hand.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"}).select("Select an energy to attach to one of your δ Pokémon.").first()
+            def energy = my.hand.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "Delta Rainbow Energy"}).select("Select an energy to attach to one of your δ Pokémon.").first()
             def tar = my.all.findAll{ it.topPokemonCard.cardTypes.is(DELTA) }.select("Select a δ Pokémon to attach the Energy to.")
             attachEnergy(tar, energy, PLAY_FROM_HAND)
           }
@@ -1157,9 +1157,9 @@ public enum HolonPhantoms implements LogicCardInfo {
             checkLastTurn()
             checkNoSPC()
             assert bg.ownPBG.playedSupporter.find {it.name.contains("Holon")} : "You don't have a Holon Supporter in play"
-            assert my.discard.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"}) : "You dont't have the required energy in your discard"
+            assert my.discard.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "Delta Rainbow Energy"}) : "You dont't have the required energy in your discard"
             powerUsed()
-            my.discard.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "δ Rainbow Energy"}).select("Choose an energy to put into your hand").showToOpponent("Energy card to be put to hand").moveTo(my.hand)
+            my.discard.findAll({it.cardTypes.is(BASIC_ENERGY) || it.name == "Delta Rainbow Energy"}).select("Choose an energy to put into your hand").showToOpponent("Energy card to be put to hand").moveTo(my.hand)
           }
         }
         move "Hook", {
