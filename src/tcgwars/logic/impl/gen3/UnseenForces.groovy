@@ -2180,7 +2180,7 @@ public enum UnseenForces implements LogicCardInfo {
         onPlay {
           eff = delayed (priority: BEFORE_LAST) {
             before (KNOCKOUT, self) {
-              if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite && ef.attackingPokemon?.inPlay) {
+              if ((ef as Knockout).byDamageFromAttack && ef.pokemonToBeKnockedOut == self && ef.attackingPokemon?.inPlay && self.active) {
                 bc "Curse Powder activates"
                 directDamage 30, ef.attackingPokemon
               }
