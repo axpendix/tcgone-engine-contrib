@@ -1030,7 +1030,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           text "Once during your turn (before your attack), you may choose a card from your hand and put it as a Prize card face up. If you do, choose 1 of your face-down Prize cards without looking and put it into your hand. This power can't be used if Slowking is affected by a Special Condition or if all of your Prize cards are face up."
           actionA {
             checkNoSPC()
-            assert !my.prizeCardSet.allVisible : "All prizes are face up"
+            assert my.prizeCardSet.faceDownCards : "All prizes are face up"
             assert my.hand : "You don't have cards in your hand"
             checkLastTurn()
             powerUsed()

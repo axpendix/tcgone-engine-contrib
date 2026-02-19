@@ -2918,12 +2918,12 @@ public enum TeamRocketReturns implements LogicCardInfo {
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card.\nEach player plays with his or her Prize cards face up for the rest of the game."
           onPlay {
-            my.prizeCardSet.allVisible=true
-            opp.prizeCardSet.allVisible=true
+            my.prizeCardSet.setAllCurrentVisible()
+            opp.prizeCardSet.setAllCurrentVisible()
             bc "All prizes are visible until the end of game!"
           }
           playRequirement {
-            assert !(my.prizeCardSet.allVisible && opp.prizeCardSet.allVisible) : "All prizes are already visible"
+            assert my.prizeCardSet.faceDownCards || opp.prizeCardSet.faceDownCards : "All prizes are already visible"
           }
         };
       default:
