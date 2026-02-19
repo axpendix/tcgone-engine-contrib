@@ -3384,12 +3384,6 @@ public enum Platinum implements LogicCardInfo {
           pokeBody "Invisible Tentacles", {
             text "Whenever your opponent’s Pokémon tries to attack, your opponent discards 1 card from his or her hand. (If your opponent can’t discard 1 card, your opponent’s Pokémon can’t attack.) You can’t use more than 1 Invisible Tentacles Poké-Body each turn."
             delayedA {
-              before CHECK_ATTACK_REQUIREMENTS, {
-                if (ef.attacker.owner == self.owner.opposite && self.owner.opposite.pbg.hand.empty) {
-                  wcu "Invisible Tentacles prevents attacking"
-                  prevent()
-                }
-              }
               before ATTACK_MAIN, {
                 if(ef.attacker.owner == self.owner.opposite && bg.em().retrieveObject("Invisible_Tentacles") != bg.turnCount) {
                   bg.em().storeObject("Invisible_Tentacles", bg.turnCount)
