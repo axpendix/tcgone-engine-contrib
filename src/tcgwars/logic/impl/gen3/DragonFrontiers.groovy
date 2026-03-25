@@ -1992,7 +1992,7 @@ public enum DragonFrontiers implements LogicCardInfo {
       return evolution (this, from:"Seadra", hp:HP140, type:F, retreatCost:1) {
         weakness L
         pokeBody "Extra Smoke", {
-          text "Any damage done to your Stage 2 Pokémon-ex by your opponent's attacks is reduced by 10 (before applying Weakness and Resistance)."
+          text "Any damage done to your Stage 2 Pokémon-ex by your opponent's attacks is reduced by 10."
           delayedA {
             // ERRATA: Extra Smoke was mistranslated; it is supposed to be an effect on your Stage 2 ex, meaning it gets applied AFTER W&R, and Swift will ignore it. Thus, the compendium entry "Feb 22, 2007 PUI Rules Team" shall be deemed void.
             before APPLY_ATTACK_DAMAGES, {
