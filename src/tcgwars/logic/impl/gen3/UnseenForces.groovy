@@ -2720,6 +2720,9 @@ public enum UnseenForces implements LogicCardInfo {
               }
             }
           }
+          onActivate {
+            clearSpecialCondition(self, [POISONED])
+          }
         }
         move "Metal Charge", {
           text "70 damage. Put 1 damage counter on Steelix ex."
@@ -2827,7 +2830,7 @@ public enum UnseenForces implements LogicCardInfo {
             // Umbreon-EX's "Darker Ring" Poké-POWER is optional. You do not have to switch one of your opponent's benched Pokémon if you do not want to. (Sep 21, 2006 PUI Rules Team)
             if (r==PLAY_FROM_HAND && opp.bench && confirm("Use Darker Ring?")) {
               powerUsed()
-              switchYourOpponentsBenchedWithActive(SRC_ABILITY)
+              switchYourOpponentsBenchedWithActive()
             }
           }
         }

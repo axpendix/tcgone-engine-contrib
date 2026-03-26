@@ -1293,6 +1293,12 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                 prevent()
               }
             }
+            onActivate {
+              if (self.specialConditions) {
+                bc "Thick Skin removes existing Special Conditions from $self."
+                clearSpecialCondition(self)
+              }
+            }
           }
           move "Poison Claws", {
             text "The Defending Pokémon is now Poisoned."
@@ -1387,6 +1393,12 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               before APPLY_SPECIAL_CONDITION,self, {
                 bc ("$self is thick Skinned!")
                 prevent()
+              }
+            }
+            onActivate {
+              if (self.specialConditions) {
+                bc "Thick Skin removes existing Special Conditions from $self."
+                clearSpecialCondition(self)
               }
             }
           }
@@ -1751,7 +1763,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               assertOppBench()
             }
             onAttack {
-              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) {
                 apply ASLEEP
               }
             }

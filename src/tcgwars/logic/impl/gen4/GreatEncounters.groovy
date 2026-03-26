@@ -1389,6 +1389,9 @@ public enum GreatEncounters implements LogicCardInfo {
                 }
               }
             }
+            onActivate {
+              clearSpecialCondition(self, [ASLEEP, PARALYZED])
+            }
           }
           move "Lava Plume", {
             text "60 damage. You may discard the top card of your deck. If you do the Defending Pokémon is now Burned."

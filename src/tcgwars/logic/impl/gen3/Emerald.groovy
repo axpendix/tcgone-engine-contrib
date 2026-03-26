@@ -1943,6 +1943,9 @@ public enum Emerald implements LogicCardInfo {
                 }
               }
             }
+            onActivate {
+              clearSpecialCondition(self, [ASLEEP, PARALYZED])
+            }
           }
           move "Searing Flame", {
             text "30 damage. The Defending Pokémon is now Burned."

@@ -1051,6 +1051,9 @@ public enum Deoxys implements LogicCardInfo {
                 }
               }
             }
+            onActivate {
+              clearSpecialCondition(self, [PARALYZED])
+            }
           }
           move "Spiral Drain", {
             text "20 damage. Remove 1 damage counter from Golbat."
@@ -1074,6 +1077,9 @@ public enum Deoxys implements LogicCardInfo {
                   prevent()
                 }
               }
+            }
+            onActivate {
+              clearSpecialCondition(self, [CONFUSED])
             }
           }
           move "Hypnoblast", {
@@ -2235,6 +2241,9 @@ public enum Deoxys implements LogicCardInfo {
                 }
               }
             }
+            onActivate {
+              clearSpecialCondition(self, [PARALYZED])
+            }
           }
           move "Bite", {
             text "10 damage."
@@ -2362,7 +2371,7 @@ public enum Deoxys implements LogicCardInfo {
       case STRENGTH_CHARM_92:
         return pokemonTool (this) {
           text "Attach a Pokémon Tool to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it.\nWhenever an attack from the Pokémon that Strength Charm is attached to does damage to the Active Pokémon, the attack does 10 more damage (before applying Weakness and Resistance). Discard Strength Charm at the end of the turn in which this Pokémon attacks."
-          //TODO: Check for older non-groovy prints to apply the correct effect of this card. 
+          //TODO: Check for older non-groovy prints to apply the correct effect of this card.
           // Got errata'd to increase damage before Weakness and Resistance
           def eff1
           def attackUsed = false

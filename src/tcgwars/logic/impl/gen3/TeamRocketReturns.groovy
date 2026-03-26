@@ -1644,10 +1644,13 @@ public enum TeamRocketReturns implements LogicCardInfo {
                 if(self.active){
                   if(self.isSPC(ASLEEP)){
                     bc "Insomnia prevents $self from being Asleep."
-                    clearSpecialCondition(self, SRC_ABILITY, [ASLEEP])
+                    clearSpecialCondition(self, [ASLEEP])
                   }
                 }
               }
+            }
+            onActivate {
+              clearSpecialCondition(self, [ASLEEP])
             }
           }
           move "Soothing Wave", {
@@ -2768,6 +2771,12 @@ public enum TeamRocketReturns implements LogicCardInfo {
                   bc "Dark and Clear prevents special conditions"
                   prevent()
                 }
+              }
+            }
+            onActivate {
+              if (self.cards.energyCount(D) && self.specialConditions) {
+                bc "Dark and Clear removes existing Special Conditions from $self."
+                clearSpecialCondition(self)
               }
             }
           }
