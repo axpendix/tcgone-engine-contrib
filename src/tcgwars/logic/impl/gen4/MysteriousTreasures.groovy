@@ -3224,23 +3224,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
         return itemCard (this) {
           text "Reveal cards from your deck until you reveal a Pokémon. Show that Pokémon to your opponent and put it into your hand. Shuffle the other revealed cards back into your deck. (If you don’t reveal a Pokémon, shuffle all the revealed cards back into your deck.)"
           onPlay {
-              //TODO: Modularize
-              def revealCard = new CardList();
-              def ind = 0
-              def curCard
-              while(ind < my.deck.size()){
-                curCard = my.deck.get(ind)
-                ind+=1
-                revealCard.add(curCard)
-                if(curCard.cardTypes.is(POKEMON))
-                  break
-              }
-              revealCard.showToMe("Drawn cards")
-              revealCard.showToOpponent("Revealed cards")
-              revealCard.clear()
-              revealCard.add(curCard)
-              revealCard.moveTo(my.hand)
-              if (ind > 1) shuffleDeck()
+            revealFromDeckUntil(POKEMON, "Pokémon")
           }
           playRequirement{
             assert my.deck

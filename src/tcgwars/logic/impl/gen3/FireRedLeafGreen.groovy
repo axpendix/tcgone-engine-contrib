@@ -1869,28 +1869,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               assert my.deck
             }
             onAttack {
-              def revealCard = new CardList();
-              def foundBasic = false
-              def ind = 0
-              def curCard
-              while(ind < my.deck.size()){
-                curCard = my.deck.get(ind)
-                ind+=1
-                revealCard.add(curCard)
-                if(curCard.cardTypes.is(BASIC)) {
-                  foundBasic = true
-                  break
-                }
-              }
-              bc "${self.owner.getPlayerUsername(bg)} revealed $ind cards from the top of the deck " + (foundBasic ? "and found $curCard" : "without finding any Basic Pokémon")
-              revealCard.showToMe("Drawn cards")
-              revealCard.showToOpponent("Revealed cards")
-              revealCard.clear()
-              if (foundBasic) {
-                revealCard.add(curCard)
-                revealCard.moveTo(my.hand)
-              }
-              shuffleDeck()
+              revealFromDeckUntil(BASIC, "Basic Pokémon")
             }
           }
           move "Bite", {

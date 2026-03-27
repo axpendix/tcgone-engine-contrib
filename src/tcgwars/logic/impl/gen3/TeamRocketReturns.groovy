@@ -1574,22 +1574,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               assert my.deck
             }
             onAttack {
-              def revealCard = new CardList();
-              def ind = 0
-              def curCard
-              while(ind < my.deck.size()){
-                curCard = my.deck.get(ind)
-                ind+=1
-                revealCard.add(curCard)
-                if(curCard.cardTypes.is(BASIC))
-                  break
-              }
-              revealCard.showToMe("Drawn cards")
-              revealCard.showToOpponent("revealed cards")
-              revealCard.clear()
-              revealCard.add(curCard)
-              revealCard.moveTo(my.hand)
-              shuffleDeck()
+              revealFromDeckUntil(BASIC, "Basic Pokémon")
             }
           }
           move "Bonemerang", {
