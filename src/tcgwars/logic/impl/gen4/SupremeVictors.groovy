@@ -286,7 +286,7 @@ public enum SupremeVictors implements LogicCardInfo {
               assertOppBench()
             }
             onAttack {
-              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
+              if (sw2(opp.bench.select("Select the new Defending Pokémon."))) {
                 apply BURNED
               }
             }
@@ -601,8 +601,8 @@ public enum SupremeVictors implements LogicCardInfo {
             energyCost W, C, C
             onAttack {
               if (opp.bench && confirm("Switch 1 of your opponent’s Benched Pokémon with the Defending Pokémon?")) {
-                if (sw2(opp.bench.select("Select the new Defending Pokémon."))) { 
-                  damage 30 
+                if (sw2(opp.bench.select("Select the new Defending Pokémon."))) {
+                  damage 30
                 }
               } else {
                 damage 30
@@ -623,6 +623,14 @@ public enum SupremeVictors implements LogicCardInfo {
           weakness R, PLUS40
           pokeBody "Green Aroma", {
             text "Remove all Special Conditions from each of your [G] Pokémon. Each of your [G] Pokémon can't be affected by any Special Conditions."
+            def greenAroma = {
+              self.owner.pbg.all.findAll{it.types.contains(G)}.each {
+                if(it.specialConditions) {
+                  bc "$thisAbility clears special conditions of $it"
+                  clearSpecialCondition(it)
+                }
+              }
+            }
             delayedA {
               before APPLY_SPECIAL_CONDITION, {
                 def pcs = ef.getTargetPokemon()
@@ -631,15 +639,12 @@ public enum SupremeVictors implements LogicCardInfo {
                   prevent()
                 }
               }
+              after ATTACH_ENERGY, { greenAroma() }
+              after ENERGY_SWITCH, { greenAroma() }
+              after DISCARD, { greenAroma() }
+              after REMOVE_FROM_PLAY, { greenAroma() }
             }
-            onActivate {
-              my.all.findAll{it.types.contains(G)}.each {
-                if(it.specialConditions) {
-                  bc "$thisAbility clears special conditions of $it"
-                  clearSpecialCondition(it)
-                }
-              }
-            }
+            onActivate { greenAroma() }
           }
           move "Desperate Pollen", {
             text "30 damage. If Venusaur already has 8 or more damage counters on it, the Defending Pokémon is now Burned, Confused, and Poisoned."
