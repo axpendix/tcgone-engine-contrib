@@ -2842,7 +2842,7 @@ public enum Stormfront implements LogicCardInfo {
               names.add card.name
             }
             if(unique > 1) {
-              my.discard.select(count:2,"Select 2 different Trainer, Supporter, or Stadium cards",{it.cardTypes.is(ITEM)||it.cardTypes.is(SUPPORTER)||it.cardTypes.is(STADIUM)}, thisCard.player, {
+              my.discard.select(count:2,"Select 2 different Trainer, Supporter, or Stadium cards",{it.cardTypes.is(ITEM)||it.cardTypes.is(SUPPORTER)||it.cardTypes.is(STADIUM)}, bg.currentThreadPlayerType, {
                 names = []
                 for (card in it) {
                   if (names.contains(card.name)) {

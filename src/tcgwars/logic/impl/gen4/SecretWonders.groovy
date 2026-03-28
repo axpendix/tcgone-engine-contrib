@@ -2651,7 +2651,7 @@ f
             }
             onAttack {
               def maxSpace = Math.min(my.bench.freeBenchCount, 3)
-              my.deck.select(min:0, max:maxSpace, "Select up to $maxSpace Basic Pokémon of different types.", cardTypeFilter(BASIC), thisCard.player, { CardList list ->
+              my.deck.select(min:0, max:maxSpace, "Select up to $maxSpace Basic Pokémon of different types.", cardTypeFilter(BASIC), bg.currentThreadPlayerType, { CardList list ->
                 TypeSet typeSet = new TypeSet()
                 for (card in list) {
                   if (typeSet.containsAny(card.types)) {
