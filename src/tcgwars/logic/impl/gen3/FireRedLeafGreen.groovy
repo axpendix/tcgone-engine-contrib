@@ -905,7 +905,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost W, C
             onAttack {
               damage 30
-              extraEnergyDamage(2,hp(20),W,thisMove)
+              extraBasicEnergyDamage(2,hp(20),W,thisMove)
             }
           }
 

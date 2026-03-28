@@ -960,7 +960,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             energyCost W
             onAttack {
               damage 20
-              extraEnergyDamage(3,hp(20),W,thisMove)
+              extraBasicEnergyDamage(3,hp(20),W,thisMove)
             }
           }
 
