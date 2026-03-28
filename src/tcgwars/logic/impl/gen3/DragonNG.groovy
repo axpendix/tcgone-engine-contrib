@@ -1561,9 +1561,13 @@ public enum DragonNG implements LogicCardInfo {
         move "Luring Flame", {
           text "Switch 1 of your opponent's Benched Pokémon with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch. The new Defending Pokémon is now Burned."
           energyCost R, C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.bench : "Your opponent has no Benched Pokémon."
+          }
           onAttack {
-
+            if(sw2(opp.bench.oppSelect("Choose a new Active Pokémon."))) {
+              apply BURNED, defending
+            }
           }
         }
       };
