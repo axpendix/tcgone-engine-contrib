@@ -1021,17 +1021,23 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         move "Loving Draw", {
           text "Draw cards until you have the same number of cards in your hand as your opponent has in his or her hand."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.hand.size() - my.hand.size() > 0 : "Your hand size is already greater than or equal to opponent hand size. "
+          }
           onAttack {
-
+            draw(opp.hand.size() - my.hand.size())
           }
         }
         move "Sweet Temptation", {
           text "Switch 1 of your opponent's Benched Pokémon with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch. This attack does 10 damage to the new Defending Pokémon."
           energyCost W
-          attackRequirement {}
+          attackRequirement {
+            assert opp.bench : "Your opponent has no Benched Pokémon."
+          }
           onAttack {
-
+            if(sw2(opp.bench.oppSelect("Choose a new Active Pokémon."))) {
+              damage 10
+            }
           }
         }
       };
@@ -1994,7 +2000,13 @@ public enum HiddenLegendsNG implements LogicCardInfo {
           energyCost M, C
           attackRequirement {}
           onAttack {
-            damage 40
+            if(opp.bench && confirm("Switch 1 of your opponent's Benched Pokémon with the Defending Pokémon?")) {
+              if(sw2(opp.bench.oppSelect("Choose a new Active Pokémon."))) {
+                damage 40
+              }
+            } else {
+              damage 40
+            }
           }
         }
         move "Extra Comet Punch", {
@@ -2012,9 +2024,14 @@ public enum HiddenLegendsNG implements LogicCardInfo {
         move "Intense Glare", {
           text "Switch 1 of your opponent's Benched Pokémon with 1 of the Defending Pokémon. Your opponent chooses the Defending Pokémon to switch. The new Defending Pokémon is now Burned and Confused."
           energyCost C
-          attackRequirement {}
+          attackRequirement {
+            assert opp.bench : "Your opponent has no Benched Pokémon."
+          }
           onAttack {
-
+            if(sw2(opp.bench.oppSelect("Choose a new Active Pokémon."))) {
+              apply BURNED, defending
+              apply CONFUSED, defending
+            }
           }
         }
         move "Fire Blast", {
