@@ -203,22 +203,30 @@ public enum TeamMagmaVsTeamAquaNG implements LogicCardInfo {
         }
       };
       case TEAM_AQUA_S_CRAWDAUNT_2:
-      return evolution (this, from:"null", hp:HP080, type:[W, D], retreatCost:1) {
+      return evolution (this, from:"Team Aqua's Corphish", hp:HP080, type:[W, D], retreatCost:1) {
         weakness L
         move "Aqua Reverse", {
           text "20 damage. Before doing damage, you may choose 1 of your opponent's Benched Pokémon that has Team Magma in its name and switch it with 1 of the Defending Pokémon. Your opponent chooses which Defending Pokémon to switch."
           energyCost D, C
-          attackRequirement {}
           onAttack {
-            damage 20
+            def teamMagmaBench = opp.bench.findAll { it.name.contains("Team Magma") }
+            if(teamMagmaBench && confirm("Switch 1 of your opponent's Benched Team Magma Pokémon with the Defending Pokémon?")) {
+              if(sw2(teamMagmaBench.select("Choose a new Active Pokémon."))) {
+                damage 20
+              }
+            } else {
+              damage 20
+            }
           }
         }
         move "Deep Impact", {
           text "40 damage. If the Defending Pokémon already has any damage counters on it, the Defending Pokémon is now Confused."
           energyCost W, W, C
-          attackRequirement {}
           onAttack {
             damage 40
+            if (defending.numberOfDamageCounters > 0) {
+              applyAfterDamage CONFUSED
+            }
           }
         }
       };
