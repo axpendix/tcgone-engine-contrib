@@ -3155,15 +3155,20 @@ public enum ChillingReign implements LogicCardInfo {
           bwAbility "Brazen Tail", {
             text "Prevent all effects of your opponent's Item and Supporter cards that would discard Energy from your Pokémon or return Energy from your Pokémon to your hand or deck."
             delayedA {
-              before MOVE_CARD_INNER,null,TRAINER_CARD,{
-                Card sourceCard=e.sourceCard
+              before(MOVE_CARD_INNER, null, null, null) {
+                Card sourceCard = e.sourceCard
+                if (!sourceCard) {
+                  def se = bg().em().currentSourceEffect
+                  sourceCard = se?.sourceCard
+                }
                 MoveCardInner eff = ef
-                if(sourceCard && sourceCard.player!=self.owner && sourceCard.cardTypes.isIn(ITEM, SUPPORTER)
-                  && eff.fromPokemon && eff.fromPokemon.owner==self.owner
+                def zt = eff.toList?.zoneType
+                // Do not use `eff.toList && ...`: in Groovy an empty CardList is falsy, so the first discard to an empty pile would skip Brazen Tail.
+                def movingEnergyToHandDeckOrDiscard = eff.toList != null && (zt == CardList.ZoneType.DISCARD || zt == CardList.ZoneType.DECK || zt == CardList.ZoneType.HAND)
+                if (sourceCard && sourceCard.player != self.owner && sourceCard.cardTypes.isIn(ITEM, SUPPORTER)
+                  && eff.fromPokemon && eff.fromPokemon.owner == self.owner
                   && eff.card && eff.card.cardTypes.isEnergy()
-                  && eff.toList && (eff.toList?.zoneType == CardList.ZoneType.DISCARD
-                  || eff.toList?.zoneType == CardList.ZoneType.DECK
-                  || eff.toList?.zoneType == CardList.ZoneType.HAND)) {
+                  && movingEnergyToHandDeckOrDiscard) {
                   bc "Brazen Tail prevents moving of ${eff.card}"
                   prevent()
                 }
@@ -3493,7 +3498,7 @@ public enum ChillingReign implements LogicCardInfo {
                 def target = e.getTargetPokemon()
                 if (target && ef.reason==PLAY_FROM_HAND && !target.types.contains(P)) {
                   bc "Old Cemetery activates"
-                  directDamage(20, target, TRAINER_CARD)
+                  directDamage(20, target)
                 }
               }
             }
