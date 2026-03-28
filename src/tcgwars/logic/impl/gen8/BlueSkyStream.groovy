@@ -862,12 +862,8 @@ public enum BlueSkyStream implements LogicCardInfo {
               if (tar.slatedToKO) {
                 delayed(priority: FIRST) {
                   before BEGIN_TURN, {
-                    prevent()
-                    bg.setTurnCount((ef as BeginTurn).newTurnCount)
-                    draw 1
                     my.lastTurnMove = thisMove.name
-                    bc "$thisMove.name started a new turn!"
-                    unregister()
+                    takeTurnAsCurrentPlayer(delegate, ef, "$thisMove.name started a new turn!")
                   }
                 }
               }
