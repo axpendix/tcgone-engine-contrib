@@ -228,22 +228,33 @@ public enum SandstormNG implements LogicCardInfo {
         pokeBody "Super Suction Cups", {
           text "As long as Cradily is your Active Pokémon, your opponent's Pokémon can't retreat."
           delayedA {
+            before RETREAT, {
+              if (self.active && ef.retreater.owner==self.owner.opposite) {
+                wcu "Super Suction Cups prevents retreating"
+                prevent()
+              }
+            }
           }
         }
         move "Lure Poison", {
           text "Before using this effect, you may switch the Defending Pokémon with 1 of your opponent's Benched Pokémon, if any. The Defending Pokémon is now Poisoned."
           energyCost C
-          attackRequirement {}
           onAttack {
-
+            if(opp.bench && confirm("Switch the Defending Pokémon with 1 of your opponent's Benched Pokémon?")) {
+              if(sw2(opp.bench.select("New active Pokémon."))) {
+                apply POISONED
+              }
+            } else {
+              apply POISONED
+            }
           }
         }
         move "Spiral Drain", {
           text "50 damage. Remove 2 damage counters from Cradily (remove 1 if there is only 1)."
           energyCost G, C, C
-          attackRequirement {}
           onAttack {
             damage 50
+            heal 20, self
           }
         }
       };
@@ -367,7 +378,13 @@ public enum SandstormNG implements LogicCardInfo {
           energyCost M, C
           attackRequirement {}
           onAttack {
-            damage 20
+            if(opp.bench && confirm("Switch 1 of your opponent's Benched Pokémon with the Defending Pokémon?")) {
+              if(sw2(opp.bench.select("New active Pokémon."))) {
+                damage 20
+              }
+            } else {
+              damage 20
+            }
           }
         }
       };
