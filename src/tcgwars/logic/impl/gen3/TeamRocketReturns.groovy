@@ -2398,10 +2398,14 @@ public enum TeamRocketReturns implements LogicCardInfo {
             if (selected) {
               def pcs = my.all.findAll{it.notEvolution && it.topPokemonCard.cardTypes.isNot(EX)}.select()
               def tpc = pcs.topPokemonCard
-              selected.moveTo(suppressLog: true, pcs.cards)
-              my.discard.add(tpc)
+              def newCard = selected.first()
               pcs.cards.remove(tpc)
-              new CheckAbilities().run(bg)
+              my.discard.add(tpc)
+              my.deck.remove(newCard)
+              pcs.cards.add(newCard)
+              bc "$tpc was switched with $newCard"
+              checkFaint()
+              bg.em().run(new CheckAbilities(pcs))
             }
             shuffleDeck()
           }
