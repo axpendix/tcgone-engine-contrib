@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen8
 
+import tcgwars.logic.impl.gen5.DarkExplorers
 
 import static tcgwars.logic.card.Type.*
 import static tcgwars.logic.groovy.TcgBuilders.*;
@@ -151,24 +152,24 @@ public enum AstralRadiance implements ImplOnlyCardInfo {
   CANCELING_COLOGNE_136,
   CHOY_137,
   CYLLENE_138,
-  DARK_PATCH_139,
+  DARK_PATCH_139 ("Dark Patch", "139", Rarity.UNCOMMON, [ITEM, TRAINER]),
   ENERGY_LOTO_140,
   FEATHER_BALL_141,
   GAPEJAW_BOG_142,
   GARDENIA_S_VIGOR_143,
   GRANT_144,
   GUTSY_PICKAXE_145,
-  HISUIAN_HEAVY_BALL_146,
+  HISUIAN_HEAVY_BALL_146 ("Hisuian Heavy Ball", "146", Rarity.UNCOMMON, [ITEM, TRAINER]),
   IRIDA_147,
   JUBILIFE_VILLAGE_148,
   KAMADO_149,
   ROXANNE_150,
   SPICY_SEASONED_CURRY_151,
-  SUPEREFFECTIVE_GLASSES_152,
+  SUPEREFFECTIVE_GLASSES_152 ("Supereffective Glasses", "152", Rarity.UNCOMMON, [POKEMON_TOOL, ITEM, TRAINER]),
   SWEET_HONEY_153,
   SWITCH_CART_154,
-  TEMPLE_OF_SINNOH_155,
-  TREKKING_SHOES_156,
+  TEMPLE_OF_SINNOH_155 ("Temple of Sinnoh", "155", Rarity.UNCOMMON, [STADIUM, TRAINER]),
+  TREKKING_SHOES_156 ("Trekking Shoes", "156", Rarity.UNCOMMON, [ITEM, TRAINER]),
   UNIDENTIFIED_FOSSIL_157,
   WAIT_AND_SEE_TURBO_158,
   ZISU_159,
@@ -1829,13 +1830,8 @@ public enum AstralRadiance implements ImplOnlyCardInfo {
 
 
 
-      case DARK_PATCH_139: return cardng (stub) {
-        // Attach a basic [D] Energy card from your discard pile to 1 of your Benched [D] Pokémon.
-        onPlay {
-        }
-        playRequirement{
-        }
-      }
+      case DARK_PATCH_139:
+        return copy(DarkExplorers.DARK_PATCH_93, this)
 
 
 
@@ -1899,13 +1895,26 @@ public enum AstralRadiance implements ImplOnlyCardInfo {
 
 
 
-      case HISUIAN_HEAVY_BALL_146: return cardng (stub) {
-        // Look at your face-down Prize cards. You may reveal a Basic Pokémon you find there, put it into your hand, and put this Hisuian Heavy Ball in its place as a face-down Prize card. (If you don't reveal a Basic Pokémon, put this card in the discard pile.) Then, shuffle your face-down Prize cards.
-        onPlay {
-        }
-        playRequirement{
-        }
-      }
+      case HISUIAN_HEAVY_BALL_146:
+        return itemCard (this) {
+          text "Look at your face-down Prize cards. You may reveal a Basic Pokémon you find there, put it into your hand, and put this Hisuian Heavy Ball in its place as a face-down Prize card. (If you don't reveal a Basic Pokémon, put this card in the discard pile.) Then, shuffle your face-down Prize cards.\nYou may play any number of Item cards during your turn."
+          onPlay {
+            my.prizeCardSet.showToMe("Your prizes")
+            if(my.prizeCardSet.has(BASIC)){
+              def tar = my.prizeCardSet.filterByType(BASIC).select(min:0,"Replace $thisCard with one of your prizes?")
+              if(tar){
+                tar.showToOpponent("Your opponent put this card in his hand")
+                my.hand.remove(thisCard)
+                my.prizeCardSet.set(my.prizeCardSet.indexOf(tar.first()), thisCard)
+                my.hand.add(tar.first())
+                bc "Took $tar and shuffled $thisCard into prizes"
+              }
+              my.prizeCardSet.shuffle()
+            }
+          }
+          playRequirement{
+          }
+        };
 
 
 
@@ -1959,15 +1968,24 @@ public enum AstralRadiance implements ImplOnlyCardInfo {
 
 
 
-      case SUPEREFFECTIVE_GLASSES_152: return cardng (stub) {
-        // When applying Weakness to damage from the attacks of the Pokémon this card is attached to done to your opponent's Active Pokémon, apply it as ×3.
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        allowAttach {to->
-        }
-      }
+      case SUPEREFFECTIVE_GLASSES_152:
+        return pokemonTool (this) {
+          text "When applying Weakness to damage from the attacks of the Pokémon this card is attached to done to your opponent's Active Pokémon, apply it as ×3.\nYou may play any number of Item cards during your turn.\nAttach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached."
+          def eff
+          onPlay {reason->
+            effect = delayed {
+              before APPLY_WEAKNESS, {
+                bg.dm().each{
+                  if(it.from==self && it.to.active){
+                    it.flags.add(DamageManager.DamageFlag.FORCE_X3_WEAKNESS)
+                  }
+                }
+              }
+          }
+          onRemoveFromPlay {
+            effect.unregister()
+          }
+        };
 
 
 
@@ -1991,23 +2009,48 @@ public enum AstralRadiance implements ImplOnlyCardInfo {
 
 
 
-      case TEMPLE_OF_SINNOH_155: return cardng (stub) {
-        // All Special Energy attached to Pokémon (both yours and your opponent's) provide [C] Energy and have no other effect.
-        onPlay {
-        }
-        onRemoveFromPlay{
-        }
-      }
+      case TEMPLE_OF_SINNOH_155:
+        return stadium (this) {
+          text "Each player's evolved Pokémon can use any attack from its previous Evolutions. (That player still needs the necessary Energy to use each attack.)"
+          def effect
+          onPlay {
+            prevent_energy_effect = delayed {
+              before null, null, Source.SRC_SPECIAL_ENERGY, {
+                if (self.active && self.checkSpecialConditionsForClassic()) {
+                  prevent()
+                }
+              }
+            }
+            cancel_special_energy_type = getter (GET_ENERGY_TYPES) {holder->
+              if(holder.effect.target != null && holder.effect.card.cardTypes.is(SPECIAL_ENERGY)) {
+                holder.object = [[C] as Set]
+              }
+            }
+          }
+          onRemoveFromPlay{
+            prevent_energy_effect.unregister()
+            cancel_special_energy_type.unregister()
+          }
+        };
 
 
 
-      case TREKKING_SHOES_156: return cardng (stub) {
-        // Look at the top card of your deck. You may put that card into your hand. If you don't, discard that card and draw a card.
-        onPlay {
-        }
-        playRequirement{
-        }
-      }
+      case TREKKING_SHOES_156:
+          return itemCard (this) {
+          text "Look at the top card of your deck. You may put that card into your hand. If you don't, discard that card and draw a card.\nYou may play as many Item cards as you like during your turn (before your attack)."
+          onPlay {
+            my.deck.subList(0,1).showToMe("Top card of your deck")
+            if(confirm("Draw ${my.deck.subList(0,1).first()}?")){
+             draw 1 
+            } else {
+              my.deck.subList(0,1).discard()
+              draw 1
+            }
+          }
+          playRequirement{
+            assert my.deck : "There is no more card in your deck"
+          }
+        };
 
 
 
