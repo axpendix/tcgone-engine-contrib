@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen8
 
+import tcgwars.logic.impl.gen6.Xy
 
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
@@ -273,7 +274,7 @@ public enum FusionStrike implements ImplOnlyCardInfo {
   QUICK_BALL_237,
   SCHOOLBOY_238,
   SCHOOLGIRL_239,
-  SHAUNA_240,
+  SHAUNA_240 ("Shauna", "240", Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
   SIDNEY_241,
   SKATERS_PARK_242,
   SPONGY_GLOVES_243,
@@ -3580,15 +3581,8 @@ public enum FusionStrike implements ImplOnlyCardInfo {
 
 
 
-      case SHAUNA_240: return cardng (stub) {
-        // Shuffle your hand into your deck. Then, draw 5 cards.
-        onPlay {
-          shuffleDeck(my.hand.getExcludedList(thisCard))
-          draw 5
-        }
-        playRequirement{
-        }
-      }
+      case SHAUNA_240:
+        return copy(Xy.SHAUNA_127, this)
 
 
 
