@@ -1,5 +1,7 @@
 package tcgwars.logic.impl.gen8
 
+import tcgwars.logic.impl.gen5.BlackWhite
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -54,7 +56,7 @@ public enum Celebrations implements ImplOnlyCardInfo {
   DIALGA_20,
   SOLGALEO_21,
   LUGIA_22,
-  PROFESSOR_S_RESEARCH_PROFESSOR_OAK__23,
+  PROFESSOR_S_RESEARCH_PROFESSOR_OAK__23 ("Professor's Research (Professor Oak)", "23", Rarity.RARE, [SUPPORTER, TRAINER]),
   PROFESSOR_S_RESEARCH_PROFESSOR_OAK__24,
   MEW_25,
   BLASTOISE_2,
@@ -428,16 +430,8 @@ public enum Celebrations implements ImplOnlyCardInfo {
         }
       }
 
-      case PROFESSOR_S_RESEARCH_PROFESSOR_OAK__23: return cardng (stub) {
-        // Discard your hand and draw 7 cards.
-        onPlay {
-          my.hand.getExcludedList(thisCard).discard()
-          draw 7
-        }
-        playRequirement{
-          assert my.hand.getExcludedList(thisCard) && my.deck : "No card in hand or deck"
-        }
-      }
+      case PROFESSOR_S_RESEARCH_PROFESSOR_OAK__23:
+        return copy(BlackWhite.PROFESSOR_JUNIPER_101, this)
 
       case CHARIZARD_4: return cardng (stub) {
         pokemonPower "Energy Burn", {

@@ -1,5 +1,8 @@
 package tcgwars.logic.impl.gen8
 
+import tcgwars.logic.impl.gen2.GymHeroes
+import tcgwars.logic.impl.gen5.DarkExplorers
+
 import static tcgwars.logic.card.HP.*;
 import static tcgwars.logic.card.Type.*;
 import static tcgwars.logic.card.CardType.*;
@@ -160,7 +163,7 @@ public enum BrilliantStars implements ImplOnlyCardInfo {
   TORNADUS_126,
   HAWLUCHA_127,
   DRAMPA_V_128,
-  ACEROLA_S_PREMONITION_129,
+  ACEROLA_S_PREMONITION_129 ("Acerola's Premonition", "129", Rarity.UNCOMMON, [SUPPORTER, TRAINER]),
   BARRY_130,
   BLUNDER_POLICY_131,
   BOSS_S_ORDERS_132,
@@ -168,7 +171,7 @@ public enum BrilliantStars implements ImplOnlyCardInfo {
   CHEREN_S_CARE_134,
   CHOICE_BELT_135,
   CLEANSING_GLOVES_136,
-  COLLAPSED_STADIUM_137,
+  COLLAPSED_STADIUM_137 ("Collapsed Stadium", "137", Rarity.UNCOMMON, [TRAINER, STADIUM]),
   CYNTHIA_S_AMBITION_138,
   FRESH_WATER_SET_139,
   FRIENDS_IN_GALAR_140,
@@ -181,8 +184,8 @@ public enum BrilliantStars implements ImplOnlyCardInfo {
   PROFESSOR_S_RESEARCH_147,
   ROSEANNE_S_BACKUP_148,
   TEAM_YELL_S_CHEER_149,
-  ULTRA_BALL_150,
-  DOUBLE_TURBO_ENERGY_151,
+  ULTRA_BALL_150 ("Ultra Ball", "150", Rarity.UNCOMMON, [ITEM, TRAINER]),
+  DOUBLE_TURBO_ENERGY_151 ("Double Turbo Energy", "151", Rarity.UNCOMMON, [ENERGY, SPECIAL_ENERGY]),
   SHAYMIN_V_152,
   CHARIZARD_V_153,
   CHARIZARD_V_154,
@@ -1765,13 +1768,19 @@ public enum BrilliantStars implements ImplOnlyCardInfo {
 
 
 
-      case ACEROLA_S_PREMONITION_129: return cardng (stub) {
-        // Your opponent reveals their hand, and you draw a card for each Trainer card you find there.
-        onPlay {
-        }
-        playRequirement{
-        }
-      }
+      case ACEROLA_S_PREMONITION_129:
+        return supporter (this) {
+          text "Your opponent reveals their hand, and you draw a card for each Trainer card you find there.\nYou may play only 1 Supporter card during your turn."
+          onPlay {
+            def sel=opp.hand.showToMe("Opponent's hand").filterByType(ITEM)
+            if(sel){
+              draw sel.size(), TargetPlayer.SELF
+            }
+          }
+          playRequirement{
+            assert opp.hand
+          }
+        };
 
 
 
@@ -1843,13 +1852,8 @@ public enum BrilliantStars implements ImplOnlyCardInfo {
 
 
 
-      case COLLAPSED_STADIUM_137: return cardng (stub) {
-        // Each player can't have more than 4 Benched Pokémon. If a player has 5 or more Benched Pokémon, they discard Benched Pokémon until they have 4 Pokémon on the Bench. The player who played this card discards first. If more than one effect changes the number of Benched Pokémon allowed, use the smaller number.
-        onPlay {
-        }
-        onRemoveFromPlay{
-        }
-      }
+      case COLLAPSED_STADIUM_137:
+        return copy(GymHeroes.NARROW_GYM_124, this)
 
 
 
@@ -1969,27 +1973,39 @@ public enum BrilliantStars implements ImplOnlyCardInfo {
 
 
 
-      case ULTRA_BALL_150: return cardng (stub) {
-        // You can use this card only if you discard 2 other cards from your hand. Search your deck for a Pokémon, reveal it, and put it into your hand. Then, shuffle your deck.
-        onPlay {
-        }
-        playRequirement{
-        }
-      }
+      case ULTRA_BALL_150:
+        return copy(DarkExplorers.ULTRA_BALL_102, this)
 
 
 
-      case DOUBLE_TURBO_ENERGY_151: return cardng (stub) {
-        // As long as this card is attached to a Pokémon, it provides [C][C] Energy. The attacks of the Pokémon this card is attached to do 20 less damage to your opponent's Pokémon (before applying Weakness and Resistance).
-        onPlay {reason->
-        }
-        onRemoveFromPlay {
-        }
-        onMove {to->
-        }
-        allowAttach {to->
-        }
-      }
+      case DOUBLE_TURBO_ENERGY_151:
+        return specialEnergy (this, [[]]) {
+          text "As long as this card is attached to a Pokémon, it provides [C][C] Energy.\n" +
+            "The attacks of the Pokémon this card is attached to do 20 less damage to your opponent's Pokémon (before applying Weakness and Resistance)."
+          def ef
+          onPlay {reason->
+            ef = delayed(){
+              after PROCESS_ATTACK_EFFECTS, {
+                bg.dm().each {
+                  if(it.from==self && it.dmg.value){
+                    it.dmg -= hp(20)
+                    bc "Double Turbo Energy reduces damage"
+                  }
+                }
+              }
+            }
+          }
+          onRemoveFromPlay{
+            ef.unregister()
+          }
+          getEnergyTypesOverride {
+            if (self) {
+              return [[C] as Set,[C] as Set]
+            } else {
+              return [[] as Set]
+            }
+          }
+        };
 
 
 
