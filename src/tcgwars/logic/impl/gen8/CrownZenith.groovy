@@ -1,5 +1,7 @@
 package tcgwars.logic.impl.gen8
 
+import tcgwars.logic.impl.gen5.BlackWhite
+import tcgwars.logic.impl.gen7.SunMoon
 
 import static tcgwars.logic.card.Type.*
 import static tcgwars.logic.groovy.TcgBuilders.*;
@@ -136,10 +138,10 @@ public enum CrownZenith implements ImplOnlyCardInfo {
   DUBWOOL_122,
   BEA_123,
   BEDE_124,
-  CRUSHING_HAMMER_125,
+  CRUSHING_HAMMER_125 ("Crushing Hammer", "125", Rarity.UNCOMMON, [ITEM, TRAINER]),
   DIGGING_DUO_126,
-  ENERGY_RETRIEVAL_127,
-  ENERGY_SEARCH_128,
+  ENERGY_RETRIEVAL_127 ("Energy Retrieval", "127", Rarity.COMMON, [ITEM, TRAINER]),
+  ENERGY_SEARCH_128 ("Energy Search", "128", Rarity.COMMON, [ITEM, TRAINER]),
   ENERGY_SWITCH_129,
   FRIENDS_IN_HISUI_130,
   FRIENDS_IN_SINNOH_131,
@@ -148,7 +150,7 @@ public enum CrownZenith implements ImplOnlyCardInfo {
   LEON_134,
   LOST_VACUUM_135,
   NESSA_136,
-  POKE_BALL_137,
+  POKE_BALL_137 ("Poké Ball", "137", Rarity.COMMON, [ITEM, TRAINER]),
   POKEMON_CATCHER_138,
   POTION_139,
   RAIHAN_140,
@@ -1276,7 +1278,8 @@ public enum CrownZenith implements ImplOnlyCardInfo {
 
 
 
-
+      case CRUSHING_HAMMER_125:
+        return copy (SunMoon.CRUSHING_HAMMER_115, this);
 
 
 
@@ -1293,6 +1296,13 @@ public enum CrownZenith implements ImplOnlyCardInfo {
 
 
 
+      case ENERGY_RETRIEVAL_127:
+        return copy(BlackWhite.ENERGY_RETRIEVAL_92, this)
+
+
+      
+      case ENERGY_SEARCH_128:
+        return copy(BlackWhite.POKE_BALL_97, this);
 
 
 
@@ -1318,7 +1328,8 @@ public enum CrownZenith implements ImplOnlyCardInfo {
 
 
 
-
+      case POKE_BALL_137:
+        return copy(BlackWhite.POKE_BALL_97, this);
 
 
 
