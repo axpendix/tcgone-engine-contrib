@@ -1,3 +1,5 @@
+
+
 # TCG ONE Engine Contrib 
 
 This is TCG ONE's engine contribution repository.
@@ -7,7 +9,7 @@ You are welcome to submit pull requests!
 # The path to become a TCG ONE Developer
 
 ### Essentials
-- TCG ONE is only partially open source; cards are implementated in Groovy language (a superset of Java) with our custom designed DSL and each expansion (i.e. `CelestialStorm.groovy`) has definitions of its cards. They are are in this repository and are open source.
+- TCG ONE is only partially open source; cards are implementated in Groovy language (a superset of Java) with our custom designed DSL and each expansion (i.e. `CelestialStorm.groovy`) has definitions of its cards. They are in this repository and are open source.
 - On the other hand, the TCG ONE Engine is closed source and cannot be locally run by a non-staff member. 
 - Therefore, in order to test the cards in that expansion you may use [Developer UI](https://dev.tcgone.net/) which is a special UI that features a simplified sandbox environment to test all cards' game play.
 - Developer UI gets rebuilt and updated after every push to `master` branch on this repository. They trigger our CI system which will automatically rebuild and redeploy <https://dev.tcgone.net> with the latest code on `master`. The progress status can be seen on Github commit which will display a status and a link that shows the build log, which can be checked for a possible error. A 'successful' build does not mean the new code will work in runtime though, so please test ALL cards by invoking ALL of their effects on [dev](https://dev.tcgone.net).
