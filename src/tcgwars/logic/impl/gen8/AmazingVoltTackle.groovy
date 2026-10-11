@@ -2135,7 +2135,8 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         onPlay {reason->
           eff = delayed {
             before null, self, ATTACK, {
-              if (self.types.contains(W) && ef.effectType != DAMAGE && bg.currentTurn == self.owner.opposite) {
+              // the extra Prize card for a Knockout by damage (e.g. Arceus & Dialga & Palkia-GX Altered Creation GX) isn't an effect done to the Pokémon
+              if (self.types.contains(W) && ef.effectType != DAMAGE && ef.effectType != GET_GIVEN_PRIZES && bg.currentTurn == self.owner.opposite) {
                 targeted self, {
                   bc "$thisCard prevents effect"
                   prevent()
