@@ -917,7 +917,7 @@ public enum CrystalGuardians implements LogicCardInfo {
         weakness R
         pokeBody "Chlorophyll", {
           text "All Energy cards that provide only [C] Energy attached to your [G] Pokémon provide [G] Energy instead."
-          getterA GET_ENERGY_TYPES, { holder ->
+          getterA GET_ENERGY_TYPES, LAST, { holder ->
             def pcs = holder.effect.target
             if(pcs.owner == self.owner && pcs.types.contains(G) && holder.object.every{ it == ([C] as Set)}) {
               int count = holder.object.size()
