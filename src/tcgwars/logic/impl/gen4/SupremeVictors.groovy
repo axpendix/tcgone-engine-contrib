@@ -420,7 +420,7 @@ public enum SupremeVictors implements LogicCardInfo {
             onAttack {
               damage 60
               if(self.cards.energyCount(R) && my.bench && confirm("Move a [R] Energy card attached to $self to 1 of your Benched Pokémon")) {
-                def energyCard = self.cards.select("Choose a [R] Energy to move",energyFilter(L)).first()
+                def energyCard = self.cards.select("Choose a [R] Energy to move",energyFilter(R)).first()
                 def tar = my.bench.select("Move $energyCard to which Pokémon?")
                 afterDamage {
                   energySwitch(self,tar,energyCard)
