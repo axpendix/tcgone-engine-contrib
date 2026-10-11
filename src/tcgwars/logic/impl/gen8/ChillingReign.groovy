@@ -1081,7 +1081,7 @@ public enum ChillingReign implements LogicCardInfo {
           bwAbility "Frost Over", {
             text "Once during your turn when you play this card from your hand to evolve a Pokémon, you may search your discard pile for a [W] Energy and attach it to 1 of your Pokémon."
             onActivate { reason->
-              if (reason == PLAY_FROM_HAND && my.discard.filterByEnergyType(W) && confirm("Use Snowfall?")) {
+              if (reason == PLAY_FROM_HAND && my.discard.filterByEnergyType(W) && confirm("Use Frost Over?")) {
                 powerUsed()
                 attachEnergyFrom(count:1, type: W, my.discard, my.all.select("Attach to?"))
               }
@@ -2595,7 +2595,7 @@ public enum ChillingReign implements LogicCardInfo {
           bwAbility "Hidden Claw", {
             text "Once during your turn when you play this Pokémon from your hand onto your Bench, you may discard 1 Pokémon Tool card attached to any Pokémon in play (yours or your opponent's)."
             onActivate { reason ->
-              if (reason == PLAY_FROM_HAND && self.benched && all.any { it.cards.filterByType(POKEMON_TOOL) } && confirm("Use Concealing Claw?")) {
+              if (reason == PLAY_FROM_HAND && self.benched && all.any { it.cards.filterByType(POKEMON_TOOL) } && confirm("Use Hidden Claw?")) {
                 powerUsed()
                 def target = all.findAll { it.cards.filterByType(POKEMON_TOOL) }.select("Which Pokémon to remove a Pokémon Tool card from?")
                 target.cards.filterByType(POKEMON_TOOL).select("Discard").discard()
