@@ -316,7 +316,7 @@ public enum GreatEncounters implements LogicCardInfo {
                   targeted(defending) {
                     def tool = tools.select("Discard a Pokémon Tool attached to $defending").discard().first()
                     if(opp.hand) {
-                      opp.hand.showToMe("Opponent's hand").findAll{it.name == tool.name}.discard()
+                      opp.hand.showToMe("Opponent's hand").filterByType(POKEMON_TOOL).findAll{it.name == tool.name}.discard()
                     }
                   }
                 }
