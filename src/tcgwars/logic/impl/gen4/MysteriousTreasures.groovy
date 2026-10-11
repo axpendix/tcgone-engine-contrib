@@ -341,7 +341,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           pokeBody "Downer Material", {
             text "If you have Uxie and Mesprit in play, the attack cost of each of your opponent’s Basic Pokémon’s attacks is [C] more. You can’t use more than 1 Downer Material Poké-Body each turn."
             //Adapted from Sceptile-ex Delta (CG 96)
-            getterA (GET_MOVE_LIST) {h->
+            getterA (GET_MOVE_LIST, BEFORE_LAST) {h->
               def condition = self.owner.pbg.all.any { it.name == "Uxie" } && self.owner.pbg.all.any { it.name == "Mesprit" }
               if (condition && h.effect.target.owner != self.owner && (h.effect.target.basic || (h.effect.target.notEvolution && (h.effect.target.stage1 || h.effect.target.stage2))) && !h.context["Downer_Material"]) {
                 //This affects Pokémon that are printed as Basic, or Stage 1/2s that have been cheated into play, but not LEGENDs, Restored, V-UNIONs.
