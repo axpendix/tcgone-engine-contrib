@@ -1829,7 +1829,8 @@ public enum SandstormNG implements LogicCardInfo {
               }
               typeSet.addAll(card.types)
             }
-            return true
+            // 3 types in total: a dual-type Pokémon counts as 2 of them (Dec 16, 2004 PUI Rules Team)
+            return typeSet.size() <= 3
           }).showToOpponent("Cards moved to hand").moveTo(hand)
           shuffleDeck()
         }
