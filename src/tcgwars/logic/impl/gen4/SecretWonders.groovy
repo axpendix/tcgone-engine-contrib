@@ -906,7 +906,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
             onAttack {
               def card = opp.hand.select(hidden: true, "Choose a card from your opponent's hand without looking").discard()
-              if(card.filterByType(ITEM,SUPPORTER,STADIUM) && opp.hand) {
+              if(card.filterByType(TRAINER) && opp.hand) {
                 opp.hand.select(hidden: true, "Choose a card from your opponent's hand without looking").discard()
               }
             }
