@@ -1527,6 +1527,10 @@ public enum DragonNG implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
+            if (self.cards.hasEnergyType(R) && defending.cards.filterByType(ENERGY)) {
+              discardSelfEnergyAfterDamage R
+              discardDefendingEnergyAfterDamage C
+            }
           }
         }
       };
