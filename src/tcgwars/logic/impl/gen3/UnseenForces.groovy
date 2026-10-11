@@ -1156,7 +1156,7 @@ public enum UnseenForces implements LogicCardInfo {
           text "20 damage. Before doing damage, discard all Trainer cards attached to the Defending Pokémon."
           energyCost C, C
           onAttack {
-            def tar = defending.cards.filterByType(TRAINER)
+            def tar = defending.attachedTrainerCards
             if (tar){ tar.discard() }
             damage 20
           }

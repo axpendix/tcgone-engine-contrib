@@ -1112,8 +1112,8 @@ public enum CrystalGuardians implements LogicCardInfo {
           text "20 damage. Before doing damage, discard all Trainer cards attached to the Defending Pokémon."
           energyCost C, C
           onAttack {
-            if (defending.cards.filterByType(TRAINER)){
-              defending.cards.filterByType(TRAINER).discard()
+            if (defending.attachedTrainerCards){
+              defending.attachedTrainerCards.discard()
             }
             damage 20
           }

@@ -1259,8 +1259,8 @@ public enum Stormfront implements LogicCardInfo {
             text "60 damage. Before doing damage, discard all Trainer cards attached to the Defending Pokémon."
             energyCost D, C, C
             onAttack {
-              if (defending.cards.hasType(TRAINER)){
-                defending.cards.filterByType(TRAINER).discard()
+              if (defending.attachedTrainerCards){
+                defending.attachedTrainerCards.discard()
               }
               damage 60
             }
