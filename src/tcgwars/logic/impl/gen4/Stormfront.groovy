@@ -2936,13 +2936,14 @@ public enum Stormfront implements LogicCardInfo {
                   // Dusknoir Lv.X violates many of the rules of stadiums due to rulings. https://compendium.pokegym.net/compendium-lvx.html#303
                   // Manually playing the stadium based on those rulings. This is a very unique effect and should not exist elsewhere currently.
                   def pkmnCard = self.topPokemonCard
+                  def selfPlayer = self.owner
                   def stadiumCard
                   stadiumCard = stadium(new CustomCardInfo(thisCard.staticInfo).setCardTypes(TRAINER, STADIUM)) {
                     def eff
                     onPlay {
                       eff = delayed inline:true, {
                         before BEGIN_TURN, {
-                          thisCard.player.opposite.pbg.all.each {
+                          selfPlayer.opposite.pbg.all.each {
                             directDamage 10, it, TRAINER_CARD
                           }
                         }
@@ -2960,7 +2961,9 @@ public enum Stormfront implements LogicCardInfo {
                     onRemoveFromPlay {
                       eff.unregister()
                       bg.em().run(new ChangeImplementation(pkmnCard, stadiumCard))
-                      moveCard(pkmnCard, thisCard.player.pbg.hand)
+                      // ChangeImplementation points the Stadium slot at the Pokémon card; MoveCard would then treat it as the Stadium and leave a copy in the discard pile
+                      if (bg.stadiumInfoStruct?.stadiumCard == pkmnCard) bg.setStadiumInfoStruct(null)
+                      moveCard(pkmnCard, selfPlayer.pbg.hand)
                     }
                   }
                   stadiumCard.initializeFrom thisCard
