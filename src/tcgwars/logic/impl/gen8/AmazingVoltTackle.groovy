@@ -688,10 +688,12 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           energyCost W, C, C
           onAttack {
             damage 120
-            if (!defending.cards.filterByType(ENERGY)) return
-            def info = "You may select up to 2 Energy to return to the opponent's hand."
-            def selectedEnergy = defending.cards.filterByType(ENERGY).select min:0, max:2, info
-            if (selectedEnergy) selectedEnergy.moveTo opp.hand
+            afterDamage {
+              if (!defending.cards.filterByType(ENERGY)) return
+              def info = "You may select up to 2 Energy to return to the opponent's hand."
+              def selectedEnergy = defending.cards.filterByType(ENERGY).select min:0, max:2, info
+              if (selectedEnergy) selectedEnergy.moveTo opp.hand
+            }
           }
         }
       };
