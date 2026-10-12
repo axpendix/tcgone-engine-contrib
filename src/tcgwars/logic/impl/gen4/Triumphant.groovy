@@ -2268,11 +2268,15 @@ public enum Triumphant implements LogicCardInfo {
           onPlay {reason->
             eff = delayed priority:EffectPriority.LAST, {
               def flag = false
-              before KNOCKOUT, self, {
-                flag = (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite
+              // not bound to the Pokémon it was attached to when played: the Energy may have been moved since
+              before KNOCKOUT, {
+                if (e.targetPokemon == self) {
+                  flag = (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite
+                }
               }
-              before KNOCKOUT_DISCARD_STEP, self, {
-                if (flag) {
+              before KNOCKOUT_DISCARD_STEP, {
+                if (flag && e.targetPokemon == self) {
+                  flag = false
                   bc "Rescue Energy activates"
                   self.cards.filterByType(POKEMON).moveTo(self.owner.pbg.hand)
                 }
