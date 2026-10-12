@@ -2190,15 +2190,17 @@ public enum CrystalGuardians implements LogicCardInfo {
         resistance P, MINUS30
         pokeBody "Dark Eyes", {
           text "After your opponent's Pokémon uses a Poké-Power, put 2 damage counters on that Pokémon."
+          // the power may have just disabled this Pokémon's Poké-Body (e.g. Imprison)
+          def stillWorks = { !new IsAbilityBlocked(self, thisAbility).run(bg) }
           delayedA {
             after USE_ABILITY_OUTER, {
-              if (ef.targetPokemon.owner != self.owner && ef.ability instanceof PokePower) {
+              if (ef.targetPokemon.owner != self.owner && ef.ability instanceof PokePower && stillWorks()) {
                 bc "Dark Eyes activates"
                 directDamage(20, ef.targetPokemon)
               }
             }
             after ACTIVATE_ABILITY, {
-              if (ef.targetPokemon.owner != self.owner && ef.ability instanceof PokePower && ef.reason == PLAY_FROM_HAND && ef.hasUsedAbilityDuringActivation) {
+              if (ef.targetPokemon.owner != self.owner && ef.ability instanceof PokePower && ef.reason == PLAY_FROM_HAND && ef.hasUsedAbilityDuringActivation && stillWorks()) {
                 bc "Dark Eyes activates"
                 directDamage(20, ef.targetPokemon)
               }
