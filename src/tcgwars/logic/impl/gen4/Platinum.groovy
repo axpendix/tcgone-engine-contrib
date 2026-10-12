@@ -3293,6 +3293,7 @@ public enum Platinum implements LogicCardInfo {
             bg.em().storeObject("Power_Spray_Played_$thisCard.player", true)
           }
           playRequirement{
+            assert bg.currentTurn != thisCard.player : "Play this card during your opponent’s turn when your opponent’s Pokémon uses any Poké-Power"
             assert bg.em().retrieveObject("Power_Spray_Can_Play_$thisCard.player") : "Play this card during your opponent’s turn when your opponent’s Pokémon uses any Poké-Power"
           }
         };
