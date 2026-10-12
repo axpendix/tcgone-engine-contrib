@@ -1786,7 +1786,7 @@ public enum LegendsAwakened implements LogicCardInfo {
                 shuffleDeck()
               }
               if (opp.hand) {
-                opp.hand.moveTo(hidden:true, my.deck)
+                opp.hand.moveTo(hidden:true, opp.deck)
                 shuffleOppDeck()
               }
 
