@@ -2492,7 +2492,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             text "Choose 1 of the Defending Pokémon’s attacks. Metronome copies that attack except for its Energy cost. (You must still do anything else in order to use that attack.) (No matter what type that Pokémon is, Clefable ex’s type is still [C].) Clefable ex performs that attack."
             energyCost C, C
             onAttack {
-              metronome defending, delegate
+              metronome defending, delegate, mustDoEffects: true
             }
           }
           move "Moon Impact", {

@@ -604,8 +604,9 @@ public enum DragonFrontiers implements LogicCardInfo {
             }
             before null, null, ATTACK, {
               def pcs = e.getTargetPokemon()
-              if (bg.currentTurn == self.owner.opposite && e.sourceAttack?.attacker?.owner == self.owner.opposite && ef.effectType != DAMAGE && !(ef instanceof tcgwars.logic.effect.getter.GetterEffect) && pcs && pcs.owner == self.owner && pcs.benched && pcs.topPokemonCard.cardTypes.is(DELTA)) {
-                bc "Solid Shell prevents effect (${ef.effectType})"
+              if (bg.currentTurn == self.owner.opposite && e.sourceAttack?.attacker?.owner == self.owner.opposite && ef.effectType != DAMAGE && pcs && pcs.owner == self.owner && pcs.benched && pcs.topPokemonCard.cardTypes.is(DELTA)) {
+                // getter lookups are still blocked, but only real effects are worth a log line
+                if (!(ef instanceof tcgwars.logic.effect.getter.GetterEffect)) bc "Solid Shell prevents effect (${ef.effectType})"
                 prevent()
               }
             }

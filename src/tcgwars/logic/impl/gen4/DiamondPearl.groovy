@@ -826,7 +826,7 @@ public enum DiamondPearl implements LogicCardInfo {
 
               def move=choose(moveList, labelList)
               def bef=blockingEffect(ENERGY_COST_CALCULATOR, BETWEEN_TURNS)
-              attack (move as Move)
+              attack (move as Move, true)
               bef.unregisterItself(bg().em())
             }
           }
