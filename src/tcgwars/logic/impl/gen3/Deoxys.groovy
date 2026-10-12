@@ -2105,8 +2105,10 @@ public enum Deoxys implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 10
-              if(opp.bench) sw defending, opp.bench.oppSelect("Select new active.")
-              switchYourActive()
+              afterDamage {
+                if(opp.bench) sw defending, opp.bench.oppSelect("Select new active.")
+                switchYourActive()
+              }
             }
           }
 
