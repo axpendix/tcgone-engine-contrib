@@ -465,7 +465,7 @@ public enum BattleStyles implements LogicCardInfo {
           energyCost COLORLESS, COLORLESS
           onAttack {
             def count = my.all.count {it.name == "Durant" }
-            (1..count).each {
+            count.times {
               if (opp.deck.notEmpty) {
                 discard(opp.deck.first())
               }
