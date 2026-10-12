@@ -302,7 +302,14 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           onActivate { reason ->
             if (reason == PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && my.bench.notFull && deck.notEmpty && confirm("Use $thisAbility?")) {
               def shedinja = deck.search { it.name == "Shedinja" }.first()
-              if (shedinja) benchPCS(shedinja)
+              if (shedinja) {
+                bg.em().storeObject("CAST_OFF_SHELL_ACTIVE", true)
+                try {
+                  benchPCS(shedinja)
+                } finally {
+                  bg.em().storeObject("CAST_OFF_SHELL_ACTIVE", false)
+                }
+              }
               shuffleDeck()
             }
           }
@@ -1115,6 +1122,13 @@ public enum AmazingVoltTackle implements LogicCardInfo {
               if (ef.cardToPlay == thisCard && checkGlobalAbility(thisCard)) {
                 def abilityName = "Shell Bind"
                 wcu("$abilityName prevents playing $thisCard")
+                prevent()
+              }
+            }
+            // Nest Ball, Brigette etc. can't put it onto the Bench either, only Ninjask's Cast-Off Shell can
+            before PUT_ON_BENCH, {
+              if ((ef as PutOnBench).pokemonCard == thisCard && !bg.em().retrieveObject("CAST_OFF_SHELL_ACTIVE") && checkGlobalAbility(thisCard)) {
+                wcu("Shell Survival prevents putting $thisCard onto the Bench")
                 prevent()
               }
             }
