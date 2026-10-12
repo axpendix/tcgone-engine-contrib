@@ -1878,22 +1878,14 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost G, G, C, C
           onAttack {
             targeted (defending) {
-              def remainingHp = defending.getRemainingHP().value
-              def excessDamageCounters = (80 - remainingHp) / 10
-
-              delayed {
-                def pcs = defending
-                before KNOCKOUT, pcs, {
-                  if (excessDamageCounters && opp.bench) {
-                    for (i in 1..excessDamageCounters){
-                      def tar = opp.bench.select("Move a damage counter from $defending to some of your opponent's benched Pokémon? There are still ${excessDamageCounters - i + 1} available counters to move (Cancel to stop)", false)
-                      if(!tar) break;
-                      directDamage 10, tar
-                    }
-                  }
-                  unregister()
+              def excessDamageCounters = (80 - defending.getRemainingHP().value) / 10
+              // the Defending Pokémon is Knocked Out by this attack: the counters it doesn't need may go on the Bench
+              if (excessDamageCounters > 0 && opp.bench) {
+                for (i in 1..excessDamageCounters){
+                  def tar = opp.bench.select("Move a damage counter from $defending to some of your opponent's benched Pokémon? There are still ${excessDamageCounters - i + 1} available counters to move (Cancel to stop)", false)
+                  if(!tar) break;
+                  directDamage 10, tar
                 }
-                unregisterAfter 1
               }
               directDamage 80, defending
             }
