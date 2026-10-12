@@ -2744,6 +2744,11 @@ public enum DarknessAblaze implements LogicCardInfo {
                 self.owner.pbg.triggerBenchSizeCheck()
               }
             }
+            after ENERGY_SWITCH, {
+              if (ef.from.owner == self.owner || ef.to.owner == self.owner) {
+                self.owner.pbg.triggerBenchSizeCheck()
+              }
+            }
             before PUT_ON_BENCH, {
               if (!isPokemonPlayable(ef)) {
                 wcu "Cannot play non-Darkness Pokémon"
