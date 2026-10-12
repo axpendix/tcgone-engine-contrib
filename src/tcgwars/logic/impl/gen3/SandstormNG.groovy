@@ -1819,7 +1819,7 @@ public enum SandstormNG implements LogicCardInfo {
         text "Search your deck for up to 3 different types of Basic Pokémon cards (excluding Baby Pokémon), show them to your opponent, and put them into your hand. Shuffle your deck afterward." +
           "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card."
         onPlay {
-          my.deck.select(min:0, max:3, "Select up to 3 Basic Pokémon (excluding Baby Pokémon) of different types.", cardTypeFilter(BASIC), thisCard.player, { CardList list ->
+          my.deck.select(min:0, max:3, "Select up to 3 Basic Pokémon (excluding Baby Pokémon) of different types.", cardTypeFilter(BASIC), bg.currentThreadPlayerType, { CardList list ->
             if (list.filterByType(BABY).size())
               return false
             TypeSet typeSet = new TypeSet()
