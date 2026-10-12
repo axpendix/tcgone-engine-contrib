@@ -1870,7 +1870,7 @@ public enum RubySapphireNG implements LogicCardInfo {
           if (rearrangeSize > 1) {
             def list = rearrange(deck.subList(0,rearrangeSize), "Rearrange top $rearrangeSize cards in your deck")
             deck.setSubList(0, list)
-            bc "${thisCard.player} rearranged the top $rearrangeSize cards of their deck."
+            bc "${bg.currentThreadPlayerType.getPlayerUsername(bg)} rearranged the top $rearrangeSize cards of their deck."
           }
         }
       };
