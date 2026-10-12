@@ -2017,7 +2017,7 @@ public enum DiamondPearl implements LogicCardInfo {
               flip {
                 if (confirm("Do you want to draw a card?"))
                   draw 1
-                if (confirm("Your opponent used $self's Poké-Power \"DRAW\". Do you want to draw a card?"))
+                if (confirm("Your opponent used $self's Poké-Power \"DRAW\". Do you want to draw a card?", self.owner.opposite))
                   draw 1, TargetPlayer.OPPONENT
               }
             }
