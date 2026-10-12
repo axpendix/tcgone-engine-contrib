@@ -3711,10 +3711,11 @@ public enum LegendsAwakened implements LogicCardInfo {
             "Draw 2 cards. As long as Buck's Training is next to your Active Pokémon, each of your Active Pokémon's attacks does 10 more damage to the Active Pokémon (before applying Weakness and Resistance)."
           onPlay {
             draw 2
+            def user = bg.currentThreadPlayerType
             delayed {
               after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each {
-                  if (it.to.active && it.from.owner == thisCard.player && it.to.owner != it.from.owner && it.dmg.value) {
+                  if (it.to.active && it.from.owner == user && it.to.owner != it.from.owner && it.dmg.value) {
                   bc "Buck's Training +10"
                   it.dmg += hp(10)
                   }
