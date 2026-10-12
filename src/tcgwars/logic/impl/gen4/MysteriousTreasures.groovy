@@ -260,6 +260,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               before USE_ABILITY_INNER, {
                 PokemonCardSet pcs = ef.getTargetPokemon()
                 Ability ability = ef.ability
+                def usedAbilityEffect = ef
                 if(
                   ability instanceof PokePower &&
                   (!self.specialConditions) &&
@@ -273,6 +274,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                   bc "$self activates Power Cancel to block ${ability.name}!"
                   powerUsed()
                   self.owner.pbg.hand.select(count: 2, "Discard 2 hand from your hand", {true}, self.owner).discard()
+                  usedAbilityEffect.countsAsUsed = true
                   prevent()
                 }
               }
