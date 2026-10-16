@@ -2494,8 +2494,10 @@ public enum ChillingReign implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              applyAfterDamage(POISONED)
-              extraPoison(11)
+              afterDamage {
+                apply POISONED, defending
+                extraPoison(11) // after apply: re-applying Poisoned on an already Poisoned Pokémon resets the extra counters (16715)
+              }
             }
           }
         };
