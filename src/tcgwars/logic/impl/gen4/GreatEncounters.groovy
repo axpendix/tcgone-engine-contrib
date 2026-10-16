@@ -1332,16 +1332,7 @@ public enum GreatEncounters implements LogicCardInfo {
               assert opp.all.find{it.cards.filterByType(POKEMON_TOOL)} : "Your opponent has no Pokémon Tools attached"
             }
             onAttack {
-              def pcs = opp.all.findAll { it.cards.filterByType(POKEMON_TOOL) }.select("Source Pokémon that has a Tool to move")
-              targeted (pcs) {
-                def card = pcs.cards.filterByType(POKEMON_TOOL).select("Pokémon Tool to move").first()
-                def pl = opp.all.findAll { canAttachPokemonTool(it, card) && it!=pcs}
-                if(!pl){wcu "No available Pokemon to move this card"; return}
-                def tar = pl.select("Move $tool to which Pokémon?")
-                targeted (tar) {
-                  attachPokemonTool(card, tar)
-                }
-              }
+              switcheroo()
             }
           }
           move "Overrun", {
