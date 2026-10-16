@@ -1112,7 +1112,9 @@ public enum Arceus implements LogicCardInfo {
             text "As long as Spiritomb is your Active Pokémon, each player can’t play any Trainer cards from his or her hand."
             delayedA {
               before PLAY_TRAINER, {
-                if(self.active && ef.cardToPlay.player.pbg.hand.contains(ef.cardToPlay)) { // either player's hand, e.g. Power Spray in the opponent's turn
+                // Supporters and Stadiums are not "Trainer cards" for Keystone Seal (forum 17440, 17441, 17442)
+                def card = ef.cardToPlay
+                if(self.active && !card.cardTypes.is(SUPPORTER) && !card.cardTypes.is(STADIUM) && card.player.pbg.hand.contains(card)) { // either player's hand, e.g. Power Spray in the opponent's turn
                   wcu "$thisAbility prevents playing Trainer cards"
                   prevent()
                 }
