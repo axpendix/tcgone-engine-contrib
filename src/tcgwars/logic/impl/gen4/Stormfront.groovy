@@ -2792,7 +2792,7 @@ public enum Stormfront implements LogicCardInfo {
           text "Attach Energy Link to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nAs long as Energy Link is attached to a Pokémon, you may move an Energy card attached to that Pokémon to another of your Pokémon that has Energy Link attached to it. You may use this effect as often as you like during your turn."
           def actions=[]
           onPlay {reason->
-            if(!bg.em().retrieveObject("Energy_Link+$thisCard.player")) {
+            if(!bg.em().retrieveObject("Energy_Link+$bg.currentThreadPlayerType")) {
               actions = action(thisCard, "Energy Link",[TargetPlayer.SELF]) {
                 assert my.all.findAll{it.cards.find{it.name == "Energy Link"}}.size() >= 2 : "You don't have 2 Energy Link in play"
                 assert my.all.find{it.cards.find{it.name == "Energy Link"} && it.cards.filterByType(ENERGY)} : "You don't have any Energy attached to your Pokémon with Energy Link attached"
@@ -2803,13 +2803,14 @@ public enum Stormfront implements LogicCardInfo {
                 tar=tar.select("Target for $card")
                 energySwitch(src, tar, card)
               }
-              bg.em().storeObject("Energy_Link+$thisCard.player",actions)
+              bg.em().storeObject("Energy_Link+$bg.currentThreadPlayerType",actions)
             }
           }
           onRemoveFromPlay {
-            actions = bg.em().retrieveObject("Energy_Link+$thisCard.player")
-            if(!thisCard.player.pbg.all.find{it.cards.find{it.name == "Energy Link"}}) {
+            actions = bg.em().retrieveObject("Energy_Link+$bg.currentThreadPlayerType")
+            if(!bg.currentThreadPlayerType.pbg.all.find{it.cards.find{it.name == "Energy Link"}}) {
               actions.each { bg().gm().unregisterAction(it) }
+              bg.em().storeObject("Energy_Link+$bg.currentThreadPlayerType", null) // so that the next Energy Link registers the action again
             }
           }
         };
