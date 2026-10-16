@@ -273,8 +273,9 @@ public enum RisingRivals implements LogicCardInfo {
             text "Put 1 damage counter on each of your opponent’s Pokémon that remains Asleep between turns."
             delayedA {
               before BEGIN_TURN, {
-                if (self.owner.opposite.pbg.active.isSPC(ASLEEP)) {
-                  directDamage 10, opp.active
+                def target = self.owner.opposite.pbg.active // not opp: the current turn player is not always the opponent (forum 16216)
+                if (target.isSPC(ASLEEP)) {
+                  directDamage 10, target
                 }
               }
             }

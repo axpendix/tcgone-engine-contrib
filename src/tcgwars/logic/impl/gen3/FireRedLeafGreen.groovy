@@ -869,11 +869,11 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             text "As long as Hypno is your Active Pokémon, put 2 damage counters on each Pokémon that remains Asleep between turns."
             delayedA {
               before BEGIN_TURN, {
-                if(self.active && my.active.isSPC(ASLEEP)){
-                  directDamage 20, my.active
-                }
-                if(self.active && opp.active.isSPC(ASLEEP)){
-                  directDamage 20, opp.active
+                // my/opp depend on the current turn player, not on Hypno's owner (forum 16216)
+                [self.owner.pbg.active, self.owner.opposite.pbg.active].each {
+                  if(self.active && it.isSPC(ASLEEP)){
+                    directDamage 20, it
+                  }
                 }
               }
             }
