@@ -2409,6 +2409,412 @@ public enum SwordShieldPromos implements LogicCardInfo {
           }
         }
       };
+      case GALLADE_V_SWSH258:
+      return basic (this, hp:HP220, type:F, retreatCost:2) {
+        weakness P
+        move "Rising Sword", {
+          text "20+ damage. This attack does 50 more damage for each Prize card you have taken."
+          energyCost F, C
+          onAttack {
+            damage 20 + 50 * my.prizeCardSet.takenCount
+          }
+        }
+        move "Buster Swing", {
+          text "130 damage. This attack's damage isn't affected by Resistance."
+          energyCost F, F, C
+          onAttack {
+            damage 130
+            dontApplyResistance()
+          }
+        }
+      };
+      case KIRLIA_SWSH271:
+      return evolution (this, from:"Ralts", hp:HP080, type:P, retreatCost:2) {
+        weakness M
+        bwAbility "Refinement", {
+          text "You must discard a card from your hand in order to use this Ability. Once during your turn, you may draw 2 cards."
+          actionA {
+            checkLastTurn()
+            assert my.hand : "You have no cards in your hand to discard"
+            assert my.deck : "Your deck is empty"
+            powerUsed()
+            my.hand.select("Discard a card from your hand").discard()
+            draw 2
+          }
+        }
+        move "Slap", {
+          text "30 damage."
+          energyCost P, C
+          onAttack {
+            damage 30
+          }
+        }
+      };
+      case HISUIAN_BASCULIN_SWSH273:
+      return basic (this, hp:HP050, type:W, retreatCost:1) {
+        weakness L
+        move "Submerge Silently", {
+          text "You can use this attack only if you go second, and only during your first turn. During your opponent's next turn, prevent all damage done to this Pokémon by attacks."
+          energyCost C
+          attackRequirement {
+            assert bg.turnCount == 2 : "You can use this attack only if you go second, and only during your first turn"
+          }
+          onAttack {
+            preventAllDamageNextTurn()
+          }
+        }
+        move "Bite", {
+          text "20 damage."
+          energyCost C, C
+          onAttack {
+            damage 20
+          }
+        }
+      };
+      case HISUIAN_ELECTRODE_V_SWSH294:
+      return basic (this, hp:HP210, type:G, retreatCost:1) {
+        weakness R
+        move "Tantrum Blast", {
+          text "100× damage. This attack does 100 damage for each Special Condition affecting this Pokémon."
+          energyCost()
+          attackRequirement {
+            assert self.specialConditions : "This Pokémon is not affected by any Special Condition"
+          }
+          onAttack {
+            damage 100 * self.specialConditions.size()
+          }
+        }
+        move "Solar Shot", {
+          text "120 damage. Discard all Energy from this Pokémon."
+          energyCost G, C
+          onAttack {
+            damage 120
+            afterDamage {
+              discardAllSelfEnergy()
+            }
+          }
+        }
+      };
+      case HISUIAN_ZOROARK_V_SWSH297:
+      return basic (this, hp:HP210, type:C, retreatCost:2) {
+        weakness F
+        move "Void Return", {
+          text "30 damage. You may switch this Pokémon with 1 of your Benched Pokémon."
+          energyCost()
+          onAttack {
+            damage 30
+            switchYourActive(may: true)
+          }
+        }
+        move "Shadow Cyclone", {
+          text "130 damage. Move an Energy from this Pokémon to 1 of your Benched Pokémon."
+          energyCost C, C, C
+          onAttack {
+            damage 130
+            afterDamage {
+              moveEnergy(self, my.bench)
+            }
+          }
+        }
+      };
+      case MARNIE_SWSH120:
+      return copy (SwordShield.MARNIE_169, this);
+      case SHADOW_RIDER_CALYREX_V_SWSH131:
+      return basic (this, hp:HP210, type:P, retreatCost:2) {
+        weakness D
+        resistance F, MINUS30
+        move "Cloak in Shadows", {
+          text "Attach a [P] Energy card from your discard pile to this Pokémon."
+          energyCost P
+          attackRequirement {
+            assert my.discard.filterByBasicEnergyType(P) : "There are no [P] Energy cards in your discard pile"
+          }
+          onAttack {
+            attachEnergyFrom(basic: true, type: P, my.discard, self)
+          }
+        }
+        move "Hollow Binding", {
+          text "130 damage. During your opponent's next turn, the Defending Pokémon can't retreat."
+          energyCost P, P, C
+          onAttack {
+            damage 130
+            cantRetreat(defending)
+          }
+        }
+      };
+      case DARK_SYLVEON_V_SWSH134:
+      return basic (this, hp:HP180, type:P, retreatCost:1) {
+        weakness M
+        move "Disarming Voice", {
+          text "30 damage. Your opponent's Active Pokémon is now Confused."
+          energyCost C, C
+          onAttack {
+            damage 30
+            applyAfterDamage CONFUSED
+          }
+        }
+        move "Tricky Ribbon", {
+          text "100 damage. Choose a random card from your opponent's hand. Your opponent reveals that card and shuffles it into their deck."
+          energyCost P, C, C
+          onAttack {
+            damage 100
+            afterDamage {
+              astonish()
+            }
+          }
+        }
+      };
+      case ESPEON_SWSH174:
+      return evolution (this, from:"Eevee", hp:HP110, type:P, retreatCost:1) {
+        weakness D
+        resistance F, MINUS30
+        move "Psy Bolt", {
+          text "20 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+          energyCost P
+          onAttack {
+            damage 20
+            flip { applyAfterDamage PARALYZED }
+          }
+        }
+        move "Psychic", {
+          text "10+ damage. This attack does 40 more damage for each Energy attached to your opponent's Active Pokémon."
+          energyCost P, C
+          onAttack {
+            damage 10 + 40 * defending.getEnergyCount(bg)
+          }
+        }
+      };
+      case BIBAREL_SWSH188:
+      return evolution (this, from:"Bidoof", hp:HP120, type:C, retreatCost:2) {
+        weakness F
+        bwAbility "Industrious Incisors", {
+          text "Once during your turn, you may draw cards until you have 5 cards in your hand."
+          actionA {
+            checkLastTurn()
+            assert my.hand.size() < 5 : "You have 5 or more cards in your hand."
+            assert my.deck : "Your deck is empty."
+            powerUsed()
+            draw 5 - my.hand.size()
+          }
+        }
+        move "Tail Smash", {
+          text "100 damage. Flip a coin. If tails, this attack does nothing."
+          energyCost C, C, C
+          onAttack {
+            flip { damage 100 }
+          }
+        }
+      };
+      case CORVIKNIGHT_V_SWSH200:
+      return copy (BattleStyles.CORVIKNIGHT_V_109, this);
+      case HISUIAN_BASCULEGION_SWSH205:
+      return evolution (this, from:"Hisuian Basculin", hp:HP120, type:W, retreatCost:2) {
+        weakness L
+        move "Grudge Dive", {
+          text "30+ damage. If any of your Pokémon were Knocked Out by damage from an attack from your opponent's Pokémon during their last turn, this attack does 90 more damage, and your opponent's Active Pokémon is now Confused."
+          energyCost W
+          onAttack {
+            if (my.lastKnockoutByOpponentDamageTurn == bg.turnCount - 1) {
+              damage 120
+              applyAfterDamage CONFUSED
+            } else {
+              damage 30
+            }
+          }
+        }
+        move "Jet Headbutt", {
+          text "80 damage."
+          energyCost W, C, C
+          onAttack {
+            damage 80
+          }
+        }
+      };
+      case SYLVEON_SWSH211:
+      return evolution (this, from:"Eevee", hp:HP110, type:P, retreatCost:1) {
+        weakness M
+        move "Time Out Kick", {
+          text "30 damage. You may put an Energy attached to your opponent's Active Pokémon into their hand."
+          energyCost P
+          onAttack {
+            damage 30
+            afterDamage {
+              if (defending.cards.filterByType(ENERGY)) {
+                targeted (defending) {
+                  def sel = defending.cards.filterByType(ENERGY).select(min: 0, "You may put an Energy attached to your opponent's Active Pokémon into their hand.")
+                  if (sel) sel.moveTo(opp.hand)
+                }
+              }
+            }
+          }
+        }
+        move "Symphony Whip", {
+          text "70+ damage. If you played a Supporter card from your hand during this turn, this attack does 70 more damage."
+          energyCost P, C, C
+          onAttack {
+            damage 70 + (playedSupporterThisTurn { true } ? 70 : 0)
+          }
+        }
+      };
+      case RADIANT_EEVEE_SWSH230:
+      return basic (this, hp:HP090, type:C, retreatCost:1) {
+        weakness F
+        move "Twinkle Gathering", {
+          text "Search your deck for a number of cards up to the number of different types of Pokémon you have in play and put them into your hand. Then, shuffle your deck."
+          energyCost C
+          attackRequirement {
+            assert my.deck : "Your deck is empty."
+          }
+          onAttack {
+            def count = my.all.collect { it.types }.flatten().unique().size()
+            my.deck.search(min: 1, max: count, "Search your deck for up to $count cards", { true }).moveTo(hidden: true, my.hand)
+            shuffleDeck()
+          }
+        }
+        move "Boost Dash", {
+          text "50 damage."
+          energyCost C, C, C
+          onAttack {
+            damage 50
+          }
+        }
+      };
+      case HISUIAN_TYPHLOSION_V_SWSH237:
+      return basic (this, hp:HP210, type:P, retreatCost:2) {
+        weakness D
+        resistance F, MINUS30
+        move "Singe", {
+          text "Your opponent's Active Pokémon is now Burned."
+          energyCost()
+          onAttack {
+            apply BURNED
+          }
+        }
+        move "Petrifying Flame", {
+          text "120 damage. Choose a random card from your opponent's hand. Your opponent reveals that card and shuffles it into their deck."
+          energyCost P, P, C
+          onAttack {
+            damage 120
+            afterDamage {
+              astonish()
+            }
+          }
+        }
+      };
+      case HISUIAN_DECIDUEYE_V_SWSH238:
+      return basic (this, hp:HP220, type:F, retreatCost:2) {
+        weakness P
+        move "Mountain Hunt", {
+          text "Search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
+          energyCost F
+          attackRequirement {
+            assert my.deck : "Your deck is empty."
+          }
+          onAttack {
+            my.deck.search(min: 1, max: 2, "Search your deck for up to 2 cards", { true }).moveTo(hidden: true, my.hand)
+            shuffleDeck()
+          }
+        }
+        move "Close-Quarters Shooting", {
+          text "100 damage. This attack's damage isn't affected by any effects on your opponent's Active Pokémon."
+          energyCost F, C, C
+          onAttack {
+            shredDamage 100
+          }
+        }
+      };
+      case FINNEON_SWSH240:
+      return basic (this, hp:HP050, type:W, retreatCost:1) {
+        weakness L
+        bwAbility "Oceanic Accompaniment", {
+          text "As often as you like during your turn, you may attach a [W] Energy card from your hand to 1 of your Pokémon that has the Swim Freely attack."
+          actionA {
+            assert my.hand.filterByBasicEnergyType(W) : "No [W] Energy cards in your hand"
+            def validTargets = my.all.findAll { it.topPokemonCard.moves.any { it.name == "Swim Freely" } }
+            assert validTargets : "None of your Pokémon has the Swim Freely attack"
+            powerUsed()
+            def selEnergy = my.hand.filterByBasicEnergyType(W).select("Choose a [W] Energy card to attach").first()
+            def pcs = validTargets.select("Attach to?")
+            attachEnergy(pcs, selEnergy, tcgwars.logic.effect.ability.Ability.ActivationReason.PLAY_FROM_HAND)
+          }
+        }
+        move "Water Gun", {
+          text "10 damage."
+          energyCost W
+          onAttack {
+            damage 10
+          }
+        }
+      };
+      case ORIGIN_FORME_PALKIA_V_SWSH253:
+      return basic (this, hp:HP220, type:W, retreatCost:2) {
+        weakness L
+        move "Rule the Region", {
+          text "Search your deck for a Stadium card, reveal it, and put it into your hand. Then, shuffle your deck."
+          energyCost W
+          attackRequirement {
+            assert my.deck : "Your deck is empty."
+          }
+          onAttack {
+            my.deck.search(cardTypeFilter(STADIUM)).showToOpponent("Opponent's chosen Stadium").moveTo(my.hand)
+            shuffleDeck()
+          }
+        }
+        move "Hydro Break", {
+          text "200 damage. During your next turn, this Pokémon can't attack."
+          energyCost W, W, C
+          onAttack {
+            damage 200
+            cantAttackNextTurn self
+          }
+        }
+      };
+      case ARCHEOPS_SWSH272:
+      return evolution (this, from:"Archen", hp:HP150, type:C, retreatCost:1) {
+        weakness L
+        resistance F, MINUS30
+        bwAbility "Primal Turbo", {
+          text "Once during your turn, you may search your deck for up to 2 Special Energy cards and attach them to 1 of your Pokémon. Then, shuffle your deck."
+          actionA {
+            checkLastTurn()
+            assert my.deck : "Your deck is empty."
+            powerUsed()
+            def list = my.deck.search(max: 2, "Search your deck for up to 2 Special Energy cards", cardTypeFilter(SPECIAL_ENERGY))
+            if (list) {
+              def pcs = my.all.select("Attach the Special Energy cards to?")
+              list.each { attachEnergy(pcs, it) }
+            }
+            shuffleDeck()
+          }
+        }
+        move "Speed Wing", {
+          text "120 damage."
+          energyCost C, C, C
+          onAttack {
+            damage 120
+          }
+        }
+      };
+      case TOGETIC_SWSH276:
+      return evolution (this, from:"Togepi", hp:HP080, type:P, retreatCost:1) {
+        weakness M
+        bwAbility "Voice of Happiness", {
+          text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may heal 30 damage from your Active Pokémon."
+          onActivate { r ->
+            if (r == tcgwars.logic.effect.ability.Ability.ActivationReason.PLAY_FROM_HAND && my.active.numberOfDamageCounters && confirm("Use Voice of Happiness?")) {
+              powerUsed()
+              heal 30, my.active
+            }
+          }
+        }
+        move "Fairy Wind", {
+          text "30 damage."
+          energyCost P, C
+          onAttack {
+            damage 30
+          }
+        }
+      };
       default:
       return null;
     }
