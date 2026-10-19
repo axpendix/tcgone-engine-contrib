@@ -79,6 +79,8 @@ public enum SwordShieldPromos implements LogicCardInfo {
   ALCREMIE_SWSH58 ("Alcremie", "SWSH058", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE1, _PSYCHIC_]),
   GALARIAN_OBSTAGOON_SWSH59 ("Galarian Obstagoon", "SWSH059", Rarity.PROMO, [POKEMON, EVOLUTION, STAGE2, _DARKNESS_]),
   DURALUDON_SWSH60 ("Duraludon", "SWSH060", Rarity.PROMO, [POKEMON, BASIC, _METAL_]),
+  PIKACHU_V_SWSH61 ("Pikachu V", "SWSH061", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _LIGHTNING_]),
+  PIKACHU_VMAX_SWSH62 ("Pikachu VMAX", "SWSH062", Rarity.PROMO, [POKEMON, EVOLUTION, POKEMON_V, VMAX, _LIGHTNING_]),
   PIKACHU_V_SWSH63 ("Pikachu V", "SWSH063", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _LIGHTNING_]),
   ETERNATUS_V_SWSH64 ("Eternatus V", "SWSH064", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _DARKNESS_]),
   EEVEE_V_SWSH65 ("Eevee V", "SWSH065", Rarity.PROMO, [POKEMON, BASIC, POKEMON_V, _COLORLESS_]),
@@ -869,6 +871,10 @@ public enum SwordShieldPromos implements LogicCardInfo {
       return copy (SwordShield.GALARIAN_OBSTAGOON_119, this)
       case DURALUDON_SWSH60:
       return copy (RebelClash.DURALUDON_138, this)
+      case PIKACHU_V_SWSH61:
+      return copy (AmazingVoltTackle.PIKACHU_V_30, this)
+      case PIKACHU_VMAX_SWSH62:
+      return copy (AmazingVoltTackle.PIKACHU_VMAX_31, this)
       case PIKACHU_V_SWSH63:
       return basic (this, hp:HP190, type:L, retreatCost:1) {
         weakness F
