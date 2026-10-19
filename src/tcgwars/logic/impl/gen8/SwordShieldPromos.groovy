@@ -3791,6 +3791,308 @@ public enum SwordShieldPromos implements LogicCardInfo {
           }
         }
       };
+      case ORIGIN_FORME_PALKIA_VSTAR_SWSH254:
+      return evolution (this, from:"Origin Forme Palkia V", hp:HP280, type:W, retreatCost:2) {
+        weakness L
+        bwAbility "Star Portal", {
+          text "During your turn, you may attach up to 3 [W] Energy cards from your discard pile to your [W] Pokémon in any way you like. (You can't use more than 1 VSTAR Power in a game.)"
+          actionA {
+            vStarCheck()
+            assert my.discard.find(basicEnergyFilter(W)) : "There are no [W] Energy cards in your discard pile."
+            assert my.all.any { it.types.contains(W) } : "You have no [W] Pokémon in play."
+            vStarPerform()
+            powerUsed()
+            my.discard.findAll(basicEnergyFilter(W)).select(min: 1, max: 3, "Attach up to 3 [W] Energy cards to your [W] Pokémon.").each {
+              attachEnergy(my.all.findAll { it.types.contains(W) }.select("Attach $it to which [W] Pokémon?"), it)
+            }
+          }
+        }
+        move "Subspace Swell", {
+          text "60+ damage. This attack does 20 more damage for each Benched Pokémon (both yours and your opponent's)."
+          energyCost W, W
+          onAttack {
+            damage 60 + 20 * (my.bench.size() + opp.bench.size())
+          }
+        }
+      };
+      case PIKACHU_V_UNION_SWSH139:
+      return basic (this, hp:HP300, type:L, retreatCost:2) {
+        weakness F
+        globalAbility { Card thisCard ->
+          vUnionAssembly(thisCard)
+        }
+        move "Union Gain", {
+          text "Attach up to 2 [L] Energy cards from your discard pile to this Pokémon."
+          energyCost C
+          attackRequirement {
+            assert my.discard.find(basicEnergyFilter(L)) : "There are no [L] Energy cards in your discard pile."
+          }
+          onAttack {
+            attachEnergyFrom(type: L, basic: true, may: true, max: 2, my.discard, self)
+          }
+        }
+        move "Shocking Shock", {
+          text "120 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+          energyCost L, C
+          onAttack {
+            damage 120
+            flip { applyAfterDamage PARALYZED }
+          }
+        }
+        move "Disconnect", {
+          text "150 damage. During your opponent's next turn, they can't play any Item cards from their hand."
+          energyCost L, L, C
+          onAttack {
+            damage 150
+            delayed {
+              before PLAY_TRAINER, {
+                if (bg.currentTurn == self.owner.opposite && ef.cardToPlay.cardTypes.is(ITEM) && bg.currentTurn.pbg.hand.contains(ef.cardToPlay)) {
+                  wcu "Disconnect prevents playing Item cards this turn"
+                  prevent()
+                }
+              }
+              unregisterAfter 2
+            }
+          }
+        }
+        move "Electro Ball Together", {
+          text "250 damage."
+          energyCost L, L, C
+          onAttack {
+            damage 250
+          }
+        }
+      };
+      case MORPEKO_V_UNION_SWSH215:
+      return basic (this, hp:HP310, type:L, retreatCost:2) {
+        weakness F
+        globalAbility { Card thisCard ->
+          vUnionAssembly(thisCard)
+        }
+        move "Union Gain", {
+          text "Attach up to 2 [L] Energy cards from your discard pile to this Pokémon."
+          energyCost C
+          attackRequirement {
+            assert my.discard.find(basicEnergyFilter(L)) : "There are no [L] Energy cards in your discard pile."
+          }
+          onAttack {
+            attachEnergyFrom(type: L, basic: true, may: true, max: 2, my.discard, self)
+          }
+        }
+        move "All You Can Eat", {
+          text "Draw cards until you have 10 cards in your hand."
+          energyCost C, C
+          attackRequirement {
+            assert my.hand.size() < 10 : "You already have 10 or more cards in your hand."
+            assert my.deck : "Your deck is empty."
+          }
+          onAttack {
+            draw 10 - my.hand.size()
+          }
+        }
+        move "Burst Wheel", {
+          text "100× damage. Discard all energy from this Pokémon. This attack does 100 damage for each card you discarded in this way."
+          energyCost L, C, C
+          onAttack {
+            damage 100 * discardAllSelfEnergy().size()
+          }
+        }
+        move "Electric Ball", {
+          text "160 damage."
+          energyCost L, C, C
+          onAttack {
+            damage 160
+          }
+        }
+      };
+      case ARCEUS_VSTAR_SWSH307:
+      return evolution (this, from:"Arceus V", hp:HP280, type:C, retreatCost:2) {
+        weakness F
+        bwAbility "Starbirth", {
+          text "During your turn, you may search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck. (You can't use more than 1 VSTAR Power in a game.)"
+          actionA {
+            vStarCheck()
+            assert my.deck : "Your deck is empty."
+            vStarPerform()
+            powerUsed()
+            my.deck.search(max: 2, "Search your deck for up to 2 cards.", { true }).moveTo(hidden: true, my.hand)
+            shuffleDeck()
+          }
+        }
+        move "Trinity Nova", {
+          text "200 damage. Search your deck for up to 3 basic Energy cards and attach them to your Pokémon V in any way you like. Then, shuffle your deck."
+          energyCost C, C, C
+          onAttack {
+            damage 200
+            afterDamage {
+              if (my.deck) {
+                my.deck.search(max: 3, "Search your deck for up to 3 basic Energy cards.", cardTypeFilter(BASIC_ENERGY)).each {
+                  def targets = my.all.findAll { it.pokemonV || it.topPokemonCard.cardTypes.isIn(POKEMON_VSTAR, V_UNION) }
+                  if (targets) attachEnergy(targets.select("Attach $it to which Pokémon V?"), it)
+                }
+                shuffleDeck()
+              }
+            }
+          }
+        }
+      };
+      case ZACIAN_V_UNION_SWSH163:
+      return basic (this, hp:HP320, type:M, retreatCost:2) {
+        weakness R
+        resistance G, MINUS30
+        globalAbility { Card thisCard ->
+          vUnionAssembly(thisCard)
+        }
+        move "Union Gain", {
+          text "Attach up to 2 [M] Energy cards from your discard pile to this Pokémon."
+          energyCost C
+          attackRequirement {
+            assert my.discard.find(basicEnergyFilter(M)) : "There are no [M] Energy cards in your discard pile."
+          }
+          onAttack {
+            attachEnergyFrom(type: M, basic: true, may: true, max: 2, my.discard, self)
+          }
+        }
+        move "Dance of the Crowned Sword", {
+          text "150 damage. During your opponent's next turn, the Defending Pokémon's attacks do 150 less damage (before applying Weakness and Resistance)."
+          energyCost M, M, C
+          onAttack {
+            damage 150
+            reduceDamageFromDefendingNextTurn(hp(150), thisMove, defending)
+          }
+        }
+        move "Steel Cut", {
+          text "200 damage."
+          energyCost M, M, C
+          onAttack {
+            damage 200
+          }
+        }
+        move "Master Blade", {
+          text "340 damage. Discard 3 Energy from this Pokémon."
+          energyCost M, M, M, C
+          onAttack {
+            damage 340
+            discardSelfEnergyAfterDamage C, C, C
+          }
+        }
+      };
+      case MEWTWO_V_UNION_SWSH159:
+      return basic (this, hp:HP300, type:P, retreatCost:2) {
+        weakness D
+        resistance F, MINUS30
+        globalAbility { Card thisCard ->
+          vUnionAssembly(thisCard)
+        }
+        bwAbility "Photon Barrier", {
+          text "Prevent all effects of attacks from your opponent's Pokémon done to this Pokémon. (Damage is not an effect.)"
+          delayedA {
+            before null, self, tcgwars.logic.effect.Source.ATTACK, {
+              if (e.sourceAttack?.attacker?.owner == self.owner.opposite && ef.effectType != DAMAGE && ef.effectType != KNOCKOUT
+                && !(ef instanceof tcgwars.logic.effect.basic.ApplyDamages)) {
+                bc "Photon Barrier prevents effect"
+                prevent()
+              }
+            }
+          }
+        }
+        move "Union Gain", {
+          text "Attach up to 2 [P] Energy cards from your discard pile to this Pokémon."
+          energyCost C
+          attackRequirement {
+            assert my.discard.find(basicEnergyFilter(P)) : "There are no [P] Energy cards in your discard pile."
+          }
+          onAttack {
+            attachEnergyFrom(type: P, basic: true, may: true, max: 2, my.discard, self)
+          }
+        }
+        move "Super Regeneration", {
+          text "Heal 200 damage from this Pokémon."
+          energyCost P, P, C
+          attackRequirement {
+            assert self.numberOfDamageCounters : "This Pokémon has no damage counters on it."
+          }
+          onAttack {
+            heal 200, self
+          }
+        }
+        move "Psysplosion", {
+          text "Put 16 damage counters on your opponent's Pokémon in any way you like."
+          energyCost P, P, C
+          onAttack {
+            putDamageCountersOnOpponentsPokemon(16)
+          }
+        }
+        move "Final Burn", {
+          text "300 damage."
+          energyCost P, P, P, C
+          onAttack {
+            damage 300
+          }
+        }
+      };
+      case GRENINJA_V_UNION_SWSH155:
+      return basic (this, hp:HP300, type:W, retreatCost:2) {
+        weakness L
+        globalAbility { Card thisCard ->
+          vUnionAssembly(thisCard)
+        }
+        bwAbility "Ninja Body", {
+          text "Whenever your opponent plays an Item card from their hand, prevent all effects of that card done to this Pokémon."
+          delayedA {
+            def flag = false
+            before PLAY_TRAINER, {
+              if (ef.cardToPlay.cardTypes.is(ITEM) && bg.currentTurn == self.owner.opposite && bg.currentTurn.pbg.hand.contains(ef.cardToPlay)) {
+                flag = true
+              }
+            }
+            after PLAY_TRAINER, {
+              flag = false
+            }
+            before null, null, tcgwars.logic.effect.Source.TRAINER_CARD, {
+              if (flag && e.getTargetPokemon() == self) {
+                bc "Ninja Body prevents effect"
+                prevent()
+              }
+            }
+          }
+        }
+        move "Union Gain", {
+          text "Attach up to 2 [W] Energy cards from your discard pile to this Pokémon."
+          energyCost C
+          attackRequirement {
+            assert my.discard.find(basicEnergyFilter(W)) : "There are no [W] Energy cards in your discard pile."
+          }
+          onAttack {
+            attachEnergyFrom(type: W, basic: true, may: true, max: 2, my.discard, self)
+          }
+        }
+        move "Aqua Edge", {
+          text "130 damage."
+          energyCost W
+          onAttack {
+            damage 130
+          }
+        }
+        move "Twister Shuriken", {
+          text "This attack does 100 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+          energyCost W, W, C
+          attackRequirement {
+            assert opp.bench : "Your opponent has no Benched Pokémon."
+          }
+          onAttack {
+            opp.bench.each { damage 100, it }
+          }
+        }
+        move "Waterfall Blind", {
+          text "180 damage. During your opponent's next turn, the Defending Pokémon can't retreat."
+          energyCost W, W, C
+          onAttack {
+            damage 180
+            cantRetreat defending
+          }
+        }
+      };
       default:
       return null;
     }
