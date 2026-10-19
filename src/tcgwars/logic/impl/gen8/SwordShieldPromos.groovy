@@ -1358,6 +1358,301 @@ public enum SwordShieldPromos implements LogicCardInfo {
           }
         }
       }
+      case GALARIAN_SLOWPOKE_SWSH126:
+      return basic (this, hp:HP070, type:P, retreatCost:2) {
+        weakness D
+        resistance F, MINUS30
+        move "Everyone Laze Around", {
+          text "Heal 10 damage from each of your Pokémon."
+          energyCost C
+          attackRequirement {
+            assert my.all.find{it.numberOfDamageCounters} : "None of your Pokémon have damage counters."
+          }
+          onAttack {
+            my.all.each {
+              heal 10, it
+            }
+          }
+        }
+        move "Tail Whap", {
+          text "30 damage."
+          energyCost C, C, C
+          onAttack {
+            damage 30
+          }
+        }
+      };
+      case EEVEE_SWSH127:
+      return basic (this, hp:HP060, type:C, retreatCost:1) {
+        weakness F
+        move "Be Prepared", {
+          text "Attach a basic Energy card from your hand to this Pokémon."
+          energyCost C
+          attackRequirement {
+            assert my.hand.filterByType(BASIC_ENERGY) : "You have no basic Energy cards in your hand."
+          }
+          onAttack {
+            attachEnergyFrom(basic: true, my.hand, self)
+          }
+        }
+        move "Bite", {
+          text "30 damage."
+          energyCost C, C, C
+          onAttack {
+            damage 30
+          }
+        }
+      };
+      case EISCUE_SWSH128:
+      return basic (this, hp:HP120, type:W, retreatCost:2) {
+        weakness M
+        move "Ice Bonus", {
+          text "Discard a [W] Energy card from your hand. If you do, draw 3 cards."
+          energyCost W
+          attackRequirement {
+            assert my.hand.filterByBasicEnergyType(W) : "You have no [W] Energy cards in your hand."
+            assert my.deck : "You have no cards in deck."
+          }
+          onAttack {
+            my.hand.filterByBasicEnergyType(W).select("Discard a [W] Energy card.").discard()
+            draw 3
+          }
+        }
+        move "Headbutt Bounce", {
+          text "100 damage."
+          energyCost W, W, C
+          onAttack {
+            damage 100
+          }
+        }
+      };
+      case LANCE_S_CHARIZARD_V_SWSH133:
+      return basic (this, hp:HP220, type:R, retreatCost:3) {
+        weakness W
+        move "Flamethrower", {
+          text "200 damage. Discard an Energy from this Pokémon."
+          energyCost R, R, C
+          onAttack {
+            damage 200
+            discardSelfEnergyAfterDamage C
+          }
+        }
+      };
+      case PIKACHU_V_SWSH143:
+      return basic (this, hp:HP190, type:L, retreatCost:1) {
+        weakness F
+        move "Volt Tackle", {
+          text "210 damage. This Pokémon also does 30 damage to itself."
+          energyCost L, L, C
+          onAttack {
+            damage 210
+            damage 30, self
+          }
+        }
+      };
+      case PROFESSOR_S_RESEARCH_SWSH152:
+      return copy (SwordShield.PROFESSOR_S_RESEARCH_178, this);
+      case PIKACHU_SWSH153:
+      return basic (this, hp:HP060, type:L, retreatCost:1) {
+        weakness F
+        move "Thunder Shock", {
+          text "30 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+          energyCost L, L
+          onAttack {
+            damage 30
+            flip { applyAfterDamage PARALYZED }
+          }
+        }
+      };
+      case DEOXYS_SWSH170:
+      return basic (this, hp:HP120, type:P, retreatCost:1) {
+        weakness D
+        resistance F, MINUS30
+        move "Photon Boost", {
+          text "80+ damage. If this Pokémon has any Fusion Strike Energy attached, this attack does 80 more damage."
+          energyCost C, C, C
+          onAttack {
+            damage 80
+            if (self.cards.any{it.name == "Fusion Strike Energy"}) damage 80
+          }
+        }
+      };
+      case GALARIAN_OBSTAGOON_SWSH193:
+      return evolution (this, from:"Galarian Linoone", hp:HP170, type:D, retreatCost:2) {
+        weakness G
+        move "Rampaging Kick", {
+          text "180 damage. Discard 2 [D] Energy from this Pokémon."
+          energyCost D, D, C
+          onAttack {
+            damage 180
+            discardSelfEnergyAfterDamage D, D
+          }
+        }
+      };
+      case ROWLET_SWSH220:
+      return basic (this, hp:HP060, type:G, retreatCost:1) {
+        weakness R
+        move "Jump On", {
+          text "10+ damage. Flip a coin. If heads, this attack does 10 more damage."
+          energyCost C
+          onAttack {
+            damage 10
+            flip { damage 10 }
+          }
+        }
+      };
+      case OSHAWOTT_SWSH222:
+      return basic (this, hp:HP070, type:W, retreatCost:1) {
+        weakness L
+        move "Beat", {
+          text "10 damage."
+          energyCost C
+          onAttack {
+            damage 10
+          }
+        }
+      };
+      case BULBASAUR_SWSH231:
+      return basic (this, hp:HP070, type:G, retreatCost:2) {
+        weakness R
+        move "Vine Whip", {
+          text "10 damage."
+          energyCost G
+          onAttack {
+            damage 10
+          }
+        }
+        move "Razor Leaf", {
+          text "20 damage."
+          energyCost G, C
+          onAttack {
+            damage 20
+          }
+        }
+      };
+      case SQUIRTLE_SWSH233:
+      return basic (this, hp:HP070, type:W, retreatCost:1) {
+        weakness L
+        move "Water Gun", {
+          text "20 damage."
+          energyCost W
+          onAttack {
+            damage 20
+          }
+        }
+      };
+      case DRAGONITE_V_SWSH235:
+      return basic (this, hp:HP230, type:N, retreatCost:2) {
+        move "Hyper Beam", {
+          text "60 damage. Discard an Energy from your opponent's Active Pokémon."
+          energyCost W, L
+          onAttack {
+            damage 60
+            discardDefendingEnergyAfterDamage C
+          }
+        }
+        move "Buster Tail", {
+          text "160 damage."
+          energyCost W, L, C
+          onAttack {
+            damage 160
+          }
+        }
+      };
+      case SCORBUNNY_SWSH244:
+      return basic (this, hp:HP060, type:R, retreatCost:1) {
+        weakness W
+        move "Flaring Dash", {
+          text "Flip a coin until you get tails. For each heads, draw a card."
+          energyCost R
+          attackRequirement {
+            assert my.deck : "You have no cards in deck."
+          }
+          onAttack {
+            flipUntilTails { draw 1 }
+          }
+        }
+        move "Flare", {
+          text "30 damage."
+          energyCost R, C, C
+          onAttack {
+            damage 30
+          }
+        }
+      };
+      case CROAGUNK_SWSH245:
+      return basic (this, hp:HP060, type:D, retreatCost:1) {
+        weakness F
+        move "Corkscrew Punch", {
+          text "20 damage."
+          energyCost D
+          onAttack {
+            damage 20
+          }
+        }
+      };
+      case ZERAORA_V_SWSH263:
+      return basic (this, hp:HP210, type:L, retreatCost:1) {
+        weakness F
+        move "Claw Slash", {
+          text "50 damage."
+          energyCost L, C
+          onAttack {
+            damage 50
+          }
+        }
+        move "Thunderous Bolt", {
+          text "190 damage. During your next turn, this Pokémon can't attack."
+          energyCost L, L, C
+          onAttack {
+            damage 190
+            cantAttackNextTurn self
+          }
+        }
+      };
+      case CRANIDOS_SWSH274:
+      return evolution (this, from:"Unidentified Fossil", hp:HP090, type:F, retreatCost:2) {
+        weakness G
+        move "Ram", {
+          text "20 damage."
+          energyCost F
+          onAttack {
+            damage 20
+          }
+        }
+        move "Stone Edge", {
+          text "40+ damage. Flip a coin. If heads, this attack does 40 more damage."
+          energyCost F, F
+          onAttack {
+            damage 40
+            flip { damage 40 }
+          }
+        }
+      };
+      case PIKACHU_V_SWSH285:
+      return basic (this, hp:HP200, type:L, retreatCost:1) {
+        weakness F
+        move "Pika Drive", {
+          text "200 damage. During your next turn, this Pokémon can't attack."
+          energyCost L, L, C
+          onAttack {
+            damage 200
+            cantAttackNextTurn self
+          }
+        }
+      };
+      case ARCANINE_SWSH304:
+      return evolution (this, from:"Growlithe", hp:HP130, type:R, retreatCost:3) {
+        weakness W
+        move "Sun-Drenched Tackle", {
+          text "160 damage. During your next turn, this Pokémon can't attack."
+          energyCost R, R, C
+          onAttack {
+            damage 160
+            cantAttackNextTurn self
+          }
+        }
+      };
       default:
       return null;
     }
