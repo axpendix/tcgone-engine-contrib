@@ -2815,6 +2815,455 @@ public enum SwordShieldPromos implements LogicCardInfo {
           }
         }
       };
+      case UMBREON_SWSH129:
+      return evolution (this, from:"Eevee", hp:HP110, type:D, retreatCost:1) {
+        weakness G
+        move "Blindside", {
+          text "This attack does 60 damage to 1 of your opponent's Pokémon that has any damage counters on it. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+          energyCost D
+          attackRequirement {
+            assertOppAll(info: "with damage counters on them", { it.numberOfDamageCounters })
+          }
+          onAttack {
+            damage 60, opp.all.findAll { it.numberOfDamageCounters }.select("Do 60 damage to?")
+          }
+        }
+        move "Moon Mirage", {
+          text "80 damage. Your opponent's Active Pokémon is now Confused."
+          energyCost D, C, C
+          onAttack {
+            damage 80
+            applyAfterDamage CONFUSED
+          }
+        }
+      };
+      case HOOPA_V_SWSH176:
+      return basic (this, hp:HP220, type:D, retreatCost:2) {
+        weakness G
+        bwAbility "Two-Faced", {
+          text "As long as this Pokémon is in play, it is Psychic and Darkness type."
+          getterA GET_POKEMON_TYPE, self, { h->
+            h.object.add(P)
+          }
+        }
+        move "Shadow Impact", {
+          text "170 damage. Put 3 damage counters on 1 of your Pokémon."
+          energyCost D, D, C
+          onAttack {
+            damage 170
+            afterDamage {
+              directDamage 30, my.all.select("Put 3 damage counters on which of your Pokémon?")
+            }
+          }
+        }
+      };
+      case GLACEON_SWSH192:
+      return evolution (this, from:"Eevee", hp:HP110, type:W, retreatCost:1) {
+        weakness M
+        move "Hail", {
+          text "This attack does 20 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+          energyCost W
+          onAttack {
+            opp.all.each {
+              damage 20, it
+            }
+          }
+        }
+        move "Frosty Typhoon", {
+          text "120 damage. During your next turn, this Pokémon can't use Frosty Typhoon."
+          energyCost W, C, C
+          onAttack {
+            damage 120
+            cantUseAttack thisMove, self
+          }
+        }
+      };
+      case WYRDEER_SWSH206:
+      return evolution (this, from:"Stantler", hp:HP140, type:P, retreatCost:2) {
+        weakness D
+        resistance F, MINUS30
+        bwAbility "Hurried Gait", {
+          text "Once during your turn, you may draw a card."
+          actionA {
+            checkLastTurn()
+            assert my.deck : "Your deck is empty."
+            powerUsed()
+            draw 1
+          }
+        }
+        move "Extrasensory", {
+          text "40+ damage. If you have the same number of cards in your hand as your opponent, this attack does 80 more damage."
+          energyCost C, C
+          onAttack {
+            damage 40
+            if (my.hand.size() == opp.hand.size()) damage 80
+          }
+        }
+      };
+      case BOLTUND_V_SWSH219:
+      return basic (this, hp:HP200, type:L, retreatCost:1) {
+        weakness F
+        move "Smash Turn", {
+          text "30 damage. You may switch this Pokémon with 1 of your Benched Pokémon."
+          energyCost L
+          onAttack {
+            damage 30
+            switchYourActive(may: true)
+          }
+        }
+        move "Electrobullet", {
+          text "120 damage. This attack also does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+          energyCost L, L, C
+          onAttack {
+            damage 120
+            if (opp.bench) {
+              damage 30, opp.bench.select("Do 30 damage to?")
+            }
+          }
+        }
+      };
+      case COMFEY_SWSH242:
+      return basic (this, hp:HP070, type:P, retreatCost:1) {
+        weakness M
+        bwAbility "Flower Selecting", {
+          text "Once during your turn, if this Pokémon is in the Active Spot, you may look at the top 2 cards of your deck and put 1 of them into your hand. Put the other card in the Lost Zone."
+          actionA {
+            checkLastTurn()
+            assert self.active : "This Pokémon is not in the Active Spot."
+            assert my.deck : "Your deck is empty."
+            powerUsed()
+            def top = my.deck.subList(0, 2)
+            def sel = top.select("Choose a card to put into your hand. The other card will be put in the Lost Zone.")
+            sel.moveTo(hidden: true, my.hand)
+            top.getExcludedList(sel).moveTo(my.lostZone)
+          }
+        }
+        move "Spinning Attack", {
+          text "30 damage."
+          energyCost P, C
+          onAttack {
+            damage 30
+          }
+        }
+      };
+      case MACHAMP_SWSH243:
+      return evolution (this, from:"Machoke", hp:HP150, type:F, retreatCost:2) {
+        weakness P
+        bwAbility "Crisis Muscles", {
+          text "If your opponent has 3 or fewer Prize cards remaining, this Pokémon gets +150 HP."
+          getterA (GET_FULL_HP, self) { h->
+            if (self.owner.opposite.pbg.prizeCardSet.size() <= 3) {
+              h.object += hp(150)
+            }
+          }
+        }
+        move "Strong-Arm Lariat", {
+          text "100+ damage. You may do 100 more damage. If you do, during your next turn, this Pokémon can't attack."
+          energyCost F, F
+          onAttack {
+            damage 100
+            if (confirm("Strong-Arm Lariat: do 100 more damage? If you do, during your next turn, this Pokémon can't attack.")) {
+              damage 100
+              cantAttackNextTurn self
+            }
+          }
+        }
+      };
+      case GIRATINA_V_SWSH259:
+      return basic (this, hp:HP220, type:N, retreatCost:2) {
+        move "Abyss Seeking", {
+          text "Look at the top 4 cards of your deck and put 2 of them into your hand. Put the other cards in the Lost Zone."
+          energyCost C
+          attackRequirement {
+            assert my.deck : "Your deck is empty."
+          }
+          onAttack {
+            def top = my.deck.subList(0, 4)
+            def sel = top.select(count: 2, "Choose 2 cards to put into your hand. The other cards will be put in the Lost Zone.")
+            sel.moveTo(hidden: true, my.hand)
+            top.getExcludedList(sel).moveTo(my.lostZone)
+          }
+        }
+        move "Shred", {
+          text "160 damage. This attack's damage isn't affected by any effects on your opponent's Active Pokémon."
+          energyCost G, P, C
+          onAttack {
+            shredDamage 160
+          }
+        }
+      };
+      case CHARIZARD_VSTAR_SWSH262:
+      return evolution (this, from:"Charizard V", hp:HP280, type:R, retreatCost:2) {
+        weakness W
+        move "Explosive Fire", {
+          text "130+ damage. If this Pokémon has any damage counters on it, this attack does 100 more damage."
+          energyCost R, R, C
+          onAttack {
+            damage 130
+            if (self.numberOfDamageCounters) damage 100
+          }
+        }
+        move "Star Blaze", {
+          text "320 damage. Discard 2 Energy from this Pokémon. (You can't use more than 1 VSTAR Power in a game.)"
+          energyCost R, R, R, C
+          attackRequirement {
+            vStarCheck()
+          }
+          onAttack {
+            vStarPerform()
+            damage 320
+            discardSelfEnergyAfterDamage C, C
+          }
+        }
+      };
+      case ZERAORA_VMAX_SWSH264:
+      return evolution (this, from:"Zeraora V", hp:HP320, type:L, retreatCost:2) {
+        weakness F
+        move "Reactive Pulse", {
+          text "60× damage. This attack does 60 damage for each of your opponent's Pokémon in play that has an Ability."
+          energyCost L, L
+          attackRequirement {
+            assert opp.all.any { it.abilities } : "None of your opponent's Pokémon has an Ability."
+          }
+          onAttack {
+            damage 60 * opp.all.findAll { it.abilities }.size()
+          }
+        }
+        move "Max Fist", {
+          text "240 damage. Discard 2 Energy from this Pokémon."
+          energyCost L, L, C
+          onAttack {
+            damage 240
+            discardSelfEnergyAfterDamage C, C
+          }
+        }
+      };
+      case REGIELEKI_V_SWSH280:
+      return basic (this, hp:HP200, type:L, retreatCost:1) {
+        weakness F
+        move "Switching Bolt", {
+          text "30 damage. Switch this Pokémon with 1 of your Benched Pokémon."
+          energyCost L
+          onAttack {
+            damage 30
+            switchYourActive()
+          }
+        }
+        move "Lightning Wall", {
+          text "100 damage. During your opponent's next turn, this Pokémon takes 100 less damage from attacks (after applying Weakness and Resistance)."
+          energyCost L, C, C
+          onAttack {
+            damage 100
+            reduceDamageNextTurn(hp(100), thisMove)
+          }
+        }
+      };
+      case PYUKUMUKU_SWSH169:
+      return basic (this, hp:HP080, type:W, retreatCost:1) {
+        weakness L
+        globalAbility { Card thisCard ->
+          action(thisCard, "$thisCard: Pitch a Pyukumuku", [tcgwars.logic.TargetPlayer.fromPlayerType(thisCard.player)], false) {
+            def key = "Pitch_a_Pyukumuku_" + thisCard.player
+            assert thisCard.player.pbg.hand.contains(thisCard) : "Not in hand"
+            assert thisCard.player.pbg.deck : "Your deck is empty"
+            assert bg.em().retrieveObject(key) != bg.turnCount : "You can't use more than 1 Pitch a Pyukumuku Ability each turn."
+            assert checkGlobalAbility(thisCard) : "Blocked"
+            bg.em().storeObject(key, bg.turnCount)
+            bc "$thisCard used Pitch a Pyukumuku"
+            new CardList(thisCard).showToOpponent("Pitch a Pyukumuku: this card will be put on the bottom of your opponent's deck").moveTo(thisCard.player.pbg.deck)
+            draw 1
+          }
+        }
+        bwAbility "Pitch a Pyukumuku", {
+          text "Once during your turn, if this Pokémon is in your hand, you may reveal it and put it on the bottom of your deck. If you do, draw a card. You can't use more than 1 Pitch a Pyukumuku Ability each turn."
+        }
+        move "Knuckle Punch", {
+          text "50 damage."
+          energyCost W, C, C
+          onAttack {
+            damage 50
+          }
+        }
+      };
+      case LEAFEON_SWSH191:
+      return evolution (this, from:"Eevee", hp:HP110, type:G, retreatCost:1) {
+        weakness R
+        move "Leaf Guard", {
+          text "30 damage. During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+          energyCost G
+          onAttack {
+            damage 30
+            reduceDamageNextTurn(hp(30), thisMove)
+          }
+        }
+        move "Grass Knot", {
+          text "50+ damage. This attack does 30 more damage for each [C] in your opponent's Active Pokémon's Retreat Cost."
+          energyCost G, C
+          onAttack {
+            damage 50 + 30 * defending.retreatCost
+          }
+        }
+      };
+      case LEAFEON_V_SWSH194:
+      return basic (this, hp:HP210, type:G, retreatCost:2) {
+        weakness R
+        move "Leaf Guard", {
+          text "30 damage. During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+          energyCost G
+          onAttack {
+            damage 30
+            reduceDamageNextTurn(hp(30), thisMove)
+          }
+        }
+        move "Slashing Strike", {
+          text "180 damage. During your next turn, this Pokémon can't use Slashing Strike."
+          energyCost G, G, C
+          onAttack {
+            damage 180
+            cantUseAttack thisMove, self
+          }
+        }
+      };
+      case HISUIAN_SAMUROTT_SWSH207:
+      return evolution (this, from:"Dewott", hp:HP170, type:D, retreatCost:2) {
+        weakness G
+        bwAbility "Wily Stance", {
+          text "You must discard a card from your hand in order to use this Ability. Once during your turn, you may draw 3 cards."
+          actionA {
+            checkLastTurn()
+            assert my.hand : "You have no cards in your hand to discard."
+            assert my.deck : "Your deck is empty."
+            powerUsed()
+            my.hand.select("Discard a card from your hand.").discard()
+            draw 3
+          }
+        }
+        move "Dark Mastery", {
+          text "60+ damage. This attack does 20 more damage for each Energy attached to all of your Pokémon."
+          energyCost D, C, C
+          onAttack {
+            damage 60 + 20 * my.all.sum { it.cards.energyCount(C) }
+          }
+        }
+      };
+      case MAGNEZONE_SWSH208:
+      return evolution (this, from:"Magneton", hp:HP150, type:M, retreatCost:2) {
+        weakness R
+        resistance G, MINUS30
+        bwAbility "Giga Magnet", {
+          text "Once during your turn, you may look at the top 6 cards of your deck and attach any number of [M] Energy cards you find there to your Pokémon in any way you like. Shuffle the other cards back into your deck."
+          actionA {
+            checkLastTurn()
+            assert my.deck : "Your deck is empty."
+            powerUsed()
+            def top = my.deck.subList(0, 6)
+            top.showToMe("Top 6 cards of your deck")
+            def tar = top.filterByBasicEnergyType(M)
+            if (tar) {
+              tar.select(min: 0, max: tar.size(), "Select the [M] Energy cards to attach").each {
+                attachEnergy(my.all.select("Attach $it to?"), it)
+              }
+            }
+            shuffleDeck()
+          }
+        }
+        move "Power Beam", {
+          text "120 damage."
+          energyCost M, C, C
+          onAttack {
+            damage 120
+          }
+        }
+      };
+      case ORIGIN_FORME_DIALGA_VSTAR_SWSH256:
+      return evolution (this, from:"Origin Forme Dialga V", hp:HP280, type:M, retreatCost:3) {
+        weakness R
+        resistance G, MINUS30
+        move "Metal Blast", {
+          text "40+ damage. This attack does 40 more damage for each [M] Energy attached to this Pokémon."
+          energyCost C
+          onAttack {
+            damage 40 + 40 * self.cards.energyCount(M)
+          }
+        }
+        move "Star Chronos", {
+          text "220 damage. Take another turn after this one. (Skip Pokémon Checkup.) (You can't use more than 1 VSTAR Power in a game.)"
+          energyCost M, M, M, M, C
+          attackRequirement {
+            vStarCheck()
+          }
+          onAttack {
+            vStarPerform()
+            damage 220
+            afterDamage {
+              delayed (priority: FIRST) {
+                before BEGIN_TURN, {
+                  takeTurnAsCurrentPlayer(delegate, ef, "Star Chronos started a new turn!")
+                }
+              }
+            }
+          }
+        }
+      };
+      case MANAPHY_SWSH275:
+      return basic (this, hp:HP070, type:W, retreatCost:1) {
+        weakness L
+        move "Pulling Currents", {
+          text "Your opponent reveals their hand. Put up to 2 Basic Pokémon you find there onto your opponent's Bench."
+          energyCost W
+          attackRequirement {
+            assert opp.hand : "Your opponent's hand is empty."
+            assert opp.bench.notFull : "Your opponent's Bench is full."
+          }
+          onAttack {
+            def basics = opp.hand.filterByType(BASIC)
+            if (basics) {
+              def max = Math.min(2, Math.min(opp.bench.freeBenchCount, basics.size()))
+              opp.hand.select(min: 0, max: max, "Your opponent's hand. Put up to $max Basic Pokémon onto your opponent's Bench.", cardTypeFilter(BASIC)).each {
+                benchPCS(it)
+              }
+            } else {
+              opp.hand.showToMe("Your opponent's hand")
+            }
+          }
+        }
+        move "Aqua Bullet", {
+          text "40 damage. This attack also does 20 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+          energyCost W, C
+          onAttack {
+            damage 40
+            if (opp.bench) {
+              damage 20, opp.bench.select("Do 20 damage to?")
+            }
+          }
+        }
+      };
+      case ZAMAZENTA_V_SWSH293:
+      return copy (SwordShield.ZAMAZENTA_V_139, this);
+      case LATIAS_SWSH171:
+      return basic (this, hp:HP120, type:N, retreatCost:1) {
+        bwAbility "Red Assist", {
+          text "Once during your turn, you may attach a [P] Energy card from your hand to 1 of your Latios."
+          actionA {
+            checkLastTurn()
+            assert my.hand.filterByBasicEnergyType(P) : "You have no [P] Energy cards in your hand."
+            def validTargets = my.all.findAll { it.name == "Latios" }
+            assert validTargets : "You have no Latios in play."
+            powerUsed()
+            def selEnergy = my.hand.filterByBasicEnergyType(P).select("Choose a [P] Energy card to attach").first()
+            def pcs = validTargets.select("Attach to which Latios?")
+            attachEnergy(pcs, selEnergy, tcgwars.logic.effect.ability.Ability.ActivationReason.PLAY_FROM_HAND)
+          }
+        }
+        move "Dyna Barrier", {
+          text "70 damage. During your opponent's next turn, prevent all damage done to this Pokémon by attacks from Pokémon VMAX."
+          energyCost R, P, C
+          onAttack {
+            damage 70
+            preventAllDamageFromCustomPokemonNextTurn(thisMove, self, { it.pokemonVMAX })
+          }
+        }
+      };
       default:
       return null;
     }
