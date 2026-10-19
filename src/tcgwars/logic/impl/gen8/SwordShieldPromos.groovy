@@ -1993,6 +1993,422 @@ public enum SwordShieldPromos implements LogicCardInfo {
           }
         }
       };
+      case PIKACHU_SWSH234:
+      return basic (this, hp:HP060, type:L, retreatCost:1) {
+        weakness F
+        move "Gift Delivery", {
+          text "Flip a coin. If heads, search your deck for an Item card, reveal it, and put it into your hand. Then, shuffle your deck."
+          energyCost C
+          attackRequirement {
+            assert my.deck : "Your deck is empty."
+          }
+          onAttack {
+            flip {
+              my.deck.search("Search your deck for an Item card.", cardTypeFilter(ITEM)).showToOpponent("Opponent's chosen Item card.").moveTo(my.hand)
+              shuffleDeck()
+            }
+          }
+        }
+        move "Pika Ball", {
+          text "50 damage."
+          energyCost L, C, C
+          onAttack {
+            damage 50
+          }
+        }
+      };
+      case HISUIAN_SAMUROTT_V_SWSH239:
+      return basic (this, hp:HP220, type:D, retreatCost:2) {
+        weakness G
+        move "Basket Crash", {
+          text "Discard up to 2 Pokémon Tools from your opponent's Pokémon."
+          energyCost D
+          attackRequirement {
+            assert opp.all.any { it.cards.filterByType(POKEMON_TOOL) } : "Your opponent's Pokémon have no Pokémon Tools attached."
+          }
+          onAttack {
+            def tools = new CardList()
+            opp.all.each { pcs ->
+              if (!pcs.cards.filterByType(POKEMON_TOOL)) return
+              targeted (pcs) {
+                tools.addAll(pcs.cards.filterByType(POKEMON_TOOL))
+              }
+            }
+            if (tools) {
+              tools.select(min: 0, max: 2, "Discard up to 2 Pokémon Tools from your opponent's Pokémon.").discard()
+            }
+          }
+        }
+        move "Shadow Slash", {
+          text "180 damage. Discard an Energy from this Pokémon."
+          energyCost D, D, D
+          onAttack {
+            damage 180
+            discardSelfEnergyAfterDamage C
+          }
+        }
+      };
+      case REGIGIGAS_SWSH247:
+      return basic (this, hp:HP150, type:C, retreatCost:4) {
+        weakness F
+        move "Limber Up", {
+          text "20 damage. Attach a basic Energy card from your discard pile to this Pokémon."
+          energyCost C
+          onAttack {
+            damage 20
+            afterDamage {
+              if (my.discard.filterByType(BASIC_ENERGY)) {
+                attachEnergyFrom(basic: true, my.discard, self)
+              }
+            }
+          }
+        }
+        move "Double Impact", {
+          text "120× damage. Flip 2 coins. This attack does 120 damage for each heads."
+          energyCost C, C, C, C
+          onAttack {
+            flip 2, { damage 120 }
+          }
+        }
+      };
+      case KLEAVOR_V_SWSH248:
+      return basic (this, hp:HP210, type:F, retreatCost:2) {
+        weakness G
+        move "Cut", {
+          text "40 damage."
+          energyCost F
+          onAttack {
+            damage 40
+          }
+        }
+        move "Axe Slash", {
+          text "150 damage. Discard an Energy from this Pokémon. If you do, discard an Energy from your opponent's Active Pokémon."
+          energyCost F, F, C
+          onAttack {
+            damage 150
+            afterDamage {
+              def oldEnCnt = self.cards.filterByType(ENERGY).size()
+              if (oldEnCnt) {
+                discardSelfEnergy(C)
+                if (oldEnCnt > self.cards.filterByType(ENERGY).size() && defending.cards.filterByType(ENERGY)) {
+                  discardDefendingEnergy()
+                }
+              }
+            }
+          }
+        }
+      };
+      case DEOXYS_V_SWSH266:
+      return basic (this, hp:HP210, type:P, retreatCost:2) {
+        weakness D
+        resistance F, MINUS30
+        move "Psychic", {
+          text "30+ damage. This attack does 30 more damage for each Energy attached to your opponent's Active Pokémon."
+          energyCost P, C
+          onAttack {
+            damage 30 + 30 * defending.cards.energyCount(C)
+          }
+        }
+        move "Power Edge", {
+          text "140 damage."
+          energyCost P, P, C
+          onAttack {
+            damage 140
+          }
+        }
+      };
+      case SUNFLORA_SWSH269:
+      return evolution (this, from:"Sunkern", hp:HP090, type:G, retreatCost:2) {
+        weakness R
+        move "Bright Beam", {
+          text "10+ damage. You may discard up to 3 Energy cards from your hand. This attack does 70 more damage for each card you discarded in this way."
+          energyCost C, C
+          onAttack {
+            def discarded = 0
+            if (my.hand.filterByType(ENERGY)) {
+              discarded = my.hand.filterByType(ENERGY).select(min: 0, max: 3, "Discard up to 3 Energy cards from your hand? (70 more damage for each)").discard().size()
+            }
+            damage 10 + 70 * discarded
+          }
+        }
+      };
+      case PIKACHU_VMAX_SWSH286:
+      return evolution (this, from:"Pikachu V", hp:HP310, type:L, retreatCost:2) {
+        weakness F
+        move "Tail Charge", {
+          text "30 damage. Attach up to 3 [L] Energy cards from your discard pile to 1 of your Pokémon."
+          energyCost L
+          onAttack {
+            damage 30
+            afterDamage {
+              if (my.discard.filterByBasicEnergyType(L)) {
+                attachEnergyFrom(max: 3, basic: true, type: L, my.discard, my.all)
+              }
+            }
+          }
+        }
+        move "G-Max Thunder", {
+          text "250 damage."
+          energyCost L, L, L, C
+          onAttack {
+            damage 250
+          }
+        }
+      };
+      case GRENINJA_SWSH305:
+      return evolution (this, from:"Frogadier", hp:HP140, type:W, retreatCost:1) {
+        weakness L
+        move "Coordinated Shuriken", {
+          text "120 damage. This attack also does 10 damage to 3 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+          energyCost W, C, C
+          onAttack {
+            damage 120
+            multiDamage(opp.bench, 3, 10)
+          }
+        }
+      };
+      case ICE_RIDER_CALYREX_V_SWSH130:
+      return basic (this, hp:HP210, type:W, retreatCost:2) {
+        weakness M
+        move "Blizzard", {
+          text "40 damage. This attack also does 10 damage to each of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+          energyCost W, C
+          onAttack {
+            damage 40
+            opp.bench.each { damage 10, it }
+          }
+        }
+        move "Frost Stamp", {
+          text "140 damage."
+          energyCost W, W, C
+          onAttack {
+            damage 140
+          }
+        }
+      };
+      case LIGHT_TOXTRICITY_SWSH137:
+      return evolution (this, from:"Toxel", hp:HP120, type:L, retreatCost:2) {
+        weakness F
+        move "Slow Ballad", {
+          text "Heal 30 damage from both Active Pokémon."
+          energyCost C
+          attackRequirement {
+            assert self.numberOfDamageCounters || defending.numberOfDamageCounters : "Neither Active Pokémon has damage counters on it."
+          }
+          onAttack {
+            heal 30, self
+            heal 30, defending
+          }
+        }
+        move "Beatdown Smash", {
+          text "160 damage. During your next turn, this Pokémon can't use Beatdown Smash."
+          energyCost L, L, C
+          onAttack {
+            damage 160
+            cantUseAttack(thisMove, self)
+          }
+        }
+      };
+      case HYDREIGON_C_SWSH138:
+      return basic (this, hp:HP110, type:D, retreatCost:2) {
+        weakness G
+        move "Bite", {
+          text "30 damage."
+          energyCost C, C
+          onAttack {
+            damage 30
+          }
+        }
+        move "Berserker Blade", {
+          text "100 damage. This attack also does 20 damage to 2 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+          energyCost D, D, C
+          onAttack {
+            damage 100
+            multiDamage(opp.bench, 2, 20)
+          }
+        }
+      };
+      case SPECIAL_DELIVERY_BIDOOF_SWSH177:
+      return basic (this, hp:HP070, type:C, retreatCost:2) {
+        weakness F
+        move "Happy Delivery", {
+          text "Search your deck for an Item card, reveal it, and put it into your hand. Then, shuffle your deck."
+          energyCost C
+          attackRequirement {
+            assert my.deck : "Your deck is empty."
+          }
+          onAttack {
+            my.deck.search("Search your deck for an Item card.", cardTypeFilter(ITEM)).showToOpponent("Opponent's chosen Item card.").moveTo(my.hand)
+            shuffleDeck()
+          }
+        }
+        move "Rock Smash", {
+          text "30+ damage. Flip a coin. If heads, this attack does 30 more damage."
+          energyCost C, C, C
+          onAttack {
+            damage 30
+            flip { damage 30 }
+          }
+        }
+      };
+      case LIEPARD_SWSH187:
+      return evolution (this, from:"Purrloin", hp:HP100, type:D, retreatCost:1) {
+        weakness G
+        bwAbility "Trade", {
+          text "You must discard a card from your hand in order to use this Ability. Once during your turn, you may draw 2 cards."
+          actionA {
+            checkLastTurn()
+            assert my.hand : "You have no cards in your hand."
+            assert my.deck : "Your deck is empty."
+            powerUsed()
+            my.hand.select("Discard a card from your hand.").discard()
+            draw 2
+          }
+        }
+        move "Slash", {
+          text "60 damage."
+          energyCost C, C
+          onAttack {
+            damage 60
+          }
+        }
+      };
+      case ARCEUS_V_SWSH204:
+      return basic (this, hp:HP220, type:C, retreatCost:2) {
+        weakness F
+        move "Trinity Charge", {
+          text "Search your deck for up to 3 basic Energy cards and attach them to your Pokémon V in any way you like. Then, shuffle your deck."
+          energyCost C, C
+          attackRequirement {
+            assert my.deck : "Your deck is empty."
+            assert my.all.any { it.pokemonV } : "You have no Pokémon V in play."
+          }
+          onAttack {
+            my.deck.search(max: 3, "Search your deck for up to 3 basic Energy cards.", cardTypeFilter(BASIC_ENERGY)).each {
+              attachEnergy(my.all.findAll { it.pokemonV }.select("Attach $it to which Pokémon V?"), it)
+            }
+            shuffleDeck()
+          }
+        }
+        move "Power Edge", {
+          text "130 damage."
+          energyCost C, C, C
+          onAttack {
+            damage 130
+          }
+        }
+      };
+      case SPARK_SWSH226:
+      return supporter (this) {
+        text "Draw 2 cards. If you drew any cards in this way, flip a coin. If heads, attach a [L] Energy card from your discard pile to 1 of your Benched Pokémon.\nYou may play only 1 Supporter card during your turn."
+        onPlay {
+          draw 2
+          flip {
+            if (my.bench && my.discard.filterByBasicEnergyType(L)) {
+              attachEnergyFrom(basic: true, type: L, my.discard, my.bench)
+            }
+          }
+        }
+        playRequirement {
+          assert my.deck : "Your deck is empty."
+        }
+      };
+      case BLANCHE_SWSH227:
+      return supporter (this) {
+        text "Draw 2 cards. If you drew any cards in this way, flip a coin. If heads, attach a [W] Energy card from your discard pile to 1 of your Benched Pokémon.\nYou may play only 1 Supporter card during your turn."
+        onPlay {
+          draw 2
+          flip {
+            if (my.bench && my.discard.filterByBasicEnergyType(W)) {
+              attachEnergyFrom(basic: true, type: W, my.discard, my.bench)
+            }
+          }
+        }
+        playRequirement {
+          assert my.deck : "Your deck is empty."
+        }
+      };
+      case CANDELA_SWSH228:
+      return supporter (this) {
+        text "Draw 2 cards. If you drew any cards in this way, flip a coin. If heads, attach a [R] Energy card from your discard pile to 1 of your Benched Pokémon.\nYou may play only 1 Supporter card during your turn."
+        onPlay {
+          draw 2
+          flip {
+            if (my.bench && my.discard.filterByBasicEnergyType(R)) {
+              attachEnergyFrom(basic: true, type: R, my.discard, my.bench)
+            }
+          }
+        }
+        playRequirement {
+          assert my.deck : "Your deck is empty."
+        }
+      };
+      case WEAVILE_SWSH246:
+      return evolution (this, from:"Sneasel", hp:HP110, type:D, retreatCost:1) {
+        weakness G
+        move "Pursuit Claw", {
+          text "This attack does 20 damage to 1 of your opponent's Benched Pokémon for each damage counter on that Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+          energyCost D
+          attackRequirement {
+            assert opp.bench.any { it.numberOfDamageCounters } : "None of your opponent's Benched Pokémon have damage counters on them."
+          }
+          onAttack {
+            def pcs = opp.bench.findAll { it.numberOfDamageCounters }.select("Deal 20 damage for each damage counter on which Pokémon?")
+            damage 20 * pcs.numberOfDamageCounters, pcs
+          }
+        }
+        move "Claw Slash", {
+          text "110 damage."
+          energyCost D, D, C
+          onAttack {
+            damage 110
+          }
+        }
+      };
+      case INFERNAPE_V_SWSH252:
+      return basic (this, hp:HP200, type:R, retreatCost:0) {
+        weakness W
+        move "Meteor Punch", {
+          text "30× damage. Flip a coin until you get tails. This attack does 30 damage for each heads."
+          energyCost C
+          onAttack {
+            flipUntilTails { damage 30 }
+          }
+        }
+        move "Bright Flame", {
+          text "200 damage. Discard 2 Energy from this Pokémon."
+          energyCost R, R, C
+          onAttack {
+            damage 200
+            discardSelfEnergyAfterDamage C, C
+          }
+        }
+      };
+      case ROTOM_V_SWSH257:
+      return basic (this, hp:HP190, type:L, retreatCost:1) {
+        weakness F
+        move "Lost Hack", {
+          text "Put a Special Energy attached to 1 of your opponent's Pokémon in the Lost Zone."
+          energyCost C
+          attackRequirement {
+            assert opp.all.any { it.cards.filterByType(SPECIAL_ENERGY) } : "Your opponent's Pokémon have no Special Energy attached."
+          }
+          onAttack {
+            def pcs = opp.all.findAll { it.cards.filterByType(SPECIAL_ENERGY) }.select("Put a Special Energy attached to which Pokémon in the Lost Zone?")
+            targeted (pcs) {
+              pcs.cards.filterByType(SPECIAL_ENERGY).select("Special Energy to put in the Lost Zone.").moveTo(opp.lostZone)
+            }
+          }
+        }
+        move "Extreme Current", {
+          text "160 damage. Discard an Energy from this Pokémon."
+          energyCost L, L, C
+          onAttack {
+            damage 160
+            discardSelfEnergyAfterDamage C
+          }
+        }
+      };
       default:
       return null;
     }
