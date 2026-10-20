@@ -581,8 +581,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               assert tar : "There is no Pokémon with damage counter outside Slowbro"
               powerUsed()
               def pcs = tar.select()
-              self.damage+=hp(10)
-              pcs.damage-=hp(10)
+              moveDamageCounters pcs, self, 1
             }
           }
           move "Psyshock", {

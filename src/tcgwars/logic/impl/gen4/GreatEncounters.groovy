@@ -700,8 +700,7 @@ public enum GreatEncounters implements LogicCardInfo {
               assert self.numberOfDamageCounters : "$self is healthy"
             }
             onAttack {
-              directDamage 10 * self.numberOfDamageCounters, defending
-              healAll self
+              moveDamageCounters self, defending, self.numberOfDamageCounters
             }
           }
           move "Hypnoblast", {
@@ -2780,9 +2779,7 @@ public enum GreatEncounters implements LogicCardInfo {
               def targets = all
               targets.remove(source)
               def target = targets.select("Select a Pokémon to move the damage counter to.")
-              source.damage -= hp(10)
-              target.damage += hp(10)
-              bc "Full Moon Dance moved a damage counter from $source to $target."
+              moveDamageCounters source, target, 1
               checkFaint()
             }
           }

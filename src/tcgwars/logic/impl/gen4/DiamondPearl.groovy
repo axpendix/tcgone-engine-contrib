@@ -1315,10 +1315,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
             onAttack {
               flip {
-                def movedDmg = self.damage.value
-                self.damage = hp(0)
-                bc "Moved ${movedDmg / 10} damage counters from $self to $defending."
-                directDamage movedDmg, defending
+                moveDamageCounters self, defending, self.numberOfDamageCounters
               }
             }
           }
@@ -2361,8 +2358,7 @@ public enum DiamondPearl implements LogicCardInfo {
             }
             onAttack {
               def tar = opp.all.select("Which Pokémon will you move the damage counter to?")
-              self.damage -= hp(10)
-              directDamage 10, tar
+              moveDamageCounters self, tar, 1
             }
           }
 

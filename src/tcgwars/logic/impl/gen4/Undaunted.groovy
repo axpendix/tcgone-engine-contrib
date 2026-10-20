@@ -220,8 +220,7 @@ public enum Undaunted implements LogicCardInfo {
                 if(!pcs) break;
                 def tar = opp.all.select("Select the pokémon to recieve the damage counter", false)
                 if(!tar) break;
-                pcs.damage-=hp(10)
-                tar.damage+=hp(10)
+                if (!moveDamageCounters(pcs, tar, 1)) break // prevented (e.g. Watchful Eye)
                 numMoved++
                 if(numMoved >= 4) break;
               }

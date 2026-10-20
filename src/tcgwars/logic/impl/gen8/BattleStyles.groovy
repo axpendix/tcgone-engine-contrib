@@ -1451,9 +1451,7 @@ public enum BattleStyles implements LogicCardInfo {
             powerUsed()
             def pcs = my.all.findAll { it.numberOfDamageCounters }.select("Choose the Pokémon to move the damage counter from")
             def tar = opp.all.select("Select the Pokémon to recieve the damage counter")
-            pcs.damage -= hp(10)
-            directDamage 10, tar, SRC_ABILITY
-            bc "Moved 1 damage counter from $pcs to $tar"
+            moveDamageCounters pcs, tar, 1
           }
         }
         move "Psychic Sphere", {

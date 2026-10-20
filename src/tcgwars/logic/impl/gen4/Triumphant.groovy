@@ -2575,8 +2575,7 @@ public enum Triumphant implements LogicCardInfo {
                 tar = tar.select("Target for damage counter (cancel to stop)", false)
                 if(!tar) break;
 
-                src.damage-=hp(10)
-                directDamage 10, tar
+                if (!moveDamageCounters(src, tar, 1)) break // prevented (e.g. Watchful Eye)
               }
               eff.unregister()
               checkFaint()

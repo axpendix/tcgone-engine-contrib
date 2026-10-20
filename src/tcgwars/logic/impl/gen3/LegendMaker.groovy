@@ -2549,9 +2549,7 @@ public enum LegendMaker implements LogicCardInfo {
             target = target.select("Target for damage counter")
             targeted (source) {
               targeted (target) {
-                source.damage-=hp(10)
-                directDamage 10, target, SRC_ABILITY
-                bc "Moved 1 damage counter from $source to $target"
+                moveDamageCounters source, target, 1
                 checkFaint()
               }
             }

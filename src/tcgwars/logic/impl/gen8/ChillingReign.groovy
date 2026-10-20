@@ -3192,9 +3192,7 @@ public enum ChillingReign implements LogicCardInfo {
           onPlay {
             def maxCount = Math.min(my.active.numberOfDamageCounters, 3)
             def count = choose(1..maxCount,"Move how many damage counters?", maxCount) as Integer
-            my.active.damage -= hp(10 * count)
-            opp.active.damage += hp(10 * count)
-            bc "Moved $count damage counters from $my.active to $opp.active"
+            moveDamageCounters my.active, opp.active, count
           }
           playRequirement {
             assert my.active.numberOfDamageCounters : "Active Pokémon does not have damage counters"

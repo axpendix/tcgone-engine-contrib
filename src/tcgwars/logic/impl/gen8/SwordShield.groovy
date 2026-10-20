@@ -1863,9 +1863,7 @@ public enum SwordShield implements LogicCardInfo {
             def target = my.all.findAll { it.types.contains(P) }
             target.remove(source)
             target = target.select("Target for the damage counter?")
-            source.damage-=hp(10)
-            bc "Swapped a damage counter from $source to $target."
-            directDamage 10, target
+            moveDamageCounters source, target, 1
             checkFaint()
           }
         }

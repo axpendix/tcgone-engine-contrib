@@ -496,8 +496,7 @@ public enum SecretWonders implements LogicCardInfo {
               assert self.numberOfDamageCounters : "$self is healthy"
               powerUsed()
               def count = choose(1..Math.min(self.numberOfDamageCounters,3),"Move how many damage counters?",Math.min(self.numberOfDamageCounters,3))
-              self.damage -= hp(10 * count)
-              directDamage 10 * count, my.all.findAll{it.name=="Gastrodon West Sea"}.select("Move damage counters to")
+              moveDamageCounters self, my.all.findAll{it.name=="Gastrodon West Sea"}.select("Move damage counters to"), count
             }
           }
           move "Dwindling Wave", {
@@ -1227,8 +1226,7 @@ public enum SecretWonders implements LogicCardInfo {
             onAttack {
               def count = Math.min(self.numberOfDamageCounters,self.getPokemonCards().find{it.name == "Smoochum"}?4:2)
               targeted (defending) {
-                self.damage -= hp(10 * count)
-                directDamage 10 * count, defending
+                moveDamageCounters self, defending, count
               }
             }
           }

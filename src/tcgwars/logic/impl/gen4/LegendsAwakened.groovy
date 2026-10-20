@@ -705,9 +705,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             onAttack {
               def src = my.all.findAll{it.numberOfDamageCounters}.select("Source")
               def tar = opp.all.select("Target")
-              src.damage -= hp(10)
-              tar.damage += hp(10)
-              bc "Moved a damage counter from $src to $tar"
+              moveDamageCounters src, tar, 1
               checkFaint()
             }
           }
