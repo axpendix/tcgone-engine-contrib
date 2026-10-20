@@ -711,6 +711,7 @@ enum EvolvingSkies implements LogicCardInfo {
       case AMPHAROS_56:
         return copy(BlueSkyStream.AMPHAROS_28, this);
       case EMOLGA_57:
+        // TODO-STUB (heads: org.codehaus.groovy.runtime.typehandling.GroovyCastException: Cannot cast object 'null' with class 'null' to class 'int'. Try 'java.lang.Integer' instead at EvolvingSkies:714 | tails: org.codeh)
         return basic(this, hp: HP070, type: L, retreatCost: null) {
           weakness FIGHTING
           move "Thunder Shock", {
@@ -905,6 +906,7 @@ enum EvolvingSkies implements LogicCardInfo {
       case GOURGEIST_77:
         return copy(SkyscrapingPerfection.GOURGEIST_17, this);
       case CUTIEFLY_78:
+        // TODO-STUB (heads: org.codehaus.groovy.runtime.typehandling.GroovyCastException: Cannot cast object 'null' with class 'null' to class 'int'. Try 'java.lang.Integer' instead at EvolvingSkies:908 | tails: org.codeh)
         return basic(this, hp: HP030, type: P, retreatCost: null) {
           weakness METAL
           move "Flap", {
@@ -1412,12 +1414,14 @@ enum EvolvingSkies implements LogicCardInfo {
       case DIGGING_GLOVES_145:
         return copy(SkyscrapingPerfection.DIGGING_GLOVES_60, this);
       case DREAM_BALL_146:
+        // TODO-STUB (heads: java.lang.NullPointerException: Cannot invoke method call() on null object | tails: java.lang.NullPointerException: Cannot invoke method call() on null object)
         return copy(EeveeHeroes.DREAM_BALL_61, this);
       case ELEMENTAL_BADGE_147:
         return copy(EeveeHeroes.ELEMENTAL_BADGE_62, this);
       case FULL_FACE_GUARD_148:
         return copy(SkyscrapingPerfection.FULL_FACE_GUARD_62, this);
       case GORDIE_149:
+        // TODO-STUB (tails: java.lang.IllegalArgumentException: the selection request cannot be fulfilled. cards=[%card;name=Geodude (EXP 110);url=https://tcg.one/scans/l/expedition/110.jpg;%, %card;name=Strength Charm (E)
         return copy(EeveeHeroes.GORDIE_67, this);
       case LUCKY_ICE_POP_150:
         return copy(BlueSkyStream.LUCKY_ICE_POP_56, this);
@@ -1436,6 +1440,7 @@ enum EvolvingSkies implements LogicCardInfo {
       case SHOPPING_CENTER_157:
         return copy(EeveeHeroes.FASHION_MALL_68, this);
       case SINGLE_STRIKE_SCROLL_OF_THE_FANGED_DRAGON_158:
+        // TODO-STUB (heads: groovy.lang.MissingMethodException: No signature of method: static tcgwars.logic.groovy.TcgBuilders.onAttakc() is applicable for argument types: (tcgwars.logic.impl.gen8.SkyscrapingPerfection$_)
         return copy(SkyscrapingPerfection.SINGLE_STRIKE_SCROLL_OF_THE_DRAGON_FANG_61, this);
       case SNOW_LEAF_BADGE_159:
         return copy(EeveeHeroes.SNOW_LEAF_BADGE_63, this);
@@ -1450,6 +1455,7 @@ enum EvolvingSkies implements LogicCardInfo {
       case ZINNIA_S_RESOLVE_164:
         return copy(BlueSkyStream.ZINNIA_S_RESOLVE_65, this);
       case TREASURE_ENERGY_165:
+        // TODO-STUB (heads: java.lang.NullPointerException: Cannot invoke method call() on null object | tails: java.lang.NullPointerException: Cannot invoke method call() on null object)
         return copy(EeveeHeroes.TREASURE_ENERGY_69, this);
       case LEAFEON_V_166:
         return copy(LEAFEON_V_7, this);
