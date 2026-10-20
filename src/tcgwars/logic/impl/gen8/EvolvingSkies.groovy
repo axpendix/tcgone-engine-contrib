@@ -711,8 +711,7 @@ enum EvolvingSkies implements LogicCardInfo {
       case AMPHAROS_56:
         return copy(BlueSkyStream.AMPHAROS_28, this);
       case EMOLGA_57:
-        // TODO-STUB (heads: org.codehaus.groovy.runtime.typehandling.GroovyCastException: Cannot cast object 'null' with class 'null' to class 'int'. Try 'java.lang.Integer' instead at EvolvingSkies:714 | tails: org.codeh)
-        return basic(this, hp: HP070, type: L, retreatCost: null) {
+        return basic(this, hp: HP070, type: L, retreatCost: 0) {
           weakness FIGHTING
           move "Thunder Shock", {
             text "30 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
@@ -906,8 +905,7 @@ enum EvolvingSkies implements LogicCardInfo {
       case GOURGEIST_77:
         return copy(SkyscrapingPerfection.GOURGEIST_17, this);
       case CUTIEFLY_78:
-        // TODO-STUB (heads: org.codehaus.groovy.runtime.typehandling.GroovyCastException: Cannot cast object 'null' with class 'null' to class 'int'. Try 'java.lang.Integer' instead at EvolvingSkies:908 | tails: org.codeh)
-        return basic(this, hp: HP030, type: P, retreatCost: null) {
+        return basic(this, hp: HP030, type: P, retreatCost: 0) {
           weakness METAL
           move "Flap", {
             text "10 damage. "
@@ -1414,15 +1412,50 @@ enum EvolvingSkies implements LogicCardInfo {
       case DIGGING_GLOVES_145:
         return copy(SkyscrapingPerfection.DIGGING_GLOVES_60, this);
       case DREAM_BALL_146:
-        // TODO-STUB (heads: java.lang.NullPointerException: Cannot invoke method call() on null object | tails: java.lang.NullPointerException: Cannot invoke method call() on null object)
-        return copy(EeveeHeroes.DREAM_BALL_61, this);
+        return itemCard (this) {
+          text "You can play this card only if you took it as a face-down Prize card, before you put it into your hand. Search your deck for a Pokémon and put it onto your Bench. Then, shuffle your deck.\nYou may play any number of Item cards during your turn."
+          initHook { Card thisCard ->
+            delayed (priority: LAST) {
+              after TAKE_PRIZE, {
+                def owner = thisCard.player
+                if (ef.card == thisCard && ef.playerType == owner && ef.takenAsFaceDown && !bg.ended
+                  && owner.pbg.prizeCardSet.notEmpty && owner.pbg.hand.contains(thisCard)
+                  && owner.pbg.deck.notEmpty && owner.pbg.bench.notFull
+                  && confirm("You took $thisCard as a face-down Prize card. Play it before you put it into your hand?", owner)) {
+                  // a Prize card can be taken during the opponent's turn too: the owner makes the choices
+                  tryWithDeterministicCurrentThreadPlayerType(owner) {
+                    bc "${owner.getPlayerUsername(bg)} played $thisCard"
+                    // only Basic Pokémon can be put onto the Bench
+                    my.deck.search("Search your deck for a Basic Pokémon and put it onto your Bench", cardTypeFilter(POKEMON, BASIC)).each { benchPCS(it) }
+                    shuffleDeck()
+                    discard thisCard
+                  }
+                }
+              }
+            }
+          }
+          onPlay {}
+          playRequirement {
+            assert false : "You can play this card only if you took it as a face-down Prize card, before you put it into your hand"
+          }
+        };
       case ELEMENTAL_BADGE_147:
         return copy(EeveeHeroes.ELEMENTAL_BADGE_62, this);
       case FULL_FACE_GUARD_148:
         return copy(SkyscrapingPerfection.FULL_FACE_GUARD_62, this);
       case GORDIE_149:
-        // TODO-STUB (tails: java.lang.IllegalArgumentException: the selection request cannot be fulfilled. cards=[%card;name=Geodude (EXP 110);url=https://tcg.one/scans/l/expedition/110.jpg;%, %card;name=Strength Charm (E)
-        return copy(EeveeHeroes.GORDIE_67, this);
+        return supporter (this) {
+          text "Look at the top 7 cards of your deck. You may reveal any number of Energy cards you find there and put them into your hand. Shuffle the other cards back into your deck.\nYou may play only 1 Supporter card during your turn."
+          onPlay {
+            def top = my.deck.subList(0, 7)
+            top.select(min: 0, max: top.size(), "Top 7 cards of your deck. You may reveal any number of Energy cards you find there and put them into your hand", cardTypeFilter(ENERGY))
+              .showToOpponent("Gordie: Your opponent put these cards into their hand").moveTo(my.hand)
+            shuffleDeck()
+          }
+          playRequirement {
+            assert my.deck : "Your deck is empty"
+          }
+        };
       case LUCKY_ICE_POP_150:
         return copy(BlueSkyStream.LUCKY_ICE_POP_56, this);
       case MOON_SUN_BADGE_151:
@@ -1440,8 +1473,40 @@ enum EvolvingSkies implements LogicCardInfo {
       case SHOPPING_CENTER_157:
         return copy(EeveeHeroes.FASHION_MALL_68, this);
       case SINGLE_STRIKE_SCROLL_OF_THE_FANGED_DRAGON_158:
-        // TODO-STUB (heads: groovy.lang.MissingMethodException: No signature of method: static tcgwars.logic.groovy.TcgBuilders.onAttakc() is applicable for argument types: (tcgwars.logic.impl.gen8.SkyscrapingPerfection$_)
-        return copy(SkyscrapingPerfection.SINGLE_STRIKE_SCROLL_OF_THE_DRAGON_FANG_61, this);
+        return pokemonTool (this) {
+          text "The Single Strike Pokémon this card is attached to can use the attack on this card. (You still need the necessary Energy to use this attack.)\n[F][M][M][C][C] Superstrong Slash 300\nDiscard all Energy from this Pokémon.\nYou may play any number of Item cards during your turn. Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached."
+          def newMove
+          onPlay {reason->
+            def moveBody = {
+              text "300 damage. Discard all Energy from this Pokémon."
+              attackRequirement {
+                // self is not set properly creating a move like this, use bg.ownActive() instead
+                assert bg.ownActive().singleStrike : "${bg.ownActive()} is not a $SINGLE_STRIKE Pokémon"
+              }
+              energyCost F, M, M, C, C
+              onAttack {
+                damage 300
+                afterDamage {
+                  discardAllSelfEnergy()
+                }
+              }
+            }
+            Move move = new Move("Superstrong Slash")
+            moveBody.delegate = new MoveBuilder(thisMove: move)
+            moveBody.call()
+            newMove = getter GET_MOVE_LIST, self, {h->
+              if (h.effect.target.singleStrike) {
+                def moveList = []
+                moveList.addAll h.object
+                moveList.add move
+                h.object = moveList
+              }
+            }
+          }
+          onRemoveFromPlay {
+            newMove.unregister()
+          }
+        };
       case SNOW_LEAF_BADGE_159:
         return copy(EeveeHeroes.SNOW_LEAF_BADGE_63, this);
       case SPIRIT_MASK_160:
@@ -1455,8 +1520,26 @@ enum EvolvingSkies implements LogicCardInfo {
       case ZINNIA_S_RESOLVE_164:
         return copy(BlueSkyStream.ZINNIA_S_RESOLVE_65, this);
       case TREASURE_ENERGY_165:
-        // TODO-STUB (heads: java.lang.NullPointerException: Cannot invoke method call() on null object | tails: java.lang.NullPointerException: Cannot invoke method call() on null object)
-        return copy(EeveeHeroes.TREASURE_ENERGY_69, this);
+        return specialEnergy (this, [[C]]) {
+          text "As long as this card is attached to a Pokémon, it provides [C] Energy. If you took this card as a face-down Prize card during your turn, before you put it into your hand, you may attach this card to 1 of your Pokémon."
+          initHook { Card thisCard ->
+            delayed (priority: LAST) {
+              after TAKE_PRIZE, {
+                def owner = thisCard.player
+                // Prize cards taken in Pokémon Checkup (BeginTurn) are not taken during anyone's turn
+                if (ef.card == thisCard && ef.playerType == owner && ef.takenAsFaceDown && !bg.ended
+                  && bg.currentTurn == owner && !bg.em().findMostRecentEffect(BeginTurn).present
+                  && owner.pbg.prizeCardSet.notEmpty && owner.pbg.hand.contains(thisCard) && owner.pbg.all
+                  && confirm("You took $thisCard as a face-down Prize card. Attach it to 1 of your Pokémon before you put it into your hand?", owner)) {
+                  def pcs = owner.pbg.all.select("Attach $thisCard to which Pokémon?", owner)
+                  attachEnergy pcs, thisCard
+                }
+              }
+            }
+          }
+          onPlay {}
+          onRemoveFromPlay {}
+        };
       case LEAFEON_V_166:
         return copy(LEAFEON_V_7, this);
       case LEAFEON_V_167:
