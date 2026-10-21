@@ -1,5 +1,6 @@
 package tcgwars.logic.impl.gen8
 
+import tcgwars.logic.impl.gen5.BlackWhite
 import tcgwars.logic.impl.gen3.FireRedLeafGreen
 import tcgwars.logic.impl.gen5.EmergingPowers;
 
@@ -1027,7 +1028,7 @@ public enum ChampionsPath implements LogicCardInfo {
       case PIERS_58:
       return copy (DarknessAblaze.PIERS_165, this);
       case POKE_BALL_59:
-      return copy(FireRedLeafGreen.POKE_BALL_95, this);
+        return copy(BlackWhite.POKE_BALL_97, this)
       case POKEMON_CENTER_LADY_60:
       return copy(SwordShield.POKEMON_CENTER_LADY_176, this);
       case POTION_61:

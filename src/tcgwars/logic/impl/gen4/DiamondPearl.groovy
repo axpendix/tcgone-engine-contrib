@@ -2898,18 +2898,7 @@ public enum DiamondPearl implements LogicCardInfo {
         }
       };
       case POKE_BALL_110:
-      return itemCard (this) {
-          text "Flip a coin. If heads, search your deck for a Pokémon, show it to your opponent, and put it into your hand. Shuffle your deck afterward."
-          onPlay {
-            flip{
-              my.deck.search(count: 1, "Select a Pokémon card", {it.cardTypes.is(POKEMON)}).moveTo(my.hand)
-              shuffleDeck()
-            }
-          }
-          playRequirement{
-            assert my.deck: "There are no more cards in your deck."
-          }
-        };
+        return copy(BlackWhite.POKE_BALL_97, this)
       case POKEDEX_HANDY910IS_111:
         return basicTrainer (this) {
           text "Look at the top 2 cards of your deck, choose 1 of them, and put it into your hand. Put the other card on the bottom of your deck."

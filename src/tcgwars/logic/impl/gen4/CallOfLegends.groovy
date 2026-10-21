@@ -709,7 +709,7 @@ public enum CallOfLegends implements LogicCardInfo {
       case PIDGEY_67:
         return copy(Triumphant.PIDGEY_71, this);
       case PINECO_68:
-        return copy(Undaunted.PINECO_63, this);
+        return copy(Undaunted.PINECO_62, this);
       case RELICANTH_69:
         return basic (this, hp:HP080, type:WATER, retreatCost:2) {
           weakness G

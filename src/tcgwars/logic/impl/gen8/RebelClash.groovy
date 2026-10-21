@@ -1,5 +1,7 @@
 package tcgwars.logic.impl.gen8;
 
+import tcgwars.logic.impl.gen5.DragonsExalted;
+import tcgwars.logic.impl.gen5.BlackWhite;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen4.HeartgoldSoulsilver
 
@@ -3555,7 +3557,7 @@ public enum RebelClash implements LogicCardInfo {
         }
       };
       case POKEBALL_164:
-      return copy(FireRedLeafGreen.POKE_BALL_95, this);
+        return copy(BlackWhite.POKE_BALL_97, this)
       case SCOOP_UP_NET_165:
       return itemCard (this) {
         text "Put 1 of your Pokémon that isn’t a Pokémon V or a Pokémon-GX into your hand. (Discard all attached cards.)"
@@ -3598,54 +3600,7 @@ public enum RebelClash implements LogicCardInfo {
         }
       };
       case TOOL_SCRAPPER_168:
-      return itemCard (this) {
-        text "Discard up to 2 Pokémon Tools from either player’s Pokémon. You may play as many Item cards during your turn as you like (before your attack)."
-        onPlay {
-          def i = 2
-          while (true) {
-            def tar
-            if(i > 0 && (my.all.findAll {it.cards.hasType(POKEMON_TOOL)} || opp.all.findAll {it.cards.hasType(POKEMON_TOOL)})){
-              def options = []
-              def text = []
-              if(opp.all.findAll {it.cards.hasType(POKEMON_TOOL)}){
-                options += [1]
-                text += ["Your opponent's Pokémon"]
-              }
-              if(my.all.findAll {it.cards.hasType(POKEMON_TOOL)}){
-                options += [2]
-                text += ["Your Pokémon"]
-              }
-              if(i==1){
-                options += [3]
-                text += ["Stop"]
-              }
-              def choice = choose(options,text, "Remove a tool from...?",options.get(0))
-              if(choice == 1){
-                tar = opp.all.findAll {it.cards.hasType(POKEMON_TOOL)}
-              } else if(choice == 2){
-                tar = my.all.findAll{it.cards.hasType(POKEMON_TOOL)}
-              } else{
-                break
-              }
-              if (tar) {
-                def sel = tar.select("Select a Pokémon to discard a Pokémon Tool from (cancel to stop).", false)
-                if (sel) {
-                  def list = sel.cards.filterByType(POKEMON_TOOL).select("Discard a Pokémon Tool from $sel.")
-                  targeted (sel, TRAINER_CARD) {
-                    list.discard()
-                    i -=1
-                  }
-                }
-              }
-            }else{
-              break
-            }
-          }
-        }
-        playRequirement{
-          assert all.findAll {it.cards.hasType(POKEMON_TOOL)} : "No Pokémon Tools in play."
-        }
-      };
+        return copy(DragonsExalted.TOOL_SCRAPPER_116, this)
       case TRAINING_COURT_169:
       return stadium (this) {
         text "Once during each player’s turn, that player may choose a basic Energy card from their discard pile, reveal it, and put it into their hand. This card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."

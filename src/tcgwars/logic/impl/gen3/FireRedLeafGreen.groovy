@@ -2,6 +2,7 @@ package tcgwars.logic.impl.gen3
 
 import tcgwars.logic.effect.ability.custom.Safeguard
 import tcgwars.logic.exception.EffectRequirementException;
+import tcgwars.logic.impl.gen1.BaseSet;
 import tcgwars.logic.impl.gen2.Expedition;
 
 import tcgwars.logic.effect.gm.Attack
@@ -2381,19 +2382,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           }
         };
       case POTION_101:
-        return basicTrainer (this) {
-          text "Remove 2 damage counters from 1 of your Pokémon (remove 1 damage counter if that Pokémon has only 1)."
-          onPlay {
-            def tar = my.all.findAll{it.numberOfDamageCounters}
-            if(tar){
-              def pcs = tar.select()
-              heal 20, pcs
-            }
-          }
-          playRequirement{
-            assertMyAll(info:"with damage on them", {it.numberOfDamageCounters})
-          }
-        };
+        return copy(BaseSet.POTION, this)
       case SWITCH_102:
         return basicTrainer (this) {
           text "Switch 1 of your Active Pokémon with 1 of your Benched Pokémon."

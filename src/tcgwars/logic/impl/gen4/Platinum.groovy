@@ -1,6 +1,7 @@
 package tcgwars.logic.impl.gen4
 
 
+import tcgwars.logic.impl.gen5.BlackWhite;
 import tcgwars.logic.impl.gen3.FireRedLeafGreen;
 import tcgwars.logic.impl.gen7.CelestialStorm;
 
@@ -3251,7 +3252,7 @@ public enum Platinum implements LogicCardInfo {
       case PLUSPOWER_112:
         return copy (DiamondPearl.PLUSPOWER_109, this);
       case POKE_BALL_113:
-        return copy(FireRedLeafGreen.POKE_BALL_95, this);
+        return copy(BlackWhite.POKE_BALL_97, this)
       case POKEDEX_HANDY910IS_114:
         return copy(DiamondPearl.POKEDEX_HANDY910IS_111, this);
       case POKEMON_RESCUE_115:
