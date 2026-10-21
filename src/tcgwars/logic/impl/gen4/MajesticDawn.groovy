@@ -2387,7 +2387,7 @@ public enum MajesticDawn implements LogicCardInfo {
           }
         };
       case POKE_BALL_85:
-        return copy(FireRedLeafGreen.POKE_BALL_95, this);
+        return copy(BlackWhite.POKE_BALL_97, this)
       case QUICK_BALL_86:
         return copy (MysteriousTreasures.QUICK_BALL_114, this);
       case SUPER_SCOOP_UP_87:
