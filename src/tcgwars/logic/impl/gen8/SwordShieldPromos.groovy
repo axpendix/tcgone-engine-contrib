@@ -3272,7 +3272,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           energyCost F, C, C
           onAttack {
             damage 120
-            if (defending.pokemonV || defending.topPokemonCard.cardTypes.isIn(POKEMON_VSTAR, V_UNION)) damage 120
+            if (defending.pokemonV) damage 120
           }
         }
         move "Aura Star", {
@@ -3377,7 +3377,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           energyCost F, C
           onAttack {
             damage 120
-            def targets = opp.bench.findAll { it.pokemonV || it.topPokemonCard.cardTypes.isIn(POKEMON_VSTAR, V_UNION) }
+            def targets = opp.bench.findAll { it.pokemonV }
             if (targets) {
               damage 60, targets.select("Do 60 damage to?")
             }
@@ -3699,7 +3699,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           energyCost P, P, C
           onAttack {
             damage 190
-            def targets = opp.bench.findAll { it.pokemonV || it.topPokemonCard.cardTypes.isIn(POKEMON_VSTAR, V_UNION) }
+            def targets = opp.bench.findAll { it.pokemonV }
             if (targets) {
               damage 60, targets.select("Do 60 damage to?")
             }
@@ -3927,7 +3927,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
             afterDamage {
               if (my.deck) {
                 my.deck.search(max: 3, "Search your deck for up to 3 basic Energy cards.", cardTypeFilter(BASIC_ENERGY)).each {
-                  def targets = my.all.findAll { it.pokemonV || it.topPokemonCard.cardTypes.isIn(POKEMON_VSTAR, V_UNION) }
+                  def targets = my.all.findAll { it.pokemonV }
                   if (targets) attachEnergy(targets.select("Attach $it to which Pokémon V?"), it)
                 }
                 shuffleDeck()
