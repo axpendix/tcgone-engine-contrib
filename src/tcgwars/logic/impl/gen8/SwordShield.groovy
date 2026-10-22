@@ -3595,9 +3595,10 @@ public enum SwordShield implements LogicCardInfo {
           "As long as this card is attached to a Pokémon, it provides every type of Energy but provides only 1 Energy at a time."
         energyTypesIconOverride = [RAINBOW]
         onPlay {reason->
-          if (reason == PLAY_FROM_HAND) {
-            my.hand.getExcludedList(thisCard).select("Select a card to discard.").discard()
-          }
+        }
+        attachFromHandCost {to->
+          // required to play the card, so it is paid under Temple of Sinnoh too (TPCi Rules Team 2022-06-09)
+          to.owner.pbg.hand.getExcludedList(thisCard).select("Select a card to discard.").discard()
         }
         getEnergyTypesOverride {
           if (self) return [valuesBasicEnergy() as Set]
