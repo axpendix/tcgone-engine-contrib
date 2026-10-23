@@ -3672,7 +3672,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           onActivate { r ->
             if (r == tcgwars.logic.effect.ability.Ability.ActivationReason.PLAY_FROM_HAND && my.deck && confirm("Use Luminous Sign?")) {
               powerUsed()
-              my.deck.search("Search your deck for a Supporter card", cardTypeFilter(SUPPORTER)).showToOpponent("Luminous Sign: selected Supporter card").moveTo(my.hand)
+              my.deck.search("Search your deck for a Supporter card", cardTypeFilter(SUPPORTER)).moveTo(my.hand)
               shuffleDeck()
             }
           }
