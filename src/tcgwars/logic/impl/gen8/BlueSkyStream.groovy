@@ -1166,15 +1166,13 @@ public enum BlueSkyStream implements LogicCardInfo {
       case FLAPPLE_50:
       return evolution (this, from:"Applin", hp:HP080, type:N, retreatCost:1) {
         move "Acidic Mucus", {
-          text "50× damage. This attack does 50 damage for each of your opponent's Pokémon that has an Ability."
+          text "50× damage. This attack does 50 damage for each of your opponent's Pokémon in play that has an Ability."
           energyCost C
           attackRequirement {
-            assert opp.all.any { it.abilities } : "None of your opponent's Pokémon has an Ability"
+            assert opp.all.any { it.hasModernAbility() } : "None of your opponent's Pokémon has an Ability"
           }
           onAttack {
-            opp.all.findAll { it.abilities }.each {
-              damage 50, it
-            }
+            damage 50 * opp.all.count { it.hasModernAbility() }
           }
         }
         move "Fighting Tackle", {
