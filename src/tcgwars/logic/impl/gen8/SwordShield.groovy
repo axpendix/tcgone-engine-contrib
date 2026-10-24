@@ -1144,10 +1144,18 @@ public enum SwordShield implements LogicCardInfo {
           text "Flip 3 coins. For each heads, discard an Energy from your opponent’s Active Pokémon."
           energyCost W
           onAttack {
-            def count = 0
-            flip 3, { count++ }
-            def types = (1..count).collect {C} as Type[]
-            discardDefendingEnergyAfterDamage types
+            // One Energy card for each heads, whatever Energy it provides: 2 heads discard 2 Twin Energy (official Q&A)
+            def heads = 0
+            flip 3, { heads++ }
+            afterDamage {
+              def energies = defending.cards.filterByType(ENERGY)
+              if (heads && energies) {
+                targeted (defending) {
+                  def count = Math.min(heads, energies.size())
+                  energies.select(count: count, "Discard $count Energy from $defending").discard()
+                }
+              }
+            }
           }
         }
         move "Pierce", {
