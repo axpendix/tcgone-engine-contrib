@@ -3732,27 +3732,10 @@ public enum LegendsAwakened implements LogicCardInfo {
         return supporter (this) {
           text "You can play only one Supporter card each turn. When you play this card, put it next to your Active Pokémon. When your turn ends, discard this card."+
             "Shuffle your hand into your deck. Then, draw 4 cards. If any of your Pokémon were Knocked Out during your opponent's last turn, draw 4 more cards."
-          def Feelings
-          initHook {Card thisCard ->
-            boolean first
-            Feelings = bg.em().retrieveAndStore("Feelings", {
-              first = !it
-              it != null ? it : [:] as Map
-            })
-            if (first) {
-              delayed {
-                after KNOCKOUT, {
-                  if (ef.pokemonToBeKnockedOut.owner == bg.currentTurn.opposite) {
-                    Feelings.put(bg.turnCount, 1)
-                  }
-                }
-              }
-            }
-          }
           onPlay {
             shuffleDeck(hand.getExcludedList(thisCard))
             draw 4
-            if (Feelings.get(bg.turnCount - 1)) {
+            if (my.knockoutsDuringOpponentsTurn(bg.turnCount - 1)) { // my: the player of this turn, also when copied with Telepass
               draw 4
             }
           }
