@@ -3552,7 +3552,7 @@ public enum DarknessAblaze implements LogicCardInfo {
             damage 20
           }
         }
-        move "Hit and Run", {
+        move "Smack and Run", {
           text "100 damage. Put this Pokémon and all attached cards into your hand."
           energyCost C, C
           attackRequirement {}
