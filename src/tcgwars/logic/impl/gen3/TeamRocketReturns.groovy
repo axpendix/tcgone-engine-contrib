@@ -17,6 +17,7 @@ import tcgwars.logic.card.*;
 import tcgwars.logic.effect.*
 import tcgwars.logic.effect.advanced.*;
 import tcgwars.logic.effect.basic.*
+import tcgwars.logic.effect.gm.ActivateSimpleTrainer
 import tcgwars.logic.util.*;
 import tcgwars.logic.effect.ability.*
 import tcgwars.logic.effect.special.*;
@@ -906,8 +907,13 @@ public enum TeamRocketReturns implements LogicCardInfo {
           move "Detour", {
             text "If you have a Supporter card in play, use the effect on that card as the effect of this attack."
             energyCost C
+            attackRequirement {
+              assert my.playedSupporter : "You don't have a Supporter in play"
+            }
             onAttack {
-              //TODO : use card effect as move
+              // the Supporter's requirements still apply, if they aren't met the effect fails (Dec 15, 2005 PUI Rules Team)
+              def card = my.playedSupporter.select("Select a Supporter to copy its effect as this attack.").first()
+              bg.em().run(new ActivateSimpleTrainer(card))
             }
           }
 
