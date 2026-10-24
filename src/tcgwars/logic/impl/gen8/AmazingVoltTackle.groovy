@@ -2175,8 +2175,9 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           "it provides [M] Energy. The [M] Pokémon this card is attached to has no Weakness."
         def eff
         onPlay {reason->
-          eff = getter GET_WEAKNESSES, self, { holder ->
-            if (self && self.types.contains(M)) {
+          // No fixed target: a moved card (Metal Transfer) keeps this getter, and `self` follows it to its new Pokémon.
+          eff = getter GET_WEAKNESSES, { holder ->
+            if (self && holder.effect.target == self && self.types.contains(M)) {
               holder.object.clear()
             }
           }
