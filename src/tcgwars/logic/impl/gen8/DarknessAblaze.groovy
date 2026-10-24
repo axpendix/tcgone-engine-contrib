@@ -3670,8 +3670,11 @@ public enum DarknessAblaze implements LogicCardInfo {
             before TAKE_PRIZE, {
               if (itemActive && ef.pcs==self) {
                 prevent()
-                def tar = self.owner.opposite.pbg.prizeCardSet.oppSelect(hidden: true, count: 1, "The knocked out Pokémon had Billowing Smoke attached. Select a prize card, and it'll be discarded instead of taken and put into your hand.")
-                moveCard(suppressLog: true, tar.first(), self.owner.opposite.pbg.discard)
+                // the player who would take the Prize card chooses and discards it; the Knock Out happens on their turn, so
+                // an oppSelect asked the Billowing Smoke player (forum 11152)
+                def taker = (ef as TakePrize).playerType
+                def tar = taker.pbg.prizeCardSet.select(hidden: true, count: 1, "The knocked out Pokémon had Billowing Smoke attached. Select a prize card, and it'll be discarded instead of taken and put into your hand.", null, taker)
+                moveCard(suppressLog: true, tar.first(), taker.pbg.discard)
                 bc "$tar was discarded instead of taken as a Prize." // custom log entry
                 TakePrize.checkPrizes(bg)
               }
