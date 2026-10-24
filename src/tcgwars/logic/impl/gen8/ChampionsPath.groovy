@@ -497,7 +497,7 @@ public enum ChampionsPath implements LogicCardInfo {
           delayedA {
             after ATTACH_ENERGY, {
               if (self.active && ef.resolvedTarget && ef.resolvedTarget.owner != self.owner && ef.reason == PLAY_FROM_HAND) {
-                bc "$thisAbility - $ef.resolvedTarget receives 2 damage counters."
+                bc "$thisAbility - $ef.resolvedTarget receives 3 damage counters."
                 directDamage 30, ef.resolvedTarget, SRC_ABILITY
               }
             }
