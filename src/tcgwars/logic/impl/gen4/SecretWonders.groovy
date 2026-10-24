@@ -1274,22 +1274,13 @@ public enum SecretWonders implements LogicCardInfo {
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
           resistance M, MINUS20
-          initHook {Card thisCard->
-            delayed {
-              before KNOCKOUT, {
-                if(ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){
-                  bg.em().storeObject("Minus Charge", bg.turnCount)
-                }
-              }
-            }
-          }
           pokePower "Minus Charge", {
             text "Once during your turn , if any Pokémon were Knocked Out during your opponent’s last turn, you may draw 2 cards. You can’t use more than 1 Minus Charge Poké-Power each turn. This power can’t be used if Minun is affected by a Special Condition."
             actionA {
               checkLastTurn()
               checkNoSPC()
               assert bg.em().retrieveObject("Minus Charge") != bg.turnCount : "You can't use more than 1 Minus Charge Ability each turn."
-              assert bg.em().retrieveObject("Minus Charge") == bg.turnCount-1 : "None of your Pokémon were Knocked Out during your opponent's last turn."
+              assert my.knockoutsDuringOpponentsTurn(bg.turnCount - 1) : "None of your Pokémon were Knocked Out during your opponent's last turn."
               bg.em().storeObject("Minus Charge", bg.turnCount)
               powerUsed()
               draw 2
@@ -1390,15 +1381,6 @@ f
         return basic (this, hp:HP060, type:LIGHTNING, retreatCost:1) {
           weakness F, PLUS10
           resistance M, MINUS20
-          initHook {Card thisCard->
-            delayed {
-              before KNOCKOUT, {
-                if(ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){
-                  bg.em().storeObject("Plus Charge", bg.turnCount)
-                }
-              }
-            }
-          }
           pokePower "Plus Charge", {
             text "Once during your turn , if any of your Pokémon were Knocked Out during your opponent’s last turn, you may search your discard pile for up to 2 basic Energy cards, show them to your opponent, and put them into your hand. You can’t use more then 1 Plus Charge Poké-Power each turn. This power can’t be used if Plusle is affected by a Special Condition."
             actionA {
@@ -1406,7 +1388,7 @@ f
               checkNoSPC()
               assert my.discard.filterByType(BASIC_ENERGY) : "You have no basic Energy in your discard pile"
               assert bg.em().retrieveObject("Plus Charge") != bg.turnCount : "You can't use more than 1 Plus Charge Ability each turn."
-              assert bg.em().retrieveObject("Plus Charge") == bg.turnCount-1 : "None of your Pokémon were Knocked Out during your opponent's last turn."
+              assert my.knockoutsDuringOpponentsTurn(bg.turnCount - 1) : "None of your Pokémon were Knocked Out during your opponent's last turn."
               bg.em().storeObject("Plus Charge", bg.turnCount)
               powerUsed()
               my.discard.select(max:2,"Search your discard pile for up to 2 basic Energy cards",cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)

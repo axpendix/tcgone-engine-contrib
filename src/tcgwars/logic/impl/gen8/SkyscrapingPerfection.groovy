@@ -1381,15 +1381,6 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
         text "You can play this card only if 1 of your Pokémon was Knocked Out during your opponent's last turn. Attach a basic Energy card from your discard pile to 1 of your Pokémon. If you do, " +
           "search your deck for a card and put it into your hand. Then, " +
           "shuffle your deck."
-        initHook {Card thisCard->
-          delayed {
-            before KNOCKOUT, {
-              if(ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite){
-                keyStore("Raihan_KO", thisCard, bg.turnCount)
-              }
-            }
-          }
-        }
         onPlay {
           def (attached, to) = attachEnergyFrom(basic: true, my.discard, my.all)
           if (attached) {
@@ -1399,7 +1390,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
           }
         }
         playRequirement{
-          assert keyStore("Raihan_KO", thisCard, null) == bg.turnCount - 1: "No Pokémon was Knocked Out during your opponent’s last turn"
+          assert my.knockoutsDuringOpponentsTurn(bg.turnCount - 1) : "None of your Pokémon were Knocked Out during your opponent's last turn"
           assert my.discard.any { it.cardTypes.is(BASIC_ENERGY) } : "No basic Energy cards in your discard pile"
         }
       };

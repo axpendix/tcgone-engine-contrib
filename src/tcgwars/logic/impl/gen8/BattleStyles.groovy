@@ -2679,20 +2679,11 @@ public enum BattleStyles implements LogicCardInfo {
       case BRUNO_121:
       return supporter (this) {
         text "Shuffle your hand into your deck. Then, draw 4 cards. If any of your Pokémon were Knocked Out during your opponent's last turn, draw 7 cards instead."
-        initHook { Card thisCard->
-          delayed {
-            before KNOCKOUT, {
-              if (ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite) {
-                keyStore("Bruno_KO", thisCard, bg.turnCount)
-              }
-            }
-          }
-        }
         onPlay {
           hand.getExcludedList(thisCard).moveTo(hidden:true, my.deck)
           shuffleDeck()
 
-          if (keyStore("Bruno_KO", thisCard, null) == bg.turnCount - 1) {
+          if (my.knockoutsDuringOpponentsTurn(bg.turnCount - 1)) {
             draw 7
           } else {
             draw 4

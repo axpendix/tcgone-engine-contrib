@@ -763,18 +763,9 @@ public enum ShiningFates implements LogicCardInfo {
       case GYM_TRAINER_59:
       return supporter (this) {
         text "Draw 2 cards. If any of your Pokémon were Knocked Out during your opponent's last turn, draw 2 more cards."
-        initHook { Card thisCard->
-          delayed {
-            before KNOCKOUT, {
-              if (ef.pokemonToBeKnockedOut.owner == thisCard.player && bg.currentTurn == thisCard.player.opposite) {
-                keyStore("Gym_Trainer_KO$thisCard.player", thisCard, bg.turnCount)
-              }
-            }
-          }
-        }
         onPlay {
           draw 2
-          if (keyStore("Gym_Trainer_KO$thisCard.player", thisCard, null) == bg.turnCount - 1) {
+          if (my.knockoutsDuringOpponentsTurn(bg.turnCount - 1)) {
             draw 2
           }
         }
