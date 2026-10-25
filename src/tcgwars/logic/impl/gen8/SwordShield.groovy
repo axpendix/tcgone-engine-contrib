@@ -6,7 +6,6 @@ import tcgwars.logic.impl.gen5.DarkExplorers;
 import tcgwars.logic.impl.gen5.EmergingPowers;
 import tcgwars.logic.impl.gen6.Flashfire;
 import tcgwars.logic.impl.gen6.KalosStarterSet
-import tcgwars.logic.impl.gen6.Xy;
 import tcgwars.logic.impl.gen7.SunMoon;
 import tcgwars.logic.impl.gen7.UltraPrism;
 import tcgwars.logic.impl.gen7.UnbrokenBonds;
@@ -3513,7 +3512,20 @@ public enum SwordShield implements LogicCardInfo {
       case POTION_177:
       return copy(BlackWhite.POTION_100, this);
       case PROFESSOR_S_RESEARCH_178:
-      return copy(Xy.PROFESSOR_SYCAMORE_122, this);
+      // Every Professor's Research print runs this code. Unlike Professor Sycamore XY 122 it can be played with an empty
+      // deck: it still discards the hand, and drawing from an empty deck draws nothing (owner's decision). Only a play that
+      // would do nothing at all (no other card in the hand and an empty deck) is refused, as Professor Juniper BW 101.
+      return supporter (this) {
+        text "Discard your hand and draw 7 cards." +
+          "\nYou may play only 1 Supporter card during your turn (before your attack)."
+        onPlay {
+          my.hand.getExcludedList(thisCard).discard()
+          draw 7
+        }
+        playRequirement{
+          assert my.hand.getExcludedList(thisCard) || my.deck : "No card in hand or deck"
+        }
+      };
       case QUICK_BALL_179:
       return itemCard (this) {
         text "You can play this card only if you discard another card from your hand." +
