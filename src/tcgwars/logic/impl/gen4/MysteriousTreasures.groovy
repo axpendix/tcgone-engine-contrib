@@ -710,7 +710,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               assert self.cards.filterByBasicEnergyType(L) : "No Basic [L] Energy on $self."
             }
             onAttack {
-              damage 30 * self.cards.filterByBasicEnergyType(L).discard().size()
+              damage 30 * discardAfterDamage(self.cards.filterByBasicEnergyType(L)).size()
             }
           }
 

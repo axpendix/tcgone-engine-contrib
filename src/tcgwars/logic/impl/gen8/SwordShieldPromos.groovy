@@ -3599,7 +3599,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           energyCost F, F
           onAttack {
             def list = self.cards.filterByEnergyType(F)
-            list.discard()
+            discardAfterDamage list
             damage 10 + 60 * list.size()
           }
         }

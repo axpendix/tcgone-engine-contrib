@@ -462,16 +462,19 @@ public enum Stormfront implements LogicCardInfo {
             onAttack {
               def i = 4
               def count = 0 //count will increase if the card is discarded successfully. i will decrease whenever a card is attempted to be discarded
+              // your own cards are discarded after the damage and stay attached until then: they can't be chosen twice
+              def ownChosen = new CardList()
+              def toolsOf = { pcs -> pcs.cards.filterByType(POKEMON_TOOL, TECHNICAL_MACHINE).findAll { !ownChosen.contains(it) } }
               while (true) {
                 def tar
-                if(i > 0 && (my.all.find {it.cards.filterByType(POKEMON_TOOL, TECHNICAL_MACHINE)} || opp.all.find {it.cards.filterByType(POKEMON_TOOL, TECHNICAL_MACHINE)})){
+                if(i > 0 && (my.all.find {toolsOf(it)} || opp.all.find {it.cards.filterByType(POKEMON_TOOL, TECHNICAL_MACHINE)})){
                   def options = []
                   def text = []
                   if(opp.all.findAll {it.cards.filterByType(POKEMON_TOOL, TECHNICAL_MACHINE)}){
                     options += [1]
                     text += ["Your opponent's Pokémon"]
                   }
-                  if(my.all.findAll {it.cards.filterByType(POKEMON_TOOL, TECHNICAL_MACHINE)}){
+                  if(my.all.findAll {toolsOf(it)}){
                     options += [2]
                     text += ["Your Pokémon"]
                   }
@@ -481,17 +484,21 @@ public enum Stormfront implements LogicCardInfo {
                   if(choice == 1){
                     tar = opp.all.findAll {it.cards.filterByType(POKEMON_TOOL, TECHNICAL_MACHINE)}
                   } else if(choice == 2){
-                    tar = my.all.findAll{it.cards.filterByType(POKEMON_TOOL, TECHNICAL_MACHINE)}
+                    tar = my.all.findAll{toolsOf(it)}
                   } else{
                     break
                   }
                   if (tar) {
                     def sel = tar.select("Select a Pokémon to discard a Pokémon Tool or Technical Machine from (cancel to stop).", false)
                     if (sel) {
-                      def card = sel.cards.filterByType(POKEMON_TOOL, TECHNICAL_MACHINE).select("Discard a Pokémon Tool or Technical Machine from $sel.")
+                      def card = toolsOf(sel).select("Discard a Pokémon Tool or Technical Machine from $sel.")
                       i -= 1
                       targeted (sel) {
-                        card.discard()
+                        if (choice == 2) {
+                          ownChosen.addAll(card)
+                        } else {
+                          card.discard()
+                        }
                         count ++
                       }
                     }
@@ -501,6 +508,7 @@ public enum Stormfront implements LogicCardInfo {
                 }
               }//Modified tool scrapper code
               damage 20 * count
+              discardAfterDamage ownChosen
             }
           }
           move "Horror Chant", {

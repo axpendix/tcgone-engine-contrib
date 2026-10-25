@@ -6,6 +6,7 @@ import tcgwars.logic.effect.basic.Knockout
 import tcgwars.logic.effect.basic.Move
 import tcgwars.logic.impl.gen3.TeamRocketReturns
 import tcgwars.logic.impl.gen5.PlasmaStorm
+import tcgwars.logic.util.CardList
 import tcgwars.logic.util.CardTypeSet
 import tcgwars.logic.util.TypeSet
 
@@ -1066,16 +1067,17 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
             assert my.all.any { it.cards.energyCount W } : "No Pokémon with [W] Energy attached"
           }
           onAttack {
-            int count = 0
+            // the chosen Energy stays attached until it's discarded after the damage
+            def chosen = new CardList()
             while (1) {
-              def tar = my.all.findAll { it.cards.filterByEnergyType(W).notEmpty() }
+              def tar = my.all.findAll { it.cards.filterByEnergyType(W).any { !chosen.contains(it) } }
               if (!tar) break
               def pcs = tar.select("Pokémon that has [W] energy to discard. Cancel to stop", false)
               if (!pcs) break
-              pcs.cards.filterByEnergyType(W).select("[W] Energy to discard").discard()
-              count++
+              chosen.addAll(pcs.cards.filterByEnergyType(W).findAll { !chosen.contains(it) }.select("[W] Energy to discard"))
             }
-            damage 60 * count
+            damage 60 * chosen.size()
+            discardAfterDamage chosen
           }
         }
       };
