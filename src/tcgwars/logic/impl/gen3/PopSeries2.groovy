@@ -45,7 +45,7 @@ public enum PopSeries2 implements LogicCardInfo {
   VENUSAUR_6 ("Venusaur", "6", Rarity.RARE, [POKEMON, EVOLUTION, STAGE2, _GRASS_]),
   IVYSAUR_7 ("Ivysaur", "7", Rarity.UNCOMMON, [POKEMON, EVOLUTION, STAGE1, _GRASS_]),
   MR__BRINEY_S_COMPASSION_8 ("Mr. Briney's Compassion", "8", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  MULTI_TECHNICAL_MACHINE_01_9 ("Multi Technical Machine 01", "9", Rarity.UNCOMMON, [TRAINER, TECHNICAL_MACHINE]),
+  MULTI_TECHNICAL_MACHINE_01_9 ("Multi Technical Machine 01", "9", Rarity.UNCOMMON, [TRAINER, ITEM, TECHNICAL_MACHINE]),
   POKEMON_PARK_10 ("Pokémon Park", "10", Rarity.UNCOMMON, [TRAINER, STADIUM]),
   TV_REPORTER_11 ("TV Reporter", "11", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   BULBASAUR_12 ("Bulbasaur", "12", Rarity.COMMON, [POKEMON, BASIC, _GRASS_]),
