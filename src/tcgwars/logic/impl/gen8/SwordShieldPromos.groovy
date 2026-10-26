@@ -3986,11 +3986,20 @@ public enum SwordShieldPromos implements LogicCardInfo {
         }
         bwAbility "Photon Barrier", {
           text "Prevent all effects of attacks from your opponent's Pokémon done to this Pokémon. (Damage is not an effect.)"
+          // The opponent's attacks used while Photon Barrier works: it goes on preventing their lasting effects (a getter is only
+          // judged later). The lasting effects of an attack used while it didn't work (Path to the Peak) were already done to this
+          // Pokémon and stay when it works again (forum 17519; official Japanese Q&A on Unown G's GUARD and Doom News).
+          def protectedFrom = [] as Set
           delayedA {
+            before ATTACK_MAIN, {
+              if (ef.attacker.owner == self.owner.opposite) protectedFrom.add(ef)
+            }
             before null, self, tcgwars.logic.effect.Source.ATTACK, {
-              if (e.sourceAttack?.attacker?.owner == self.owner.opposite && ef.effectType != DAMAGE && ef.effectType != KNOCKOUT
-                && !(ef instanceof tcgwars.logic.effect.basic.ApplyDamages)) {
-                bc "Photon Barrier prevents effect"
+              def attack = e.sourceAttack
+              if (attack?.attacker?.owner == self.owner.opposite && (attack == bg.em().findAttack() || protectedFrom.contains(attack))
+                && ef.effectType != DAMAGE && ef.effectType != KNOCKOUT && !(ef instanceof tcgwars.logic.effect.basic.ApplyDamages)) {
+                // getters are judged after every action: block them without a line each time
+                if (!(ef instanceof tcgwars.logic.effect.getter.GetterEffect)) bc "Photon Barrier prevents effect"
                 prevent()
               }
             }
