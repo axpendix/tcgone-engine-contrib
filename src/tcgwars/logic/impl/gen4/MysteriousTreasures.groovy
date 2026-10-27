@@ -366,11 +366,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
               //TODO: Think/check how this would work re: Pokémon used as Special Energy.
               damage 10
               delayed {
-                before PLAY_ENERGY, {
-                  if (ef.cardToPlay.cardTypes.is(SPECIAL_ENERGY) && bg.currentTurn == self.owner.opposite) {
-                    wcu "Sonic Volume prevents playing this card"
-                    prevent()
-                  }
+                cantPlayEnergyFromHand delegate, "Bind Pulse prevents attaching Special Energy", {
+                  it.cardTypes.is(SPECIAL_ENERGY) && bg.currentTurn == self.owner.opposite
                 }
                 unregisterAfter 2
               }
