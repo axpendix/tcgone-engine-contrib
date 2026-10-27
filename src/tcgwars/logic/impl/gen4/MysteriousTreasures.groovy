@@ -2565,12 +2565,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 flip{
                   bc "${opp.owner.getPlayerUsername(bg)} can't attach any Energy cards from their hand to their Active Pokémon during their next turn. (This effect is on the player, it isn't removed by benching or evolving the currently Active ${defending}.)"
                   delayed{
-                    before ATTACH_ENERGY, {
-                      if(ef.reason == PLAY_FROM_HAND && ef.resolvedTarget.owner == self.owner.opposite && ef.resolvedTarget.active) {
-                        wcu "Electromagnetic Jam prevents you from attaching Energy to your Active Pokémon."
-                        prevent()
-                      }
-                    }
+                    cantPlayEnergyFromHand delegate, "Electromagnetic Jam prevents you from attaching Energy to your Active Pokémon.", to: { it.owner == self.owner.opposite && it.active }, { true }
                     unregisterAfter 2
                   }
                 }

@@ -3328,12 +3328,7 @@ public enum Stormfront implements LogicCardInfo {
                     bc "During ${opp.owner.getPlayerUsername(bg)}'s next turn, Energy can't be attached from their hand to the Defending ${defending}. (This effect can be removed by evolving or benching ${defending}.)"
                     def pcs = defending
                     delayed {
-                      before ATTACH_ENERGY, pcs, {
-                        if(ef.reason == PLAY_FROM_HAND) {
-                          wcu "Night Bind: Can't attach energy to ${pcs}"
-                          prevent()
-                        }
-                      }
+                      cantPlayEnergyFromHand delegate, "Night Bind: Can't attach energy to ${pcs}", to: { it == pcs }, { true }
                       unregisterAfter 2
                       after FALL_BACK, pcs, {unregister()}
                       after CHANGE_STAGE, pcs, {unregister()}
