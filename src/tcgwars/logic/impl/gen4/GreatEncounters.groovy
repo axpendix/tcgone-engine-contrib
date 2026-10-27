@@ -1702,11 +1702,21 @@ public enum GreatEncounters implements LogicCardInfo {
               Card toolCard
               toolCard = pokemonTool(new CustomCardInfo(top.staticInfo).setCardTypes(TRAINER, POKEMON_TOOL)) {
                 def eff
+                // The opponent's attacks used while Unown G is attached: GUARD goes on preventing their lasting effects. The lasting
+                // effects of an attack used before it was attached were already done (official Japanese Q&A: GUARD vs Doom News): they
+                // run and end as usual (forum 16414, the can't retreat of an earlier Poison Bind).
+                def protectedFrom = [] as Set
                 onPlay {
                   eff = delayed {
+                    before ATTACK_MAIN, {
+                      if (ef.attacker.owner == self.owner.opposite) protectedFrom.add(ef)
+                    }
                     before null, pokemon, Source.ATTACK, {
-                      if (e.targetPokemon == self && bg.currentTurn == self.owner.opposite && ef.effectType != DAMAGE && ef.effectType != GET_GIVEN_PRIZES && !(ef instanceof ApplyDamages)) {
-                        bc "GUARD prevents effect ${ef.effectType}"
+                      def attack = e.sourceAttack
+                      if (e.targetPokemon == self && bg.currentTurn == self.owner.opposite && (attack == bg.em().findAttack() || protectedFrom.contains(attack))
+                        && ef.effectType != DAMAGE && ef.effectType != GET_GIVEN_PRIZES && !(ef instanceof ApplyDamages)) {
+                        // getters are judged after every action: block them without a line each time
+                        if (!(ef instanceof tcgwars.logic.effect.getter.GetterEffect)) bc "GUARD prevents effect ${ef.effectType}"
                         prevent()
                       }
                     }
