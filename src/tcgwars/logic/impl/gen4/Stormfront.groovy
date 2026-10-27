@@ -259,11 +259,8 @@ public enum Stormfront implements LogicCardInfo {
               if (r==PLAY_FROM_HAND && self.active && confirm("Use Emperor Aura?")) {
                 powerUsed()
                 delayed {
-                  before ATTACH_ENERGY, {
-                    if (ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner.opposite && self.active){
-                      wcu "Emperor Aura prevents playing this card"
-                      prevent()
-                    }
+                  cantPlayEnergyFromHand delegate, "Emperor Aura prevents playing this card", {
+                    bg.currentTurn == self.owner.opposite && self.active
                   }
                   unregisterAfter 2
                 }
