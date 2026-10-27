@@ -1929,14 +1929,16 @@ public enum ChillingReign implements LogicCardInfo {
           weakness DARKNESS
           resistance FIGHTING, MINUS30
           bwAbility "Underworld Door", {
-            text "Once during your turn you may attach a [P] Energy card from your hand to 1 of your Benched [P] Pokémon. Then, draw 2 cards."
+            text "Once during your turn, you may attach a [P] Energy card from your hand to 1 of your Benched [P] Pokémon. If you attached Energy to a Pokémon in this way, draw 2 cards."
             actionA {
               checkLastTurn()
               assert my.hand.hasEnergyType(P) : "You have no [P] Energy cards in your hand"
               assertMyBench(hasType: P)
               powerUsed()
-              attachEnergyFrom(type:P, my.hand, my.bench.findAll { it.types.contains(P) })
-              draw 2
+              def (energy, pcs) = attachEnergyFrom(type:P, my.hand, my.bench.findAll { it.types.contains(P) })
+              if (energy && pcs.cards.containsAll(energy)) {
+                draw 2
+              }
             }
           }
           move "Max Geist", {
