@@ -185,7 +185,7 @@ public enum PopSeries2 implements LogicCardInfo {
         pokeBody "Mirror Coat", {
           text "If Suicune is Burned or Poisoned by an opponent's attack (even if Suicune is Knocked Out), the Attacking Pokémon is now affected by the same Special Conditions (1 if there is only 1)."
           delayedA {
-            before APPLY_SPECIAL_CONDITION, self, {
+            after APPLY_SPECIAL_CONDITION, self, {
               if (ef.type == POISONED || ef.type == BURNED) {
                 bc "Mirror Coat : ${ef.type}"
                 apply ef.type, self.owner.opposite.pbg.active, SRC_ABILITY

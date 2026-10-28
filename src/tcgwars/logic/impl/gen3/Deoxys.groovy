@@ -973,7 +973,7 @@ public enum Deoxys implements LogicCardInfo {
           pokeBody "Mirror Coat", {
             text "If Xatu is Burned or Poisoned by an opponent’s attack (even if Xatu is Knocked Out), the Attacking Pokémon is now affected by the same Special Conditions (1 if there is only 1)."
             delayedA {
-              before APPLY_SPECIAL_CONDITION,self, {
+              after APPLY_SPECIAL_CONDITION,self, {
                 if(ef.type == POISONED || ef.type == BURNED){
                   bc "Mirror Coat : ${ef.type}"
                   apply ef.type, self.owner.opposite.pbg.active, SRC_ABILITY
@@ -1072,8 +1072,8 @@ public enum Deoxys implements LogicCardInfo {
             text "Grumpig can’t be Confused."
             delayedA {
               before APPLY_SPECIAL_CONDITION,self, {
-                bc "$self Carefree pervent it to be Confused"
                 if(ef.type == CONFUSED){
+                  bc "$self Carefree pervent it to be Confused"
                   prevent()
                 }
               }
@@ -1878,7 +1878,7 @@ public enum Deoxys implements LogicCardInfo {
           pokeBody "Mirror Coat", {
             text "If Natu if Burned or Poisoned by an opponent’s attack (even if Natu is Knocked Out), the Attacking Pokémon is now affected by the same Special Conditions (1 if there is only 1)."
             delayedA {
-              before APPLY_SPECIAL_CONDITION,self, {
+              after APPLY_SPECIAL_CONDITION,self, {
                 bc "Mirror Coat : ${ef.type}"
                 if(ef.type == POISONED || ef.type == BURNED){
                   apply ef.type, self.owner.opposite.pbg.active, SRC_ABILITY
