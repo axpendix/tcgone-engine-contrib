@@ -2355,13 +2355,13 @@ public enum Triumphant implements LogicCardInfo {
               checkLastTurn()
               powerUsed {new Knockout(self).run(bg)}
               new Knockout(self).run(bg)
-              def top = my.deck.subList(0,7)
+              def top = my.deck ? my.deck.subList(0,7) : new CardList() // an empty deck: the Knock Out still happens, there is nothing to look at
               def maximum = top.filterByType(ENERGY).size()
-              def energy = top.select(min:0,max:maximum,"Choose any number of Energy cards to attach to your Pokémon",cardTypeFilter(ENERGY))
+              def energy = top ? top.select(min:0,max:maximum,"Choose any number of Energy cards to attach to your Pokémon",cardTypeFilter(ENERGY)) : new CardList()
               energy.each {
                 attachEnergy(my.all.select("Attach $it.name to?"), it)
               }
-              top.getExcludedList(energy).discard()
+              if (top) top.getExcludedList(energy).discard()
             }
           }
           move "Gigashock", {
