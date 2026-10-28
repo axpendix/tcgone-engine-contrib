@@ -1731,6 +1731,9 @@ public enum GreatEncounters implements LogicCardInfo {
                 }
               }
               toolCard.initializeFrom(top)
+              // The Tool card takes the place of Unown G's Pokémon card on the Bench, so attaching it moves a card that is in play
+              // (else MoveCard warns "Card not found anywhere", forum 17544). onRemoveFromPlay swaps the two back.
+              bg.em().run(new ChangeImplementation(toolCard, top))
               attachPokemonTool(toolCard, pokemon)
               removePCS(self)
             }
