@@ -1417,7 +1417,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           onAttack {
             damage 30
             afterDamage{
-              if (!defending.slatedToKO && opp.bench) {
+              if (opp.bench) {
                 sw opp.active, opp.bench.oppSelect("Choose your new Active Pokémon.")
               }
             }
