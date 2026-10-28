@@ -2423,8 +2423,9 @@ public enum DeltaSpecies implements LogicCardInfo {
               it.cardTypes.is(SUPPORTER) &&
               it.name.contains("Holon")
             })
+            // no showToOpponent: the log names the card (admin's policy for Trainers, forum 16157)
             if (tar) {
-              tar.showToOpponent("Opponent played Holon Transceiver and searched their deck for this Holon Supporter.").moveTo(my.hand)
+              tar.moveTo(my.hand)
             }
             shuffleDeck()
           }
@@ -2432,7 +2433,7 @@ public enum DeltaSpecies implements LogicCardInfo {
             my.discard.findAll{
               it.cardTypes.is(SUPPORTER) &&
               it.name.contains("Holon")
-            }.select("Which card to move to hand?").showToOpponent("Opponent played Holon Transceiver and will move this Holon Supporter from their discard pile to their hand.").moveTo(my.hand)
+            }.select("Which card to move to hand?").moveTo(my.hand)
           }
         }
         playRequirement {
