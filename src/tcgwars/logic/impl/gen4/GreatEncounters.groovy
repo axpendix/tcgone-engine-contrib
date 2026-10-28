@@ -1713,10 +1713,27 @@ public enum GreatEncounters implements LogicCardInfo {
                     }
                     before null, pokemon, Source.ATTACK, {
                       def attack = e.sourceAttack
-                      if (e.targetPokemon == self && bg.currentTurn == self.owner.opposite && (attack == bg.em().findAttack() || protectedFrom.contains(attack))
+                      def attackNow = bg.em().findAttack()
+                      def getter = ef instanceof tcgwars.logic.effect.getter.GetterEffect
+                      // An effect that the opponent's attack left on the opponent's own Pokémon and that strikes back at this Pokémon as it
+                      // attacks (Spike Armor, Destiny Bond) is prevented, even when that attack was used before Unown G was attached: the
+                      // effect is on the opponent's Pokémon (PUI 2008-09-11).
+                      def strikesBack = bg.currentTurn == self.owner && attackNow?.attacker == self && attack?.attacker?.owner == self.owner.opposite &&
+                        !getter && !(ef instanceof tcgwars.logic.effect.DelayedEffect)
+                      if (e.targetPokemon == self && (strikesBack || bg.currentTurn == self.owner.opposite && (attack == attackNow || protectedFrom.contains(attack)))
                         && ef.effectType != DAMAGE && ef.effectType != GET_GIVEN_PRIZES && !(ef instanceof ApplyDamages)) {
                         // getters are judged after every action: block them without a line each time
-                        if (!(ef instanceof tcgwars.logic.effect.getter.GetterEffect)) bc "GUARD prevents effect ${ef.effectType}"
+                        if (!getter) bc "GUARD prevents effect ${ef.effectType}"
+                        prevent()
+                      }
+                    }
+                    // A switch that would make this Pokémon the Active Pokémon is an effect on it, whoever chooses it (PUI 2008-09-11:
+                    // Sonic Blade; 2010-08-05: Inviting Trap). Whirlwind-style switches target the Defending Pokémon, so the listener
+                    // above doesn't see them.
+                    before SWITCH, null, Source.ATTACK, {
+                      if (ef.switchedOut == self && ef.fallenBack != null && ef.targetPokemon != self && bg.currentTurn == self.owner.opposite
+                        && e.sourceAttack == bg.em().findAttack()) {
+                        bc "GUARD prevents effect SWITCH"
                         prevent()
                       }
                     }
