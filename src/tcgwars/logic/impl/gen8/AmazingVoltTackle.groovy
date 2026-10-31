@@ -863,7 +863,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
       case PIKACHU_VMAX_31:
       return evolution (this, from:"Pikachu V", hp:HP310, type:L, retreatCost:2) {
         weakness F
-        move "G=Max Volt Tackle", {
+        move "G-Max Volt Tackle", {
           text "120+ damage. You may discard all Energy from this Pokémon. If you do, this attack does 150 more damage."
           energyCost L, L, L
           onAttack {
