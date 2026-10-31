@@ -1297,7 +1297,8 @@ public enum EeveeHeroes implements LogicCardInfo {
             assert deck : "Your deck is empty"
           }
           onAttack {
-            deck.search max:3, { (it as Card).cardTypes.isIn POKEMON_V, VMAX, POKEMON_VSTAR }
+            // deck.search shuffles the deck; the log reveals the cards put into the hand (forum 17511)
+            deck.search(max: 3, { (it as Card).cardTypes.isIn POKEMON_V, VMAX, POKEMON_VSTAR }).moveTo(hand)
           }
         }
         move "Stampede", {
