@@ -80,7 +80,7 @@ public enum Web implements LogicCardInfo {
   RAICHU_36("Raichu", "36", Rarity.RARE, [STAGE1, EVOLUTION, POKEMON, _LIGHTNING_]),
   DARK_ALAKAZAM_37("Dark Alakazam", "37", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _PSYCHIC_]),
   DRAGONITE_38("Dragonite", "38", Rarity.RARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
-  TEAM_ROCKET_S_MEOWTH_39("Team Rocket's Meowth", "39", Rarity.RARE, [BASIC, POKEMON, _COLORLESS_]),
+  TEAM_ROCKET_S_MEOWTH_39("Team Rocket's Meowth", "39", Rarity.RARE, [BASIC, POKEMON, _COLORLESS_, OWNERS_POKEMON]),
   ROCKET_S_SNEAK_ATTACK_40("Rocket's Sneak Attack", "40", Rarity.RARE, [TRAINER, SUPPORTER]),
   DARK_VENUSAUR_41("Dark Venusaur", "41", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _GRASS_]),
   DARK_CHARIZARD_42("Dark Charizard", "42", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIRE_]),
