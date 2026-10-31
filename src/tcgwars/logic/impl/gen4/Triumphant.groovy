@@ -41,7 +41,7 @@ public enum Triumphant implements LogicCardInfo {
   ALTARIA_2 ("Altaria", "2", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _COLORLESS_]),
   CELEBI_3 ("Celebi", "3", Rarity.HOLORARE, [BASIC, POKEMON, _PSYCHIC_]),
   DRAPION_4 ("Drapion", "4", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _DARKNESS_]),
-  MAMOSWINE_5 ("Mamoswine", "5", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _WATER_]),
+  MAMOSWINE_5 ("Mamoswine", "5", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _WATER_]),
   NIDOKING_6 ("Nidoking", "6", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _FIGHTING_]),
   PORYGON_Z_7 ("Porygon-Z", "7", Rarity.HOLORARE, [STAGE2, EVOLUTION, POKEMON, _COLORLESS_]),
   RAPIDASH_8 ("Rapidash", "8", Rarity.HOLORARE, [STAGE1, EVOLUTION, POKEMON, _FIRE_]),
