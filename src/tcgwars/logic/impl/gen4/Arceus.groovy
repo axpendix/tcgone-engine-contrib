@@ -128,7 +128,7 @@ public enum Arceus implements LogicCardInfo {
   ENERGY_RESTORE_86 ("Energy Restore", "86", Rarity.UNCOMMON, [TRAINER, ITEM]),
   EXPERT_BELT_87 ("Expert Belt", "87", Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL]),
   LUCKY_EGG_88 ("Lucky Egg", "88", Rarity.UNCOMMON, [TRAINER, ITEM, POKEMON_TOOL]),
-  OLD_AMBER_89 ("Old Amber", "89", Rarity.COMMON, [TRAINER, ITEM]),
+  OLD_AMBER_89 ("Old Amber", "89", Rarity.COMMON, [TRAINER, ITEM, FOSSIL]),
   PROFESSOR_OAK_S_VISIT_90 ("Professor Oak's Visit", "90", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   ULTIMATE_ZONE_91 ("Ultimate Zone", "91", Rarity.UNCOMMON, [TRAINER, STADIUM]),
   DOME_FOSSIL_92 ("Dome Fossil", "92", Rarity.COMMON, [TRAINER, ITEM, FOSSIL]),

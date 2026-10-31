@@ -127,7 +127,7 @@ public enum MajesticDawn implements LogicCardInfo {
   ENERGY_RESTORE_81 ("Energy Restore", "81", Rarity.UNCOMMON, [TRAINER, ITEM]),
   FOSSIL_EXCAVATOR_82 ("Fossil Excavator", "82", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   MOM_S_KINDNESS_83 ("Mom's Kindness", "83", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  OLD_AMBER_84 ("Old Amber", "84", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  OLD_AMBER_84 ("Old Amber", "84", Rarity.UNCOMMON, [TRAINER, ITEM, FOSSIL]),
   POKE_BALL_85 ("Poké Ball", "85", Rarity.UNCOMMON, [TRAINER, ITEM]),
   QUICK_BALL_86 ("Quick Ball", "86", Rarity.UNCOMMON, [TRAINER, ITEM]),
   SUPER_SCOOP_UP_87 ("Super Scoop Up", "87", Rarity.UNCOMMON, [TRAINER, ITEM]),

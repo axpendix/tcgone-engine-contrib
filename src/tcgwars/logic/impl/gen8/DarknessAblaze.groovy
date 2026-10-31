@@ -196,7 +196,7 @@ public enum DarknessAblaze implements LogicCardInfo {
   OLD_PC_164 ("Old PC", "164", Rarity.UNCOMMON, [TRAINER, ITEM]),
   PIERS_165 ("Piers", "165", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   POKEMON_BREEDER_S_NURTURING_166 ("Pokémon Breeder's Nurturing", "166", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
-  RARE_FOSSIL_167 ("Rare Fossil", "167", Rarity.UNCOMMON, [TRAINER, ITEM]),
+  RARE_FOSSIL_167 ("Rare Fossil", "167", Rarity.UNCOMMON, [TRAINER, ITEM, FOSSIL]),
   ROSE_168 ("Rose", "168", Rarity.UNCOMMON, [TRAINER, SUPPORTER]),
   ROSE_TOWER_169 ("Rose Tower", "169", Rarity.UNCOMMON, [TRAINER, STADIUM]),
   SPIKEMUTH_170 ("Spikemuth", "170", Rarity.UNCOMMON, [TRAINER, STADIUM]),
