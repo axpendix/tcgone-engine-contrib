@@ -2552,57 +2552,71 @@ public enum Triumphant implements LogicCardInfo {
         return basic (this, hp:HP150, type:[PSYCHIC, D], retreatCost:2) {
           weakness P
           weakness F
-          move "Moon’s Invite", {
-            text "Move as many damage counters on your opponent’s Pokémon as you like to any of your opponent’s other Pokémon in any way you like."
-            energyCost P
-            attackRequirement {
-              assert opp.all.find{it.numberOfDamageCounters} : "Your opponent's Pokémon have no damage counters to move"
-              assert opp.bench : "Your opponent only has 1 Pokémon in play"
-            }
-            onAttack {
-              def eff = delayed {
-                before KNOCKOUT, {
-                  prevent()
-                }
-              }
-              while(1){
-                def pl=(opp.all.findAll {it.numberOfDamageCounters})
-                if(!pl) break;
-                def src =pl.select("Source for damage counter (cancel to stop)", false)
-                if(!src) break;
-                def tar = opp.all
-                tar.remove(src)
-                tar = tar.select("Target for damage counter (cancel to stop)", false)
-                if(!tar) break;
-
-                if (!moveDamageCounters(src, tar, 1)) break // prevented (e.g. Watchful Eye)
-              }
-              eff.unregister()
-              checkFaint()
-            }
-          }
           move "Lost Crisis", {
             text "100 damage. Choose 2 Energy attached to Darkrai & Cresselia LEGEND and put them in the Lost Zone. If any of your opponent’s Pokémon would be Knocked Out by damage from this attack, put that Pokémon and all cards attached to it in the Lost Zone instead of discarding it."
             energyCost D, D, C, C
             onAttack {
               damage 100
-              moveSelfEnergyAfterDamage my.lostZone, C, C
+              def energy = selectEnergy(self, C, C)
+              afterDamage {
+                if (energy) energy.moveTo(my.lostZone)
+              }
+              def opponent = self.owner.opposite
+              def turn = bg.turnCount
               delayed {
                 def knockedOut = null
                 before KNOCKOUT, {
-                  if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner && self.active && ef.pokemonToBeKnockedOut.owner != self.owner ) {
-                    knockedOut = ef.pokemonToBeKnockedOut.cards.copy()
-                  }
+                  def pcs = ef.pokemonToBeKnockedOut as PokemonCardSet
+                  knockedOut = (ef.byDamageFromAttack && bg.turnCount == turn && pcs.owner == opponent) ? pcs : null
                 }
-                after KNOCKOUT, {
-                  if (knockedOut) {
-                    bc "Lost Crisis sends Knocked Out Pokémon to the Lost Zone."
-                    knockedOut.moveTo(self.owner.opposite.pbg.lostZone)
+                // the Pokémon and all attached cards go to the Lost Zone before the regular discard step
+                before KNOCKOUT_DISCARD_STEP, {
+                  def pcs = e.targetPokemon
+                  if (pcs != null && pcs == knockedOut) {
                     knockedOut = null
+                    bc "Lost Crisis puts $pcs and all cards attached to it in the Lost Zone"
+                    pcs.cards.moveTo(pcs.owner.pbg.lostZone)
                   }
                 }
                 unregisterAfter 1
               }
+            }
+          }
+          move "Moon's Invite", {
+            text "Move as many damage counters on your opponent’s Pokémon as you like to any of your opponent’s other Pokémon in any way you like."
+            energyCost P
+            attackRequirement {
+              assert opp.all.any { it.numberOfDamageCounters } : "Your opponent's Pokémon have no damage counters"
+              assert opp.bench : "Your opponent has no other Pokémon to move damage counters to"
+            }
+            onAttack {
+              // a Pokémon that got damage counters is no source any more and one that gave some no target: every final
+              // placement of the damage counters is still possible and the moving always comes to an end
+              def gave = [] as Set
+              def got = [] as Set
+              while (true) {
+                def sources = opp.all.findAll { pcs -> pcs.numberOfDamageCounters && !got.contains(pcs) && opp.all.any { it != pcs && !gave.contains(it) } }
+                if (!sources) break
+                def src = sources.select("Move damage counters from which of your opponent's Pokémon? (cancel to stop)", false)
+                if (!src) break
+                def tar = opp.all.findAll { it != src && !gave.contains(it) }.select("Move damage counters from $src to which Pokémon? (cancel to stop)", false)
+                if (!tar) break
+                int max = src.numberOfDamageCounters
+                int count = max > 1 ? choose((1..max).toList(), "How many damage counters do you want to move from $src to $tar?", max) as int : 1
+                def tried = false, moved = 0
+                targeted (src) {
+                  targeted (tar) {
+                    tried = true
+                    moved = moveDamageCounters(src, tar, count)
+                    if (moved) {
+                      gave.add(src)
+                      got.add(tar)
+                    }
+                  }
+                }
+                if (tried && !moved) break // the move itself was prevented (e.g. Watchful Eye)
+              }
+              checkFaint()
             }
           }
 
