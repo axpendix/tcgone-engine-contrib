@@ -3912,10 +3912,10 @@ public enum SwordShieldPromos implements LogicCardInfo {
           text "During your turn, you may search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck. (You can't use more than 1 VSTAR Power in a game.)"
           actionA {
             vStarCheck()
-            assert my.deck : "Your deck is empty."
-            vStarPerform()
+            assert my.deck : "Your deck is empty"
             powerUsed()
-            my.deck.search(max: 2, "Search your deck for up to 2 cards.", { true }).moveTo(hidden: true, my.hand)
+            vStarPerform()
+            my.deck.search(max: 2, "Search your deck for up to 2 cards to put into your hand", { true }).moveTo(hidden: true, my.hand)
             shuffleDeck()
           }
         }
@@ -3925,10 +3925,10 @@ public enum SwordShieldPromos implements LogicCardInfo {
           onAttack {
             damage 200
             afterDamage {
-              if (my.deck) {
-                my.deck.search(max: 3, "Search your deck for up to 3 basic Energy cards.", cardTypeFilter(BASIC_ENERGY)).each {
-                  def targets = my.all.findAll { it.pokemonV }
-                  if (targets) attachEnergy(targets.select("Attach $it to which Pokémon V?"), it)
+              def targets = my.all.findAll { it.pokemonV }
+              if (my.deck && targets) {
+                my.deck.search(max: 3, "Search your deck for up to 3 basic Energy cards to attach to your Pokémon V", cardTypeFilter(BASIC_ENERGY)).each { energy ->
+                  attachEnergy(targets.select("Attach $energy to which Pokémon V?"), energy)
                 }
                 shuffleDeck()
               }

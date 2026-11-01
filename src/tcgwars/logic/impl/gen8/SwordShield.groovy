@@ -2962,19 +2962,23 @@ public enum SwordShield implements LogicCardInfo {
         bwAbility "Intrepid Sword", {
           text "Once during your turn, you may look at the top 3 cards of your deck and attach any number of [M] Energy cards you find there to this Pokémon. Put the other cards into your hand. If you use this Ability, your turn ends."
           actionA {
-            if (my.deck && confirm("Use Intrepid Sword?")) {
-              def maxSize = Math.min(my.deck.size(), 3)
-              def topCards = my.deck.subList(0, maxSize)
-              def selectedEnergies = topCards.select(min: 0, max: topCards.filterByBasicEnergyType(M).size(), "Attach any [M] Energy to $self?", basicEnergyFilter(M))
-              selectedEnergies.each {
+            checkLastTurn()
+            assert my.deck : "Your deck is empty"
+            powerUsed()
+            def top = my.deck.subList(0, 3)
+            top.showToMe("Top 3 cards of your deck")
+            def energies = top.filterByBasicEnergyType(M)
+            if (energies) {
+              energies.select(min: 0, max: energies.size(), "Attach any number of [M] Energy cards to $self").each {
                 attachEnergy(self, it)
               }
-              def nonSelectedSize = 3 - selectedEnergies.size()
-              if (nonSelectedSize) {
-                my.deck.subList(0, nonSelectedSize).getExcludedList(selectedEnergies).moveTo(hidden: true, my.hand)
-              }
-              bg.gm().betweenTurns()
             }
+            def rest = top.findAll { my.deck.contains(it) }
+            if (rest) {
+              rest.moveTo(hidden: true, my.hand)
+            }
+            bc "${self.owner.getPlayerUsername(bg)}'s turn ends due to using $thisAbility."
+            bg.gm().betweenTurns()
           }
         }
         move "Brave Blade", {
