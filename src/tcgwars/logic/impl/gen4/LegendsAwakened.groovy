@@ -4122,7 +4122,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "50x damage. Discard the top 5 cards from your deck. This attack does 50 damage for each Energy card you discarded."
             attackRequirement {}
             onAttack {
-              def list = my.deck.subList(0,5).discard()
+              def list = my.deck ? my.deck.subList(0,5).discard() : new CardList() // an empty deck: nothing to discard, no Energy, no damage
               def numEnergy = list.filterByType(ENERGY).size()
               damage 50*numEnergy
               bc "Discarded $numEnergy Energy cards"
