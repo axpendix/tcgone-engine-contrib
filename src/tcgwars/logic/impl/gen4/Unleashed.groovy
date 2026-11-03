@@ -211,7 +211,7 @@ public enum Unleashed implements LogicCardInfo {
             text "Discard the top 3 cards from your deck. This attack does 50 damage times the number of Energy cards you discarded."
             energyCost R, C, C
             onAttack {
-              def list = my.deck.subList(0,3).discard()
+              def list = my.deck ? my.deck.subList(0,3).discard() : new CardList() // an empty deck: nothing to discard, no Energy, no damage
               def numEnergy = list.filterByType(ENERGY).size()
               damage 50*numEnergy
               bc "Discarded $numEnergy Energy cards"
