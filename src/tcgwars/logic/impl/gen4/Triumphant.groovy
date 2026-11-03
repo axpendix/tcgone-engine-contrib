@@ -1530,7 +1530,7 @@ public enum Triumphant implements LogicCardInfo {
               damage 10
               flip {
                 afterDamage {
-                  opp.hand.shuffledCopy().select("Choose a card to discard").discard()
+                  if (opp.hand) opp.hand.shuffledCopy().select("Choose a card to discard").discard() // an empty hand: nothing to look at
                 }
               }
             }
