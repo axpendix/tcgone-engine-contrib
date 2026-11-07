@@ -1100,12 +1100,12 @@ public enum EeveeHeroes implements LogicCardInfo {
             cantRetreat defending
           }
         }
-        move "Lunar Blade", {
-          text "80+ damage. If this Pokémon has any damage counters on it, this attack does 100 more damage."
+        move "Moonlight Blade", {
+          text "80+ damage. If this Pokémon has any damage counters on it, this attack does 80 more damage."
           energyCost D, C, C
           onAttack {
             damage 80
-            if (self.numberOfDamageCounters) damage 100
+            if (self.numberOfDamageCounters) damage 80
           }
         }
       };
