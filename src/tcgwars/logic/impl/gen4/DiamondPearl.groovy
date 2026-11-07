@@ -567,7 +567,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              apply POISONED
+              applyAfterDamage POISONED
             }
           }
           move "Spike Whip", {
@@ -633,10 +633,10 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              flip {
+              flip { afterDamage {
                 apply POISONED
                 extraPoison 1
-               }
+               } }
             }
           }
 
@@ -686,7 +686,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              flip { apply PARALYZED }
+              flip { applyAfterDamage PARALYZED }
             }
           }
           move "Leaf Storm", {
@@ -721,7 +721,7 @@ public enum DiamondPearl implements LogicCardInfo {
                 damage 20
               }
               if (self.getPokemonCards().find {it.name == "Azurill"})
-                flip { apply PARALYZED }
+                flip { applyAfterDamage PARALYZED }
             }
           }
         };
@@ -794,7 +794,7 @@ public enum DiamondPearl implements LogicCardInfo {
             onAttack {
               damage 20
               flip {
-                apply PARALYZED
+                applyAfterDamage PARALYZED
                 discardDefendingEnergy()
               }
             }
@@ -850,7 +850,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
-              apply POISONED
+              applyAfterDamage POISONED
             }
           }
 
@@ -895,7 +895,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              flip {apply PARALYZED}
+              flip {applyAfterDamage PARALYZED}
             }
           }
           move "Toxic Dust", {
@@ -904,8 +904,10 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
-              apply POISONED
-              extraPoison 1
+              afterDamage {
+                apply POISONED
+                extraPoison 1
+              }
             }
           }
 
@@ -1071,7 +1073,7 @@ public enum DiamondPearl implements LogicCardInfo {
               damage 60
               flip {
                 damage 30
-                apply CONFUSED
+                applyAfterDamage CONFUSED
               }
             }
           }
@@ -1204,7 +1206,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 50
-              flip {apply PARALYZED}
+              flip {applyAfterDamage PARALYZED}
             }
           }
 
@@ -1227,7 +1229,7 @@ public enum DiamondPearl implements LogicCardInfo {
             onAttack {
               damage 40
               if (self.getPokemonCards().find {it.name == "Munchlax"}) damage 30
-              apply ASLEEP, self
+              afterDamage { apply ASLEEP, self }
             }
           }
 
@@ -1417,7 +1419,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              flip { apply CONFUSED }
+              flip { applyAfterDamage CONFUSED }
             }
           }
           move "Magical Leaf", {
@@ -1460,7 +1462,7 @@ public enum DiamondPearl implements LogicCardInfo {
             onAttack {
               damage 10
               flip {
-                apply CONFUSED
+                applyAfterDamage CONFUSED
                 cantRetreat defending
               }
             }
@@ -1609,7 +1611,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              flip {apply PARALYZED}
+              flip {applyAfterDamage PARALYZED}
             }
           }
 
@@ -2168,7 +2170,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              flip { apply CONFUSED }
+              flip { applyAfterDamage CONFUSED }
             }
           }
 
@@ -2342,7 +2344,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              flip {apply PARALYZED}
+              flip {applyAfterDamage PARALYZED}
               if (self.getPokemonCards().find {it.name == "Elekid"} && opp.bench){
                 damage 20, opp.bench.select()
               }
@@ -2555,7 +2557,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              flip { apply CONFUSED }
+              flip { applyAfterDamage CONFUSED }
             }
           }
 
@@ -2815,7 +2817,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              apply POISONED
+              applyAfterDamage POISONED
             }
           }
 
@@ -2860,7 +2862,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              flip {apply PARALYZED}
+              flip {applyAfterDamage PARALYZED}
             }
           }
 

@@ -2082,7 +2082,7 @@ public enum Platinum implements LogicCardInfo {
             onAttack {
               damage 50
               flip {
-                apply PARALYZED
+                applyAfterDamage PARALYZED
               }
             }
           }

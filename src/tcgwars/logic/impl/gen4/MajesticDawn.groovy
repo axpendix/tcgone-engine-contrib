@@ -658,7 +658,7 @@ public enum MajesticDawn implements LogicCardInfo {
             onAttack {
               damage 30
               flip {
-                apply CONFUSED
+                applyAfterDamage CONFUSED
               }
             }
           }
@@ -1436,7 +1436,7 @@ public enum MajesticDawn implements LogicCardInfo {
             onAttack {
               damage 30
               flip {
-                apply PARALYZED
+                applyAfterDamage PARALYZED
               }
             }
           }
@@ -2049,7 +2049,7 @@ public enum MajesticDawn implements LogicCardInfo {
             onAttack {
               damage 20
               flip {
-                apply PARALYZED
+                applyAfterDamage PARALYZED
               }
             }
           }

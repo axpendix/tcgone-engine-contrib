@@ -1481,7 +1481,7 @@ f
             energyCost C
             onAttack {
               damage 10
-              flip { apply CONFUSED }
+              flip { applyAfterDamage CONFUSED }
             }
           }
 
@@ -2715,7 +2715,7 @@ f
             onAttack {
               damage 10
               flip {
-                apply PARALYZED
+                applyAfterDamage PARALYZED
               }
             }
           }
@@ -2800,7 +2800,7 @@ f
             onAttack {
               damage 10
               flip {
-                apply PARALYZED
+                applyAfterDamage PARALYZED
               }
             }
           }
@@ -2868,7 +2868,7 @@ f
             onAttack {
               damage 10
               flip {
-                apply PARALYZED
+                applyAfterDamage PARALYZED
               }
             }
           }
@@ -3041,7 +3041,7 @@ f
             onAttack {
               damage 20
               flip {
-                apply PARALYZED
+                applyAfterDamage PARALYZED
               }
             }
           }
@@ -3192,7 +3192,7 @@ f
             onAttack {
               damage 20
               flip {
-                apply POISONED
+                applyAfterDamage POISONED
               }
             }
           }
@@ -3430,7 +3430,7 @@ f
             onAttack {
               damage 10
               flip {
-                apply CONFUSED
+                applyAfterDamage CONFUSED
               }
             }
           }

@@ -1963,7 +1963,7 @@ public enum GreatEncounters implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              flip { apply POISONED }
+              flip { applyAfterDamage POISONED }
             }
           }
         };
@@ -2130,7 +2130,7 @@ public enum GreatEncounters implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              apply POISONED
+              applyAfterDamage POISONED
             }
           }
         };
@@ -2599,7 +2599,7 @@ public enum GreatEncounters implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              flip { apply CONFUSED }
+              flip { applyAfterDamage CONFUSED }
             }
           }
         };

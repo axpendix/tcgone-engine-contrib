@@ -2409,7 +2409,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              flip { apply CONFUSED }
+              flip { applyAfterDamage CONFUSED }
             }
           }
 
@@ -2502,7 +2502,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              flip { apply POISONED }
+              flip { applyAfterDamage POISONED }
             }
           }
 
@@ -2677,7 +2677,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               if (my.deck && confirm("Discard the top card of your deck? If you do, this attack does 10 damage plus 10 more damage and Larvitar is now Asleep.")){
                 my.deck.subList(0,1).discard()
                 damage 10
-                apply ASLEEP, self
+                afterDamage { apply ASLEEP, self }
               }
             }
           }
@@ -2773,7 +2773,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              flip { apply POISONED }
+              flip { applyAfterDamage POISONED }
             }
           }
 
@@ -2795,7 +2795,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              flip { apply PARALYZED }
+              flip { applyAfterDamage PARALYZED }
             }
           }
 
@@ -2866,7 +2866,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              flip { apply PARALYZED }
+              flip { applyAfterDamage PARALYZED }
             }
           }
 
@@ -2902,7 +2902,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              flip { apply PARALYZED }
+              flip { applyAfterDamage PARALYZED }
             }
           }
 
