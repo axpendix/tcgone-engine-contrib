@@ -1256,7 +1256,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
             energyCost L, C
             onAttack {
               damage 20
-              if(opp.bench) moveEnergy(basic : true, defending, opp.bench)
+              afterDamage {
+                if(opp.bench) moveEnergy(basic : true, defending, opp.bench)
+              }
             }
           }
           move "Poison Pulse", {
@@ -1505,7 +1507,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
             energyCost W, C, C
             onAttack {
               damage 30
-              if(opp.bench) moveEnergy(defending,opp.bench.select())
+              afterDamage {
+                if(opp.bench) moveEnergy(defending,opp.bench.select())
+              }
             }
           }
 
@@ -2512,7 +2516,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 10
-              if(my.discard.filterByType(BASIC_ENERGY).filterByEnergyType(W)) attachEnergyFrom(type:W,my.discard,self)
+              afterDamage {
+                if(my.discard.filterByType(BASIC_ENERGY).filterByEnergyType(W)) attachEnergyFrom(type:W,my.discard,self)
+              }
             }
           }
           move "Ice Wing", {
@@ -2631,7 +2637,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
             energyCost R, C
             onAttack {
               damage 30
-              attachEnergyFrom(type : R, my.discard,my.all)
+              afterDamage {
+                attachEnergyFrom(type : R, my.discard,my.all)
+              }
             }
           }
           move "Combustion", {
@@ -2814,7 +2822,9 @@ public enum TeamRocketReturns implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 10
-              attachEnergyFrom(type : L,my.discard,self)
+              afterDamage {
+                attachEnergyFrom(type : L,my.discard,self)
+              }
             }
           }
           move "Raging Thunder", {

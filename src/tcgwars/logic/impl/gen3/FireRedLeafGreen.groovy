@@ -530,11 +530,13 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost L, L, C
             onAttack {
               damage 50
-              if(confirm("move any number of [L] Energy cards attached to Raichu to another of your Pokémon?"))
-              {
-                def pcs = my.bench.select()
-                self.cards.filterByEnergyType(L).select(max : self.cards.filterByEnergyType(L).size()).each{
-                  energySwitch(self,pcs,it)
+              afterDamage {
+                if(confirm("move any number of [L] Energy cards attached to Raichu to another of your Pokémon?"))
+                {
+                  def pcs = my.bench.select()
+                  self.cards.filterByEnergyType(L).select(max : self.cards.filterByEnergyType(L).size()).each{
+                    energySwitch(self,pcs,it)
+                  }
                 }
               }
             }
@@ -1347,9 +1349,11 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost C
             onAttack {
               damage 10
-              def tar = my.discard.filterByType(BASIC_ENERGY)
-              if(tar){
-                attachEnergyFrom(basic: true, my.discard, self)
+              afterDamage {
+                def tar = my.discard.filterByType(BASIC_ENERGY)
+                if(tar){
+                  attachEnergyFrom(basic: true, my.discard, self)
+                }
               }
             }
           }

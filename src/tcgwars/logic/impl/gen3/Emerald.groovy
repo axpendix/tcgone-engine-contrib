@@ -2081,8 +2081,10 @@ public enum Emerald implements LogicCardInfo {
             energyCost W, C, C
             onAttack {
               damage 70
-              if(my.bench){
-                moveEnergy(basic: true, self, my.bench.select("Which pokémon will receive the energy?"))
+              afterDamage {
+                if(my.bench){
+                  moveEnergy(basic: true, self, my.bench.select("Which pokémon will receive the energy?"))
+                }
               }
             }
           }

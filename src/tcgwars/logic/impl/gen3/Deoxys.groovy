@@ -1491,9 +1491,11 @@ public enum Deoxys implements LogicCardInfo {
             onAttack {
               def pcs = opp.bench.select("Select the Pokémon to attack.")
               damage 10, pcs
-              if(pcs.cards.energyCount(C)){
-                if(confirm("Move 1 energy from that Pokémon to another of your opponent’s Pokémon?")){
-                  moveEnergy(pcs,opp.all)
+              afterDamage {
+                if(pcs.cards.energyCount(C)){
+                  if(confirm("Move 1 energy from that Pokémon to another of your opponent’s Pokémon?")){
+                    moveEnergy(pcs,opp.all)
+                  }
                 }
               }
             }

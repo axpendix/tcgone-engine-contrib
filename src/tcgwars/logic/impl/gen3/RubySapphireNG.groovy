@@ -425,7 +425,9 @@ public enum RubySapphireNG implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-            attachEnergyFrom(type:L, my.deck, my.all)
+            afterDamage {
+              attachEnergyFrom(type:L, my.deck, my.all)
+            }
           }
         }
         move "Thunder Jolt", {

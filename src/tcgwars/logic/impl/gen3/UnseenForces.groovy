@@ -497,10 +497,12 @@ public enum UnseenForces implements LogicCardInfo {
             damage 20
 
             flip {
-              deck.search (basicEnergyFilter(L)).each{
-                attachEnergy(my.all.select("Attach the [L] Energy to?"), it)
+              afterDamage {
+                deck.search (basicEnergyFilter(L)).each{
+                  attachEnergy(my.all.select("Attach the [L] Energy to?"), it)
+                }
+                shuffleDeck()
               }
-              shuffleDeck()
             }
           }
         }
@@ -1390,9 +1392,11 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             damage 20
 
-            def tar = my.discard.filterByType(BASIC_ENERGY)
-            if (tar) {
-              attachEnergyFrom(basic: true, my.discard, self)
+            afterDamage {
+              def tar = my.discard.filterByType(BASIC_ENERGY)
+              if (tar) {
+                attachEnergyFrom(basic: true, my.discard, self)
+              }
             }
           }
         }

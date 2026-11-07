@@ -429,7 +429,9 @@ public enum DragonFrontiers implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 30
-            attachEnergyFrom(my.discard, my.all.select())
+            afterDamage {
+              attachEnergyFrom(my.discard, my.all.select())
+            }
           }
         }
       };
