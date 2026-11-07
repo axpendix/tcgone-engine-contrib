@@ -731,7 +731,7 @@ public enum BlueSkyStream implements LogicCardInfo {
           onAttack {
             damage 20
             def tc = bg.em().retrieveObject("Twins_Spark_${thisCard.player}") ?: -1
-            if (tc == bg.turnCount - 2) {
+            if (tc == my.previousTurnCount) {
               damage 100
             }
           }

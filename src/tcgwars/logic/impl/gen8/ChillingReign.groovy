@@ -1401,7 +1401,7 @@ public enum ChillingReign implements LogicCardInfo {
 
               def tc = bg.em().retrieveObject("Coordinated_Bolt_${thisCard.player}") ?: -1
               def attacker = bg.em().retrieveObject("Coordinated_Bolt_Attacker_${thisCard.player}")
-              if (tc == bg.turnCount - 2 && attacker != self.hashCode() && opp.bench) {
+              if (tc == my.previousTurnCount && attacker != self.hashCode() && opp.bench) {
                 damage 90
               }
             }
@@ -1461,7 +1461,7 @@ public enum ChillingReign implements LogicCardInfo {
 
               def tc = bg.em().retrieveObject("Cross_Fist_${thisCard.player}") ?: -1
               def attacker = bg.em().retrieveObject("Cross_Fist_Attacker_${thisCard.player}")
-              if (tc == bg.turnCount - 2 && attacker != self.hashCode() && opp.bench) {
+              if (tc == my.previousTurnCount && attacker != self.hashCode() && opp.bench) {
                 damage 160, opp.bench.select("Deal damage to?")
               }
             }

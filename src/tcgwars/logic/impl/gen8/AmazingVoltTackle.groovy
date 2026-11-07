@@ -1529,7 +1529,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           energyCost F, C
           onAttack {
             damage 50
-            if (keyStore("Headlock", self, null) == bg.turnCount - 2) {
+            if (keyStore("Headlock", self, null) == my.previousTurnCount) {
               damage 120
             }
           }

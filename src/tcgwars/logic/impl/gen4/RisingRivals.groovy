@@ -629,7 +629,7 @@ public enum RisingRivals implements LogicCardInfo {
             text "If Aggron was damaged by an attack during your opponent’s last turn, this attack does the same amount of damage done to Aggron to the Defending Pokémon."
             energyCost C, C
             attackRequirement {
-              assert bg().turnCount == turnCount + 1 && lastDamage > hp(0): "$self was not damaged by an attack last turn"
+              assert turnCount == opp.lastTurnCount && lastDamage > hp(0): "$self was not damaged by an attack last turn"
             }
             onAttack {
               damage lastDamage.value
@@ -681,7 +681,7 @@ public enum RisingRivals implements LogicCardInfo {
               // used its own attack, not Needle Shock (F584)
               def copied = bg.em().findAttack().subattack
               afterDamage {
-                if(bg.em().retrieveObject("Needle_Shock_"+self.owner)!=(bg.turnCount - 2)) {
+                if(bg.em().retrieveObject("Needle_Shock_"+self.owner) != my.previousTurnCount) {
                   apply PARALYZED
                   apply POISONED
                 }

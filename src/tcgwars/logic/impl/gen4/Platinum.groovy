@@ -762,7 +762,7 @@ public enum Platinum implements LogicCardInfo {
                 lastAttackedTurn = bg.turnCount
               }
               before CHECK_ATTACK_REQUIREMENTS, self, {
-                if(lastAttackedTurn == bg.turnCount - 2) {
+                if(lastAttackedTurn == self.owner.pbg.previousTurnCount) {
                   wcu "Lazy Paunch prevents attacking"
                   prevent()
                 }
@@ -854,7 +854,7 @@ public enum Platinum implements LogicCardInfo {
             energyCost C, C
             attackRequirement {
               assert defending.isSPC(ASLEEP) : "The defending Pokémon is not asleep"
-              assert bg.em().retrieveObject("Altaria_Platinum_Midnight_Eyes_${defending.hashCode()}") == bg.turnCount-2 : "The defending Pokémon was not damaged or affected by Midnight Eyes during your last turn"
+              assert bg.em().retrieveObject("Altaria_Platinum_Midnight_Eyes_${defending.hashCode()}") == my.previousTurnCount : "The defending Pokémon was not damaged or affected by Midnight Eyes during your last turn"
             }
             onAttack {
               new Knockout(defending).run(bg)
@@ -3510,7 +3510,7 @@ public enum Platinum implements LogicCardInfo {
             text "If any of your [G] Pokémon were Knocked Out by damage from an opponent’s attack during his or her last turn, each of Shaymin’s attacks does 60 more damage to the Active Pokémon."
             delayedA {
               after PROCESS_ATTACK_EFFECTS, {
-                if (ef.attacker==self && bg.em().retrieveObject("Revenge_Seed") == bg.turnCount-1) bg.dm().each {
+                if (ef.attacker==self && bg.em().retrieveObject("Revenge_Seed") == self.owner.opposite.pbg.lastTurnCount) bg.dm().each {
                   if (it.from == self && it.to.active && it.to.owner != self.owner && it.dmg.value) {
                     bc "Revenge seed +60"
                     it.dmg += hp(60)
