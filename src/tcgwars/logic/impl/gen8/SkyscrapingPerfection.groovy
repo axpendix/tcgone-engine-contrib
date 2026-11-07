@@ -1334,7 +1334,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
               assert bg.ownActive().singleStrike : "${bg.ownActive()} is not a $SINGLE_STRIKE Pokémon"
             }
             energyCost F, M, M, C, C
-            onAttakc {
+            onAttack {
               damage 300
               afterDamage {
                 discardAllSelfEnergy()
