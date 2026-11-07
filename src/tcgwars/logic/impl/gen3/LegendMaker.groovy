@@ -1899,7 +1899,7 @@ public enum LegendMaker implements LogicCardInfo {
           onAttack {
             flip 1, {
               damage 10
-              discardDefendingEnergy()
+              afterDamage { discardDefendingEnergy() }
             }, {}
           }
         }
@@ -2090,7 +2090,7 @@ public enum LegendMaker implements LogicCardInfo {
           onAttack {
             damage 30
             flip {
-              discardDefendingEnergy()
+              afterDamage { discardDefendingEnergy() }
             }
           }
         }

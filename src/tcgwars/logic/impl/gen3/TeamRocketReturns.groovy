@@ -529,7 +529,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             onAttack {
               damage 20
               flipUntilTails {
-                discardDefendingEnergy()
+                afterDamage { discardDefendingEnergy() }
               }
             }
           }
@@ -1115,7 +1115,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             onAttack {
               damage 40
               flip {
-                discardDefendingEnergy()
+                afterDamage { discardDefendingEnergy() }
               }
             }
           }
@@ -1173,7 +1173,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               damage 40
               if(self.cards.filterByType(ENERGY) && confirm("discard an Energy card attached to Dark Golduck. If you do, discard an Energy attached to the Defending Pokémon")){
                 discardSelfEnergy C
-                discardDefendingEnergy()
+                afterDamage { discardDefendingEnergy() }
               }
             }
           }

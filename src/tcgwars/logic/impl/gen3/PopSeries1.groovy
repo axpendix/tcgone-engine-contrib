@@ -136,7 +136,7 @@ public enum PopSeries1 implements LogicCardInfo {
           energyCost C, C, C, C
           onAttack {
             damage 50
-            flip { discardDefendingEnergy() }
+            flip { afterDamage { discardDefendingEnergy() } }
           }
         }
       };

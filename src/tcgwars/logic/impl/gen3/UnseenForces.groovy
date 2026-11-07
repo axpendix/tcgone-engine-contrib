@@ -1372,7 +1372,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 30
-            flip { discardDefendingEnergy() }
+            flip { afterDamage { discardDefendingEnergy() } }
           }
         }
         move "Double Lariat", {
