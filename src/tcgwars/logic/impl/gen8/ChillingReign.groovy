@@ -965,7 +965,7 @@ public enum ChillingReign implements LogicCardInfo {
                   }
                   after CHANGE_STAGE, defending, { unregister() }
                   after FALL_BACK, defending, { unregister() }
-                  unregisterAfter 3
+                  untilEndOfNextTurnOf self.owner
                 }
               }
             }

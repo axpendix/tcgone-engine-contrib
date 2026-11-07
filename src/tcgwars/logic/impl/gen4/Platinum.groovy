@@ -692,7 +692,7 @@ public enum Platinum implements LogicCardInfo {
                       }
                     }
                   }
-                  unregisterAfter 3
+                  untilEndOfNextTurnOf self.owner
                   after FALL_BACK, self, {unregister()}
                   after CHANGE_STAGE, self, {unregister()}
                 }
@@ -1371,7 +1371,7 @@ public enum Platinum implements LogicCardInfo {
                     }
                   }
                 }
-                unregisterAfter 3
+                untilEndOfNextTurnOf self.owner
                 after CHANGE_STAGE, self, {unregister()}
                 register { registeredOn = bg.turnCount }
               }

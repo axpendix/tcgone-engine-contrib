@@ -1955,7 +1955,7 @@ f
                         it.dmg+=hp(20)
                       }}
                     }
-                    unregisterAfter 3
+                    untilEndOfNextTurnOf self.owner
                     after FALL_BACK, pcs, {unregister()}
                     after CHANGE_STAGE, pcs, {unregister()}
                     after FALL_BACK, self, {unregister()}

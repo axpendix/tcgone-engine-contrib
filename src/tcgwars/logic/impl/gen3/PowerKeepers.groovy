@@ -2065,7 +2065,7 @@ public enum PowerKeepers implements LogicCardInfo {
                     prevent()
                   }
                 }
-                unregisterAfter 2
+                untilEndOfNextTurnOf self.owner.opposite
               }
             }
           }

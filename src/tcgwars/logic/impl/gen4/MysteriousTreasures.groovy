@@ -3471,7 +3471,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                       discard efs.card
                     }
                   }
-                  unregisterAfter 2
+                  untilEndOfNextTurnOf self.owner.opposite
                   after FALL_BACK, self, {unregister()}
                   after CHANGE_STAGE, self, {unregister()}
                 }

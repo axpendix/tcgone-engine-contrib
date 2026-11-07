@@ -1481,7 +1481,7 @@ public enum BattleStyles implements LogicCardInfo {
                     }
                   }
                 }
-                unregisterAfter 2
+                untilEndOfNextTurnOf self.owner.opposite
               }
             }
           }

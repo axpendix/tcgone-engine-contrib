@@ -1792,7 +1792,7 @@ public enum SupremeVictors implements LogicCardInfo {
                   unregister {
                     eff.unregister()
                   }
-                  unregisterAfter 2
+                  untilEndOfNextTurnOf self.owner
                   after FALL_BACK, defending, {unregister()}
                   after CHANGE_STAGE, defending, {unregister()}
                 }

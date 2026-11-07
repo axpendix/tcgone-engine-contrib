@@ -567,7 +567,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
                   unregister {
                     eff.unregister()
                   }
-                  unregisterAfter 3
+                  untilEndOfNextTurnOf self.owner
                   after CHANGE_STAGE, self, { unregister() }
                 }
               }

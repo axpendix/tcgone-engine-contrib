@@ -1679,7 +1679,7 @@ public enum DragonFrontiers implements LogicCardInfo {
                 }
               }
             }
-            unregisterAfter 2, {
+            untilEndOfNextTurnOf(self.owner.opposite) {
               discard thisCard
             }
           }

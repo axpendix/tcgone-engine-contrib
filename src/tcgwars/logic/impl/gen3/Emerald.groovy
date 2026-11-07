@@ -401,7 +401,7 @@ public enum Emerald implements LogicCardInfo {
                 }
                 after FALL_BACK, self, {unregister()}
                 after CHANGE_STAGE, self, {unregister()}
-                unregisterAfter 3
+                untilEndOfNextTurnOf self.owner
               }
             }
           }

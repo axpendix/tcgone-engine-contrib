@@ -781,7 +781,7 @@ public enum Undaunted implements LogicCardInfo {
                   unregister {
                     eff.unregister()
                   }
-                  unregisterAfter 3
+                  untilEndOfNextTurnOf self.owner
                   after FALL_BACK, self, {unregister()}
                   after CHANGE_STAGE, self, {unregister()}
                 }
@@ -1838,7 +1838,7 @@ public enum Undaunted implements LogicCardInfo {
           onPlay {
             def pcs = my.all.select("Which Pokémon will you attach $thisCard to?")
             moveCard(thisCard, pcs)
-            int turns = 1
+            def opponentsNextTurn = NextTurn.of(opp.owner, bg) // counted in their turns: your own extra turn doesn't end it (F591)
             delayed {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
@@ -1848,8 +1848,8 @@ public enum Undaunted implements LogicCardInfo {
                   }
                 }
               }
-              before BETWEEN_TURNS, {
-                if(turns-- <= 0){
+              before BETWEEN_TURNS, { // the end of a turn
+                if(opponentsNextTurn.isNow(bg) || opponentsNextTurn.isOver(bg)){
                   discard thisCard
                 }
               }
