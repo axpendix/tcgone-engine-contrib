@@ -912,7 +912,9 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              attachEnergyFrom(basic: true, my.discard, my.bench)
+              afterDamage {
+                attachEnergyFrom(basic: true, my.discard, my.bench)
+              }
             }
           }
         };
@@ -2387,10 +2389,15 @@ public enum LegendsAwakened implements LogicCardInfo {
               if (opp.discard.filterByType(ENERGY)) {
                 def energies = opp.discard.filterByType(ENERGY).select(min:1, max: 2, "Select up to 2 Energy Cards to attach")
 
+                // the targets are chosen and damaged now, the Energy is attached after the damage
+                def attachments = []
                 energies.each {
-                  def target = opp.all.select("Attach to?")
-                  attachEnergy(target, it)
+                  def target = opp.all.select("Attach $it to?")
+                  attachments << [target, it]
                   damage 20, target
+                }
+                afterDamage {
+                  attachments.each { attachEnergy(it[0], it[1]) }
                 }
               }
             }

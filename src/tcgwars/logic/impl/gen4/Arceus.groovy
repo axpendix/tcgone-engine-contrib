@@ -537,7 +537,9 @@ public enum Arceus implements LogicCardInfo {
             onAttack {
               damage 10
               flip {
-                attachEnergyFrom(my.discard,self)
+                afterDamage {
+                  attachEnergyFrom(my.discard,self)
+                }
               }
             }
           }

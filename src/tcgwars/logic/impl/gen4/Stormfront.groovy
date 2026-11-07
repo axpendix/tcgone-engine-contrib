@@ -539,10 +539,12 @@ public enum Stormfront implements LogicCardInfo {
             energyCost C, C, C
             onAttack {
               damage 50
-              if(my.bench) {
-                def energy = self.cards.select("Choose an energy card to move",cardTypeFilter(ENERGY)).first()
-                def tar = my.bench.select("Move $energy to...")
-                energySwitch(self,tar,energy)
+              afterDamage {
+                if(my.bench) {
+                  def energy = self.cards.select("Choose an energy card to move",cardTypeFilter(ENERGY)).first()
+                  def tar = my.bench.select("Move $energy to...")
+                  energySwitch(self,tar,energy)
+                }
               }
             }
           }

@@ -430,9 +430,11 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost W, W
             onAttack {
               damage 30
-              if(my.hand.filterByBasicEnergyType(W) && my.bench) {
-                my.hand.select(min:0, max:2, "Choose up to 2 basic [W] Energy cards to attach to your Benched Pokémon",basicEnergyFilter(W)).each {
-                  attachEnergy(my.bench.select("Attach $it to"), it, PLAY_FROM_HAND)
+              afterDamage {
+                if(my.hand.filterByBasicEnergyType(W) && my.bench) {
+                  my.hand.select(min:0, max:2, "Choose up to 2 basic [W] Energy cards to attach to your Benched Pokémon",basicEnergyFilter(W)).each {
+                    attachEnergy(my.bench.select("Attach $it to"), it, PLAY_FROM_HAND)
+                  }
                 }
               }
             }
@@ -593,8 +595,10 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost L, C
             onAttack {
               damage 30
-              if(my.bench && self.cards.energyCount(C)) {
-                moveEnergy(self,my.bench)
+              afterDamage {
+                if(my.bench && self.cards.energyCount(C)) {
+                  moveEnergy(self,my.bench)
+                }
               }
             }
           }
@@ -829,7 +833,9 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost ()
             onAttack {
               damage 20
-              attachEnergyFrom(type: F, my.discard, self)
+              afterDamage {
+                attachEnergyFrom(type: F, my.discard, self)
+              }
             }
           }
           move "Sand Impact", {

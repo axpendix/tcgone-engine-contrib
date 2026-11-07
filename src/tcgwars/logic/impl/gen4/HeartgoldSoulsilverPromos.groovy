@@ -266,7 +266,9 @@ public enum HeartgoldSoulsilverPromos implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 10
-              attachEnergyFrom(basic: true, my.discard, my.bench)
+              afterDamage {
+                attachEnergyFrom(basic: true, my.discard, my.bench)
+              }
             }
           }
           move "Infinite Wind", {
