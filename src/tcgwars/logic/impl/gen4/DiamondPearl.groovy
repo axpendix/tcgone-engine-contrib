@@ -795,7 +795,7 @@ public enum DiamondPearl implements LogicCardInfo {
               damage 20
               flip {
                 applyAfterDamage PARALYZED
-                discardDefendingEnergy()
+                afterDamage { discardDefendingEnergy() }
               }
             }
           }
