@@ -540,9 +540,12 @@ public enum MajesticDawn implements LogicCardInfo {
             onAttack {
               damage 60
               if(self.cards.filterByType(ENERGY) && defending.cards.filterByType(ENERGY) && confirm("Return an Energy attached to $self to your hand?")) {
-                self.cards.select("Return an energy card attached to $self to your hand", cardTypeFilter(ENERGY)).moveTo(my.hand)
-                targeted (defending) {
-                  defending.cards.select("Return an energy card attached to $self to your hand", cardTypeFilter(ENERGY)).moveTo(opp.hand)
+                def own = self.cards.select("Return an energy card attached to $self to your hand", cardTypeFilter(ENERGY))
+                afterDamage {
+                  own.moveTo(my.hand)
+                  targeted (defending) {
+                    defending.cards.select("Return an Energy card attached to $defending to your opponent's hand", cardTypeFilter(ENERGY)).moveTo(opp.hand)
+                  }
                 }
               }
             }

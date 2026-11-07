@@ -921,7 +921,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 30
-              flip {discardDefendingEnergy()}
+              flip {afterDamage { discardDefendingEnergy() }}
             }
           }
           move "Water Gun", {

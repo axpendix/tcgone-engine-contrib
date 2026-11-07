@@ -265,7 +265,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 40
-              flip { discardDefendingEnergy() }
+              flip { afterDamage { discardDefendingEnergy() } }
             }
           }
           move "Draco Meteor", {
