@@ -260,7 +260,7 @@ public enum Stormfront implements LogicCardInfo {
                 powerUsed()
                 delayed {
                   cantPlayEnergyFromHand delegate, "Emperor Aura prevents playing this card", {
-                    bg.currentTurn == self.owner.opposite && self.active
+                    bg.currentTurn == self.owner.opposite
                   }
                   unregisterAfter 2
                 }
