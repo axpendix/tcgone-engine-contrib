@@ -677,12 +677,15 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost G, C, C
             onAttack {
               damage 30
+              // "your Pokémon" are the attacker's, also when it copied Needle Shock; a Pokémon that copies Needle Shock
+              // used its own attack, not Needle Shock (F584)
+              def copied = bg.em().findAttack().subattack
               afterDamage {
-                if(bg.em().retrieveObject("Needle_Shock_"+thisCard.player)!=(bg.turnCount - 2)) {
+                if(bg.em().retrieveObject("Needle_Shock_"+self.owner)!=(bg.turnCount - 2)) {
                   apply PARALYZED
                   apply POISONED
                 }
-                bg.em().storeObject("Needle_Shock_"+thisCard.player,bg.turnCount)
+                if (!copied) bg.em().storeObject("Needle_Shock_"+self.owner,bg.turnCount)
               }
             }
           }

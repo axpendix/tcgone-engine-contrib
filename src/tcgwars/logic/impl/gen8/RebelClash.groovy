@@ -2226,7 +2226,9 @@ public enum RebelClash implements LogicCardInfo {
               bc "Meteor Assault cannot be used until this Pokémon leaves the Active Spot"
               delayed (priority: BEFORE_LAST) {
                 before CHECK_ATTACK_REQUIREMENTS, {
-                  if (ef.attacker == self && ef.move.name == "Meteor Assault") {
+                  // a copy of Meteor Assault is the copier's own attack, which has no such restriction (official
+                  // Japanese Q&A, Marshadow's Shadow Imitation copies it again on the next turn; F584)
+                  if (ef.attacker == self && ef.move.name == "Meteor Assault" && !ef.subattack) {
                     wcu "Meteor Assault prevent this attack from being used as long as $self is Active"
                     prevent()
                   }

@@ -288,7 +288,8 @@ public enum Jap10thMovie implements LogicCardInfo {
             energyCost P, P, C
             onAttack {
               damage 60
-              decreasedBaseDamageNextTurn(self, "Psycho Boost", hp(30))
+              // a Pokémon that copies Psycho Boost used its own attack, not Psycho Boost (F584)
+              if (!bg.em().findAttack().subattack) decreasedBaseDamageNextTurn(self, "Psycho Boost", hp(30))
             }
           }
         };

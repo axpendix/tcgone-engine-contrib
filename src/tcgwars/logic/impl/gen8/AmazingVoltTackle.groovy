@@ -1520,11 +1520,12 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           onAttack {
             damage 30
             cantRetreat defending
-            keyStore "Headlock", self, bg.turnCount
+            // a Pokémon that copies Full Nelson used its own attack, not Full Nelson (F584)
+            if (!bg.em().findAttack().subattack) keyStore "Headlock", self, bg.turnCount
           }
         }
         move "Tentacle Buster", {
-          text "50+ damage. If this Pokémon used Headlock during your last turn, this attack does 120 more damage."
+          text "50+ damage. If this Pokémon used Full Nelson during your last turn, this attack does 120 more damage."
           energyCost F, C
           onAttack {
             damage 50

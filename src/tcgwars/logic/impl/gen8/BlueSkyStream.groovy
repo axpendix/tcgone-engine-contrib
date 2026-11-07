@@ -862,7 +862,8 @@ public enum BlueSkyStream implements LogicCardInfo {
               if (tar.slatedToKO) {
                 delayed(priority: FIRST) {
                   before BEGIN_TURN, {
-                    my.lastTurnMove = thisMove.name
+                    // BetweenTurns has already recorded the attack used this turn (lastTurnMove): Yoga Loop, or the
+                    // attack that copied it, which doesn't count as Yoga Loop (official Japanese Q&A; F584)
                     takeTurnAsCurrentPlayer(delegate, ef, "$thisMove.name started a new turn!")
                   }
                 }
