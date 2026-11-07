@@ -549,7 +549,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost G, C
           onAttack {
             damage 20
-            apply POISONED
+            applyAfterDamage POISONED
             cantRetreat defending
           }
         }
@@ -583,7 +583,7 @@ public enum LegendMaker implements LogicCardInfo {
           onAttack {
             damage 30
             if (self.cards.any{ it.name == "React Energy" }) {
-              apply CONFUSED
+              applyAfterDamage CONFUSED
             }
           }
         }
@@ -619,8 +619,8 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost G, C
           onAttack {
             damage 10
-            apply ASLEEP
-            apply POISONED
+            applyAfterDamage ASLEEP
+            applyAfterDamage POISONED
           }
         }
         move "Sharp Leaf", {
@@ -651,7 +651,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost W, W, C
           onAttack {
             damage 40
-            apply ASLEEP
+            applyAfterDamage ASLEEP
           }
         }
         move "Rely on Friends", {
@@ -728,7 +728,7 @@ public enum LegendMaker implements LogicCardInfo {
           onAttack {
             damage 20
             if (defending.cards.filterByType(SPECIAL_ENERGY)) {
-              apply CONFUSED
+              applyAfterDamage CONFUSED
             }
           }
         }
@@ -846,7 +846,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost P
           onAttack {
             damage 10
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -1416,7 +1416,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost M, C
           onAttack {
             damage 20
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -1884,7 +1884,7 @@ public enum LegendMaker implements LogicCardInfo {
           onAttack {
             damage 10
             if (bg.stadiumInfoStruct && bg.stadiumInfoStruct.stadiumCard.name == "Full Flame") {
-              apply BURNED
+              applyAfterDamage BURNED
             }
           }
         }

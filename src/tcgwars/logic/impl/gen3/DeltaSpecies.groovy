@@ -321,7 +321,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost P, M
           onAttack {
             damage 30
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -959,8 +959,8 @@ public enum DeltaSpecies implements LogicCardInfo {
           onAttack {
             damage 30
             if (self.cards.filterByType(TECHNICAL_MACHINE)) {
-              apply ASLEEP
-              apply BURNED
+              applyAfterDamage ASLEEP
+              applyAfterDamage BURNED
             }
           }
         }
@@ -1516,7 +1516,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost L, C
           onAttack {
             damage 20
-            flip { apply CONFUSED }
+            flip { applyAfterDamage CONFUSED }
           }
         }
         move "Speed Ball", {
@@ -1616,7 +1616,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost R
           onAttack {
             damage 10
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Combustion", {
@@ -1835,7 +1835,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost L, C
           onAttack {
             damage 20
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -1888,7 +1888,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost L
           onAttack {
             damage 10
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -2228,7 +2228,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -2240,7 +2240,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost G
           onAttack {
             damage 10
-            flip { apply POISONED }
+            flip { applyAfterDamage POISONED }
           }
         }
       };
@@ -2759,7 +2759,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           energyCost W, W, C
           onAttack {
             damage 40
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };

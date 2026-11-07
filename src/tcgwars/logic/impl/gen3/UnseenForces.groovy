@@ -403,7 +403,7 @@ public enum UnseenForces implements LogicCardInfo {
             }
             if (differentTypes >= 3) {
               damage 20
-              apply BURNED
+              applyAfterDamage BURNED
             }
           }
         }
@@ -472,7 +472,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 20
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Flamethrower", {
@@ -1193,7 +1193,7 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             damage 10
             if (defending.evolution) {
-              apply CONFUSED
+              applyAfterDamage CONFUSED
             }
           }
         }
@@ -1836,7 +1836,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost G, C
           onAttack {
             damage 20
-            apply POISONED
+            applyAfterDamage POISONED
           }
         }
       };
@@ -2634,7 +2634,7 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             damage 90
             discardSelfEnergy C
-            apply POISONED
+            applyAfterDamage POISONED
           }
         }
       };
@@ -3189,11 +3189,11 @@ public enum UnseenForces implements LogicCardInfo {
 
             flip 3, {}, {}, [
               1: {
-                apply ASLEEP
+                applyAfterDamage ASLEEP
               }, 2: {
-                apply CONFUSED
+                applyAfterDamage CONFUSED
               }, 3: {
-                apply PARALYZED
+                applyAfterDamage PARALYZED
               }
             ]
           }
@@ -3593,7 +3593,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-            apply ASLEEP
+            applyAfterDamage ASLEEP
           }
         }
       };

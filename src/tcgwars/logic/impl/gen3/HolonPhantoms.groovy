@@ -263,7 +263,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost M, C, C
           onAttack {
             damage 50
-            apply POISONED
+            applyAfterDamage POISONED
           }
         }
       };

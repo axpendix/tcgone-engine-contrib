@@ -1045,8 +1045,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
             onAttack {
               damage 30
               if (defending.EX) {
-                apply ASLEEP
-                apply POISONED
+                applyAfterDamage ASLEEP
+                applyAfterDamage POISONED
               }
             }
           }
@@ -1689,7 +1689,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             energyCost C, C
             onAttack {
               damage 10
-              apply POISONED
+              applyAfterDamage POISONED
             }
           }
 
@@ -2759,7 +2759,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             energyCost C, C, C, C
             onAttack {
               damage 60
-              apply ASLEEP, self
+              afterDamage { apply ASLEEP, self }
             }
           }
 
