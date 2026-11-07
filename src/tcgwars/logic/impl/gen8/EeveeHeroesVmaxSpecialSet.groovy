@@ -112,7 +112,7 @@ public enum EeveeHeroesVmaxSpecialSet implements LogicCardInfo {
           text "Put a [W] Pokémon from your discard pile onto your Bench. Then, attach up to 3 [W] Energy from your discard pile to that Pokémon."
           energyCost C
           def cl1 = {
-            my.discard.findAll{it.cardTypes.pokemon && it.types.contains(W)}
+            my.discard.findAll{it.cardTypes.is(POKEMON) && !it.cardTypes.isIn(BREAK, LVL_X, LEGEND, V_UNION) && it.types.contains(W)}
           }
           attackRequirement {
             assert cl1() : "No [W] Pokémon in your discard pile"
