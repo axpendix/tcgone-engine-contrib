@@ -592,7 +592,10 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              damage 30 + 10 * self.cards.filterByEnergyType(W).moveTo(my.hand).size()
+              damage 30 + 10 * self.cards.filterByEnergyType(W).size()
+              afterDamage {
+                self.cards.filterByEnergyType(W).moveTo(my.hand)
+              }
             }
           }
 
