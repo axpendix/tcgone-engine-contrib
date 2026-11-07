@@ -240,6 +240,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
                     it.dmg += hp 100
                   }}
                 }
+                unregisterAfter 1
               }
             }
           }
