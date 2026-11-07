@@ -452,7 +452,9 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
           energyCost P, C
           onAttack {
             damage 60
-            moveEnergy self, my.bench
+            afterDamage {
+              moveEnergy self, my.bench
+            }
           }
         }
       };

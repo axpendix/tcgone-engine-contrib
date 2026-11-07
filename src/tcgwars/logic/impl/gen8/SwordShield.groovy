@@ -876,8 +876,10 @@ public enum SwordShield implements LogicCardInfo {
           energyCost R
           onAttack {
             damage 20
-            attachEnergyFrom(type: R, my.deck, self)
-            shuffleDeck()
+            afterDamage {
+              attachEnergyFrom(type: R, my.deck, self)
+              shuffleDeck()
+            }
           }
         }
         move "Magnum Kick", {
@@ -3165,7 +3167,9 @@ public enum SwordShield implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 40
-            attachEnergyFrom(basic: true, my.discard, my.bench)
+            afterDamage {
+              attachEnergyFrom(basic: true, my.discard, my.bench)
+            }
           }
         }
       };

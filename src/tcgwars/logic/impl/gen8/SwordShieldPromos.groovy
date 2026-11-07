@@ -1234,10 +1234,12 @@ public enum SwordShieldPromos implements LogicCardInfo {
           }
           onAttack {
             damage 120
-            deck.search (max:3,basicEnergyFilter(W)).each {
-              attachEnergy(my.bench.select("Attach $it to"), it)
+            afterDamage {
+              deck.search (max:3,basicEnergyFilter(W)).each {
+                attachEnergy(my.bench.select("Attach $it to"), it)
+              }
+              shuffleDeck()
             }
-            shuffleDeck()
           }
         }
         move "G-Max Bombard", {
@@ -1758,8 +1760,10 @@ public enum SwordShieldPromos implements LogicCardInfo {
           energyCost W
           onAttack {
             damage 30
-            if (my.deck) {
-              attachEnergyFrom(basic: true, type: W, my.deck, self)
+            afterDamage {
+              if (my.deck) {
+                attachEnergyFrom(basic: true, type: W, my.deck, self)
+              }
             }
           }
         }
@@ -1924,8 +1928,10 @@ public enum SwordShieldPromos implements LogicCardInfo {
           energyCost R
           onAttack {
             damage 10
-            if (my.deck) {
-              attachEnergyFrom(basic: true, type: R, my.deck, self)
+            afterDamage {
+              if (my.deck) {
+                attachEnergyFrom(basic: true, type: R, my.deck, self)
+              }
             }
           }
         }

@@ -805,7 +805,9 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 30
-            attachEnergyFrom count:1, basic:true, my.discard, self
+            afterDamage {
+              attachEnergyFrom count:1, basic:true, my.discard, self
+            }
           }
         }
         move "Amazing Sword", {
@@ -994,7 +996,9 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
               def discarded = my.deck.subList(0, 1).discard().first()
               if (!(discarded.cardTypes.energy)) return
               damage 90
-              attachEnergy self, discarded
+              afterDamage {
+                attachEnergy self, discarded
+              }
             }
           }
         }
@@ -1014,7 +1018,9 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 30
-            attachEnergyFrom basic:true, count:1, my.discard, self
+            afterDamage {
+              attachEnergyFrom basic:true, count:1, my.discard, self
+            }
           }
         }
         move "Amazing Shield", {

@@ -265,8 +265,10 @@ public enum ChampionsPath implements LogicCardInfo {
           energyCost R, R, C
           onAttack {
             damage 90
-            if (my.bench) {
-              attachEnergyFrom max:2, type:R, my.discard, my.bench
+            afterDamage {
+              if (my.bench) {
+                attachEnergyFrom max:2, type:R, my.discard, my.bench
+              }
             }
           }
         }

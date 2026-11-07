@@ -1940,8 +1940,10 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 40
-            if (my.bench && my.discard.any { it.cardTypes.is BASIC_ENERGY }) {
-              attachEnergyFrom max: 2, basic: true, my.discard, my.bench
+            afterDamage {
+              if (my.bench && my.discard.any { it.cardTypes.is BASIC_ENERGY }) {
+                attachEnergyFrom max: 2, basic: true, my.discard, my.bench
+              }
             }
           }
         }
