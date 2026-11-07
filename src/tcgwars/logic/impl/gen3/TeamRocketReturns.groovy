@@ -2668,8 +2668,8 @@ public enum TeamRocketReturns implements LogicCardInfo {
               damage 50
               afterDamage{
                 if(self.cards.filterByType(ENERGY) && confirm("discard an Energy card attached to Rocket’s Scizor ex?")){
-                  discardSelfEnergy C
-                  attachEnergyFrom(my.discard,self)
+                  def discarded = self.cards.filterByType(ENERGY).select("Choose the Energy card to discard.").discard()
+                  attachEnergyFrom(my.discard.getExcludedList(discarded), self)
                 }
               }
             }
