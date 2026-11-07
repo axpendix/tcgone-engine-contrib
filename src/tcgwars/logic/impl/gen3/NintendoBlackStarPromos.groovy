@@ -632,7 +632,7 @@ public enum NintendoBlackStarPromos implements LogicCardInfo {
           onAttack {
             damage 30
             afterDamage {
-              attachEnergyFrom(basic: true, my.hand, my.all)
+              attachEnergyFrom(may: true, basic: true, my.hand, my.all)
             }
           }
         }

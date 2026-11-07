@@ -845,7 +845,7 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             damage 20
             afterDamage {
-              attachEnergyFrom(basic: true, my.hand, my.all)
+              attachEnergyFrom(may: true, basic: true, my.hand, my.all)
             }
           }
         }
