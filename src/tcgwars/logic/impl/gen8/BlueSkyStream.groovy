@@ -1084,7 +1084,7 @@ public enum BlueSkyStream implements LogicCardInfo {
       };
       case RAYQUAZA_VMAX_47:
       return evolution (this, from:"Rayquaza V", hp:HP320, type:N, retreatCost:2) {
-        bwAbility "Blue Sky Wave", {
+        bwAbility "Azure Pulse", {
           text "Once during your turn, you may discard your hand and draw 3 cards."
           actionA {
             checkLastTurn()
@@ -1094,12 +1094,12 @@ public enum BlueSkyStream implements LogicCardInfo {
           }
         }
         move "Max Burst", {
-          text "20+ damage. Discard any amount of basic [R] Energy or any amount of basic [L] Energy from this Pokémon. This attack does 80 more damage for each card you discarded in this way."
+          text "20+ damage. You may discard any amount of basic [R] Energy or any amount of basic [L] Energy from this Pokémon. This attack does 80 more damage for each card you discarded in this way."
           energyCost R, L
           onAttack {
             damage 20
             def selectedEnergy = self.cards.select(min:0, max:self.cards.filterByType(BASIC_ENERGY).size(),
-              "You may discard up to 2 basic [R] Energy or up to 2 basic [L] Energy from this Pokémon",
+              "You may discard any amount of basic [R] Energy or any amount of basic [L] Energy from this Pokémon",
               { Card card ->
               card.cardTypes.basicEnergy && (card.containsType(R) || card.containsType(L))
             }, bg.currentTurn, { CardList list ->
