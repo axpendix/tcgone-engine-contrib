@@ -269,7 +269,7 @@ public enum UnseenForces implements LogicCardInfo {
           onAttack {
             damage 50
             afterDamage {
-              if (confirm("You may discard all [L] Energy from this Pokémon. If you do, the Defending Pokémon is now Burned and Confused.")) {
+              if (self.cards.filterByEnergyType(L) && confirm("You may discard all [L] Energy from this Pokémon. If you do, the Defending Pokémon is now Burned and Confused.")) {
                 discardAllSelfEnergy(L)
                 apply BURNED
                 apply CONFUSED

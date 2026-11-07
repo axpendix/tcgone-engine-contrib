@@ -897,7 +897,7 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost L, L, C
             onAttack {
               damage 50
-              if(confirm("Discard 2 Energy attached to $self")) {
+              if(self.cards.energySufficient(C, C) && confirm("Discard 2 Energy attached to $self")) {
                 damage 40
                 discardSelfEnergyAfterDamage C, C
               }

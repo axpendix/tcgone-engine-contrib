@@ -241,7 +241,7 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost L, C, C
             onAttack {
               damage 70
-              if(confirm("Discard all [L] Energy attached to $self")) {
+              if(self.cards.filterByEnergyType(L) && confirm("Discard all [L] Energy attached to $self")) {
                 opp.bench.findAll{it.cards.energyCount(C)}.each{
                   damage 20, it
                 }

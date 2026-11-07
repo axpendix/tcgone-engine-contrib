@@ -729,7 +729,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           onAttack {
             damage 50
 
-            if (confirm("Discard an Energy card from $self to deal 20 more damage?")) {
+            if (self.cards.filterByType(ENERGY) && confirm("Discard an Energy card from $self to deal 20 more damage?")) {
               def tar = self.cards.filterByType(ENERGY).select(count:1)
               damage 20
 

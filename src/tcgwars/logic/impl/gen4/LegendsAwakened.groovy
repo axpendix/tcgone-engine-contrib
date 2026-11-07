@@ -1365,7 +1365,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             onAttack {
               damage 50
               afterDamage {
-                if (my.discard.filterByType(ENERGY) && confirm(text)) {
+                if (self.cards.filterByType(ENERGY) && my.discard.filterByType(ENERGY) && confirm(text)) {
                   def card = my.discard.filterByType(ENERGY).select(count: 1, "Search your discard pile for an Energy card").first()
                   discardSelfEnergy C
                   attachEnergy(self, card)

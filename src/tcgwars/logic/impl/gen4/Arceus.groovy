@@ -548,7 +548,7 @@ public enum Arceus implements LogicCardInfo {
             energyCost L, L, C
             onAttack {
               damage 40
-              if(confirm("Discard all [L] Energy attached to $self in order to deal 40 more damage?")) {
+              if(self.cards.filterByEnergyType(L) && confirm("Discard all [L] Energy attached to $self in order to deal 40 more damage?")) {
                 damage 40
                 afterDamage {
                   discardAllSelfEnergy L

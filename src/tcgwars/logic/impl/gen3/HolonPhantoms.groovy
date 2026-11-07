@@ -599,7 +599,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           onAttack {
             damage 50
             afterDamage {
-              if (confirm("Rotating Claws - Discard an Energy? If you do, search your discard pile for an Energy card (excluding the one you discarded) and attach it to Pidgeot.")) {
+              if (self.cards.filterByType(ENERGY) && confirm("Rotating Claws - Discard an Energy? If you do, search your discard pile for an Energy card (excluding the one you discarded) and attach it to Pidgeot.")) {
                 def tar = self.cards.filterByType(ENERGY).select("Choose the Energy card to Discard.").discard()
 
                 attachEnergyFrom(my.discard.getExcludedList(tar), self)
@@ -630,7 +630,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           text "50 damage. You may discard 2 [M] Energy attached to Raichu. If you do, this attack's base damage is 90 instead of 50."
           energyCost M, M, C
           onAttack {
-            if (confirm("Discard 2 [M]?")) {
+            if (self.cards.energySufficient(M, M) && confirm("Discard 2 [M]?")) {
               damage 90
               afterDamage{
                 discardSelfEnergy M, M //TODO: Select the [M] energy prior to damage.
@@ -2238,7 +2238,7 @@ public enum HolonPhantoms implements LogicCardInfo {
             damage 50
 
             afterDamage {
-              if (defending.evolution && !defending.slatedToKO && confirm("Discard 2 Energy to devolve the Defending Pokémon?")) {
+              if (defending.evolution && !defending.slatedToKO && self.cards.energySufficient(C, C) && confirm("Discard 2 Energy to devolve the Defending Pokémon?")) {
                 discardSelfEnergy(C, C)
                 devolve(defending, opp.deck)
                 shuffleOppDeck()

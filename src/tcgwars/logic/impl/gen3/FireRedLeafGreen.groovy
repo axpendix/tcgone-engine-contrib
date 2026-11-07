@@ -2703,7 +2703,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost W, W, C
             onAttack {
               damage 50
-              if (confirm("Discard an Energy card attached to $self?")) {
+              if (self.cards.filterByType(ENERGY) && confirm("Discard an Energy card attached to $self?")) {
                 afterDamage {
                   discardSelfEnergy C
                   discardDefendingEnergy()
@@ -2739,7 +2739,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost R, R, C
             onAttack {
               damage 60
-              if (confirm("Discard an Energy card attached to $self?")) {
+              if (self.cards.filterByType(ENERGY) && confirm("Discard an Energy card attached to $self?")) {
                 afterDamage {discardSelfEnergy C}
                 applyAfterDamage CONFUSED
               }
@@ -2771,7 +2771,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             energyCost L, L, C
             onAttack {
               damage 50
-              if (confirm("Discard an Energy card attached to $self for +20?")) {
+              if (self.cards.filterByType(ENERGY) && confirm("Discard an Energy card attached to $self for +20?")) {
                 damage 20
                 afterDamage {discardSelfEnergy C}
               }

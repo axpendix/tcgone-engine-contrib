@@ -572,7 +572,7 @@ public enum BattleStyles implements LogicCardInfo {
           energyCost GRASS, GRASS, COLORLESS
           onAttack {
             damage 80
-            if (confirm("Discard all Energy from $self to do 80 more damage?")) {
+            if (self.cards.filterByType(ENERGY) && confirm("Discard all Energy from $self to do 80 more damage?")) {
               damage 80
               afterDamage {
                 discardAllSelfEnergy()

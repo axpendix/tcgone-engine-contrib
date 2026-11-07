@@ -1171,7 +1171,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             energyCost W, C, C
             onAttack {
               damage 40
-              if(confirm("discard an Energy card attached to Dark Golduck. If you do, discard an Energy attached to the Defending Pokémon")){
+              if(self.cards.filterByType(ENERGY) && confirm("discard an Energy card attached to Dark Golduck. If you do, discard an Energy attached to the Defending Pokémon")){
                 discardSelfEnergy C
                 discardDefendingEnergy()
               }
@@ -2667,7 +2667,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             onAttack {
               damage 50
               afterDamage{
-                if(confirm("discard an Energy card attached to Rocket’s Scizor ex?")){
+                if(self.cards.filterByType(ENERGY) && confirm("discard an Energy card attached to Rocket’s Scizor ex?")){
                   discardSelfEnergy C
                   attachEnergyFrom(my.discard,self)
                 }

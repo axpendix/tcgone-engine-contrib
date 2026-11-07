@@ -2901,7 +2901,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost M, C, C
           onAttack {
             damage 130
-            if (confirm("Discard 2 Energies to take 100 less damage next turn?")) {
+            if (self.cards.energySufficient(C, C) && confirm("Discard 2 Energies to take 100 less damage next turn?")) {
               discardSelfEnergyAfterDamage(C, C)
 
               afterDamage {

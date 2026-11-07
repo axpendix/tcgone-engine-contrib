@@ -307,7 +307,7 @@ public enum DiamondPearl implements LogicCardInfo {
             energyCost L, L, L, C
             attackRequirement {}
             onAttack {
-              if(confirm("You may discard all [L] Energy attached to Electivire. If you do, this attack’s base damage is 120 instead of 60.")){
+              if(self.cards.filterByEnergyType(L) && confirm("You may discard all [L] Energy attached to Electivire. If you do, this attack’s base damage is 120 instead of 60.")){
                 discardAllSelfEnergy(L)
                 damage 120
               } else {

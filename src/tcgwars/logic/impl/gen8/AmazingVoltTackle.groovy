@@ -868,7 +868,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           energyCost L, L, L
           onAttack {
             damage 120
-            if (confirm("Discard all Energy from $self to do 150 more damage?")) {
+            if (self.cards.filterByType(ENERGY) && confirm("Discard all Energy from $self to do 150 more damage?")) {
               discardAllSelfEnergy()
               damage 150
             }

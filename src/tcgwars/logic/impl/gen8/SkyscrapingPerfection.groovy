@@ -560,7 +560,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
           energyCost F, F, C
           onAttack {
             damage 70
-            if (confirm("Discard all Energy from this Pokémon to paralyze the defending Pokémon?")) {
+            if (self.cards.filterByType(ENERGY) && confirm("Discard all Energy from this Pokémon to paralyze the defending Pokémon?")) {
               afterDamage {
                 discardAllSelfEnergy()
                 apply PARALYZED

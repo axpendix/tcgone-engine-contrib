@@ -236,7 +236,7 @@ public enum GreatEncounters implements LogicCardInfo {
             energyCost P, P, C
             onAttack {
               damage 50
-              if(my.bench.find{it.numberOfDamageCounters} && confirm("Discard 2 Energy attached to $self?")) {
+              if(my.bench.find{it.numberOfDamageCounters} && self.cards.energySufficient(C, C) && confirm("Discard 2 Energy attached to $self?")) {
                 healAll my.bench.findAll{it.numberOfDamageCounters}.select("Remove all damage counters from 1 of your Benched Pokémon")
                 discardSelfEnergyAfterDamage C, C
               }
@@ -674,7 +674,7 @@ public enum GreatEncounters implements LogicCardInfo {
               damage 40
               CardList energyList = self.cards.filterByEnergyType(R)
               energyList.addAll(self.cards.filterByEnergyType(D))
-              def dscrd = self.cards.select(min:0,"Discard a [R] or [D] Energy?",{energyList.contains(it)})
+              def dscrd = energyList ? self.cards.select(min:0,"Discard a [R] or [D] Energy?",{energyList.contains(it)}) : new CardList()
               if (dscrd) {
                 if (dscrd.energyCount(R)) {
                   applyAfterDamage BURNED

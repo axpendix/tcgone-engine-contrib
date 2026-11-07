@@ -2554,7 +2554,7 @@ public enum Deoxys implements LogicCardInfo {
             energyCost P, C, C
             onAttack {
               damage 50
-              if(confirm("discard 2 Energy attached to Deoxys ex? If you do deal 20 more damage for every energy attached to the Defending Pokémon")){
+              if(self.cards.energySufficient(C, C) && confirm("discard 2 Energy attached to Deoxys ex? If you do deal 20 more damage for every energy attached to the Defending Pokémon")){
                 damage 20*defending.cards.energyCount(C)
                 afterDamage{
                   discardSelfEnergy C,C
@@ -2769,7 +2769,7 @@ public enum Deoxys implements LogicCardInfo {
             energyCost D, D, C
             onAttack {
               damage 60
-              if(confirm("Discard a [D] Energy attached to Sharpedo ex? You will do 20 more damage and discard 1 Energy card attached to the Defending Pokémon.")){
+              if(self.cards.filterByEnergyType(D) && confirm("Discard a [D] Energy attached to Sharpedo ex? You will do 20 more damage and discard 1 Energy card attached to the Defending Pokémon.")){
                 damage 20
                 afterDamage{
                   discardSelfEnergy D

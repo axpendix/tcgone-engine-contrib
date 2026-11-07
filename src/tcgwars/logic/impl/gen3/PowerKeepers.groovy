@@ -515,7 +515,7 @@ public enum PowerKeepers implements LogicCardInfo {
           energyCost L, L, C
           onAttack {
             damage 50
-            if (confirm("Discard all [L] Energy?")) {
+            if (self.cards.filterByEnergyType(L) && confirm("Discard all [L] Energy?")) {
               damage 40
               afterDamage { discardAllSelfEnergy(L) } //TODO: Handle in the static.
             }
@@ -1861,7 +1861,7 @@ public enum PowerKeepers implements LogicCardInfo {
             damage 60
 
             afterDamage {
-              if (confirm("Discard a [P] attached to Claydol ex? If you do, discard an Energy card attached to the Defending Pokémon.")) {
+              if (self.cards.filterByEnergyType(P) && confirm("Discard a [P] attached to Claydol ex? If you do, discard an Energy card attached to the Defending Pokémon.")) {
                 discardSelfEnergy(P)
                 discardDefendingEnergy()
               }
