@@ -2622,7 +2622,9 @@ public enum LegendsAwakened implements LogicCardInfo {
               assert (hand || my.deck) : "Not enough cards in your hand or your deck is empty."
             }
             onAttack {
-              def num = my.hand.getExcludedList(thisCard).select(min: 1, max:2, "Discard up to 2 cards and draw twice as many").discard().size()
+              // "up to 2" in an attack is 0 to 2; an empty hand has nothing to choose
+              def hand = my.hand.getExcludedList(thisCard)
+              def num = hand ? hand.select(min: 0, max:2, "Discard up to 2 cards and draw as many").discard().size() : 0
               draw num
             }
           }

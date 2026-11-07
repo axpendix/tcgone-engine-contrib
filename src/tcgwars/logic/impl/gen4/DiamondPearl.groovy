@@ -1134,6 +1134,10 @@ public enum DiamondPearl implements LogicCardInfo {
               assert my.prizeCardSet.faceDownCards : "All prizes are face up"
             }
             onAttack {
+              if (!my.hand) { // no card to put as a Prize card: no swap
+                bc "$thisMove: no card in the hand to put as a Prize card"
+                return
+              }
               def newPrize = my.hand.select(hidden: false, "Card to put into Prizes").first()
 
               def tar = my.prizeCardSet.faceDownCards.select(hidden: true, "Choose a Prize card to replace with one in your hand.").first()

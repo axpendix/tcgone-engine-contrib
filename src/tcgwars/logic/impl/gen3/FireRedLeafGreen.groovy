@@ -938,7 +938,8 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             text "30× damage. You may discard from your hand as many Technical Machine and Pokémon Tool cards as you like. This attack does 30 damage times the number of cards your discarded."
             energyCost C, C
             onAttack {
-              def tar = my.hand.filterByType(POKEMON_TOOL,TECHNICAL_MACHINE).select(max:my.hand.filterByType(POKEMON_TOOL,TECHNICAL_MACHINE).size())
+              def tools = my.hand.filterByType(POKEMON_TOOL,TECHNICAL_MACHINE)
+            def tar = tools ? tools.select(min: 0, max: tools.size()) : new CardList() // "you may", and none to choose without them
               damage 30*tar.size()
               tar.discard()
             }

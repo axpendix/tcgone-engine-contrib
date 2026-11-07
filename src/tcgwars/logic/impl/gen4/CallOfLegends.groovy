@@ -518,7 +518,9 @@ public enum CallOfLegends implements LogicCardInfo {
             onAttack {
               damage 30
               afterDamage{
-                opp.hand.shuffledCopy().select(hidden: true, "Choose 1 card to put in the Lost Zone.").moveTo(opp.lostZone)
+                if (opp.hand) { // an empty hand has no card to choose
+                  opp.hand.shuffledCopy().select(hidden: true, "Choose 1 card to put in the Lost Zone.").moveTo(opp.lostZone)
+                }
               }
             }
           }

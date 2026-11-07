@@ -2565,7 +2565,9 @@ f
             onAttack {
               damage 20
               flip {
-                opp.hand.select(hidden: true, "Choose a card from your opponent's hand without looking").discard()
+                if (opp.hand) { // an empty hand has no card to choose
+                  opp.hand.select(hidden: true, "Choose a card from your opponent's hand without looking").discard()
+                }
               }
 
             }

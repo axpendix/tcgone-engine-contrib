@@ -1289,6 +1289,7 @@ public enum HolonPhantoms implements LogicCardInfo {
           energyCost L, C
           onAttack {
             damage 30
+            if (!opp.hand) return // an empty hand has no card to choose
             def chosenCard = opp.hand.shuffledCopy().select(hidden: true, count: 1, "Choose 1 card from your opponent's hand without looking.")
             def result = ""
 
@@ -2110,7 +2111,9 @@ public enum HolonPhantoms implements LogicCardInfo {
               shuffleDeck()
             }
           },{
-            my.hand.select(min: 0, "Put an Omanyte, Kabuto, Aerodactyl, Aerodactyl ex, Lileep, or Anorith from your hand onto your Bench", {["Omanyte", "Kabuto", "Aerodactyl", "Aerodactyl ex", "Lileep", "Anorith"].contains(it.name)}).each {
+            def fossilPokemon = {["Omanyte", "Kabuto", "Aerodactyl", "Aerodactyl ex", "Lileep", "Anorith"].contains(it.name)}
+            // mandatory when the hand has one
+            my.hand.select(min: my.hand.any(fossilPokemon) ? 1 : 0, "Put an Omanyte, Kabuto, Aerodactyl, Aerodactyl ex, Lileep, or Anorith from your hand onto your Bench", fossilPokemon).each {
               benchPCS(it)
             }
           }

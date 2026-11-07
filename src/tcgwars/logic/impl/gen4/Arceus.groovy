@@ -1023,8 +1023,9 @@ public enum Arceus implements LogicCardInfo {
               assert opp.hand : "Your opponent's hand is"
             }
             onAttack {
+              // a Supporter card found in the hand must be chosen (PUI 2007-02-22, Shiftry ex's Skill Hack)
               def oppHand = opp.hand.shuffledCopy()
-              def card = oppHand.select(min:0, "Select a Supporter to copy its effect as this attack.",cardTypeFilter(SUPPORTER)).discard().first()
+              def card = oppHand.select(min: oppHand.filterByType(SUPPORTER) ? 1 : 0, "Select a Supporter to copy its effect as this attack.",cardTypeFilter(SUPPORTER)).discard().first()
               if(card) {
                 bg.em().run(new ActivateSimpleTrainer(card))
               }

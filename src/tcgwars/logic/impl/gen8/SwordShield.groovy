@@ -2498,8 +2498,8 @@ public enum SwordShield implements LogicCardInfo {
           }
           onAttack {
             def tar = my.all.select("Which Pokémon to attach [F] to and heal 120 damage?")
-            attachEnergyFrom(may: true, type: F, my.hand, tar)
-            heal 120, tar
+            def (energy, pcs) = attachEnergyFrom(type: F, my.hand, tar) // the attach isn't optional
+            if (energy && tar.cards.containsAll(energy)) heal 120, tar
           }
         }
         move "Max Rockfall", {

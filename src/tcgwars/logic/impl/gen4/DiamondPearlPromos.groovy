@@ -291,7 +291,9 @@ public enum DiamondPearlPromos implements LogicCardInfo {
               powerUsed()
 
               flip {
-                def card = opp.hand.select(min:0, max: 1,"Look at your opponent's hand, choose a Pokémon you find there, and put it on the bottom of his or her deck", cardTypeFilter(POKEMON))
+                // a Pokémon found in the hand must be chosen (PUI 2007-02-22, Shiftry ex's Skill Hack)
+                def hand = opp.hand.shuffledCopy()
+                def card = hand.select(min: hand.filterByType(POKEMON) ? 1 : 0, max: 1,"Look at your opponent's hand, choose a Pokémon you find there, and put it on the bottom of his or her deck", cardTypeFilter(POKEMON))
                 if (card.notEmpty()) {
                   card.moveTo(opp.deck)
                 }
