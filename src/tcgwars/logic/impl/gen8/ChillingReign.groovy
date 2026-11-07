@@ -1394,14 +1394,14 @@ public enum ChillingReign implements LogicCardInfo {
             }
           }
           move "Coordinated Bolt", {
-            text "30+ damage. If any of your other Rapid Strike Pokémon used an attack during your last turn, this attack does 90 more damage."
+            text "30+ damage. If 1 of your other Rapid Strike Pokémon used an attack during your last turn, this attack does 90 more damage."
             energyCost COLORLESS
             onAttack {
               damage 30
 
               def tc = bg.em().retrieveObject("Coordinated_Bolt_${thisCard.player}") ?: -1
               def attacker = bg.em().retrieveObject("Coordinated_Bolt_Attacker_${thisCard.player}")
-              if (tc == my.previousTurnCount && attacker != self.hashCode() && opp.bench) {
+              if (tc == my.previousTurnCount && attacker != self.hashCode()) {
                 damage 90
               }
             }
