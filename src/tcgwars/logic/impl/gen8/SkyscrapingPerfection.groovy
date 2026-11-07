@@ -1360,13 +1360,13 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
       };
       case FULL_FACE_GUARD_62:
       return pokemonTool (this) {
-        text "If the Pokémon this card is attached to has no Abilities" +
+        text "If the Pokémon this card is attached to has no Abilities, " +
           "it takes 20 less damage from attacks from your opponent's Pokémon (after applying Weakness and Resistance)."
         def eff
         onPlay {reason->
           eff = delayed {
             before APPLY_ATTACK_DAMAGES, {
-              if(self.abilities.isEmpty()) {
+              if(!self.hasModernAbility()) {
                 bg.dm().each{
                   if(it.to == self && it.from.owner == self.owner.opposite && it.notNoEffect && it.dmg.value) {
                     bc "$thisCard -20"
