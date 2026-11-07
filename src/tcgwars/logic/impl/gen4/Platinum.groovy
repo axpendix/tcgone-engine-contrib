@@ -1227,10 +1227,10 @@ public enum Platinum implements LogicCardInfo {
             energyCost W, C
             onAttack {
               damage 40
-              if(confirm("Move all Energy cards attached to $self to 1 of your benched Pokémon?")) {
+              if(my.bench && confirm("Move all Energy cards attached to $self to 1 of your benched Pokémon?")) {
                 damage 20
                 afterDamage {
-                  def tar = my.all.select("Move all Energy cards to")
+                  def tar = my.bench.select("Move all Energy cards to")
                   self.cards.filterByType(ENERGY).each {
                     energySwitch(self,tar,it)
                   }
