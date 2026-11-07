@@ -375,8 +375,8 @@ public enum SwordShield implements LogicCardInfo {
           energyCost G
           onAttack {
             damage 30
-            apply POISONED
-            flip { apply PARALYZED }
+            applyAfterDamage POISONED
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Mega Drain", {
@@ -777,7 +777,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost R
           onAttack {
             damage 10
-            apply BURNED
+            applyAfterDamage BURNED
           }
         }
         move "Fire Claws", {
@@ -807,7 +807,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost R
           onAttack {
             damage 20
-            apply BURNED
+            applyAfterDamage BURNED
           }
         }
         move "Bright Flame", {
@@ -940,7 +940,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost R
           onAttack {
             damage 50
-            apply BURNED
+            applyAfterDamage BURNED
           }
         }
         move "Burning Kick", {
@@ -1022,7 +1022,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost R, C, C, C
           onAttack {
             damage 110
-            apply BURNED
+            applyAfterDamage BURNED
           }
         }
       };
@@ -1046,7 +1046,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 30
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Tidal Wave", {
@@ -1574,7 +1574,7 @@ public enum SwordShield implements LogicCardInfo {
             damage 90
             if (opp.hand) {
               opp.hand.shuffledCopy().showToMe("Your opponent's hand.")
-              if (opp.hand.filterByType(ENERGY)) apply PARALYZED
+              if (opp.hand.filterByType(ENERGY)) applyAfterDamage PARALYZED
             }
           }
         }
@@ -1598,7 +1598,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost L, C
           onAttack {
             damage 60
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -1710,15 +1710,15 @@ public enum SwordShield implements LogicCardInfo {
               1:{ damage 30 },
               2:{
                 damage 60
-                apply PARALYZED
+                applyAfterDamage PARALYZED
               },
               3:{
                 damage 90
-                apply PARALYZED
+                applyAfterDamage PARALYZED
               },
               4:{
                 damage 120
-                apply PARALYZED
+                applyAfterDamage PARALYZED
               }
             ]
           }
@@ -1784,7 +1784,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost P
           onAttack {
             damage 10
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -1847,7 +1847,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 20
-            apply ASLEEP
+            applyAfterDamage ASLEEP
           }
         }
         move "Spooky Shot", {
@@ -1881,7 +1881,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost P, P, C
           onAttack {
             damage 90
-            apply ASLEEP
+            applyAfterDamage ASLEEP
           }
         }
       };
@@ -2240,7 +2240,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 30
-            apply CONFUSED
+            applyAfterDamage CONFUSED
           }
         }
         move "Explosion", {
@@ -2385,7 +2385,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost F
           onAttack {
             damage 20
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -2624,7 +2624,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost D, C, C
           onAttack {
             damage 80
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Toxic Strike", {
@@ -2632,7 +2632,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost D, D, C, C
           onAttack {
             damage 130
-            apply POISONED
+            applyAfterDamage POISONED
           }
         }
       };
@@ -2670,7 +2670,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost D, C, C
           onAttack {
             damage 70
-            flip { apply POISONED }
+            flip { applyAfterDamage POISONED }
           }
         }
       };
@@ -3052,7 +3052,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost C, C, C, C
           onAttack {
             damage 170
-            apply ASLEEP, self
+            afterDamage { apply ASLEEP, self }
           }
         }
       };

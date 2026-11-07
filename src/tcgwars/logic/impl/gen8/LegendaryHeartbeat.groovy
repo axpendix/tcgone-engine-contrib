@@ -973,7 +973,7 @@ public enum LegendaryHeartbeat implements LogicCardInfo {
           energyCost F, F, C
           onAttack {
             damage 90
-            apply BURNED
+            applyAfterDamage BURNED
           }
         }
         move "Boulder Crush", {

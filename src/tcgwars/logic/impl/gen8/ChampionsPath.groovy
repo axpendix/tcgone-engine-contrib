@@ -168,8 +168,8 @@ public enum ChampionsPath implements LogicCardInfo {
           }
           onAttack {
             damage 80
-            apply POISONED
-            apply ASLEEP
+            applyAfterDamage POISONED
+            applyAfterDamage ASLEEP
           }
         }
         move "Solar Typhoon", {
@@ -209,7 +209,7 @@ public enum ChampionsPath implements LogicCardInfo {
           energyCost G
           onAttack {
             damage 80
-            apply POISONED
+            applyAfterDamage POISONED
           }
         }
       };
@@ -292,7 +292,7 @@ public enum ChampionsPath implements LogicCardInfo {
           energyCost R, C, C
           onAttack {
             damage 50
-            apply BURNED
+            applyAfterDamage BURNED
           }
         }
         move "Heat Crawler", {

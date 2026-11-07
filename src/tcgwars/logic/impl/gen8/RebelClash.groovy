@@ -342,9 +342,9 @@ public enum RebelClash implements LogicCardInfo {
           energyCost G
           onAttack {
             damage 30
-            apply POISONED
-            apply BURNED
-            apply CONFUSED
+            applyAfterDamage POISONED
+            applyAfterDamage BURNED
+            applyAfterDamage CONFUSED
           }
         }
         move "Cutting Wind", {
@@ -395,7 +395,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost G, C, C
           onAttack {
             damage 50
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -563,7 +563,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost G, C, C
           onAttack {
             damage 80
-            apply ASLEEP
+            applyAfterDamage ASLEEP
           }
         }
         move "Megaton Lariat", {
@@ -806,7 +806,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost R, C, C
           onAttack {
             damage 90
-            apply ASLEEP
+            applyAfterDamage ASLEEP
           }
         }
       };
@@ -901,7 +901,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost R, C
           onAttack {
             damage 30
-            apply BURNED
+            applyAfterDamage BURNED
           }
         }
         move "Ground Burn", {
@@ -976,7 +976,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost R, C
           onAttack {
             damage 110
-            apply CONFUSED
+            applyAfterDamage CONFUSED
           }
         }
       };
@@ -988,7 +988,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 20
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Flamethrower", {
@@ -1037,7 +1037,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost R, R, C
           onAttack {
             damage 170
-            apply BURNED
+            applyAfterDamage BURNED
           }
         }
       };
@@ -1049,7 +1049,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-            apply ASLEEP
+            applyAfterDamage ASLEEP
           }
         }
         move "Triple Spin", {
@@ -1175,7 +1175,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost W, C, C, C
           onAttack {
             damage 150
-            apply ASLEEP
+            applyAfterDamage ASLEEP
           }
         }
       };
@@ -1198,7 +1198,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 30
-            apply CONFUSED
+            applyAfterDamage CONFUSED
           }
         }
       };
@@ -1210,7 +1210,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost W
           onAttack {
             damage 30
-            apply CONFUSED
+            applyAfterDamage CONFUSED
           }
         }
         move "Resonance", {
@@ -1230,7 +1230,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost W, C
           onAttack {
             damage 30
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -1470,7 +1470,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost L, C
           onAttack {
             damage 50
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
         move "Electrified Bolt", {
@@ -1655,7 +1655,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost L
           onAttack {
             damage 10
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -1669,7 +1669,7 @@ public enum RebelClash implements LogicCardInfo {
             opp.all.each {
               damage 20, it
             }
-            apply POISONED
+            applyAfterDamage POISONED
           }
         }
         move "Hammer In", {
@@ -1688,7 +1688,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost L
           onAttack {
             damage 20
-            apply POISONED
+            applyAfterDamage POISONED
           }
         }
         move "Electric Riot", {
@@ -2074,7 +2074,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost P, C
           onAttack {
             damage 30
-            apply CONFUSED
+            applyAfterDamage CONFUSED
           }
         }
       };
@@ -2267,7 +2267,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost C
           onAttack {
             damage 10
-            flip { apply PARALYZED }
+            flip { applyAfterDamage PARALYZED }
           }
         }
       };
@@ -2587,7 +2587,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 10
-            apply POISONED
+            applyAfterDamage POISONED
           }
         }
       };
@@ -2606,7 +2606,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost D, C, C
           onAttack {
             damage 80
-            apply POISONED
+            applyAfterDamage POISONED
             cantRetreat(defending)
           }
         }
@@ -2723,7 +2723,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost D, D, C
           onAttack {
             damage 130
-            apply CONFUSED
+            applyAfterDamage CONFUSED
           }
         }
       };
@@ -3149,7 +3149,7 @@ public enum RebelClash implements LogicCardInfo {
           energyCost C, C, C
           onAttack {
             damage 120
-            apply ASLEEP, self
+            afterDamage { apply ASLEEP, self }
           }
         }
       };

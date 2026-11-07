@@ -314,8 +314,8 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 150
-            apply POISONED
-            apply CONFUSED
+            applyAfterDamage POISONED
+            applyAfterDamage CONFUSED
           }
         }
       };
@@ -340,7 +340,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            flip {apply PARALYZED}
+            flip {applyAfterDamage PARALYZED}
           }
         }
         move "Solar Beam", {
@@ -688,7 +688,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
-            apply BURNED
+            applyAfterDamage BURNED
           }
         }
         move "Vengeful Flame", {
@@ -736,7 +736,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 40
-            apply BURNED
+            applyAfterDamage BURNED
           }
         }
       };
@@ -770,7 +770,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            apply BURNED
+            applyAfterDamage BURNED
           }
         }
         move "Raging Flare", {
@@ -894,7 +894,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
-            apply BURNED
+            applyAfterDamage BURNED
           }
         }
       };
@@ -1162,7 +1162,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 10
-            flip {apply PARALYZED}
+            flip {applyAfterDamage PARALYZED}
           }
         }
       };
@@ -1175,7 +1175,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 30
-            flip {apply PARALYZED}
+            flip {applyAfterDamage PARALYZED}
           }
         }
       };
@@ -1284,7 +1284,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 20
-            apply POISONED
+            applyAfterDamage POISONED
           }
         }
       };
@@ -1311,7 +1311,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 80
-            apply POISONED
+            applyAfterDamage POISONED
           }
         }
       };
@@ -1361,7 +1361,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           attackRequirement {}
           onAttack {
             damage 130
-            apply ASLEEP
+            applyAfterDamage ASLEEP
           }
         }
       };

@@ -750,7 +750,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           onAttack {
             damage 80
             if (bg.em().retrieveObject("NESSA") != bg.turnCount) return
-            apply PARALYZED
+            applyAfterDamage PARALYZED
           }
         }
         move "Surf", {
@@ -1670,7 +1670,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           energyCost D, C, C, C
           onAttack {
             damage 180
-            apply CONFUSED, self
+            afterDamage { apply CONFUSED, self }
           }
         }
       };
