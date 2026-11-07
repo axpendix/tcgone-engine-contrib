@@ -1425,8 +1425,8 @@ enum EvolvingSkies implements LogicCardInfo {
                   // a Prize card can be taken during the opponent's turn too: the owner makes the choices
                   tryWithDeterministicCurrentThreadPlayerType(owner) {
                     bc "${owner.getPlayerUsername(bg)} played $thisCard"
-                    // only Basic Pokémon can be put onto the Bench
-                    my.deck.search("Search your deck for a Basic Pokémon and put it onto your Bench", cardTypeFilter(POKEMON, BASIC)).each { benchPCS(it) }
+                    // any Pokémon, Evolution Pokémon included; BREAK, LV.X, LEGEND and V-UNION cards can't be a Pokémon on their own
+                    my.deck.search("Search your deck for a Pokémon and put it onto your Bench", { it.cardTypes.is(POKEMON) && !it.cardTypes.isIn(BREAK, LVL_X, LEGEND, V_UNION) }).each { benchPCS(it) }
                     shuffleDeck()
                     discard thisCard
                   }
