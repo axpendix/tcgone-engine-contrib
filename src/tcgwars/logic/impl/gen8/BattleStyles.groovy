@@ -2683,7 +2683,7 @@ public enum BattleStyles implements LogicCardInfo {
           hand.getExcludedList(thisCard).moveTo(hidden:true, my.deck)
           shuffleDeck()
 
-          if (my.knockoutsDuringOpponentsTurn(bg.turnCount - 1)) {
+          if (my.knockoutsDuringOpponentsTurn(opp.lastTurnCount)) {
             draw 7
           } else {
             draw 4

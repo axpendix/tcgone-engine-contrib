@@ -461,7 +461,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost G
           onAttack {
             damage 30
-            if (my.lastKnockoutByOpponentDamageTurn == bg.turnCount-1 && my.lastKnockoutTypes && my.lastKnockoutTypes.contains(G)) damage 90
+            if (my.lastKnockoutByOpponentDamageTurn == opp.lastTurnCount && my.lastKnockoutTypes && my.lastKnockoutTypes.contains(G)) damage 90
           }
         }
         move "Giga Hammer", {

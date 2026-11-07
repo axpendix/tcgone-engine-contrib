@@ -246,7 +246,7 @@ public enum BlueSkyStream implements LogicCardInfo {
           energyCost G, C
           onAttack {
             damage 30
-            if (my.lastKnockoutByOpponentDamageTurn == bg.turnCount - 1)
+            if (my.lastKnockoutByOpponentDamageTurn == opp.lastTurnCount)
               damage 90
           }
         }

@@ -1060,7 +1060,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              if(my.lastKnockoutByOpponentDamageTurn == bg.turnCount-1) damage 50
+              if(my.lastKnockoutByOpponentDamageTurn == opp.lastTurnCount) damage 50
             }
           }
           move "Dynamic Punch", {

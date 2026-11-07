@@ -940,7 +940,7 @@ public enum GreatEncounters implements LogicCardInfo {
               checkNoSPC()
               assert my.deck : "Your deck is emtpy"
               assert bg.em().retrieveObject("Trump Card") != bg.turnCount : "You can't use more than 1 Trump Card Ability each turn."
-              assert my.knockoutsDuringOpponentsTurn(bg.turnCount - 1) : "None of your Pokémon were Knocked Out during your opponent's last turn."
+              assert my.knockoutsDuringOpponentsTurn(opp.lastTurnCount) : "None of your Pokémon were Knocked Out during your opponent's last turn."
               bg.em().storeObject("Trump Card", bg.turnCount)
               powerUsed()
               my.deck.search(min:1, "Search your deck for 1 card",{true}).moveTo(hidden:true,my.hand)

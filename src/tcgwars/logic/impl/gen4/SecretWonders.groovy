@@ -1280,7 +1280,7 @@ public enum SecretWonders implements LogicCardInfo {
               checkLastTurn()
               checkNoSPC()
               assert bg.em().retrieveObject("Minus Charge") != bg.turnCount : "You can't use more than 1 Minus Charge Ability each turn."
-              assert my.knockoutsDuringOpponentsTurn(bg.turnCount - 1) : "None of your Pokémon were Knocked Out during your opponent's last turn."
+              assert my.knockoutsDuringOpponentsTurn(opp.lastTurnCount) : "None of your Pokémon were Knocked Out during your opponent's last turn."
               bg.em().storeObject("Minus Charge", bg.turnCount)
               powerUsed()
               draw 2
@@ -1388,7 +1388,7 @@ f
               checkNoSPC()
               assert my.discard.filterByType(BASIC_ENERGY) : "You have no basic Energy in your discard pile"
               assert bg.em().retrieveObject("Plus Charge") != bg.turnCount : "You can't use more than 1 Plus Charge Ability each turn."
-              assert my.knockoutsDuringOpponentsTurn(bg.turnCount - 1) : "None of your Pokémon were Knocked Out during your opponent's last turn."
+              assert my.knockoutsDuringOpponentsTurn(opp.lastTurnCount) : "None of your Pokémon were Knocked Out during your opponent's last turn."
               bg.em().storeObject("Plus Charge", bg.turnCount)
               powerUsed()
               my.discard.select(max:2,"Search your discard pile for up to 2 basic Energy cards",cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)

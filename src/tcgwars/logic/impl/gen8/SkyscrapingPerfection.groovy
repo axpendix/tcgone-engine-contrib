@@ -1392,7 +1392,7 @@ public enum SkyscrapingPerfection implements LogicCardInfo {
           }
         }
         playRequirement{
-          assert my.knockoutsDuringOpponentsTurn(bg.turnCount - 1) : "None of your Pokémon were Knocked Out during your opponent's last turn"
+          assert my.knockoutsDuringOpponentsTurn(opp.lastTurnCount) : "None of your Pokémon were Knocked Out during your opponent's last turn"
           assert my.discard.any { it.cardTypes.is(BASIC_ENERGY) } : "No basic Energy cards in your discard pile"
         }
       };

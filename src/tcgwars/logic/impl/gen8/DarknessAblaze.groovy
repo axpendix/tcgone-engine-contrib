@@ -3139,7 +3139,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           energyCost C, C
           onAttack {
             damage 30
-            if (my.lastKnockoutByOpponentDamageTurn == bg.turnCount-1) damage 90
+            if (my.lastKnockoutByOpponentDamageTurn == opp.lastTurnCount) damage 90
           }
         }
         move "Hammer In", {

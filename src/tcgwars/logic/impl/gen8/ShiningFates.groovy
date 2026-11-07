@@ -765,7 +765,7 @@ public enum ShiningFates implements LogicCardInfo {
         text "Draw 2 cards. If any of your Pokémon were Knocked Out during your opponent's last turn, draw 2 more cards."
         onPlay {
           draw 2
-          if (my.knockoutsDuringOpponentsTurn(bg.turnCount - 1)) {
+          if (my.knockoutsDuringOpponentsTurn(opp.lastTurnCount)) {
             draw 2
           }
         }

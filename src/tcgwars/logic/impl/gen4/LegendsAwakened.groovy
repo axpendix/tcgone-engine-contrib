@@ -3735,7 +3735,7 @@ public enum LegendsAwakened implements LogicCardInfo {
           onPlay {
             shuffleDeck(hand.getExcludedList(thisCard))
             draw 4
-            if (my.knockoutsDuringOpponentsTurn(bg.turnCount - 1)) { // my: the player of this turn, also when copied with Telepass
+            if (my.knockoutsDuringOpponentsTurn(opp.lastTurnCount)) { // my: the player of this turn, also when copied with Telepass
               draw 4
             }
           }

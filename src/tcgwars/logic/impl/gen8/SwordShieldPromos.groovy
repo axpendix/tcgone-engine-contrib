@@ -2614,7 +2614,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           text "30+ damage. If any of your Pokémon were Knocked Out by damage from an attack from your opponent's Pokémon during their last turn, this attack does 90 more damage, and your opponent's Active Pokémon is now Confused."
           energyCost W
           onAttack {
-            if (my.lastKnockoutByOpponentDamageTurn == bg.turnCount - 1) {
+            if (my.lastKnockoutByOpponentDamageTurn == opp.lastTurnCount) {
               damage 120
               applyAfterDamage CONFUSED
             } else {
