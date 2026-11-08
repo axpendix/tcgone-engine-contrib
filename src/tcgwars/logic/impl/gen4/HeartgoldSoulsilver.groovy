@@ -252,7 +252,11 @@ public enum HeartgoldSoulsilver implements LogicCardInfo {
             text "Return 1 of your Pokémon and all cards attached to it to your hand."
             energyCost C, C
             attackRequirement {
-              assert my.all.size() > 1
+              // Returning your only Pokémon in play is allowed and loses the game (official Japanese Q&A: Gliscor's Burning
+              // Poison, Starmie's Star Boomerang): ask first, as the Trainers do (confirmScoopLastPokemon).
+              if (my.bench.empty) {
+                assert confirm("You have no other Pokémon in play. Fairy Power will return $self to your hand and you will lose the game. Use it anyway?") : "Fairy Power was canceled"
+              }
             }
             onAttack {
               def pcs = my.all.select()
