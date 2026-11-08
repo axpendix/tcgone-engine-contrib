@@ -316,8 +316,15 @@ public enum MysteriousTreasures implements LogicCardInfo {
             onAttack {
               damage 30
               afterDamage{
-                //TODO: Make an oppFlipUntilHeads method
-                flipUntilTails { opp.active.cards.filterByType(ENERGY).select(count:1).moveTo(opp.deck) }
+                def tails = 0
+                flipUntilHeads({ tails++ }, self.owner.opposite)
+                def energies = defending.cards.filterByType(ENERGY)
+                if (tails && energies) {
+                  targeted (defending) {
+                    def count = Math.min(tails, energies.size())
+                    energies.select(count: count, "Put $count Energy card(s) attached to $defending on the bottom of your opponent's deck").moveTo(opp.deck)
+                  }
+                }
               }
             }
           }

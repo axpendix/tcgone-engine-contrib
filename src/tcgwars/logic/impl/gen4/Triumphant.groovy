@@ -816,7 +816,7 @@ public enum Triumphant implements LogicCardInfo {
               assert opp.bench : "Your opponent has no Benched Pokémon"
             }
             onAttack {
-              flip opp.bench.size(), {}, {
+              flip "Bench Manipulation", opp.bench.size(), self.owner.opposite, {}, {
                 noWrDamage 40, defending
               }
             }

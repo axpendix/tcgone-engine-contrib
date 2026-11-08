@@ -1010,7 +1010,7 @@ public enum SecretWonders implements LogicCardInfo {
             energyCost F, F, C
             onAttack {
               damage 50
-              flip 1, {}, {
+              flip "Pit Trap", self.owner.opposite, {}, {
                 damage 50
               }
             }
