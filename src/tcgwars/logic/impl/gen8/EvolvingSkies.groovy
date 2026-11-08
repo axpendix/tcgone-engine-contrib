@@ -328,7 +328,12 @@ enum EvolvingSkies implements LogicCardInfo {
           move "Astonish", {
             text "10 damage. Choose a random card from your opponent's hand. Your opponent reveals that card and shuffles it into their deck."
             energyCost COLORLESS, COLORLESS
-            astonish()
+            onAttack {
+              damage 10
+              afterDamage {
+                astonish()
+              }
+            }
           }
         };
       case TROPIUS_6:
