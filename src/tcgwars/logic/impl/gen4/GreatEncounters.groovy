@@ -26,6 +26,7 @@ import static tcgwars.logic.card.Resistance.ResistanceType.MINUS20
 import static tcgwars.logic.card.Type.*
 import static tcgwars.logic.card.Weakness.*
 import static tcgwars.logic.effect.EffectPriority.BEFORE_LAST
+import static tcgwars.logic.effect.EffectPriority.BEFORE_LAST2
 import static tcgwars.logic.effect.EffectType.*
 import static tcgwars.logic.effect.ability.Ability.ActivationReason.PLAY_FROM_HAND
 import static tcgwars.logic.effect.special.SpecialConditionType.*
@@ -991,8 +992,9 @@ public enum GreatEncounters implements LogicCardInfo {
           weakness L
           pokeBody "Sleeping Pulse", {
             text "As long as Wailord remains Asleep between turns, remove 1 damage counter from Wailord."
-            delayedA {
-              // TODO directDamage should delay doing faint checks until end of between turns phase to let this interaction resolve properly
+            // BEFORE_LAST2: after all Special Conditions of Pokémon Checkup (the Asleep flip, Poison and Burn damage), so it
+            // also removes the damage counter Poison just placed; the Knock Out check comes after it (forum 17559)
+            delayedA (priority: BEFORE_LAST2) {
               before BEGIN_TURN, {
                 if (self.isSPC(ASLEEP)) {
                   bc "Sleeping Pulse activates."
@@ -1000,16 +1002,6 @@ public enum GreatEncounters implements LogicCardInfo {
                 }
               }
             }
-//            delayedA (anytime:true) {
-//              def lastExecId = null
-//              before BEGIN_TURN, {
-//                if (lastExecId != e.executionId && self.numberOfDamageCounters && self.isSPC(ASLEEP)) {
-//                  bc "$thisAbility activates"
-//                  heal 10, self
-//                  lastExecId = e.executionId
-//                }
-//              }
-//            }
           }
           move "Sink Deep", {
             text "60 damage. If Wailord has any damage counters on it, Wailord is now Asleep."

@@ -609,8 +609,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
             }
           }
           pokeBody "Rest Up", {
-            text "If Snorlax remains Asleep between turns, remove 2 damage counters from Snorlax (remove 1 of there is only 1)."
-            delayedA {
+            text "If Snorlax remains Asleep between turns, remove 2 damage counters from Snorlax (remove 1 if there is only 1)."
+            // BEFORE_LAST2: after all Special Conditions of Pokémon Checkup, like Wailord GE 30's Sleeping Pulse (forum 17559)
+            delayedA (priority: BEFORE_LAST2) {
               before BEGIN_TURN, {
                 if(self.isSPC(ASLEEP)){
                   heal 20, self
