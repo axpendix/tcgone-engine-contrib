@@ -3512,24 +3512,18 @@ public enum ChillingReign implements LogicCardInfo {
       case PATH_TO_THE_PEAK_148:
         return stadium (this) {
           text "Each player's Pokémon in play with a Rule Box has no Abilities. This Stadium stays in play when you play it. Discard it if another Stadium comes into play. If a Stadium with the same name is in play, you can't play this card."
+          // Only Pokémon in play: Abilities used from the discard pile (Ho-Oh V SIT 140, Darkrai-GX BUS 88) still work (official Japanese Q&A).
           def effect1
-          def effect2
           onPlay {
             effect1 = getter(GET_ABILITIES, BEFORE_LAST) { h->
               if (h.effect.target.ruleBox) {
                 h.object.keySet().removeIf { it instanceof BwAbility }
               }
             }
-            effect2 = getter IS_GLOBAL_ABILITY_BLOCKED, { Holder h ->
-              if (h.effect.target.cardTypes.contains(POKEMON) && h.effect.target.cardTypes.ruleBox) {
-                h.object=true
-              }
-            }
             new CheckAbilities().run(bg)
           }
           onRemoveFromPlay{
             effect1.unregister()
-            effect2.unregister()
             new CheckAbilities().run(bg)
           }
         };
