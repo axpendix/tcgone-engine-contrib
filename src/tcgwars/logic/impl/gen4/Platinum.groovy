@@ -3272,7 +3272,9 @@ public enum Platinum implements LogicCardInfo {
           text "Attach Energy Gain to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nAttach Team Galactic's Invention G-101 Energy Gain to 1 of your Pokémon SP that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card. When the Pokémon this card is attached to is no longer a Pokémon SP, discard this card.\nAs long as Team Galactic's Invention G-101 Energy Gain is attached to a Pokémon, the attack cost of that Pokémon’s attacks is [C] less."
           def eff1
           onPlay {reason->
-            eff1=getter GET_MOVE_LIST, self, {h->
+            // after every cost increase (Azelf MT 4's Downer Material adds its [C] at BEFORE_LAST), so it also takes back a
+            // [C] added to a cost that had none, such as Blaziken FB SV 2's [R] Luring Flame (forum 17591)
+            eff1=getter GET_MOVE_LIST, BEFORE_LAST2, self, {h->
               def list=[]
               for(move in h.object){
                 def copy=move.shallowCopy()
