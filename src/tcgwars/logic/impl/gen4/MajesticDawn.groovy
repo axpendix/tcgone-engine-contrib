@@ -560,6 +560,7 @@ public enum MajesticDawn implements LogicCardInfo {
             energyCost C
             attackRequirement {
               assert my.deck : "Your deck is emtpy"
+              assert my.all.any { bg.gm().hasEvolution(it.name) } : "No card evolves from any of your Pokémon in play"
             }
             onAttack {
               searchYourDeckThenEvolveOneOfYourPokemon()

@@ -3346,6 +3346,7 @@ public enum UnseenForces implements LogicCardInfo {
           energyCost P
           attackRequirement {
             assert my.deck
+            assert my.all.any { bg.gm().hasEvolution(it.name) } : "No card evolves from any of your Pokémon in play"
           }
           onAttack {
             if (searchYourDeckThenEvolveOneOfYourPokemon()) {
