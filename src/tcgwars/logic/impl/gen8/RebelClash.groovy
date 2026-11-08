@@ -2208,7 +2208,7 @@ public enum RebelClash implements LogicCardInfo {
         }
       };
       case GALARIAN_SIRFETCH_D_95:
-      return evolution (this, from:"Galarian Farfetch’d", hp:HP130, type:F, retreatCost:2) {
+      return evolution (this, from:"Galarian Farfetch'd", hp:HP130, type:F, retreatCost:2) {
         weakness P
         move "Pierce", {
           text "40 damage."
