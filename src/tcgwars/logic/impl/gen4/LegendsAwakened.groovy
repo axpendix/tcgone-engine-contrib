@@ -3825,6 +3825,9 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "Search your deck for a card that evolves from 1 of your Pokémon and put it onto that Pokémon. (This counts as evolving that Pokémon.) Shuffle your deck afterward."
             attackRequirement {
               assert my.deck
+              // No search when no card in the game evolves from any of your Pokémon (TPCi 2018-07-26, Wally and Evosoda
+              // on Snorlax; PUI 2008-07-17, Skill Copy of Ascension): public knowledge says it can't find anything.
+              assert my.all.any { bg.gm().hasEvolution(it.name) } : "No card evolves from any of your Pokémon in play"
             }
             onAttack {
               searchYourDeckThenEvolveOneOfYourPokemon()
