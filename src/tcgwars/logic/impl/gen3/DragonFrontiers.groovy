@@ -1776,13 +1776,13 @@ public enum DragonFrontiers implements LogicCardInfo {
 
           if (allHeads) {
             if (my.discard.filterByType(POKEMON)) {
-              my.discard.filterByType(POKEMON).select(count: 1, "Search your discard pile for a Pokémon card.").showToOpponent("Your opponent played Old Rod.").moveTo(my.hand)
+              my.discard.filterByType(POKEMON).select(count: 1, "Search your discard pile for a Pokémon card.").moveTo(my.hand)
             } else {
               bc "There are no Pokémon cards in ${my.owner.getPlayerUsername(bg)}'s discard pile."
             }
           } else if (allTails){
             if (my.discard.filterByType(TRAINER)) {
-              my.discard.filterByType(TRAINER).select(count: 1, "Search your discard pile for a Trainer card.").showToOpponent("Your opponent played Old Rod.").moveTo(my.hand)
+              my.discard.filterByType(TRAINER).select(count: 1, "Search your discard pile for a Trainer card.").moveTo(my.hand)
             } else {
               bc "There are no Trainer cards in ${my.owner.getPlayerUsername(bg)}'s discard pile."
             }

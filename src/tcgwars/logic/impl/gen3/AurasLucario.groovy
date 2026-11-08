@@ -361,7 +361,7 @@ public enum AurasLucario implements LogicCardInfo {
 				onPlay {
 					my.discard.select(max:2, "Search your discard pile for up to 2 Basic Pokémon or Evolution cards with the \"VS\" set symbol", {
 						it.cardTypes.is(POKEMON) && it.cardTypes.is(VS)
-					}).showToOpponent("Time Flower: Selected cards").moveTo(my.hand)
+					}).moveTo(my.hand)
 				}
 			};
 			case SWITCH_16:
@@ -377,7 +377,7 @@ public enum AurasLucario implements LogicCardInfo {
 				onPlay {
 					my.deck.search(max: 2, "Select an Aura's Lucario (ex) card and a [M] Energy card",
 					{["Aura's Lucario", "Aura's Lucario ex"].contains(it.name) || it.cardTypes.is(ENERGY) && it.containsTypePlain(M)},
-					{CardList list -> list.filterByType(POKEMON).size() <= 1 && list.filterByType(ENERGY).size() <= 1}).showToOpponent("Aaron's Aura: Selected cards").moveTo(my.hand)
+					{CardList list -> list.filterByType(POKEMON).size() <= 1 && list.filterByType(ENERGY).size() <= 1}).moveTo(my.hand)
 					shuffleDeck()
 				}
 			};

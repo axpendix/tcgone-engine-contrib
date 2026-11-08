@@ -2254,7 +2254,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           }
           if (cardsToSearch){
             def tar = my.deck.search (max: cardsToSearch, "Search your deck for ${cardsToSearch==1?:"up to " + cardsToSearch} Basic Pokémon", cardTypeFilter(BASIC))
-            if (tar) tar.showToOpponent("Selected Pokémon").moveTo(my.hand)
+            if (tar) tar.moveTo(my.hand)
             shuffleDeck()
           }
         }
@@ -2301,7 +2301,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           list.showToMe("Top $prizeCardCount cards of your deck.")
 
           def numOfEnergies = list.filterByType(ENERGY).size()
-          list.filterByType(ENERGY).select(min: 0, max: numOfEnergies, "Select any amount of Energy cards to move to your hand.").showToOpponent("Opponent used Holon Lass").moveTo(my.hand)
+          list.filterByType(ENERGY).select(min: 0, max: numOfEnergies, "Select any amount of Energy cards to move to your hand.").moveTo(my.hand)
           shuffleDeck()
         }
         playRequirement{
@@ -2319,7 +2319,7 @@ public enum DeltaSpecies implements LogicCardInfo {
 
           deck.search(max: 3, "Search your deck for up to 3 Basic Pokémon with 100 HP or less", {
             it.cardTypes.pokemon && it.cardTypes.is(BASIC) && it.hp.value <= 100
-          }).showToOpponent("Opponent used Holon Mentor").moveTo(my.hand)
+          }).moveTo(my.hand)
 
           shuffleDeck()
         }
@@ -2359,7 +2359,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           my.deck.search(max: 1, "Select a [M] or a Pokémon card with δ in its card.", {
             (it.cardTypes.is(ENERGY) && it.containsTypePlain(M)) ||
               (it.cardTypes.is(POKEMON) && it.getCardTypes(bg_test).is(DELTA))
-          }).showToOpponent("Opponent's used Holon Researcher, and will put this card into their hand.").moveTo(my.hand)
+          }).moveTo(my.hand)
 
           shuffleDeck()
         }

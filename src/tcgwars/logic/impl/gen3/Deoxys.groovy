@@ -2292,7 +2292,7 @@ public enum Deoxys implements LogicCardInfo {
             flip {
               def tar = my.discard.filterByType(ENERGY)
               def enCnt = Math.min(2, tar.size())
-              tar.select(count: enCnt,"Select $enCnt Energy ${enCnt>1 ? "cards" : "card"}.").showToOpponent("Selected card${enCnt>1 ? "s" : ''}.").moveTo(my.deck)
+              tar.select(count: enCnt,"Select $enCnt Energy ${enCnt>1 ? "cards" : "card"}.").moveTo(my.deck)
               shuffleDeck()
             }
           }

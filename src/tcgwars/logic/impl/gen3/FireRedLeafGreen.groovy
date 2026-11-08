@@ -2203,7 +2203,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           // Q. Can I use Celio's Network to search my deck for a Pokémon LV.X?
           // A. Yes, you can. Earlier card references of "Basic Pokémon or Evolution card" refers to Pokémon in general, which includes Pokémon LV.X. (May 10, 2007 PUI Rules Team)
           onPlay {
-            my.deck.search(count: 1,"Search your deck for a Basic Pokémon or Evolution card",{(it.cardTypes.is(POKEMON)) && !(it.cardTypes.is(EX))}).showToOpponent("Selected card").moveTo(my.hand)
+            my.deck.search(count: 1,"Search your deck for a Basic Pokémon or Evolution card",{(it.cardTypes.is(POKEMON)) && !(it.cardTypes.is(EX))}).moveTo(my.hand)
             shuffleDeck()
           }
           playRequirement{
@@ -2380,7 +2380,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
         return basicTrainer (this) {
           text "Search your discard pile for a Supporter card, show it to your opponent, and put it into your hand."
           onPlay {
-            my.discard.filterByType(SUPPORTER).select("Select one Supporter card").showToOpponent("Selected supporter").moveTo(my.hand)
+            my.discard.filterByType(SUPPORTER).select("Select one Supporter card").moveTo(my.hand)
           }
           playRequirement{
             assert my.discard.filterByType(SUPPORTER) : "You have no Supporters in your discard"

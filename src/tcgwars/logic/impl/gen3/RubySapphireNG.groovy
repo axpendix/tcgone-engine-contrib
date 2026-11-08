@@ -1866,7 +1866,6 @@ public enum RubySapphireNG implements LogicCardInfo {
         onPlay {
           CardList topThree = my.deck.subList(0, 3)
           CardList sel = topThree.select2(min:0, text:"Top 3 cards of your deck. You may choose to reveal a Basic Pokémon, Evolution card or Energy Card and put it into your hand.\nRemaining cards will be put on top of your deck in order of your choice.", filter:{it.cardTypes.isIn(BASIC, EVOLUTION, ENERGY)})
-                  .showToOpponent("Your opponent used PokéNav. They're putting this card in their hand.")
                   .moveTo(my.hand)
           def rearrangeSize = Math.min(sel ? 2 : 3, deck.size())
           if (rearrangeSize > 1) {

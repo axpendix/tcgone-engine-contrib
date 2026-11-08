@@ -1724,10 +1724,10 @@ public enum Emerald implements LogicCardInfo {
               if(!my.deck){choice = 2}
             }
             if(choice == 1){
-              my.deck.search(max: 2,"Search for up to 2 basic Energy cards",cardTypeFilter(BASIC_ENERGY)).showToOpponent("Selected cards.").moveTo(my.hand)
+              my.deck.search(max: 2,"Search for up to 2 basic Energy cards",cardTypeFilter(BASIC_ENERGY)).moveTo(my.hand)
             }
             else{
-              my.discard.filterByType(BASIC_ENERGY).select(max: 2).showToOpponent("Selected cards.").moveTo(my.hand)
+              my.discard.filterByType(BASIC_ENERGY).select(max: 2).moveTo(my.hand)
             }
           }
           playRequirement{
@@ -1773,7 +1773,7 @@ public enum Emerald implements LogicCardInfo {
         return supporter (this) {
           text "Search you deck for up to 3 cards in any combination of Supporter cards and Stadium cards, show them to your opponent, and put them into your hand. Shuffle your deck afterward.\nYou may play only 1 Supporter card during your turn (before your attack)."
           onPlay {
-            my.deck.search(max :3,"Search your deck for 3 Supporter or Stadium in any combination",{it.cardTypes.is(SUPPORTER) || it.cardTypes.is(STADIUM)}).showToOpponent("Opponent used Scott").moveTo(hand)
+            my.deck.search(max :3,"Search your deck for 3 Supporter or Stadium in any combination",{it.cardTypes.is(SUPPORTER) || it.cardTypes.is(STADIUM)}).moveTo(hand)
             shuffleDeck()
           }
           playRequirement{
