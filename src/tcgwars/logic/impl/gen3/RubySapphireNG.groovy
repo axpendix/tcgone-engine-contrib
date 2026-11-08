@@ -503,12 +503,6 @@ public enum RubySapphireNG implements LogicCardInfo {
               h.object=true
             }
           }
-          //TODO: Is this needed here?
-          getterA IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
-            if (self.active && h.effect.target.owner == self.owner.opposite) {
-              h.object=true
-            }
-          }
           onActivate {
             new CheckAbilities().run(bg)
           }

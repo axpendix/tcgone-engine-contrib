@@ -2352,14 +2352,8 @@ public enum Deoxys implements LogicCardInfo {
         return stadium (this) {
           text "Ignore Poké-Bodies for all Basic Pokémon in play (both yours and your opponent’s) (excluding Pokémon-ex and Pokémon that has an owner in its name).\nThis card stays in play when you play it. Discard this card if another Stadium card comes into play. If another card with the same name is in play, you can’t play this card."
           def eff1
-          def eff2
           onPlay {
             eff1 = getter IS_ABILITY_BLOCKED, { Holder h->
-              if (h.effect.ability instanceof PokeBody && h.effect.target.notEvolution && !h.effect.target.EX && !h.effect.target.topPokemonCard.cardTypes.is(OWNERS_POKEMON)) {
-                h.object=true
-              }
-            }
-            eff2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
               if (h.effect.ability instanceof PokeBody && h.effect.target.notEvolution && !h.effect.target.EX && !h.effect.target.topPokemonCard.cardTypes.is(OWNERS_POKEMON)) {
                 h.object=true
               }
@@ -2368,7 +2362,6 @@ public enum Deoxys implements LogicCardInfo {
           }
           onRemoveFromPlay{
             eff1.unregister()
-            eff2.unregister()
             new CheckAbilities().run(bg)
           }
         };

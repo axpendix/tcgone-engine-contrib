@@ -2628,15 +2628,10 @@ public enum MajesticDawn implements LogicCardInfo {
           weakness M, PLUS30
           pokeBody "Chilly Breath", {
             text "As long as Glaceon is your Active Pokémon, your opponent’s Pokémon can’t use any Poké-Powers."
-            def eff1, eff2
+            def eff1
             onActivate {
               eff1 = getter IS_ABILITY_BLOCKED, { Holder h->
                 if (self.active && h.effect.target.owner == self.owner.opposite && (h.effect.ability instanceof PokePower)) {
-                  h.object=true
-                }
-              }
-              eff2 = getter IS_GLOBAL_ABILITY_BLOCKED, {Holder h->
-                if (self.active && h.effect.target.owner == self.owner.opposite) {
                   h.object=true
                 }
               }
@@ -2644,7 +2639,6 @@ public enum MajesticDawn implements LogicCardInfo {
             }
             onDeactivate {
               eff1.unregister()
-              eff2.unregister()
               new CheckAbilities().run(bg)
             }
           }

@@ -1046,15 +1046,6 @@ public enum BattleStyles implements LogicCardInfo {
               }
             }
           }
-          getterA IS_GLOBAL_ABILITY_BLOCKED, { Holder h ->
-            def tar = h.effect.target as PokemonCardSet
-            if (self.active && h.effect.ability instanceof BwAbility
-              && tar.owner != self.owner && tar.basic && !tar.ruleBox) {
-              targeted(tar, SRC_ABILITY) {
-                h.object = true
-              }
-            }
-          }
           onActivate {
             new CheckAbilities().run(bg)
           }
