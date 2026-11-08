@@ -1715,12 +1715,15 @@ public enum GreatEncounters implements LogicCardInfo {
                       def attack = e.sourceAttack
                       def attackNow = bg.em().findAttack()
                       def getter = ef instanceof tcgwars.logic.effect.getter.GetterEffect
+                      // Only the opponent's attacks: Attack runs BetweenTurns, so the opponent's turn begins while this Pokémon's own attack
+                      // is still the attack being used (forum 17595, Giga Blaster's lock judged after the opponent's draw).
+                      def byOpponent = attack?.attacker?.owner == self.owner.opposite
                       // An effect that the opponent's attack left on the opponent's own Pokémon and that strikes back at this Pokémon as it
                       // attacks (Spike Armor, Destiny Bond) is prevented, even when that attack was used before Unown G was attached: the
                       // effect is on the opponent's Pokémon (PUI 2008-09-11).
-                      def strikesBack = bg.currentTurn == self.owner && attackNow?.attacker == self && attack?.attacker?.owner == self.owner.opposite &&
+                      def strikesBack = bg.currentTurn == self.owner && attackNow?.attacker == self && byOpponent &&
                         !getter && !(ef instanceof tcgwars.logic.effect.DelayedEffect)
-                      if (e.targetPokemon == self && (strikesBack || bg.currentTurn == self.owner.opposite && (attack == attackNow || protectedFrom.contains(attack)))
+                      if (e.targetPokemon == self && byOpponent && (strikesBack || bg.currentTurn == self.owner.opposite && (attack == attackNow || protectedFrom.contains(attack)))
                         && ef.effectType != DAMAGE && ef.effectType != GET_GIVEN_PRIZES && !(ef instanceof ApplyDamages)) {
                         // getters are judged after every action: block them without a line each time
                         if (!getter) bc "GUARD prevents effect ${ef.effectType}"
