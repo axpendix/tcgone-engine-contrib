@@ -3579,12 +3579,15 @@ f
             text "60 damage. If the Defending Pokémon would be Knocked Out by damage from this attack, you may search your discard pile for any 1 card, show it to your opponent, and put it into your hand."
             energyCost D, D, C
             onAttack {
-              delayed (priority: LAST) {
-                def pcs = defending
-                before KNOCKOUT, pcs, {
-                  if(ef.byDamageFromAttack && my.discard) {
+              def pcs = defending
+              // "Would be Knocked Out": the damage took its HP to 0, also when an effect saves it then (official Japanese Q&A, Bide;
+              // PUI 2009-07-02, Strong-Willed). FIRST: before Mr. Mime SV 37's Focus Wall restores its HP after the damage.
+              delayed (priority: FIRST) {
+                after APPLY_ATTACK_DAMAGES, {
+                  if(pcs.slatedToKO && my.discard) {
                     my.discard.select(min:0,"Darkness Wing: Search your discard pile for a card").showToOpponent("Darkness Wing: Selected Cards").moveTo(my.hand)
                   }
+                  unregister()
                 }
                 unregisterAfter 1
               }
