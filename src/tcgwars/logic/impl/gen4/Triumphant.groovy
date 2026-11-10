@@ -2605,13 +2605,11 @@ public enum Triumphant implements LogicCardInfo {
                 int count = max > 1 ? choose((1..max).toList(), "How many damage counters do you want to move from $src to $tar?", max) as int : 1
                 def tried = false, moved = 0
                 targeted (src) {
-                  targeted (tar) {
-                    tried = true
-                    moved = moveDamageCounters(src, tar, count)
-                    if (moved) {
-                      gave.add(src)
-                      got.add(tar)
-                    }
+                  tried = true
+                  moved = moveDamageCounters(src, tar, count)
+                  if (moved) {
+                    gave.add(src)
+                    got.add(tar)
                   }
                 }
                 if (tried && !moved) break // the move itself was prevented (e.g. Watchful Eye)

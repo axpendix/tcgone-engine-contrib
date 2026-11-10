@@ -1225,9 +1225,7 @@ public enum SecretWonders implements LogicCardInfo {
             }
             onAttack {
               def count = Math.min(self.numberOfDamageCounters,self.getPokemonCards().find{it.name == "Smoochum"}?4:2)
-              targeted (defending) {
-                moveDamageCounters self, defending, count
-              }
+              moveDamageCounters self, defending, count
             }
           }
 

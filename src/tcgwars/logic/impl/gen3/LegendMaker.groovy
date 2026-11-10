@@ -2548,10 +2548,8 @@ public enum LegendMaker implements LogicCardInfo {
             target.remove(source)
             target = target.select("Target for damage counter")
             targeted (source) {
-              targeted (target) {
-                moveDamageCounters source, target, 1
-                checkFaint()
-              }
+              moveDamageCounters source, target, 1
+              checkFaint()
             }
           }
         }
