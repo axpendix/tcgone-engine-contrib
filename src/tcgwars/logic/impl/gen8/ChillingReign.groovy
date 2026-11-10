@@ -447,7 +447,7 @@ public enum ChillingReign implements LogicCardInfo {
               def tar = my.hand.filterByEnergyType(G)
               if (tar) {
                 tar.select(min:0, max:tar.size(), "Select the ones you want to attach").each {
-                  attachEnergy(my.all.select("Attach $it to?"), it)
+                  attachEnergy(my.all.select("Attach $it to?"), it, PLAY_FROM_HAND)
                 }
               }
             }

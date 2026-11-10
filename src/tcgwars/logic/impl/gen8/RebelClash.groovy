@@ -2042,7 +2042,7 @@ public enum RebelClash implements LogicCardInfo {
             def tar = my.hand.filterByType(BASIC_ENERGY)
             if (tar) {
               tar.select(min:0, max:tar.size(), "Select as much basic Energy as you'd like to attach.").each {
-                attachEnergy(my.all.select("Attach $it to?"), it)
+                attachEnergy(my.all.select("Attach $it to?"), it, PLAY_FROM_HAND)
               }
             }
           }
