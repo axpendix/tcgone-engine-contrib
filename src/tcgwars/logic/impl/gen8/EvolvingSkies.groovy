@@ -1,5 +1,7 @@
 package tcgwars.logic.impl.gen8
 
+import tcgwars.logic.TargetPlayer
+import tcgwars.logic.effect.Source
 import tcgwars.logic.effect.gm.Attack
 import tcgwars.logic.impl.gen3.TeamRocketReturns;
 
@@ -315,13 +317,86 @@ enum EvolvingSkies implements LogicCardInfo {
   Card getImplementation() {
     switch (this) {
       case PINSIR_1:
-        return copy(EeveeHeroes.PINSIR_1, this);
+        return basic(this, hp: HP120, type: G, retreatCost: 2) {
+          weakness FIRE
+          bwAbility "Vise Coach", {
+            text "Damage from your Single Strike Pokémon's attacks isn't affected by your opponent's Active Pokémon's Resistance."
+            delayedA {
+              before APPLY_RESISTANCE, {
+                if (ef.attacker.owner == self.owner && ef.attacker.singleStrike) {
+                  bc text
+                  prevent()
+                }
+              }
+            }
+          }
+          move "Seismic Toss", {
+            text "110 damage. "
+            energyCost GRASS, GRASS, COLORLESS
+            onAttack {
+              damage 110
+            }
+          }
+        };
       case HOPPIP_2:
-        return copy(BlueSkyStream.HOPPIP_1, this);
+        return basic(this, hp: HP040, type: G, retreatCost: 0) {
+          weakness FIRE
+          move "Continuous Spin", {
+            text "20× damage. Flip a coin until you get tails. This attack does 20 damage for each heads."
+            energyCost GRASS
+            onAttack {
+              flipUntilTails {
+                damage 20
+              }
+            }
+          }
+        };
       case SKIPLOOM_3:
-        return copy(BlueSkyStream.SKIPLOOM_2, this);
+        return evolution(this, from: "Hoppip", hp: HP060, type: G, retreatCost: 0) {
+          weakness FIRE
+          bwAbility "Solar Evolution", {
+            text "When you attach an Energy card from your hand to this Pokémon during your turn, you may search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
+            delayedA {
+              after ATTACH_ENERGY, self, {
+                if (ef.reason == PLAY_FROM_HAND
+                  && bg.currentTurn == self.owner
+                  && self.owner.pbg.deck
+                  && confirm("Use $thisAbility?")) {
+                  powerUsed()
+                  def list = deck.search text, {
+                    it.cardTypes.is(EVOLUTION) && it.predecessor == self.name
+                  }
+                  list.each {
+                    evolve self, it
+                  }
+                  shuffleDeck()
+                }
+              }
+            }
+          }
+          move "Spinning Attack", {
+            text "20 damage. "
+            energyCost GRASS
+            onAttack {
+              damage 20
+            }
+          }
+        };
       case JUMPLUFF_4:
-        return copy(BlueSkyStream.JUMPLUFF_3, this);
+        return evolution(this, from: "Skiploom", hp: HP090, type: G, retreatCost: 0) {
+          weakness FIRE
+          bwAbility "Fluffy Barrage", {
+            text "This Pokémon may attack twice each turn. If the first attack Knocks Out your opponent's Active Pokémon, you may attack again after your opponent chooses a new Active Pokémon."
+            ancient_trait_omega_barrage self, delegate
+          }
+          move "Spinning Attack", {
+            text "60 damage. "
+            energyCost GRASS
+            onAttack {
+              damage 60
+            }
+          }
+        };
       case SEEDOT_5:
         return basic(this, hp: HP050, type: G, retreatCost: 1) {
           weakness FIRE
@@ -337,11 +412,69 @@ enum EvolvingSkies implements LogicCardInfo {
           }
         };
       case TROPIUS_6:
-        return copy(BlueSkyStream.TROPIUS_4, this);
+        return basic(this, hp: HP110, type: G, retreatCost: 1) {
+          weakness FIRE
+          move "Rally Back", {
+            text "30+ damage. If any of your Pokémon were Knocked Out by damage from an attack from your opponent's Pokémon during their last turn, this attack does 90 more damage."
+            energyCost GRASS, COLORLESS
+            onAttack {
+              damage 30
+              if (my.lastKnockoutByOpponentDamageTurn == opp.lastTurnCount)
+                damage 90
+            }
+          }
+          move "Solar Beam", {
+            text "100 damage. "
+            energyCost GRASS, GRASS, COLORLESS
+            onAttack {
+              damage 100
+            }
+          }
+        };
       case LEAFEON_V_7:
-        return copy(EeveeHeroes.LEAFEON_V_2, this);
+        return basic(this, hp: HP200, type: G, retreatCost: 1) {
+          weakness FIRE
+          bwAbility "Greening Cells", {
+            text "Once during your turn, you may search your deck for a [G] Energy card and attach it to 1 of your Pokémon. Then, shuffle your deck. If you use this Ability, your turn ends."
+            actionA {
+              checkLastTurn()
+              assert deck : "Your deck is empty"
+              powerUsed()
+              attachEnergyFrom type:G, deck, my.all
+              usingThisAbilityEndsTurn delegate
+            }
+          }
+          move "Leaf Blade", {
+            text "90+ damage. Flip a coin. If heads, this attack does 60 more damage."
+            energyCost GRASS, COLORLESS, COLORLESS
+            onAttack {
+              damage 90
+              flip { damage 60 }
+            }
+          }
+        };
       case LEAFEON_VMAX_8:
-        return copy(EeveeHeroes.LEAFEON_VMAX_3, this);
+        return evolution(this, from: "Leafeon V", hp: HP310, type: G, retreatCost: 2) {
+          weakness FIRE
+          move "Grass Knot", {
+            text "60× damage. This attack does 60 damage for each [C] in your opponent's Active Pokémon's Retreat Cost."
+            energyCost GRASS, COLORLESS
+            attackRequirement {
+              assert defending.retreatCost : "Opponent's Active Pokémon has no Retreat Cost"
+            }
+            onAttack {
+              damage 60 * defending.retreatCost
+            }
+          }
+          move "Max Leaf", {
+            text "170 damage. Heal 30 damage from this Pokémon."
+            energyCost GRASS, GRASS, COLORLESS
+            onAttack {
+              damage 170
+              heal 30, self
+            }
+          }
+        };
       case PETILIL_9:
         return basic(this, hp: HP060, type: G, retreatCost: 1) {
           weakness FIRE
@@ -404,23 +537,173 @@ enum EvolvingSkies implements LogicCardInfo {
           }
         };
       case TREVENANT_V_13:
-        return copy(BlueSkyStream.TREVENANT_V_7, this);
+        return basic(this, hp: HP210, type: G, retreatCost: 2) {
+          weakness FIRE
+          move "Absorb Life", {
+            text "30 damage. Heal 30 damage from this Pokémon."
+            energyCost GRASS, COLORLESS
+            onAttack {
+              damage 30
+              heal 30, self
+            }
+          }
+          move "Shadow Claw", {
+            text "120 damage. Discard a random card from your opponent's hand."
+            energyCost GRASS, GRASS, COLORLESS
+            onAttack {
+              damage 120
+              afterDamage {
+                discardRandomCardFromOpponentsHand()
+              }
+            }
+          }
+        };
       case TREVENANT_VMAX_14:
-        return copy(BlueSkyStream.TREVENANT_VMAX_8, this);
+        return evolution(this, from: "Trevenant V", hp: HP320, type: G, retreatCost: 3) {
+          weakness FIRE
+          move "Missing in the Forest", {
+            text "40× damage. This attack does 40 damage for each Supporter card in your opponent's discard pile."
+            energyCost GRASS, COLORLESS
+            attackRequirement {
+              assert opp.discard.any { it.cardTypes.is(SUPPORTER) } : "No Supporter cards in your opponent's discard pile"
+            }
+            onAttack {
+              damage 40 * opp.discard.findAll({ it.cardTypes.is(SUPPORTER) }).size()
+            }
+          }
+          move "Max Tree", {
+            text "180 damage. "
+            energyCost GRASS, GRASS, COLORLESS
+            onAttack {
+              damage 180
+            }
+          }
+        };
       case GOSSIFLEUR_15:
-        return copy(EeveeHeroes.GOSSIFLEUR_9, this);
+        return basic(this, hp: HP050, type: G, retreatCost: 1) {
+          weakness FIRE
+          move "Blot", {
+            text "10 damage. Heal 10 damage from this Pokémon."
+            energyCost GRASS
+            onAttack {
+              damage 10
+              heal 10, self
+            }
+          }
+        };
       case ELDEGOSS_16:
-        return copy(EeveeHeroes.ELDEGOSS_10, this);
+        return evolution(this, from: "Gossifleur", hp: HP080, type: G, retreatCost: 1) {
+          weakness FIRE
+          bwAbility "Cotton Lift", {
+            text "Once during your turn, you may search your deck for up to 2 basic Energy cards, reveal them, and put them into your hand. Then, shuffle your deck."
+            actionA {
+              checkLastTurn()
+              assert deck : "Your deck is empty"
+              powerUsed()
+              def cards = deck.search max:2, cardTypeFilter(BASIC_ENERGY)
+              cards.showToOpponent bg, text
+              cards.moveTo hand
+            }
+          }
+          move "Cotton Guard", {
+            text "30 damage. During your opponent's next turn, this Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+            energyCost GRASS
+            onAttack {
+              damage 30
+              reduceDamageNextTurn hp(30), thisMove
+            }
+          }
+        };
       case APPLIN_17:
-        return copy(BlueSkyStream.APPLIN_9, this);
+        return basic(this, hp: HP040, type: G, retreatCost: 1) {
+          weakness FIRE
+          move "Rollout", {
+            text "10 damage. "
+            energyCost COLORLESS
+            onAttack {
+              damage 10
+            }
+          }
+        };
       case FLAREON_VMAX_18:
-        return copy(EeveeHeroesVmaxSpecialSet.FLAREON_VMAX_1, this);
+        return evolution(this, from: "Flareon V", hp: HP320, type: R, retreatCost: 2) {
+          weakness WATER
+          move "Max Detonate", {
+            text "100× damage. Discard the top 5 cards of your deck. This attack does 100 damage for each Energy card you discarded in this way."
+            energyCost FIRE, COLORLESS, COLORLESS
+            attackRequirement {
+              assert my.deck
+            }
+            onAttack {
+              def list = my.deck.subList(0, 5).discard()
+              damage 100 * list.filterByType(ENERGY).size()
+            }
+          }
+        };
       case ENTEI_19:
-        return copy(EeveeHeroes.ENTEI_14, this);
+        return basic(this, hp: HP120, type: R, retreatCost: 2) {
+          weakness WATER
+          move "Angry Fang", {
+            text "10× damage. This attack does 10 damage for each damage counter on all of your Benched Single Strike Pokémon."
+            energyCost FIRE, COLORLESS
+            attackRequirement {
+              assert my.bench.any { it.singleStrike && it.numberOfDamageCounters } : "No Single Strike Pokémon on your Bench have damage counters on them"
+            }
+            onAttack {
+              damage 10 * my.bench.sum { it.singleStrike ? it.numberOfDamageCounters : 0 }
+            }
+          }
+          move "Heat Tackle", {
+            text "120 damage. This Pokémon also does 30 damage to itself."
+            energyCost FIRE, FIRE, COLORLESS
+            onAttack {
+              damage 120
+              damage 30, self
+            }
+          }
+        };
       case VICTINI_20:
-        return copy(BlueSkyStream.VICTINI_12, this);
+        return basic(this, hp: HP060, type: R, retreatCost: 1) {
+          weakness WATER
+          move "Victory Dive", {
+            text "30 damage. You may search your deck for up to 2 cards and put them into your hand. Then, shuffle your deck."
+            energyCost COLORLESS, COLORLESS
+            onAttack {
+              damage 30
+              if (my.deck && confirm("Search your deck for up to 2 cards?")) {
+                def list = deck.search min:1, max:2, { true }
+                list.moveTo hidden:true, my.hand
+                shuffleDeck()
+              }
+            }
+          }
+        };
       case VOLCARONA_V_21:
-        return copy(BlueSkyStream.VOLCARONA_V_15, this);
+        return basic(this, hp: HP210, type: R, retreatCost: 2) {
+          weakness WATER
+          move "Surging Flames", {
+            text "20+ damage. This attack does 20 more damage for each basic Energy card in your discard pile. Then, shuffle those Energy cards into your deck."
+            energyCost FIRE
+            onAttack {
+              def list = my.discard.findAll { BASIC_ENERGY in it.cardTypes }
+              damage 20 + 20 * list.size()
+              afterDamage {
+                if (list.notEmpty()) {
+                  list.moveTo my.deck
+                  shuffleDeck()
+                }
+              }
+            }
+          }
+          move "Fire Blast", {
+            text "160 damage. Discard an Energy from this Pokémon."
+            energyCost FIRE, FIRE, COLORLESS
+            onAttack {
+              damage 160
+              discardSelfEnergyAfterDamage()
+            }
+          }
+        };
       case LITLEO_22:
         return basic(this, hp: HP060, type: R, retreatCost: 1) {
           weakness WATER
@@ -513,19 +796,155 @@ enum EvolvingSkies implements LogicCardInfo {
           }
         };
       case GYARADOS_V_28:
-        return copy(BlueSkyStream.GYARADOS_V_20, this);
+        return basic(this, hp: HP220, type: W, retreatCost: 3) {
+          weakness LIGHTNING
+          move "Get Angry", {
+            text "20× damage. This attack does 20 damage for each damage counter on this Pokémon."
+            energyCost WATER, WATER, COLORLESS
+            attackRequirement {
+              assert self.numberOfDamageCounters : "No damage counters on $self"
+            }
+            onAttack {
+              damage 20 * self.numberOfDamageCounters
+            }
+          }
+          move "Heavy Storm", {
+            text "180 damage. "
+            energyCost WATER, WATER, WATER, COLORLESS
+            onAttack {
+              damage 180
+            }
+          }
+        };
       case GYARADOS_VMAX_29:
-        return copy(BlueSkyStream.GYARADOS_VMAX_21, this);
+        return evolution(this, from: "Gyarados V", hp: HP330, type: W, retreatCost: 4) {
+          weakness LIGHTNING
+          move "Hyper Beam", {
+            text "120 damage. Discard an Energy from your opponent's Active Pokémon."
+            energyCost WATER, WATER, COLORLESS
+            onAttack {
+              damage 120
+              discardDefendingEnergyAfterDamage()
+            }
+          }
+          move "Max Tyrant", {
+            text "240 damage. "
+            energyCost WATER, WATER, WATER, COLORLESS
+            onAttack {
+              damage 240
+            }
+          }
+        };
       case VAPOREON_VMAX_30:
-        return copy(EeveeHeroesVmaxSpecialSet.VAPOREON_VMAX_2, this);
+        return evolution(this, from: "Vaporeon V", hp: HP320, type: W, retreatCost: 2) {
+          weakness LIGHTNING
+          move "Bubble Pod", {
+            text "Put a [W] Pokémon from your discard pile onto your Bench. If you do, attach up to 3 [W] Energy cards from your discard pile to that Pokémon."
+            energyCost COLORLESS
+            def cl1 = {
+              my.discard.findAll{it.cardTypes.is(POKEMON) && !it.cardTypes.isIn(BREAK, LVL_X, LEGEND, V_UNION) && it.types.contains(W)}
+            }
+            attackRequirement {
+              assert cl1() : "No [W] Pokémon in your discard pile"
+              assert my.bench.notFull : "Bench full"
+            }
+            onAttack {
+              def pcs = benchPCS(cl1().select("Put to bench").first())
+              if (pcs) {
+                attachEnergyFrom(max: 3, may: true, type: W, my.discard, pcs)
+              }
+            }
+          }
+          move "Max Torrent", {
+            text "100+ damage. If your opponent's Active Pokémon already has any damage counters on it, this attack does 100 more damage."
+            energyCost WATER, COLORLESS, COLORLESS
+            onAttack {
+              damage 100
+              if (opp.active.numberOfDamageCounters) damage 100
+            }
+          }
+        };
       case SUICUNE_V_31:
-        return copy(SkyscrapingPerfection.SUICUNE_V_1, this);
+        return basic(this, hp: HP210, type: W, retreatCost: 2) {
+          weakness LIGHTNING
+          bwAbility "Fleet-Footed", {
+            text "Once during your turn, if this Pokémon is in the Active Spot, you may draw a card."
+            actionA {
+              checkLastTurn()
+              assert self.active : "$self must be in the Active Spot"
+              assert deck : "Deck is empty"
+              powerUsed()
+              draw 1
+            }
+          }
+          move "Blizzard Rondo", {
+            text "20+ damage. This attack does 20 more damage for each Benched Pokémon (both yours and your opponent's)."
+            energyCost WATER, COLORLESS
+            onAttack {
+              damage 20 + 20 * all.findAll { it.benched }.size()
+            }
+          }
+        };
       case LOTAD_32:
-        return copy(SkyscrapingPerfection.LOTAD_2, this);
+        return basic(this, hp: HP060, type: W, retreatCost: 1) {
+          weakness LIGHTNING
+          move "Call for Family", {
+            text "Search your deck for up to 2 Basic Pokémon and put them onto your Bench. Then, shuffle your deck."
+            energyCost COLORLESS
+            callForFamily basic: true, 2, delegate
+          }
+          move "Rain Splash", {
+            text "20 damage. "
+            energyCost WATER, COLORLESS
+            onAttack {
+              damage 20
+            }
+          }
+        };
       case LOMBRE_33:
-        return copy(SkyscrapingPerfection.LOMBRE_3, this);
+        return evolution(this, from: "Lotad", hp: HP090, type: W, retreatCost: 1) {
+          weakness LIGHTNING
+          move "Wave Splash", {
+            text "50 damage. "
+            energyCost WATER, COLORLESS
+            onAttack {
+              damage 50
+            }
+          }
+        };
       case LUDICOLO_34:
-        return copy(SkyscrapingPerfection.LUDICOLO_4, this);
+        return evolution(this, from: "Lombre", hp: HP140, type: W, retreatCost: 2) {
+          weakness LIGHTNING
+          bwAbility "Enthusiastic Dance", {
+            text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may use this Ability. During this turn, your Basic Pokémon's attacks do 100 more damage to your opponent's Active Pokémon (before applying Weakness and Resistance)."
+            onActivate {r->
+              if(r == PLAY_FROM_HAND && confirm("Use Enthusiastic Dance?")) {
+                powerUsed()
+                delayed {
+                  after PROCESS_ATTACK_EFFECTS, {
+                    bg.dm().each {if (
+                    it.to.active
+                      && it.from.basic
+                      && it.from.owner == thisCard.player
+                      && it.to.owner != it.from.owner
+                      && it.dmg.value) {
+                      bc "$thisAbility.name +100"
+                      it.dmg += hp 100
+                    }}
+                  }
+                  unregisterAfter 1
+                }
+              }
+            }
+          }
+          move "Wave Splash", {
+            text "120 damage. "
+            energyCost WATER, COLORLESS
+            onAttack {
+              damage 120
+            }
+          }
+        };
       case CARVANHA_35:
         return basic(this, hp: HP050, type: W, retreatCost: 1) {
           weakness LIGHTNING
@@ -567,9 +986,37 @@ enum EvolvingSkies implements LogicCardInfo {
           }
         };
       case FEEBAS_37:
-        return copy(EeveeHeroes.FEEBAS_22, this);
+        return basic(this, hp: HP030, type: W, retreatCost: 1) {
+          weakness LIGHTNING
+          move "Flail Around", {
+            text "10× damage. Flip 3 coins. This attack does 10 damage for each heads."
+            energyCost WATER
+            onAttack {
+              flip 3, { damage 10 }
+            }
+          }
+        };
       case MILOTIC_38:
-        return copy(EeveeHeroes.MILOTIC_23, this);
+        return evolution(this, from: "Feebas", hp: HP120, type: W, retreatCost: 2) {
+          weakness LIGHTNING
+          bwAbility "Dew Guard", {
+            text "Whenever your opponent plays a Supporter card from their hand, prevent all effects of that card done to you or your hand."
+            def messageDisplayed = false
+            onActivate {
+              if (!messageDisplayed) {
+                bc "$thisAbility is not impelmented."
+                messageDisplayed = true
+              }
+            }
+          }
+          move "Double Smash", {
+            text "70× damage. Flip 2 coins. This attack does 70 damage for each heads."
+            energyCost WATER, COLORLESS
+            onAttack {
+              flip 2, { damage 70 }
+            }
+          }
+        };
       case LUVDISC_39:
         return basic(this, hp: HP070, type: W, retreatCost: 1) {
           weakness LIGHTNING
@@ -594,9 +1041,53 @@ enum EvolvingSkies implements LogicCardInfo {
           }
         };
       case GLACEON_V_40:
-        return copy(EeveeHeroes.GLACEON_V_24, this);
+        return basic(this, hp: HP210, type: W, retreatCost: 2) {
+          weakness METAL
+          move "Frozen Awakening", {
+            text "Search your deck for a card that evolves from this Pokémon and put it onto this Pokémon to evolve it. Then, shuffle your deck."
+            energyCost WATER
+            ascension delegate
+          }
+          move "Heavy Snow", {
+            text "120 damage. Discard a Stadium in play."
+            energyCost WATER, COLORLESS, COLORLESS
+            onAttack {
+              damage 120
+              afterDamage {
+                discardStadium()
+              }
+            }
+          }
+        };
       case GLACEON_VMAX_41:
-        return copy(EeveeHeroes.GLACEON_VMAX_25, this);
+        return evolution(this, from: "Glaceon V", hp: HP310, type: W, retreatCost: 2) {
+          weakness METAL
+          bwAbility "Crystal Veil", {
+            text "Prevent all damage done to this Pokémon by attacks from your opponent's Pokémon VMAX, except any Glaceon VMAX."
+            delayedA {
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each{
+                  def info = "$thisAbility prevents all damage from Pokémon VMAX, except Glaceon VMAX"
+                  def filter = { attacker -> attacker.pokemonVMAX && !attacker.name.equals("Glaceon VMAX") }
+                  if (it.to == self && it.from.owner != self.owner && filter(it.from) && it.notNoEffect && it.dmg.value) {
+                    bc info
+                    it.dmg=hp(0)
+                  }
+                }
+              }
+            }
+          }
+          move "Max Icicle", {
+            text "150 damage. This attack also does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+            energyCost WATER, COLORLESS, COLORLESS
+            onAttack {
+              damage 150
+              if (opp.bench) {
+                damage 30, opp.bench.select(text)
+              }
+            }
+          }
+        };
       case TYMPOLE_42:
         return basic(this, hp: HP070, type: W, retreatCost: 2) {
           weakness LIGHTNING
@@ -609,7 +1100,32 @@ enum EvolvingSkies implements LogicCardInfo {
           }
         };
       case CRYOGONAL_43:
-        return copy(BlueSkyStream.CRYOGONAL_24, this);
+        return basic(this, hp: HP090, type: W, retreatCost: 1) {
+          weakness METAL
+          move "Element Chain", {
+            text "Look at the top 6 cards of your deck and attach any number of basic Energy cards you find there to your Pokémon in any way you like. Shuffle the other cards back into your deck."
+            energyCost WATER
+            attackRequirement {
+              assert my.deck : "Your deck is empty"
+            }
+            onAttack {
+              def top6List = my.deck.subList 0, 6
+              def numberOfBasicEnergy = top6List.findAll { BASIC_ENERGY in it.cardTypes }.size()
+              def selectedEnergyList = top6List.select text, 0, numberOfBasicEnergy, null, { BASIC_ENERGY in it.cardTypes }, { true}
+              selectedEnergyList.each {
+                attachEnergy my.all.select("Attach $it.name to?"), it
+              }
+              shuffleDeck()
+            }
+          }
+          move "Icy Snow", {
+            text "30 damage. "
+            energyCost WATER, COLORLESS
+            onAttack {
+              damage 30
+            }
+          }
+        };
       case BERGMITE_44:
         return basic(this, hp: HP070, type: W, retreatCost: 2) {
           weakness METAL
@@ -648,9 +1164,44 @@ enum EvolvingSkies implements LogicCardInfo {
           }
         };
       case WISHIWASHI_46:
-        return copy(BlueSkyStream.WISHIWASHI_25, this);
+        return basic(this, hp: HP030, type: W, retreatCost: 1) {
+          weakness LIGHTNING
+          bwAbility "Group Power", {
+            text "If this Pokémon has 3 or more [W] Energy attached, it gets +150 HP."
+            getterA GET_FULL_HP, self, { holder ->
+              if (self.cards.energyCount(W) >= 3) {
+                holder.object += hp 150
+              }
+            }
+          }
+          move "Schooling Shot", {
+            text "30+ damage. This attack does 30 more damage for each basic Energy attached to this Pokémon."
+            energyCost COLORLESS, COLORLESS
+            onAttack {
+              damage 30
+              damage 30 * self.cards.basicEnergyCardCount()
+            }
+          }
+        };
       case EISCUE_47:
-        return copy(SkyscrapingPerfection.EISCUE_9, this);
+        return basic(this, hp: HP120, type: W, retreatCost: 2) {
+          weakness METAL
+          move "Icy Snow", {
+            text "20 damage. "
+            energyCost WATER
+            onAttack {
+              damage 20
+            }
+          }
+          move "Blockface", {
+            text "70 damage. During your opponent's next turn, prevent all damage done to this Pokémon by attacks from Basic Pokémon."
+            energyCost WATER, COLORLESS, COLORLESS
+            onAttack {
+              damage 70
+              preventAllDamageFromCustomPokemonNextTurn thisMove, self, { it.basic }
+            }
+          }
+        };
       case ARCTOVISH_V_48:
         return basic(this, hp: HP220, type: W, retreatCost: 2) {
           weakness LIGHTNING
@@ -674,11 +1225,67 @@ enum EvolvingSkies implements LogicCardInfo {
           }
         };
       case PIKACHU_49:
-        return copy(EeveeHeroes.PIKACHU_26, this);
+        return basic(this, hp: HP060, type: L, retreatCost: 1) {
+          weakness FIGHTING
+          move "Energize", {
+            text "Attach a [L] Energy card from your discard pile to this Pokémon."
+            energyCost LIGHTNING
+            attackRequirement {
+              assert my.discard.energyCount(L) : "Your discard pile has no [L] Energy cards"
+            }
+            onAttack {
+              attachEnergyFrom type:L, my.discard, self
+            }
+          }
+          move "Electro Ball", {
+            text "30 damage. "
+            energyCost LIGHTNING, COLORLESS, COLORLESS
+            onAttack {
+              damage 30
+            }
+          }
+        };
       case RAICHU_50:
-        return copy(EeveeHeroes.RAICHU_27, this);
+        return evolution(this, from: "Pikachu", hp: HP130, type: L, retreatCost: 2) {
+          weakness FIGHTING
+          move "Big Sparking", {
+            text "This attack does 50 damage to each Pokémon V and Pokémon-GX (both yours and your opponent's). (Don't apply Weakness and Resistance for Benched Pokémon.)"
+            energyCost LIGHTNING
+            attackRequirement {
+              assert all.any { it.pokemonV || it.pokemonGX } : "No Pokémon V or Pokémon-GX in play"
+            }
+            onAttack {
+              all.findAll { it.pokemonV || it.pokemonGX }.each {
+                damage 50, it
+              }
+            }
+          }
+          move "Thunderbolt", {
+            text "180 damage. Discard all Energy from this Pokémon."
+            energyCost LIGHTNING, LIGHTNING, COLORLESS
+            onAttack {
+              damage 180
+              afterDamage {
+                discardAllSelfEnergy()
+              }
+            }
+          }
+        };
       case JOLTEON_VMAX_51:
-        return copy(EeveeHeroesVmaxSpecialSet.JOLTEON_VMAX_3, this);
+        return evolution(this, from: "Jolteon V", hp: HP300, type: L, retreatCost: 0) {
+          weakness FIGHTING
+          move "Max Thunder Rumble", {
+            text "100 damage. This attack also does 100 damage to 1 of your opponent's Benched Pokémon that has any damage counters on it. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+            energyCost LIGHTNING, COLORLESS
+            onAttack {
+              damage 100
+              def targets = opp.bench.findAll{ it.numberOfDamageCounters }
+              if (targets) {
+                damage 100, targets.select("Deal 100 damage to?")
+              }
+            }
+          }
+        };
       case CHINCHOU_52:
         return basic(this, hp: HP070, type: L, retreatCost: 1) {
           weakness FIGHTING
@@ -710,11 +1317,70 @@ enum EvolvingSkies implements LogicCardInfo {
           }
         };
       case MAREEP_54:
-        return copy(BlueSkyStream.MAREEP_26, this);
+        return basic(this, hp: HP060, type: L, retreatCost: 1) {
+          weakness FIGHTING
+          move "Rear Kick", {
+            text "10 damage. "
+            energyCost COLORLESS
+            onAttack {
+              damage 10
+            }
+          }
+          move "Electro Ball", {
+            text "30 damage. "
+            energyCost LIGHTNING, COLORLESS
+            onAttack {
+              damage 30
+            }
+          }
+        };
       case FLAAFFY_55:
-        return copy(BlueSkyStream.FLAAFFY_27, this);
+        return evolution(this, from: "Mareep", hp: HP090, type: L, retreatCost: 2) {
+          weakness FIGHTING
+          bwAbility "Dynamotor", {
+            text "Once during your turn (before your attack), you may attach a [L] Energy card from your discard pile to 1 of your Benched Pokémon."
+            actionA {
+              checkLastTurn()
+              assert my.discard.filterByEnergyType(L) : "No [L] Energy card in your discard pile"
+              assert my.bench : "You have no Benched Pokémon"
+              powerUsed()
+              def list = my.discard.filterByEnergyType(L).select("Choose a [L] Energy Card to attach")
+              attachEnergy(my.bench.select(), list.first())
+            }
+          }
+          move "Electro Ball", {
+            text "50 damage. "
+            energyCost LIGHTNING, LIGHTNING, COLORLESS
+            onAttack {
+              damage 50
+            }
+          }
+        };
       case AMPHAROS_56:
-        return copy(BlueSkyStream.AMPHAROS_28, this);
+        return evolution(this, from: "Flaaffy", hp: HP150, type: L, retreatCost: 2) {
+          weakness FIGHTING
+          move "Thunder Shock", {
+            text "40 damage. Flip a coin. If heads, your opponent's Active Pokémon is now Paralyzed."
+            energyCost LIGHTNING
+            onAttack {
+              damage 40
+              flip {
+                applyAfterDamage PARALYZED
+              }
+            }
+          }
+          move "Electron Crush", {
+            text "100+ damage. You may discard 3 [L] Energy from this Pokémon. If you do, this attack does 120 more damage."
+            energyCost LIGHTNING, LIGHTNING, LIGHTNING, COLORLESS
+            onAttack {
+              damage 100
+              if(self.cards.energyCount(L) >= 3 && confirm ("Discard 3 [L] Energy from $self to deal 120 more damage?")) {
+                damage 120
+                discardSelfEnergyAfterDamage L, L, L
+              }
+            }
+          }
+        };
       case EMOLGA_57:
         return basic(this, hp: HP070, type: L, retreatCost: 0) {
           weakness FIGHTING
@@ -790,7 +1456,28 @@ enum EvolvingSkies implements LogicCardInfo {
           }
         };
       case REGIELEKI_60:
-        return copy(BlueSkyStream.REGIELEKI_33, this);
+        return basic(this, hp: HP120, type: L, retreatCost: 2) {
+          weakness FIGHTING
+          move "Static Shock", {
+            text "20 damage. "
+            energyCost COLORLESS
+            onAttack {
+              damage 20
+            }
+          }
+          move "Teraspark", {
+            text "120 damage. Discard all [L] Energy from this Pokémon. This attack also does 40 damage to 2 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+            energyCost LIGHTNING, LIGHTNING, COLORLESS
+            attackRequirement {}
+            onAttack {
+              damage 120
+              multiDamage(opp.bench, 2, 40)
+              afterDamage {
+                discardAllSelfEnergy(L)
+              }
+            }
+          }
+        };
       case DROWZEE_61:
         return basic(this, hp: HP070, type: P, retreatCost: 2) {
           weakness DARKNESS
@@ -827,13 +1514,103 @@ enum EvolvingSkies implements LogicCardInfo {
           }
         };
       case GALARIAN_ARTICUNO_63:
-        return copy(SkyscrapingPerfection.GALARIAN_ARTICUNO_12, this);
+        return basic(this, hp: HP120, type: P, retreatCost: 2) {
+          weakness DARKNESS
+          resistance FIGHTING, MINUS30
+          bwAbility "Cruel Charge", {
+            text "When you play this Pokémon from your hand onto your Bench during your turn, you may attach up to 2 [P] Energy cards from your hand to this Pokémon."
+            onActivate {reason ->
+              if(reason == PLAY_FROM_HAND && my.hand.filterByEnergyType(P) && confirm("Use $thisAbility.name?")) {
+                powerUsed()
+                attachEnergyFrom max:2, type: P, my.hand, self
+              }
+            }
+          }
+          move "Psylaser", {
+            text "Discard all [P] Energy from this Pokémon. This attack does 120 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+            energyCost PSYCHIC, PSYCHIC, COLORLESS
+            onAttack {
+              damage 120, opp.all.select("This attack does 120 damage to 1 of your opponent's Pokémon.")
+              afterDamage {
+                self.cards.filterByEnergyType(P).discard()
+              }
+            }
+          }
+        };
       case ESPEON_V_64:
-        return copy(EeveeHeroes.ESPEON_V_35, this);
+        return basic(this, hp: HP200, type: P, retreatCost: 1) {
+          weakness DARKNESS
+          resistance FIGHTING, MINUS30
+          move "Zen Shot", {
+            text "This attack does 60 damage to 1 of your opponent's Pokémon V. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+            energyCost PSYCHIC
+            attackRequirement {
+              assert opp.all.any { it.pokemonV } : "Opponent has no Pokémon V"
+            }
+            onAttack {
+              damage 60, opp.all.findAll { it.pokemonV }.select(text)
+            }
+          }
+          move "Super Psy Bolt", {
+            text "120 damage. "
+            energyCost PSYCHIC, COLORLESS, COLORLESS
+            onAttack {
+              damage 120
+            }
+          }
+        };
       case ESPEON_VMAX_65:
-        return copy(EeveeHeroesVmaxSpecialSet.ESPEON_VMAX_4, this);
+        return evolution(this, from: "Espeon V", hp: HP310, type: P, retreatCost: 2) {
+          weakness DARKNESS
+          resistance FIGHTING, MINUS30
+          bwAbility "Solar Revelation", {
+            text "Prevent all effects of attacks from your opponent's Pokémon done to all of your Pokémon that have Energy attached.(Existing effects are not removed. Damage is not an effect.)"
+            delayedA {
+              before null, null, Source.ATTACK, {
+                def pcs = e.getTargetPokemon()
+                // only the opponent's attacks: your own attacks (their use included) aren't stopped
+                if (pcs && pcs.owner == self.owner && pcs.cards.energyCount(C) && ef.effectType != DAMAGE
+                  && e.sourceAttack?.attacker?.owner == self.owner.opposite) {
+                  if (!(ef instanceof tcgwars.logic.effect.getter.GetterEffect)) bc "Espeon VMAX's Solar Revelation prevents effect."
+                  prevent()
+                }
+              }
+            }
+          }
+          move "Max Mindstorm", {
+            text "60× damage. This attack does 60 damage for each Energy attached to all of your opponent's Pokémon."
+            energyCost PSYCHIC, COLORLESS, COLORLESS
+            attackRequirement {}
+            onAttack {
+              int count = opp.all.sum { it.cards.energyCount(C) }
+              damage 60 * count
+            }
+          }
+        };
       case WOBBUFFET_66:
-        return copy(SkyscrapingPerfection.WOBBUFFET_13, this);
+        return basic(this, hp: HP120, type: P, retreatCost: 2) {
+          weakness DARKNESS
+          resistance FIGHTING, MINUS30
+          move "Mirror Pain", {
+            text "Put damage counters on your opponent's Active Pokémon equal to the number of damage counters on 1 of your Benched Pokémon."
+            energyCost COLORLESS, COLORLESS
+            attackRequirement {
+              assert my.bench.any { it.numberOfDamageCounters } : "No damage counters on your Benched Pokémon"
+            }
+            onAttack {
+              def info = "Pokémon with damage counters on your bench. That number of damage counters will be put on your opponent's Active Pokémon."
+              def source = bench.findAll { it.numberOfDamageCounters }.select info
+              directDamage source.numberOfDamageCounters * 10, defending
+            }
+          }
+          move "Headbutt Bounce", {
+            text "70 damage. "
+            energyCost PSYCHIC, COLORLESS, COLORLESS
+            onAttack {
+              damage 70
+            }
+          }
+        };
       case SABLEYE_67:
         return basic(this, hp: HP070, type: P, retreatCost: 1) {
           weakness DARKNESS
@@ -894,21 +1671,184 @@ enum EvolvingSkies implements LogicCardInfo {
           }
         };
       case GOLURK_V_70:
-        return copy(SkyscrapingPerfection.GOLURK_V_15, this);
+        return basic(this, hp: HP220, type: P, retreatCost: 3) {
+          weakness DARKNESS
+          resistance FIGHTING, MINUS30
+          move "Mega Punch", {
+            text "80 damage. "
+            energyCost PSYCHIC, COLORLESS, COLORLESS
+            onAttack {
+              damage 80
+            }
+          }
+          move "Rewind Beam", {
+            text "180 damage. If your opponent's Active Pokémon is an evolved Pokémon, devolve it by putting the highest Stage Evolution card on it into your opponent's hand."
+            energyCost PSYCHIC, PSYCHIC, COLORLESS, COLORLESS
+            onAttack {
+              damage 180
+              afterDamage {
+                if (defending.evolution) {
+                  devolve defending, defending.owner.pbg.hand
+                }
+              }
+            }
+          }
+        };
       case FLABEBE_71:
-        return copy(EeveeHeroes.FLABEBE_37, this);
+        return basic(this, hp: HP040, type: P, retreatCost: 1) {
+          weakness METAL
+          move "Hypnotic Gaze", {
+            text "Your opponent's Active Pokémon is now Asleep."
+            energyCost PSYCHIC
+            attackRequirement {
+              assert !defending.specialConditions.contains(ASLEEP) : "Opponent's Active Pokémon is already Asleep"
+            }
+            onAttack {
+              apply ASLEEP
+            }
+          }
+        };
       case FLOETTE_72:
-        return copy(EeveeHeroes.FLOETTE_38, this);
+        return evolution(this, from: "Flabébé", hp: HP070, type: P, retreatCost: 1) {
+          weakness METAL
+          move "Fairy Wind", {
+            text "20 damage. "
+            energyCost PSYCHIC
+            onAttack {
+              damage 20
+            }
+          }
+          move "Double Spin", {
+            text "50× damage. Flip 2 coins. This attack does 50 damage for each heads."
+            energyCost PSYCHIC, COLORLESS, COLORLESS
+            onAttack {
+              flip 2, { damage 50 }
+            }
+          }
+        };
       case FLORGES_73:
-        return copy(EeveeHeroes.FLORGES_39, this);
+        return evolution(this, from: "Floette", hp: HP130, type: P, retreatCost: 2) {
+          weakness METAL
+          bwAbility "Rapid Strike Connection", {
+            text "As often as you like during your turn, you may move an Energy from 1 of your Pokémon to 1 of your Rapid Strike Pokémon."
+            actionA {
+              assert my.all.any { it.rapidStrike } : "You have no Rapid Strike Pokémon in play"
+              assert my.all.any { it.cards.energyCount C } : "You have no Pokémon with Energy attached"
+              powerUsed()
+              moveEnergy my.all.findAll { it.cards.energyCount C }, my.all.findAll { it.rapidStrike }
+            }
+          }
+          move "Wonder Shine", {
+            text "110 damage. Your opponent's Active Pokémon is now Confused."
+            energyCost PSYCHIC, COLORLESS, COLORLESS
+            onAttack {
+              damage 110
+              applyAfterDamage CONFUSED
+            }
+          }
+        };
       case SYLVEON_V_74:
-        return copy(EeveeHeroes.SYLVEON_V_40, this);
+        return basic(this, hp: HP200, type: P, retreatCost: 1) {
+          weakness METAL
+          bwAbility "Dream Gift", {
+            text "Once during your turn, you may search your deck for an Item card, reveal it, and put it into your hand. Then, shuffle your deck. If you use this Ability, your turn ends."
+            actionA {
+              checkLastTurn()
+              assert deck : "Your deck is empty"
+              powerUsed()
+              def card = deck.search text, { it.cardTypes.is ITEM }
+              card.showToOpponent bg, text
+              card.moveTo hand
+              usingThisAbilityEndsTurn delegate
+            }
+          }
+          move "Magical Shot", {
+            text "60 damage. "
+            energyCost COLORLESS, COLORLESS
+            onAttack {
+              damage 60
+            }
+          }
+        };
       case SYLVEON_VMAX_75:
-        return copy(EeveeHeroes.SYLVEON_VMAX_41, this);
+        return evolution(this, from: "Sylveon V", hp: HP310, type: P, retreatCost: 2) {
+          weakness METAL
+          move "Precious Touch", {
+            text "Attach an Energy card from your hand to 1 of your Benched Pokémon. If you do, heal 120 damage from that Pokémon."
+            energyCost PSYCHIC
+            attackRequirement {
+              assert hand.any { it.cardTypes.is ENERGY } : "No Energy in hand"
+            }
+            onAttack {
+              // "If you do": nothing is healed when no Energy card was attached (no Benched Pokémon, or the attachment was
+              // prevented, e.g. by Honchkrow-GX UNB 109's Ruler of the Night)
+              def attached = attachEnergyFrom(hand, my.bench)
+              if (attached) {
+                def (energy, pcs) = attached
+                if (energy && pcs instanceof PokemonCardSet && pcs.cards.containsAll(energy)) {
+                  heal 120, pcs
+                }
+              }
+            }
+          }
+          move "Max Harmony", {
+            text "70+ damage. This attack does 30 more damage for each different type of Pokémon on your Bench."
+            energyCost COLORLESS, COLORLESS, COLORLESS
+            onAttack {
+              damage 70
+              def types = [] as TypeSet
+              bench.each {
+                def currentTypes = it.types.findAll { !types.contains(it) }
+                if (currentTypes) {
+                  damage 30 * currentTypes.size()
+                  types.addAll currentTypes
+                }
+              }
+            }
+          }
+        };
       case PUMPKABOO_76:
-        return copy(SkyscrapingPerfection.PUMPKABOO_16, this);
+        return basic(this, hp: HP060, type: P, retreatCost: 2) {
+          weakness DARKNESS
+          resistance FIGHTING, MINUS30
+          bwAbility "Pumpkin Pit", {
+            text "When you play this Pokémon from your hand onto your Bench during your turn, you may discard a Stadium in play."
+            onActivate {reason ->
+              if (reason == PLAY_FROM_HAND && bg().stadiumInfoStruct?.stadiumCard && confirm("Use $thisAbility.name?")) {
+                powerUsed()
+                discardStadium()
+              }
+            }
+          }
+          move "Stampede", {
+            text "20 damage. "
+            energyCost COLORLESS, COLORLESS
+            onAttack {
+              damage 20
+            }
+          }
+        };
       case GOURGEIST_77:
-        return copy(SkyscrapingPerfection.GOURGEIST_17, this);
+        return evolution(this, from: "Pumpkaboo", hp: HP120, type: P, retreatCost: 2) {
+          weakness DARKNESS
+          resistance FIGHTING, MINUS30
+          move "Pandemonium", {
+            text "60× damage. Reveal the top 6 cards of your deck. This attack does 60 damage for each [P] Pokémon you find there. Then, shuffle those Pokémon back into your deck and discard the other cards."
+            energyCost COLORLESS, COLORLESS
+            attackRequirement {
+              assert deck : "Deck is empty"
+            }
+            onAttack {
+              def revealedCards = deck.subList 0, 6
+              revealedCards.showToOpponent("Top 6 cards of your opponent's Deck.").showToMe("Top 6 cards of your Deck")
+              def pokemonCards = revealedCards.filterByAllType POKEMON, _PSYCHIC_
+              damage 60 * pokemonCards.size()
+              revealedCards.getExcludedList(pokemonCards).discard()
+              pokemonCards.moveTo deck
+              shuffleDeck()
+            }
+          }
+        };
       case CUTIEFLY_78:
         return basic(this, hp: HP030, type: P, retreatCost: 0) {
           weakness METAL
@@ -933,13 +1873,108 @@ enum EvolvingSkies implements LogicCardInfo {
           }
         };
       case MARSHADOW_80:
-        return copy(EeveeHeroes.MARSHADOW_44, this);
+        return basic(this, hp: HP080, type: P, retreatCost: 1) {
+          weakness DARKNESS
+          resistance FIGHTING, MINUS30
+          move "Rapid Hunt", {
+            text "Search your deck for up to 2 Rapid Strike cards, reveal them, and put them into your hand. Then, shuffle your deck."
+            energyCost COLORLESS
+            attackRequirement {
+              assert deck : "Your deck is empty"
+            }
+            onAttack {
+              def cards = deck.search max:2, { it.cardTypes.is RAPID_STRIKE }
+              cards.showToOpponent bg, text
+              cards.moveTo hand
+            }
+          }
+          move "Shadow Flicker", {
+            text "10 damage. If the Defending Pokémon is Knocked Out during your next turn, take 1 more Prize card."
+            energyCost COLORLESS
+            onAttack {
+              damage 10
+              additionalPrizesIfDefendingKnockedOutNextTurn 1, delegate
+            }
+          }
+        };
       case HITMONCHAN_81:
-        return copy(SkyscrapingPerfection.HITMONCHAN_18, this);
+        return basic(this, hp: HP110, type: F, retreatCost: 1) {
+          weakness PSYCHIC
+          move "Clean Hit", {
+            text "20+ damage. If your opponent's Active Pokémon is an Evolution Pokémon, this attack does 50 more damage."
+            energyCost FIGHTING
+            onAttack {
+              damage 20
+              if (defending.realEvolution) damage 50
+            }
+          }
+          move "Bullet Straight Punch", {
+            text "40 damage. This attack's damage isn't affected by Resistance."
+            energyCost FIGHTING, COLORLESS
+            onAttack {
+              noResistanceDamage 40, defending
+            }
+          }
+        };
       case GALARIAN_ZAPDOS_82:
-        return copy(SkyscrapingPerfection.GALARIAN_ZAPDOS_19, this);
+        return basic(this, hp: HP110, type: F, retreatCost: 0) {
+          weakness PSYCHIC
+          bwAbility "Strong Legs Charge", {
+            text "When you play this Pokémon from your hand onto your Bench during your turn, you may attach up to 2 [F] Energy cards from your hand to this Pokémon."
+            onActivate {reason ->
+              if(reason == PLAY_FROM_HAND && my.hand.filterByEnergyType(F) && confirm("Use $thisAbility.name?")) {
+                powerUsed()
+                attachEnergyFrom max:2, type: F, my.hand, self
+              }
+            }
+          }
+          move "Zapper Kick", {
+            text "70 damage. You may discard all Energy from this Pokémon. If you do, your opponent's Active Pokémon is now Paralyzed."
+            energyCost FIGHTING, FIGHTING, COLORLESS
+            onAttack {
+              damage 70
+              if (self.cards.filterByType(ENERGY) && confirm("Discard all Energy from this Pokémon to paralyze the defending Pokémon?")) {
+                afterDamage {
+                  discardAllSelfEnergy()
+                  apply PARALYZED
+                }
+              }
+            }
+          }
+        };
       case MEDICHAM_V_83:
-        return copy(BlueSkyStream.MEDICHAM_V_36, this);
+        return basic(this, hp: HP210, type: F, retreatCost: 2) {
+          weakness PSYCHIC
+          move "Yoga Loop", {
+            text "Put 2 damage counters on 1 of your opponent's Pokémon. If your opponent's Pokémon is Knocked Out by this attack, take another turn after this one. (Skip Pokémon Checkup.) If 1 of your Pokémon used Yoga Loop during your last turn, this attack can't be used."
+            energyCost COLORLESS, COLORLESS
+            attackRequirement {
+              assert self.owner.pbg.lastTurnMove != thisMove.name : "If 1 of your Pokémon used $thisMove.name during your last turn, this attack can't be used"
+            }
+            onAttack {
+              def tar = opp.all.select "Put 2 damage counters on 1 of your opponent's Pokemon"
+              directDamage 20, tar
+              afterDamage {
+                if (tar.slatedToKO) {
+                  delayed(priority: FIRST) {
+                    before BEGIN_TURN, {
+                      // BetweenTurns has already recorded the attack used this turn (lastTurnMove): Yoga Loop, or the
+                      // attack that copied it, which doesn't count as Yoga Loop (official Japanese Q&A; F584)
+                      takeTurnAsCurrentPlayer(delegate, ef, "$thisMove.name started a new turn!")
+                    }
+                  }
+                }
+              }
+            }
+          }
+          move "Smash Uppercut", {
+            text "100 damage. This attack's damage isn't affected by Resistance."
+            energyCost FIGHTING, COLORLESS, COLORLESS
+            onAttack {
+              noResistanceDamage 100, defending
+            }
+          }
+        };
       case HIPPOPOTAS_84:
         return basic(this, hp: HP100, type: F, retreatCost: 4) {
           weakness GRASS
@@ -1073,15 +2108,111 @@ enum EvolvingSkies implements LogicCardInfo {
           }
         };
       case LYCANROC_V_91:
-        return copy(SkyscrapingPerfection.LYCANROC_V_24, this);
+        return basic(this, hp: HP200, type: F, retreatCost: 1) {
+          weakness GRASS
+          move "Rock Throw", {
+            text "40 damage. "
+            energyCost FIGHTING
+            onAttack {
+              damage 40
+            }
+          }
+          move "Crashing Fangs", {
+            text "200 damage. During your next turn, this Pokémon can't attack."
+            energyCost FIGHTING, FIGHTING, COLORLESS
+            onAttack {
+              damage 200
+              cantAttackNextTurn self
+            }
+          }
+        };
       case LYCANROC_VMAX_92:
-        return copy(SkyscrapingPerfection.LYCANROC_VMAX_25, this);
+        return evolution(this, from: "Lycanroc V", hp: HP320, type: F, retreatCost: 1) {
+          weakness GRASS
+          move "Hunting Claw", {
+            text "Knock Out 1 of your opponent's Pokémon in play that has 60 HP or less remaining."
+            energyCost FIGHTING
+            attackRequirement {
+              assert opp.all.any { it.remainingHP.value <= 60 } : "No opponent Pokémon with 60 HP or less remaining"
+            }
+            onAttack {
+              def target = opp.all.findAll { it.remainingHP.value <= 60 }.select text
+              new Knockout(target).run(bg)
+            }
+          }
+          move "Max Edge", {
+            text "190 damage. This attack also does 30 damage to 1 of your opponent's Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+            energyCost FIGHTING, FIGHTING, COLORLESS
+            onAttack {
+              damage 190
+              if (opp.bench) damage 30, opp.bench.select("This attack also does 30 damage to 1 of your opponent's Benched Pokémon.")
+            }
+          }
+        };
       case GALARIAN_MOLTRES_93:
-        return copy(SkyscrapingPerfection.GALARIAN_MOLTRES_26, this);
+        return basic(this, hp: HP120, type: D, retreatCost: 2) {
+          weakness GRASS
+          bwAbility "Malevolent Charge", {
+            text "When you play this Pokémon from your hand onto your Bench during your turn, you may attach up to 2 [D] Energy cards from your hand to this Pokémon."
+            onActivate {reason ->
+              if(reason == PLAY_FROM_HAND && my.hand.filterByEnergyType(D) && confirm("Use $thisAbility.name?")) {
+                powerUsed()
+                attachEnergyFrom max:2, type: D, my.hand, self
+              }
+            }
+          }
+          move "Fiery Wrath", {
+            text "20+ damage. This attack does 50 more damage for each Prize card your opponent has taken."
+            energyCost DARKNESS, DARKNESS, COLORLESS
+            onAttack {
+              damage 20
+              damage 50 * opp.prizeCardSet.takenCount
+            }
+          }
+        };
       case UMBREON_V_94:
-        return copy(EeveeHeroes.UMBREON_V_47, this);
+        return basic(this, hp: HP200, type: D, retreatCost: 2) {
+          weakness GRASS
+          move "Mean Look", {
+            text "30 damage. During your opponent's next turn, the Defending Pokémon can't retreat."
+            energyCost DARKNESS
+            onAttack {
+              damage 30
+              cantRetreat defending
+            }
+          }
+          move "Moonlight Blade", {
+            text "80+ damage. If this Pokémon has any damage counters on it, this attack does 80 more damage."
+            energyCost DARKNESS, COLORLESS, COLORLESS
+            onAttack {
+              damage 80
+              if (self.numberOfDamageCounters) damage 80
+            }
+          }
+        };
       case UMBREON_VMAX_95:
-        return copy(EeveeHeroes.UMBREON_VMAX_48, this);
+        return evolution(this, from: "Umbreon V", hp: HP310, type: D, retreatCost: 2) {
+          weakness GRASS
+          bwAbility "Dark Signal", {
+            text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may switch 1 of your opponent's Benched Pokémon with their Active Pokémon."
+            onActivate {r->
+              if (r==PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner) {
+                def tar = opp.bench.select text + " Cancel to keep $opp.active the Active Pokémon.", false
+                if (tar) {
+                  powerUsed()
+                  sw opp.active, tar, SRC_ABILITY
+                }
+              }
+            }
+          }
+          move "Max Darkness", {
+            text "160 damage. "
+            energyCost DARKNESS, COLORLESS, COLORLESS
+            onAttack {
+              damage 160
+            }
+          }
+        };
       case NUZLEAF_96:
         return evolution(this, from: "Seedot", hp: HP080, type: D, retreatCost: 1) {
           weakness GRASS
@@ -1154,57 +2285,548 @@ enum EvolvingSkies implements LogicCardInfo {
           }
         };
       case GARBODOR_V_100:
-        return copy(SkyscrapingPerfection.GARBODOR_V_30, this);
+        return basic(this, hp: HP210, type: D, retreatCost: 3) {
+          weakness FIGHTING
+          move "Trash Stench", {
+            text "40 damage. Your opponent's Active Pokémon is now Poisoned. During your opponent's next turn, that Pokémon can't retreat."
+            energyCost DARKNESS, COLORLESS
+            onAttack {
+              damage 40
+              applyAfterDamage POISONED
+              cantRetreat defending
+            }
+          }
+          move "Sludge Bomb", {
+            text "130 damage. "
+            energyCost DARKNESS, DARKNESS, COLORLESS
+            onAttack {
+              damage 130
+            }
+          }
+        };
       case GARBODOR_VMAX_101:
-        return copy(SkyscrapingPerfection.GARBODOR_VMAX_31, this);
+        return evolution(this, from: "Garbodor V", hp: HP330, type: D, retreatCost: 3) {
+          weakness FIGHTING
+          bwAbility "Rubbish Collecting", {
+            text "This Pokémon may have up to 2 Pokémon Tools attached to it. If it loses this Ability, discard Pokémon Tools from it until only 1 remains."
+            def key = "OMEGA_DOUBLE_"
+            onActivate {
+              bg.em().storeObject(key + self.hashCode(), 1) //logic is in PlayPokemonTool
+            }
+            onDeactivate {
+              bg.em().storeObject(key + self.hashCode(), null)
+              while (self.cards.filterByType(POKEMON_TOOL).size() > 1) {
+                self.cards.filterByType(POKEMON_TOOL).select("Select to discard", { true }, self.owner).discard()
+              }
+            }
+          }
+          move "G-Max Malodor", {
+            text "120 damage. Your opponent's Active Pokémon is now Poisoned. During your opponent's next turn, that Pokémon can't retreat."
+            energyCost DARKNESS, COLORLESS
+            onAttack {
+              damage 120
+              applyAfterDamage POISONED
+              cantRetreat defending
+            }
+          }
+        };
       case ZORUA_102:
-        return copy(EeveeHeroes.ZORUA_49, this);
+        return basic(this, hp: HP070, type: D, retreatCost: 1) {
+          weakness GRASS
+          move "Rear Kick", {
+            text "30 damage. "
+            energyCost COLORLESS, COLORLESS
+            onAttack {
+              damage 30
+            }
+          }
+        };
       case ZOROARK_103:
-        return copy(EeveeHeroes.ZOROARK_50, this);
+        return evolution(this, from: "Zorua", hp: HP120, type: D, retreatCost: 2) {
+          weakness GRASS
+          bwAbility "Phantom Transformation", {
+            text "Once during your turn, you may choose a Stage 1 Pokémon, except any Zoroark, from your discard pile. If you do, discard this Pokémon and all attached cards, and put the chosen Pokémon in its place."
+            actionA {
+              checkLastTurn()
+              assert my.discard.any { it.cardTypes.is(STAGE1) && it.name != "Zoroark" } : "No Stage 1 Pokémon in your discard pile"
+              powerUsed()
+              def newPcs = my.discard.select text, { it.cardTypes.is(STAGE1) && it.name != "Zoroark" }
+              self.cards.discard()
+              newPcs.moveTo self.cards
+            }
+          }
+          move "Night Daze", {
+            text "70 damage. "
+            energyCost COLORLESS, COLORLESS
+            onAttack {
+              damage 70
+            }
+          }
+        };
       case NICKIT_104:
-        return copy(SkyscrapingPerfection.NICKIT_32, this);
+        return basic(this, hp: HP070, type: D, retreatCost: 1) {
+          weakness GRASS
+          move "Tail Whap", {
+            text "30 damage. "
+            energyCost COLORLESS, COLORLESS
+            onAttack {
+              damage 30
+            }
+          }
+        };
       case THIEVUL_105:
-        return copy(SkyscrapingPerfection.THIEVUL_33, this);
+        return evolution(this, from: "Nickit", hp: HP100, type: D, retreatCost: 1) {
+          weakness GRASS
+          bwAbility "Fumbling Hands", {
+            text "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may have each player shuffle their hand and put it on the bottom of their deck. If either player put any cards on the bottom of their deck in this way, each player draws 4 cards."
+            onActivate { reason ->
+              def handWithoutThisCard = my.hand.getExcludedList(thisCard)
+              if (reason == PLAY_FROM_HAND && self.evolution && bg.currentTurn == self.owner && (handWithoutThisCard.notEmpty || opp.hand.notEmpty) && confirm("Use $thisAbility?")) {
+                if (opp.hand){
+                  bc "${opp.owner.getPlayerUsername(bg)} shuffled their hand of ${opp.hand.size()} cards, and put it at the bottom of their deck."
+                  opp.hand.shuffledCopy().moveTo(suppressLog: true, opp.deck)
+                } else {
+                  bc "${opp.owner.getPlayerUsername(bg)} doesn't have any cards in hand, only needs to draw."
+                }
+                draw 4, TargetPlayer.OPPONENT
+
+                if (handWithoutThisCard) {
+                  bc "${my.owner.getPlayerUsername(bg)} shuffled their hand of ${handWithoutThisCard.size()} cards, and put it at the bottom of their deck."
+                  my.hand.getExcludedList(thisCard).shuffledCopy().moveTo(suppressLog: true, my.deck)
+                } else {
+                  bc "${my.owner.getPlayerUsername(bg)} doesn't have any cards in hand, only needs to draw."
+                }
+                draw 4
+              }
+            }
+          }
+          move "Tail Smack", {
+            text "60 damage. "
+            energyCost COLORLESS, COLORLESS
+            onAttack {
+              damage 60
+            }
+          }
+        };
       case ALTARIA_106:
-        return copy(SkyscrapingPerfection.ALTARIA_40, this);
+        return evolution(this, from: "Swablu", hp: HP090, type: N, retreatCost: 0) {
+          bwAbility "Tempting Tune", {
+            text "Once during your turn, you may search your deck for a Supporter card, reveal it, shuffle your deck, then put that card on top of it."
+            actionA {
+              checkLastTurn()
+              assert deck : "Deck is empty"
+              powerUsed()
+              def tar = deck.search { it.cardTypes.is SUPPORTER }
+              tar.showToOpponent(bg, "Supporter Card placed on top of opponent's deck")
+              tar.moveTo addToTop:true, deck
+            }
+          }
+          move "Glide", {
+            text "60 damage. "
+            energyCost WATER, METAL
+            onAttack {
+              damage 60
+            }
+          }
+        };
       case BAGON_107:
-        return copy(BlueSkyStream.BAGON_43, this);
+        return basic(this, hp: HP070, type: N, retreatCost: 2) {
+          move "Gnaw", {
+            text "10 damage. "
+            energyCost COLORLESS
+            onAttack {
+              damage 10
+            }
+          }
+          move "Headbutt", {
+            text "30 damage. "
+            energyCost FIRE, WATER
+            onAttack {
+              damage 30
+            }
+          }
+        };
       case SHELGON_108:
-        return copy(BlueSkyStream.SHELGON_44, this);
+        return evolution(this, from: "Bagon", hp: HP090, type: N, retreatCost: 3) {
+          move "Hard Roll", {
+            text "50 damage. Flip a coin. If heads, during your opponent's next turn, prevent all damage from and effects of attacks done to this Pokémon."
+            energyCost FIRE, WATER
+            onAttack {
+              damage 50
+              flip {
+                preventAllEffectsNextTurn()
+              }
+            }
+          }
+        };
       case SALAMENCE_109:
-        return copy(BlueSkyStream.SALAMENCE_45, this);
+        return evolution(this, from: "Shelgon", hp: HP170, type: N, retreatCost: 2) {
+          bwAbility "Intimidating Roar", {
+            text "Once during your turn, you may have your opponent switch their Active Pokémon with 1 of their Benched Pokémon."
+            actionA {
+              checkLastTurn()
+              assert opp.bench
+              powerUsed()
+              sw opp.active, opp.bench.oppSelect("Select new Active Pokémon."), SRC_ABILITY
+            }
+          }
+          move "Fierce Dragon", {
+            text "100+ damage. If your opponent's Active Pokémon already has any damage counters on it, this attack does 120 more damage."
+            energyCost FIRE, WATER
+            onAttack {
+              damage 100
+              if (defending.numberOfDamageCounters) damage 120
+            }
+          }
+        };
       case RAYQUAZA_V_110:
-        return copy(BlueSkyStream.RAYQUAZA_V_46, this);
+        return basic(this, hp: HP210, type: N, retreatCost: 2) {
+          move "Dragon Pulse", {
+            text "40 damage. Discard the top 2 cards of your deck."
+            energyCost LIGHTNING
+            onAttack {
+              damage 40
+              deck.subList(0, 2).discard()
+            }
+          }
+          move "Spiral Burst", {
+            text "20+ damage. You may discard up to 2 basic [R] Energy or up to 2 basic [L] Energy from this Pokémon. This attack does 80 more damage for each card you discarded in this way."
+            energyCost FIRE, LIGHTNING
+            onAttack {
+              damage 20
+              def selectedEnergy = self.cards.select(min:0, max:2, "You may discard up to 2 basic [R] Energy or up to 2 basic [L] Energy from this Pokémon", { Card card ->
+                card.cardTypes.basicEnergy && (card.containsType(R) || card.containsType(L))
+              }, bg.currentTurn, { CardList list ->
+                def typeMap = ["R": 0, "L": 0]
+                list.each {
+                  if(it.containsType(R)) typeMap.R += 1
+                  else if (it.containsType(L)) typeMap.L += 1
+                }
+                // Cannot discard both R and L Energy https://compendium.pokegym.net/ruling/1596/
+                (!typeMap.R && !typeMap.L) || (typeMap.R && !typeMap.L) || (!typeMap.R && typeMap.L)
+              })
+
+              if (selectedEnergy) {
+                damage 80 * selectedEnergy.size()
+                afterDamage {
+                  selectedEnergy.discard()
+                }
+              }
+            }
+          }
+        };
       case RAYQUAZA_VMAX_111:
-        return copy(BlueSkyStream.RAYQUAZA_VMAX_47, this);
+        return evolution(this, from: "Rayquaza V", hp: HP320, type: N, retreatCost: 2) {
+          bwAbility "Azure Pulse", {
+            text "Once during your turn, you may discard your hand and draw 3 cards."
+            actionA {
+              checkLastTurn()
+              powerUsed()
+              my.hand.discard()
+              draw 3
+            }
+          }
+          move "Max Burst", {
+            text "20+ damage. You may discard any amount of basic [R] Energy or any amount of basic [L] Energy from this Pokémon. This attack does 80 more damage for each card you discarded in this way."
+            energyCost FIRE, LIGHTNING
+            onAttack {
+              damage 20
+              def selectedEnergy = self.cards.select(min:0, max:self.cards.filterByType(BASIC_ENERGY).size(),
+                "You may discard any amount of basic [R] Energy or any amount of basic [L] Energy from this Pokémon",
+                { Card card ->
+                card.cardTypes.basicEnergy && (card.containsType(R) || card.containsType(L))
+              }, bg.currentTurn, { CardList list ->
+                def typeMap = ["R": 0, "L": 0]
+                list.each {
+                  if(it.containsType(R)) typeMap.R += 1
+                  else if (it.containsType(L)) typeMap.L += 1
+                }
+                // Cannot discard both R and L Energy https://compendium.pokegym.net/ruling/1596/
+                (!typeMap.R && !typeMap.L) || (typeMap.R && !typeMap.L) || (!typeMap.R && typeMap.L)
+              })
+
+              if (selectedEnergy) {
+                damage 80 * selectedEnergy.size()
+                afterDamage {
+                  selectedEnergy.discard()
+                }
+              }
+            }
+          }
+        };
       case DIALGA_112:
-        return copy(SkyscrapingPerfection.DIALGA_41, this);
+        return basic(this, hp: HP130, type: N, retreatCost: 2) {
+          move "Chrono Wind", {
+            text "80 damage. If the Defending Pokémon is a Pokémon V, it can't attack during your opponent's next turn."
+            energyCost COLORLESS, COLORLESS, COLORLESS
+            onAttack {
+              damage 80
+              if (defending.pokemonV) {
+                cantAttackNextTurn defending
+              }
+            }
+          }
+          move "Heavy Impact", {
+            text "210 damage. "
+            energyCost PSYCHIC, METAL, METAL, COLORLESS
+            onAttack {
+              damage 210
+            }
+          }
+        };
       case DEINO_113:
-        return copy(SkyscrapingPerfection.DEINO_42, this);
+        return basic(this, hp: HP060, type: N, retreatCost: 1) {
+          move "Call for Family", {
+            text "Search your deck for a Basic Pokémon and put it onto your Bench. Then, shuffle your deck."
+            energyCost DARKNESS
+            callForFamily basic:true, 1, delegate
+          }
+          move "Bite", {
+            text "30 damage. "
+            energyCost PSYCHIC, DARKNESS
+            onAttack {
+              damage 30
+            }
+          }
+        };
       case ZWEILOUS_114:
-        return copy(SkyscrapingPerfection.ZWEILOUS_43, this);
+        return evolution(this, from: "Deino", hp: HP100, type: N, retreatCost: 2) {
+          move "Bite", {
+            text "40 damage. "
+            energyCost PSYCHIC, DARKNESS
+            onAttack {
+              damage 40
+            }
+          }
+          move "Dragon Headbutt", {
+            text "100 damage. "
+            energyCost PSYCHIC, DARKNESS, COLORLESS, COLORLESS
+            onAttack {
+              damage 100
+            }
+          }
+        };
       case HYDREIGON_115:
-        return copy(SkyscrapingPerfection.HYDREIGON_44, this);
+        return evolution(this, from: "Zweilous", hp: HP170, type: N, retreatCost: 3) {
+          move "Dragon Counter", {
+            text "20+ damage. This attack does 100 more damage for each Prize card your opponent took during their last turn."
+            energyCost PSYCHIC, DARKNESS
+            onAttack {
+              damage 20
+              damage 100 * bg.lastTurnTakePrize
+            }
+          }
+          move "Pitch-Black Fangs", {
+            text "210 damage. "
+            energyCost PSYCHIC, DARKNESS, COLORLESS, COLORLESS
+            onAttack {
+              damage 210
+            }
+          }
+        };
       case KYUREM_116:
-        return copy(SkyscrapingPerfection.KYUREM_45, this);
+        return basic(this, hp: HP120, type: N, retreatCost: 2) {
+          move "Extreme Freeze", {
+            text "60× damage. Discard any amount of [W] Energy from your Pokémon. This attack does 60 damage for each card you discarded in this way."
+            energyCost WATER, WATER, METAL
+            attackRequirement {
+              assert my.all.any { it.cards.energyCount W } : "No Pokémon with [W] Energy attached"
+            }
+            onAttack {
+              // the chosen Energy stays attached until it's discarded after the damage
+              def chosen = new CardList()
+              while (1) {
+                def tar = my.all.findAll { it.cards.filterByEnergyType(W).any { !chosen.contains(it) } }
+                if (!tar) break
+                def pcs = tar.select("Pokémon that has [W] energy to discard. Cancel to stop", false)
+                if (!pcs) break
+                chosen.addAll(pcs.cards.filterByEnergyType(W).findAll { !chosen.contains(it) }.select("[W] Energy to discard"))
+              }
+              damage 60 * chosen.size()
+              discardAfterDamage chosen
+            }
+          }
+        };
       case NOIVERN_V_117:
-        return copy(SkyscrapingPerfection.NOIVERN_V_46, this);
+        return basic(this, hp: HP200, type: N, retreatCost: 0) {
+          move "Boomburst", {
+            text "This attack does 20 damage to each of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+            energyCost PSYCHIC
+            onAttack {
+              damage 20, opp.all
+            }
+          }
+          move "Synchro Loud", {
+            text "60+ damage. If you have the same number of cards in your hand as your opponent, this attack does 120 more damage."
+            energyCost PSYCHIC, DARKNESS
+            onAttack {
+              damage 60
+              if (my.hand.size() == opp.hand.size()) damage 120
+            }
+          }
+        };
       case ZYGARDE_118:
-        return copy(BlueSkyStream.ZYGARDE_48, this);
+        return basic(this, hp: HP130, type: N, retreatCost: 2) {
+          move "Bite", {
+            text "30 damage. "
+            energyCost COLORLESS
+            onAttack {
+              damage 30
+            }
+          }
+          move "Judgment Surge", {
+            text "This attack does 40 damage to 1 of your opponent's Pokémon for each Prize card your opponent has taken. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+            energyCost GRASS, FIGHTING, COLORLESS
+            attackRequirement {
+              assert opp.prizeCardSet.takenCount : "Opponent has not taken any Prize cards yet"
+            }
+            onAttack {
+              def tar = opp.all.select text
+              damage 40 * opp.prizeCardSet.takenCount, tar
+            }
+          }
+        };
       case DRAMPA_119:
-        return copy(SkyscrapingPerfection.DRAMPA_47, this);
+        return basic(this, hp: HP120, type: N, retreatCost: 2) {
+          move "Corkscrew Punch", {
+            text "30 damage. "
+            energyCost COLORLESS
+            onAttack {
+              damage 30
+            }
+          }
+          move "Berserk", {
+            text "70+ damage. If your Benched Pokémon have any damage counters on them, this attack does 90 more damage."
+            energyCost WATER, FIGHTING
+            onAttack {
+              damage 70
+              if (bench.any { it.numberOfDamageCounters }) damage 90
+            }
+          }
+        };
       case FLAPPLE_120:
-        return copy(BlueSkyStream.FLAPPLE_50, this);
+        return evolution(this, from: "Applin", hp: HP080, type: N, retreatCost: 1) {
+          move "Acidic Mucus", {
+            text "50× damage. This attack does 50 damage for each of your opponent's Pokémon in play that has an Ability."
+            energyCost COLORLESS
+            attackRequirement {
+              assert opp.all.any { it.hasModernAbility() } : "None of your opponent's Pokémon has an Ability"
+            }
+            onAttack {
+              damage 50 * opp.all.count { it.hasModernAbility() }
+            }
+          }
+          move "Fighting Tackle", {
+            text "80+ damage. If your opponent's Active Pokémon is a Pokémon V, this attack does 80 more damage."
+            energyCost GRASS, FIRE
+            onAttack {
+              damage 80
+              if (defending.pokemonV) damage 80
+            }
+          }
+        };
       case APPLETUN_121:
-        return copy(BlueSkyStream.APPLETUN_51, this);
+        return evolution(this, from: "Applin", hp: HP090, type: N, retreatCost: 3) {
+          move "Thick Mucus", {
+            text "70× damage. This attack does 70 damage for each Special Energy card attached to your opponent's Pokémon."
+            energyCost COLORLESS
+            attackRequirement {
+              assert opp.all.any { it.cards.filterByType(SPECIAL_ENERGY) } : "None of your opponent's Pokémon has Special Energy attached"
+            }
+            onAttack {
+              // each Special Energy card counts, not each Pokémon that has one
+              damage 70 * opp.all.sum { it.cards.filterByType(SPECIAL_ENERGY).size() }
+            }
+          }
+          move "Fighting Tackle", {
+            text "80+ damage. If your opponent's Active Pokémon is a Pokémon V, this attack does 80 more damage."
+            energyCost GRASS, FIRE
+            onAttack {
+              damage 80
+              if (defending.pokemonV) damage 80
+            }
+          }
+        };
       case DURALUDON_V_122:
-        return copy(SkyscrapingPerfection.DURALUDON_V_48, this);
+        return basic(this, hp: HP220, type: N, retreatCost: 2) {
+          move "Metal Claw", {
+            text "70 damage. "
+            energyCost FIGHTING, METAL
+            onAttack {
+              damage 70
+            }
+          }
+          move "Breaking Swipe", {
+            text "140 damage. During your opponent's next turn, the Defending Pokémon's attacks do 30 less damage (before applying Weakness and Resistance)."
+            energyCost FIGHTING, METAL, METAL
+            onAttack {
+              damage 140
+              reduceDamageFromDefendingNextTurn hp(30), thisMove, defending
+            }
+          }
+        };
       case DURALUDON_VMAX_123:
-        return copy(SkyscrapingPerfection.DURALUDON_VMAX_49, this);
+        return evolution(this, from: "Duraludon V", hp: HP330, type: N, retreatCost: 3) {
+          bwAbility "Skyscraper", {
+            text "Prevent all damage done to this Pokémon by attacks from your opponent's Pokémon that have Special Energy attached."
+            delayedA {
+              before APPLY_ATTACK_DAMAGES, {
+                bg.dm().each {
+                  if(it.to == self && it.from.cards.filterByType(SPECIAL_ENERGY) && it.from.owner == self.owner.opposite && it.dmg.value && it.notNoEffect) {
+                    bc "$thisAbility.name prevents damage from Pokémon with Special Energy attached."
+                    it.dmg = hp(0)
+                  }
+                }
+              }
+            }
+          }
+          move "G-Max Pulverization", {
+            text "220 damage. This attack's damage isn't affected by any effects on your opponent's Active Pokémon."
+            energyCost FIGHTING, METAL, METAL
+            onAttack {
+              shredDamage 220
+            }
+          }
+        };
       case REGIDRAGO_124:
-        return copy(BlueSkyStream.REGIDRAGO_52, this);
+        return basic(this, hp: HP130, type: N, retreatCost: 3) {
+          move "Hammer In", {
+            text "30 damage. "
+            energyCost COLORLESS, COLORLESS
+            onAttack {
+              damage 30
+            }
+          }
+          move "Dragon Energy", {
+            text "240- damage. This attack does 20 less damage for each damage counter on this Pokémon."
+            energyCost GRASS, GRASS, FIRE
+            onAttack {
+              damage 240 - 20 * self.numberOfDamageCounters
+            }
+          }
+        };
       case EEVEE_125:
-        return copy(EeveeHeroes.EEVEE_58, this);
+        return basic(this, hp: HP070, type: C, retreatCost: 1) {
+          weakness FIGHTING
+          move "Vee-Search", {
+            text "Search your deck for up to 3 Pokémon V, reveal them, and put them into your hand. Then, shuffle your deck."
+            energyCost COLORLESS
+            attackRequirement {
+              assert deck : "Your deck is empty"
+            }
+            onAttack {
+              // deck.search shuffles the deck; the log reveals the cards put into the hand (forum 17511)
+              deck.search(max: 3, { (it as Card).cardTypes.isIn POKEMON_V, VMAX, POKEMON_VSTAR }).moveTo(hand)
+            }
+          }
+          move "Stampede", {
+            text "20 damage. "
+            energyCost COLORLESS, COLORLESS
+            onAttack {
+              damage 20
+            }
+          }
+        };
       case TEDDIURSA_126:
         return basic(this, hp: HP070, type: C, retreatCost: 2) {
           weakness FIGHTING
@@ -1235,15 +2857,101 @@ enum EvolvingSkies implements LogicCardInfo {
           }
         };
       case SMEARGLE_128:
-        return copy(EeveeHeroes.SMEARGLE_59, this);
+        return basic(this, hp: HP080, type: C, retreatCost: 1) {
+          weakness FIGHTING
+          move "Live Painting", {
+            text "30+ damage. Reveal any number of basic Energy cards from your hand. This attack does 30 more damage for each type of basic Energy you revealed in this way."
+            energyCost COLORLESS, COLORLESS
+            onAttack {
+              damage 30
+              def targets = my.hand.filterByType(BASIC_ENERGY)
+              def cards = targets.select min:0, max:targets.size(), text
+              if (cards) {
+                cards.showToOpponent(bg, "Cards revealed to increase damage $thisMove does.")
+                def types = [] as TypeSet
+                cards.each {
+                  def energyType = it.basicType
+                  if (!types.contains(energyType)) {
+                    damage 30
+                    types.add energyType
+                  }
+                }
+              }
+            }
+          }
+        };
       case SLAKOTH_129:
-        return copy(SkyscrapingPerfection.SLAKOTH_50, this);
+        return basic(this, hp: HP070, type: C, retreatCost: 2) {
+          weakness FIGHTING
+          move "Smack 'n' Slack", {
+            text "30 damage. This Pokémon is now Asleep."
+            energyCost COLORLESS, COLORLESS
+            onAttack {
+              damage 30
+              afterDamage {
+                apply ASLEEP, self
+              }
+            }
+          }
+        };
       case VIGOROTH_130:
-        return copy(SkyscrapingPerfection.VIGOROTH_51, this);
+        return evolution(this, from: "Slakoth", hp: HP090, type: C, retreatCost: 1) {
+          weakness FIGHTING
+          move "Shatter", {
+            text "20 damage. Discard a Stadium in play."
+            energyCost COLORLESS
+            onAttack {
+              damage 20
+              afterDamage {
+                discardStadium()
+              }
+            }
+          }
+          move "Slash", {
+            text "50 damage. "
+            energyCost COLORLESS, COLORLESS
+            onAttack {
+              damage 50
+            }
+          }
+        };
       case SLAKING_131:
-        return copy(SkyscrapingPerfection.SLAKING_52, this);
+        return evolution(this, from: "Vigoroth", hp: HP180, type: C, retreatCost: 4) {
+          weakness FIGHTING
+          bwAbility "Act Freely", {
+            text "If a Stadium is in play, this Pokémon can't attack."
+            delayedA {
+              before CHECK_ATTACK_REQUIREMENTS, {
+                if (self.active && bg.currentTurn == self.owner && bg.stadiumInfoStruct) {
+                  wcu "Act Freely prevents attacking."
+                  prevent()
+                }
+              }
+            }
+          }
+          move "Rout", {
+            text "120+ damage. This attack does 30 more damage for each of your opponent's Benched Pokémon."
+            energyCost COLORLESS, COLORLESS, COLORLESS
+            onAttack {
+              damage 120
+              damage 30 * opp.bench.size()
+            }
+          }
+        };
       case SWABLU_132:
-        return copy(SkyscrapingPerfection.SWABLU_53, this);
+        return basic(this, hp: HP050, type: C, retreatCost: 1) {
+          weakness LIGHTNING
+          resistance FIGHTING, MINUS30
+          move "Surprise Attack", {
+            text "30 damage. Flip a coin. If tails, this attack does nothing."
+            energyCost COLORLESS
+            onAttack {
+              flip {
+                damage 30
+              }
+            }
+          }
+        };
       case LILLIPUP_133:
         return basic(this, hp: HP060, type: C, retreatCost: 1) {
           weakness FIGHTING
@@ -1407,15 +3115,78 @@ enum EvolvingSkies implements LogicCardInfo {
           }
         };
       case AROMA_LADY_141:
-        return copy(EeveeHeroes.AROMA_LADY_66, this);
+        return supporter (this) {
+          text "Draw 2 cards. If you do, your Active Pokémon recovers from all Special Conditions.\nYou may play only 1 Supporter card during your turn."
+          onPlay {
+            draw 2
+            clearSpecialCondition active
+          }
+          playRequirement{
+            assert deck : "Your deck is empty"
+          }
+        };
       case BOOST_SHAKE_142:
-        return copy(EeveeHeroes.RAPID_SHAKE_60, this);
+        return itemCard (this) {
+          text "Search your deck for a card that evolves from 1 of your Pokémon and put it onto that Pokémon to evolve it. Then, shuffle your deck. You can use this card during your first turn or on a Pokémon that was put into play this turn. Your turn ends.\nYou may play any number of Item cards during your turn."
+          onPlay {
+            def names = my.all.findAll { bg.gm().hasEvolution(it.name) }.collect { it.name }.toSet()
+            def card = deck.search "Select card that evolves from any of $names", { card -> card.cardTypes.is(EVOLUTION) && card.predecessors.find {names.contains(it)} }
+            if(card) {
+              def list = my.all.findAll { card.first().predecessors.contains(it.name) }
+              def pcs = (list.size() == 1) ? list.first() : list.select("Evolve which Pokeémon?")
+              evolve pcs, card.first()
+            }
+            bc "${thisCard.player.getPlayerUsername(bg)}'s turn ends due to using ${thisCard}."
+            bg.gm().betweenTurns()
+          }
+          playRequirement{
+            assert my.deck : "Your deck is empty"
+            assert my.all.any { bg().gm().hasEvolution it.name } : "No Pokémon that evolve in play"
+          }
+        };
       case COPYCAT_143:
         return copy(TeamRocketReturns.COPYCAT_83, this);
       case CRYSTAL_CAVE_144:
-        return copy(SkyscrapingPerfection.CRYSTAL_CAVE_66, this);
+        return stadium (this) {
+          text "Once during each player's turn, that player may heal 30 damage from each of their [M] Pokémon and [N] Pokémon."
+          def lastTurn = 0
+          def actions = []
+          onPlay {
+            actions = action(thisCard, "Stadium: $thisCard") {
+              assert lastTurn != bg.turnCount : "You have already used $thisCard this turn"
+              def targets = my.all.findAll { it.types.containsAny([M, N] as TypeSet) && it.numberOfDamageCounters }
+              assert targets : "You have no [M] or [N] Pokémon with damage counters"
+              bc "Used $thisCard"
+              lastTurn = bg.turnCount
+              targets.each {
+                heal 30, it
+              }
+            }
+          }
+          onRemoveFromPlay{
+            actions.each { bg.gm().unregisterAction(it) }
+          }
+        };
       case DIGGING_GLOVES_145:
-        return copy(SkyscrapingPerfection.DIGGING_GLOVES_60, this);
+        return pokemonTool (this) {
+          text "The attacks of the Pokémon this card is attached to do 30 more damage to your opponent's Active [F] Pokémon (before applying Weakness and Resistance).\nYou may play any number of Item cards during your turn. Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached."
+          def eff
+          onPlay {reason->
+            eff = delayed {
+              after PROCESS_ATTACK_EFFECTS, {
+                bg.dm().each {
+                  if (it.from == self && it.to.active && it.to.owner == self.owner.opposite && it.dmg.value && it.to.types.contains(F)) {
+                    it.dmg += hp(30)
+                    bc "$thisCard +30"
+                  }
+                }
+              }
+            }
+          }
+          onRemoveFromPlay {
+            eff.unregister()
+          }
+        };
       case DREAM_BALL_146:
         return itemCard (this) {
           text "You can play this card only if you took it as a face-down Prize card, before you put it into your hand. Search your deck for a Pokémon and put it onto your Bench. Then, shuffle your deck.\nYou may play any number of Item cards during your turn."
@@ -1445,9 +3216,48 @@ enum EvolvingSkies implements LogicCardInfo {
           }
         };
       case ELEMENTAL_BADGE_147:
-        return copy(EeveeHeroes.ELEMENTAL_BADGE_62, this);
+        return pokemonTool (this) {
+          text "If the Pokémon V this card is attached to has \"Vaporeon,\" \"Jolteon,\" or \"Flareon\" in its name, its attacks cost [C] less.\nYou may play any number of Item cards during your turn. Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached."
+          def eff
+          onPlay {reason->
+            eff = getter GET_MOVE_LIST, BEFORE_LAST, self, { h ->
+              if ( self.pokemonV && ["Flareon", "Vaporeon", "Jolteon"].any{self.name.contains(it)} ) {
+                def list = []
+                for (move in h.object) {
+                  def copy = move.shallowCopy()
+                  copy.energyCost.remove C
+                  list.add copy
+                }
+                h.object = list
+              }
+            }
+          }
+          onRemoveFromPlay {
+            eff.unregister()
+          }
+        };
       case FULL_FACE_GUARD_148:
-        return copy(SkyscrapingPerfection.FULL_FACE_GUARD_62, this);
+        return pokemonTool (this) {
+          text "If the Pokémon this card is attached to has no Abilities, it takes 20 less damage from attacks from your opponent's Pokémon (after applying Weakness and Resistance).\nYou may play any number of Item cards during your turn. Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached."
+          def eff
+          onPlay {reason->
+            eff = delayed {
+              before APPLY_ATTACK_DAMAGES, {
+                if(!self.hasModernAbility()) {
+                  bg.dm().each{
+                    if(it.to == self && it.from.owner == self.owner.opposite && it.notNoEffect && it.dmg.value) {
+                      bc "$thisCard -20"
+                      it.dmg -= hp(20)
+                    }
+                  }
+                }
+              }
+            }
+          }
+          onRemoveFromPlay {
+            eff.unregister()
+          }
+        };
       case GORDIE_149:
         return supporter (this) {
           text "Look at the top 7 cards of your deck. You may reveal any number of Energy cards you find there and put them into your hand. Shuffle the other cards back into your deck.\nYou may play only 1 Supporter card during your turn."
@@ -1462,21 +3272,184 @@ enum EvolvingSkies implements LogicCardInfo {
           }
         };
       case LUCKY_ICE_POP_150:
-        return copy(BlueSkyStream.LUCKY_ICE_POP_56, this);
+        return itemCard (this) {
+          text "Heal 20 damage from your Active Pokémon. If you healed any damage in this way, flip a coin. If heads, put this Lucky Ice Pop into your hand instead of the discard pile.\nYou may play any number of Item cards during your turn."
+          onPlay {
+            def damageBefore = my.active.damage.value
+            heal 20, active
+            // "If you healed any damage in this way": no coin flip when the heal was prevented (Dyna Tree Hill CRE 135)
+            if (my.active.damage.value < damageBefore) {
+              flip {
+                delayed {
+                  before DISCARD, {
+                    if (ef.card == thisCard) {
+                      prevent()
+                      moveCard thisCard, my.hand
+                      unregister()
+                    }
+                  }
+                }
+              }
+            }
+          }
+          playRequirement {
+            assert my.active.numberOfDamageCounters : "Active Pokémon has no damage counters on it"
+          }
+        };
       case MOON_SUN_BADGE_151:
-        return copy(EeveeHeroes.MOON_AND_SUN_BADGE_64, this);
+        return pokemonTool (this) {
+          text "If the Pokémon V this card is attached to has \"Espeon\" or \"Umbreon\" in its name, whenever your opponent plays a Supporter card from their hand, prevent all effects of that card done to that Pokémon.\nYou may play any number of Item cards during your turn. Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached."
+          def eff
+          onPlay {reason->
+            eff = delayed {
+              def power = false
+              before PLAY_TRAINER, {
+                if (ef.probe) return
+                if (ef.supporter
+                && bg.currentTurn == self.owner.opposite
+                && bg.currentTurn.pbg.hand.contains(ef.cardToPlay)
+                && (self.name.contains("Espeon") || self.name.contains("Umbreon"))
+                && self.pokemonV) {
+                  power = true
+                }
+              }
+              after PLAY_TRAINER, {
+                power = false
+              }
+              before null, self, TRAINER_CARD, {
+                if (power) {
+                  if (!(ef instanceof tcgwars.logic.effect.getter.GetterEffect)) bc "$thisCard.name prevents effects from Supporter cards done to $self"
+                  prevent()
+                }
+              }
+            }
+          }
+          onRemoveFromPlay {
+            eff.unregister()
+          }
+        };
       case RAIHAN_152:
-        return copy(SkyscrapingPerfection.RAIHAN_63, this);
+        return supporter (this) {
+          text "You can play this card only if any of your Pokémon were Knocked Out during your opponent's last turn. Attach a basic Energy card from your discard pile to 1 of your Pokémon. If you do, search your deck for a card and put it into your hand. Then, shuffle your deck.\nYou may play only 1 Supporter card during your turn."
+          onPlay {
+            def (attached, to) = attachEnergyFrom(basic: true, my.discard, my.all)
+            if (attached) {
+              def card = deck.search count:1, { true }
+              card.moveTo hidden:true, hand
+              shuffleDeck()
+            }
+          }
+          playRequirement{
+            assert my.knockoutsDuringOpponentsTurn(opp.lastTurnCount) : "None of your Pokémon were Knocked Out during your opponent's last turn"
+            assert my.discard.any { it.cardTypes.is(BASIC_ENERGY) } : "No basic Energy cards in your discard pile"
+          }
+        };
       case RAPID_STRIKE_SCROLL_OF_THE_FLYING_DRAGON_153:
-        return copy(BlueSkyStream.RAPID_STRIKE_SCROLL_OF_THE_FLYING_DRAGON_62, this);
+        return pokemonTool (this) {
+          text "The Rapid Strike Pokémon this card is attached to can use the attack on this card. (You still need the necessary Energy to use this attack.)\n[R][L] Meteor\nDiscard 2 Energy from this Pokémon. This attack does 90 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)\nYou may play any number of Item cards during your turn. Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached."
+          def newMove
+          onPlay {reason->
+            def moveBody = {
+              text "Discard 2 Energy from this Pokémon. This attack does 90 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+              attackRequirement {
+                // self is not set properly creating a move like this, use bg.ownActive() instead
+                assert bg.ownActive().rapidStrike : "${bg.ownActive()} is not a $RAPID_STRIKE Pokémon"
+              }
+              energyCost FIRE, LIGHTNING
+              onAttack {
+                discardSelfEnergyAfterDamage C, C
+                damage 90, opp.all.select text
+              }
+            }
+            Move move = new Move("Meteor")
+            moveBody.delegate = new MoveBuilder(thisMove: move)
+            moveBody.call()
+            newMove = getter GET_MOVE_LIST, self, {h->
+              if (h.effect.target.rapidStrike) {
+                def moveList = []
+                moveList.addAll h.object
+                moveList.add move
+                h.object = moveList
+              }
+            }
+          }
+          onRemoveFromPlay {
+            newMove.unregister()
+          }
+        };
       case RESCUE_CARRIER_154:
-        return copy(SkyscrapingPerfection.RESCUE_TROLLEY_59, this);
+        return itemCard (this) {
+          text "Put up to 2 Pokémon, each with 90 HP or less, from your discard pile into your hand.\nYou may play any number of Item cards during your turn."
+          onPlay {
+            def cards = my.discard.select(min: 1, max: 2, thisCard.cardText, { it.cardTypes.is(POKEMON) && it.hp <= 90 })
+            cards.moveTo hand
+          }
+          playRequirement{
+            assert my.discard.any { it.cardTypes.is(POKEMON) && it.hp <= 90 } : "No Pokémon with 90 HP or less in your discard pile"
+          }
+        };
       case RIBBON_BADGE_155:
-        return copy(EeveeHeroes.RIBBON_BADGE_65, this);
+        return pokemonTool (this) {
+          text "If the Pokémon V this card is attached to has \"Sylveon\" in its name and is Knocked Out by damage from an attack from your opponent's Pokémon, that player takes 1 fewer Prize card.\nYou may play any number of Item cards during your turn. Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached."
+          def eff
+          onPlay {reason->
+            eff = getter GET_GIVEN_PRIZES, self, {holder->
+              if (self.name.contains("Sylveon") && self.pokemonV && self.KOBYDMG == bg.turnCount) {
+                bc "$thisCard.name reduces prizes taken from KOing ${self} by one."
+                holder.object -= 1
+              }
+            }
+          }
+          onRemoveFromPlay {
+            eff.unregister()
+          }
+        };
       case RUBBER_GLOVES_156:
-        return copy(BlueSkyStream.RUBBERY_GLOVES_60, this);
+        return pokemonTool (this) {
+          text "The attacks of the Pokémon this card is attached to do 30 more damage to your opponent's Active [L] Pokémon (before applying Weakness and Resistance).\nYou may play any number of Item cards during your turn. Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached."
+          def eff
+          onPlay {reason->
+            eff = delayed {
+              after PROCESS_ATTACK_EFFECTS, {
+                bg.dm().each {
+                  if (it.from == self && it.to.active && it.to.owner == self.owner.opposite && it.dmg.value && it.to.types.contains(L)) {
+                    it.dmg += hp(30)
+                    bc "$thisCard +30"
+                  }
+                }
+              }
+            }
+          }
+          onRemoveFromPlay {
+            eff.unregister()
+          }
+        };
       case SHOPPING_CENTER_157:
-        return copy(EeveeHeroes.FASHION_MALL_68, this);
+        return stadium (this) {
+          text "Once during each player's turn, that player may put a Pokémon Tool attached to 1 of their Pokémon into their hand."
+          def lastTurn
+          def actions = []
+          onPlay {
+            actions = action (thisCard, "Stadium: $thisCard.name") {
+              assert lastTurn != bg.turnCount : "You have already used $thisCard this turn"
+              assert my.all.any { it.cards.filterByType POKEMON_TOOL } : "You have no Pokémon with a Pokémon Tool attached"
+              bc "Used $thisCard"
+              lastTurn = bg.turnCount
+              def tar = my.all.findAll { it.cards.filterByType POKEMON_TOOL }.select thisCard.cardText
+              def toolCard
+              if (tar.cards.filterByType(POKEMON_TOOL).size() > 1) {
+                def card = tar.cards.filterByType(POKEMON_TOOL).select "Return which Pokémon Tool to your hand?"
+                toolCard = card
+              } else {
+                toolCard = tar.cards.filterByType(POKEMON_TOOL)
+              }
+              toolCard.moveTo hand
+            }
+          }
+          onRemoveFromPlay{
+            actions.each { bg.gm().unregisterAction it }
+          }
+        };
       case SINGLE_STRIKE_SCROLL_OF_THE_FANGED_DRAGON_158:
         return pokemonTool (this) {
           text "The Single Strike Pokémon this card is attached to can use the attack on this card. (You still need the necessary Energy to use this attack.)\n[F][M][M][C][C] Superstrong Slash 300\nDiscard all Energy from this Pokémon.\nYou may play any number of Item cards during your turn. Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached."
@@ -1513,17 +3486,106 @@ enum EvolvingSkies implements LogicCardInfo {
           }
         };
       case SNOW_LEAF_BADGE_159:
-        return copy(EeveeHeroes.SNOW_LEAF_BADGE_63, this);
+        return pokemonTool (this) {
+          text "If the Pokémon V this card is attached to has \"Leafeon\" or \"Glaceon\" in its name, it has no Retreat Cost and no Weakness.\nYou may play any number of Item cards during your turn. Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached."
+          def eff1, eff2
+          def snowLeafBadgeCond = { PokemonCardSet target -> target.pokemonV && ["Leafeon", "Glaceon"].any{target.name.contains(it)} }
+          onPlay {reason->
+            eff1 = getter(GET_WEAKNESSES, self){h->
+              if ( snowLeafBadgeCond.call(self) ) {
+                h.object.clear()
+              }
+            }
+            eff2 =getter(GET_RETREAT_COST, LAST, self){h->
+              if ( snowLeafBadgeCond.call(self) ) {
+                h.object=0
+              }
+            }
+          }
+          onRemoveFromPlay {
+            eff1.unregister()
+            eff2.unregister()
+          }
+        };
       case SPIRIT_MASK_160:
-        return copy(BlueSkyStream.NETHER_MASK_61, this);
+        return pokemonTool (this) {
+          text "If the Pokémon this card is attached to is in the Active Spot and is damaged by an attack from your opponent's Pokémon (even if it is Knocked Out), your opponent discards a card from their hand.\nYou may play any number of Item cards during your turn. Attach a Pokémon Tool to 1 of your Pokémon that doesn't already have a Pokémon Tool attached."
+          def eff
+          onPlay {reason->
+            eff = delayed {
+              def applyEffect
+              before APPLY_ATTACK_DAMAGES, {
+                applyEffect = bg.currentTurn == self.owner.opposite && self.active && bg.dm().find { it.to == self && it.dmg.value }
+              }
+              after APPLY_ATTACK_DAMAGES, {
+                if (applyEffect && self.owner.opposite.pbg.hand) {
+                  self.owner.opposite.pbg.hand.select({ true }, self.owner.opposite).discard()
+                }
+              }
+            }
+          }
+          onRemoveFromPlay {
+            eff.unregister()
+          }
+        };
       case STORMY_MOUNTAINS_161:
-        return copy(BlueSkyStream.STORMY_MOUNTAIN_RANGE_66, this);
+        return stadium (this) {
+          text "Once during each player's turn, that player may search their deck for a Basic [L] Pokémon or Basic [N] Pokémon and put it onto their Bench. Then, that player shuffles their deck."
+          def lastTurn
+          def actions = []
+          onPlay {
+            actions = action(thisCard, "Stadium: $thisCard") {
+              assert lastTurn != bg.turnCount : "You have already used $thisCard this turn"
+              assert my.bench.notFull : "You do not have any room on your bench"
+              assert deck : "Your deck is empty"
+              bc "Used $thisCard"
+              lastTurn = bg.turnCount
+              def card = deck.search {Card c->
+                c.cardTypes.is(BASIC) && (c.types.contains(L) || c.types.contains(N))
+              }
+              card.each {
+                benchPCS it
+              }
+            }
+          }
+          onRemoveFromPlay{
+            actions.each { bg.gm().unregisterAction it }
+          }
+        };
       case SWITCHING_CUPS_162:
-        return copy(SkyscrapingPerfection.SWITCHEROO_CUP_58, this);
+        return itemCard (this) {
+          text "Switch a card from your hand with the top card of your deck.\nYou may play any number of Item cards during your turn."
+          onPlay {
+            hand.getExcludedList(thisCard).select().moveTo(addToTop: true, hidden: true, my.deck)
+            deck.subList(1,2).moveTo(hidden: true, my.hand) // Card placed on top, get the one underneath
+          }
+          playRequirement{
+            assert hand.getExcludedList(thisCard) : "You have no other cards in your hand"
+            assert deck : "Your deck is empty"
+          }
+        };
       case TOY_CATCHER_163:
-        return copy(BlueSkyStream.TOY_CATCHER_58, this);
+        return itemCard (this) {
+          text "Switch 1 of your opponent's Benched Pokémon that has 50 HP or less remaining with your opponent's Active Pokémon.\nYou may play any number of Item cards during your turn."
+          onPlay {
+            sw opp.active, opp.bench.findAll { it.remainingHP.value <= 50 }.select("Switch which of your opponent's Benched Pokémon with 50 HP or less remaining with their Active Pokémon?")
+          }
+          playRequirement {
+            assert opp.bench.any { it.remainingHP.value <= 50 } : "Opponent has no Benched Pokémon with 50 HP or less remaining"
+          }
+        };
       case ZINNIA_S_RESOLVE_164:
-        return copy(BlueSkyStream.ZINNIA_S_RESOLVE_65, this);
+        return supporter (this) {
+          text "You can play this card only if you discard 2 other cards from your hand. Draw a card for each of your opponent's Pokémon in play.\nYou may play only 1 Supporter card during your turn."
+          onPlay {
+            my.hand.getExcludedList(thisCard).select(min:2,max:2,"To discard").discard()
+            draw opp.all.size()
+          }
+          playRequirement{
+            assert hand.getExcludedList(thisCard).size() >= 2 : "You do not have 2 other cards to discard from your hand"
+            assert deck : "Your deck is empty"
+          }
+        };
       case TREASURE_ENERGY_165:
         return specialEnergy (this, [[C]]) {
           text "As long as this card is attached to a Pokémon, it provides [C] Energy. If you took this card as a face-down Prize card during your turn, before you put it into your hand, you may attach this card to 1 of your Pokémon."
@@ -1552,13 +3614,53 @@ enum EvolvingSkies implements LogicCardInfo {
       case TREVENANT_V_168:
         return copy(TREVENANT_V_13, this);
       case FLAREON_V_169:
-        return copy(EeveeHeroes.FLAREON_V_11, this);
+        return basic(this, hp: HP210, type: R, retreatCost: 2) {
+          weakness WATER
+          move "Flaming Breath", {
+            text "20 damage. Search your deck for a [R] Energy card and attach it to this Pokémon. Then, shuffle your deck."
+            energyCost COLORLESS
+            onAttack {
+              damage 20
+              afterDamage {
+                attachEnergyFrom type:R, deck, self
+              }
+            }
+          }
+          move "Scorching Column", {
+            text "120 damage. Your opponent's Active Pokémon is now Burned."
+            energyCost FIRE, FIRE, COLORLESS
+            onAttack {
+              damage 120
+              applyAfterDamage BURNED
+            }
+          }
+        };
       case VOLCARONA_V_170:
         return copy(VOLCARONA_V_21, this);
       case GYARADOS_V_171:
         return copy(GYARADOS_V_28, this);
       case VAPOREON_V_172:
-        return copy(EeveeHeroes.VAPOREON_V_15, this);
+        return basic(this, hp: HP210, type: W, retreatCost: 2) {
+          weakness LIGHTNING
+          move "Triple Draw", {
+            text "Draw 3 cards."
+            energyCost COLORLESS
+            attackRequirement {
+              assert deck : "Your deck is empty"
+            }
+            onAttack {
+              draw 3
+            }
+          }
+          move "Splash Jump", {
+            text "90 damage. Switch this Pokémon with 1 of your Benched Pokémon."
+            energyCost WATER, WATER, COLORLESS
+            onAttack {
+              damage 90
+              switchYourActive()
+            }
+          }
+        };
       case SUICUNE_V_173:
         return copy(SUICUNE_V_31, this);
       case GLACEON_V_174:
@@ -1568,7 +3670,23 @@ enum EvolvingSkies implements LogicCardInfo {
       case ARCTOVISH_V_176:
         return copy(ARCTOVISH_V_48, this);
       case JOLTEON_V_177:
-        return copy(EeveeHeroes.JOLTEON_V_30, this);
+        return basic(this, hp: HP190, type: L, retreatCost: 0) {
+          weakness FIGHTING
+          move "Thunder Spear", {
+            text "This attack does 20 damage to 1 of your opponent's Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+            energyCost COLORLESS
+            onAttack {
+              damage 20, opp.all.select(text)
+            }
+          }
+          move "Pin Missile", {
+            text "60× damage. Flip 4 coins. This attack does 60 damage for each heads."
+            energyCost LIGHTNING, COLORLESS, COLORLESS
+            onAttack {
+              flip 4, { damage 60 }
+            }
+          }
+        };
       case DRACOZOLT_V_178:
         return copy(DRACOZOLT_V_58, this);
       case ESPEON_V_179:
@@ -1596,7 +3714,25 @@ enum EvolvingSkies implements LogicCardInfo {
       case GARBODOR_V_190:
         return copy(GARBODOR_V_100, this);
       case DRAGONITE_V_191:
-        return copy(BlueSkyStream.DRAGONITE_V_42, this);
+        return basic(this, hp: HP230, type: N, retreatCost: 3) {
+          move "Shred", {
+            text "50 damage. This attack's damage isn't affected by any effects on your opponent's Active Pokémon."
+            energyCost COLORLESS, COLORLESS
+            onAttack {
+              shredDamage 50
+            }
+          }
+          move "Dragon Gale", {
+            text "250 damage. This attack also does 20 damage to each of your Benched Pokémon. (Don't apply Weakness and Resistance for Benched Pokémon.)"
+            energyCost WATER, WATER, LIGHTNING
+            onAttack {
+              damage 250
+              my.bench.each {
+                damage 20, it
+              }
+            }
+          }
+        };
       case DRAGONITE_V_192:
         return copy(DRAGONITE_V_191, this);
       case RAYQUAZA_V_193:
