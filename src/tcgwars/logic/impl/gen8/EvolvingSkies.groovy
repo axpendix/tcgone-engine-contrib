@@ -1001,11 +1001,41 @@ enum EvolvingSkies implements LogicCardInfo {
           weakness LIGHTNING
           bwAbility "Dew Guard", {
             text "Whenever your opponent plays a Supporter card from their hand, prevent all effects of that card done to you or your hand."
-            def messageDisplayed = false
-            onActivate {
-              if (!messageDisplayed) {
-                bc "$thisAbility is not impelmented."
-                messageDisplayed = true
+            // While such a Supporter resolves, its effects on this player (drawing, shuffling their deck, Avery's Bench discard)
+            // and on the cards in their hand, deck or discard pile are prevented; its effects on their Pokémon aren't (official
+            // Japanese Q&A: Judge and Roxanne are done by their player alone, Avery discards nothing, Team Yell Grunt still puts
+            // an Energy into the hand). A look at the hand or a choice the Supporter asks for first isn't an event: not stopped.
+            delayedA {
+              Card supporter = null
+              def logged = false
+              before PLAY_TRAINER, {
+                if (ef.probe) return
+                def own = ef.supporter && bg.currentTurn == self.owner.opposite && bg.currentTurn.pbg.hand.contains(ef.cardToPlay)
+                supporter = own ? ef.cardToPlay : null
+                logged = false
+              }
+              after PLAY_TRAINER, {
+                supporter = null
+              }
+              before null, null, Source.TRAINER_CARD, {
+                if (supporter == null || e.sourceCard != supporter) return
+                def pbg = self.owner.pbg
+                def outOfPlay = { Card c -> pbg.hand.contains(c) || pbg.deck.contains(c) || pbg.discard.contains(c) }
+                boolean done = false
+                if (ef instanceof MoveCard) done = ef.cards.any(outOfPlay)
+                else if (ef instanceof Discard) done = outOfPlay(ef.card)
+                else if (ef instanceof tcgwars.logic.effect.advanced.PutOnBench) done = pbg.hand.contains(ef.pokemonCard)
+                else if (ef instanceof DrawCard) done = (ef.playerType ?: ef.targetPlayer?.getPlayerType(bg)) == self.owner
+                else if (ef instanceof ShuffleDeck) done = ef.targetPlayer.getPlayerType(bg) == self.owner
+                // Avery's "until they have 3" getter: only this player's Bench is checked while it is registered
+                else if (ef.effectType == GET_BENCH_SIZE) done = true
+                if (done) {
+                  if (!logged) {
+                    bc "Dew Guard prevents the effects of the Supporter card done to ${self.owner.getPlayerUsername(bg)} or their hand."
+                    logged = true
+                  }
+                  prevent()
+                }
               }
             }
           }
