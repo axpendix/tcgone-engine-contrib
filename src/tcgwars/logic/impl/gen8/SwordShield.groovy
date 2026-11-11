@@ -1948,7 +1948,7 @@ public enum SwordShield implements LogicCardInfo {
               }
               before ASLEEP_SPC, null, null, BEGIN_TURN, {
                 if(ef.target == defending){ //MARK parentEvent
-                  flip "Asleep (Sleepy Pulse)", 2, {}, {}, [2:{
+                  flip "Asleep (Sleepy Pulse)", 2, ef.target.owner, {}, {}, [2:{
                     ef.unregisterItself(bg.em());
                   },1:{
                     bc "$ef.target is still asleep."
