@@ -318,8 +318,7 @@ public enum PowerKeepers implements LogicCardInfo {
             assertOppBench()
           }
           onAttack {
-            //TODO: Opponent flips, "Will" (CEC) should not be usable here, or by Fliptini effects (that allow to reflip *your* flips).
-            flip opp.bench.size(), {}, { noWrDamage 40, defending }
+            flip "Bench Manipulation", opp.bench.size(), self.owner.opposite, {}, { noWrDamage 40, defending }
           }
         }
       };

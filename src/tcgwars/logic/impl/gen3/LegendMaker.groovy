@@ -1463,7 +1463,7 @@ public enum LegendMaker implements LogicCardInfo {
             before ASLEEP_SPC, null, null, BEGIN_TURN, {
               //TODO: Check this not stacking with other cards (Slumbering Forest, Dark Gengar NeoDestiny). 99% sure it doesn't but just to make sure.
               if(self.active){
-                flip "Asleep (Deep Sleep)", 2, {}, {}, [2:{
+                flip "Asleep (Deep Sleep)", 2, ef.target.owner, {}, {}, [2:{
                   ef.unregisterItself(bg.em());
                 },1:{
                   bc "$ef.target is still asleep."
