@@ -2222,7 +2222,8 @@ public enum RebelClash implements LogicCardInfo {
           energyCost F, C, C
           onAttack {
             damage 180
-            afterDamage {
+            // a copy (Seek Inspiration, Shadow Imitation) is the copier's own attack: no lock and no line (F584, F590)
+            if (!bg.em().findAttack().subattack) afterDamage {
               bc "Meteor Assault cannot be used until this Pokémon leaves the Active Spot"
               delayed (priority: BEFORE_LAST) {
                 before CHECK_ATTACK_REQUIREMENTS, {
