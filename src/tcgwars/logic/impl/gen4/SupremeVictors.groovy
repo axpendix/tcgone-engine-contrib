@@ -1381,7 +1381,7 @@ public enum SupremeVictors implements LogicCardInfo {
                 if (pcs.isSPC(ASLEEP)) {
                   delayed (target:pcs) {
                     before ASLEEP_SPC, pcs, null, BEGIN_TURN, {
-                      flip "Asleep (Hibernation Spore)", 2, {}, {}, [2: {
+                      flip "Asleep (Hibernation Spore)", 2, ef.target.owner, {}, {}, [2: {
                         ef.unregisterItself(bg.em());
                       }, 1:{
                         bc "$pcs is still asleep."

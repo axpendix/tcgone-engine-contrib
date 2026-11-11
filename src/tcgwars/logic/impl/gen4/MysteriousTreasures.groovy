@@ -2187,15 +2187,11 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
+              // every coin the opponent flips during that turn (TreatCoinFlipAsTails), like Drowzee FFI 35's Sinister Suggestion
               delayed {
-                def doit = {
-                  if (bg.currentThreadPlayerType != self.owner) {
-                    bc "Hidden Power forced the coinflip to be TAILS."
-                    bg.deterministicCoinFlipQueue.offer(false)
-                  }
-                }
-                before COIN_FLIP, {doit()}
-                before COIN_FLIP_GETTER, {doit()}
+                def key = CoinFlip.DROWZEE_35_Sinister_Suggestion
+                unregister { bg.em().storeObject(key, null) }
+                register { bg.em().storeObject(key, bg.turnCount + 1) }
                 unregisterAfter 2
               }
             }

@@ -2861,7 +2861,7 @@ public enum GreatEncounters implements LogicCardInfo {
                 if (pcs.isSPC(ASLEEP)) {
                   delayed (target:pcs) {
                     before ASLEEP_SPC, pcs, null, BEGIN_TURN, {
-                      flip "Asleep (Endless Darkness)", 2, {}, {}, [2: {
+                      flip "Asleep (Endless Darkness)", 2, ef.target.owner, {}, {}, [2: {
                         ef.unregisterItself(bg.em());
                       }, 1:{
                         bc "$pcs is still asleep."
@@ -2897,7 +2897,7 @@ public enum GreatEncounters implements LogicCardInfo {
               checkNoSPC()
               powerUsed()
 
-              flip 2, {}, {}, [
+              flip "Time Skip", 2, self.owner.opposite, {}, {}, [
                 2: { usingThisAbilityEndsTurn delegate },
                 0: {
                   eff = delayed {
