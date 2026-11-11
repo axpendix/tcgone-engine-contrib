@@ -1565,12 +1565,21 @@ enum EvolvingSkies implements LogicCardInfo {
           resistance FIGHTING, MINUS30
           bwAbility "Solar Revelation", {
             text "Prevent all effects of attacks from your opponent's Pokémon done to all of your Pokémon that have Energy attached.(Existing effects are not removed. Damage is not an effect.)"
+            // The opponent's attacks used while Solar Revelation works, each with the Pokémon that had Energy attached then: it
+            // goes on preventing their lasting effects on those Pokémon (a getter is only judged later). A lasting effect done to
+            // a Pokémon without Energy, or while Solar Revelation didn't work, stays ("Existing effects are not removed"), like
+            // Photon Barrier (Mewtwo V-UNION SWSH159).
+            def protectedFrom = [:]
             delayedA {
+              before ATTACK_MAIN, {
+                if (ef.attacker.owner == self.owner.opposite) protectedFrom[ef] = self.owner.pbg.all.findAll { it.cards.energyCount(C) } as Set
+              }
               before null, null, Source.ATTACK, {
                 def pcs = e.getTargetPokemon()
+                def attack = e.sourceAttack
                 // only the opponent's attacks: your own attacks (their use included) aren't stopped
-                if (pcs && pcs.owner == self.owner && pcs.cards.energyCount(C) && ef.effectType != DAMAGE
-                  && e.sourceAttack?.attacker?.owner == self.owner.opposite) {
+                if (pcs && pcs.owner == self.owner && ef.effectType != DAMAGE && attack?.attacker?.owner == self.owner.opposite
+                  && (attack == bg.em().findAttack() ? pcs.cards.energyCount(C) : protectedFrom[attack]?.contains(pcs))) {
                   if (!(ef instanceof tcgwars.logic.effect.getter.GetterEffect)) bc "Espeon VMAX's Solar Revelation prevents effect."
                   prevent()
                 }
