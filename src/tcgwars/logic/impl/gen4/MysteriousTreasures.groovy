@@ -2190,8 +2190,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
               // every coin the opponent flips during that turn (TreatCoinFlipAsTails), like Drowzee FFI 35's Sinister Suggestion
               delayed {
                 def key = CoinFlip.DROWZEE_35_Sinister_Suggestion
-                unregister { bg.em().storeObject(key, null) }
-                register { bg.em().storeObject(key, bg.turnCount + 1) }
+                unregister { bg.em().storeObject(key, null); bg.em().storeObject(CoinFlip.DROWZEE_35_Sinister_Suggestion_NAME, null) }
+                register { bg.em().storeObject(key, bg.turnCount + 1); bg.em().storeObject(CoinFlip.DROWZEE_35_Sinister_Suggestion_NAME, thisMove.name) }
                 unregisterAfter 2
               }
             }
