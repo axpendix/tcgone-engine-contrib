@@ -2,6 +2,7 @@ package tcgwars.logic.impl.gen8
 
 import tcgwars.logic.TargetPlayer
 import tcgwars.logic.effect.Source
+import tcgwars.logic.effect.advanced.PutOnBench
 import tcgwars.logic.effect.gm.Attack
 import tcgwars.logic.impl.gen3.TeamRocketReturns;
 
@@ -2389,9 +2390,10 @@ enum EvolvingSkies implements LogicCardInfo {
               checkLastTurn()
               assert my.discard.any { it.cardTypes.is(STAGE1) && it.name != "Zoroark" } : "No Stage 1 Pokémon in your discard pile"
               powerUsed()
-              def newPcs = my.discard.select text, { it.cardTypes.is(STAGE1) && it.name != "Zoroark" }
-              self.cards.discard()
-              newPcs.moveTo self.cards
+              def chosen = my.discard.select text, { it.cardTypes.is(STAGE1) && it.name != "Zoroark" }
+              // discards Zoroark and puts the chosen Pokémon in its place, Active or Benched: a new Pokémon, without
+              // Zoroark's damage counters, Special Conditions or effects (F602)
+              bg.em().run(new PutOnBench(chosen.first(), OTHER).replacing(self))
             }
           }
           move "Night Daze", {
