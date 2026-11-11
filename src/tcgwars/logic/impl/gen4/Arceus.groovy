@@ -666,7 +666,9 @@ public enum Arceus implements LogicCardInfo {
               powerUsed()
               def pcs = opp.all.findAll{it.numberOfDamageCounters}.select("Choose the pokémon to move the damage counter from")
               def tar = opp.all.findAll{it != pcs}.select("Select the pokémon to recieve the damage counter")
-              moveDamageCounters pcs, tar, 1
+              targeted (pcs) { // the counter stays on a protected source (Compendium ruling 79)
+                moveDamageCounters pcs, tar, 1
+              }
             }
           }
           move "Shadow Skip", {

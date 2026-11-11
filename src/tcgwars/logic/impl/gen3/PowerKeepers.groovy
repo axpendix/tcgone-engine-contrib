@@ -1805,7 +1805,9 @@ public enum PowerKeepers implements LogicCardInfo {
               def countersToMove = Math.min(src.numberOfDamageCounters, 3)
               def tar = opp.all.findAll{it != src}.select("Choose the Pokémon that will receive the $countersToMove Damage Counters")
 
-              moveDamageCounters src, tar, countersToMove
+              targeted (src) { // the counters stay on a protected source (Compendium ruling 79)
+                moveDamageCounters src, tar, countersToMove
+              }
             }
           }
         }

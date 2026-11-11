@@ -2795,8 +2795,10 @@ public enum GreatEncounters implements LogicCardInfo {
               def targets = all
               targets.remove(source)
               def target = targets.select("Select a Pokémon to move the damage counter to.")
-              moveDamageCounters source, target, 1
-              checkFaint()
+              targeted (source) { // the counter stays on a protected source (Compendium ruling 79)
+                moveDamageCounters source, target, 1
+                checkFaint()
+              }
             }
           }
           move "Moon Skip", {
