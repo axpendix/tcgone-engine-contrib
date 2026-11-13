@@ -4108,6 +4108,16 @@ public enum SwordShieldPromos implements LogicCardInfo {
           }
         }
       };
+      case PIKACHU_V_UNION_SWSH140: case PIKACHU_V_UNION_SWSH141: case PIKACHU_V_UNION_SWSH142:
+      return copy(PIKACHU_V_UNION_SWSH139, this); // pieces 2 to 4: the same Pokémon V-UNION
+      case GRENINJA_V_UNION_SWSH156: case GRENINJA_V_UNION_SWSH157: case GRENINJA_V_UNION_SWSH158:
+      return copy(GRENINJA_V_UNION_SWSH155, this); // pieces 2 to 4: the same Pokémon V-UNION
+      case MEWTWO_V_UNION_SWSH160: case MEWTWO_V_UNION_SWSH161: case MEWTWO_V_UNION_SWSH162:
+      return copy(MEWTWO_V_UNION_SWSH159, this); // pieces 2 to 4: the same Pokémon V-UNION
+      case ZACIAN_V_UNION_SWSH164: case ZACIAN_V_UNION_SWSH165: case ZACIAN_V_UNION_SWSH166:
+      return copy(ZACIAN_V_UNION_SWSH163, this); // pieces 2 to 4: the same Pokémon V-UNION
+      case MORPEKO_V_UNION_SWSH216: case MORPEKO_V_UNION_SWSH217: case MORPEKO_V_UNION_SWSH218:
+      return copy(MORPEKO_V_UNION_SWSH215, this); // pieces 2 to 4: the same Pokémon V-UNION
       default:
       return null;
     }
