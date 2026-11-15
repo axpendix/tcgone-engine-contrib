@@ -1304,7 +1304,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           text "10+ damage. Before doing damage, discard any number of Pokémon Tools from all of your Pokémon. This attack does 40 more damage for each card you discarded in this way."
           energyCost P
           onAttack {
-            additionalDamageByDiscardingCardTypeFromPokemon 10, 40, POKEMON_TOOL
+            additionalDamageByDiscardingCardTypeFromPokemon 10, 40, POKEMON_TOOL, true // "Before doing damage": the Tools leave before the damage, unlike a discard written after it (F282)
           }
         }
       };
