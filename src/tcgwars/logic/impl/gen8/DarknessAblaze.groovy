@@ -3671,7 +3671,7 @@ public enum DarknessAblaze implements LogicCardInfo {
                 // an oppSelect asked the Billowing Smoke player (forum 11152)
                 def taker = (ef as TakePrize).playerType
                 def tar = taker.pbg.prizeCardSet.select(hidden: true, count: 1, "The knocked out Pokémon had Billowing Smoke attached. Select a prize card, and it'll be discarded instead of taken and put into your hand.", null, taker)
-                moveCard(suppressLog: true, tar.first(), taker.pbg.discard)
+                bg.em().run(new Discard(tar.first()).setSuppressLog(true)) // through Discard, so that Eternal Cycle and the like apply (F644)
                 bc "$tar was discarded instead of taken as a Prize." // custom log entry
                 TakePrize.checkPrizes(bg)
               }
