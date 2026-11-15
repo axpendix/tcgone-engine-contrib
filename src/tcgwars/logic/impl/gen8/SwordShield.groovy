@@ -3522,9 +3522,10 @@ public enum SwordShield implements LogicCardInfo {
       case POTION_177:
       return copy(BlackWhite.POTION_100, this);
       case PROFESSOR_S_RESEARCH_178:
-      // Every Professor's Research print runs this code. Unlike Professor Sycamore XY 122 it can be played with an empty
-      // deck: it still discards the hand, and drawing from an empty deck draws nothing (owner's decision). Only a play that
-      // would do nothing at all (no other card in the hand and an empty deck) is refused, as Professor Juniper BW 101.
+      // Every Professor's Research print runs this code, and so does every Professor Sycamore and Professor Juniper print
+      // (they copy it: same text). It can be played with an empty deck: it still discards the hand, and drawing from an empty
+      // deck draws nothing (owner's decision, F323). Only a play that would do nothing at all (no other card in the hand and
+      // an empty deck) is refused.
       return supporter (this) {
         text "Discard your hand and draw 7 cards." +
           "\nYou may play only 1 Supporter card during your turn (before your attack)."
