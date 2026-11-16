@@ -300,7 +300,6 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               dittoReplacement.moveTo(self.cards)
               self.cards.remove(ditto)
               my.discard.add(ditto)
-              new CheckAbilities().run(bg)
             }
           }
           move "Energy Ball", {
@@ -2299,11 +2298,9 @@ public enum FireRedLeafGreen implements LogicCardInfo {
                 h.object=true
               }
             }
-            new CheckAbilities().run(bg)
           }
           onRemoveFromPlay{
             effect1.unregister()
-            new CheckAbilities().run(bg)
           }
         };
       case POKE_BALL_95:

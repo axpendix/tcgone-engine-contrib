@@ -226,10 +226,8 @@ public enum Platinum implements LogicCardInfo {
             text "Each Pokémon that has any damage counters on it can’t use any Poké-Powers."
             delayedA {
               after DIRECT_DAMAGE, {
-                new CheckAbilities().run(bg)
               }
               after REMOVE_DAMAGE_COUNTER, {
-                new CheckAbilities().run(bg)
               }
             }
             getterA IS_ABILITY_BLOCKED, { Holder h ->
@@ -240,10 +238,8 @@ public enum Platinum implements LogicCardInfo {
               }
             }
             onActivate {
-              new CheckAbilities().run(bg)
             }
             onDeactivate {
-              new CheckAbilities().run(bg)
             }
           }
           move "Gigavolt", {
@@ -3334,10 +3330,8 @@ public enum Platinum implements LogicCardInfo {
               }
             }
             onActivate {
-              new CheckAbilities().run(bg)
             }
             onDeactivate{
-              new CheckAbilities().run(bg)
             }
           }
           move "Remove Lost", {

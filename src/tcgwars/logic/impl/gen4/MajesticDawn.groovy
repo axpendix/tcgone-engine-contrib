@@ -2636,11 +2636,9 @@ public enum MajesticDawn implements LogicCardInfo {
                   h.object=true
                 }
               }
-              new CheckAbilities().run(bg)
             }
             onDeactivate {
               eff1.unregister()
-              new CheckAbilities().run(bg)
             }
           }
           move "Avalache", {

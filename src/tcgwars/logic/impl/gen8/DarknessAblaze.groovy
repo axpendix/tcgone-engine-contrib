@@ -2680,7 +2680,6 @@ public enum DarknessAblaze implements LogicCardInfo {
                     && self.owner.pbg.all.find { !it.types.contains(D) }
             ) {
               self.owner.pbg.triggerBenchSizeCheck()
-              new CheckAbilities().run(bg)
             }
           }
           def updateActiveInfinityZoneCount = { Boolean isAbilityActive ->
@@ -2718,7 +2717,6 @@ public enum DarknessAblaze implements LogicCardInfo {
             after PUT_ON_BENCH, {
               if (ef.pokemonCard != thisCard && ef.pokemonCard.player == self.owner && self.owner.pbg.all.find { !it.types.contains(D) }) {
                 self.owner.pbg.triggerBenchSizeCheck()
-                new CheckAbilities().run(bg)
               }
             }
             after SWITCH, {
@@ -2778,11 +2776,9 @@ public enum DarknessAblaze implements LogicCardInfo {
           }
           onActivate {
             self.owner.pbg.triggerBenchSizeCheck()
-            new CheckAbilities().run(bg)
           }
           onDeactivate {
             self.owner.pbg.triggerBenchSizeCheck()
-            new CheckAbilities().run(bg)
           }
         }
         move "Dread End", {

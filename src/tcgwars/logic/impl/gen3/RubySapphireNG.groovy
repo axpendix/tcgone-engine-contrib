@@ -504,10 +504,8 @@ public enum RubySapphireNG implements LogicCardInfo {
             }
           }
           onActivate {
-            new CheckAbilities().run(bg)
           }
           onDeactivate {
-            new CheckAbilities().run(bg)
           }
         }
         move "Critical Move", {

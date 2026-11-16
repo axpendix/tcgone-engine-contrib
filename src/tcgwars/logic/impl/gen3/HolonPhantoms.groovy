@@ -475,14 +475,11 @@ public enum HolonPhantoms implements LogicCardInfo {
           }
           delayedA {
             after PLAY_CARD, {
-              new CheckAbilities().run(bg)
             }
           }
           onActivate{
-            new CheckAbilities().run(bg)
           }
           onDeactivate{
-            new CheckAbilities().run(bg)
           }
         }
         move "Spearhead", {
@@ -516,14 +513,11 @@ public enum HolonPhantoms implements LogicCardInfo {
           }
           delayedA {
             after PLAY_CARD, {
-              new CheckAbilities().run(bg)
             }
           }
           onActivate{
-            new CheckAbilities().run(bg)
           }
           onDeactivate{
-            new CheckAbilities().run(bg)
           }
         }
         move "Dive", {
@@ -583,14 +577,11 @@ public enum HolonPhantoms implements LogicCardInfo {
           }
           delayedA {
             after PLAY_CARD, {
-              new CheckAbilities().run(bg)
             }
           }
           onActivate{
-            new CheckAbilities().run(bg)
           }
           onDeactivate{
-            new CheckAbilities().run(bg)
           }
         }
         move "Rotating Claws", {

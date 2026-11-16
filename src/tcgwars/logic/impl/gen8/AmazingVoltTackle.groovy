@@ -475,10 +475,8 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         bwAbility "Incandescent Awakening", {
           text "If this Pokémon has a Memory Capsule card attached to it, each player's [G] Pokémon in play has no Abilities."
           onActivate {
-            bg.em().run(new CheckAbilities())
           }
           onDeactivate {
-            bg.em().run(new CheckAbilities())
           }
           getterA GET_ABILITIES, BEFORE_LAST, {Holder holder->
             if (self.cards.any { it.name == "Memory Capsule" }
@@ -488,10 +486,8 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           }
           delayedA {
             after ATTACH_POKEMON_TOOL, {
-              bg.em().run(new CheckAbilities())
             }
             after DISCARD, {
-              if (ef.card.name == "Memory Capsule") bg.em().run(new CheckAbilities())
             }
           }
         }
@@ -573,10 +569,8 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         bwAbility "Torrential Awakening", {
           text "If this Pokémon has a Memory Capsule card attached to it, each player's [R] Pokémon in play has no Abilities."
           onActivate {
-            bg.em().run(new CheckAbilities())
           }
           onDeactivate {
-            bg.em().run(new CheckAbilities())
           }
           getterA GET_ABILITIES, BEFORE_LAST, {Holder holder->
             if (self.cards.any { it.name == "Memory Capsule" } && holder.effect.target != self
@@ -586,10 +580,8 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           }
           delayedA {
             after ATTACH_POKEMON_TOOL, {
-              bg.em().run(new CheckAbilities())
             }
             after DISCARD, {
-              if (ef.card.name == "Memory Capsule") bg.em().run(new CheckAbilities())
             }
           }
         }
@@ -922,10 +914,8 @@ public enum AmazingVoltTackle implements LogicCardInfo {
         bwAbility "Thunderous Awakening", {
           text "If this Pokémon has a Memory Capsule card attached to it, each player's [W] Pokémon in play has no Abilities."
           onActivate {
-            bg.em().run(new CheckAbilities())
           }
           onDeactivate {
-            bg.em().run(new CheckAbilities())
           }
           getterA GET_ABILITIES, BEFORE_LAST, {Holder holder->
             if (self.cards.any { it.name == "Memory Capsule" } && holder.effect.target != self
@@ -935,10 +925,8 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           }
           delayedA {
             after ATTACH_POKEMON_TOOL, {
-              bg.em().run(new CheckAbilities())
             }
             after DISCARD, {
-              if (ef.card.name == "Memory Capsule") bg.em().run(new CheckAbilities())
             }
           }
         }

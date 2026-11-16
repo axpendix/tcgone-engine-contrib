@@ -3216,7 +3216,6 @@ public enum ChillingReign implements LogicCardInfo {
               thisCard.player.opposite.pbg.triggerBenchSizeCheck()
               eff.unregister()
               thisCard.player.opposite.pbg.triggerBenchSizeCheck()
-              new CheckAbilities().run(bg)
             }
           }
           playRequirement {
@@ -3520,11 +3519,9 @@ public enum ChillingReign implements LogicCardInfo {
                 h.object.keySet().removeIf { it instanceof BwAbility }
               }
             }
-            new CheckAbilities().run(bg)
           }
           onRemoveFromPlay{
             effect1.unregister()
-            new CheckAbilities().run(bg)
           }
         };
       case PEONIA_149:

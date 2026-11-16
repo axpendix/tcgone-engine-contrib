@@ -1047,10 +1047,8 @@ public enum BattleStyles implements LogicCardInfo {
             }
           }
           onActivate {
-            new CheckAbilities().run(bg)
           }
           onDeactivate {
-            new CheckAbilities().run(bg)
           }
         }
         move "Swirling Slice", {

@@ -1677,11 +1677,9 @@ public enum Emerald implements LogicCardInfo {
                 h.object=true
               }
             }
-            new CheckAbilities().run(bg)
           }
           onRemoveFromPlay{
             eff.unregister()
-            new CheckAbilities().run(bg)
           }
         };
       case DOUBLE_FULL_HEAL_76:
@@ -2026,10 +2024,8 @@ public enum Emerald implements LogicCardInfo {
               }
             }
             onActivate{
-              new CheckAbilities().run(bg)
             }
             onDeactivate {
-              new CheckAbilities().run(bg)
             }
 
           }

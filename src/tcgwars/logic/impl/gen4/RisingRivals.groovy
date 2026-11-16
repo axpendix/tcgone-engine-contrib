@@ -591,11 +591,9 @@ public enum RisingRivals implements LogicCardInfo {
                         h.object=true
                       }
                     }
-                    new CheckAbilities().run(bg)
                   }
                   unregister{
                     eff.unregister()
-                    new CheckAbilities().run(bg)
                   }
                   unregisterAfter 2
                   after FALL_BACK, defending, { unregister() }
@@ -3638,7 +3636,6 @@ public enum RisingRivals implements LogicCardInfo {
               def tpc = pcs.topPokemonCard
               selected.moveTo(suppressLog: true, pcs.cards)
               new CardList(tpc).moveTo(my.deck)
-              new CheckAbilities().run(bg)
               clearSpecialCondition(pcs)
               //TODO Find a way to remove "effects". This effect seems similar to Channeler/Pokémon Ranger
             }

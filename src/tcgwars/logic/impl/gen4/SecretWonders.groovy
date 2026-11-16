@@ -472,11 +472,9 @@ public enum SecretWonders implements LogicCardInfo {
                         h.object=true
                       }
                     }
-                    new CheckAbilities().run(bg)
                   }
                   unregister{
                     eff.unregister()
-                    new CheckAbilities().run(bg)
                   }
                   unregisterAfter 1
                 }
@@ -3242,11 +3240,9 @@ f
                             h.object = true
                           }
                         }
-                        new CheckAbilities().run(bg)
                       }
                       unregister {
                         eff.unregister()
-                        new CheckAbilities().run(bg)
                       }
                       after CLEAR_SPECIAL_CONDITION, pcs, {
                         if (ef.types.contains(POISONED)) {

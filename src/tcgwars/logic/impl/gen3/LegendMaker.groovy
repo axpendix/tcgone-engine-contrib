@@ -538,10 +538,8 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
           onActivate {
-            new CheckAbilities().run(bg)
           }
           onDeactivate{
-            new CheckAbilities().run(bg)
           }
         }
         move "Poison Ring", {
@@ -711,10 +709,8 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
           onActivate {
-            new CheckAbilities().run(bg)
           }
           onDeactivate{
-            new CheckAbilities().run(bg)
           }
         }
         move "Foresight", {
@@ -820,14 +816,11 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
           onActivate{
-            new CheckAbilities().run(bg)
           }
           onDeactivate{
-            new CheckAbilities().run(bg)
           }
           delayedA{
             after PLAY_CARD, {
-              new CheckAbilities().run(bg)
             }
           }
         }
@@ -1015,14 +1008,11 @@ public enum LegendMaker implements LogicCardInfo {
             }
           }
           onActivate{
-            new CheckAbilities().run(bg)
           }
           onDeactivate{
-            new CheckAbilities().run(bg)
           }
           delayedA{
             after PLAY_CARD, {
-              new CheckAbilities().run(bg)
             }
           }
         }
@@ -2217,13 +2207,11 @@ public enum LegendMaker implements LogicCardInfo {
           }
           thisCard.player.pbg.triggerBenchSizeCheck()
           thisCard.player.opposite.pbg.triggerBenchSizeCheck()
-          new CheckAbilities().run(bg)
         }
         onRemoveFromPlay{
           eff.unregister()
           thisCard.player.opposite.pbg.triggerBenchSizeCheck()
           thisCard.player.pbg.triggerBenchSizeCheck()
-          new CheckAbilities().run(bg)
         }
       };
       case POWER_TREE_76:

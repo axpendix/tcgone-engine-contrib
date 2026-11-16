@@ -1734,12 +1734,10 @@ public enum CrystalGuardians implements LogicCardInfo {
             after CHANGE_STAGE, self, {check(self)}
           }
           check(self)
-          new CheckAbilities().run(bg)
         }
         onRemoveFromPlay {
           eff1.unregister()
           eff2.unregister()
-          new CheckAbilities().run(bg)
         }
         allowAttach { to->
           !to.EX
@@ -1897,12 +1895,10 @@ public enum CrystalGuardians implements LogicCardInfo {
                 h.object=true
               }
             }
-            new CheckAbilities().run(bg)
           }
           onDeactivate {
             eff1.unregister()
             eff2.unregister()
-            new CheckAbilities().run(bg)
           }
         }
         move "Split Bomb", {

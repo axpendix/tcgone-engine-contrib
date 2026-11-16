@@ -2565,10 +2565,8 @@ public enum RebelClash implements LogicCardInfo {
             }
           }
           onActivate {
-            new CheckAbilities().run(bg)
           }
           onDeactivate {
-            new CheckAbilities().run(bg)
           }
         }
         move "Severe Poison", {

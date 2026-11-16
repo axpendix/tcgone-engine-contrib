@@ -638,11 +638,9 @@ public enum Triumphant implements LogicCardInfo {
             }
             onActivate {
               self.owner.opposite.pbg.triggerBenchSizeCheck()
-              new CheckAbilities().run(bg)
             }
             onDeactivate {
               self.owner.opposite.pbg.triggerBenchSizeCheck()
-              new CheckAbilities().run(bg)
             }
           }
           move "Sharp Point", {

@@ -1707,12 +1707,10 @@ public enum DragonFrontiers implements LogicCardInfo {
               }
             }
           }
-          new CheckAbilities().run(bg)
         }
         onRemoveFromPlay {
           eff.unregister()
           eff2.unregister()
-          new CheckAbilities().run(bg)
         }
       };
       case HOLON_MENTOR_75:

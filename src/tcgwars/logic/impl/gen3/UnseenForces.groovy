@@ -807,10 +807,8 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
           onActivate {
-            new CheckAbilities().run(bg)
           }
           onDeactivate {
-            new CheckAbilities().run(bg)
           }
         }
         move "Drag Off", {
@@ -2230,13 +2228,11 @@ public enum UnseenForces implements LogicCardInfo {
             after CHANGE_STAGE, self, {check(self)}
           }
           check(self)
-          new CheckAbilities().run(bg)
         }
         onRemoveFromPlay {
           eff1.unregister()
           eff2.unregister()
           eff3.unregister()
-          new CheckAbilities().run(bg)
         }
         /*onMove {to->
           check(to)
@@ -2521,10 +2517,8 @@ public enum UnseenForces implements LogicCardInfo {
             }
           }
           onActivate{
-            new CheckAbilities().run(bg)
           }
           onDeactivate {
-            new CheckAbilities().run(bg)
           }
         }
         move "Tsunami", {
