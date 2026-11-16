@@ -546,7 +546,8 @@ public enum Deoxys implements LogicCardInfo {
             text "Prevent all effects, including damage, done to Ninjask by your opponent’s attacks from his or her Basic Pokémon."
             delayedA {
               before null, self, Source.ATTACK, {
-                if (!self.owner.opposite.pbg.active.evolution && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                // e.sourceAttack: not the lasting effects of Ninjask's own attack (Swords Dance), which fire their events with Ninjask as target too
+                if (!self.owner.opposite.pbg.active.evolution && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && e.sourceAttack.attacker.owner != self.owner){
                   bc "Fast Protection prevents effect"
                   prevent()
                 }

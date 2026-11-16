@@ -218,7 +218,8 @@ public enum LegendMaker implements LogicCardInfo {
             damage 40
             delayed {
               before null, self, Source.ATTACK, {
-                if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                // e.sourceAttack: not the lasting effects of Aerodactyl's own attack, which fire their events with Aerodactyl as target too
+                if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && e.sourceAttack.attacker.owner != self.owner){
                   bc "Speed Stroke prevents effect"
                   prevent()
                 }
