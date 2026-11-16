@@ -216,7 +216,7 @@ public enum LegendMaker implements LogicCardInfo {
           energyCost C, C, C
           onAttack {
             damage 40
-            delayed {
+            delayed (target: self) {
               before null, self, Source.ATTACK, {
                 // e.sourceAttack: not the lasting effects of Aerodactyl's own attack, which fire their events with Aerodactyl as target too
                 if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && e.sourceAttack.attacker.owner != self.owner){

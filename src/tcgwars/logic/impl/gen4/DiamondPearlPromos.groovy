@@ -557,7 +557,7 @@ public enum DiamondPearlPromos implements LogicCardInfo {
             onAttack {
               damage 70
               afterDamage {
-                delayed {
+                delayed (target: self) {
                   def eff
                   register {
                     eff = getter GET_RETREAT_COST, BEFORE_LAST, self, { h ->

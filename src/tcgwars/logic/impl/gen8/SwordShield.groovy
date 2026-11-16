@@ -2417,8 +2417,8 @@ public enum SwordShield implements LogicCardInfo {
                 bc "Until this Grapploct leaves the Active Spot, the Defending ${defending}'s attacks cost [C][C] more, and said ${defending} can't retreat. (This effect can also be removed by benching/evolving ${defending}.)"
                 def pcs = defending
                 def eff1, eff2
-                delayed {
-                  eff1 = delayed {
+                delayed (target: pcs) {
+                  eff1 = delayed (target: pcs) {
                     before RETREAT, defending, {
                       wcu "${thisMove.name} prevents you from retreating."
                       prevent()

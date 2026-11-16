@@ -503,7 +503,7 @@ public enum Platinum implements LogicCardInfo {
             energyCost P, C, C
             onAttack {
               damage 60
-              delayed {
+              delayed (target: self) {
                 def eff
                 register {
                   eff = getter (GET_WEAKNESSES, self) {h->
@@ -1821,10 +1821,10 @@ public enum Platinum implements LogicCardInfo {
                 bc "During ${opp.owner.getPlayerUsername(bg)}'s next turn, the Defending ${defending} can't retreat or use any Poké-Powers. (This effect can be removed by evolving or benching ${defending}.)"
                 cantRetreat defending
                 def pcs = defending
-                delayed {
+                delayed (target: pcs) {
                   def eff
                   register {
-                    eff = getter (IS_ABILITY_BLOCKED) { Holder h->
+                    eff = getter (IS_ABILITY_BLOCKED, pcs) { Holder h->
                       if (bg.currentTurn==self.owner.opposite && h.effect.target == defending && h.effect.ability instanceof PokePower) {
                         h.object = true
                       }

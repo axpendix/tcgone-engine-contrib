@@ -771,7 +771,7 @@ public enum Undaunted implements LogicCardInfo {
             onAttack {
               damage 60
               afterDamage{
-                delayed {
+                delayed (target: self) {
                   def eff
                   register {
                     eff = getter GET_RETREAT_COST, LAST, self, { h ->

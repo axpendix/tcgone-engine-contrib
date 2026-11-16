@@ -989,7 +989,7 @@ public enum SecretWonders implements LogicCardInfo {
             onAttack {
               flip {
                 preventAllEffectsNextTurn()
-                delayed {
+                delayed (target: self) {
                   before BETWEEN_TURNS, {
                     if (bg.currentTurn == self.owner.opposite && self.owner.opposite.pbg.bench) {
                       bc "Dig Trap activates"

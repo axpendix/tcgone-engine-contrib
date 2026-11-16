@@ -1782,7 +1782,7 @@ public enum SupremeVictors implements LogicCardInfo {
             onAttack {
               damage 40
               afterDamage {
-                delayed {
+                delayed (target: defending) {
                   def eff=null
                   register {
                     eff = getter GET_RETREAT_COST, defending, {holder->

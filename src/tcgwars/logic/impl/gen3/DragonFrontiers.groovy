@@ -2012,7 +2012,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           onAttack {
             damage 80
 
-            delayed {
+            delayed (target: self) {
               def eff
               register {
                 eff = getter (GET_WEAKNESSES, self) {h->
