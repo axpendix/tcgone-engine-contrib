@@ -797,7 +797,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             text "Once during your opponent’s turn, if Uxie is damaged by an opponent’s attack (even if Uxie is Knocked Out), you may use this power. The Attacking Pokémon can’t use that attack during your opponent’s next turn."
             delayedA (priority: LAST) {
               before APPLY_ATTACK_DAMAGES, {
-                if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value}) && confirm("Use Memory Out?")) {
+                if(bg.currentTurn == self.owner.opposite && bg.dm().find({it.to==self && it.dmg.value}) && confirm("Use Memory Out?", self.owner)) {
                   powerUsed()
                   bc "$self used Memory Out, $ef.attacker won't be able to use this attack on your next turn!"
                   cantUseAttack(ef.move, ef.attacker)
