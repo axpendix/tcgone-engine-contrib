@@ -458,9 +458,8 @@ public enum UnseenForces implements LogicCardInfo {
           text "As long as you have less Pokémon in play than your opponent, your opponent can't play any Trainer cards (except for Supporter cards) from his or her hand."
           delayedA {
             before PLAY_TRAINER, {
-              // TODO: Fix bodies like this one to cover Power Spray in the future.
-              //       "bg.currentTurn == self.owner.opposite" won't work for stopping that.
-              if (self.owner.pbg.all.size() < self.owner.opposite.pbg.all.size() && !ef.cardToPlay.cardTypes.is(SUPPORTER) && bg.currentTurn == self.owner.opposite) {
+              // by whose card it is, not whose turn: the opponent's Power Spray is played in this Pokémon's owner's turn
+              if (self.owner.pbg.all.size() < self.owner.opposite.pbg.all.size() && !ef.cardToPlay.cardTypes.is(SUPPORTER) && ef.cardToPlay.player == self.owner.opposite) {
                 wcu "Lonesome prevents playing this card"
                 prevent()
               }
