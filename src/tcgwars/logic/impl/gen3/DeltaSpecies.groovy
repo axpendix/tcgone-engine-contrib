@@ -241,7 +241,7 @@ public enum DeltaSpecies implements LogicCardInfo {
           onAttack {
             damage 30
 
-            delayed {
+            delayed (targetPlayer: self.owner.opposite) { // an effect on the opponent player (F427)
               before PLAY_TRAINER, {
                 if (bg.currentTurn == self.owner.opposite && ef.cardToPlay.player == self.owner.opposite && !ef.cardToPlay.cardTypes.is(SUPPORTER)) {
                   wcu "Radar Jam prevents playing Trainer Cards this turn"

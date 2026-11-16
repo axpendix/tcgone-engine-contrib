@@ -1971,7 +1971,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
             energyCost W
             onAttack {
               flip{
-                delayed{
+                delayed (targetPlayer: self.owner.opposite) { // an effect on the opponent player (F427)
                   before PLAY_TRAINER, {
                     if (bg.currentTurn == self.owner.opposite && ef.cardToPlay.player == self.owner.opposite) {
                       wcu "Psyduck's Headache prevents playing this card!"

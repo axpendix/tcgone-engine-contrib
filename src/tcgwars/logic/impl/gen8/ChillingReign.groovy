@@ -1896,7 +1896,7 @@ public enum ChillingReign implements LogicCardInfo {
             onAttack {
               damage 10
 
-              delayed {
+              delayed (targetPlayer: self.owner.opposite) { // an effect on the opponent player (F427)
                 cantPlayEnergyFromHand delegate, "$thisMove prevents playing Special Energy Cards this turn", {
                   it.cardTypes.is(SPECIAL_ENERGY) && bg.currentTurn == self.owner.opposite
                 }

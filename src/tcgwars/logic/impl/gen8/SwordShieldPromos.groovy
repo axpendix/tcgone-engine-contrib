@@ -3850,7 +3850,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
           energyCost L, L, C
           onAttack {
             damage 150
-            delayed {
+            delayed (targetPlayer: self.owner.opposite) { // an effect on the opponent player (F427)
               before PLAY_TRAINER, {
                 if (bg.currentTurn == self.owner.opposite && ef.cardToPlay.cardTypes.is(ITEM) && bg.currentTurn.pbg.hand.contains(ef.cardToPlay)) {
                   wcu "Disconnect prevents playing Item cards this turn"

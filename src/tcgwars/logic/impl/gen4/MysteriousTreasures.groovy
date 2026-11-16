@@ -372,7 +372,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             onAttack {
               //TODO: Think/check how this would work re: Pokémon used as Special Energy.
               damage 10
-              delayed {
+              delayed (targetPlayer: self.owner.opposite) { // an effect on the opponent player (F427)
                 cantPlayEnergyFromHand delegate, "Bind Pulse prevents attaching Special Energy", {
                   it.cardTypes.is(SPECIAL_ENERGY) && bg.currentTurn == self.owner.opposite
                 }
@@ -2568,7 +2568,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
               afterDamage {
                 flip{
                   bc "${opp.owner.getPlayerUsername(bg)} can't attach any Energy cards from their hand to their Active Pokémon during their next turn. (This effect is on the player, it isn't removed by benching or evolving the currently Active ${defending}.)"
-                  delayed{
+                  delayed (targetPlayer: self.owner.opposite) { // an effect on the opponent player (F427)
                     cantPlayEnergyFromHand delegate, "Electromagnetic Jam prevents you from attaching Energy to your Active Pokémon.", to: { it.owner == self.owner.opposite && it.active }, { true }
                     unregisterAfter 2
                   }

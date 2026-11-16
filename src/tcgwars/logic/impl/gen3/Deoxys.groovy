@@ -1738,7 +1738,7 @@ public enum Deoxys implements LogicCardInfo {
             energyCost L
             onAttack {
               flip {
-                delayed{
+                delayed (targetPlayer: self.owner.opposite) { // an effect on the opponent player (F427)
                   before PLAY_TRAINER, {
                     if (bg.currentTurn == self.owner.opposite && ef.cardToPlay.player == self.owner.opposite) {
                       wcu "High Voltage prevents playing this card"
@@ -2658,7 +2658,7 @@ public enum Deoxys implements LogicCardInfo {
             energyCost L, C
             onAttack {
               damage 40
-              delayed {
+              delayed (targetPlayer: self.owner.opposite) { // an effect on the opponent player (F427)
                 before PLAY_TRAINER, {
                   if (!ef.cardToPlay.cardTypes.is(SUPPORTER) && bg.currentTurn == self.owner.opposite && ef.cardToPlay.player == self.owner.opposite) {
                     wcu "Disconnect prevents playing this card"

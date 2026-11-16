@@ -793,8 +793,8 @@ public enum Triumphant implements LogicCardInfo {
             onAttack {
               damage 20
               runAtBeginningOfYourOpponentsTurn {
-                delayed {
-                  def eff = getter IS_ABILITY_BLOCKED, { Holder h->
+                delayed (targetPlayer: self.owner.opposite) { // an effect on the opponent player, not on a Pokémon (F427, B6)
+                  def eff = getter (IS_ABILITY_BLOCKED, targetPlayer: self.owner.opposite) { Holder h->
                     if(bg.currentTurn == self.owner.opposite && h.effect.ability instanceof PokePower) {
                       h.object = true
                     }

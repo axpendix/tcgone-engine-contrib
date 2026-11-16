@@ -2284,7 +2284,7 @@ public enum Stormfront implements LogicCardInfo {
             text "You opponent can’t play any Trainer cards from his or her hand during your opponent’s next turn."
             energyCost ()
             onAttack {
-              delayed {
+              delayed (targetPlayer: self.owner.opposite) { // an effect on the opponent player (F427)
                 before PLAY_TRAINER, {
                   if (ef.cardToPlay.cardTypes.is(ITEM) && bg.currentTurn == self.owner.opposite && (ef.cardToPlay as Card).player == self.owner.opposite) {
                     wcu "$thisMove prevents you from playing Trainer cards."
@@ -3326,7 +3326,7 @@ public enum Stormfront implements LogicCardInfo {
                   targeted (defending) {
                     bc "During ${opp.owner.getPlayerUsername(bg)}'s next turn, Energy can't be attached from their hand to the Defending ${defending}. (This effect can be removed by evolving or benching ${defending}.)"
                     def pcs = defending
-                    delayed {
+                    delayed (target: pcs) { // on the Defending Pokémon: benching or evolving it ends the effect, as the message says (F427)
                       cantPlayEnergyFromHand delegate, "Night Bind: Can't attach energy to ${pcs}", to: { it == pcs }, { true }
                       unregisterAfter 2
                       after FALL_BACK, pcs, {unregister()}

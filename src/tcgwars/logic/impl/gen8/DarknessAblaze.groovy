@@ -1461,7 +1461,7 @@ public enum DarknessAblaze implements LogicCardInfo {
           onAttack {
             damage 50
             // TODO: Could make a configurable Trainer Lock static out of this
-            delayed {
+            delayed (targetPlayer: self.owner.opposite) { // an effect on the opponent player (F427)
               before PLAY_TRAINER, {
                 def fromHand = bg.currentTurn.pbg.hand.contains(ef.cardToPlay)
                 if (bg.currentTurn == self.owner.opposite && ef.cardToPlay.cardTypes.is(ITEM) && fromHand) {

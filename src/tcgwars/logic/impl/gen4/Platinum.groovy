@@ -453,7 +453,7 @@ public enum Platinum implements LogicCardInfo {
             energyCost M, C
             onAttack {
               damage 10
-              delayed {
+              delayed (targetPlayer: self.owner.opposite) { // an effect on the opponent player (F427)
                 before PLAY_TRAINER, {
                   if ((ef.cardToPlay.cardTypes.is(ITEM) || ef.cardToPlay.cardTypes.is(STADIUM))
                     && bg.currentTurn == self.owner.opposite
@@ -2735,7 +2735,7 @@ public enum Platinum implements LogicCardInfo {
             energyCost ()
             onAttack {
               flip {
-                delayed {
+                delayed (targetPlayer: self.owner.opposite) { // an effect on the opponent player (F427)
                   before PLAY_TRAINER, {
                     if ((ef.cardToPlay.cardTypes.is(ITEM) || ef.cardToPlay.cardTypes.is(SUPPORTER) || ef.cardToPlay.cardTypes.is(STADIUM)) && bg.currentTurn == self.owner.opposite && (ef.cardToPlay as Card).player == self.owner.opposite) {
                       wcu "Headache prevents you from playing Item cards."

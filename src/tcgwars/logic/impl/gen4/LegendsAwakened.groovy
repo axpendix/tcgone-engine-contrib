@@ -1574,7 +1574,7 @@ public enum LegendsAwakened implements LogicCardInfo {
               damage 60
 
               flip {
-                delayed {
+                delayed (targetPlayer: self.owner.opposite) { // an effect on the opponent player (F427)
                   before PLAY_TRAINER, {
                     if (bg.currentTurn == self.owner.opposite && (ef.cardToPlay.cardTypes.is(TRAINER)) && (ef.cardToPlay as Card).player == self.owner.opposite) {
                       wcu "Disturbing Pollen prevents playing Trainer Cards this turn"

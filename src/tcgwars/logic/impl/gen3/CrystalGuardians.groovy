@@ -2085,10 +2085,10 @@ public enum CrystalGuardians implements LogicCardInfo {
           onAttack {
             damage 30
             runAtBeginningOfYourOpponentsTurn {
-              delayed {
+              delayed (targetPlayer: self.owner.opposite) { // an effect on the opponent player, not on a Pokémon (F427, B6)
                 def eff
                 register{
-                  eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
+                  eff = getter (IS_ABILITY_BLOCKED, targetPlayer: self.owner.opposite) { Holder h ->
                     if (h.effect.target.owner == self.owner.opposite && h.effect.ability instanceof PokePower) {
                       h.object=true
                     }

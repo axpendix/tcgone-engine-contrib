@@ -1857,7 +1857,7 @@ public enum DragonFrontiers implements LogicCardInfo {
           onAttack {
             damage 40
 
-            delayed {
+            delayed (targetPlayer: self.owner.opposite) { // an effect on the opponent player (F427)
               before PLAY_TRAINER, {
                 if (!ef.cardToPlay.cardTypes.is(SUPPORTER)
                   && bg.currentTurn == self.owner.opposite
