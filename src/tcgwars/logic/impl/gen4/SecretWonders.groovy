@@ -993,7 +993,7 @@ public enum SecretWonders implements LogicCardInfo {
                   before BETWEEN_TURNS, {
                     if (bg.currentTurn == self.owner.opposite && self.owner.opposite.pbg.bench) {
                       bc "Dig Trap activates"
-                      directDamage 60, self.owner.opposite.pbg.bench.select("put 6 damage counters on 1 of your opponent’s Bench Pokémon")
+                      directDamage 60, self.owner.opposite.pbg.bench.select("put 6 damage counters on 1 of your opponent’s Bench Pokémon", self.owner)
                     }
                   }
                   after FALL_BACK, self, {unregister()}

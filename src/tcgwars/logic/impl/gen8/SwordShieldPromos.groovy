@@ -569,7 +569,7 @@ public enum SwordShieldPromos implements LogicCardInfo {
             def opponent = self.owner.opposite.pbg
             if (opponent.hand.size() > 0) {
               bc "Teapot of Surprises activates"
-              opponent.hand.select(hidden: true, count:1).showToOpponent("Chosen card").showToMe("Teapot of Surprises: this card will be put on the bottom of your deck").moveTo(opponent.deck) //Inverted showTo effects, but should work fine now
+              opponent.hand.select(hidden: true, count:1, "Teapot of Surprises: choose a random card from your opponent's hand", null, self.owner).showToOpponent("Chosen card").showToMe("Teapot of Surprises: this card will be put on the bottom of your deck").moveTo(opponent.deck) //Inverted showTo effects, but should work fine now
             }
           }
         }

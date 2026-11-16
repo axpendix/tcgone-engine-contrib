@@ -834,8 +834,8 @@ public enum RisingRivals implements LogicCardInfo {
             text "If Gastrodon East Sea is switched or retreats to your Bench, move as many Energy cards attached to Gastrodon East Sea as you like to the new Active Pokémon."
             delayedA {
               after FALL_BACK, self, {
-                if(self.cards.energyCount(C) && confirm("Use Sticky Hold?")) {
-                  def energyList = self.cards.select(max:self.cards.filterByType(ENERGY).size(),"Move any number of Energy cards attached from $self to ${self.owner.pbg.active}",cardTypeFilter(ENERGY))
+                if(self.cards.energyCount(C) && confirm("Use Sticky Hold?", self.owner)) {
+                  def energyList = self.cards.select(max:self.cards.filterByType(ENERGY).size(),"Move any number of Energy cards attached from $self to ${self.owner.pbg.active}",cardTypeFilter(ENERGY),self.owner)
                   energyList.each {
                     energySwitch(self,self.owner.pbg.active,it,true)
                   }
