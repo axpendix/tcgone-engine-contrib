@@ -1722,16 +1722,10 @@ public enum GreatEncounters implements LogicCardInfo {
                         prevent()
                       }
                     }
-                    // A switch that would make this Pokémon the Active Pokémon is an effect on it, whoever chooses it (PUI 2008-09-11:
-                    // Sonic Blade; 2010-08-05: Inviting Trap). Whirlwind-style switches target the Defending Pokémon, so the listener
-                    // above doesn't see them.
-                    before SWITCH, null, Source.ATTACK, {
-                      if (ef.switchedOut == self && ef.fallenBack != null && ef.targetPokemon != self && bg.currentTurn == self.owner.opposite
-                        && e.sourceAttack == bg.em().findAttack()) {
-                        bc "GUARD prevents effect SWITCH"
-                        prevent()
-                      }
-                    }
+                    // A switch in ("Switch the Defending Pokémon with 1 of your opponent's Benched Pokémon", Inviting Trap) targets this
+                    // Pokémon, so the listener above prevents it (PUI 2010-08-05). A switch out ("Your opponent switches the Defending
+                    // Pokémon with 1 of his or her Benched Pokémon", Sonic Blade, Push Down) targets the Defending Pokémon: this Pokémon,
+                    // on the Bench, can be the one chosen to come in (the testers, forum 17561; Advanced Player's Rulebook C-04/C-05, F598).
                   }
                 }
                 onRemoveFromPlay {
