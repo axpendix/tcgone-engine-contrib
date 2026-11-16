@@ -1897,11 +1897,8 @@ public enum ChillingReign implements LogicCardInfo {
               damage 10
 
               delayed {
-                before ATTACH_ENERGY, {
-                  if (ef.reason == PLAY_FROM_HAND && ef.card.cardTypes.is(SPECIAL_ENERGY) && bg.currentTurn == self.owner.opposite) {
-                    wcu "$thisMove prevents playing Special Energy Cards this turn"
-                    prevent()
-                  }
+                cantPlayEnergyFromHand delegate, "$thisMove prevents playing Special Energy Cards this turn", {
+                  it.cardTypes.is(SPECIAL_ENERGY) && bg.currentTurn == self.owner.opposite
                 }
                 before PLAY_TRAINER, {
                   if (ef.cardToPlay.cardTypes.is(STADIUM) && bg.currentTurn == self.owner.opposite) {
