@@ -1738,7 +1738,7 @@ public enum Deoxys implements LogicCardInfo {
               flip {
                 delayed{
                   before PLAY_TRAINER, {
-                    if (bg.currentTurn == self.owner.opposite) {
+                    if (bg.currentTurn == self.owner.opposite && ef.cardToPlay.player == self.owner.opposite) {
                       wcu "High Voltage prevents playing this card"
                       prevent()
                     }
@@ -2659,7 +2659,7 @@ public enum Deoxys implements LogicCardInfo {
               damage 40
               delayed {
                 before PLAY_TRAINER, {
-                  if (!ef.cardToPlay.cardTypes.is(SUPPORTER) && bg.currentTurn == self.owner.opposite) {
+                  if (!ef.cardToPlay.cardTypes.is(SUPPORTER) && bg.currentTurn == self.owner.opposite && ef.cardToPlay.player == self.owner.opposite) {
                     wcu "Disconnect prevents playing this card"
                     prevent()
                   }

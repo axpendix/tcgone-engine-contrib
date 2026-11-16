@@ -2061,7 +2061,7 @@ public enum PowerKeepers implements LogicCardInfo {
               powerUsed()
               delayed {
                 before PLAY_TRAINER, {
-                  if (bg.currentTurn == self.owner.opposite) {
+                  if (bg.currentTurn == self.owner.opposite && ef.cardToPlay.player == self.owner.opposite) {
                     wcu "Chilling Breath prevents playing Trainer cards"
                     prevent()
                   }

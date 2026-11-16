@@ -1973,7 +1973,7 @@ public enum TeamRocketReturns implements LogicCardInfo {
               flip{
                 delayed{
                   before PLAY_TRAINER, {
-                    if (bg.currentTurn == self.owner.opposite) {
+                    if (bg.currentTurn == self.owner.opposite && ef.cardToPlay.player == self.owner.opposite) {
                       wcu "Psyduck's Headache prevents playing this card!"
                       prevent()
                     }
