@@ -2168,7 +2168,8 @@ public enum MysteriousTreasures implements LogicCardInfo {
                 }
                 onRemoveFromPlay {
                   eff.unregister()
-                  bg.em().run(new ChangeImplementation(top, trcard))
+                  // moved to another Pokémon (Switcheroo, Trick) it is still the Tool card: swap back only once it left play
+                  if (trcard.findPCS() == null) bg.em().run(new ChangeImplementation(top, trcard))
                 }
                 onDisable {
                   eff.unregister()

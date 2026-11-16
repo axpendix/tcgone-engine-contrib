@@ -1736,7 +1736,8 @@ public enum GreatEncounters implements LogicCardInfo {
                 }
                 onRemoveFromPlay {
                   eff.unregister()
-                  bg.em().run(new ChangeImplementation(top, toolCard))
+                  // moved to another Pokémon (Switcheroo, Trick) it is still the Tool card: swap back only once it left play
+                  if (toolCard.findPCS() == null) bg.em().run(new ChangeImplementation(top, toolCard))
                 }
                 onDisable {
                   eff.unregister()
