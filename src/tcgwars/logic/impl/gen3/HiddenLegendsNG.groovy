@@ -1035,7 +1035,8 @@ public enum HiddenLegendsNG implements LogicCardInfo {
             assert opp.bench : "Your opponent has no Benched Pokémon."
           }
           onAttack {
-            if(sw2(opp.bench.oppSelect("Choose a new Active Pokémon."))) {
+            // the attacking player chooses the Benched Pokémon ("Your opponent chooses the Defending Pokémon to switch" is for 2-on-2 play)
+            if(sw2(opp.bench.select("Choose your opponent's new Active Pokémon."))) {
               damage 10
             }
           }

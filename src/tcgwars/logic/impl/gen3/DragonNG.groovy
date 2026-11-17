@@ -1569,8 +1569,10 @@ public enum DragonNG implements LogicCardInfo {
             assert opp.bench : "Your opponent has no Benched Pokémon."
           }
           onAttack {
-            if(sw2(opp.bench.oppSelect("Choose a new Active Pokémon."))) {
-              apply BURNED, defending
+            // the attacking player chooses the Benched Pokémon ("Your opponent chooses the Defending Pokémon to switch" is for 2-on-2 play),
+            // and the Burn goes to the new Defending Pokémon: `defending` is the one the attack began with, now on the Bench
+            if(sw2(opp.bench.select("Choose your opponent's new Active Pokémon."))) {
+              apply BURNED
             }
           }
         }
