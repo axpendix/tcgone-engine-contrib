@@ -248,8 +248,8 @@ public enum DiamondPearl implements LogicCardInfo {
                 if (defending.evolution && confirm ("You may return all Energy cards attached to Dialga to your hand. If you do, remove the highest Stage Evolution card from the Defending Pokémon and shuffle that card into your opponent’s deck.")) {
                   def moved = self.cards.filterByType(ENERGY).moveTo(my.hand)
                   if(moved.stream().anyMatch(self.cards.&contains)) return
-                  devolve(defending, opp.deck)
-                  shuffleOppDeck()
+                  // devolve answers true when the effect was prevented (Misty's Tentacruel's Flee): no card went into the deck, nothing to shuffle
+                  if (!devolve(defending, opp.deck)) shuffleOppDeck()
                 }
               }
             }
