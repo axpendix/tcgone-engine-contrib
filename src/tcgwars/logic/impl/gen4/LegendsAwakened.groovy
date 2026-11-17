@@ -1002,8 +1002,13 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "Whenever you attach a basic Energy card from your hand to Forretress (excluding effects of attacks), you may flip a coin. If tails, put 2 damage counters on each Pokémon (both yours and your opponent's) (excluding any Forretress)."
             //Errata: https://compendium.pokegym.net/compendium-lvx.html#280
             delayedA {
-              after ATTACH_ENERGY, self, {
-                if (e.source != ATTACK && ef.fromHand && ef.card.cardTypes.is(BASIC_ENERGY)) {
+              // an Ability that attaches several cards (Blastoise SW 2's Waterlog) attaches them all first, then comes one flip for
+              // each card attached to Forretress (PUI 2009-04-14): count them and flip when the Ability is done
+              int pending = 0
+              def flipPending = {
+                def flips = pending
+                pending = 0
+                flips.times {
                   flip "Iron Shell", 1, { }, {
                     all.each {
                       if (it.name != "Forretress") {
@@ -1011,6 +1016,23 @@ public enum LegendsAwakened implements LogicCardInfo {
                       }
                     }
                   }
+                }
+              }
+              after ATTACH_ENERGY, self, {
+                if (e.source != ATTACK && ef.fromHand && ef.card.cardTypes.is(BASIC_ENERGY)) {
+                  pending++
+                  if (!bg.em().currentEffectStack.find { it.effectType == USE_ABILITY_OUTER }) {
+                    flipPending()
+                  }
+                }
+              }
+              after USE_ABILITY_OUTER, {
+                flipPending()
+              }
+              before BETWEEN_TURNS, { // Waterlog ends the turn right after it attached the cards
+                if (pending) {
+                  flipPending()
+                  checkFaint()
                 }
               }
             }
