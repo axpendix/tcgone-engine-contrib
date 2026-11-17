@@ -2449,7 +2449,7 @@ public enum Stormfront implements LogicCardInfo {
             text "During your opponent’s next turn, if Onix would be damaged by an attack, prevent that attack’s damage done to Onix if that damage is 40 or less."
             energyCost C
             onAttack {
-              delayed (target: self) {
+              delayed (priority: BEFORE_LAST2, target: self) {
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
                     if(it.to == self && it.dmg.value <= 40 && it.notNoEffect) {

@@ -1383,7 +1383,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               //TODO: Check for a harden() method in Statics
-              delayed (target: self) {
+              delayed (priority: BEFORE_LAST2, target: self) {
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
                     if(it.to == self && it.dmg.value <= 30 && it.notNoEffect) {
@@ -1878,7 +1878,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               //TODO: Check for a harden() method in Statics
-              delayed (target: self) {
+              delayed (priority: BEFORE_LAST2, target: self) {
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
                     if(it.to == self && it.dmg.value <= 30 && it.notNoEffect) {
