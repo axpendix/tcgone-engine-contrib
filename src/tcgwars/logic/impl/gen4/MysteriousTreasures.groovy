@@ -554,12 +554,17 @@ public enum MysteriousTreasures implements LogicCardInfo {
           resistance F, MINUS20
           pokeBody "Dark Genes", {
             text "As long as Honchkrow has the Energy necessary to use its attack, each of your Murkrow can use Honchkrow’s attack as its own without the Energy necessary to use that attack."
-            getterA GET_MOVE_LIST, BEFORE_LAST, { h ->
+            // LAST: Murkrow needs no Energy for these attacks, so the cost increases on Murkrow don't reach them (official
+            // Japanese Q&A: Azelf MT 4's Downer Material). Only the attacks printed on Honchkrow and Honchkrow Lv.X
+            // (baseMoves), not a Technical Machine's (official Japanese Q&A: Multi Technical Machine 01) nor those a Tool
+            // such as Memory Berry lets it use.
+            getterA GET_MOVE_LIST, LAST, { h ->
               PokemonCardSet hTarget = h.effect.target
               if (hTarget.active && hTarget.owner == self.owner && hTarget.name == "Murkrow" && self.benched) {
+                List printedMoves = self.baseMoves
                 List honchkrowMoves = bg.em().activateGetter(new GetMoveList(self))
                 for (move in honchkrowMoves) {
-                  if (self.cards.energySufficient(move.energyCost)) {
+                  if (printedMoves.contains(move) && self.cards.energySufficient(move.energyCost)) {
                     Move copy = move.shallowCopy()
                     copy.energyCost.clear()
                     h.object.add(copy)
