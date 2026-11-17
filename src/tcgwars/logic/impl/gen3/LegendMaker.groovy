@@ -1320,8 +1320,7 @@ public enum LegendMaker implements LogicCardInfo {
             def list = opp.all.findAll { it.evolution }
             def pcs = list.select("Choose one of your opponent's evolved Pokémon.")
             flip {
-              devolve(pcs, opp.deck)
-              shuffleOppDeck()
+              if (!devolve(pcs, opp.deck)) shuffleOppDeck()
             }
           }
         }

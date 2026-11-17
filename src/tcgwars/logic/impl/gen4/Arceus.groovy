@@ -856,8 +856,7 @@ public enum Arceus implements LogicCardInfo {
             }
             onAttack {
               def pcs = opp.all.findAll{it.evolution}.select("Choose 1 of your opponent's Evolved Pokémon")
-              devolve(pcs, opp.deck)
-              shuffleOppDeck()
+              if (!devolve(pcs, opp.deck)) shuffleOppDeck()
             }
           }
           move "Primal Tentacles", {
