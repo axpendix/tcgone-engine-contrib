@@ -547,7 +547,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
           text " If you go first, you can use this attack on your first turn. Discard your hand and draw 6 cards."
           energyCost C
           attackRequirement {
-            assert my.deck : "Deck is empty"
+            assert my.hand || my.deck : "Your hand and deck are empty"
           }
           onAttack {
             my.hand.discard()
