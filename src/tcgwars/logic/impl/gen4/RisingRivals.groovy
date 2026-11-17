@@ -1938,7 +1938,7 @@ public enum RisingRivals implements LogicCardInfo {
                 targeted (defending) {
                   bc "During ${opp.owner.getPlayerUsername(bg)}'s next turn, ${opp.owner.getPlayerUsername(bg)} can't play any Pokémon from their hand to Evolve or Level Up the defending $defending. (This effect can be removed by evolving or benching ${defending}.)"
                   def pcs = defending
-                  delayed {
+                  delayed (target: pcs) { // on the Defending Pokémon: benching or evolving it ends the effect (F427)
                     def warnAndPrevent = {
                       if (self.active && bg.currentTurn == self.owner.opposite) {
                         wcu "$self's $thisMove prevents playing Pokémon from your hand to evolve your Pokémon"

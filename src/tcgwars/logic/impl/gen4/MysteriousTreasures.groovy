@@ -2188,8 +2188,9 @@ public enum MysteriousTreasures implements LogicCardInfo {
             energyCost C, C
             attackRequirement {}
             onAttack {
-              // every coin the opponent flips during that turn (TreatCoinFlipAsTails), like Drowzee FFI 35's Sinister Suggestion
-              delayed {
+              // every coin the opponent flips during that turn (TreatCoinFlipAsTails), like Drowzee FFI 35's Sinister Suggestion: an effect on the
+              // opponent player (B13, F427). It is not Unown I MT 37's Hidden Power, which is on the Energy card (6a.14)
+              delayed (targetPlayer: self.owner.opposite) {
                 def key = CoinFlip.DROWZEE_35_Sinister_Suggestion, turn = null // shared: cleared only while it holds this effect's turn
                 unregister { if (bg.em().retrieveObject(key) == turn) { bg.em().storeObject(key, null); bg.em().storeObject(CoinFlip.DROWZEE_35_Sinister_Suggestion_NAME, null) } }
                 register { turn = bg.turnCount + 1; bg.em().storeObject(key, turn); bg.em().storeObject(CoinFlip.DROWZEE_35_Sinister_Suggestion_NAME, thisMove.name) }

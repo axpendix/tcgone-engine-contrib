@@ -1055,7 +1055,7 @@ public enum AmazingVoltTackle implements LogicCardInfo {
               bc ("Attaching an Energy from hand to the Defending Pokémon ($defending) during ${self.owner.opposite.getPlayerUsername(bg)}'s next turn"
                 + " will place 6 damage counters on the Defending Pokémon. (This effect can be removed by benching/evolving ${defending})")
               def pcs = defending
-              delayed {
+              delayed (target: pcs) { // an effect on the Defending Pokémon (F427)
                 after ATTACH_ENERGY, {
                   if (ef.reason == PLAY_FROM_HAND && bg.currentTurn == self.owner.opposite && ef.resolvedTarget == pcs) {
                     directDamage 60, pcs

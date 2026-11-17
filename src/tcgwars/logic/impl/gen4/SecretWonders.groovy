@@ -3232,10 +3232,10 @@ f
                 def pcs = defending
                 targeted(pcs) {
                   if (pcs.isSPC(POISONED)) {// Is !bg.em().run(new ApplySpecialCondition(POISONED, pcs, SOURCE.ATTACK)) better here
-                    delayed {
+                    delayed (target: pcs) { // an effect on the Defending Pokémon, the delayed effect and its getter (F427)
                       def eff
                       register {
-                        eff = getter IS_ABILITY_BLOCKED, { Holder h ->
+                        eff = getter (IS_ABILITY_BLOCKED, pcs) { Holder h ->
                           if (h.effect.target == pcs && h.effect.ability instanceof PokeBody) {
                             h.object = true
                           }

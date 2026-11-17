@@ -3097,7 +3097,7 @@ public enum Stormfront implements LogicCardInfo {
                 delayed (target: self) {
                   before KNOCKOUT, self, {
                     if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
-                      flip {
+                      flip self.owner, {
                         self.damage = self.fullHP - hp(10)
                         bc "$self endured the hit!"
                         prevent()

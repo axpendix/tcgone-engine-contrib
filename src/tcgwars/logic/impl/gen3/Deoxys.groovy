@@ -1421,19 +1421,7 @@ public enum Deoxys implements LogicCardInfo {
             text "During your opponent’s next turn, prevent all effects of attacks, including damage, done to Silcoon by your opponent’s Evolved Pokémon."
             energyCost G, C
             onAttack {
-              delayed (target: self) {
-                before APPLY_ATTACK_DAMAGES, {
-                  bg.dm().each{
-                    if(it.from.evolution && it.to == self) {
-                      bc "Advanced Armor prevent damage"
-                      it.dmg = hp(0)
-                    }
-                  }
-                }
-                unregisterAfter 2
-                after FALL_BACK, self, {unregister()}
-                after CHANGE_STAGE, self, {unregister()}
-              }
+              preventAllEffectsFromCustomPokemonNextTurn(thisMove, self, {it.evolution})
             }
           }
         };

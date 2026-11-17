@@ -1940,7 +1940,7 @@ public enum SwordShield implements LogicCardInfo {
           energyCost C
           onAttack {
             apply ASLEEP, defending
-            delayed {
+            delayed (target: defending) { // the 2 coins of the Defending Pokémon's Asleep checkup: an effect on that Pokémon (F427)
               after CLEAR_SPECIAL_CONDITION, defending, {
                 if(ef.types.contains(ASLEEP)){
                   unregister()
