@@ -2562,6 +2562,7 @@ enum EvolvingSkies implements LogicCardInfo {
             text "Once during your turn, you may discard your hand and draw 3 cards."
             actionA {
               checkLastTurn()
+              assert my.hand || my.deck : "Your hand and deck are empty"
               powerUsed()
               my.hand.discard()
               draw 3
