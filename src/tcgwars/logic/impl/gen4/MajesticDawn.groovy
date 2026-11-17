@@ -643,7 +643,8 @@ public enum MajesticDawn implements LogicCardInfo {
             text "After your opponent’s Pokémon uses a Poké-Power, put 2 damage counters on that Pokémon."
             delayedA {
               after USE_ABILITY_OUTER, {
-                if (ef.targetPokemon.owner != self.owner && ef.ability instanceof PokePower) {
+                // as Dark Eyes CG 97: not on a Pokémon that left play or evolved through the Power (PUI 2006-11-16)
+                if (ef.targetPokemon.owner != self.owner && ef.ability instanceof PokePower && ef.ability.active) {
                   bc "Primal Claw activates"
                   directDamage(20, ef.targetPokemon)
                 }

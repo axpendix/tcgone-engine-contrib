@@ -2180,7 +2180,8 @@ public enum CrystalGuardians implements LogicCardInfo {
           def stillWorks = { !new IsAbilityBlocked(self, thisAbility).run(bg) }
           delayedA {
             after USE_ABILITY_OUTER, {
-              if (ef.targetPokemon.owner != self.owner && ef.ability instanceof PokePower && stillWorks()) {
+              // a Pokémon that left play or evolved through the Power (Baby Evolution) is no longer the one that used it, and its Power is off (PUI 2006-11-16)
+              if (ef.targetPokemon.owner != self.owner && ef.ability instanceof PokePower && ef.ability.active && stillWorks()) {
                 bc "Dark Eyes activates"
                 directDamage(20, ef.targetPokemon)
               }
