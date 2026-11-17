@@ -353,7 +353,10 @@ public enum DiamondPearl implements LogicCardInfo {
           move "Flare Blitz", {
             text "90 damage. Discard all [R] Energy attached to Infernape."
             energyCost R, R
-            attackRequirement {}
+            attackRequirement {
+              // a copied "discard all [R] Energy" needs at least one before Black & White (Compendium, Mar 15 2007)
+              assert !isMetronomeAndMustDoEffects() || self.cards.filterByEnergyType(R) : "$self has no [R] Energy to discard"
+            }
             onAttack {
               damage 90
               afterDamage{
@@ -411,7 +414,8 @@ public enum DiamondPearl implements LogicCardInfo {
             text "80 damage. Move all [L] Energy attached to Luxray to 1 of your Benched Pokémon. (Ignore this effect if you don’t have any Benched Pokémon.)"
             energyCost L, L, L, L
             attackRequirement {
-              assert !isMetronomeAndMustDoEffects() || self.energyCards.energyCount(L)
+              // a copy fails without [L] Energy to move, unless the effect is ignored (no Benched Pokémon)
+              assert !isMetronomeAndMustDoEffects() || !my.bench || self.energyCards.energyCount(L) : "$self has no [L] Energy to move"
             }
             onAttack {
               damage 80

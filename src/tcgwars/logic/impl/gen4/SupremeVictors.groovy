@@ -349,7 +349,10 @@ public enum SupremeVictors implements LogicCardInfo {
           move "Electric Current", {
             text "40 damage. Move a [L] Energy card attached to Electivire FB to 1 of your Benched Pokémon."
             energyCost L, C, C
-            attackRequirement {}
+            attackRequirement {
+              // a copy fails without a [L] Energy card to move; the Japanese print ignores the effect without Benched Pokémon
+              assert !isMetronomeAndMustDoEffects() || !my.bench || self.cards.energyCount(L) : "$self has no [L] Energy card to move"
+            }
             onAttack {
               damage 40
               if(my.bench && self.cards.energyCount(L)) {

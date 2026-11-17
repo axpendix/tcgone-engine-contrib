@@ -1677,7 +1677,8 @@ f
               damage 50
               flip {
                 damage 20
-                discardSelfEnergyAfterDamage R
+                // a copied Flare Tail fails before Black & White without a [R] Energy to discard (DiscardSelfEnergy)
+                discardSelfEnergy R
               }
             }
           }

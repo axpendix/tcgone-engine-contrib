@@ -478,6 +478,10 @@ public enum Unleashed implements LogicCardInfo {
           move "Hydro Launcher", {
             text "Return 2 [W] Energy attached to Blastoise to your hand. Choose 1 of your opponent’s Pokémon. This attack does 100 damage to that Pokémon. (Don’t apply Weakness and Resistance for Benched Pokémon.)"
             energyCost W, W, C, C
+            attackRequirement {
+              // a copy fails before Black & White without 2 [W] Energy to return
+              assert !isMetronomeAndMustDoEffects() || self.cards.energySufficient(W, W) : "$self doesn't have 2 [W] Energy to return"
+            }
             onAttack {
               damage 100, opp.all.select()
               afterDamage {
