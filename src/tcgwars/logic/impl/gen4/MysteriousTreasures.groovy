@@ -3490,7 +3490,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             onAttack {
               damage 80
               //TODO: Modularize?
-              delayed (target: self) {
+              delayed (priority: AFTER_FIRST, target: self) {
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
                     if(it.from.owner==self.owner.opposite && it.to==self && it.dmg.value && it.notNoEffect){

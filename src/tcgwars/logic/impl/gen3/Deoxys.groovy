@@ -216,7 +216,7 @@ public enum Deoxys implements LogicCardInfo {
           weakness FIRE
           pokeBody "Hunch", {
             text "As long as Beautifly’s remaining HP is 40 or less, Beautifly does 40 more damage to the Defending Pokémon (before applying Weakness and Resistance)."
-            delayedA {
+            delayedA priority: AFTER_FIRST, {
               before APPLY_ATTACK_DAMAGES,{
                 if(self.getRemainingHP().value <= 40){
                   bg.dm().each{
@@ -1533,7 +1533,7 @@ public enum Deoxys implements LogicCardInfo {
           weakness FIGHTING
           pokeBody "Vigorous Aura", {
             text "As long as Vigoroth is your Active Pokémon, attacks by each player’s Active Pokémon (both if there are 2) do 10 more damage to any Active Pokémon (before applying Weakness and Resistance)."
-            delayedA {
+            delayedA priority: AFTER_FIRST, {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
                   if(self.active && it.from.active && it.to.active) {
@@ -2622,7 +2622,7 @@ public enum Deoxys implements LogicCardInfo {
             energyCost F, F, C
             onAttack {
               damage 80
-              delayed (target: self) {
+              delayed (priority: AFTER_FIRST, target: self) {
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
                     if(it.from.owner==self.owner.opposite && it.to==self && it.dmg.value && it.notNoEffect){

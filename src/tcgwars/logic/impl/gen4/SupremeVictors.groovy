@@ -3810,7 +3810,7 @@ public enum SupremeVictors implements LogicCardInfo {
           weakness W
           pokeBody "Burning Spirit", {
             text "Any damage done by attacks to a Burned Pokémon (both yours and your opponent's) is increased by 40 (after applying Weakness and Resistance). No more than 40 damage can be added by all Burning Spirit Poké-Bodies"
-            delayedA {
+            delayedA priority: AFTER_FIRST, {
               before APPLY_ATTACK_DAMAGES, {
                 if(bg.em().retrieveObject("Burning Spirit") != bg.turnCount){
                   bg.dm().each {
@@ -3831,7 +3831,7 @@ public enum SupremeVictors implements LogicCardInfo {
             onAttack {
               damage 80
               afterDamage {
-                delayed (target: self) {
+                delayed (priority: AFTER_FIRST, target: self) {
                   before APPLY_ATTACK_DAMAGES, {
                     bg.dm().each {
                       if(it.to==self && it.dmg.value && it.notNoEffect){

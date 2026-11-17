@@ -390,10 +390,10 @@ public enum FireRedLeafGreen implements LogicCardInfo {
           weakness WATER
           pokeBody "Power Gene", {
             text "As long as Nidoking is in play, your attacks by Nidoran♀, Nidorina, Nidoqueen, Nidoran♂, and Nidorino do 10 more damage to the Defending Pokémon."
-            delayedA {
+            delayedA priority: AFTER_FIRST, {
               before APPLY_ATTACK_DAMAGES, {
                 bg.dm().each{
-                  if(it.from.owner == self.owner && (it.from.name == "Nidoran♂" || it.from.name == "Nidoran♀" || it.from.name == "Nidorino" || it.from.name == "Nidorina"|| it.from.name == "Nidoqueen")) {
+                  if(it.from.owner == self.owner && (it.from.name == "Nidoran♂" || it.from.name == "Nidoran♀" || it.from.name == "Nidorino" || it.from.name == "Nidorina"|| it.from.name == "Nidoqueen") && it.dmg.value) {
                     bc "Power Gene +10"
                     it.dmg += hp(10)
                   }

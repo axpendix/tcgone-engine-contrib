@@ -314,7 +314,7 @@ public enum Stormfront implements LogicCardInfo {
             onAttack {
               damage 60
               afterDamage {
-                delayed (target: self) {
+                delayed (priority: AFTER_FIRST, target: self) {
                   before APPLY_ATTACK_DAMAGES, {
                     bg.dm().each {
                       if(it.to == self && it.dmg.value && it.notNoEffect){
@@ -3069,7 +3069,7 @@ public enum Stormfront implements LogicCardInfo {
           weakness P, PLUS40
           pokeBody "No Guard", {
             text "As long as Machamp is your Active Pokémon, each of Machamp’s attacks does 60 more damage to the Active Pokémon (before applying Weakness and Resistance) and any damage done to Machamp by your opponent’s Pokémon is increased by 60 (after applying Weakness and Resistance)."
-            delayedA {
+            delayedA priority: AFTER_FIRST, {
               after PROCESS_ATTACK_EFFECTS, {
                 if(ef.attacker==self) bg.dm().each {
                   if(it.from==self && it.to.active && it.to.owner!=self.owner && it.dmg.value){
