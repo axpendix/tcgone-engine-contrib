@@ -674,7 +674,7 @@ public enum Stormfront implements LogicCardInfo {
             energyCost G, G, C, C
             onAttack {
               damage 80
-              delayed {
+              delayed (targetPlayer: self.owner.opposite) {
                 after PUT_ON_BENCH, {
                   if(ef.basicFromHand && bg.currentTurn == self.owner.opposite){
                     ef.place.damage += 20
@@ -3323,15 +3323,13 @@ public enum Stormfront implements LogicCardInfo {
               damage 20
               afterDamage {
                 flip {
-                  targeted (defending) {
-                    bc "During ${opp.owner.getPlayerUsername(bg)}'s next turn, Energy can't be attached from their hand to the Defending ${defending}. (This effect can be removed by evolving or benching ${defending}.)"
-                    def pcs = defending
-                    delayed (target: pcs) { // on the Defending Pokémon: benching or evolving it ends the effect, as the message says (F427)
-                      cantPlayEnergyFromHand delegate, "Night Bind: Can't attach energy to ${pcs}", to: { it == pcs }, { true }
-                      unregisterAfter 2
-                      after FALL_BACK, pcs, {unregister()}
-                      after CHANGE_STAGE, pcs, {unregister()}
-                    }
+                  // The same text as Electrike MT 81's Electromagnetic Jam: "your opponent can't attach any Energy cards from his or her
+                  // hand to the Active Pokémon during his or her next turn" is an effect on the opponent player and on whichever Pokémon
+                  // is Active, not on the Defending Pokémon (F427).
+                  bc "${opp.owner.getPlayerUsername(bg)} can't attach any Energy cards from their hand to their Active Pokémon during their next turn. (This effect is on the player, it isn't removed by benching or evolving the currently Active ${defending}.)"
+                  delayed (targetPlayer: self.owner.opposite) {
+                    cantPlayEnergyFromHand delegate, "Night Bind prevents you from attaching Energy to your Active Pokémon.", to: { it.owner == self.owner.opposite && it.active }, { true }
+                    unregisterAfter 2
                   }
                 }
               }

@@ -1723,7 +1723,7 @@ public enum FireRedLeafGreen implements LogicCardInfo {
               targeted (defending){
                 bc "At the end of ${opp.owner.getPlayerUsername(bg)}'s next turn, the Defending ${defending} will be Confused. (This effect can be removed by evolving or benching ${defending}.)"
                 def pcs = defending
-                delayed {
+                delayed (target: pcs) {
                   before BETWEEN_TURNS, {
                     if (bg.currentTurn == self.owner.opposite) {
                       bc "Slow Trip Gas activates"

@@ -259,7 +259,7 @@ public enum SupremeVictors implements LogicCardInfo {
               def pcs = defending
               targeted (pcs) {
                 bc "At the end of ${pcs.owner}'s next turn, $pcs will be Knocked Out. (This effect can be removed by benching/evolving $pcs)"
-                delayed {
+                delayed (target: pcs) {
                   before BETWEEN_TURNS, {
                     if(turnCount + 1 <= bg.turnCount){
                       if(all.contains(pcs)){
@@ -2578,7 +2578,7 @@ public enum SupremeVictors implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               damage 20
-              delayed {
+              delayed (targetPlayer: self.owner.opposite) {
                 after PUT_ON_BENCH, {
                   if(ef.basicFromHand && bg.currentTurn == self.owner.opposite){
                     ef.place.damage += 20
@@ -3295,7 +3295,7 @@ public enum SupremeVictors implements LogicCardInfo {
               def move=choose(moves, moves.collect({it.name}), "Encore") as Move
               def pcs = defending
               bc "$pcs can only use ${move.name} next turn."
-              delayed{
+              delayed (target: pcs) {
                 before CHECK_ATTACK_REQUIREMENTS, {
                   if (ef.move != move) {
                     wcu "$pcs can only use ${move.name}"

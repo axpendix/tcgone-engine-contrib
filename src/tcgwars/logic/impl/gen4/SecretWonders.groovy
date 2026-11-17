@@ -1144,7 +1144,7 @@ public enum SecretWonders implements LogicCardInfo {
                   def move=choose(moves, moves.collect({it.name}), "Encore") as Move
                   def pcs = defending
                   bc "$pcs can only use ${move.name} next turn."
-                  delayed{
+                  delayed (target: pcs) {
                     before CHECK_ATTACK_REQUIREMENTS, {
                       if (ef.move != move) {
                         wcu "$pcs can only use ${move.name}"

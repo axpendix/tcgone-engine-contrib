@@ -952,7 +952,7 @@ public enum ChillingReign implements LogicCardInfo {
             onAttack {
               targeted (defending) {
                 bc "During ${self.owner}'s next turn, if $defending is damaged by an attack from a Rapid Strike Pokémon, it will be Knocked Out. (This effect can be removed by benching/evolving $defending)"
-                delayed {
+                delayed (target: defending) {
                   before APPLY_ATTACK_DAMAGES, {
                     if (bg.currentTurn == self.owner) {
                       bg.dm().each {
@@ -2469,7 +2469,7 @@ public enum ChillingReign implements LogicCardInfo {
               def pcs = defending
               targeted(pcs) {
                 bc "At the end of ${self.owner.opposite}'s next turn, the Defending ${defending} will be Knocked Out. (This effect can be removed by benching/evolving ${defending}.)"
-                delayed {
+                delayed (target: pcs) {
                   before BETWEEN_TURNS, {
                     if (bg.currentTurn == self.owner.opposite && all.contains(pcs)) {
                       bc "Word of Ruin effect activates."

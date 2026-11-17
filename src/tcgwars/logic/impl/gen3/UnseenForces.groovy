@@ -420,7 +420,7 @@ public enum UnseenForces implements LogicCardInfo {
             def pcs = defending
             targeted (pcs){
               bc "3 damage counters will be put on ${opp.owner.getPlayerUsername(bg)}'s Defending ${pcs} at the end of their next turn. (This effect can be removed by evolving or benching ${pcs}.)"
-              delayed {
+              delayed (target: pcs) {
                 before BETWEEN_TURNS, {
                   if (bg.currentTurn == self.owner.opposite) {
                     bc "Spiky Shell activates"

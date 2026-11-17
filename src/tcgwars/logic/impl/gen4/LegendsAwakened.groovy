@@ -1104,7 +1104,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             onAttack {
               discardAllSelfEnergy(null)
               targeted(defending) {
-                delayed {
+                delayed (target: defending) {
                   def activatedTurn, card
                   register {
                     activatedTurn = bg.turnCount

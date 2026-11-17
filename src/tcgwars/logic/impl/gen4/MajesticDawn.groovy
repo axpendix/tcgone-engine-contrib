@@ -259,7 +259,7 @@ public enum MajesticDawn implements LogicCardInfo {
               damage 10
               def pcs = defending
               targeted(pcs){
-                delayed {
+                delayed (target: pcs) {
                   before BETWEEN_TURNS, {
                     if (bg.currentTurn == self.owner.opposite && all.contains(pcs)) {
                       bc "Dark Slumber activates."

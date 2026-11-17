@@ -583,11 +583,12 @@ public enum RisingRivals implements LogicCardInfo {
             onAttack {
               damage 60
               afterDamage {
-                delayed {
+                def pcs = defending
+                delayed (target: pcs) { // on the Defending Pokémon, which its getter names too (F427)
                   def eff
                   register {
-                    eff = getter (IS_ABILITY_BLOCKED) { Holder h ->
-                      if (h.effect.target == defending && h.effect.target.owner == self.owner.opposite && (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody)) {
+                    eff = getter (IS_ABILITY_BLOCKED, pcs) { Holder h ->
+                      if (h.effect.target == pcs && h.effect.target.owner == self.owner.opposite && (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody)) {
                         h.object=true
                       }
                     }
@@ -596,9 +597,9 @@ public enum RisingRivals implements LogicCardInfo {
                     eff.unregister()
                   }
                   unregisterAfter 2
-                  after FALL_BACK, defending, { unregister() }
-                  after LEVEL_UP, defending, { unregister() }
-                  after EVOLVE, defending, { unregister() }
+                  after FALL_BACK, pcs, { unregister() }
+                  after LEVEL_UP, pcs, { unregister() }
+                  after EVOLVE, pcs, { unregister() }
                 }
               }
             }

@@ -1437,7 +1437,7 @@ enum EvolvingSkies implements LogicCardInfo {
               targeted (defending) {
                 bc "During ${opp.owner.getPlayerUsername(bg)}'s next turn, Energy can't be attached from their hand to the Defending $defending. (This effect can be removed by evolving or benching ${defending}.)"
                 def pcs = defending
-                delayed {
+                delayed (target: pcs) {
                   before ATTACH_ENERGY, pcs, {
                     if (ef.reason == PLAY_FROM_HAND) {
                       wcu "$thisMove: Can't attach energy to $pcs"
