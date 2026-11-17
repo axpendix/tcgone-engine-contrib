@@ -2292,7 +2292,39 @@ public enum Arceus implements LogicCardInfo {
           }
         };
       case LUCKY_EGG_88:
-        return copy(SwordShield.LUCKY_EGG_167, this);
+        return pokemonTool (this) {
+          // TPCi errata of 2010-05-07 (Compendium, Lucky Egg): the Pokémon draws only when it is put into the discard pile. The
+          // Sword & Shield print (167) is played as written, without that condition (TPCi Rules Team, 2024-12-12), so it has its
+          // own code and this card doesn't copy it (trello s0xHMoYH)
+          text "Attach Lucky Egg to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nWhen the Pokémon this card is attached to is Knocked Out by damage from an opponent’s attack and put into your discard pile, draw cards until you have 7 cards in your hand."
+          def eff
+          onPlay {reason->
+            eff = delayed (priority: BEFORE_LAST) {
+              before KNOCKOUT, self, {
+                if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite) {
+                  def pcs = self
+                  // counted now: the Knock Out's discard step then empties the Pokémon, and Lost City, Rescue Energy and the like
+                  // move its cards elsewhere before it
+                  def pokemon = new CardList(pcs.cards.filterByType(POKEMON))
+                  // the Tool leaves play with the Pokémon, so the draw is a one-time effect of its own, after the Knock Out
+                  delayed {
+                    after KNOCKOUT, pcs, {
+                      unregister()
+                      if (pokemon.every { pcs.owner.pbg.discard.contains(it) }) {
+                        bc "Lucky Egg activates"
+                        def count = 7 - pcs.owner.pbg.hand.size()
+                        if (count > 0) draw count, pcs.owner.toTargetPlayer()
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          onRemoveFromPlay {
+            eff.unregister()
+          }
+        };
       case OLD_AMBER_89:
         return copy(MajesticDawn.OLD_AMBER_84, this);
       case PROFESSOR_OAK_S_VISIT_90:
