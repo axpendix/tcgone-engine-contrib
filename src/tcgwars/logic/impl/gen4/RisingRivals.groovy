@@ -584,11 +584,17 @@ public enum RisingRivals implements LogicCardInfo {
               damage 60
               afterDamage {
                 def pcs = defending
-                delayed (target: pcs) { // on the Defending Pokémon, which its getter names too (F427)
+                def sealed = pcs.topPokemonCard
+                // LAST: a trigger of the retreat that Benches it resolves first (PUI 2009-06-11, Dugtrio PL 24's Sinkhole)
+                delayed (target: pcs, priority: LAST) { // on the Defending Pokémon, which its getter names too (F427)
+                  def opponentsTurn = untilEndOfNextTurnOf self.owner.opposite
                   def eff
                   register {
                     eff = getter (IS_ABILITY_BLOCKED, pcs) { Holder h ->
-                      if (h.effect.target == pcs && h.effect.target.owner == self.owner.opposite && (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody)) {
+                      // only during that turn, not the rest of this one nor Pokémon Checkup (PUI 2008-07-10, Psychic Lock vs
+                      // Phoenix Turn); a card put on it or taken off makes it another Pokémon before its Powers are turned on
+                      if (h.effect.target == pcs && opponentsTurn.isNow(bg) && pcs.topPokemonCard.is(sealed)
+                        && (h.effect.ability instanceof PokePower || h.effect.ability instanceof PokeBody)) {
                         h.object=true
                       }
                     }
@@ -596,10 +602,10 @@ public enum RisingRivals implements LogicCardInfo {
                   unregister{
                     eff.unregister()
                   }
-                  unregisterAfter 2
-                  after FALL_BACK, pcs, { unregister() }
-                  after LEVEL_UP, pcs, { unregister() }
-                  after EVOLVE, pcs, { unregister() }
+                  before BETWEEN_TURNS, { if (opponentsTurn.isNow(bg)) unregister() } // before Abilities are checked for Pokémon Checkup
+                  after FALL_BACK, pcs, { if (!bg.em().currentEffectStack.find { it.effectType == RETREAT }) unregister() }
+                  after RETREAT, pcs, { unregister() }
+                  after CHANGE_STAGE, pcs, { unregister() }
                 }
               }
             }
