@@ -420,12 +420,7 @@ public enum Undaunted implements LogicCardInfo {
             onAttack {
               damage 30
               delayed (target: self) {
-                before null, self, Source.ATTACK, {
-                  if ((e.sourceAttack.attacker.hasPokePower() || e.sourceAttack.attacker.hasPokeBody() || e.sourceAttack.attacker.hasPokemonPower()) && e.sourceAttack.attacker.owner != self.owner && ef.effectType != DAMAGE){
-                    bc "Moonlight Fang prevents effect"
-                    prevent()
-                  }
-                }
+                preventEffectsOfAttacks delegate, self, name: thisMove, attackers: { it.hasPokePower() || it.hasPokeBody() || it.hasPokemonPower() }
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
                     if(it.to == self && it.notNoEffect && (it.from.hasPokePower() || it.from.hasPokeBody() || it.from.hasPokemonPower())){
