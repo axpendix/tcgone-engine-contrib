@@ -227,9 +227,9 @@ public enum Stormfront implements LogicCardInfo {
             energyCost P, P, C
             onAttack {
               damage 50
-              delayed {
+              delayed (target: self) {
                 before null, self, Source.ATTACK, {
-                  if (self.owner.opposite.pbg.active.cards.energyCount(C) < 3 && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                  if (self.owner.opposite.pbg.active.cards.energyCount(C) < 3 && bg.currentTurn==self.owner.opposite && e.sourceAttack?.attacker?.owner != self.owner && ef.effectType != DAMAGE){
                     bc "$thisMove prevents effect"
                     prevent()
                   }
@@ -314,7 +314,7 @@ public enum Stormfront implements LogicCardInfo {
             onAttack {
               damage 60
               afterDamage {
-                delayed {
+                delayed (target: self) {
                   before APPLY_ATTACK_DAMAGES, {
                     bg.dm().each {
                       if(it.to == self && it.dmg.value && it.notNoEffect){
@@ -2449,7 +2449,7 @@ public enum Stormfront implements LogicCardInfo {
             text "During your opponent’s next turn, if Onix would be damaged by an attack, prevent that attack’s damage done to Onix if that damage is 40 or less."
             energyCost C
             onAttack {
-              delayed{
+              delayed (target: self) {
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
                     if(it.to == self && it.dmg.value <= 40 && it.notNoEffect) {
@@ -3094,7 +3094,7 @@ public enum Stormfront implements LogicCardInfo {
             onAttack {
               damage 20
               afterDamage {
-                delayed {
+                delayed (target: self) {
                   before KNOCKOUT, self, {
                     if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
                       flip {

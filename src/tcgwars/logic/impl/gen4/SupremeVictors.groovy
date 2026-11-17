@@ -3830,7 +3830,7 @@ public enum SupremeVictors implements LogicCardInfo {
             onAttack {
               damage 80
               afterDamage {
-                delayed {
+                delayed (target: self) {
                   before APPLY_ATTACK_DAMAGES, {
                     bg.dm().each {
                       if(it.to==self && it.dmg.value && it.notNoEffect){

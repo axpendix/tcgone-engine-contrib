@@ -288,7 +288,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             onAttack {
               damage 50
               afterDamage {
-                delayed {
+                delayed (target: self) {
                   before APPLY_ATTACK_DAMAGES, {
                     bg.dm().each {
                       if (it.to==self && it.dmg.value && it.notNoEffect && it.from.stage2) {
@@ -3464,7 +3464,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
                     }
                   }
                   before null, self, Source.ATTACK, {
-                    if (bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                    if (bg.currentTurn==self.owner.opposite && e.sourceAttack?.attacker?.owner != self.owner && ef.effectType != DAMAGE){
                       bc "Stance prevents effects"
                       prevent()
                     }
@@ -3489,7 +3489,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
             onAttack {
               damage 80
               //TODO: Modularize?
-              delayed {
+              delayed (target: self) {
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
                     if(it.from.owner==self.owner.opposite && it.to==self && it.dmg.value && it.notNoEffect){

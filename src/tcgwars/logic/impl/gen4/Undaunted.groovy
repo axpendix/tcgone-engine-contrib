@@ -419,7 +419,7 @@ public enum Undaunted implements LogicCardInfo {
             energyCost D
             onAttack {
               damage 30
-              delayed {
+              delayed (target: self) {
                 before null, self, Source.ATTACK, {
                   if ((e.sourceAttack.attacker.hasPokePower() || e.sourceAttack.attacker.hasPokeBody() || e.sourceAttack.attacker.hasPokemonPower()) && e.sourceAttack.attacker.owner != self.owner && ef.effectType != DAMAGE){
                     bc "Moonlight Fang prevents effect"
@@ -1078,7 +1078,7 @@ public enum Undaunted implements LogicCardInfo {
               damage 20
 
               afterDamage {
-                delayed (priority: BEFORE_LAST) {
+                delayed (priority: BEFORE_LAST, target: self) {
                   before APPLY_ATTACK_DAMAGES, {
                     def entry = bg.dm().find {it.to == self && it.dmg.value && it.notNoEffect}
                     if (entry) {

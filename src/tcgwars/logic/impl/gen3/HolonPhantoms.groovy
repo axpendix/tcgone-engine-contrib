@@ -738,8 +738,8 @@ public enum HolonPhantoms implements LogicCardInfo {
           onAttack {
             damage 40
             afterDamage{
-              delayed {
-                def eff = getter (GET_WEAKNESSES) { h->
+              delayed (target: self) {
+                def eff = getter (GET_WEAKNESSES, self) { h->
                   if (h.effect.target == self) {
                     def list = h.object as List<Weakness>
                     list.clear()

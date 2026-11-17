@@ -287,7 +287,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             energyCost P
             onAttack {
               discardSelfEnergy(P)
-              delayed (priority: BEFORE_LAST) {
+              delayed (priority: BEFORE_LAST, target: self) {
                 before (KNOCKOUT, self) {
                   if ((ef as Knockout).byDamageFromAttack && bg.currentTurn == self.owner.opposite && ef.attackingPokemon?.inPlay){
                     bc "Destiny Bond activates"
@@ -1417,7 +1417,7 @@ public enum LegendsAwakened implements LogicCardInfo {
             text "As long as Torkoal is your Active Pokémon, prevent all effects, including damage, done to your Benched Pokémon by your opponent's attacks."
             delayedA {
               before null, null, ATTACK, {
-                if (self.active && ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE) {
+                if (self.active && ef instanceof TargetedEffect && bg.currentTurn==self.owner.opposite && e.sourceAttack?.attacker?.owner != self.owner && ef.effectType != DAMAGE) {
                   def pcs = e.getTargetPokemon()
                   if (pcs != null && pcs.benched && pcs.owner == self.owner) {
                     bc "White Smoke prevents effect"

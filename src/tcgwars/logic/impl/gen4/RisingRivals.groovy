@@ -2562,7 +2562,7 @@ public enum RisingRivals implements LogicCardInfo {
             energyCost C
             attackRequirement {}
             onAttack {
-              delayed PRIORITY:BEFORE_LAST, {
+              delayed (PRIORITY: BEFORE_LAST, target: self) {
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
                     if(it.to == self && it.dmg.value <= 40 && it.notNoEffect) {

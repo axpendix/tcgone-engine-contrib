@@ -651,7 +651,7 @@ public enum DiamondPearl implements LogicCardInfo {
             onAttack {
               flip {
                 damage 30
-                delayed(priority: BEFORE_LAST) {
+                delayed (priority: BEFORE_LAST, target: self) {
                   before APPLY_ATTACK_DAMAGES, {
                     def damageEntry = bg().dm().find({ it.to == self && it.dmg.value > 0 })
                     if (damageEntry) {
@@ -1383,7 +1383,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               //TODO: Check for a harden() method in Statics
-              delayed {
+              delayed (target: self) {
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
                     if(it.to == self && it.dmg.value <= 30 && it.notNoEffect) {
@@ -1878,7 +1878,7 @@ public enum DiamondPearl implements LogicCardInfo {
             attackRequirement {}
             onAttack {
               //TODO: Check for a harden() method in Statics
-              delayed {
+              delayed (target: self) {
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
                     if(it.to == self && it.dmg.value <= 30 && it.notNoEffect) {
@@ -2692,7 +2692,7 @@ public enum DiamondPearl implements LogicCardInfo {
             onAttack {
               //This *definitely* can be added to statics, matches multiple attacks in DP and SM eras.
               flip {
-                delayed {
+                delayed (target: self) {
                   before KNOCKOUT, self, {
                     if((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite){
                       self.damage = self.fullHP - hp(10)

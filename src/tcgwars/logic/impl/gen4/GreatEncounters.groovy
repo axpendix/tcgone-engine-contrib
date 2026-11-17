@@ -517,7 +517,7 @@ public enum GreatEncounters implements LogicCardInfo {
             onAttack {
               damage 60
               afterDamage {
-                delayed {
+                delayed (target: self) {
                   before APPLY_ATTACK_DAMAGES, {
                     bg.dm().each {
                       if(it.from.realEvolution && it.from.owner == self.owner.opposite && it.notNoEffect && it.dmg.value){

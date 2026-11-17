@@ -333,12 +333,12 @@ public enum Jap10thMovie implements LogicCardInfo {
             onAttack {
               damage 60
               afterDamage {
-                delayed {
+                delayed (target: self) {
                   before APPLY_ATTACK_DAMAGES, {
                     bg.dm().each {
                       if(it.to == self && it.dmg.value && it.notNoEffect){
-                        bc "${thisMove.name} +20"
-                        it.dmg+=hp(20)
+                        bc "${thisMove.name} +30"
+                        it.dmg+=hp(30)
                       }
                     }
                   }

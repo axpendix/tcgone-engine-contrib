@@ -1421,7 +1421,7 @@ public enum Deoxys implements LogicCardInfo {
             text "During your opponent’s next turn, prevent all effects of attacks, including damage, done to Silcoon by your opponent’s Evolved Pokémon."
             energyCost G, C
             onAttack {
-              delayed{
+              delayed (target: self) {
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each{
                     if(it.from.evolution && it.to == self) {
@@ -1431,6 +1431,8 @@ public enum Deoxys implements LogicCardInfo {
                   }
                 }
                 unregisterAfter 2
+                after FALL_BACK, self, {unregister()}
+                after CHANGE_STAGE, self, {unregister()}
               }
             }
           }
@@ -2572,10 +2574,10 @@ public enum Deoxys implements LogicCardInfo {
             energyCost P, C, C
             onAttack {
               damage 50
-              delayed{
+              delayed (target: self) {
                 before null, self, Source.ATTACK, {
                   //TODO: Should prevent stuff like Turtonator-GX's Shell Trap
-                  if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE){
+                  if (self.owner.opposite.pbg.active.EX && bg.currentTurn==self.owner.opposite && e.sourceAttack?.attacker?.owner != self.owner && ef.effectType != DAMAGE){
                     bc "Psychic Shield effect"
                     prevent()
                   }
@@ -2632,7 +2634,7 @@ public enum Deoxys implements LogicCardInfo {
             energyCost F, F, C
             onAttack {
               damage 80
-              delayed {
+              delayed (target: self) {
                 before APPLY_ATTACK_DAMAGES, {
                   bg.dm().each {
                     if(it.from.owner==self.owner.opposite && it.to==self && it.dmg.value && it.notNoEffect){

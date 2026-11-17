@@ -1944,7 +1944,7 @@ f
               afterDamage {
                 def pcs = defending
                 targeted(pcs){
-                  delayed {
+                  delayed (target: self) {
                     after PROCESS_ATTACK_EFFECTS, {
                       bg.dm().each {if(it.to==pcs && it.from==self && it.dmg.value>0 && it.notNoEffect){
                         bc "$thisMove increases damage"

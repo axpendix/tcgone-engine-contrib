@@ -1068,7 +1068,7 @@ public enum RebelClash implements LogicCardInfo {
           delayedA {
             before null, null, Source.ATTACK, {
               def pcs = e.getTargetPokemon()
-              if (pcs && pcs.cards.energyCount(C) && bg.currentTurn==self.owner.opposite && ef.effectType != DAMAGE && pcs.owner==self.owner) {
+              if (pcs && pcs.cards.energyCount(C) && bg.currentTurn==self.owner.opposite && e.sourceAttack?.attacker?.owner != self.owner && ef.effectType != DAMAGE && pcs.owner==self.owner) {
                 bc "Galarian Mr. Rime's Screen Cleaner prevents effect."
                 prevent()
               }
@@ -2225,7 +2225,7 @@ public enum RebelClash implements LogicCardInfo {
             // a copy (Seek Inspiration, Shadow Imitation) is the copier's own attack: no lock and no line (F584, F590)
             if (!bg.em().findAttack().subattack) afterDamage {
               bc "Meteor Assault cannot be used until this Pokémon leaves the Active Spot"
-              delayed (priority: BEFORE_LAST) {
+              delayed (priority: BEFORE_LAST, target: self) {
                 before CHECK_ATTACK_REQUIREMENTS, {
                   // a copy of Meteor Assault is the copier's own attack, which has no such restriction (official
                   // Japanese Q&A, Marshadow's Shadow Imitation copies it again on the next turn; F584)

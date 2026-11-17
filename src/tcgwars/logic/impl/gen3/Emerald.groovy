@@ -390,7 +390,7 @@ public enum Emerald implements LogicCardInfo {
             text "During your next turn, if any of your current Active Pokémon does damage to any Defending Pokémon, the attack does 30 more damage (before applying Weakness and Resistance)."
             energyCost C, C
             onAttack {
-              delayed{
+              delayed (target: self) {
                 after PROCESS_ATTACK_EFFECTS, {
                   bg.dm().each{
                     if(it.from == self && it.to.active && it.notNoEffect && it.dmg.value) {

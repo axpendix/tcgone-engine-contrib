@@ -2907,7 +2907,7 @@ public enum SwordShield implements LogicCardInfo {
               discardSelfEnergyAfterDamage(C, C)
 
               afterDamage {
-                delayed {
+                delayed (target: self) {
                   before APPLY_ATTACK_DAMAGES, {
                     bg.dm().each {
                       if (it.to==self && it.dmg.value && it.notNoEffect) {
