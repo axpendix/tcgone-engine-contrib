@@ -2295,7 +2295,9 @@ public enum Arceus implements LogicCardInfo {
         return pokemonTool (this) {
           // TPCi errata of 2010-05-07 (Compendium, Lucky Egg): the Pokémon draws only when it is put into the discard pile. The
           // Sword & Shield print (167) is played as written, without that condition (TPCi Rules Team, 2024-12-12), so it has its
-          // own code and this card doesn't copy it (trello s0xHMoYH)
+          // own code and this card doesn't copy it (trello s0xHMoYH). Like every errata (bug-triage.mdc, F411), it isn't played in
+          // the formats from before it (Diamond & Pearl block, whose newest set is Arceus, 2009-11) nor in Unlimited: they play
+          // the printed text and draw wherever the Pokémon goes
           text "Attach Lucky Egg to 1 of your Pokémon that doesn’t already have a Pokémon Tool attached to it. If that Pokémon is Knocked Out, discard this card.\nWhen the Pokémon this card is attached to is Knocked Out by damage from an opponent’s attack and put into your discard pile, draw cards until you have 7 cards in your hand."
           def eff
           onPlay {reason->
@@ -2310,7 +2312,8 @@ public enum Arceus implements LogicCardInfo {
                   delayed {
                     after KNOCKOUT, pcs, {
                       unregister()
-                      if (pokemon.every { pcs.owner.pbg.discard.contains(it) }) {
+                      boolean errata = !(bg.formatId in ['DPP_SERIES', 'UNLIMITED'])
+                      if (!errata || pokemon.every { pcs.owner.pbg.discard.contains(it) }) {
                         bc "Lucky Egg activates"
                         def count = 7 - pcs.owner.pbg.hand.size()
                         if (count > 0) draw count, pcs.owner.toTargetPlayer()
