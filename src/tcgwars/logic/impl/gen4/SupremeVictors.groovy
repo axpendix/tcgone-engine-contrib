@@ -2188,7 +2188,7 @@ public enum SupremeVictors implements LogicCardInfo {
           resistance F, MINUS20
           pokeBody "Intimidating Pattern", {
             text "As long as Masquerain is your Active Pokémon, any damage done by an opponent's attack is reduced by 20 (before applying Weakness and Resistance)."
-            delayedA {
+            delayedA priority: BEFORE_LAST, {
               after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each {
                   if(self.active && it.from.owner == self.owner.opposite) {

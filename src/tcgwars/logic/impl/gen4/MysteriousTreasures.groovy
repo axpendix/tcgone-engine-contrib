@@ -987,7 +987,7 @@ public enum MysteriousTreasures implements LogicCardInfo {
           pokeBody "Craggy Face", {
             text "As long as Glalie is your Active Pokémon, any damage done by attacks from your opponent’s Stage 2 Pokémon is reduced by 20 (before applying Weakness and Resistance)."
             //Errata, used to say "Stage 2 Evolved Pokémon"
-            delayedA {
+            delayedA priority: BEFORE_LAST, {
               after PROCESS_ATTACK_EFFECTS, {
                 bg.dm().each{
                   if(self.active && it.from.owner != self.owner && it.from.stage2) {
