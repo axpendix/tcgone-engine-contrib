@@ -1941,15 +1941,20 @@ public enum SwordShield implements LogicCardInfo {
           onAttack {
             apply ASLEEP, defending
             delayed (target: defending) { // the 2 coins of the Defending Pokémon's Asleep checkup: an effect on that Pokémon (F427)
+              // it is that Pokémon's and ends with its Asleep, however that ends: cleared, its own 2 heads, Benched, evolved, Knocked Out
               after CLEAR_SPECIAL_CONDITION, defending, {
                 if(ef.types.contains(ASLEEP)){
                   unregister()
                 }
               }
+              after FALL_BACK, defending, { unregister() }
+              after KNOCKOUT, defending, { unregister() }
+              after CHANGE_STAGE, defending, { unregister() }
               before ASLEEP_SPC, null, null, BEGIN_TURN, {
                 if(ef.target == defending){ //MARK parentEvent
                   flip "Asleep (Sleepy Pulse)", 2, ef.target.owner, {}, {}, [2:{
                     ef.unregisterItself(bg.em());
+                    unregister()
                   },1:{
                     bc "$ef.target is still asleep."
                   },0:{

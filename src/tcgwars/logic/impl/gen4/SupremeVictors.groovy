@@ -1383,6 +1383,7 @@ public enum SupremeVictors implements LogicCardInfo {
                     before ASLEEP_SPC, pcs, null, BEGIN_TURN, {
                       flip "Asleep (Hibernation Spore)", 2, ef.target.owner, {}, {}, [2: {
                         ef.unregisterItself(bg.em());
+                        unregister();
                       }, 1:{
                         bc "$pcs is still asleep."
                       }, 0:{
