@@ -2936,9 +2936,14 @@ public enum Stormfront implements LogicCardInfo {
           resistance C, MINUS20
           pokePower "Ectoplasm", {
             text "If Dusknoir is your Active Pokémon and would be Knocked Out by damage from your opponent’s attack, you may discard all cards attached to Dusknoir LV.X and put Dusknoir LV.X as a Stadium card into play instead of discarding it. This counts as Dusknoir being Knocked Out and your opponent takes a Prize card. As long as you have Dusknoir LV.X as a Stadium card in play, put 1 damage counter on each of your opponent’s Pokémon between turns. If another Stadium card comes into play or Dusknoir LV.X is discarded by the effects of any attacks, Poké-Powers, Poké-Bodies, Trainer, or Supporter cards, return Dusknoir LV.X to your hand."
-            delayedA priority:BEFORE_LAST, {
+            // LAST: the other "is Knocked Out" effects still see Dusknoir Lv.X (Lucky Egg AR 88 then knows it wasn't discarded, PUI
+            // 2010-05-27), and a Knock Out that one of them prevents never gets here
+            delayedA priority:LAST, {
               before KNOCKOUT, self, {
-                if((ef as Knockout).byDamageFromAttack && self.active && confirm("Use Ectoplasm?", self.owner)){
+                // Active when the opponent's attack damaged it, even if that attack then switched it to the Bench, where it is
+                // Knocked Out (Whirlwind, PUI 2008-12-04)
+                def activeWhenDamaged = self.lastOpponentAttackTurn == bg.turnCount && self.lastOpponentAttackWhileActive
+                if((ef as Knockout).byDamageFromAttack && activeWhenDamaged && confirm("Use Ectoplasm?", self.owner)){
                   powerUsed()
 
                   // Dusknoir Lv.X violates many of the rules of stadiums due to rulings. https://compendium.pokegym.net/compendium-lvx.html#303

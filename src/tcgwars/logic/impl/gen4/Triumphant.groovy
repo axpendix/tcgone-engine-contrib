@@ -2269,14 +2269,18 @@ public enum Triumphant implements LogicCardInfo {
             // 2010-11-04); the owner's decision (2023-09-26, trello 5jPNPAsy) is that it always goes back to the hand
             eff = delayed priority:EffectPriority.FIRST, {
               def flag = false
+              def top = null
               // not bound to the Pokémon it was attached to when played: the Energy may have been moved since
               before KNOCKOUT, {
                 if (e.targetPokemon == self) {
                   flag = (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner.opposite
+                  top = self.topPokemonCard
                 }
               }
               before KNOCKOUT_DISCARD_STEP, {
-                if (flag && e.targetPokemon == self) {
+                // nothing to put back when the Pokémon card went elsewhere instead of the discard pile before this step:
+                // Dusknoir Lv.X SF 96 that became a Stadium through Ectoplasm (PUI 2010-11-18)
+                if (flag && e.targetPokemon == self && self.cards.contains(top)) {
                   flag = false
                   bc "Rescue Energy activates"
                   self.cards.filterByType(POKEMON).moveTo(self.owner.pbg.hand)
