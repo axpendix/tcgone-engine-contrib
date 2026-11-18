@@ -225,10 +225,16 @@ public enum ShinyStarV implements LogicCardInfo {
             assert my.discard.any { it.cardTypes.isAll(BASIC, POKEMON_V) } : "No Basic Pokémon V in your discard pile"
             checkLastTurn()
             powerUsed()
-            def card = my.discard.select "Choose a Basic Pokémon V to switch with $self", { it.cardTypes.isAll(BASIC, POKEMON_V) }
-            discard self.topPokemonCard
-            card.moveTo suppressLog:true, self.cards
-            bc "Switched with $card"
+            def card = my.discard.select("Choose a Basic Pokémon V to switch with $self", { it.cardTypes.isAll(BASIC, POKEMON_V) }).first()
+            def top = self.topPokemonCard
+            // switched in place, as Ninja Boy STS 103 does, so everything on the Pokémon remains: discarding its card would fire
+            // REMOVE_FROM_PLAY, which ends the effects bound to that card and, with no Pokémon card left in it for a moment,
+            // its Special Conditions (trello a4e9QARs)
+            self.cards.remove(top)
+            my.discard.remove(card)
+            self.cards.add(card)
+            my.discard.add(top)
+            bc "$top was switched with $card"
             bg.em().run new CheckAbilities(self)
           }
         }

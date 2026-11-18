@@ -2361,9 +2361,13 @@ public enum BattleStyles implements LogicCardInfo {
             def card = my.hand.filterByNameEquals("Aegislash").select("Stance Change").first()
             def pcs = self
             def top = pcs.topPokemonCard
-            bg.em().activateInnerEffect(new MoveCard(top, my.hand))
-            bg.em().activateInnerEffect(new MoveCard(card, pcs))
-            bc "Switched with $card"
+            // switched in place, as Aegislash XY 85 does, so everything on the Pokémon remains: a MoveCard out of it fires
+            // REMOVE_FROM_PLAY, which ends the effects bound to the old card and its Special Conditions (trello a4e9QARs)
+            pcs.cards.remove(top)
+            my.hand.remove(card)
+            pcs.cards.add(card)
+            my.hand.add(top)
+            bc "$top was switched with $card"
           }
         }
         move "Full Metal Blade", {
@@ -2392,9 +2396,13 @@ public enum BattleStyles implements LogicCardInfo {
             def card = my.hand.filterByNameEquals("Aegislash").select("Stance Change").first()
             def pcs = self
             def top = pcs.topPokemonCard
-            bg.em().activateInnerEffect(new MoveCard(top, my.hand))
-            bg.em().activateInnerEffect(new MoveCard(card, pcs))
-            bc "Switched with $card"
+            // switched in place, as Aegislash XY 85 does, so everything on the Pokémon remains: a MoveCard out of it fires
+            // REMOVE_FROM_PLAY, which ends the effects bound to the old card and its Special Conditions (trello a4e9QARs)
+            pcs.cards.remove(top)
+            my.hand.remove(card)
+            pcs.cards.add(card)
+            my.hand.add(top)
+            bc "$top was switched with $card"
           }
         }
         move "Gigaton Bash", {
