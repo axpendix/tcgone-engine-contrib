@@ -2264,7 +2264,10 @@ public enum Triumphant implements LogicCardInfo {
           text "Rescue Energy provides 1 [C] Energy. If the Pokémon this card is attached to is Knocked Out by damage from an attack, put that Pokémon back into your hand. (Discard all cards attached to that Pokémon.)"
           def eff
           onPlay {reason->
-            eff = delayed priority:EffectPriority.LAST, {
+            // FIRST: the Pokémon goes back to the hand before an effect of the discard step puts it in the Lost Zone instead
+            // (Lost Crisis, Broken-space Blow, Lost City). The rulings let the owner choose the order (HS Triumphant FAQ, PUI
+            // 2010-11-04); the owner's decision (2023-09-26, trello 5jPNPAsy) is that it always goes back to the hand
+            eff = delayed priority:EffectPriority.FIRST, {
               def flag = false
               // not bound to the Pokémon it was attached to when played: the Energy may have been moved since
               before KNOCKOUT, {

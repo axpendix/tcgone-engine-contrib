@@ -1165,17 +1165,16 @@ public enum Platinum implements LogicCardInfo {
             onAttack {
               damage 50
               delayed (target: defending) {
-                def knockedOut = null
+                def knockedOut = false
                 before KNOCKOUT, {
-                  if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner && self.active && ef.pokemonToBeKnockedOut == defending ) {
-                    knockedOut = ef.pokemonToBeKnockedOut.cards.copy()
-                  }
+                  knockedOut = (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner && self.active && ef.pokemonToBeKnockedOut == defending
                 }
-                after KNOCKOUT, {
-                  if (knockedOut) {
+                // in the discard step, not after the Knock Out: a card that Rescue Energy put back into the hand stays there
+                before KNOCKOUT_DISCARD_STEP, {
+                  if (knockedOut && e.targetPokemon == defending) {
+                    knockedOut = false
                     bc "Broken-space Blow puts all cards into the Lost Zone."
-                    knockedOut.moveTo(self.owner.opposite.pbg.lostZone)
-                    knockedOut = null
+                    defending.cards.moveTo(defending.owner.pbg.lostZone)
                   }
                 }
                 unregisterAfter 1
@@ -3408,17 +3407,16 @@ public enum Platinum implements LogicCardInfo {
                 damage 30, pcs
 
                 delayed (target: pcs) {
-                  def knockedOut = null
+                  def knockedOut = false
                   before KNOCKOUT, {
-                    if ((ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner && self.active && ef.pokemonToBeKnockedOut == pcs ) {
-                      knockedOut = ef.pokemonToBeKnockedOut.cards.copy()
-                    }
+                    knockedOut = (ef as Knockout).byDamageFromAttack && bg.currentTurn==self.owner && self.active && ef.pokemonToBeKnockedOut == pcs
                   }
-                  after KNOCKOUT, {
-                    if (knockedOut) {
+                  // in the discard step, not after the Knock Out: a card that Rescue Energy put back into the hand stays there
+                  before KNOCKOUT_DISCARD_STEP, {
+                    if (knockedOut && e.targetPokemon == pcs) {
+                      knockedOut = false
                       bc "Darkness Lost puts all cards into the Lost Zone."
-                      knockedOut.moveTo(self.owner.opposite.pbg.lostZone)
-                      knockedOut = null
+                      pcs.cards.moveTo(pcs.owner.pbg.lostZone)
                     }
                   }
                   unregisterAfter 1
